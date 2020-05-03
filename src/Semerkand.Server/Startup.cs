@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components;
 
 using System.Net.Http;
+using Semerkand.CommonUI.Components;
 
 #endif
 
@@ -55,6 +56,11 @@ using Serilog;
 using System.Reflection;
 using Semerkand.Server.Data;
 using Syncfusion.Blazor;
+using System.Globalization;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Options;
+
 
 namespace Semerkand.Server
 {
@@ -333,6 +339,34 @@ namespace Semerkand.Server
             });
 
             services.AddControllers().AddNewtonsoftJson();
+
+
+            //#region Localization
+            //// Set the Resx file folder path to access
+            //services.AddLocalization(options => options.ResourcesPath = "Resources");
+            //services.AddSyncfusionBlazor();
+            //// register a Syncfusion locale service to customize the Syncfusion Blazor component locale culture
+            //services.AddSingleton(typeof(ISyncfusionStringLocalizer), typeof(SyncLocalizer));
+            //services.Configure<RequestLocalizationOptions>(options =>
+            //{
+            //    // Define the list of cultures your app will support
+            //    var supportedCultures = new List<CultureInfo>()
+            //{
+            //    new CultureInfo("en-US"),
+            //    new CultureInfo("de")
+            //};
+
+            //    // Set the default culture
+            //    options.DefaultRequestCulture = new RequestCulture("en-US");
+
+            //    options.SupportedCultures = supportedCultures;
+            //    options.SupportedUICultures = supportedCultures;
+            //});
+            //#endregion
+
+
+
+
             services.AddSignalR();
 
             services.AddSwaggerDocument(config =>
@@ -395,6 +429,33 @@ namespace Semerkand.Server
             // Setup HttpClient for server side
             services.AddScoped<HttpClient>();
 
+
+            #region Localization
+            // Set the Resx file folder path to access
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+            services.AddSyncfusionBlazor();
+            // register a Syncfusion locale service to customize the Syncfusion Blazor component locale culture
+            services.AddSingleton(typeof(ISyncfusionStringLocalizer), typeof(SyncLocalizer));
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                // Define the list of cultures your app will support
+                var supportedCultures = new List<CultureInfo>()
+            {
+                new CultureInfo("en-US"),
+                new CultureInfo("tr")
+            };
+
+                // Set the default culture
+                options.DefaultRequestCulture = new RequestCulture("tr");
+
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedCultures;
+            });
+            #endregion
+            
+
+
+
             services.AddRazorPages();
             services.AddServerSideBlazor();
 
@@ -410,6 +471,7 @@ namespace Semerkand.Server
             Log.Logger.Debug("Adding AuthenticationStateProvider...");
             services.AddScoped<AuthenticationStateProvider, IdentityAuthenticationStateProvider>();
 
+            services.AddScoped<SampleService>();
 #endif
 
             Log.Logger.Debug($"Total Services Registered: {services.Count}");
@@ -436,6 +498,13 @@ namespace Semerkand.Server
             // A REST API global exception handler and response wrapper for a consistent API
             // Configure API Loggin in appsettings.json - Logs most API calls. Great for debugging and user activity audits
             app.UseMiddleware<APIResponseRequestLoggingMiddleware>(Convert.ToBoolean(Configuration["Semerkand:EnableAPILogging:Enabled"] ?? "true"));
+
+
+            #region Localization
+
+            app.UseRequestLocalization(app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>().Value);
+
+            #endregion
 
             if (env.IsDevelopment())
             {

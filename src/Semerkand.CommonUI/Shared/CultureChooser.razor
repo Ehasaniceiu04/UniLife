@@ -1,0 +1,65 @@
+﻿@using System.Threading
+
+@inject NavigationManager NavigationManager
+
+<div style="margin-bottom: 20px;">
+    Select your language:
+
+    <select @onchange="OnSelected">
+        <option>Select...</option>
+        <option value="en-US">English</option>
+        <option value="fr-FR">Français</option>
+        <option value="de">German</option>
+        <option value="tr">Turkish</option>
+    </select>
+    <br />
+    Current UI culture (used for localization): @Thread.CurrentThread.CurrentUICulture.Name
+    <br />
+    Current thread culture (used for date and number formatting): @Thread.CurrentThread.CurrentCulture.Name
+</div>
+
+@code{
+
+    public class CultureData
+    {
+        public string Text { get; set; }
+        public string Value { get; set; }
+    }
+
+    private void OnSelected(ChangeEventArgs e)
+    {
+        var culture = (string)e.Value;
+        var uri = new Uri(NavigationManager.Uri)
+            .GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
+        var query = $"?culture={Uri.EscapeDataString(culture)}&" +
+            $"redirectUri={Uri.EscapeDataString(uri)}";
+
+        NavigationManager.NavigateTo("/Culture/SetCulture" + query, forceLoad: true);
+    }
+ 
+    public List<CultureData> Cultures { get; set; } = new List<CultureData>()
+{
+        new  CultureData() { Text = "English", Value = "en-US" },
+        new  CultureData() { Text = "French", Value = "fr-FR" },
+        new  CultureData() { Text = "German", Value = "de" },
+        new  CultureData() { Text = "Türkçe", Value = "tr" },
+    };
+
+    public string SelectedCulture { get; set; } = Thread.CurrentThread.CurrentUICulture.Name;
+
+    public void OnValueChanged(string eventArgs)
+    {
+        SelectedCulture = eventArgs;
+
+        SetCulture(eventArgs);
+    }
+
+    public void SetCulture(string culture)
+    {
+        var uri = new Uri(NavigationManager.Uri).GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
+        var query = $"?culture={Uri.EscapeDataString(culture)}&redirectUri={Uri.EscapeDataString(uri)}";
+
+        // use a path that matches your culture redirect controller from the previous steps
+        NavigationManager.NavigateTo("/Culture/SetCulture" + query, forceLoad: true);
+    }
+}

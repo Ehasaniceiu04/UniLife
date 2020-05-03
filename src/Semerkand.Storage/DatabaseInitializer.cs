@@ -45,6 +45,7 @@ namespace Semerkand.Storage
 
         public virtual async Task SeedAsync()
         {
+            //Buna sonra bak. yeni tablelar falan geliyor.
             ////Apply EF Core migration scripts
             //await MigrateAsync();
 

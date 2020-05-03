@@ -12,6 +12,7 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
+using Semerkand.CommonUI.Components;
 
 namespace Semerkand.Client
 {
@@ -49,6 +50,9 @@ namespace Semerkand.Client
                 config.MaximumOpacity = 95;
                 config.VisibleStateDuration = 3000;
             });
+
+            builder.Services.AddScoped<SampleService>();
+
 
             await builder
             .Build()

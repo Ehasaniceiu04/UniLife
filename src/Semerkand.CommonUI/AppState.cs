@@ -7,7 +7,6 @@ using Semerkand.CommonUI.Services.Contracts;
 using Semerkand.Shared.Dto;
 using Semerkand.Shared.Dto.Account;
 using Newtonsoft.Json;
-using static Microsoft.AspNetCore.Http.StatusCodes;
 
 namespace Semerkand.CommonUI
 {
