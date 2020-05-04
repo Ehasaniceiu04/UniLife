@@ -2,8 +2,11 @@
 
 @using Syncfusion.Blazor.Calendars
 @using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor
 
 @using Semerkand.CommonUI.Components.Grid.DataGrid
+
+@inject HttpClient Http;
 
 <h1>Örnek Gridimiz - CRUD</h1>
 <p>
@@ -16,6 +19,13 @@
 @*<CultureChooser />*@
 
 @code{
+
+
+    [Inject]
+    protected IJSRuntime JsRuntime { get; set; }
+
+
+
     public class Emp
     {
         public int EmpId { get; set; }
@@ -33,17 +43,39 @@
         }).ToList();
     }
 
+
+
+    //protected override async Task OnInitializedAsync()
+    //{
+
+    //    var Locale = await Http.GetJsonAsync<object>("tr.json");
+    //    this.JsRuntime.Sf().LoadLocaleData(Locale).SetCulture("tr");
+
+
+
+    //}
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var Locale = await Http.GetJsonAsync<object>("tr.json");
+            this.JsRuntime.Sf().LoadLocaleData(Locale).SetCulture("tr");
+
+            //this.JsRuntime.Sf().LoadLocaleData("tr.json").SetCulture("tr");
+        }
+    }
+
+
     bool lazySnackbarIsOpen = false;
 
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
+    //await base.OnInitializedAsync();
 
-        await Task.Delay(TimeSpan.FromSeconds(3)).ContinueWith((_) =>
-        {
-            this.lazySnackbarIsOpen = true;
-        });
-    }
+    //await Task.Delay(TimeSpan.FromSeconds(3)).ContinueWith((_) =>
+    //{
+    //    this.lazySnackbarIsOpen = true;
+    //});
 
     public void Dispose()
     {

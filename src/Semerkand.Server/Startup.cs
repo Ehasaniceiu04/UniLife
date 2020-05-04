@@ -56,10 +56,10 @@ using Serilog;
 using System.Reflection;
 using Semerkand.Server.Data;
 using Syncfusion.Blazor;
-using System.Globalization;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Localization;
-using Microsoft.Extensions.Options;
+//using System.Globalization;
+//using System.Collections.Generic;
+//using Microsoft.AspNetCore.Localization;
+//using Microsoft.Extensions.Options;
 
 
 namespace Semerkand.Server
@@ -374,12 +374,12 @@ namespace Semerkand.Server
                 config.PostProcess = document =>
                 {
                     document.Info.Version = migrationsAssembly.Version.ToString();
-                    document.Info.Title = "Blazor Boilerplate";
+                    document.Info.Title = "Uni-Life";
 #if ServerSideBlazor
-                    document.Info.Description = "Blazor Boilerplate / Starter Template using the  Server Side Version";
+                    document.Info.Description = "Uni-Life / Starter Template using the  Server Side Version";
 #endif
 #if ClientSideBlazor
-                    document.Info.Description = "Blazor Boilerplate / Starter Template using the Client Side / Webassembly Version.";
+                    document.Info.Description = "Uni-Life / Starter Template using the Client Side / Webassembly Version.";
 #endif
                 };
             });
@@ -430,28 +430,28 @@ namespace Semerkand.Server
             services.AddScoped<HttpClient>();
 
 
-            #region Localization
-            // Set the Resx file folder path to access
-            services.AddLocalization(options => options.ResourcesPath = "Resources");
-            services.AddSyncfusionBlazor();
-            // register a Syncfusion locale service to customize the Syncfusion Blazor component locale culture
-            services.AddSingleton(typeof(ISyncfusionStringLocalizer), typeof(SyncLocalizer));
-            services.Configure<RequestLocalizationOptions>(options =>
-            {
-                // Define the list of cultures your app will support
-                var supportedCultures = new List<CultureInfo>()
-            {
-                new CultureInfo("en-US"),
-                new CultureInfo("tr")
-            };
+            //#region Localization
+            //// Set the Resx file folder path to access
+            //services.AddLocalization(options => options.ResourcesPath = "Resources");
+            //services.AddSyncfusionBlazor();
+            //// register a Syncfusion locale service to customize the Syncfusion Blazor component locale culture
+            //services.AddSingleton(typeof(ISyncfusionStringLocalizer), typeof(SyncLocalizer));
+            //services.Configure<RequestLocalizationOptions>(options =>
+            //{
+            //    // Define the list of cultures your app will support
+            //    var supportedCultures = new List<CultureInfo>()
+            //{
+            //    new CultureInfo("en-US"),
+            //    new CultureInfo("tr")
+            //};
 
-                // Set the default culture
-                options.DefaultRequestCulture = new RequestCulture("tr");
+            //    // Set the default culture
+            //    options.DefaultRequestCulture = new RequestCulture("tr");
 
-                options.SupportedCultures = supportedCultures;
-                options.SupportedUICultures = supportedCultures;
-            });
-            #endregion
+            //    options.SupportedCultures = supportedCultures;
+            //    options.SupportedUICultures = supportedCultures;
+            //});
+            //#endregion
             
 
 
@@ -500,11 +500,11 @@ namespace Semerkand.Server
             app.UseMiddleware<APIResponseRequestLoggingMiddleware>(Convert.ToBoolean(Configuration["Semerkand:EnableAPILogging:Enabled"] ?? "true"));
 
 
-            #region Localization
+            //#region Localization
 
-            app.UseRequestLocalization(app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>().Value);
+            //app.UseRequestLocalization(app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>().Value);
 
-            #endregion
+            //#endregion
 
             if (env.IsDevelopment())
             {

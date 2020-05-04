@@ -6,8 +6,8 @@
     <Version>0.8.1</Version>
     <Authors>Keith Fimreite</Authors>
     <Company>EnkodeLLC</Company>
-    <Title>Blazor Boilerplate Shared</Title>
-    <Description>Blazor Boilerplate is starter kit / SPA Admin Template for Blazor</Description>
+    <Title>Uni-Life Shared</Title>
+    <Description>Uni-Life is starter kit / SPA Admin Template for Blazor</Description>
     <WebPage>https://blazorboilerplate.com/</WebPage>
     <PackageProjectUrl>https://blazorboilerplate.com/</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>

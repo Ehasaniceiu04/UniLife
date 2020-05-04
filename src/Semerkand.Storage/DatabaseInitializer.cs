@@ -45,7 +45,7 @@ namespace Semerkand.Storage
 
         public virtual async Task SeedAsync()
         {
-            //Buna sonra bak. yeni tablelar falan geliyor.
+            ////Buna sonra bak.yeni tablelar falan geliyor.
             ////Apply EF Core migration scripts
             //await MigrateAsync();
 
@@ -131,12 +131,12 @@ namespace Semerkand.Storage
                         new Todo
                         {
                             IsCompleted = false,
-                            Title = "Test Blazor Boilerplate"
+                            Title = "Test Uni-Life"
                         },
                         new Todo
                         {
                             IsCompleted = false,
-                            Title = "Test Blazor Boilerplate 1",
+                            Title = "Test Uni-Life 1",
                         }
                 );
             }
