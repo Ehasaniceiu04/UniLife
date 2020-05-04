@@ -397,6 +397,7 @@ namespace Semerkand.Server
             services.AddTransient<IExternalAuthManager, ExternalAuthManager>(); // Currently not being used.
             services.AddTransient<IMessageManager, MessageManager>();
             services.AddTransient<ITodoManager, ToDoManager>();
+            services.AddTransient<IUniversiteManager, UniversiteManager>();
             services.AddTransient<IUserProfileManager, UserProfileManager>();
 
 

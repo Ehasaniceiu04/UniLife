@@ -9,6 +9,9 @@
         <MatNavItem Href="@navigationManager.ToAbsoluteUri("todo_list").AbsoluteUri">
             <MatIcon>list_alt</MatIcon> <span class="miniHover">Todo List</span>
         </MatNavItem>
+        <MatNavItem Href="@navigationManager.ToAbsoluteUri("tanimlar").AbsoluteUri">
+            <MatIcon>business</MatIcon> <span class="miniHover">Tanimlar</span>
+        </MatNavItem>
 
         <MatNavSubMenu>
             <MatNavSubMenuHeader>
@@ -85,7 +88,7 @@
         <MatNavItem Href="@navigationManager.ToAbsoluteUri("sponsors").AbsoluteUri">
             <MatIcon>attach_money</MatIcon> <span class="miniHover">Sponsors</span>
         </MatNavItem>
-</MatNavMenu>
+    </MatNavMenu>
 
 @code {
     public bool IsLoggedIn = false;

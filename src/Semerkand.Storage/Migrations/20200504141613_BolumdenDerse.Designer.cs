@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Semerkand.Storage;
@@ -9,9 +10,10 @@ using Semerkand.Storage;
 namespace Semerkand.Storage.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200504141613_BolumdenDerse")]
+    partial class BolumdenDerse
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -313,9 +315,6 @@ namespace Semerkand.Storage.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<int>("FakulteId")
-                        .HasColumnType("integer");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
@@ -333,8 +332,6 @@ namespace Semerkand.Storage.Migrations
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("FakulteId");
 
                     b.ToTable("Bolums");
                 });
@@ -404,12 +401,7 @@ namespace Semerkand.Storage.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<int>("MufredatID")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("MufredatID");
 
                     b.ToTable("Derss");
                 });
@@ -514,12 +506,7 @@ namespace Semerkand.Storage.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<int>("ProgramId")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("ProgramId");
 
                     b.ToTable("Mufredats");
                 });
@@ -530,9 +517,6 @@ namespace Semerkand.Storage.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("BolumId")
-                        .HasColumnType("integer");
 
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uuid");
@@ -559,8 +543,6 @@ namespace Semerkand.Storage.Migrations
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BolumId");
 
                     b.ToTable("Programs");
                 });
@@ -740,24 +722,6 @@ namespace Semerkand.Storage.Migrations
                         .HasForeignKey("ApplicationUserId");
                 });
 
-            modelBuilder.Entity("Semerkand.Shared.DataModels.Bolum", b =>
-                {
-                    b.HasOne("Semerkand.Shared.DataModels.Fakulte", "Fakulte")
-                        .WithMany("Bolums")
-                        .HasForeignKey("FakulteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Semerkand.Shared.DataModels.Ders", b =>
-                {
-                    b.HasOne("Semerkand.Shared.DataModels.Mufredat", "Mufredat")
-                        .WithMany("Derss")
-                        .HasForeignKey("MufredatID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Semerkand.Shared.DataModels.Fakulte", b =>
                 {
                     b.HasOne("Semerkand.Shared.DataModels.Universite", "Universite")
@@ -772,24 +736,6 @@ namespace Semerkand.Storage.Migrations
                     b.HasOne("Semerkand.Shared.DataModels.ApplicationUser", "Sender")
                         .WithMany("Messages")
                         .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Semerkand.Shared.DataModels.Mufredat", b =>
-                {
-                    b.HasOne("Semerkand.Shared.DataModels.Program", "Program")
-                        .WithMany("Mufredats")
-                        .HasForeignKey("ProgramId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Semerkand.Shared.DataModels.Program", b =>
-                {
-                    b.HasOne("Semerkand.Shared.DataModels.Bolum", "Bolum")
-                        .WithMany("Programs")
-                        .HasForeignKey("BolumId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

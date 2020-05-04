@@ -2,6 +2,7 @@
 using Semerkand.Shared.DataModels;
 using Semerkand.Shared.Dto;
 using Semerkand.Shared.Dto.Account;
+using Semerkand.Shared.Dto.Definitions;
 using Semerkand.Shared.Dto.Sample;
 using ApiLogItem = Semerkand.Shared.DataModels.ApiLogItem;
 using Message = Semerkand.Shared.DataModels.Message;
@@ -16,6 +17,7 @@ namespace Semerkand.Storage.Mapping
         /// </summary>
         public MappingProfile()
         {
+            CreateMap<Universite, UniversiteDto>().ReverseMap();
             CreateMap<Todo, TodoDto>().ReverseMap();           
             CreateMap<UserProfile, UserProfileDto>().ReverseMap();
             CreateMap<ApiLogItem, ApiLogItemDto>().ReverseMap();

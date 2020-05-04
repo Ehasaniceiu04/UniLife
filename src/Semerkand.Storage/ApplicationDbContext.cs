@@ -26,7 +26,12 @@ namespace Semerkand.Storage
         public DbSet<Tenant> Tenants { get; set; }
         private IUserSession _userSession { get; set; }
         public DbSet<DbLog> Logs { get; set; }
-        public DbSet<Test> Tests { get; set; }
+        public DbSet<Universite> Universites{ get; set; }
+        public DbSet<Fakulte> Fakultes{ get; set; }
+        public DbSet<Bolum> Bolums{ get; set; }
+        public DbSet<Program> Programs{ get; set; }
+        public DbSet<Mufredat> Mufredats{ get; set; }
+        public DbSet<Ders> Derss{ get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IUserSession userSession) : base(options)
         {

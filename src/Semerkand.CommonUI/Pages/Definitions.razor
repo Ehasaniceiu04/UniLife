@@ -1,0 +1,100 @@
+﻿@page "/tanimlar"
+@inject HttpClient Http;
+@using Semerkand.Shared.Dto.Definitions
+@inject IMatToaster matToaster
+
+<MatTabGroup>
+    <MatTab Label="Üniversite">
+
+        <div class="col-lg-12 control-section">
+            <div class="content-wrapper">
+                <div class="row">
+                    <SfGrid DataSource="@universiteDtos" Toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Update", "Cancel" })" AllowPaging="true">
+                        <GridEditSettings AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
+                        <GridColumns>
+                            <GridColumn Field=@nameof(UniversiteDto.Id) HeaderText="Üniversite ID" IsPrimaryKey="true" ValidationRules="@(new { required=true, number=true})" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+                            <GridColumn Field=@nameof(UniversiteDto.Isim) HeaderText="Üniversite İsim" Width="170"></GridColumn>
+                        </GridColumns>
+                    </SfGrid>
+
+                </div>
+            </div>
+        </div>
+
+
+    </MatTab>
+    <MatTab Label="Fakülte">
+        <SfCalendar TValue="DateTime?" Value="@DateValue"></SfCalendar>
+    </MatTab>
+    <MatTab Label="Bölüm">
+        <DialogEditing></DialogEditing>
+    </MatTab>
+    <MatTab Label="Program">
+        Program
+    </MatTab>
+    <MatTab Label="Müfredat">
+        Müfredat
+    </MatTab>
+    <MatTab Label="Ders">
+        <LabelContent>
+            Third <MatIcon Icon="@MatIconNames.Close"></MatIcon>
+        </LabelContent>
+        <ChildContent>
+            Ders
+        </ChildContent>
+    </MatTab>
+    <MatTab>
+
+    </MatTab>
+
+</MatTabGroup>
+
+
+<button @onclick="@Switch">Switch</button>
+
+@code{
+    public bool Visible { get; set; }
+    public DateTime? DateValue { get; set; } = DateTime.Now;
+
+    List<UniversiteDto> universiteDtos = new List<UniversiteDto>();
+
+    public void Switch()
+    {
+        Visible = !Visible;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ReadUniversites();
+    }
+
+    async Task ReadUniversites()
+    {
+        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/universite");
+
+        if (apiResponse.StatusCode == Status200OK)
+        {
+            matToaster.Add(apiResponse.Message, MatToastType.Success, "Üniversiteler getirildi");
+            universiteDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<UniversiteDto[]>(apiResponse.Result.ToString()).ToList<UniversiteDto>();
+        }
+        else
+        {
+            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Üniversite bilgisi getirilirken hata oluştu!");
+        }
+    }
+
+
+    //[Inject]
+    //protected IJSRuntime JsRuntime { get; set; }
+
+    //protected override async Task OnAfterRenderAsync(bool firstRender)
+    //{
+    //    if (firstRender)
+    //    {
+    //        var Locale = await Http.GetJsonAsync<object>("tr.json");
+    //        this.JsRuntime.Sf().LoadLocaleData(Locale).SetCulture("tr");
+
+    //        //this.JsRuntime.Sf().LoadLocaleData("tr.json").SetCulture("tr");
+    //    }
+    //}
+}

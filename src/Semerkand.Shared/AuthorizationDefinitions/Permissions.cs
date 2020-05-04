@@ -12,6 +12,18 @@ namespace Semerkand.Shared.AuthorizationDefinitions
 
     public static class Permissions
     {
+        public static class Universite
+        {
+            [Description("Create a new Universite")]
+            public const string Create = nameof(Universite) + "." + nameof(Actions.Create);
+            [Description("Read Universites")]
+            public const string Read = nameof(Universite) + "." + nameof(Actions.Read);
+            [Description("Edit existing Universites")]
+            public const string Update = nameof(Universite) + "." + nameof(Actions.Update);
+            [Description("Delete any Universite")]
+            public const string Delete = nameof(Universite) + "." + nameof(Actions.Delete);
+        }
+
         public static class Todo
         {
             [Description("Create a new ToDo")]

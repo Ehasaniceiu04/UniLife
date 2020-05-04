@@ -16,6 +16,13 @@ namespace Semerkand.Storage
         public DbSet<ApplicationUser> Users { get; set; }
         //public DbSet<Tenant> Tenants { get; set; }
 
+        public DbSet<Universite> Universites { get; set; }
+        public DbSet<Fakulte> Fakultes { get; set; }
+        public DbSet<Bolum> Bolums { get; set; }
+        public DbSet<Program> Programs { get; set; }
+        public DbSet<Mufredat> Mufredats { get; set; }
+        public DbSet<Ders> Derss { get; set; }
+
         public void SetGlobalQueryForSoftDelete<T>(ModelBuilder builder) where T : class, ISoftDelete;
 
         public void SetGlobalQueryForSoftDeleteAndTenant<T>(ModelBuilder builder) where T : class, ISoftDelete, ITenant;
