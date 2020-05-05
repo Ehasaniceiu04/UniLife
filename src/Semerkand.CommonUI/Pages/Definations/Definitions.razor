@@ -1,0 +1,48 @@
+﻿@page "/tanimlar"
+@inject HttpClient Http;
+@using Semerkand.Shared.Dto.Definitions
+@using Semerkand.CommonUI.Pages
+@inject IMatToaster matToaster
+
+<MatTabGroup>
+    <MatTab Label="Üniversite">
+
+        <Semerkand.CommonUI.Pages.Definations.Tabs.Universiteler></Semerkand.CommonUI.Pages.Definations.Tabs.Universiteler>
+
+    </MatTab>
+    <MatTab Label="Fakülte">
+        <SfCalendar TValue="DateTime?" Value="@DateValue"></SfCalendar>
+    </MatTab>
+    <MatTab Label="Bölüm">
+        <DialogEditing></DialogEditing>
+    </MatTab>
+    <MatTab Label="Program">
+        Program
+    </MatTab>
+    <MatTab Label="Müfredat">
+        Müfredat
+    </MatTab>
+    <MatTab Label="Ders">
+        <LabelContent>
+            Third <MatIcon Icon="@MatIconNames.Close"></MatIcon>
+        </LabelContent>
+        <ChildContent>
+            Ders
+        </ChildContent>
+    </MatTab>
+    <MatTab>
+
+    </MatTab>
+
+</MatTabGroup>
+
+
+@*<button @onclick="@Switch">Switch</button>*@
+
+@code{
+    public bool Visible { get; set; }
+    public DateTime? DateValue { get; set; } = DateTime.Now;
+    
+
+
+}
