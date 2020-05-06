@@ -23,6 +23,7 @@ namespace Semerkand.Storage
             services.AddTransient<IUserProfileStore, UserProfileStore>();
             services.AddTransient<IToDoStore, ToDoStore>();
             services.AddTransient<IUniversiteStore, UniversiteStore>();
+            services.AddTransient<IFakulteStore, FakulteStore>();
             //services.AddTransient<ITenantStore, TenantStore>();
             services.AddTransient<IApiLogStore, ApiLogStore>();
                        

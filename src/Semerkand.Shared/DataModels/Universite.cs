@@ -4,10 +4,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Semerkand.Shared.DataModels
 {
-    public class Universite : IAuditable, ISoftDelete
+    public class Universite : Entity<int>,IAuditable, ISoftDelete
     {
-        [Key]
-        public int Id { get; set; }
         [Required]
         [MaxLength(300)]
         public string Isim { get; set; }

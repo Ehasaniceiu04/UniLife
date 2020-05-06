@@ -398,6 +398,7 @@ namespace Semerkand.Server
             services.AddTransient<IMessageManager, MessageManager>();
             services.AddTransient<ITodoManager, ToDoManager>();
             services.AddTransient<IUniversiteManager, UniversiteManager>();
+            services.AddTransient<IFakulteManager, FakulteManager>();
             services.AddTransient<IUserProfileManager, UserProfileManager>();
 
 
@@ -458,7 +459,16 @@ namespace Semerkand.Server
 
 
             services.AddRazorPages();
-            services.AddServerSideBlazor();
+            //services.AddServerSideBlazor(); //For dev show error.
+
+            services.AddServerSideBlazor().AddCircuitOptions(o =>
+            {
+                if (_environment.IsDevelopment()) //only add details when debugging
+                {
+                    o.DetailedErrors = true;
+                }
+            });
+
 
             // Authentication providers
 

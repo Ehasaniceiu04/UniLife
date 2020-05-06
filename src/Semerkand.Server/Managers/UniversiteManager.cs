@@ -1,12 +1,10 @@
 ﻿using Semerkand.Server.Middleware.Wrappers;
 using Semerkand.Shared.DataInterfaces;
-using Semerkand.Shared.Dto.Sample;
-using static Microsoft.AspNetCore.Http.StatusCodes;
-using Microsoft.EntityFrameworkCore;
+using Semerkand.Shared.Dto.Definitions;
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using Semerkand.Shared.Dto.Definitions;
+using static Microsoft.AspNetCore.Http.StatusCodes;
 
 namespace Semerkand.Server.Managers
 {

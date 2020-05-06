@@ -17,11 +17,18 @@ namespace Semerkand.Storage.Mapping
         /// </summary>
         public MappingProfile()
         {
-            CreateMap<Universite, UniversiteDto>().ReverseMap();
+            
             CreateMap<Todo, TodoDto>().ReverseMap();           
             CreateMap<UserProfile, UserProfileDto>().ReverseMap();
             CreateMap<ApiLogItem, ApiLogItemDto>().ReverseMap();
             CreateMap<Message, MessageDto>().ReverseMap();
+
+            CreateMap<Universite, UniversiteDto>().ReverseMap();
+            CreateMap<Fakulte, FakulteDto>().ReverseMap();
+            CreateMap<Bolum, BolumDto>().ReverseMap();
+            CreateMap<Program, ProgramDto>().ReverseMap();
+            CreateMap<Mufredat, MufredatDto>().ReverseMap();
+            CreateMap<Ders, DersDto>().ReverseMap();
         }
     }
 }

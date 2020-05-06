@@ -2,22 +2,32 @@
 @inject HttpClient Http;
 @using Semerkand.Shared.Dto.Definitions
 @using Semerkand.CommonUI.Pages
+@using Semerkand.CommonUI.Pages.Definations.Tabs 
 @inject IMatToaster matToaster
 
 <MatTabGroup>
     <MatTab Label="Üniversite">
 
-        <Semerkand.CommonUI.Pages.Definations.Tabs.Universiteler></Semerkand.CommonUI.Pages.Definations.Tabs.Universiteler>
+        <UniversiteList></UniversiteList>
 
     </MatTab>
     <MatTab Label="Fakülte">
-        <SfCalendar TValue="DateTime?" Value="@DateValue"></SfCalendar>
+        @*<Semerkand.CommonUI.Pages.Definations.Tabs.GenericDefination ApiAdres="api/universite"
+                                                                     EntityName="Universite">
+            <GridColumn Field=@nameof(UniversiteDto.Isim) HeaderText="Üniversite İsim" ValidationRules="@(new { required=true})" Width="170"></GridColumn>
+
+        </Semerkand.CommonUI.Pages.Definations.Tabs.GenericDefination>*@
+
+
+        <FakulteList></FakulteList>
+
+
     </MatTab>
     <MatTab Label="Bölüm">
         <DialogEditing></DialogEditing>
     </MatTab>
     <MatTab Label="Program">
-        Program
+        <SfCalendar TValue="DateTime?" Value="@DateValue"></SfCalendar>
     </MatTab>
     <MatTab Label="Müfredat">
         Müfredat
@@ -29,9 +39,6 @@
         <ChildContent>
             Ders
         </ChildContent>
-    </MatTab>
-    <MatTab>
-
     </MatTab>
 
 </MatTabGroup>

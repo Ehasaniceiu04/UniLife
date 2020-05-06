@@ -1,9 +1,10 @@
 ﻿using Semerkand.Shared.DataModels;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Semerkand.Shared.Dto.Definitions
 {
-    public class UniversiteDto: EntityDto<int>
+    public class FakulteDto : EntityDto<int>
     {
         //[Key]
         //public int Id { get; set; }
@@ -11,5 +12,12 @@ namespace Semerkand.Shared.Dto.Definitions
         [Required]
         [MaxLength(300)]
         public string Isim { get; set; }
+
+
+        public int UniversiteId { get; set; }
+        public UniversiteDto Universite { get; set; }
+
+
+        public ICollection<BolumDto> Bolums { get; set; }
     }
 }

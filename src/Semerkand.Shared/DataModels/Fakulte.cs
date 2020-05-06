@@ -8,10 +8,8 @@ using System.Threading.Tasks;
 
 namespace Semerkand.Shared.DataModels
 {
-    public class Fakulte : IAuditable, ISoftDelete
+    public class Fakulte : Entity<int>, IAuditable, ISoftDelete
     {
-        [Key]
-        public int Id { get; set; }
         [Required]
         [MaxLength(300)]
         public string Isim { get; set; }
