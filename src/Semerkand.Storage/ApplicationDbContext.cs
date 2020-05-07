@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using ApiLogItem = Semerkand.Shared.DataModels.ApiLogItem;
 using Message = Semerkand.Shared.DataModels.Message;
 using UserProfile = Semerkand.Shared.DataModels.UserProfile;
+using System.Runtime.CompilerServices;
 
 namespace Semerkand.Storage
 {
@@ -38,6 +39,7 @@ namespace Semerkand.Storage
             _userSession = userSession;
         }
 
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //Fluent API Does not follow foreign key naming convention

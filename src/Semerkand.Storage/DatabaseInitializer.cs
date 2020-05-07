@@ -46,17 +46,17 @@ namespace Semerkand.Storage
         public virtual async Task SeedAsync()
         {
             ////Buna sonra bak.yeni tablelar falan geliyor.
-            ////Apply EF Core migration scripts
-            //await MigrateAsync();
+            //Apply EF Core migration scripts
+            await MigrateAsync();
 
-            ////Seed users and roles
-            //await SeedASPIdentityCoreAsync();
+            //Seed users and roles
+            await SeedASPIdentityCoreAsync();
 
-            ////Seed clients and Api
-            //await SeedIdentityServerAsync();
+            //Seed clients and Api
+            await SeedIdentityServerAsync();
 
-            ////Seed blazorboilerplate data
-            //await SeedSemerkandAsync();
+            //Seed blazorboilerplate data
+            await SeedSemerkandAsync();
         }
 
         private async Task MigrateAsync()

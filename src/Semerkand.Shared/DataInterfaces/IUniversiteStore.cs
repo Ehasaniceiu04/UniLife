@@ -12,9 +12,9 @@ namespace Semerkand.Shared.DataInterfaces
 
         Task<UniversiteDto> GetById(int id);
 
-        Task<Universite> Create(UniversiteDto todoDto);
+        Task<Universite> Create(UniversiteDto universiteDto);
 
-        Task<Universite> Update(UniversiteDto todoDto);
+        Task<Universite> Update(UniversiteDto universiteDto);
 
         Task DeleteById(int id);
     }

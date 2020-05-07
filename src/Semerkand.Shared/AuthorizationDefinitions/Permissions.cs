@@ -12,6 +12,17 @@ namespace Semerkand.Shared.AuthorizationDefinitions
 
     public static class Permissions
     {
+        public static class Bolum
+        {
+            [Description("Create a new Bolum")]
+            public const string Create = nameof(Bolum) + "." + nameof(Actions.Create);
+            [Description("Read Bolums")]
+            public const string Read = nameof(Bolum) + "." + nameof(Actions.Read);
+            [Description("Edit existing Bolums")]
+            public const string Update = nameof(Bolum) + "." + nameof(Actions.Update);
+            [Description("Delete any Bolum")]
+            public const string Delete = nameof(Bolum) + "." + nameof(Actions.Delete);
+        }
         public static class Fakulte
         {
             [Description("Create a new Fakulte")]

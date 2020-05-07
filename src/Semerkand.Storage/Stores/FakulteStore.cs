@@ -1,14 +1,13 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Semerkand.Shared.DataInterfaces;
 using Semerkand.Shared.DataModels;
-using Semerkand.Shared.Dto.Sample;
-using Microsoft.EntityFrameworkCore;
+using Semerkand.Shared.Dto.Definitions;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Semerkand.Shared.Dto.Definitions;
 
 namespace Semerkand.Storage.Stores
 {
@@ -21,11 +20,13 @@ namespace Semerkand.Storage.Stores
         {
             _db = db;
             _autoMapper = autoMapper;
-        }       
+        }
 
         public async Task<List<FakulteDto>> GetAll()
         {
-            var asd=await _autoMapper.ProjectTo<FakulteDto>(_db.Fakultes.AsNoTracking()).ToListAsync();
+            //return await _autoMapper.ProjectTo<FakulteDto>(_db.Fakultes).ToListAsync();
+            //var asd=  _autoMapper.Map<List<FakulteDto>>(await _db.Fakultes.Include("Universite").ToListAsync());
+            var asd = _autoMapper.Map<List<FakulteDto>>(await _db.Fakultes.ToListAsync());
             return asd;
         }
 

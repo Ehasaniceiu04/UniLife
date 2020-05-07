@@ -10,8 +10,8 @@ using Semerkand.Storage;
 namespace Semerkand.Storage.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200504143327_BolumdenDerseFix")]
-    partial class BolumdenDerseFix
+    [Migration("20200507162210_control")]
+    partial class control
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Semerkand.Storage.Migrations
 {
-    public partial class MyMigration : Migration
+    public partial class control : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -85,6 +85,24 @@ namespace Semerkand.Storage.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Todos", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Universites",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Isim = table.Column<string>(maxLength: 300, nullable: false),
+                    CreatedBy = table.Column<Guid>(nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    ModifiedBy = table.Column<Guid>(nullable: false),
+                    ModifiedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Universites", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -287,6 +305,131 @@ namespace Semerkand.Storage.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Fakultes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Isim = table.Column<string>(maxLength: 300, nullable: false),
+                    UniversiteId = table.Column<int>(nullable: false),
+                    CreatedBy = table.Column<Guid>(nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    ModifiedBy = table.Column<Guid>(nullable: false),
+                    ModifiedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Fakultes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Fakultes_Universites_UniversiteId",
+                        column: x => x.UniversiteId,
+                        principalTable: "Universites",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Bolums",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Isim = table.Column<string>(maxLength: 400, nullable: false),
+                    FakulteId = table.Column<int>(nullable: false),
+                    CreatedBy = table.Column<Guid>(nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    ModifiedBy = table.Column<Guid>(nullable: false),
+                    ModifiedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bolums", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Bolums_Fakultes_FakulteId",
+                        column: x => x.FakulteId,
+                        principalTable: "Fakultes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Programs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Isim = table.Column<string>(maxLength: 300, nullable: false),
+                    BolumId = table.Column<int>(nullable: false),
+                    CreatedBy = table.Column<Guid>(nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    ModifiedBy = table.Column<Guid>(nullable: false),
+                    ModifiedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Programs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Programs_Bolums_BolumId",
+                        column: x => x.BolumId,
+                        principalTable: "Bolums",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Mufredats",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Isim = table.Column<string>(maxLength: 300, nullable: false),
+                    ProgramId = table.Column<int>(nullable: false),
+                    CreatedBy = table.Column<Guid>(nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    ModifiedBy = table.Column<Guid>(nullable: false),
+                    ModifiedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Mufredats", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Mufredats_Programs_ProgramId",
+                        column: x => x.ProgramId,
+                        principalTable: "Programs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Derss",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Isim = table.Column<string>(maxLength: 300, nullable: false),
+                    MufredatID = table.Column<int>(nullable: false),
+                    CreatedBy = table.Column<Guid>(nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    ModifiedBy = table.Column<Guid>(nullable: false),
+                    ModifiedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Derss", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Derss_Mufredats_MufredatID",
+                        column: x => x.MufredatID,
+                        principalTable: "Mufredats",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_ApiLogs_ApplicationUserId",
                 table: "ApiLogs",
@@ -330,6 +473,21 @@ namespace Semerkand.Storage.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Bolums_FakulteId",
+                table: "Bolums",
+                column: "FakulteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Derss_MufredatID",
+                table: "Derss",
+                column: "MufredatID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Fakultes_UniversiteId",
+                table: "Fakultes",
+                column: "UniversiteId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Logs_TimeStamp",
                 table: "Logs",
                 column: "TimeStamp");
@@ -338,6 +496,16 @@ namespace Semerkand.Storage.Migrations
                 name: "IX_Messages_UserID",
                 table: "Messages",
                 column: "UserID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Mufredats_ProgramId",
+                table: "Mufredats",
+                column: "ProgramId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Programs_BolumId",
+                table: "Programs",
+                column: "BolumId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tenants_OwnerUserId",
@@ -373,6 +541,9 @@ namespace Semerkand.Storage.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Derss");
+
+            migrationBuilder.DropTable(
                 name: "Logs");
 
             migrationBuilder.DropTable(
@@ -391,7 +562,22 @@ namespace Semerkand.Storage.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "Mufredats");
+
+            migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Programs");
+
+            migrationBuilder.DropTable(
+                name: "Bolums");
+
+            migrationBuilder.DropTable(
+                name: "Fakultes");
+
+            migrationBuilder.DropTable(
+                name: "Universites");
         }
     }
 }

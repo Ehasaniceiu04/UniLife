@@ -11,8 +11,8 @@ namespace Semerkand.Shared.DataModels
         public string Isim { get; set; }
 
         public int ProgramId { get; set; }
-        public Program Program { get; set; }
+        public virtual Program Program { get; set; }
 
-        public ICollection<Ders> Derss { get; set; }
+        public virtual ICollection<Ders> Derss { get; set; }
     }
 }

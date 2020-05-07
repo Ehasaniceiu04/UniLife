@@ -10,6 +10,6 @@ namespace Semerkand.Shared.DataModels
         public string Isim { get; set; }
 
         public int MufredatID { get; set; }
-        public Mufredat Mufredat { get; set; }
+        public virtual Mufredat Mufredat { get; set; }
     }
 }

@@ -11,8 +11,8 @@ namespace Semerkand.Shared.DataModels
         public string Isim { get; set; }
 
         public int BolumId { get; set; }
-        public Bolum Bolum { get; set; }
+        public virtual Bolum Bolum { get; set; }
 
-        public ICollection<Mufredat> Mufredats { get; set; }
+        public virtual ICollection<Mufredat> Mufredats { get; set; }
     }
 }

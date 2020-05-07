@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,9 +17,11 @@ namespace Semerkand.Shared.DataModels
 
 
         public int UniversiteId { get; set; }
+        
+       // [ForeignKey("UniversiteId")]
         public virtual Universite Universite { get; set; }
 
 
-        public ICollection<Bolum> Bolums{ get; set; }
+        public virtual ICollection<Bolum> Bolums{ get; set; }
     }
 }

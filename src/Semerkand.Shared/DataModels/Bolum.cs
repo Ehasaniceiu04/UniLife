@@ -12,8 +12,8 @@ namespace Semerkand.Shared.DataModels
 
 
         public int FakulteId { get; set; }
-        public Fakulte Fakulte { get; set; }
+        public virtual Fakulte Fakulte { get; set; }
 
-        public ICollection<Program> Programs { get; set; }
+        public virtual ICollection<Program> Programs { get; set; }
     }
 }

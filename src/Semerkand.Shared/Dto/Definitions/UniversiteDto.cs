@@ -12,12 +12,6 @@ namespace Semerkand.Shared.Dto.Definitions
         [Required]
         [MaxLength(300)]
         public string Isim { get; set; }
-
         public ICollection<FakulteDto> Fakultes { get; set; }
-
-        
-        
-
-
     }
 }
