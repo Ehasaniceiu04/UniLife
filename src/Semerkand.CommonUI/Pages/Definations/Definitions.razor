@@ -5,43 +5,45 @@
 @using Semerkand.CommonUI.Pages.Definations.Tabs 
 @inject IMatToaster matToaster
 
-<MatTabGroup>
-    <MatTab Label="Üniversite">
+    <MatTabGroup>
 
-        <UniversiteList></UniversiteList>
+        <MatTab Label="Üniversite">
 
-    </MatTab>
-    <MatTab Label="Fakülte">
-        @*<Semerkand.CommonUI.Pages.Definations.Tabs.GenericDefination ApiAdres="api/universite"
-                                                                     EntityName="Universite">
-            <GridColumn Field=@nameof(UniversiteDto.Isim) HeaderText="Üniversite İsim" ValidationRules="@(new { required=true})" Width="170"></GridColumn>
+            <UniversiteList></UniversiteList>
 
-        </Semerkand.CommonUI.Pages.Definations.Tabs.GenericDefination>*@
+        </MatTab>
+        <MatTab Label="Fakülte">
+            @*<Semerkand.CommonUI.Pages.Definations.Tabs.GenericDefination ApiAdres="api/universite"
+                                                                         EntityName="Universite">
+                <GridColumn Field=@nameof(UniversiteDto.Isim) HeaderText="Üniversite İsim" ValidationRules="@(new { required=true})" Width="170"></GridColumn>
 
-
-        <FakulteList></FakulteList>
+            </Semerkand.CommonUI.Pages.Definations.Tabs.GenericDefination>*@
 
 
-    </MatTab>
-    <MatTab Label="Bölüm">
-        <DialogEditing></DialogEditing>
-    </MatTab>
-    <MatTab Label="Program">
-        <SfCalendar TValue="DateTime?" Value="@DateValue"></SfCalendar>
-    </MatTab>
-    <MatTab Label="Müfredat">
-        Müfredat
-    </MatTab>
-    <MatTab Label="Ders">
-        <LabelContent>
-            Third <MatIcon Icon="@MatIconNames.Close"></MatIcon>
-        </LabelContent>
-        <ChildContent>
-            Ders
-        </ChildContent>
-    </MatTab>
+            <FakulteList></FakulteList>
 
-</MatTabGroup>
+
+        </MatTab>
+        <MatTab Label="Bölüm">
+            <BolumList></BolumList>
+        </MatTab>
+        <MatTab Label="Program">
+            <ProgramList></ProgramList>
+        </MatTab>
+        <MatTab Label="Müfredat">
+            <SfCalendar TValue="DateTime?" Value="@DateValue"></SfCalendar>
+            <DialogEditing></DialogEditing>
+        </MatTab>
+        <MatTab Label="Ders">
+            <LabelContent>
+                Third <MatIcon Icon="@MatIconNames.Close"></MatIcon>
+            </LabelContent>
+            <ChildContent>
+                Ders
+            </ChildContent>
+        </MatTab>
+
+    </MatTabGroup>
 
 
 @*<button @onclick="@Switch">Switch</button>*@

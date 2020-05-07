@@ -1,4 +1,5 @@
 ﻿using Semerkand.Shared.DataModels;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Semerkand.Shared.Dto.Definitions
@@ -11,5 +12,12 @@ namespace Semerkand.Shared.Dto.Definitions
         [Required]
         [MaxLength(300)]
         public string Isim { get; set; }
+
+        public ICollection<FakulteDto> Fakultes { get; set; }
+
+        
+        
+
+
     }
 }

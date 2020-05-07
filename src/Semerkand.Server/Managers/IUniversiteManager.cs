@@ -7,6 +7,7 @@ namespace Semerkand.Server.Managers
 {
     public interface IUniversiteManager
     {
+        //Task<ApiResponse> Get();
         Task<ApiResponse> Get();
         Task<ApiResponse> Get(int id);
         Task<ApiResponse> Create(UniversiteDto universiteDto);

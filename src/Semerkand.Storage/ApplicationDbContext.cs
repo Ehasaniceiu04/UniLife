@@ -70,6 +70,11 @@ namespace Semerkand.Storage
             SetGlobalQueryFilters(modelBuilder);
         }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+        }
+
         private void SetGlobalQueryFilters(ModelBuilder modelBuilder)
         {
             foreach (Microsoft.EntityFrameworkCore.Metadata.IMutableEntityType tp in modelBuilder.Model.GetEntityTypes())

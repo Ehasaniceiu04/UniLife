@@ -15,7 +15,20 @@ namespace Semerkand.Shared.Dto.Definitions
 
 
         public int UniversiteId { get; set; }
-        public UniversiteDto Universite { get; set; }
+        public virtual UniversiteDto Universite { get; set; }
+
+        //[System.ComponentModel.DataAnnotations.Schema.NotMapped]
+        //public string UniversiteIsim
+        //{
+        //    get
+        //    {
+        //        return Universite.Isim;
+        //    }
+        //    set
+        //    {
+        //        Universite.Isim = value;
+        //    }
+        //}
 
 
         public ICollection<BolumDto> Bolums { get; set; }

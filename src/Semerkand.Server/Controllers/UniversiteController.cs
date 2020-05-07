@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using static Microsoft.AspNetCore.Http.StatusCodes;
 using Semerkand.Shared.Dto.Definitions;
+using System.Collections.Generic;
 
 namespace Semerkand.Server.Controllers
 {
@@ -26,6 +27,7 @@ namespace Semerkand.Server.Controllers
         [AllowAnonymous]
         public async Task<ApiResponse> Get()
             => await _universiteManager.Get();
+
 
         // GET: api/Universite/5
         [HttpGet("{id}")]

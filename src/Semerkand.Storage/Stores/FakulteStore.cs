@@ -25,7 +25,8 @@ namespace Semerkand.Storage.Stores
 
         public async Task<List<FakulteDto>> GetAll()
         {
-            return await _autoMapper.ProjectTo<FakulteDto>(_db.Fakultes).ToListAsync();
+            var asd=await _autoMapper.ProjectTo<FakulteDto>(_db.Fakultes.AsNoTracking()).ToListAsync();
+            return asd;
         }
 
         public async Task<FakulteDto> GetById(int id)

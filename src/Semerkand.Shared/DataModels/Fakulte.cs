@@ -16,7 +16,7 @@ namespace Semerkand.Shared.DataModels
 
 
         public int UniversiteId { get; set; }
-        public Universite Universite { get; set; }
+        public virtual Universite Universite { get; set; }
 
 
         public ICollection<Bolum> Bolums{ get; set; }

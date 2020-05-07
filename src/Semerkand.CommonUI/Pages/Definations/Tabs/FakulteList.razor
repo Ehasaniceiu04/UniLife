@@ -1,19 +1,67 @@
 ﻿@inject HttpClient Http;
 @using Semerkand.Shared.Dto.Definitions
 @inject IMatToaster matToaster
-
+@using Syncfusion.Blazor.DropDowns
 @using System.Net
+@using Newtonsoft.Json
 
 <div class="col-lg-12 control-section">
     <div class="content-wrapper">
         <div class="row">
-            <SfGrid @ref="FakulteGrid" DataSource="@fakulteDtos" Toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Update", "Cancel" })" AllowPaging="true">
+            <SfGrid @ref="FakulteGrid" DataSource="@fakulteDtos" Toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Update", "Cancel" })" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
+                @*<SfDataManager AdaptorInstance="@typeof(CustomAdaptor)" Adaptor="Adaptors.CustomAdaptor"></SfDataManager>*@
                 <GridEvents OnActionComplete="ActionCompletedHandler" TValue="FakulteDto"></GridEvents>
                 <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
                 <GridColumns>
                     <GridColumn Visible="false" Field=@nameof(FakulteDto.Id) HeaderText="Fakülte ID" AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
                     <GridColumn Field=@nameof(FakulteDto.Isim) HeaderText="Fakülte İsim" ValidationRules="@(new { required=true})" Width="170"></GridColumn>
-                    <GridColumn Field=@nameof(FakulteDto.Universite) HeaderText="Universite" EditType="EditType.DropDownEdit" Width="150"></GridColumn>
+                    <GridColumn Field=@nameof(FakulteDto.UniversiteId) HeaderText="Üniversite" ForeignKeyValue="Isim" ForeignKeyField="Id" DataSource="@universiteDtos" Width="150"></GridColumn>
+
+
+                    @*<GridColumn Field=@nameof(FakulteDto.Universite.UniversiteIsim) HeaderText="Universite" EditType="EditType.DropDownEdit" Width="150"></GridColumn>*@
+                    @*<GridColumn Field=@nameof(FakulteDto.UniversiteId) HeaderText="Üniversite" ForeignKeyValue="Isim" ForeignKeyField="Id" DataSource="universiteDtos">
+            <Template>
+                <SfDropDownList ID="Id" TValue="int?" TItem="UniversiteDto" DataSource="universiteDtos">
+                    <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
+                    <DropDownListFieldSettings Text="Isim" Value="Id"></DropDownListFieldSettings>
+                </SfDropDownList>
+            </Template>
+        </GridColumn>*@
+
+                    @*çalışıyor*@
+                    @*<GridColumn Field=@nameof(FakulteDto.UniversiteId) HeaderText="Üniversite" ForeignKeyValue="Isim" ForeignKeyField="Id" Width="150" DataSource="universiteDtos">
+            <EditTemplate Context="FakulteDtoContext">
+                <SfDropDownList ID="UniversiteId" TValue="string" TItem="UniversiteDto" Index="0" DataSource="universiteDtos">
+                    <DropDownListFieldSettings Text="Isim" Value="Id"></DropDownListFieldSettings>
+                </SfDropDownList>
+            </EditTemplate>
+        </GridColumn>*@
+
+                    @*<GridColumn Field=@nameof(FakulteDto.UniversiteId) HeaderText="Üniversite" ForeignKeyValue="Isim" ForeignKeyField="Id" Width="150" DataSource="universiteDtos">
+            <EditTemplate Context="FakulteDtoContext">
+                <SfDropDownList ID="UniversiteId" TValue="string" TItem="UniversiteDto" Index="0" DataSource="universiteDtos">
+                    <DropDownListFieldSettings Text="Isim" Value="Id"></DropDownListFieldSettings>
+                </SfDropDownList>
+            </EditTemplate>
+            <Template>
+                <SfDropDownList ID="UniversiteId" TValue="string" TItem="UniversiteDto" Index="0" DataSource="universiteDtos">
+                    <DropDownListFieldSettings Text="Isim" Value="Id"></DropDownListFieldSettings>
+                </SfDropDownList>
+            </Template>
+        </GridColumn>*@
+
+
+                    
+
+                    @*<GridColumn Field=@nameof(FakulteDto.UniversiteIsim) HeaderText="Universite" EditType="EditType.DropDownEdit" ForeignKeyValue="Isim" ForeignKeyField="Id" Width="150" DataSource="universiteDtos">
+            <EditTemplate>
+                <SfDropDownList ID="UniversiteIsim" Placeholder="Üniversite" TValue="string" TItem="UniversiteDto" DataSource="universiteDtos">
+                    <DropDownListFieldSettings Text="Isim" Value="Id"></DropDownListFieldSettings>
+                </SfDropDownList>
+            </EditTemplate>
+        </GridColumn>*@
+
+
                 </GridColumns>
             </SfGrid>
 
@@ -21,16 +69,21 @@
     </div>
 </div>
 
-
 @code{
 
     SfGrid<FakulteDto> FakulteGrid;
 
     List<FakulteDto> fakulteDtos = new List<FakulteDto>();
 
+    List<UniversiteDto> universiteDtos = new List<UniversiteDto>();
+
     protected override async Task OnInitializedAsync()
     {
         await ReadUniversites();
+
+        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/universite");
+        universiteDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<UniversiteDto[]>(apiResponse.Result.ToString()).ToList<UniversiteDto>();
+
     }
 
     async Task ReadUniversites()
@@ -48,7 +101,8 @@
         }
     }
 
-    public void ActionCompletedHandler(ActionEventArgs<FakulteDto> args)
+    public void ActionCompletedHandler(ActionEventArgs<FakulteDto>
+        args)
     {
         if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
         {
@@ -76,11 +130,13 @@
     {
         try
         {
-            ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/fakulte", fakulteDto);
+            ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>
+                ("api/fakulte", fakulteDto);
             if (apiResponse.StatusCode == Status200OK)
             {
                 matToaster.Add(apiResponse.Message, MatToastType.Success);
-                //todo = Newtonsoft.Json.JsonConvert.DeserializeObject<FakulteDto>(apiResponse.Result.ToString());
+                //todo = Newtonsoft.Json.JsonConvert.DeserializeObject<FakulteDto>
+                //(apiResponse.Result.ToString());
                 //todos.Add(todo);
                 //todo = new TodoDto(); //reset todo after insert
             }
@@ -110,7 +166,8 @@
         //this updates the IsCompleted flag only
         try
         {
-            ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>("api/fakulte", fakulteDto);
+            ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>
+                ("api/fakulte", fakulteDto);
 
             if (!apiResponse.IsError)
             {
@@ -159,7 +216,8 @@
     //{
     //    if (firstRender)
     //    {
-    //        var Locale = await Http.GetJsonAsync<object>("tr.json");
+    //        var Locale = await Http.GetJsonAsync<object>
+    //("tr.json");
     //        this.JsRuntime.Sf().LoadLocaleData(Locale).SetCulture("tr");
 
     //        //this.JsRuntime.Sf().LoadLocaleData("tr.json").SetCulture("tr");
