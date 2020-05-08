@@ -13,6 +13,7 @@ namespace Semerkand.Shared.DataModels
         public int BolumId { get; set; }
         public virtual Bolum Bolum { get; set; }
 
-        public virtual ICollection<Mufredat> Mufredats { get; set; }
+        //public virtual ICollection<Mufredat> Mufredats { get; set; }
+        public virtual ICollection<Harc> Harcs { get; set; }
     }
 }

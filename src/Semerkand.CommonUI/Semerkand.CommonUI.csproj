@@ -52,4 +52,8 @@
     <ProjectReference Include="..\Semerkand.Shared\Semerkand.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\Admin\Ogrenciler\Tabs\" />
+  </ItemGroup>
+
 </Project>

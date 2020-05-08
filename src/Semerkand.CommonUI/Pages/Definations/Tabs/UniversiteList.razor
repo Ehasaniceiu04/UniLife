@@ -4,21 +4,16 @@
 
 @using System.Net
 
-<div class="col-lg-12 control-section">
-    <div class="content-wrapper">
-        <div class="row">
-            <SfGrid @ref="UniGrid" DataSource="@universiteDtos" Toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Update", "Cancel" })" AllowPaging="true" AllowFiltering="true">
-                <GridEvents OnActionComplete="ActionCompletedHandler" TValue="UniversiteDto"></GridEvents>
-                <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
-                <GridColumns>
-                    <GridColumn Visible="false" Field=@nameof(UniversiteDto.Id) HeaderText="Üniversite ID" AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
-                    <GridColumn Field=@nameof(UniversiteDto.Isim) HeaderText="Üniversite İsim" Width="170"></GridColumn>
-                </GridColumns>
-            </SfGrid>
-
-        </div>
-    </div>
-</div>
+    <ControlSection>
+        <SfGrid @ref="UniGrid" DataSource="@universiteDtos" Toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Update", "Cancel" })" AllowPaging="true" AllowFiltering="true">
+            <GridEvents OnActionComplete="ActionCompletedHandler" TValue="UniversiteDto"></GridEvents>
+            <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
+            <GridColumns>
+                <GridColumn Visible="false" Field=@nameof(UniversiteDto.Id) HeaderText="Üniversite ID" AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+                <GridColumn Field=@nameof(UniversiteDto.Isim) HeaderText="Üniversite İsim" Width="170"></GridColumn>
+            </GridColumns>
+        </SfGrid>
+    </ControlSection>
 
 
 @code{

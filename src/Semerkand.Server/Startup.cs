@@ -402,6 +402,8 @@ namespace Semerkand.Server
             services.AddTransient<IBolumManager, BolumManager>();
             services.AddTransient<IHarcManager, HarcManager>();
             services.AddTransient<IProgramManager, ProgramManager>();
+            services.AddTransient<IMufredatManager, MufredatManager>();
+            services.AddTransient<IDersManager, DersManager>();
             services.AddTransient<IUserProfileManager, UserProfileManager>();
 
 

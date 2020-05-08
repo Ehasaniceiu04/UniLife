@@ -12,6 +12,28 @@ namespace Semerkand.Shared.AuthorizationDefinitions
 
     public static class Permissions
     {
+        public static class Ders
+        {
+            [Description("Create a new Ders")]
+            public const string Create = nameof(Ders) + "." + nameof(Actions.Create);
+            [Description("Read Derss")]
+            public const string Read = nameof(Ders) + "." + nameof(Actions.Read);
+            [Description("Edit existing Derss")]
+            public const string Update = nameof(Ders) + "." + nameof(Actions.Update);
+            [Description("Delete any Ders")]
+            public const string Delete = nameof(Ders) + "." + nameof(Actions.Delete);
+        }
+        public static class Mufredat
+        {
+            [Description("Create a new Mufredat")]
+            public const string Create = nameof(Mufredat) + "." + nameof(Actions.Create);
+            [Description("Read Mufredats")]
+            public const string Read = nameof(Mufredat) + "." + nameof(Actions.Read);
+            [Description("Edit existing Mufredats")]
+            public const string Update = nameof(Mufredat) + "." + nameof(Actions.Update);
+            [Description("Delete any Mufredat")]
+            public const string Delete = nameof(Mufredat) + "." + nameof(Actions.Delete);
+        }
         public static class Harc
         {
             [Description("Create a new Harc")]

@@ -1,0 +1,186 @@
+﻿@page "/dersler"
+@inject HttpClient Http;
+@using Semerkand.Shared.Dto.Definitions
+@inject IMatToaster matToaster
+@using Syncfusion.Blazor.DropDowns
+@using System.Net
+@using Newtonsoft.Json
+
+<div class="col-lg-12 control-section">
+    <div class="content-wrapper">
+        <div class="row">
+            <SfGrid @ref="DersGrid" DataSource="@dersDtos" Toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Update", "Cancel" })" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
+                @*<SfDataManager AdaptorInstance="@typeof(CustomAdaptor)" Adaptor="Adaptors.CustomAdaptor"></SfDataManager>*@
+                <GridEvents Created="CreatedHandler" OnActionComplete="ActionCompletedHandler" TValue="DersDto"></GridEvents>
+                <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
+                <GridColumns>
+                    <GridColumn Visible="false" Field=@nameof(DersDto.Id) HeaderText="Fakülte ID" AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+                    <GridColumn Field=@nameof(DersDto.Isim) HeaderText="Ders" ValidationRules="@(new { required=true})" Width="170"></GridColumn>
+                    <GridColumn Field=@nameof(DersDto.MufredatID) HeaderText="Müfredat" ForeignKeyValue="Isim" ForeignKeyField="Id" DataSource="@mufredatDtos" Width="150"></GridColumn>
+
+                </GridColumns>
+            </SfGrid>
+
+        </div>
+    </div>
+</div>
+
+@code{
+
+    SfGrid<DersDto> DersGrid;
+
+    List<DersDto> dersDtos = new List<DersDto>();
+
+    List<MufredatDto> mufredatDtos = new List<MufredatDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ReadDersler();
+
+        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/mufredat");
+        mufredatDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<MufredatDto[]>(apiResponse.Result.ToString()).ToList<MufredatDto>();
+
+    }
+
+    async Task ReadDersler()
+    {
+        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/ders");
+
+        if (apiResponse.StatusCode == Status200OK)
+        {
+            matToaster.Add(apiResponse.Message, MatToastType.Success, "Dersler getirildi");
+            dersDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<DersDto[]>(apiResponse.Result.ToString()).ToList<DersDto>();
+        }
+        else
+        {
+            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Ders bilgisi getirilirken hata oluştu!");
+        }
+    }
+
+    public void CreatedHandler(object args)
+    {
+        var asd = args;
+    }
+
+    public void ActionCompletedHandler(ActionEventArgs<DersDto>args)
+    {
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
+        {
+
+        }
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+        {
+            if (args.Action == "edit")
+            {
+                Update(args.Data);
+            }
+            else if (args.Action == "add")
+            {
+                Create(args.Data);
+            }
+
+        }
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
+        {
+            Delete(args.Data);
+        }
+    }
+
+    public async Task Create(DersDto dersDto)
+    {
+        try
+        {
+            ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>
+                ("api/ders", dersDto);
+            if (apiResponse.StatusCode == Status200OK)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success);
+                //todo = Newtonsoft.Json.JsonConvert.DeserializeObject<DersDto>
+                //(apiResponse.Result.ToString());
+                //todos.Add(todo);
+                //todo = new TodoDto(); //reset todo after insert
+            }
+            else
+            {
+                //TODO Ahmet 1**
+                //TODO Ahmet 2**
+                dersDtos.Remove(dersDto);
+                DersGrid.Refresh();
+                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Ders Creation Failed");
+            }
+        }
+        catch (Exception ex)
+        {
+            //TODO Ahmet 1**: liste içinden değinde gride eklediğini sil demeli !!
+            //TODO Ahmet 2**: Dbden hata geldiği zaman Bu hata sebebini mantıklı şekilde buraya vermemiz gerekiyor. Aynı Idli kayıt gönder patlatıyon.
+
+            dersDtos.Remove(dersDto);
+            DersGrid.Refresh();
+            matToaster.Add(ex.Message, MatToastType.Danger, "Ders Creation Failed");
+        }
+    }
+
+
+    public async void Update(DersDto dersDto)
+    {
+        //this updates the IsCompleted flag only
+        try
+        {
+            ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>
+                ("api/ders", dersDto);
+
+            if (!apiResponse.IsError)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success);
+            }
+            else
+            {
+                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Ders Save Failed");
+                //update failed gridi boz !
+            }
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.Message, MatToastType.Danger, "Ders Save Failed");
+            //update failed gridi boz !
+        }
+    }
+
+    public async Task Delete(DersDto dersDto)
+    {
+        try
+        {
+            var response = await Http.DeleteAsync("api/ders/" + dersDto.Id);
+            if (response.StatusCode == (HttpStatusCode)Status200OK)
+            {
+                matToaster.Add("Ders Deleted", MatToastType.Success);
+                dersDtos.Remove(dersDto);
+            }
+            else
+            {
+                matToaster.Add("Ders Delete Failed: " + response.StatusCode, MatToastType.Danger);
+            }
+            //deleteDialogOpen = false;
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.Message, MatToastType.Danger, "Ders Save Failed");
+        }
+    }
+
+
+    //[Inject]
+    //protected IJSRuntime JsRuntime { get; set; }
+
+    //protected override async Task OnAfterRenderAsync(bool firstRender)
+    //{
+    //    if (firstRender)
+    //    {
+    //        var Locale = await Http.GetJsonAsync<object>
+    //("tr.json");
+    //        this.JsRuntime.Sf().LoadLocaleData(Locale).SetCulture("tr");
+
+    //        //this.JsRuntime.Sf().LoadLocaleData("tr.json").SetCulture("tr");
+    //    }
+    //}
+}

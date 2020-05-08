@@ -1,0 +1,259 @@
+﻿@page "/admin/ogrenciler"
+@using Semerkand.Shared.Dto.Account
+@attribute [Authorize(Policy = Policies.IsAdmin)]
+@inject HttpClient Http
+@inject IAuthorizationService AuthorizationService
+@inject AuthenticationStateProvider authStateProvider
+@inject IMatToaster matToaster
+@inject AppState appState
+@using System.Net
+
+<h1>Öğrenciler</h1>
+
+@if (userDtos == null)
+{
+<LoadingBackground ShowLogoBox="true">
+    <label>Loading Users</label>
+</LoadingBackground>
+}
+else
+{
+<ControlSection>
+    <SfGrid ShowColumnChooser="true" ID="UserGrid" @ref="UserGrid" DataSource="@userDtos" Toolbar="@(new List<string>() { "Add", "Edit", "Delete","ExcelExport", "CsvExport", "PdfExport","Search","ColumnChooser" })" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
+        <GridEvents  OnToolbarClick="ToolbarClick" OnActionComplete="ActionCompletedHandler" TValue="UserInfoDto"></GridEvents>
+        <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
+        @*<GridSelectionSettings CheckboxOnly="true" PersistSelection="true"></GridSelectionSettings>*@
+        <GridColumns>
+            @*<GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>*@
+            <GridColumn Visible="false" Field=@nameof(UserInfoDto.UserId) HeaderText="Öğrenci ID" AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+            <GridColumn Field=@nameof(UserInfoDto.FirstName) HeaderText="Öğrenci İsim" ValidationRules="@(new { required=true})" Width="170"></GridColumn>
+            <GridColumn Field=@nameof(UserInfoDto.Email) HeaderText="Email" ValidationRules="@(new { required=true})" Width="170"></GridColumn>
+            <GridColumn Field=@nameof(UserInfoDto.Roles) HeaderText="Roles">
+                <Template>
+                    @{
+                        UserInfoDto userInfo = (context as UserInfoDto);
+                        <MatChipSet>
+                            @foreach (var role in userInfo.Roles)
+                            {
+                            <MatChip Label="@role"></MatChip>
+                            }
+                        </MatChipSet>
+                    }
+                </Template>
+                <EditTemplate>
+                    @{
+
+                        <MatChipSet>
+                            @foreach (var role in roleSelections.OrderBy(x => x.Name))
+                            {
+                            <MatChip Label="@role.Name" LeadingIcon="@( (role.IsSelected) ? "done" : "")" @onclick="@(()=>UpdateUserRole(role))" />
+                            }
+                        </MatChipSet>
+                    }
+                </EditTemplate>
+            </GridColumn>
+
+        </GridColumns>
+    </SfGrid>
+</ControlSection>
+}
+
+
+@code{
+    SfGrid<UserInfoDto> UserGrid;
+
+    List<UserInfoDto> userDtos;
+    public UserInfoDto userDto { get; set; } = new UserInfoDto(); // Holds user being actively modified or created
+    List<RoleSelection> roleSelections { get; set; } = new List<RoleSelection>();
+    public class RoleSelection
+    {
+        public bool IsSelected { get; set; }
+        public string Name { get; set; }
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ReadOgrencis();
+        await PopulateRoleList();
+    }
+    public async Task PopulateRoleList()
+    {
+        try
+        {
+            var roleNames = new List<string>();
+            var response = await Http.GetFromJsonAsync<ApiResponseDto<List<string>>>("api/Account/ListRoles");
+
+            roleNames = response.Result;
+
+            roleSelections = new List<RoleSelection>();// clear out list
+
+            // initialize selection list with all un-selected
+            foreach (string role in roleNames)
+            {
+                roleSelections.Add(new RoleSelection
+                {
+                    Name = role,
+                    IsSelected = false
+                });
+            }
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Role Retrieval Error");
+        }
+    }
+    protected void UpdateUserRole(RoleSelection roleSelectionItem)
+    {
+        roleSelectionItem.IsSelected = !roleSelectionItem.IsSelected;
+    }
+
+    public void OpenEditDialog(Guid userId)
+    {
+        userDto = new UserInfoDto(); // reset user object
+        userDto = userDtos.Where(x => x.UserId == userId).SingleOrDefault();  // load the user information into the temp user object for worry free editing
+        foreach (var role in roleSelections)
+            role.IsSelected = userDto.Roles.Contains(role.Name);
+
+        userDto.SaveState();
+        //editDialogOpen = true;
+    }
+
+    async Task ReadOgrencis()
+    {
+
+        var apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>($"api/Admin/Users?pageSize={10}&pageNumber={0}");
+
+        if (apiResponse.StatusCode == Status200OK)
+        {
+            matToaster.Add(apiResponse.Message, MatToastType.Success, "Öğrenciler getirildi");
+            userDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<UserInfoDto[]>(apiResponse.Result.ToString()).ToList<UserInfoDto>();
+        }
+        else
+        {
+            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Öğrenci bilgisi getirilirken hata oluştu!");
+        }
+    }
+
+    public void ActionCompletedHandler(ActionEventArgs<UserInfoDto>
+        args)
+    {
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
+        {
+
+        }
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+        {
+            if (args.Action == "edit")
+            {
+                OpenEditDialog(args.Data.UserId);
+                Update(args.Data);
+            }
+            else if (args.Action == "add")
+            {
+                Create(args.Data);
+            }
+
+        }
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
+        {
+            Delete(args.Data);
+        }
+    }
+
+    public void ToolbarClick(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+    {
+        if (args.Item.Id == "Grid_pdfexport")
+        {
+            this.UserGrid.PdfExport();
+        }
+        if (args.Item.Id == "Grid_excelexport")
+        {
+            this.UserGrid.ExcelExport();
+        }
+        if (args.Item.Id == "Grid_csvexport")
+        {
+            this.UserGrid.CsvExport();
+        }
+    }
+
+    public async Task Create(UserInfoDto userInfoDto)
+    {
+        try
+        {
+            ApiResponseDto<UserInfoDto> apiResponse = await Http.PostJsonAsync<ApiResponseDto<UserInfoDto>>
+                ("api/user", userInfoDto);
+            if (apiResponse.StatusCode == Status200OK)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success);
+                userDtos.FirstOrDefault(x => x.UserId == new Guid()).UserId= apiResponse.Result.UserId;
+                UserGrid.Refresh();
+            }
+            else
+            {
+                //TODO Ahmet 1**
+                //TODO Ahmet 2**
+                userDtos.Remove(userInfoDto);
+                UserGrid.Refresh();
+                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Öğrenci Creation Failed");
+            }
+        }
+        catch (Exception ex)
+        {
+            //TODO Ahmet 1**: liste içinden değinde gride eklediğini sil demeli !!
+            //TODO Ahmet 2**: Dbden hata geldiği zaman Bu hata sebebini mantıklı şekilde buraya vermemiz gerekiyor. Aynı Idli kayıt gönder patlatıyon.
+
+            userDtos.Remove(userInfoDto);
+            UserGrid.Refresh();
+            matToaster.Add(ex.Message, MatToastType.Danger, "Öğrenci Creation Failed");
+        }
+    }
+
+
+    public async void Update(UserInfoDto userInfoDto)
+    {
+        //this updates the IsCompleted flag only
+        try
+        {
+            ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>
+                ("api/user", userInfoDto);
+
+            if (!apiResponse.IsError)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success);
+            }
+            else
+            {
+                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Öğrenci Save Failed");
+                //update failed gridi boz !
+            }
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.Message, MatToastType.Danger, "Öğrenci Save Failed");
+            //update failed gridi boz !
+        }
+    }
+
+    public async Task Delete(UserInfoDto userInfoDto)
+    {
+        try
+        {
+            var response = await Http.DeleteAsync("api/user/" + userInfoDto.UserId);
+            if (response.StatusCode == (HttpStatusCode)Status200OK)
+            {
+                matToaster.Add("Öğrenci Deleted", MatToastType.Success);
+                userDtos.Remove(userInfoDto);
+            }
+            else
+            {
+                matToaster.Add("Öğrenci Delete Failed: " + response.StatusCode, MatToastType.Danger);
+            }
+            //deleteDialogOpen = false;
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.Message, MatToastType.Danger, "Öğrenci Save Failed");
+        }
+    }
+
+}

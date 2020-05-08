@@ -30,6 +30,7 @@ namespace Semerkand.Storage.Mapping
             CreateMap<Harc, HarcDto>().ReverseMap();
             CreateMap<Mufredat, MufredatDto>().ReverseMap();
             CreateMap<Ders, DersDto>().ReverseMap();
+            CreateMap<Mufredat, MufredatDto>().ReverseMap();
         }
     }
 }

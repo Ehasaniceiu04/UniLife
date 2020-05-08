@@ -1,0 +1,22 @@
+﻿
+@inject NavigationManager navigationManager
+
+@code {
+
+    //This seems better approach easy to navigate.
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        //navigationManager.NavigateTo("/login");
+
+        CallLogin();
+        return null;
+    }
+
+    private void CallLogin()
+    {
+        var returnUrl =
+              navigationManager.ToBaseRelativePath(navigationManager.Uri);
+        navigationManager.NavigateTo($"/account/Login/{returnUrl}", forceLoad: false);
+    }
+}

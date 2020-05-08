@@ -10,8 +10,8 @@ namespace Semerkand.Shared.DataModels
         [MaxLength(300)]
         public string Isim { get; set; }
 
-        public int ProgramId { get; set; }
-        public virtual Program Program { get; set; }
+        //public int ProgramId { get; set; }
+        //public virtual Program Program { get; set; }
 
         public virtual ICollection<Ders> Derss { get; set; }
     }

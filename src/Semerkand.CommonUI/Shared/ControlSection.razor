@@ -1,0 +1,12 @@
+﻿<div class="col-lg-12 control-section">
+    <div class="content-wrapper">
+        <div class="row">
+            @ChildContent
+        </div>
+    </div>
+</div>
+
+@code{
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+}

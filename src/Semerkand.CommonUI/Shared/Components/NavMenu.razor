@@ -1,4 +1,4 @@
-@using Microsoft.AspNetCore.Components;
+﻿@using Microsoft.AspNetCore.Components;
 @inject NavigationManager navigationManager
 
     <MatNavMenu Multi="true" Class="app-sidebar">
@@ -11,6 +11,46 @@
         </MatNavItem>
         <MatNavItem Href="@navigationManager.ToAbsoluteUri("tanimlar").AbsoluteUri">
             <MatIcon>business</MatIcon> <span class="miniHover">Tanimlar</span>
+        </MatNavItem>
+
+        <MatNavSubMenu>
+            <MatNavSubMenuHeader>
+                <MatNavItem AllowSelection="false">
+                    <MatIcon>stars</MatIcon><span class="miniHover"> Ders Ve Müfredat</span>
+                </MatNavItem>
+            </MatNavSubMenuHeader>
+            <MatNavSubMenuList>
+                <MatNavItem Href="@navigationManager.ToAbsoluteUri("mufredat").AbsoluteUri">
+                    <MatIcon>touch_app</MatIcon> <span class="miniHover">Müfredat</span>
+                </MatNavItem>
+                <MatNavItem Href="@navigationManager.ToAbsoluteUri("dersler").AbsoluteUri">
+                    <MatIcon>screen_share</MatIcon> <span class="miniHover">Dersler</span>
+                </MatNavItem>
+            </MatNavSubMenuList>
+        </MatNavSubMenu>
+        <MatNavItem Href="@navigationManager.ToAbsoluteUri("sinav").AbsoluteUri">
+            <MatIcon>business</MatIcon> <span class="miniHover">Sinav Ve Not</span>
+        </MatNavItem>
+        <MatNavSubMenu>
+            <MatNavSubMenuHeader>
+                <MatNavItem AllowSelection="false">
+                    <MatIcon>stars</MatIcon><span class="miniHover"> Öğrenci İşlemleri</span>
+                </MatNavItem>
+            </MatNavSubMenuHeader>
+            <MatNavSubMenuList>
+                <MatNavItem Href="@navigationManager.ToAbsoluteUri("drag_and_drop").AbsoluteUri">
+                    <MatIcon>touch_app</MatIcon> <span class="miniHover">Drag and Drop</span>
+                </MatNavItem>
+                <MatNavItem Href="@navigationManager.ToAbsoluteUri("screenshots").AbsoluteUri">
+                    <MatIcon>screen_share</MatIcon> <span class="miniHover">Screenshots</span>
+                </MatNavItem>
+            </MatNavSubMenuList>
+        </MatNavSubMenu>
+        <MatNavItem Href="@navigationManager.ToAbsoluteUri("paydas").AbsoluteUri">
+            <MatIcon>business</MatIcon> <span class="miniHover">Paydaş İşlemler</span>
+        </MatNavItem>
+        <MatNavItem Href="@navigationManager.ToAbsoluteUri("raporlar").AbsoluteUri">
+            <MatIcon>business</MatIcon> <span class="miniHover">Raporlar</span>
         </MatNavItem>
 
         <MatNavSubMenu>
@@ -59,6 +99,9 @@
                         </MatNavItem>
                     </MatNavSubMenuHeader>
                     <MatNavSubMenuList>
+                        <MatNavItem Href="@navigationManager.ToAbsoluteUri("admin/ogrenciler").AbsoluteUri">
+                            <MatIcon>supervisor_account</MatIcon> <span class="miniHover">Öğrenciler</span>
+                        </MatNavItem>
                         <MatNavItem Href="@navigationManager.ToAbsoluteUri("admin/users").AbsoluteUri">
                             <MatIcon>supervisor_account</MatIcon> <span class="miniHover">Users</span>
                         </MatNavItem>

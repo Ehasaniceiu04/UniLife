@@ -5,25 +5,20 @@
 @using System.Net
 @using Newtonsoft.Json
 
-<div class="col-lg-12 control-section">
-    <div class="content-wrapper">
-        <div class="row">
-            <SfGrid @ref="BolumGrid" DataSource="@bolumDtos" Toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Update", "Cancel" })" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
-                <GridEvents OnActionComplete="ActionCompletedHandler" TValue="BolumDto"></GridEvents>
-                <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
-                <GridColumns>
-                    <GridColumn Visible="false" Field=@nameof(BolumDto.Id) HeaderText="Bölüm ID" AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
-                    <GridColumn Field=@nameof(BolumDto.Isim) HeaderText="Bölüm İsim" ValidationRules="@(new { required=true})" Width="170"></GridColumn>
-                    @*<GridColumn Field=@nameof(BolumDto.Fakulte.UniversiteId) HeaderText="Üniversite" ForeignKeyValue="Isim" ForeignKeyField="Id" DataSource="@universiteDtos" Width="150"></GridColumn>*@
-                    <GridColumn Field=@nameof(BolumDto.FakulteId) HeaderText="Fakülte" ForeignKeyValue="Isim" ForeignKeyField="Id" DataSource="@fakulteDtos" Width="150"></GridColumn>
+    <ControlSection>
+        <SfGrid @ref="BolumGrid" DataSource="@bolumDtos" Toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Update", "Cancel" })" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
+            <GridEvents OnActionComplete="ActionCompletedHandler" TValue="BolumDto"></GridEvents>
+            <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
+            <GridColumns>
+                <GridColumn Visible="false" Field=@nameof(BolumDto.Id) HeaderText="Bölüm ID" AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+                <GridColumn Field=@nameof(BolumDto.Isim) HeaderText="Bölüm İsim" ValidationRules="@(new { required=true})" Width="170"></GridColumn>
+                @*<GridColumn Field=@nameof(BolumDto.Fakulte.UniversiteId) HeaderText="Üniversite" ForeignKeyValue="Isim" ForeignKeyField="Id" DataSource="@universiteDtos" Width="150"></GridColumn>*@
+                <GridColumn Field=@nameof(BolumDto.FakulteId) HeaderText="Fakülte" ForeignKeyValue="Isim" ForeignKeyField="Id" DataSource="@fakulteDtos" Width="150"></GridColumn>
 
-                </GridColumns>
-            </SfGrid>
-
-        </div>
-    </div>
-</div>
-
+            </GridColumns>
+        </SfGrid>
+    </ControlSection>
+            
 @code{
 
     SfGrid<BolumDto> BolumGrid;
@@ -34,14 +29,14 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await ReadFakultes();
+        await ReadBolums();
 
         ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/fakulte");
         fakulteDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<FakulteDto[]>(apiResponse.Result.ToString()).ToList<FakulteDto>();
 
     }
 
-    async Task ReadFakultes()
+    async Task ReadBolums()
     {
 
         ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/bolum");
@@ -86,20 +81,16 @@
     {
         try
         {
-            ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>
+            ApiResponseDto<BolumDto> apiResponse = await Http.PostJsonAsync<ApiResponseDto<BolumDto>>
                 ("api/bolum", bolumDto);
             if (apiResponse.StatusCode == Status200OK)
             {
                 matToaster.Add(apiResponse.Message, MatToastType.Success);
-                //todo = Newtonsoft.Json.JsonConvert.DeserializeObject<BolumDto>
-                //(apiResponse.Result.ToString());
-                //todos.Add(todo);
-                //todo = new TodoDto(); //reset todo after insert
+                bolumDtos.FirstOrDefault(x => x.Id == 0).Id = apiResponse.Result.Id;
+                BolumGrid.Refresh();
             }
             else
             {
-                //TODO Ahmet 1**
-                //TODO Ahmet 2**
                 bolumDtos.Remove(bolumDto);
                 BolumGrid.Refresh();
                 matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Bölüm Creation Failed");
@@ -107,15 +98,11 @@
         }
         catch (Exception ex)
         {
-            //TODO Ahmet 1**: liste içinden değinde gride eklediğini sil demeli !!
-            //TODO Ahmet 2**: Dbden hata geldiği zaman Bu hata sebebini mantıklı şekilde buraya vermemiz gerekiyor. Aynı Idli kayıt gönder patlatıyon.
-
             bolumDtos.Remove(bolumDto);
             BolumGrid.Refresh();
             matToaster.Add(ex.Message, MatToastType.Danger, "Bölüm Creation Failed");
         }
     }
-
 
     public async void Update(BolumDto bolumDto)
     {
@@ -160,7 +147,7 @@
         }
         catch (Exception ex)
         {
-            matToaster.Add(ex.Message, MatToastType.Danger, "Universite Save Failed");
+            matToaster.Add(ex.Message, MatToastType.Danger, "Bölüm Save Failed");
         }
     }
 

@@ -9,6 +9,6 @@ namespace Semerkand.Shared.Dto.Definitions
         public string Isim { get; set; }
 
         public int MufredatID { get; set; }
-        public MufredatDto Mufredat { get; set; }
+        public virtual MufredatDto Mufredat { get; set; }
     }
 }
