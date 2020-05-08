@@ -12,6 +12,28 @@ namespace Semerkand.Shared.AuthorizationDefinitions
 
     public static class Permissions
     {
+        public static class Harc
+        {
+            [Description("Create a new Harc")]
+            public const string Create = nameof(Harc) + "." + nameof(Actions.Create);
+            [Description("Read Harcs")]
+            public const string Read = nameof(Harc) + "." + nameof(Actions.Read);
+            [Description("Edit existing Harcs")]
+            public const string Update = nameof(Harc) + "." + nameof(Actions.Update);
+            [Description("Delete any Harc")]
+            public const string Delete = nameof(Harc) + "." + nameof(Actions.Delete);
+        }
+        public static class Program
+        {
+            [Description("Create a new Program")]
+            public const string Create = nameof(Program) + "." + nameof(Actions.Create);
+            [Description("Read Programs")]
+            public const string Read = nameof(Program) + "." + nameof(Actions.Read);
+            [Description("Edit existing Programs")]
+            public const string Update = nameof(Program) + "." + nameof(Actions.Update);
+            [Description("Delete any Program")]
+            public const string Delete = nameof(Program) + "." + nameof(Actions.Delete);
+        }
         public static class Bolum
         {
             [Description("Create a new Bolum")]

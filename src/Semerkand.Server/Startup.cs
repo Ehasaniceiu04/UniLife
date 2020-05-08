@@ -400,6 +400,8 @@ namespace Semerkand.Server
             services.AddTransient<IUniversiteManager, UniversiteManager>();
             services.AddTransient<IFakulteManager, FakulteManager>();
             services.AddTransient<IBolumManager, BolumManager>();
+            services.AddTransient<IHarcManager, HarcManager>();
+            services.AddTransient<IProgramManager, ProgramManager>();
             services.AddTransient<IUserProfileManager, UserProfileManager>();
 
 

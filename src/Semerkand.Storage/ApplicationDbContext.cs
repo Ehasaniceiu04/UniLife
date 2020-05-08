@@ -31,6 +31,7 @@ namespace Semerkand.Storage
         public DbSet<Fakulte> Fakultes{ get; set; }
         public DbSet<Bolum> Bolums{ get; set; }
         public DbSet<Program> Programs{ get; set; }
+        public DbSet<Harc> Harcs { get; set; }
         public DbSet<Mufredat> Mufredats{ get; set; }
         public DbSet<Ders> Derss{ get; set; }
 

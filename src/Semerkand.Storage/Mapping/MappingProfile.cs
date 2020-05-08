@@ -27,6 +27,7 @@ namespace Semerkand.Storage.Mapping
             CreateMap<Fakulte, FakulteDto>().ReverseMap();
             CreateMap<Bolum, BolumDto>().ReverseMap();
             CreateMap<Program, ProgramDto>().ReverseMap();
+            CreateMap<Harc, HarcDto>().ReverseMap();
             CreateMap<Mufredat, MufredatDto>().ReverseMap();
             CreateMap<Ders, DersDto>().ReverseMap();
         }

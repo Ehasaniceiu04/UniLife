@@ -1,0 +1,167 @@
+﻿@inject HttpClient Http;
+@using Semerkand.Shared.Dto.Definitions
+@inject IMatToaster matToaster
+@using Syncfusion.Blazor.DropDowns
+@using System.Net
+@using Newtonsoft.Json
+
+<div class="col-lg-12 control-section">
+    <div class="content-wrapper">
+        <div class="row">
+            <SfGrid @ref="HarcGrid" DataSource="@harcDtos" Toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Update", "Cancel" })" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
+                <GridEvents OnActionComplete="ActionCompletedHandler" TValue="HarcDto"></GridEvents>
+                <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
+                <GridColumns>
+                    <GridColumn Visible="false" Field=@nameof(HarcDto.Id) HeaderText="Harc ID" AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+                    <GridColumn Field=@nameof(HarcDto.Isim) HeaderText="Harc İsim" ValidationRules="@(new { required=true})" Width="170"></GridColumn>
+                    @*<GridColumn Field=@nameof(HarcDto.Fakulte.UniversiteId) HeaderText="Üniversite" ForeignKeyValue="Isim" ForeignKeyField="Id" DataSource="@universiteDtos" Width="150"></GridColumn>*@
+                    <GridColumn Field=@nameof(HarcDto.ProgramId) HeaderText="Program" ForeignKeyValue="Isim" ForeignKeyField="Id" DataSource="@programDtos" Width="150"></GridColumn>
+
+                </GridColumns>
+            </SfGrid>
+
+        </div>
+    </div>
+</div>
+
+@code{
+
+    SfGrid<HarcDto> HarcGrid;
+
+    List<HarcDto> harcDtos = new List<HarcDto>();
+
+    List<ProgramDto> programDtos = new List<ProgramDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ReadHarcs();
+
+        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/program");
+        programDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<ProgramDto[]>(apiResponse.Result.ToString()).ToList<ProgramDto>();
+
+    }
+
+    async Task ReadHarcs()
+    {
+
+        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/harc");
+
+        if (apiResponse.StatusCode == Status200OK)
+        {
+            matToaster.Add(apiResponse.Message, MatToastType.Success, "Harcler getirildi");
+            harcDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<HarcDto[]>(apiResponse.Result.ToString()).ToList<HarcDto>();
+        }
+        else
+        {
+            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Harc bilgisi getirilirken hata oluştu!");
+        }
+    }
+
+    public void ActionCompletedHandler(ActionEventArgs<HarcDto>
+        args)
+    {
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
+        {
+
+        }
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+        {
+            if (args.Action == "edit")
+            {
+                Update(args.Data);
+            }
+            else if (args.Action == "add")
+            {
+                Create(args.Data);
+            }
+
+        }
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
+        {
+            Delete(args.Data);
+        }
+    }
+
+    public async Task Create(HarcDto harcDto)
+    {
+        try
+        {
+            ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>
+                ("api/harc", harcDto);
+            if (apiResponse.StatusCode == Status200OK)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success);
+                //todo = Newtonsoft.Json.JsonConvert.DeserializeObject<HarcDto>
+                //(apiResponse.Result.ToString());
+                //todos.Add(todo);
+                //todo = new TodoDto(); //reset todo after insert
+            }
+            else
+            {
+                //TODO Ahmet 1**
+                //TODO Ahmet 2**
+                harcDtos.Remove(harcDto);
+                HarcGrid.Refresh();
+                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Harc Creation Failed");
+            }
+        }
+        catch (Exception ex)
+        {
+            //TODO Ahmet 1**: liste içinden değinde gride eklediğini sil demeli !!
+            //TODO Ahmet 2**: Dbden hata geldiği zaman Bu hata sebebini mantıklı şekilde buraya vermemiz gerekiyor. Aynı Idli kayıt gönder patlatıyon.
+
+            harcDtos.Remove(harcDto);
+            HarcGrid.Refresh();
+            matToaster.Add(ex.Message, MatToastType.Danger, "Harc Creation Failed");
+        }
+    }
+
+
+    public async void Update(HarcDto harcDto)
+    {
+        //this updates the IsCompleted flag only
+        try
+        {
+            ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>
+                ("api/harc", harcDto);
+
+            if (!apiResponse.IsError)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success);
+            }
+            else
+            {
+                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Harc Save Failed");
+                //update failed gridi boz !
+            }
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.Message, MatToastType.Danger, "Harc Save Failed");
+            //update failed gridi boz !
+        }
+    }
+
+    public async Task Delete(HarcDto harcDto)
+    {
+        //try
+        //{
+        //    var response = await Http.DeleteAsync("api/harc/" + harcDto.Id);
+        //    if (response.StatusCode == (HttpStatusCode)Status200OK)
+        //    {
+        //        matToaster.Add("Harc Deleted", MatToastType.Success);
+        //        harcDtos.Remove(harcDto);
+        //    }
+        //    else
+        //    {
+        //        matToaster.Add("Harc Delete Failed: " + response.StatusCode, MatToastType.Danger);
+        //    }
+        //    //deleteDialogOpen = false;
+        //}
+        //catch (Exception ex)
+        //{
+        //    matToaster.Add(ex.Message, MatToastType.Danger, "Universite Save Failed");
+        //}
+    }
+
+}

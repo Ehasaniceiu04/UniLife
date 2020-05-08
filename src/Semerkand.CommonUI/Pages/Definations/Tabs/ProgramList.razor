@@ -1,83 +1,167 @@
-﻿@using Syncfusion.Blazor.Grids
+﻿@inject HttpClient Http;
+@using Semerkand.Shared.Dto.Definitions
+@inject IMatToaster matToaster
 @using Syncfusion.Blazor.DropDowns
-@using Syncfusion.Blazor.Inputs
-@using Syncfusion.Blazor.Calendars
+@using System.Net
+@using Newtonsoft.Json
 
-<SfGrid DataSource="@Orders" AllowPaging="true" @ref="Grid" Toolbar="@(new string[] { "Add", "Edit", "Delete", "Cancel", "Update" })" Height="315">
-    <GridEvents OnActionBegin="ActionBeginHandler" TValue="Order"></GridEvents>
-    <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog">
-        <Template>
-            @{
-                var Order = (context as Order);
-                <div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label>Order ID</label>
-                            <SfTextBox ID="OrderID" Value="@(Order.OrderID.ToString())" Enabled="@Data"></SfTextBox>
-                        </div>
-                        <div class="form-group col-md-6">
-                            @*<label>Customer Name</label>*@
-                            <SfAutoComplete Placeholder="Customer Name" TItem="Order" ID="customerID" FloatLabelType="FloatLabelType.Auto" Value="@(Order.CustomerID)" TValue="string" DataSource="@GridData">
-                                <AutoCompleteFieldSettings Value="CustomerID"></AutoCompleteFieldSettings>
-                            </SfAutoComplete>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label>Order Date</label>
-                            <SfDatePicker ID="OrderDate" Value="@(Order.OrderDate)"></SfDatePicker>
-                        </div>
-                    </div>
-                </div>
-            }
-        </Template>
-    </GridEditSettings>
-    <GridColumns>
-        <GridColumn Field=@nameof(Order.OrderID) HeaderText="Order ID" IsPrimaryKey="true" ValidationRules="@(new { required=true})" TextAlign="TextAlign.Center" Width="120"></GridColumn>
-        <GridColumn Field=@nameof(Order.CustomerID) HeaderText="Customer Name" TextAlign="TextAlign.Center" Width="120"></GridColumn>
-        <GridColumn Field=@nameof(Order.OrderDate) HeaderText=" Order Date" EditType="EditType.DatePickerEdit" Visible="false" Format="d" TextAlign="TextAlign.Center" Width="130" Type="ColumnType.Date"></GridColumn>
-        <GridColumn Field=@nameof(Order.Freight) HeaderText="Freight" Format="C2" TextAlign="TextAlign.Right" Width="120"></GridColumn>
-    </GridColumns>
-</SfGrid>
+<div class="col-lg-12 control-section">
+    <div class="content-wrapper">
+        <div class="row">
+            <SfGrid @ref="ProgramGrid" DataSource="@programDtos" Toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Update", "Cancel" })" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
+                <GridEvents OnActionComplete="ActionCompletedHandler" TValue="ProgramDto"></GridEvents>
+                <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
+                <GridColumns>
+                    <GridColumn Visible="false" Field=@nameof(ProgramDto.Id) HeaderText="Program ID" AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+                    <GridColumn Field=@nameof(ProgramDto.Isim) HeaderText="Program İsim" ValidationRules="@(new { required=true})" Width="170"></GridColumn>
+                    @*<GridColumn Field=@nameof(ProgramDto.Fakulte.UniversiteId) HeaderText="Üniversite" ForeignKeyValue="Isim" ForeignKeyField="Id" DataSource="@universiteDtos" Width="150"></GridColumn>*@
+                    <GridColumn Field=@nameof(ProgramDto.BolumId) HeaderText="Bölüm" ForeignKeyValue="Isim" ForeignKeyField="Id" DataSource="@bolumDtos" Width="150"></GridColumn>
+
+                </GridColumns>
+            </SfGrid>
+
+        </div>
+    </div>
+</div>
 
 @code{
-    SfGrid<Order> Grid;
-    public List<Order> Orders { get; set; }
-    public bool Enabled = true;
-    public bool Data = false;
-    public List<Order> GridData = new List<Order>
-{
-        new Order() { OrderID = 10248, CustomerID = "VINET", Freight = 32.38, OrderDate = DateTime.Now.AddDays(-2) },
-        new Order() { OrderID = 10249, CustomerID = "TOMSP", Freight = 11.61, OrderDate = DateTime.Now.AddDays(-5) },
-        new Order() { OrderID = 10250, CustomerID = "HANAR", Freight = 65.83, OrderDate = DateTime.Now.AddDays(-12) },
-        new Order() { OrderID = 10251, CustomerID = "VICTE", Freight = 41.34, OrderDate = DateTime.Now.AddDays(-18)},
-        new Order() { OrderID = 10252, CustomerID = "SUPRD", Freight = 51.3,  OrderDate = DateTime.Now.AddDays(-22)},
-        new Order() { OrderID = 10253, CustomerID = "HANAR", Freight = 58.17, OrderDate = DateTime.Now.AddDays(-26) },
 
-    };
+    SfGrid<ProgramDto> ProgramGrid;
 
-    public void ActionBeginHandler(ActionEventArgs<Order> args)
+    List<ProgramDto> programDtos = new List<ProgramDto>();
+
+    List<BolumDto> bolumDtos = new List<BolumDto>();
+
+    protected override async Task OnInitializedAsync()
     {
-        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Add)
+        await ReadPrograms();
+
+        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/bolum");
+        bolumDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<BolumDto[]>(apiResponse.Result.ToString()).ToList<BolumDto>();
+
+    }
+
+    async Task ReadPrograms()
+    {
+
+        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/program");
+
+        if (apiResponse.StatusCode == Status200OK)
         {
-            Data = true;
+            matToaster.Add(apiResponse.Message, MatToastType.Success, "Programler getirildi");
+            programDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<ProgramDto[]>(apiResponse.Result.ToString()).ToList<ProgramDto>();
+        }
+        else
+        {
+            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Program bilgisi getirilirken hata oluştu!");
         }
     }
 
-    protected override void OnInitialized()
+    public void ActionCompletedHandler(ActionEventArgs<ProgramDto>
+        args)
     {
-        Orders = Enumerable.Range(1, 75).Select(x => new Order()
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
         {
-            OrderID = 1000 + x,
-            CustomerID = (new string[] { "ALFKI", "ANANTR", "ANTON", "BLONP", "BOLID" })[new Random().Next(5)],
-            Freight = 2.1 * x,
-            OrderDate = DateTime.Now.AddDays(-x),
-        }).ToList();
+
+        }
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+        {
+            if (args.Action == "edit")
+            {
+                Update(args.Data);
+            }
+            else if (args.Action == "add")
+            {
+                Create(args.Data);
+            }
+
+        }
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
+        {
+            Delete(args.Data);
+        }
     }
 
-    public class Order
+    public async Task Create(ProgramDto programDto)
     {
-        public int? OrderID { get; set; }
-        public string CustomerID { get; set; }
-        public DateTime? OrderDate { get; set; }
-        public double? Freight { get; set; }
+        try
+        {
+            ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>
+                ("api/program", programDto);
+            if (apiResponse.StatusCode == Status200OK)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success);
+                //todo = Newtonsoft.Json.JsonConvert.DeserializeObject<ProgramDto>
+                //(apiResponse.Result.ToString());
+                //todos.Add(todo);
+                //todo = new TodoDto(); //reset todo after insert
+            }
+            else
+            {
+                //TODO Ahmet 1**
+                //TODO Ahmet 2**
+                programDtos.Remove(programDto);
+                ProgramGrid.Refresh();
+                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Program Creation Failed");
+            }
+        }
+        catch (Exception ex)
+        {
+            //TODO Ahmet 1**: liste içinden değinde gride eklediğini sil demeli !!
+            //TODO Ahmet 2**: Dbden hata geldiği zaman Bu hata sebebini mantıklı şekilde buraya vermemiz gerekiyor. Aynı Idli kayıt gönder patlatıyon.
+
+            programDtos.Remove(programDto);
+            ProgramGrid.Refresh();
+            matToaster.Add(ex.Message, MatToastType.Danger, "Program Creation Failed");
+        }
     }
+
+
+    public async void Update(ProgramDto programDto)
+    {
+        //this updates the IsCompleted flag only
+        try
+        {
+            ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>
+                ("api/program", programDto);
+
+            if (!apiResponse.IsError)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success);
+            }
+            else
+            {
+                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Program Save Failed");
+                //update failed gridi boz !
+            }
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.Message, MatToastType.Danger, "Program Save Failed");
+            //update failed gridi boz !
+        }
+    }
+
+    public async Task Delete(ProgramDto programDto)
+    {
+        try
+        {
+            var response = await Http.DeleteAsync("api/program/" + programDto.Id);
+            if (response.StatusCode == (HttpStatusCode)Status200OK)
+            {
+                matToaster.Add("Program Deleted", MatToastType.Success);
+                programDtos.Remove(programDto);
+            }
+            else
+            {
+                matToaster.Add("Program Delete Failed: " + response.StatusCode, MatToastType.Danger);
+            }
+            //deleteDialogOpen = false;
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.Message, MatToastType.Danger, "Universite Save Failed");
+        }
+    }
+
 }

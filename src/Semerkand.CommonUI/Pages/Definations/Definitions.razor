@@ -30,17 +30,20 @@
         <MatTab Label="Program">
             <ProgramList></ProgramList>
         </MatTab>
-        <MatTab Label="Müfredat">
-            <SfCalendar TValue="DateTime?" Value="@DateValue"></SfCalendar>
-            <DialogEditing></DialogEditing>
-        </MatTab>
-        <MatTab Label="Ders">
-            <LabelContent>
+        @*<MatTab Label="Müfredat">
+             <LabelContent>
                 Third <MatIcon Icon="@MatIconNames.Close"></MatIcon>
             </LabelContent>
             <ChildContent>
                 Ders
             </ChildContent>
+            <SfCalendar TValue="DateTime?" Value="@DateValue"></SfCalendar>
+            <DialogEditing></DialogEditing>
+
+
+        </MatTab>*@
+        <MatTab Label="Harç">
+            <HarcList></HarcList>
         </MatTab>
 
     </MatTabGroup>
