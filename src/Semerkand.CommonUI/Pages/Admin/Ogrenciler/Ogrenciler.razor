@@ -6,70 +6,193 @@
 @inject AuthenticationStateProvider authStateProvider
 @inject IMatToaster matToaster
 @inject AppState appState
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Navigations
 @using System.Net
+@using Newtonsoft.Json
 
 <h1>Öğrenciler</h1>
 
-@if (userDtos == null)
+@if (userInfoDtos == null)
 {
-<LoadingBackground ShowLogoBox="true">
-    <label>Loading Users</label>
-</LoadingBackground>
+    <LoadingBackground ShowLogoBox="true">
+        <label>Loading Users</label>
+    </LoadingBackground>
 }
 else
 {
-<ControlSection>
-    <SfGrid ShowColumnChooser="true" ID="UserGrid" @ref="UserGrid" DataSource="@userDtos" Toolbar="@(new List<string>() { "Add", "Edit", "Delete","ExcelExport", "CsvExport", "PdfExport","Search","ColumnChooser" })" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
-        <GridEvents  OnToolbarClick="ToolbarClick" OnActionComplete="ActionCompletedHandler" TValue="UserInfoDto"></GridEvents>
-        <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
-        @*<GridSelectionSettings CheckboxOnly="true" PersistSelection="true"></GridSelectionSettings>*@
-        <GridColumns>
-            @*<GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>*@
-            <GridColumn Visible="false" Field=@nameof(UserInfoDto.UserId) HeaderText="Öğrenci ID" AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
-            <GridColumn Field=@nameof(UserInfoDto.FirstName) HeaderText="Öğrenci İsim" ValidationRules="@(new { required=true})" Width="170"></GridColumn>
-            <GridColumn Field=@nameof(UserInfoDto.Email) HeaderText="Email" ValidationRules="@(new { required=true})" Width="170"></GridColumn>
-            <GridColumn Field=@nameof(UserInfoDto.Roles) HeaderText="Roles">
+    <ControlSection>
+        @*@(new List<string>() { "Add", "Edit", "Delete","ExcelExport", "CsvExport", "PdfExport","Search","ColumnChooser" })*@
+        <SfGrid ShowColumnChooser="true"  ID="UserGrid" @ref="UserGrid" DataSource="@userInfoDtos" Toolbar="Toolbaritems" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
+            <GridEvents OnActionFailure="ActionFailureHandler" CommandClicked="CommandClickHandler" OnToolbarClick="ToolbarClickHandler" OnActionComplete="ActionCompletedHandler" OnActionBegin="ActionBeginHandler" TValue="UserInfoDto"></GridEvents>
+            
+            <GridSelectionSettings CheckboxOnly="true" PersistSelection="true"></GridSelectionSettings>
+            <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog" ShowDeleteConfirmDialog="true">
+                @*<HeaderTemplate>
+                        Records Details
+                    </HeaderTemplate>*@
                 <Template>
                     @{
                         UserInfoDto userInfo = (context as UserInfoDto);
-                        <MatChipSet>
-                            @foreach (var role in userInfo.Roles)
-                            {
-                            <MatChip Label="@role"></MatChip>
-                            }
-                        </MatChipSet>
+                        <div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label>User Id</label>
+                                    <SfTextBox ID="UserId" CssClass="form-control form-control-sm" Value="@(userInfo.UserId.ToString())" Enabled="@false"></SfTextBox>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>First Name</label>
+                                    <SfTextBox ID="FirstName" Value="@(userInfo.FirstName)" Enabled="@true"></SfTextBox>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>E-mail</label>
+                                    <SfTextBox ID="Email" Value="@(userInfo.Email)" Enabled="@true"></SfTextBox>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Roller</label>
+                                    <MatChipSet>
+                                        @foreach (var role in roleSelections.OrderBy(x => x.Name))
+                                        {
+                                            <MatChip Label="@role.Name" LeadingIcon="@( (role.IsSelected) ? "done" : "")" @onclick="@(() => UpdateUserRole(role))" />
+                                        }
+                                    </MatChipSet>
+                                </div>
+                                @*<div class="form-group col-md-6">
+                                        <label>First Name</label>
+                                        <SfAutoComplete Placeholder="Customer Name" TItem="Order" ID="customerID" FloatLabelType="FloatLabelType.Auto" Value="@(Order.CustomerID)" TValue="string" DataSource="@GridData">
+                                            <AutoCompleteFieldSettings Value="CustomerID"></AutoCompleteFieldSettings>
+                                        </SfAutoComplete>
+                                    </div>*@
+                                @*<div class="form-group col-md-6">
+                                        <label>Order Date</label>
+                                        <SfDatePicker ID="OrderDate" Value="@(Order.OrderDate)"></SfDatePicker>
+                                    </div>*@
+                            </div>
+                            @*<div class="form-row">
+                                    <div class="form-group col-md-12">
+                                        <label>Roller</label>
+                                        <MatChipSet>
+                                            @foreach (var role in roleSelections.OrderBy(x => x.Name))
+                                            {
+                                            <MatChip Label="@role.Name" LeadingIcon="@( (role.IsSelected) ? "done" : "")" @onclick="@(()=>UpdateUserRole(role))" />
+                                            }
+                                        </MatChipSet>
+                                    </div>
+                                </div>*@
+                        </div>
                     }
                 </Template>
-                <EditTemplate>
-                    @{
+                @*<FooterTemplate>
+                        <button>Save</button>
+                        <button>Cancel</button>
+                    </FooterTemplate>*@
+            </GridEditSettings>
+            <GridColumns>
+                <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
+                <GridColumn Visible="false" Field=@nameof(UserInfoDto.UserId) HeaderText="Öğrenci ID" AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+                <GridColumn Field=@nameof(UserInfoDto.FirstName) HeaderText="Öğrenci İsim" ValidationRules="@(new { required = true })"></GridColumn>
+                <GridColumn Field=@nameof(UserInfoDto.Email) HeaderText="Email" ValidationRules="@(new { required = true })"></GridColumn>
+                <GridColumn Field=@nameof(UserInfoDto.Roles) HeaderText="Roles">
+                    <Template>
+                        @{
+                            UserInfoDto userInfo = (context as UserInfoDto);
+                            <MatChipSet>
+                                @foreach (var role in userInfo.Roles)
+                                {
+                                    <MatChip Label="@role"></MatChip>
+                                }
+                            </MatChipSet>
+                        }
+                    </Template>
+                    @*<EditTemplate>
+                            @{
 
-                        <MatChipSet>
-                            @foreach (var role in roleSelections.OrderBy(x => x.Name))
-                            {
-                            <MatChip Label="@role.Name" LeadingIcon="@( (role.IsSelected) ? "done" : "")" @onclick="@(()=>UpdateUserRole(role))" />
+                                <MatChipSet>
+                                    @foreach (var role in roleSelections.OrderBy(x => x.Name))
+                                    {
+                                    <MatChip Label="@role.Name" LeadingIcon="@( (role.IsSelected) ? "done" : "")" @onclick="@(()=>UpdateUserRole(role))" />
+                                    }
+                                </MatChipSet>
                             }
-                        </MatChipSet>
-                    }
-                </EditTemplate>
-            </GridColumn>
+                        </EditTemplate>*@
+                </GridColumn>
+                <GridColumn HeaderText="Navigation" Width="120">
+                    <GridCommandColumns>
+                        <GridCommandColumn Type="CommandButtonType.None" Title="abc"
+                                           ButtonOption="@(new CommandButtonOptions()
+                                                       {
+                                                           IconCss = "remove-image-icon-icon-image", Content = "customcommand"
+                                                       })" />
+                    </GridCommandColumns>
+                </GridColumn>
 
-        </GridColumns>
-    </SfGrid>
-</ControlSection>
+            </GridColumns>
+        </SfGrid>
+    </ControlSection>
+
+
+
+    <MatDialog @bind-IsOpen="@createUserDialogOpen">
+        <MatDialogTitle>Create User</MatDialogTitle>
+        <MatDialogContent>
+            <EditForm Model="@registerParameters" OnValidSubmit="@CreateUserAsync">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <fieldset>
+                    <div class="form-group">
+                        <MatTextField @bind-Value="@registerParameters.UserName" Label="User Name" Icon="person" IconTrailing="true" FullWidth="true" Required="true"></MatTextField>
+                    </div>
+                    <div class="form-group">
+                        <MatTextField @bind-Value="@registerParameters.Email" Label="Email" Icon="mail_outline" IconTrailing="true" FullWidth="true" Required="true"></MatTextField>
+                    </div>
+                    <div class="form-group">
+                        <MatTextField @bind-Value="@registerParameters.Password" Label="Password" Icon="lock_outline" IconTrailing="true" FullWidth="true" Required="true" Type="password"></MatTextField>
+                    </div>
+                    <div class="form-group">
+                        <MatTextField @bind-Value="@registerParameters.PasswordConfirm" Label="Password Confirmation" Icon="lock_outline" IconTrailing="true" FullWidth="true" Required="true" Type="password"></MatTextField>
+                    </div>
+                </fieldset>
+            </EditForm>
+        </MatDialogContent>
+        <MatDialogActions>
+            <MatButton OnClick="@(e => { createUserDialogOpen = false; })">Cancel</MatButton>
+            <MatButton OnClick="@CreateUserAsync">Create User</MatButton>
+        </MatDialogActions>
+    </MatDialog>
+
+    <MatDialog @bind-IsOpen="@deleteUserDialogOpen" Style="z-index:100">
+        <MatDialogTitle><MatIcon Icon="warning"></MatIcon> Confirm Delete</MatDialogTitle>
+        <MatDialogContent>
+            Are you sure you want to delete user "@userInfoDto.UserName" ?
+        </MatDialogContent>
+        <MatDialogActions>
+            <MatButton OnClick="@(e => { deleteUserDialogOpen = false; })">Cancel</MatButton>
+            <MatButton OnClick="@DeleteUserAsync">Delete</MatButton>
+        </MatDialogActions>
+    </MatDialog>
 }
 
 
 @code{
     SfGrid<UserInfoDto> UserGrid;
 
-    List<UserInfoDto> userDtos;
-    public UserInfoDto userDto { get; set; } = new UserInfoDto(); // Holds user being actively modified or created
+    List<UserInfoDto> userInfoDtos;
+    public UserInfoDto userInfoDto { get; set; } = new UserInfoDto(); // Holds user being actively modified or created
+    RegisterDto registerParameters { get; set; } = new RegisterDto();
     List<RoleSelection> roleSelections { get; set; } = new List<RoleSelection>();
+
+    bool createUserDialogOpen = false;
+    bool deleteUserDialogOpen = false;
+
+    private List<Object> Toolbaritems = new List<Object>() { "Add", "Edit", "Delete", "ExcelExport", "CsvExport", "PdfExport", "Search", "ColumnChooser", new ItemModel() { Text = "Click", TooltipText = "Click", PrefixIcon = "e-click", Id = "Click" } };
+
     public class RoleSelection
     {
         public bool IsSelected { get; set; }
         public string Name { get; set; }
     };
+
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -102,6 +225,9 @@ else
             matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Role Retrieval Error");
         }
     }
+
+
+
     protected void UpdateUserRole(RoleSelection roleSelectionItem)
     {
         roleSelectionItem.IsSelected = !roleSelectionItem.IsSelected;
@@ -109,12 +235,12 @@ else
 
     public void OpenEditDialog(Guid userId)
     {
-        userDto = new UserInfoDto(); // reset user object
-        userDto = userDtos.Where(x => x.UserId == userId).SingleOrDefault();  // load the user information into the temp user object for worry free editing
+        userInfoDto = new UserInfoDto(); // reset user object
+        userInfoDto = userInfoDtos.Where(x => x.UserId == userId).SingleOrDefault();  // load the user information into the temp user object for worry free editing
         foreach (var role in roleSelections)
-            role.IsSelected = userDto.Roles.Contains(role.Name);
+            role.IsSelected = userInfoDto.Roles.Contains(role.Name);
 
-        userDto.SaveState();
+        userInfoDto.SaveState();
         //editDialogOpen = true;
     }
 
@@ -126,7 +252,7 @@ else
         if (apiResponse.StatusCode == Status200OK)
         {
             matToaster.Add(apiResponse.Message, MatToastType.Success, "Öğrenciler getirildi");
-            userDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<UserInfoDto[]>(apiResponse.Result.ToString()).ToList<UserInfoDto>();
+            userInfoDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<UserInfoDto[]>(apiResponse.Result.ToString()).ToList<UserInfoDto>();
         }
         else
         {
@@ -134,126 +260,186 @@ else
         }
     }
 
-    public void ActionCompletedHandler(ActionEventArgs<UserInfoDto>
-        args)
+    public void CommandClickHandler(CommandClickEventArgs<UserInfoDto> args)
     {
-        if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
-        {
-
-        }
-        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
-        {
-            if (args.Action == "edit")
-            {
-                OpenEditDialog(args.Data.UserId);
-                Update(args.Data);
-            }
-            else if (args.Action == "add")
-            {
-                Create(args.Data);
-            }
-
-        }
-        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
-        {
-            Delete(args.Data);
-        }
+        //Perform your custom command button click operation here. And also with the value in “args” you can differentiate the buttons, if having multiple custom command buttons.
+        var zxc = args;
     }
 
-    public void ToolbarClick(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+    public void ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
     {
-        if (args.Item.Id == "Grid_pdfexport")
+        var clieckhandler = args;
+
+        if (args.Item.Id == "Click")
+        {
+            //You can customized your code here....
+        }
+        if (args.Item.Id == "UserGrid_add")
+        {
+            args.Cancel = true;
+            createUserDialogOpen = true;
+        }
+        if (args.Item.Id == "UserGrid_delete")
+        {
+            //args.Cancel = true;
+            //deleteUserDialogOpen = true;
+
+
+        }
+        if (args.Item.Id == "UserGrid_pdfexport")
         {
             this.UserGrid.PdfExport();
         }
-        if (args.Item.Id == "Grid_excelexport")
+        if (args.Item.Id == "UserGrid_excelexport")
         {
             this.UserGrid.ExcelExport();
         }
-        if (args.Item.Id == "Grid_csvexport")
+        if (args.Item.Id == "UserGrid_csvexport")
         {
             this.UserGrid.CsvExport();
         }
     }
 
-    public async Task Create(UserInfoDto userInfoDto)
+    public async void ActionCompletedHandler(ActionEventArgs<UserInfoDto> args)
+    {
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
+        {
+            OpenEditDialog(args.RowData.UserId);
+        }
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Add)
+        {
+            roleSelections.ForEach(x => x.IsSelected = false);
+        }
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+        {
+            if (args.Action == "edit")
+            {
+
+                await UpdateUserAsync();
+            }
+            else if (args.Action == "add")
+            {
+                await CreateUserAsync();
+            }
+
+        }
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
+        {
+            var asd = args;
+            await DeleteUserAsync();
+        }
+    }
+
+    public void ActionFailureHandler(Syncfusion.Blazor.Grids.FailureEventArgs args)
+    {
+        var asd = args;
+    }
+
+
+    public void ActionBeginHandler(ActionEventArgs<UserInfoDto> args)
+    {
+
+    }
+
+
+
+    public async Task UpdateUserAsync()
     {
         try
         {
-            ApiResponseDto<UserInfoDto> apiResponse = await Http.PostJsonAsync<ApiResponseDto<UserInfoDto>>
-                ("api/user", userInfoDto);
-            if (apiResponse.StatusCode == Status200OK)
-            {
-                matToaster.Add(apiResponse.Message, MatToastType.Success);
-                userDtos.FirstOrDefault(x => x.UserId == new Guid()).UserId= apiResponse.Result.UserId;
-                UserGrid.Refresh();
-            }
+            //update the user object's role list with the new selection set
+            userInfoDto.Roles = roleSelections.Where(x => x.IsSelected == true).Select(x => x.Name).ToList();
+
+            var apiResponse = await Http.PutJsonAsync<ApiResponseDto>("api/Account", userInfoDto);
+
+            if (apiResponse.IsSuccessStatusCode)
+                matToaster.Add("User Updated", MatToastType.Success);
             else
             {
-                //TODO Ahmet 1**
-                //TODO Ahmet 2**
-                userDtos.Remove(userInfoDto);
+                matToaster.Add("Error", MatToastType.Danger, apiResponse.StatusCode.ToString());
+                userInfoDto.RestoreState();
                 UserGrid.Refresh();
-                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Öğrenci Creation Failed");
+
             }
+
+            //editDialogOpen = false;
         }
         catch (Exception ex)
         {
-            //TODO Ahmet 1**: liste içinden değinde gride eklediğini sil demeli !!
-            //TODO Ahmet 2**: Dbden hata geldiği zaman Bu hata sebebini mantıklı şekilde buraya vermemiz gerekiyor. Aynı Idli kayıt gönder patlatıyon.
-
-            userDtos.Remove(userInfoDto);
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "User Update Error");
             UserGrid.Refresh();
-            matToaster.Add(ex.Message, MatToastType.Danger, "Öğrenci Creation Failed");
+        }
+        finally
+        {
+            userInfoDto.ClearState();
         }
     }
 
-
-    public async void Update(UserInfoDto userInfoDto)
+    public async Task CreateUserAsync()
     {
-        //this updates the IsCompleted flag only
         try
         {
-            ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>
-                ("api/user", userInfoDto);
+            if (registerParameters.Password != registerParameters.PasswordConfirm)
+            {
+                matToaster.Add("Password Confirmation Failed", MatToastType.Danger, "");
+                return;
+            }
 
-            if (!apiResponse.IsError)
+            var apiResponse = await ((IdentityAuthenticationStateProvider)authStateProvider).Create(registerParameters);
+            if (apiResponse.IsSuccessStatusCode)
             {
                 matToaster.Add(apiResponse.Message, MatToastType.Success);
+                userInfoDto = Newtonsoft.Json.JsonConvert.DeserializeObject<UserInfoDto>(apiResponse.Result.ToString());
+                userInfoDtos.Add(userInfoDto);
+                registerParameters = new RegisterDto(); //reset create user object after insert
+                createUserDialogOpen = false;
+                UserGrid.Refresh();
             }
             else
             {
-                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Öğrenci Save Failed");
-                //update failed gridi boz !
+                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "User Creation Failed");
+                userInfoDtos.Remove(userInfoDto);
+                UserGrid.Refresh();
             }
         }
         catch (Exception ex)
         {
-            matToaster.Add(ex.Message, MatToastType.Danger, "Öğrenci Save Failed");
-            //update failed gridi boz !
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "User Creation Error");
+            UserGrid.Refresh();
         }
     }
 
-    public async Task Delete(UserInfoDto userInfoDto)
+
+
+    public async Task DeleteUserAsync()
     {
         try
         {
-            var response = await Http.DeleteAsync("api/user/" + userInfoDto.UserId);
+            var rows = await UserGrid.GetSelectedRecords();
+            List<UserInfoDto> result = JsonConvert.DeserializeObject<List<UserInfoDto>>(JsonConvert.SerializeObject(rows));
+            var response = await Http.DeleteAsync($"api/Account/{result.First().UserId}");
             if (response.StatusCode == (HttpStatusCode)Status200OK)
             {
-                matToaster.Add("Öğrenci Deleted", MatToastType.Success);
-                userDtos.Remove(userInfoDto);
+                matToaster.Add("User Deleted", MatToastType.Success);
+                //deleteUserDialogOpen = false;
+                //userInfoDtos.Remove(result.First());
             }
             else
             {
-                matToaster.Add("Öğrenci Delete Failed: " + response.StatusCode, MatToastType.Danger);
+                matToaster.Add("User Delete Failed", MatToastType.Danger);
+                userInfoDtos.Add(result.First());
             }
-            //deleteDialogOpen = false;
+
         }
         catch (Exception ex)
         {
-            matToaster.Add(ex.Message, MatToastType.Danger, "Öğrenci Save Failed");
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "User Delete Error");
+        }
+        finally
+        {
+            UserGrid.Refresh();
         }
     }
+
 
 }

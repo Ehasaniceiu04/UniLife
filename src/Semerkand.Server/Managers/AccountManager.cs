@@ -352,7 +352,8 @@ namespace Semerkand.Server.Managers
             var user = await _userManager.FindByIdAsync(id);
             if (user == null)
             {
-                return new ApiResponse(Status404NotFound, "User does not exist");
+                var asd= new ApiResponse(Status404NotFound, "User does not exist");
+                return asd;
             }
             try
             {
