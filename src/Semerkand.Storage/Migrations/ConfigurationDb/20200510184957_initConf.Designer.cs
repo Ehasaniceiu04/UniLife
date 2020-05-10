@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Semerkand.Storage.Migrations.ConfigurationDb
 {
     [DbContext(typeof(ConfigurationDbContext))]
-    [Migration("20200507162350_control")]
-    partial class control
+    [Migration("20200510184957_initConf")]
+    partial class initConf
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

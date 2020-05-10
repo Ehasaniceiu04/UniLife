@@ -25,5 +25,9 @@ namespace Semerkand.Shared.DataModels
         public virtual ICollection<Message> Messages { get; set; }
 
         public virtual Tenant Tenant { get; set; }
+
+        public int? OgrenciId { get; set; }
+
+        public virtual Ogrenci Ogrenci { get; set; }
     }
 }

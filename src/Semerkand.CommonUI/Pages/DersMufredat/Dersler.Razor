@@ -15,8 +15,8 @@
                 <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
                 <GridColumns>
                     <GridColumn Visible="false" Field=@nameof(DersDto.Id) HeaderText="Fakülte ID" AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
-                    <GridColumn Field=@nameof(DersDto.Isim) HeaderText="Ders" ValidationRules="@(new { required=true})" Width="170"></GridColumn>
-                    <GridColumn Field=@nameof(DersDto.MufredatID) HeaderText="Müfredat" ForeignKeyValue="Isim" ForeignKeyField="Id" DataSource="@mufredatDtos" Width="150"></GridColumn>
+                    <GridColumn Field=@nameof(DersDto.Ad) HeaderText="Ders" ValidationRules="@(new { required=true})" Width="170"></GridColumn>
+                    <GridColumn Field=@nameof(DersDto.MufredatID) HeaderText="Müfredat" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@mufredatDtos" Width="150"></GridColumn>
 
                 </GridColumns>
             </SfGrid>

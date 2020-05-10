@@ -54,7 +54,12 @@ namespace Semerkand.Storage
                 .WithOne(a => a.Tenant)
                 .HasForeignKey<Tenant>(t => t.OwnerUserId)
                 .OnDelete(DeleteBehavior.Restrict);
-            
+
+            modelBuilder.Entity<ApplicationUser>()
+                .HasOne(a => a.Ogrenci)
+                .WithOne(o => o.ApplicationUser)
+                .IsRequired(false);
+
             modelBuilder.ShadowProperties();
 
             base.OnModelCreating(modelBuilder);

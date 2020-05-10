@@ -1,11 +1,6 @@
 ﻿using Semerkand.Shared.DataInterfaces;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Semerkand.Shared.DataModels
 {
@@ -13,15 +8,38 @@ namespace Semerkand.Shared.DataModels
     {
         [Required]
         [MaxLength(300)]
-        public string Isim { get; set; }
-
-
+        public string Ad { get; set; }
+        public int Kod { get; set; }
         public int UniversiteId { get; set; }
-        
-       // [ForeignKey("UniversiteId")]
         public virtual Universite Universite { get; set; }
 
+        public int FakulteTurId { get; set; }
+        public virtual FakulteTur FakulteTur { get; set; }
 
-        public virtual ICollection<Bolum> Bolums{ get; set; }
+        public string KisaAd { get; set; }
+
+        public string AdEn { get; set; }
+        public string EPosta { get; set; }
+        public string Tel { get; set; }
+        public string Adres { get; set; }
+        public string Adres2 { get; set; }
+        public string Faks { get; set; }
+        public string Web { get; set; }
+        public int IlceId { get; set; }
+        public int OgrenimTurId { get; set; }
+        public virtual OgrenimTur OgrenimTur { get; set; }
+        public int OgrenimSure { get; set; }
+        public int IlKod { get; set; }
+        public int Tip { get; set; }
+        public string DiplomaAd { get; set; }
+        public bool IsBologna { get; set; }
+        public string BolognaIcerikTR { get; set; }
+        public string BolognaIcerikEN { get; set; }
+        public int BirimID { get; set; }
+
+
+        public virtual ICollection<Bolum> Bolums { get; set; }
+
+        public virtual ICollection<Ogrenci> Ogrencis{ get; set; }
     }
 }

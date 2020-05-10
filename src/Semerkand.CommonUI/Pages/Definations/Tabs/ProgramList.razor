@@ -11,9 +11,9 @@
             <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
             <GridColumns>
                 <GridColumn Visible="false" Field=@nameof(ProgramDto.Id) HeaderText="Program ID" AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
-                <GridColumn Field=@nameof(ProgramDto.Isim) HeaderText="Program İsim" ValidationRules="@(new { required=true})" Width="170"></GridColumn>
-                @*<GridColumn Field=@nameof(ProgramDto.Fakulte.UniversiteId) HeaderText="Üniversite" ForeignKeyValue="Isim" ForeignKeyField="Id" DataSource="@universiteDtos" Width="150"></GridColumn>*@
-                <GridColumn Field=@nameof(ProgramDto.BolumId) HeaderText="Bölüm" ForeignKeyValue="Isim" ForeignKeyField="Id" DataSource="@bolumDtos" Width="150"></GridColumn>
+                <GridColumn Field=@nameof(ProgramDto.Ad) HeaderText="Program İsim" ValidationRules="@(new { required=true})" Width="170"></GridColumn>
+                @*<GridColumn Field=@nameof(ProgramDto.Fakulte.UniversiteId) HeaderText="Üniversite" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@universiteDtos" Width="150"></GridColumn>*@
+                <GridColumn Field=@nameof(ProgramDto.BolumId) HeaderText="Bölüm" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@bolumDtos" Width="150"></GridColumn>
 
             </GridColumns>
         </SfGrid>

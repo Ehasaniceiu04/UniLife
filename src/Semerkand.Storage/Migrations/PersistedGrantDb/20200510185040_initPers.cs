@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Semerkand.Storage.Migrations.PersistedGrantDb
 {
-    public partial class control : Migration
+    public partial class initPers : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

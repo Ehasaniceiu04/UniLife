@@ -7,7 +7,7 @@ namespace Semerkand.Shared.Dto.Definitions
     {
         [Required]
         [MaxLength(300)]
-        public string Isim { get; set; }
+        public string Ad { get; set; }
 
         public int BolumId { get; set; }
         public BolumDto Bolum { get; set; }

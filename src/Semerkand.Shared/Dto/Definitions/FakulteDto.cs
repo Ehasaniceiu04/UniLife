@@ -11,22 +11,22 @@ namespace Semerkand.Shared.Dto.Definitions
 
         [Required]
         [MaxLength(300)]
-        public string Isim { get; set; }
+        public string Ad { get; set; }
 
 
         public int UniversiteId { get; set; }
         public virtual UniversiteDto Universite { get; set; }
 
         //[System.ComponentModel.DataAnnotations.Schema.NotMapped]
-        //public string UniversiteIsim
+        //public string UniversiteAd
         //{
         //    get
         //    {
-        //        return Universite.Isim;
+        //        return Universite.Ad;
         //    }
         //    set
         //    {
-        //        Universite.Isim = value;
+        //        Universite.Ad = value;
         //    }
         //}
 

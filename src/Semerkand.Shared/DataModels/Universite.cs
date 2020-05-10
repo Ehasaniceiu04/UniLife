@@ -8,7 +8,7 @@ namespace Semerkand.Shared.DataModels
     {
         [Required]
         [MaxLength(300)]
-        public string Isim { get; set; }
+        public string Ad { get; set; }
 
 
         public virtual ICollection<Fakulte> Fakultes { get; set; }

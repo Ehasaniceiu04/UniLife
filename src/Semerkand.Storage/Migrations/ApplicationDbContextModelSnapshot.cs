@@ -267,6 +267,9 @@ namespace Semerkand.Storage.Migrations
                         .HasColumnType("character varying(256)")
                         .HasMaxLength(256);
 
+                    b.Property<int?>("OgrenciId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("PasswordHash")
                         .HasColumnType("text");
 
@@ -305,6 +308,14 @@ namespace Semerkand.Storage.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<string>("Ad")
+                        .IsRequired()
+                        .HasColumnType("character varying(400)")
+                        .HasMaxLength(400);
+
+                    b.Property<string>("AdEn")
+                        .HasColumnType("text");
+
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uuid");
 
@@ -313,16 +324,29 @@ namespace Semerkand.Storage.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
+                    b.Property<string>("DiplomaAd")
+                        .HasColumnType("text");
+
+                    b.Property<string>("DiplomaAdEn")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("Durum")
+                        .HasColumnType("boolean");
+
                     b.Property<int>("FakulteId")
                         .HasColumnType("integer");
+
+                    b.Property<bool>("IsBologna")
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("Isim")
-                        .IsRequired()
-                        .HasColumnType("character varying(400)")
-                        .HasMaxLength(400);
+                    b.Property<string>("KisaAd")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Kod")
+                        .HasColumnType("integer");
 
                     b.Property<Guid>("ModifiedBy")
                         .HasColumnType("uuid");
@@ -332,9 +356,20 @@ namespace Semerkand.Storage.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
+                    b.Property<int>("OgrenimSure")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("OgrenimTurId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("OsymKod")
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.HasIndex("FakulteId");
+
+                    b.HasIndex("OgrenimTurId");
 
                     b.ToTable("Bolums");
                 });
@@ -380,6 +415,17 @@ namespace Semerkand.Storage.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<string>("Ad")
+                        .IsRequired()
+                        .HasColumnType("character varying(300)")
+                        .HasMaxLength(300);
+
+                    b.Property<string>("AdEn")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Akts")
+                        .HasColumnType("integer");
+
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uuid");
 
@@ -388,13 +434,29 @@ namespace Semerkand.Storage.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
+                    b.Property<int>("DonemTipId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("Durum")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("GeçmeNotu")
+                        .HasColumnType("integer");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("Isim")
-                        .IsRequired()
-                        .HasColumnType("character varying(300)")
-                        .HasMaxLength(300);
+                    b.Property<string>("KisaAd")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Kod")
+                        .HasColumnType("text");
+
+                    b.Property<double>("Kredi")
+                        .HasColumnType("double precision");
+
+                    b.Property<int>("LabSaat")
+                        .HasColumnType("integer");
 
                     b.Property<Guid>("ModifiedBy")
                         .HasColumnType("uuid");
@@ -407,11 +469,128 @@ namespace Semerkand.Storage.Migrations
                     b.Property<int>("MufredatID")
                         .HasColumnType("integer");
 
+                    b.Property<int>("MyProperty")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("OptikKod")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Sinif")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TeoSaat")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UygSaat")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Zorunlu")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("DonemTipId");
 
                     b.HasIndex("MufredatID");
 
                     b.ToTable("Derss");
+                });
+
+            modelBuilder.Entity("Semerkand.Shared.DataModels.Donem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Ad")
+                        .HasColumnType("text");
+
+                    b.Property<string>("AdEn")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("BasTarih")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("BitTarih")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<int>("DonemTipId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("Durum")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("KisaAd")
+                        .HasColumnType("text");
+
+                    b.Property<string>("KisaAdEn")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<int>("YilTip")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("YokSisDurum")
+                        .HasColumnType("boolean");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DonemTipId");
+
+                    b.ToTable("Donem");
+                });
+
+            modelBuilder.Entity("Semerkand.Shared.DataModels.DonemTip", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Ad")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("ModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DonemTip");
                 });
 
             modelBuilder.Entity("Semerkand.Shared.DataModels.Fakulte", b =>
@@ -421,6 +600,29 @@ namespace Semerkand.Storage.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<string>("Ad")
+                        .IsRequired()
+                        .HasColumnType("character varying(300)")
+                        .HasMaxLength(300);
+
+                    b.Property<string>("AdEn")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Adres")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Adres2")
+                        .HasColumnType("text");
+
+                    b.Property<int>("BirimID")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("BolognaIcerikEN")
+                        .HasColumnType("text");
+
+                    b.Property<string>("BolognaIcerikTR")
+                        .HasColumnType("text");
+
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uuid");
 
@@ -429,13 +631,35 @@ namespace Semerkand.Storage.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
+                    b.Property<string>("DiplomaAd")
+                        .HasColumnType("text");
+
+                    b.Property<string>("EPosta")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Faks")
+                        .HasColumnType("text");
+
+                    b.Property<int>("FakulteTurId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("IlKod")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("IlceId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsBologna")
+                        .HasColumnType("boolean");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("Isim")
-                        .IsRequired()
-                        .HasColumnType("character varying(300)")
-                        .HasMaxLength(300);
+                    b.Property<string>("KisaAd")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Kod")
+                        .HasColumnType("integer");
 
                     b.Property<Guid>("ModifiedBy")
                         .HasColumnType("uuid");
@@ -445,17 +669,36 @@ namespace Semerkand.Storage.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
+                    b.Property<int>("OgrenimSure")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("OgrenimTurId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Tel")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Tip")
+                        .HasColumnType("integer");
+
                     b.Property<int>("UniversiteId")
                         .HasColumnType("integer");
 
+                    b.Property<string>("Web")
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("FakulteTurId");
+
+                    b.HasIndex("OgrenimTurId");
 
                     b.HasIndex("UniversiteId");
 
                     b.ToTable("Fakultes");
                 });
 
-            modelBuilder.Entity("Semerkand.Shared.DataModels.Harc", b =>
+            modelBuilder.Entity("Semerkand.Shared.DataModels.FakulteTur", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -473,10 +716,56 @@ namespace Semerkand.Storage.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("Isim")
+                    b.Property<Guid>("ModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<string>("Tur")
+                        .HasColumnType("text");
+
+                    b.Property<string>("TurEn")
+                        .HasColumnType("text");
+
+                    b.Property<string>("YokasId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FakulteTur");
+                });
+
+            modelBuilder.Entity("Semerkand.Shared.DataModels.Harc", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Ad")
                         .IsRequired()
                         .HasColumnType("character varying(300)")
                         .HasMaxLength(300);
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<int>("DonemId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("IlkUzatma")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
                     b.Property<Guid>("ModifiedBy")
                         .HasColumnType("uuid");
@@ -486,14 +775,56 @@ namespace Semerkand.Storage.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
+                    b.Property<int>("NormalSure")
+                        .HasColumnType("integer");
+
                     b.Property<int>("ProgramId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TakipYillar")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DonemId");
+
                     b.HasIndex("ProgramId");
 
                     b.ToTable("Harcs");
+                });
+
+            modelBuilder.Entity("Semerkand.Shared.DataModels.KayitNeden", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Ad")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("ModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("KayitNeden");
                 });
 
             modelBuilder.Entity("Semerkand.Shared.DataModels.Message", b =>
@@ -531,6 +862,23 @@ namespace Semerkand.Storage.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<string>("Ad")
+                        .IsRequired()
+                        .HasColumnType("character varying(300)")
+                        .HasMaxLength(300);
+
+                    b.Property<string>("AdEn")
+                        .HasColumnType("text");
+
+                    b.Property<int>("AraSinavEo")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("BasTarih")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("BitTarih")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uuid");
 
@@ -539,13 +887,26 @@ namespace Semerkand.Storage.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
+                    b.Property<int>("Durum")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("FinalBaraj")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("GecmeNot")
+                        .HasColumnType("integer");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("Isim")
-                        .IsRequired()
-                        .HasColumnType("character varying(300)")
-                        .HasMaxLength(300);
+                    b.Property<string>("KararAcik")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("KararTarih")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("KisaAd")
+                        .HasColumnType("text");
 
                     b.Property<Guid>("ModifiedBy")
                         .HasColumnType("uuid");
@@ -555,17 +916,48 @@ namespace Semerkand.Storage.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
+                    b.Property<int>("ProgDersGec")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ProgramId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("YariSonuSinavEo")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Yil")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ProgramId");
 
                     b.ToTable("Mufredats");
                 });
 
-            modelBuilder.Entity("Semerkand.Shared.DataModels.Program", b =>
+            modelBuilder.Entity("Semerkand.Shared.DataModels.Ogrenci", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Ad")
+                        .IsRequired()
+                        .HasColumnType("character varying(300)")
+                        .HasMaxLength(300);
+
+                    b.Property<string>("AnaOgrNo")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ApplicationUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("AskerDurum")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("AyrilTarih")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("BolumId")
                         .HasColumnType("integer");
@@ -578,13 +970,17 @@ namespace Semerkand.Storage.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
+                    b.Property<int>("FakulteId")
+                        .HasColumnType("integer");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("Isim")
-                        .IsRequired()
-                        .HasColumnType("character varying(300)")
-                        .HasMaxLength(300);
+                    b.Property<int>("KayitNedenId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("KayitTarih")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid>("ModifiedBy")
                         .HasColumnType("uuid");
@@ -593,6 +989,219 @@ namespace Semerkand.Storage.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp without time zone")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<string>("OgrNo")
+                        .HasColumnType("text");
+
+                    b.Property<int>("OgrenimDurumId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ProgramId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId")
+                        .IsUnique();
+
+                    b.HasIndex("BolumId");
+
+                    b.HasIndex("FakulteId");
+
+                    b.HasIndex("KayitNedenId");
+
+                    b.HasIndex("OgrenimDurumId");
+
+                    b.HasIndex("ProgramId");
+
+                    b.ToTable("Ogrenci");
+                });
+
+            modelBuilder.Entity("Semerkand.Shared.DataModels.OgrenimDurum", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Ad")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("ModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OgrenimDurum");
+                });
+
+            modelBuilder.Entity("Semerkand.Shared.DataModels.OgrenimTur", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Ad")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("ModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OgrenimTur");
+                });
+
+            modelBuilder.Entity("Semerkand.Shared.DataModels.Program", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Ad")
+                        .IsRequired()
+                        .HasColumnType("character varying(300)")
+                        .HasMaxLength(300);
+
+                    b.Property<string>("AdEn")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Adres")
+                        .HasColumnType("text");
+
+                    b.Property<int>("AnaBolum")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("AzamiSure")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("BarajNot")
+                        .HasColumnType("text");
+
+                    b.Property<int>("BolumId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("BrnOgrOsymKod")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<int>("Dil")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("DiplomaAd")
+                        .HasColumnType("text");
+
+                    b.Property<string>("DiplomaAdEn")
+                        .HasColumnType("text");
+
+                    b.Property<int>("FakulteId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("GenelKon")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("HarcTutar")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("Iletisim")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsBologna")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsHazırlık")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("KisaAd")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Kod")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("ModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<int>("NormalSure")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("OptKod")
+                        .HasColumnType("text");
+
+                    b.Property<string>("OsymKod")
+                        .HasColumnType("text");
+
+                    b.Property<string>("OsymKodBurslu")
+                        .HasColumnType("text");
+
+                    b.Property<string>("OsymKodCeyrekBurs")
+                        .HasColumnType("text");
+
+                    b.Property<string>("OsymKodYariBurslu")
+                        .HasColumnType("text");
+
+                    b.Property<string>("OsymTur")
+                        .HasColumnType("text");
+
+                    b.Property<int>("ProgramTipId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ProgramTurId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("StajDurum")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("TuikKod")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -647,6 +1256,11 @@ namespace Semerkand.Storage.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<string>("Ad")
+                        .IsRequired()
+                        .HasColumnType("character varying(300)")
+                        .HasMaxLength(300);
+
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uuid");
 
@@ -657,11 +1271,6 @@ namespace Semerkand.Storage.Migrations
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
-
-                    b.Property<string>("Isim")
-                        .IsRequired()
-                        .HasColumnType("character varying(300)")
-                        .HasMaxLength(300);
 
                     b.Property<Guid>("ModifiedBy")
                         .HasColumnType("uuid");
@@ -783,10 +1392,22 @@ namespace Semerkand.Storage.Migrations
                         .HasForeignKey("FakulteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Semerkand.Shared.DataModels.OgrenimTur", "OgrenimTur")
+                        .WithMany()
+                        .HasForeignKey("OgrenimTurId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Semerkand.Shared.DataModels.Ders", b =>
                 {
+                    b.HasOne("Semerkand.Shared.DataModels.DonemTip", "DonemTip")
+                        .WithMany("Derss")
+                        .HasForeignKey("DonemTipId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Semerkand.Shared.DataModels.Mufredat", "Mufredat")
                         .WithMany("Derss")
                         .HasForeignKey("MufredatID")
@@ -794,8 +1415,29 @@ namespace Semerkand.Storage.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Semerkand.Shared.DataModels.Donem", b =>
+                {
+                    b.HasOne("Semerkand.Shared.DataModels.DonemTip", "DonemTip")
+                        .WithMany()
+                        .HasForeignKey("DonemTipId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Semerkand.Shared.DataModels.Fakulte", b =>
                 {
+                    b.HasOne("Semerkand.Shared.DataModels.FakulteTur", "FakulteTur")
+                        .WithMany("Fakultes")
+                        .HasForeignKey("FakulteTurId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Semerkand.Shared.DataModels.OgrenimTur", "OgrenimTur")
+                        .WithMany()
+                        .HasForeignKey("OgrenimTurId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Semerkand.Shared.DataModels.Universite", "Universite")
                         .WithMany("Fakultes")
                         .HasForeignKey("UniversiteId")
@@ -805,6 +1447,12 @@ namespace Semerkand.Storage.Migrations
 
             modelBuilder.Entity("Semerkand.Shared.DataModels.Harc", b =>
                 {
+                    b.HasOne("Semerkand.Shared.DataModels.Donem", "Donem")
+                        .WithMany("Harcs")
+                        .HasForeignKey("DonemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Semerkand.Shared.DataModels.Program", "Program")
                         .WithMany("Harcs")
                         .HasForeignKey("ProgramId")
@@ -817,6 +1465,52 @@ namespace Semerkand.Storage.Migrations
                     b.HasOne("Semerkand.Shared.DataModels.ApplicationUser", "Sender")
                         .WithMany("Messages")
                         .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Semerkand.Shared.DataModels.Mufredat", b =>
+                {
+                    b.HasOne("Semerkand.Shared.DataModels.Program", "Program")
+                        .WithMany()
+                        .HasForeignKey("ProgramId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Semerkand.Shared.DataModels.Ogrenci", b =>
+                {
+                    b.HasOne("Semerkand.Shared.DataModels.ApplicationUser", "ApplicationUser")
+                        .WithOne("Ogrenci")
+                        .HasForeignKey("Semerkand.Shared.DataModels.Ogrenci", "ApplicationUserId");
+
+                    b.HasOne("Semerkand.Shared.DataModels.Bolum", "Bolum")
+                        .WithMany("Ogrencis")
+                        .HasForeignKey("BolumId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Semerkand.Shared.DataModels.Fakulte", "Fakulte")
+                        .WithMany("Ogrencis")
+                        .HasForeignKey("FakulteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Semerkand.Shared.DataModels.KayitNeden", "KayitNeden")
+                        .WithMany()
+                        .HasForeignKey("KayitNedenId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Semerkand.Shared.DataModels.OgrenimDurum", "OgrenimDurum")
+                        .WithMany()
+                        .HasForeignKey("OgrenimDurumId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Semerkand.Shared.DataModels.Program", "Program")
+                        .WithMany("Ogrencis")
+                        .HasForeignKey("ProgramId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

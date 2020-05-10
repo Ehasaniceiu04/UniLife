@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Semerkand.Storage.Migrations
 {
-    public partial class control : Migration
+    public partial class initApp : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -43,11 +43,68 @@ namespace Semerkand.Storage.Migrations
                     AccessFailedCount = table.Column<int>(nullable: false),
                     FirstName = table.Column<string>(maxLength: 64, nullable: true),
                     LastName = table.Column<string>(maxLength: 64, nullable: true),
-                    FullName = table.Column<string>(maxLength: 64, nullable: true)
+                    FullName = table.Column<string>(maxLength: 64, nullable: true),
+                    OgrenciId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DonemTip",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Ad = table.Column<string>(nullable: true),
+                    CreatedBy = table.Column<Guid>(nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    ModifiedBy = table.Column<Guid>(nullable: false),
+                    ModifiedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DonemTip", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FakulteTur",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Tur = table.Column<string>(nullable: true),
+                    TurEn = table.Column<string>(nullable: true),
+                    YokasId = table.Column<string>(nullable: true),
+                    CreatedBy = table.Column<Guid>(nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    ModifiedBy = table.Column<Guid>(nullable: false),
+                    ModifiedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FakulteTur", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "KayitNeden",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Ad = table.Column<string>(nullable: true),
+                    CreatedBy = table.Column<Guid>(nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    ModifiedBy = table.Column<Guid>(nullable: false),
+                    ModifiedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_KayitNeden", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -66,6 +123,42 @@ namespace Semerkand.Storage.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Logs", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OgrenimDurum",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Ad = table.Column<string>(nullable: true),
+                    CreatedBy = table.Column<Guid>(nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    ModifiedBy = table.Column<Guid>(nullable: false),
+                    ModifiedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OgrenimDurum", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OgrenimTur",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Ad = table.Column<string>(nullable: true),
+                    CreatedBy = table.Column<Guid>(nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    ModifiedBy = table.Column<Guid>(nullable: false),
+                    ModifiedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OgrenimTur", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -93,7 +186,7 @@ namespace Semerkand.Storage.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Isim = table.Column<string>(maxLength: 300, nullable: false),
+                    Ad = table.Column<string>(maxLength: 300, nullable: false),
                     CreatedBy = table.Column<Guid>(nullable: false),
                     CreatedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
                     IsDeleted = table.Column<bool>(nullable: false),
@@ -306,13 +399,66 @@ namespace Semerkand.Storage.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Donem",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    DonemTipId = table.Column<int>(nullable: false),
+                    Ad = table.Column<string>(nullable: true),
+                    KisaAd = table.Column<string>(nullable: true),
+                    AdEn = table.Column<string>(nullable: true),
+                    KisaAdEn = table.Column<string>(nullable: true),
+                    BasTarih = table.Column<DateTime>(nullable: false),
+                    BitTarih = table.Column<DateTime>(nullable: false),
+                    Durum = table.Column<bool>(nullable: false),
+                    YokSisDurum = table.Column<bool>(nullable: false),
+                    YilTip = table.Column<int>(nullable: false),
+                    CreatedBy = table.Column<Guid>(nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    ModifiedBy = table.Column<Guid>(nullable: false),
+                    ModifiedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Donem", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Donem_DonemTip_DonemTipId",
+                        column: x => x.DonemTipId,
+                        principalTable: "DonemTip",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Fakultes",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Isim = table.Column<string>(maxLength: 300, nullable: false),
+                    Ad = table.Column<string>(maxLength: 300, nullable: false),
+                    Kod = table.Column<int>(nullable: false),
                     UniversiteId = table.Column<int>(nullable: false),
+                    FakulteTurId = table.Column<int>(nullable: false),
+                    KisaAd = table.Column<string>(nullable: true),
+                    AdEn = table.Column<string>(nullable: true),
+                    EPosta = table.Column<string>(nullable: true),
+                    Tel = table.Column<string>(nullable: true),
+                    Adres = table.Column<string>(nullable: true),
+                    Adres2 = table.Column<string>(nullable: true),
+                    Faks = table.Column<string>(nullable: true),
+                    Web = table.Column<string>(nullable: true),
+                    IlceId = table.Column<int>(nullable: false),
+                    OgrenimTurId = table.Column<int>(nullable: false),
+                    OgrenimSure = table.Column<int>(nullable: false),
+                    IlKod = table.Column<int>(nullable: false),
+                    Tip = table.Column<int>(nullable: false),
+                    DiplomaAd = table.Column<string>(nullable: true),
+                    IsBologna = table.Column<bool>(nullable: false),
+                    BolognaIcerikTR = table.Column<string>(nullable: true),
+                    BolognaIcerikEN = table.Column<string>(nullable: true),
+                    BirimID = table.Column<int>(nullable: false),
                     CreatedBy = table.Column<Guid>(nullable: false),
                     CreatedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
                     IsDeleted = table.Column<bool>(nullable: false),
@@ -322,6 +468,18 @@ namespace Semerkand.Storage.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Fakultes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Fakultes_FakulteTur_FakulteTurId",
+                        column: x => x.FakulteTurId,
+                        principalTable: "FakulteTur",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Fakultes_OgrenimTur_OgrenimTurId",
+                        column: x => x.OgrenimTurId,
+                        principalTable: "OgrenimTur",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Fakultes_Universites_UniversiteId",
                         column: x => x.UniversiteId,
@@ -336,8 +494,18 @@ namespace Semerkand.Storage.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Isim = table.Column<string>(maxLength: 400, nullable: false),
+                    Ad = table.Column<string>(maxLength: 400, nullable: false),
+                    KisaAd = table.Column<string>(nullable: true),
+                    Kod = table.Column<int>(nullable: false),
+                    AdEn = table.Column<string>(nullable: true),
+                    OsymKod = table.Column<string>(nullable: true),
+                    OgrenimTurId = table.Column<int>(nullable: false),
                     FakulteId = table.Column<int>(nullable: false),
+                    OgrenimSure = table.Column<int>(nullable: false),
+                    Durum = table.Column<bool>(nullable: false),
+                    DiplomaAd = table.Column<string>(nullable: true),
+                    IsBologna = table.Column<bool>(nullable: false),
+                    DiplomaAdEn = table.Column<string>(nullable: true),
                     CreatedBy = table.Column<Guid>(nullable: false),
                     CreatedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
                     IsDeleted = table.Column<bool>(nullable: false),
@@ -353,6 +521,12 @@ namespace Semerkand.Storage.Migrations
                         principalTable: "Fakultes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Bolums_OgrenimTur_OgrenimTurId",
+                        column: x => x.OgrenimTurId,
+                        principalTable: "OgrenimTur",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -361,8 +535,36 @@ namespace Semerkand.Storage.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Isim = table.Column<string>(maxLength: 300, nullable: false),
+                    Ad = table.Column<string>(maxLength: 300, nullable: false),
                     BolumId = table.Column<int>(nullable: false),
+                    Kod = table.Column<int>(nullable: false),
+                    AdEn = table.Column<string>(nullable: true),
+                    KisaAd = table.Column<string>(nullable: true),
+                    OptKod = table.Column<string>(nullable: true),
+                    AnaBolum = table.Column<int>(nullable: false),
+                    ProgramTipId = table.Column<int>(nullable: false),
+                    ProgramTurId = table.Column<int>(nullable: false),
+                    Adres = table.Column<string>(nullable: true),
+                    Iletisim = table.Column<string>(nullable: true),
+                    FakulteId = table.Column<int>(nullable: false),
+                    IsHazırlık = table.Column<bool>(nullable: false),
+                    AzamiSure = table.Column<int>(nullable: false),
+                    NormalSure = table.Column<int>(nullable: false),
+                    OsymKod = table.Column<string>(nullable: true),
+                    OsymTur = table.Column<string>(nullable: true),
+                    StajDurum = table.Column<bool>(nullable: false),
+                    HarcTutar = table.Column<decimal>(nullable: false),
+                    GenelKon = table.Column<int>(nullable: false),
+                    BarajNot = table.Column<string>(nullable: true),
+                    OsymKodBurslu = table.Column<string>(nullable: true),
+                    OsymKodYariBurslu = table.Column<string>(nullable: true),
+                    TuikKod = table.Column<int>(nullable: false),
+                    Dil = table.Column<int>(nullable: false),
+                    DiplomaAd = table.Column<string>(nullable: true),
+                    IsBologna = table.Column<bool>(nullable: false),
+                    BrnOgrOsymKod = table.Column<string>(nullable: true),
+                    OsymKodCeyrekBurs = table.Column<string>(nullable: true),
+                    DiplomaAdEn = table.Column<string>(nullable: true),
                     CreatedBy = table.Column<Guid>(nullable: false),
                     CreatedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
                     IsDeleted = table.Column<bool>(nullable: false),
@@ -381,13 +583,61 @@ namespace Semerkand.Storage.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Harcs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Ad = table.Column<string>(maxLength: 300, nullable: false),
+                    ProgramId = table.Column<int>(nullable: false),
+                    DonemId = table.Column<int>(nullable: false),
+                    NormalSure = table.Column<int>(nullable: false),
+                    IlkUzatma = table.Column<int>(nullable: false),
+                    TakipYillar = table.Column<int>(nullable: false),
+                    CreatedBy = table.Column<Guid>(nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    ModifiedBy = table.Column<Guid>(nullable: false),
+                    ModifiedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Harcs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Harcs_Donem_DonemId",
+                        column: x => x.DonemId,
+                        principalTable: "Donem",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Harcs_Programs_ProgramId",
+                        column: x => x.ProgramId,
+                        principalTable: "Programs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Mufredats",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Isim = table.Column<string>(maxLength: 300, nullable: false),
+                    Ad = table.Column<string>(maxLength: 300, nullable: false),
+                    Yil = table.Column<int>(nullable: false),
+                    KisaAd = table.Column<string>(nullable: true),
+                    AdEn = table.Column<string>(nullable: true),
+                    BasTarih = table.Column<DateTime>(nullable: false),
+                    BitTarih = table.Column<DateTime>(nullable: false),
+                    Durum = table.Column<int>(nullable: false),
                     ProgramId = table.Column<int>(nullable: false),
+                    KararTarih = table.Column<DateTime>(nullable: false),
+                    KararAcik = table.Column<string>(nullable: true),
+                    ProgDersGec = table.Column<int>(nullable: false),
+                    AraSinavEo = table.Column<int>(nullable: false),
+                    YariSonuSinavEo = table.Column<int>(nullable: false),
+                    GecmeNot = table.Column<int>(nullable: false),
+                    FinalBaraj = table.Column<int>(nullable: false),
                     CreatedBy = table.Column<Guid>(nullable: false),
                     CreatedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
                     IsDeleted = table.Column<bool>(nullable: false),
@@ -406,13 +656,93 @@ namespace Semerkand.Storage.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Ogrenci",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ApplicationUserId = table.Column<Guid>(nullable: false),
+                    Ad = table.Column<string>(maxLength: 300, nullable: false),
+                    OgrNo = table.Column<string>(nullable: true),
+                    FakulteId = table.Column<int>(nullable: false),
+                    BolumId = table.Column<int>(nullable: false),
+                    ProgramId = table.Column<int>(nullable: false),
+                    KayitNedenId = table.Column<int>(nullable: false),
+                    OgrenimDurumId = table.Column<int>(nullable: false),
+                    AskerDurum = table.Column<string>(nullable: true),
+                    KayitTarih = table.Column<DateTime>(nullable: false),
+                    AyrilTarih = table.Column<DateTime>(nullable: true),
+                    AnaOgrNo = table.Column<string>(nullable: true),
+                    CreatedBy = table.Column<Guid>(nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    ModifiedBy = table.Column<Guid>(nullable: false),
+                    ModifiedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ogrenci", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Ogrenci_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Ogrenci_Bolums_BolumId",
+                        column: x => x.BolumId,
+                        principalTable: "Bolums",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Ogrenci_Fakultes_FakulteId",
+                        column: x => x.FakulteId,
+                        principalTable: "Fakultes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Ogrenci_KayitNeden_KayitNedenId",
+                        column: x => x.KayitNedenId,
+                        principalTable: "KayitNeden",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Ogrenci_OgrenimDurum_OgrenimDurumId",
+                        column: x => x.OgrenimDurumId,
+                        principalTable: "OgrenimDurum",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Ogrenci_Programs_ProgramId",
+                        column: x => x.ProgramId,
+                        principalTable: "Programs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Derss",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Isim = table.Column<string>(maxLength: 300, nullable: false),
+                    Ad = table.Column<string>(maxLength: 300, nullable: false),
+                    Kod = table.Column<string>(nullable: true),
+                    DonemTipId = table.Column<int>(nullable: false),
                     MufredatID = table.Column<int>(nullable: false),
+                    KisaAd = table.Column<string>(nullable: true),
+                    Akts = table.Column<int>(nullable: false),
+                    GeçmeNotu = table.Column<int>(nullable: false),
+                    OptikKod = table.Column<string>(nullable: true),
+                    AdEn = table.Column<string>(nullable: true),
+                    UygSaat = table.Column<int>(nullable: false),
+                    LabSaat = table.Column<int>(nullable: false),
+                    TeoSaat = table.Column<int>(nullable: false),
+                    Kredi = table.Column<double>(nullable: false),
+                    Durum = table.Column<bool>(nullable: false),
+                    Zorunlu = table.Column<int>(nullable: false),
+                    Sinif = table.Column<int>(nullable: false),
+                    MyProperty = table.Column<int>(nullable: false),
                     CreatedBy = table.Column<Guid>(nullable: false),
                     CreatedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
                     IsDeleted = table.Column<bool>(nullable: false),
@@ -422,6 +752,12 @@ namespace Semerkand.Storage.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Derss", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Derss_DonemTip_DonemTipId",
+                        column: x => x.DonemTipId,
+                        principalTable: "DonemTip",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Derss_Mufredats_MufredatID",
                         column: x => x.MufredatID,
@@ -478,14 +814,49 @@ namespace Semerkand.Storage.Migrations
                 column: "FakulteId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Bolums_OgrenimTurId",
+                table: "Bolums",
+                column: "OgrenimTurId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Derss_DonemTipId",
+                table: "Derss",
+                column: "DonemTipId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Derss_MufredatID",
                 table: "Derss",
                 column: "MufredatID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Donem_DonemTipId",
+                table: "Donem",
+                column: "DonemTipId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Fakultes_FakulteTurId",
+                table: "Fakultes",
+                column: "FakulteTurId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Fakultes_OgrenimTurId",
+                table: "Fakultes",
+                column: "OgrenimTurId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Fakultes_UniversiteId",
                 table: "Fakultes",
                 column: "UniversiteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Harcs_DonemId",
+                table: "Harcs",
+                column: "DonemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Harcs_ProgramId",
+                table: "Harcs",
+                column: "ProgramId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Logs_TimeStamp",
@@ -500,6 +871,37 @@ namespace Semerkand.Storage.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Mufredats_ProgramId",
                 table: "Mufredats",
+                column: "ProgramId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ogrenci_ApplicationUserId",
+                table: "Ogrenci",
+                column: "ApplicationUserId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ogrenci_BolumId",
+                table: "Ogrenci",
+                column: "BolumId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ogrenci_FakulteId",
+                table: "Ogrenci",
+                column: "FakulteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ogrenci_KayitNedenId",
+                table: "Ogrenci",
+                column: "KayitNedenId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ogrenci_OgrenimDurumId",
+                table: "Ogrenci",
+                column: "OgrenimDurumId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ogrenci_ProgramId",
+                table: "Ogrenci",
                 column: "ProgramId");
 
             migrationBuilder.CreateIndex(
@@ -544,10 +946,16 @@ namespace Semerkand.Storage.Migrations
                 name: "Derss");
 
             migrationBuilder.DropTable(
+                name: "Harcs");
+
+            migrationBuilder.DropTable(
                 name: "Logs");
 
             migrationBuilder.DropTable(
                 name: "Messages");
+
+            migrationBuilder.DropTable(
+                name: "Ogrenci");
 
             migrationBuilder.DropTable(
                 name: "Tenants");
@@ -565,16 +973,34 @@ namespace Semerkand.Storage.Migrations
                 name: "Mufredats");
 
             migrationBuilder.DropTable(
+                name: "Donem");
+
+            migrationBuilder.DropTable(
+                name: "KayitNeden");
+
+            migrationBuilder.DropTable(
+                name: "OgrenimDurum");
+
+            migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Programs");
 
             migrationBuilder.DropTable(
+                name: "DonemTip");
+
+            migrationBuilder.DropTable(
                 name: "Bolums");
 
             migrationBuilder.DropTable(
                 name: "Fakultes");
+
+            migrationBuilder.DropTable(
+                name: "FakulteTur");
+
+            migrationBuilder.DropTable(
+                name: "OgrenimTur");
 
             migrationBuilder.DropTable(
                 name: "Universites");

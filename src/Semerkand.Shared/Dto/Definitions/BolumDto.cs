@@ -7,7 +7,7 @@ namespace Semerkand.Shared.Dto.Definitions
     {
         [Required]
         [MaxLength(400)]
-        public string Isim { get; set; }
+        public string Ad { get; set; }
 
 
         public int FakulteId { get; set; }

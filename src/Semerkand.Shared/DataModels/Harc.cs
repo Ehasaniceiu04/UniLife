@@ -7,10 +7,18 @@ namespace Semerkand.Shared.DataModels
     {
         [Required]
         [MaxLength(300)]
-        public string Isim { get; set; }
+        public string Ad { get; set; }
 
         public int ProgramId { get; set; }
         public virtual Program Program { get; set; }
+
+        public int DonemId { get; set; }
+        public virtual Donem Donem { get; set; }
+
+        public int NormalSure { get; set; }
+        public int IlkUzatma { get; set; }
+        public int TakipYillar { get; set; }
+
 
         //public virtual ICollection<Ders> Derss { get; set; }
     }

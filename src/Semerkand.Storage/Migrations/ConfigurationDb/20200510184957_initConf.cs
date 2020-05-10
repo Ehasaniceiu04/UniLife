@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Semerkand.Storage.Migrations.ConfigurationDb
 {
-    public partial class control : Migration
+    public partial class initConf : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
