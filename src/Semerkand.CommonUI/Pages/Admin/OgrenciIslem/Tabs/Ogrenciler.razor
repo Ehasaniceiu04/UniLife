@@ -1,4 +1,4 @@
-﻿@page "/admin/ogrenciler"
+﻿
 @using Semerkand.Shared.Dto.Account
 @attribute [Authorize(Policy = Policies.IsAdmin)]
 @inject HttpClient Http
@@ -10,9 +10,6 @@
 @using Syncfusion.Blazor.Navigations
 @using System.Net
 @using Newtonsoft.Json
-
-<h1>Öğrenciler</h1>
-
 @if (userInfoDtos == null)
 {
     <LoadingBackground ShowLogoBox="true">

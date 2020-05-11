@@ -1,69 +1,94 @@
 ﻿@inject HttpClient Http;
 @using Semerkand.Shared.Dto.Definitions
 @inject IMatToaster matToaster
-@using Syncfusion.Blazor.DropDowns
+@*@using Syncfusion.Blazor.DropDowns*@
+@using Syncfusion.Blazor.Inputs
 @using System.Net
+
 @using Newtonsoft.Json
 
-    <ControlSection>
-        <SfGrid @ref="FakulteGrid" DataSource="@fakulteDtos" Toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Update", "Cancel" })" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
-            @*<SfDataManager AdaptorInstance="@typeof(CustomAdaptor)" Adaptor="Adaptors.CustomAdaptor"></SfDataManager>*@
-            <GridEvents OnActionComplete="ActionCompletedHandler" TValue="FakulteDto"></GridEvents>
-            <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
-            <GridColumns>
-                <GridColumn Visible="false" Field=@nameof(FakulteDto.Id) HeaderText="Fakülte ID" AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
-                <GridColumn Field=@nameof(FakulteDto.Ad) HeaderText="Fakülte İsim" ValidationRules="@(new { required=true})" Width="170"></GridColumn>
-                <GridColumn Field=@nameof(FakulteDto.UniversiteId) HeaderText="Üniversite" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@universiteDtos" Width="150"></GridColumn>
+<ControlSection>
+    <SfGrid ShowColumnChooser="true" @ref="FakulteGrid" DataSource="@fakulteDtos" Toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Update", "Cancel","ColumnChooser" })" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowGrouping="true" ColumnMenuItems=@MenuItems ShowColumnMenu="true" Width="100%">
+        @*<SfDataManager AdaptorInstance="@typeof(CustomAdaptor)" Adaptor="Adaptors.CustomAdaptor"></SfDataManager>*@
+        <GridFilterSettings Type="FilterType.CheckBox"></GridFilterSettings>
+        <GridGroupSettings ShowGroupedColumn="true"></GridGroupSettings>
+        <GridEvents OnActionComplete="ActionCompletedHandler" TValue="FakulteDto"></GridEvents>
+        <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
+            <Template>
+                @{
+                    FakulteDto fakulteInfo = (context as FakulteDto);
+                    <div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label>Id</label>
+                                <SfTextBox ID="Id" CssClass="form-control form-control-sm" Value="@(fakulteInfo.Id.ToString())" Enabled="@false"></SfTextBox>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Ad</label>
+                                <SfTextBox ID="UserId" CssClass="form-control form-control-sm" Value="@(fakulteInfo.Ad)"></SfTextBox>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Kod</label>
+                                <SfTextBox ID="Kod" Value="@(fakulteInfo.Kod.ToString())" Enabled="@true"></SfTextBox>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>UniversiteId</label>
+                                <SfTextBox ID="UniversiteId" Value="@(fakulteInfo.UniversiteId.ToString())"></SfTextBox>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>KisaAd</label>
+                                <SfTextBox ID="KisaAd" Value="@(fakulteInfo.KisaAd)" Enabled="@true"></SfTextBox>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>AdEn</label>
+                                <SfTextBox ID="AdEn" Value="@(fakulteInfo.AdEn)" Enabled="@true"></SfTextBox>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>EPosta</label>
+                                <SfTextBox ID="EPosta" Value="@(fakulteInfo.EPosta)" Enabled="@true"></SfTextBox>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Tel</label>
+                                <SfTextBox ID="Tel" Value="@(fakulteInfo.Tel)" Enabled="@true"></SfTextBox>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>OgrenimSure</label>
+                                <SfTextBox ID="OgrenimSure" Value="@(fakulteInfo.OgrenimSure.ToString())" Enabled="@true"></SfTextBox>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>DiplomaAd</label>
+                                <SfTextBox ID="DiplomaAd" Value="@(fakulteInfo.DiplomaAd)" Enabled="@true"></SfTextBox>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </Template>
+
+        </GridEditSettings>
+        <GridColumns>
+            <GridColumn Visible="false" Field=@nameof(FakulteDto.Id) HeaderText="Fakülte ID" AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+            <GridColumn Field=@nameof(FakulteDto.Ad) HeaderText="Fakülte İsim" ValidationRules="@(new { required=true})" Width="170"></GridColumn>
+            <GridColumn Field=@nameof(FakulteDto.Kod) HeaderText="Fakülte Kod" ValidationRules="@(new { required=true,number= true,maxLength=5})" Width="170"></GridColumn>
+            <GridColumn Field=@nameof(FakulteDto.UniversiteId) HeaderText="Üniversite" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@universiteDtos" Width="150"></GridColumn>
+            <GridColumn Field=@nameof(FakulteDto.KisaAd) HeaderText="KisaAd" ValidationRules="@(new { required=true})" Width="170"></GridColumn>
+            <GridColumn Field=@nameof(FakulteDto.AdEn) HeaderText="AdEn" Width="170"></GridColumn>
+            <GridColumn Field=@nameof(FakulteDto.EPosta) HeaderText="EPosta" Width="170"></GridColumn>
+            <GridColumn Field=@nameof(FakulteDto.Tel) HeaderText="Tel" Width="170"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(FakulteDto.Adres) HeaderText="Adres" Width="170"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(FakulteDto.Faks) HeaderText="Faks" Width="170"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(FakulteDto.Web) HeaderText="Web" Width="170"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(FakulteDto.IlceId) HeaderText="IlceId" Width="170"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(FakulteDto.OgrenimSure) HeaderText="OgrenimSure" Width="170"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(FakulteDto.IlKod) HeaderText="IlKod" Width="170"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(FakulteDto.Tip) HeaderText="Tip" Width="170"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(FakulteDto.DiplomaAd) HeaderText="DiplomaAd" Width="170"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(FakulteDto.BirimID) HeaderText="BirimID" Width="170"></GridColumn>
 
 
-                @*<GridColumn Field=@nameof(FakulteDto.Universite.UniversiteAd) HeaderText="Universite" EditType="EditType.DropDownEdit" Width="150"></GridColumn>*@
-                @*<GridColumn Field=@nameof(FakulteDto.UniversiteId) HeaderText="Üniversite" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="universiteDtos">
-                    <Template>
-                        <SfDropDownList ID="Id" TValue="int?" TItem="UniversiteDto" DataSource="universiteDtos">
-                            <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
-                            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                        </SfDropDownList>
-                    </Template>
-                </GridColumn>*@
+        </GridColumns>
+    </SfGrid>
+</ControlSection>
 
-                @*çalışıyor*@
-                @*<GridColumn Field=@nameof(FakulteDto.UniversiteId) HeaderText="Üniversite" ForeignKeyValue="Ad" ForeignKeyField="Id" Width="150" DataSource="universiteDtos">
-                    <EditTemplate Context="FakulteDtoContext">
-                        <SfDropDownList ID="UniversiteId" TValue="string" TItem="UniversiteDto" Index="0" DataSource="universiteDtos">
-                            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                        </SfDropDownList>
-                    </EditTemplate>
-                </GridColumn>*@
-
-                @*<GridColumn Field=@nameof(FakulteDto.UniversiteId) HeaderText="Üniversite" ForeignKeyValue="Ad" ForeignKeyField="Id" Width="150" DataSource="universiteDtos">
-                    <EditTemplate Context="FakulteDtoContext">
-                        <SfDropDownList ID="UniversiteId" TValue="string" TItem="UniversiteDto" Index="0" DataSource="universiteDtos">
-                            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                        </SfDropDownList>
-                    </EditTemplate>
-                    <Template>
-                        <SfDropDownList ID="UniversiteId" TValue="string" TItem="UniversiteDto" Index="0" DataSource="universiteDtos">
-                            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                        </SfDropDownList>
-                    </Template>
-                </GridColumn>*@
-
-
-
-
-                @*<GridColumn Field=@nameof(FakulteDto.UniversiteAd) HeaderText="Universite" EditType="EditType.DropDownEdit" ForeignKeyValue="Ad" ForeignKeyField="Id" Width="150" DataSource="universiteDtos">
-                    <EditTemplate>
-                        <SfDropDownList ID="UniversiteAd" Placeholder="Üniversite" TValue="string" TItem="UniversiteDto" DataSource="universiteDtos">
-                            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                        </SfDropDownList>
-                    </EditTemplate>
-                </GridColumn>*@
-
-
-            </GridColumns>
-        </SfGrid>
-    </ControlSection>
-            
 
 @code{
 
@@ -72,6 +97,8 @@
     List<FakulteDto> fakulteDtos = new List<FakulteDto>();
 
     List<UniversiteDto> universiteDtos = new List<UniversiteDto>();
+
+    public string[] MenuItems = new string[] { "Group", "Ungroup", "ColumnChooser", "Filter" };
 
     protected override async Task OnInitializedAsync()
     {

@@ -1,0 +1,46 @@
+﻿Fakultede yaptıgım çalışmalar
+-----0----
+@*<GridColumn Field=@nameof(FakulteDto.Universite.UniversiteAd) HeaderText="Universite" EditType="EditType.DropDownEdit" Width="150"></GridColumn>*@
+                @*<GridColumn Field=@nameof(FakulteDto.UniversiteId) HeaderText="Üniversite" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="universiteDtos">
+                <Template>
+                    <SfDropDownList ID="Id" TValue="int?" TItem="UniversiteDto" DataSource="universiteDtos">
+                        <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
+                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                    </SfDropDownList>
+                </Template>
+            </GridColumn>*@
+
+                @*çalışıyor*@
+                @*<GridColumn Field=@nameof(FakulteDto.UniversiteId) HeaderText="Üniversite" ForeignKeyValue="Ad" ForeignKeyField="Id" Width="150" DataSource="universiteDtos">
+                <EditTemplate Context="FakulteDtoContext">
+                    <SfDropDownList ID="UniversiteId" TValue="string" TItem="UniversiteDto" Index="0" DataSource="universiteDtos">
+                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                    </SfDropDownList>
+                </EditTemplate>
+            </GridColumn>*@
+
+                @*<GridColumn Field=@nameof(FakulteDto.UniversiteId) HeaderText="Üniversite" ForeignKeyValue="Ad" ForeignKeyField="Id" Width="150" DataSource="universiteDtos">
+                <EditTemplate Context="FakulteDtoContext">
+                    <SfDropDownList ID="UniversiteId" TValue="string" TItem="UniversiteDto" Index="0" DataSource="universiteDtos">
+                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                    </SfDropDownList>
+                </EditTemplate>
+                <Template>
+                    <SfDropDownList ID="UniversiteId" TValue="string" TItem="UniversiteDto" Index="0" DataSource="universiteDtos">
+                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                    </SfDropDownList>
+                </Template>
+            </GridColumn>*@
+
+
+
+
+                @*<GridColumn Field=@nameof(FakulteDto.UniversiteAd) HeaderText="Universite" EditType="EditType.DropDownEdit" ForeignKeyValue="Ad" ForeignKeyField="Id" Width="150" DataSource="universiteDtos">
+                <EditTemplate>
+                    <SfDropDownList ID="UniversiteAd" Placeholder="Üniversite" TValue="string" TItem="UniversiteDto" DataSource="universiteDtos">
+                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                    </SfDropDownList>
+                </EditTemplate>
+            </GridColumn>*@
+
+-----0----

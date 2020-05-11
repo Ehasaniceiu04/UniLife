@@ -26,7 +26,7 @@ app {
 
 /* material theme */
 :root {
-    --mdc-theme-primary: #5D2E8F;
+    --mdc-theme-primary: #00A6B6;
     --mdc-theme-secondary: #fbaf41;
     /*--mdc-theme-on-primary: #495f90;
     --mdc-theme-on-secondary: #ffe172;*/
@@ -49,7 +49,7 @@ app {
     top: 0;
     bottom: 0;
     z-index: -1;
-    background-color: #5D2E8F;
+    background-color: #00A6B6;
 }
 
 .triangles {
@@ -147,7 +147,7 @@ app {
 }
 
 .mdc-top-app-bar__section .mdc-icon-button i {
-    color: #5D2E8F;
+    color: #00A6B6;
 }
 
 .logo-img {
@@ -312,8 +312,15 @@ app {
 }
 
 .mdc-drawer__content {
-    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #00A6B6 70%);
     color: #FFF;
+}
+
+
+.matBlazor_theme_775be226-8ff4-4518-86b5-ec6d6ecb5590 {
+    --mdc-theme-primary: #2196f3;
+    --mdc-theme-secondary: #607d8b;
+    --mdc-theme-background: #8bc34a;
 }
 
 .mdc-drawer .mdc-list-item {
@@ -327,7 +334,7 @@ app {
 }
 
 .mdc-drawer .mdc-list-item--disabled {
-    color: #775e91 !important;
+    color: #5e65918f !important;
 }
 
 .mdc-drawer a.mdc-list-item {
@@ -358,7 +365,7 @@ app {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #5D2E8F;
+    background-color: #044D7F;
     height: 64px;
     color: #fff;
 }
@@ -515,7 +522,7 @@ ul.breadcrumb {
 
 .mdc-dialog__title {
     color: #fff !important;
-    background: #5D2E8F;
+    background: #00A6B6;
 }
 
 .mdc-dialog__actions {
