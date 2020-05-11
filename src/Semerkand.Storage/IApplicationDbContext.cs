@@ -23,6 +23,8 @@ namespace Semerkand.Storage
         public DbSet<Harc> Harcs{ get; set; }
         public DbSet<Mufredat> Mufredats { get; set; }
         public DbSet<Ders> Derss { get; set; }
+        public DbSet<OgrenimTur> OgrenimTurs{ get; set; }
+        public DbSet<FakulteTur> FakulteTurs{ get; set; }
 
         public void SetGlobalQueryForSoftDelete<T>(ModelBuilder builder) where T : class, ISoftDelete;
 

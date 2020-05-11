@@ -1,7 +1,7 @@
 ﻿@inject HttpClient Http;
 @using Semerkand.Shared.Dto.Definitions
 @inject IMatToaster matToaster
-@*@using Syncfusion.Blazor.DropDowns*@
+@using Syncfusion.Blazor.DropDowns
 @using Syncfusion.Blazor.Inputs
 @using System.Net
 
@@ -10,7 +10,7 @@
 <ControlSection>
     <SfGrid ShowColumnChooser="true" @ref="FakulteGrid" DataSource="@fakulteDtos" Toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Update", "Cancel","ColumnChooser" })" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowGrouping="true" ColumnMenuItems=@MenuItems ShowColumnMenu="true" Width="100%">
         @*<SfDataManager AdaptorInstance="@typeof(CustomAdaptor)" Adaptor="Adaptors.CustomAdaptor"></SfDataManager>*@
-        <GridFilterSettings Type="FilterType.CheckBox"></GridFilterSettings>
+        <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.CheckBox"></GridFilterSettings>
         <GridGroupSettings ShowGroupedColumn="true"></GridGroupSettings>
         <GridEvents OnActionComplete="ActionCompletedHandler" TValue="FakulteDto"></GridEvents>
         <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
@@ -18,48 +18,93 @@
                 @{
                     FakulteDto fakulteInfo = (context as FakulteDto);
                     <div>
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label>Id</label>
-                                <SfTextBox ID="Id" CssClass="form-control form-control-sm" Value="@(fakulteInfo.Id.ToString())" Enabled="@false"></SfTextBox>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label>Ad</label>
-                                <SfTextBox ID="UserId" CssClass="form-control form-control-sm" Value="@(fakulteInfo.Ad)"></SfTextBox>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label>Kod</label>
-                                <SfTextBox ID="Kod" Value="@(fakulteInfo.Kod.ToString())" Enabled="@true"></SfTextBox>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label>UniversiteId</label>
-                                <SfTextBox ID="UniversiteId" Value="@(fakulteInfo.UniversiteId.ToString())"></SfTextBox>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label>KisaAd</label>
-                                <SfTextBox ID="KisaAd" Value="@(fakulteInfo.KisaAd)" Enabled="@true"></SfTextBox>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label>AdEn</label>
-                                <SfTextBox ID="AdEn" Value="@(fakulteInfo.AdEn)" Enabled="@true"></SfTextBox>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label>EPosta</label>
-                                <SfTextBox ID="EPosta" Value="@(fakulteInfo.EPosta)" Enabled="@true"></SfTextBox>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label>Tel</label>
-                                <SfTextBox ID="Tel" Value="@(fakulteInfo.Tel)" Enabled="@true"></SfTextBox>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label>OgrenimSure</label>
-                                <SfTextBox ID="OgrenimSure" Value="@(fakulteInfo.OgrenimSure.ToString())" Enabled="@true"></SfTextBox>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label>DiplomaAd</label>
-                                <SfTextBox ID="DiplomaAd" Value="@(fakulteInfo.DiplomaAd)" Enabled="@true"></SfTextBox>
-                            </div>
-                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-4">
+                                                <label>Id</label>
+                                                <SfTextBox ID="Id" CssClass="form-control form-control-sm" Value="@(fakulteInfo.Id.ToString())" Enabled="@false"></SfTextBox>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label>Ad</label>
+                                                <SfTextBox ID="Ad" CssClass="form-control form-control-sm" Value="@(fakulteInfo.Ad)"></SfTextBox>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label>Kod</label>
+                                                <SfTextBox ID="Kod" Value="@(fakulteInfo.Kod.ToString())" Enabled="@true"></SfTextBox>
+                                            </div>
+
+                                            <div class="form-group col-md-4">
+                                                <label>Üniversite</label>
+                                                <SfDropDownList ID="UniversiteId" Value="@(fakulteInfo.UniversiteId.ToString())" TValue="string" TItem="UniversiteDto" Index="0" DataSource="universiteDtos">
+                                                    <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
+                                                </SfDropDownList>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label>Fakulte Tür</label>
+                                                <SfDropDownList ID="FakulteTurId" Value="@(fakulteInfo.FakulteTurId.ToString())" TValue="string" TItem="FakulteTurDto" Index="0" DataSource="fakulteTurDtos">
+                                                    <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
+                                                </SfDropDownList>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label>Ogrenim Tür</label>
+                                                <SfDropDownList ID="OgrenimTurId" Value="@(fakulteInfo.OgrenimTurId.ToString())" TValue="string" TItem="OgrenimTurDto" Index="0" DataSource="ogrenimTurDtos">
+                                                    <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
+                                                </SfDropDownList>
+                                            </div>
+
+
+                                            <div class="form-group col-md-4">
+                                                <label>KisaAd</label>
+                                                <SfTextBox ID="KisaAd" Value="@(fakulteInfo.KisaAd)" Enabled="@true"></SfTextBox>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label>AdEn</label>
+                                                <SfTextBox ID="AdEn" Value="@(fakulteInfo.AdEn)" Enabled="@true"></SfTextBox>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label>EPosta</label>
+                                                <SfTextBox ID="EPosta" Value="@(fakulteInfo.EPosta)" Enabled="@true"></SfTextBox>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label>Tel</label>
+                                                <SfTextBox ID="Tel" Value="@(fakulteInfo.Tel)" Enabled="@true"></SfTextBox>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label>Adres</label>
+                                                <SfTextBox ID="Adres" Value="@(fakulteInfo.Adres)" Enabled="@true"></SfTextBox>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label>Faks</label>
+                                                <SfTextBox ID="Faks" Value="@(fakulteInfo.Faks)" Enabled="@true"></SfTextBox>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label>Web</label>
+                                                <SfTextBox ID="Web" Value="@(fakulteInfo.Web)" Enabled="@true"></SfTextBox>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label>IlceId</label>
+                                                <SfTextBox ID="IlceId" Value="@(fakulteInfo.IlceId.ToString())" Enabled="@true"></SfTextBox>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label>IlKod</label>
+                                                <SfTextBox ID="IlKod" Value="@(fakulteInfo.IlKod.ToString())" Enabled="@true"></SfTextBox>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label>Tip</label>
+                                                <SfTextBox ID="Tip" Value="@(fakulteInfo.Tip.ToString())" Enabled="@true"></SfTextBox>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label>OgrenimSure</label>
+                                                <SfTextBox ID="OgrenimSure" Value="@(fakulteInfo.OgrenimSure.ToString())" Enabled="@true"></SfTextBox>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label>DiplomaAd</label>
+                                                <SfTextBox ID="DiplomaAd" Value="@(fakulteInfo.DiplomaAd)" Enabled="@true"></SfTextBox>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label>BirimID</label>
+                                                <SfTextBox ID="BirimID" Value="@(fakulteInfo.BirimID.ToString())" Enabled="@true"></SfTextBox>
+                                            </div>
+                                        </div>
                     </div>
                 }
             </Template>
@@ -74,6 +119,8 @@
             <GridColumn Field=@nameof(FakulteDto.AdEn) HeaderText="AdEn" Width="170"></GridColumn>
             <GridColumn Field=@nameof(FakulteDto.EPosta) HeaderText="EPosta" Width="170"></GridColumn>
             <GridColumn Field=@nameof(FakulteDto.Tel) HeaderText="Tel" Width="170"></GridColumn>
+            <GridColumn Field=@nameof(FakulteDto.FakulteTurId) HeaderText="Fakulte Tür" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@fakulteTurDtos" Width="150"></GridColumn>
+            <GridColumn Field=@nameof(FakulteDto.OgrenimTurId) HeaderText="Öğrenim Tür" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@ogrenimTurDtos" Width="150"></GridColumn>
             <GridColumn Visible="false" Field=@nameof(FakulteDto.Adres) HeaderText="Adres" Width="170"></GridColumn>
             <GridColumn Visible="false" Field=@nameof(FakulteDto.Faks) HeaderText="Faks" Width="170"></GridColumn>
             <GridColumn Visible="false" Field=@nameof(FakulteDto.Web) HeaderText="Web" Width="170"></GridColumn>
@@ -97,6 +144,8 @@
     List<FakulteDto> fakulteDtos = new List<FakulteDto>();
 
     List<UniversiteDto> universiteDtos = new List<UniversiteDto>();
+    List<FakulteTurDto> fakulteTurDtos = new List<FakulteTurDto>();
+    List<OgrenimTurDto> ogrenimTurDtos = new List<OgrenimTurDto>();
 
     public string[] MenuItems = new string[] { "Group", "Ungroup", "ColumnChooser", "Filter" };
 
@@ -106,7 +155,10 @@
 
         ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/universite");
         universiteDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<UniversiteDto[]>(apiResponse.Result.ToString()).ToList<UniversiteDto>();
-
+        ApiResponseDto apiResponseFakulteTur = await Http.GetFromJsonAsync<ApiResponseDto>("api/fakulteTur");
+        fakulteTurDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<FakulteTurDto[]>(apiResponseFakulteTur.Result.ToString()).ToList<FakulteTurDto>();
+        ApiResponseDto apiResponseOgrenimTur = await Http.GetFromJsonAsync<ApiResponseDto>("api/ogrenimtur");
+        ogrenimTurDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<OgrenimTurDto[]>(apiResponseOgrenimTur.Result.ToString()).ToList<OgrenimTurDto>();
     }
 
     async Task ReadUniversites()
@@ -123,9 +175,12 @@
             matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Fakülte bilgisi getirilirken hata oluştu!");
         }
     }
+    public void ActionBeginHandler(ActionEventArgs<FakulteDto> args)
+    {
 
-    public void ActionCompletedHandler(ActionEventArgs<FakulteDto>
-        args)
+    }
+
+    public void ActionCompletedHandler(ActionEventArgs<FakulteDto>args)
     {
         if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
         {

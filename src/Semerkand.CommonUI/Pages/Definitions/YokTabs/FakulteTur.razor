@@ -1,0 +1,176 @@
+﻿@inject HttpClient Http;
+@using Semerkand.Shared.Dto.Definitions
+@inject IMatToaster matToaster
+
+@using System.Net
+
+<ControlSection>
+    <SfGrid Width="100%" Height="85%" AllowResizing="true" @ref="UniGrid" DataSource="@fakulteTurDtos" Toolbar="@(new List<string>() { "Add" })" AllowPaging="true" AllowFiltering="true">
+        <GridEvents OnActionComplete="ActionCompletedHandler" TValue="FakulteTurDto"></GridEvents>
+        <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
+        <GridColumns>
+            <GridColumn Visible="false" Field=@nameof(FakulteTurDto.Id) AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+            <GridColumn Field=@nameof(FakulteTurDto.Ad) HeaderText="Öğrenim Tür" Width="170"></GridColumn>
+            <GridColumn HeaderText="Manage Records" Width="150">
+                <GridCommandColumns>
+                    <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-edit", CssClass = "e-flat" })"></GridCommandColumn>
+                    <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-delete", CssClass = "e-flat" })"></GridCommandColumn>
+                    <GridCommandColumn Type="CommandButtonType.Save" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-update", CssClass = "e-flat" })"></GridCommandColumn>
+                    <GridCommandColumn Type="CommandButtonType.Cancel" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-cancel-icon", CssClass = "e-flat" })"></GridCommandColumn>
+                </GridCommandColumns>
+            </GridColumn>
+        </GridColumns>
+    </SfGrid>
+</ControlSection>
+
+<style type="text/css" class="cssStyles">
+    .e-grid .e-altrow {
+        background-color: #fafafa;
+    }
+</style>
+
+
+@code{
+
+    SfGrid<FakulteTurDto> UniGrid;
+
+    List<FakulteTurDto> fakulteTurDtos = new List<FakulteTurDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ReadFakulteTurs();
+    }
+
+    async Task ReadFakulteTurs()
+    {
+        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/fakulteTur");
+
+        if (apiResponse.StatusCode == Status200OK)
+        {
+            matToaster.Add(apiResponse.Message, MatToastType.Success, "Fakülte Tür getirildi");
+            fakulteTurDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<FakulteTurDto[]>(apiResponse.Result.ToString()).ToList<FakulteTurDto>();
+        }
+        else
+        {
+            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Üniversite bilgisi getirilirken hata oluştu!");
+        }
+    }
+
+    public void ActionCompletedHandler(ActionEventArgs<FakulteTurDto> args)
+    {
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
+        {
+
+        }
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+        {
+            if (args.Action == "edit")
+            {
+                Update(args.Data);
+            }
+            else if (args.Action == "add")
+            {
+                Create(args.Data);
+            }
+
+        }
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
+        {
+            Delete(args.Data);
+        }
+    }
+
+    public async Task Create(FakulteTurDto fakulteTurDto)
+    {
+        try
+        {
+            ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/fakulteTur", fakulteTurDto);
+            if (apiResponse.StatusCode == Status200OK)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success);
+                //todo = Newtonsoft.Json.JsonConvert.DeserializeObject<FakulteTurDto>(apiResponse.Result.ToString());
+                //todos.Add(todo);
+                //todo = new TodoDto(); //reset todo after insert
+            }
+            else
+            {
+                //TODO Ahmet 1**
+                //TODO Ahmet 2**
+                fakulteTurDtos.Remove(fakulteTurDto);
+                UniGrid.Refresh();
+                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "fakulteTur Creation Failed");
+            }
+        }
+        catch (Exception ex)
+        {
+            //TODO Ahmet 1**: liste içinden değinde gride eklediğini sil demeli !!
+            //TODO Ahmet 2**: Dbden hata geldiği zaman Bu hata sebebini mantıklı şekilde buraya vermemiz gerekiyor. Aynı Idli kayıt gönder patlatıyon.
+
+            fakulteTurDtos.Remove(fakulteTurDto);
+            UniGrid.Refresh();
+            matToaster.Add(ex.Message, MatToastType.Danger, "FakulteTur Creation Failed");
+        }
+    }
+
+
+    public async void Update(FakulteTurDto fakulteTurDto)
+    {
+        //this updates the IsCompleted flag only
+        try
+        {
+            ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>("api/fakulteTur", fakulteTurDto);
+
+            if (!apiResponse.IsError)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success);
+            }
+            else
+            {
+                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "FakulteTur Save Failed");
+                //update failed gridi boz !
+            }
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.Message, MatToastType.Danger, "FakulteTur Save Failed");
+            //update failed gridi boz !
+        }
+    }
+
+    public async Task Delete(FakulteTurDto fakulteTurDto)
+    {
+        try
+        {
+            var response = await Http.DeleteAsync("api/fakulteTur/" + fakulteTurDto.Id);
+            if (response.StatusCode == (HttpStatusCode)Status200OK)
+            {
+                matToaster.Add("FakulteTur Deleted", MatToastType.Success);
+                fakulteTurDtos.Remove(fakulteTurDto);
+            }
+            else
+            {
+                matToaster.Add("FakulteTur Delete Failed: " + response.StatusCode, MatToastType.Danger);
+            }
+            //deleteDialogOpen = false;
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.Message, MatToastType.Danger, "FakulteTur Save Failed");
+        }
+    }
+
+
+    //[Inject]
+    //protected IJSRuntime JsRuntime { get; set; }
+
+    //protected override async Task OnAfterRenderAsync(bool firstRender)
+    //{
+    //    if (firstRender)
+    //    {
+    //        var Locale = await Http.GetJsonAsync<object>("tr.json");
+    //        this.JsRuntime.Sf().LoadLocaleData(Locale).SetCulture("tr");
+
+    //        //this.JsRuntime.Sf().LoadLocaleData("tr.json").SetCulture("tr");
+    //    }
+    //}
+}

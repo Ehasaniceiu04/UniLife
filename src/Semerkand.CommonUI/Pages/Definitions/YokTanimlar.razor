@@ -1,0 +1,34 @@
+﻿@page "/yoktanimlar"
+@inject HttpClient Http;
+@using Semerkand.Shared.Dto.Definitions
+@using Semerkand.CommonUI.Pages
+@using Semerkand.CommonUI.Pages.Definitions.Tabs
+@using Semerkand.CommonUI.Pages.Definitions.YokTabs
+@inject IMatToaster matToaster
+
+    <MatTabGroup>
+
+        <MatTab Label="OgrenimTur">
+
+            <OgrenimTur></OgrenimTur>
+
+        </MatTab>
+        <MatTab Label="Fakülte Tur">
+
+            <FakulteTur></FakulteTur>
+
+        </MatTab>
+
+
+    </MatTabGroup>
+
+
+@*<button @onclick="@Switch">Switch</button>*@
+
+@code{
+    public bool Visible { get; set; }
+    public DateTime? DateValue { get; set; } = DateTime.Now;
+
+
+
+}

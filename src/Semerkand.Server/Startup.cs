@@ -1,7 +1,5 @@
 using System;
-using System.IO;
 using System.Linq;
-using System.Net;
 //using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
@@ -16,7 +14,6 @@ using Semerkand.CommonUI.States;
 using MatBlazor;
 
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Components;
 
 using System.Net.Http;
 using Semerkand.CommonUI.Components;
@@ -44,9 +41,6 @@ using Microsoft.AspNetCore.Http;
 using static Microsoft.AspNetCore.Http.StatusCodes;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.ResponseCompression;
-using Microsoft.Azure.KeyVault;
-using Microsoft.Azure.Services.AppAuthentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -54,7 +48,6 @@ using Microsoft.Extensions.Hosting;
 
 using Serilog;
 using System.Reflection;
-using Semerkand.Server.Data;
 using Syncfusion.Blazor;
 //using System.Globalization;
 //using System.Collections.Generic;
@@ -404,6 +397,8 @@ namespace Semerkand.Server
             services.AddTransient<IProgramManager, ProgramManager>();
             services.AddTransient<IMufredatManager, MufredatManager>();
             services.AddTransient<IDersManager, DersManager>();
+            services.AddTransient<IOgrenimTurManager, OgrenimTurManager>();
+            services.AddTransient<IFakulteTurManager, FakulteTurManager>();
             services.AddTransient<IUserProfileManager, UserProfileManager>();
 
 
@@ -459,7 +454,7 @@ namespace Semerkand.Server
             //    options.SupportedUICultures = supportedCultures;
             //});
             //#endregion
-            
+
 
 
 

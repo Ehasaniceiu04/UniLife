@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using static Microsoft.AspNetCore.Http.StatusCodes;
 using Semerkand.Shared.Dto.Definitions;
 using Semerkand.Shared.DataModels;
-using Semerkand.CommonUI.Pages.Definations.Tabs;
+using Semerkand.CommonUI.Pages.Definitions.Tabs;
 
 namespace Semerkand.Server.Controllers
 {

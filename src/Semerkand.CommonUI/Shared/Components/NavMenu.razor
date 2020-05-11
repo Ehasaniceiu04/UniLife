@@ -9,9 +9,26 @@
         <MatNavItem Href="@navigationManager.ToAbsoluteUri("todo_list").AbsoluteUri">
             <MatIcon>list_alt</MatIcon> <span class="miniHover">Todo List</span>
         </MatNavItem>
-        <MatNavItem Href="@navigationManager.ToAbsoluteUri("tanimlar").AbsoluteUri">
+        @*<MatNavItem Href="@navigationManager.ToAbsoluteUri("tanimlar").AbsoluteUri">
             <MatIcon>business</MatIcon> <span class="miniHover">Tanimlar</span>
-        </MatNavItem>
+        </MatNavItem>*@
+
+        <MatNavSubMenu>
+            <MatNavSubMenuHeader>
+                <MatNavItem AllowSelection="false">
+                    <MatIcon>stars</MatIcon><span class="miniHover"> Tanımlar</span>
+                </MatNavItem>
+            </MatNavSubMenuHeader>
+            <MatNavSubMenuList>
+                <MatNavItem Href="@navigationManager.ToAbsoluteUri("tanimlar").AbsoluteUri">
+                    <MatIcon>business</MatIcon> <span class="miniHover">Üniv Tanımlar</span>
+                </MatNavItem>
+                <MatNavItem Href="@navigationManager.ToAbsoluteUri("yoktanimlar").AbsoluteUri">
+                    <MatIcon>screen_share</MatIcon> <span class="miniHover">Yok Tanımlar</span>
+                </MatNavItem>
+            </MatNavSubMenuList>
+        </MatNavSubMenu>
+
 
         <MatNavSubMenu>
             <MatNavSubMenuHeader>
