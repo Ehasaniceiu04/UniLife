@@ -8,16 +8,7 @@ using System.Threading.Tasks;
 
 namespace Semerkand.Shared.DataInterfaces
 {
-    public interface IDonemTipStore
+    public interface IDonemTipStore : IBaseStore<DonemTip, DonemTipDto>
     {
-        Task<List<DonemTipDto>> GetAll();
-
-        Task<DonemTipDto> GetById(int id);
-
-        Task<DonemTip> Create(DonemTipDto donemTipDto);
-
-        Task<DonemTip> Update(DonemTipDto donemTipDto);
-
-        Task DeleteById(int id);
     }
 }

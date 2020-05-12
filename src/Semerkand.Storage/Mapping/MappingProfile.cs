@@ -22,6 +22,8 @@ namespace Semerkand.Storage.Mapping
             CreateMap<UserProfile, UserProfileDto>().ReverseMap();
             CreateMap<ApiLogItem, ApiLogItemDto>().ReverseMap();
             CreateMap<Message, MessageDto>().ReverseMap();
+            
+            CreateMap<ApplicationUser, ApplicationUserDto>().ReverseMap();
 
             CreateMap<Universite, UniversiteDto>().ReverseMap();
             CreateMap<Fakulte, FakulteDto>().ReverseMap();
@@ -32,9 +34,11 @@ namespace Semerkand.Storage.Mapping
             CreateMap<Ders, DersDto>().ReverseMap();
             CreateMap<Mufredat, MufredatDto>().ReverseMap();
             CreateMap<OgrenimTur, OgrenimTurDto > ().ReverseMap();
+            CreateMap<OgrenimDurum, OgrenimDurumDto>().ReverseMap();
             CreateMap<FakulteTur, FakulteTurDto>().ReverseMap();
             CreateMap<Donem , DonemDto>().ReverseMap();
             CreateMap<DonemTip, DonemTipDto>().ReverseMap();
+            CreateMap<Ogrenci, OgrenciDto>().ReverseMap();
         }
     }
 }
