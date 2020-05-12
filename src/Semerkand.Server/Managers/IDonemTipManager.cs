@@ -1,19 +1,14 @@
-﻿using Semerkand.Server.Middleware.Wrappers;
+﻿using Semerkand.Shared.DataModels;
 using Semerkand.Shared.Dto.Definitions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Semerkand.Server.Managers
 {
-    public interface IDonemTipManager
+    public interface IDonemTipManager : IBaseManager<DonemTip, DonemTipDto>
     {
-        Task<ApiResponse> Get();
-        Task<ApiResponse> Get(int id);
-        Task<ApiResponse> Create(DonemTipDto donemTipDto);
-        Task<ApiResponse> Update(DonemTipDto donemTipDto);
-        Task<ApiResponse> Delete(int id);
+        //Task<ApiResponse> Get();
+        //Task<ApiResponse> Get(int id);
+        //Task<ApiResponse> Create(DonemTipDto donemTipDto);
+        //Task<ApiResponse> Update(DonemTipDto donemTipDto);
+        //Task<ApiResponse> Delete(int id);
     }
 }
