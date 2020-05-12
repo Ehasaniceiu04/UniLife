@@ -34,6 +34,100 @@
 
 
 
+Fakulte TEmplate çalımaları,
+-----0-----
+
+                    <div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label>Id</label>
+                                <SfTextBox ID="Id" CssClass="form-control form-control-sm" Value="@(fakulteInfo.Id.ToString())" Enabled="@false"></SfTextBox>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Ad</label>
+                                <SfTextBox ID="Ad" CssClass="form-control form-control-sm e-corner" Value="@(fakulteInfo.Ad)"></SfTextBox>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Kod</label>
+                                <SfTextBox ID="Kod" Value="@(fakulteInfo.Kod.ToString())" Enabled="@true"></SfTextBox>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label>Üniversite</label>
+                                <SfDropDownList ID="UniversiteId" Value="@(fakulteInfo.UniversiteId.ToString())" TValue="string" TItem="UniversiteDto" Index="0" DataSource="universiteDtos">
+                                    <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
+                                </SfDropDownList>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Fakulte Tür</label>
+                                <SfDropDownList ID="FakulteTurId" Value="@(fakulteInfo.FakulteTurId.ToString())" TValue="string" TItem="FakulteTurDto" Index="0" DataSource="fakulteTurDtos">
+                                    <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
+                                </SfDropDownList>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Ogrenim Tür</label>
+                                <SfDropDownList ID="OgrenimTurId" Value="@(fakulteInfo.OgrenimTurId.ToString())" TValue="string" TItem="OgrenimTurDto" Index="0" DataSource="ogrenimTurDtos">
+                                    <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
+                                </SfDropDownList>
+                            </div>
+
+
+                            <div class="form-group col-md-6">
+                                <label>KisaAd</label>
+                                <SfTextBox ID="KisaAd" Value="@(fakulteInfo.KisaAd)" Enabled="@true"></SfTextBox>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>AdEn</label>
+                                <SfTextBox ID="AdEn" Value="@(fakulteInfo.AdEn)" Enabled="@true"></SfTextBox>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>EPosta</label>
+                                <SfTextBox ID="EPosta" Value="@(fakulteInfo.EPosta)" Enabled="@true"></SfTextBox>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Tel</label>
+                                <SfTextBox ID="Tel" Value="@(fakulteInfo.Tel)" Enabled="@true"></SfTextBox>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Adres</label>
+                                <SfTextBox ID="Adres" Value="@(fakulteInfo.Adres)" Enabled="@true"></SfTextBox>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Faks</label>
+                                <SfTextBox ID="Faks" Value="@(fakulteInfo.Faks)" Enabled="@true"></SfTextBox>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Web</label>
+                                <SfTextBox ID="Web" Value="@(fakulteInfo.Web)" Enabled="@true"></SfTextBox>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>IlceId</label>
+                                <SfTextBox ID="IlceId" Value="@(fakulteInfo.IlceId.ToString())" Enabled="@true"></SfTextBox>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>IlKod</label>
+                                <SfTextBox ID="IlKod" Value="@(fakulteInfo.IlKod.ToString())" Enabled="@true"></SfTextBox>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Tip</label>
+                                <SfTextBox ID="Tip" Value="@(fakulteInfo.Tip.ToString())" Enabled="@true"></SfTextBox>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>OgrenimSure</label>
+                                <SfTextBox ID="OgrenimSure" Value="@(fakulteInfo.OgrenimSure.ToString())" Enabled="@true"></SfTextBox>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>DiplomaAd</label>
+                                <SfTextBox ID="DiplomaAd" Value="@(fakulteInfo.DiplomaAd)" Enabled="@true"></SfTextBox>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>BirimID</label>
+                                <SfTextBox ID="BirimID" Value="@(fakulteInfo.BirimID.ToString())" Enabled="@true"></SfTextBox>
+                            </div>
+                        </div>
+                    </div>
+
+
 
                 @*<GridColumn Field=@nameof(FakulteDto.UniversiteAd) HeaderText="Universite" EditType="EditType.DropDownEdit" ForeignKeyValue="Ad" ForeignKeyField="Id" Width="150" DataSource="universiteDtos">
                 <EditTemplate>
@@ -44,3 +138,7 @@
             </GridColumn>*@
 
 -----0----
+
+
+
+-----0-----
