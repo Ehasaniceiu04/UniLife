@@ -401,6 +401,8 @@ namespace Semerkand.Server
             services.AddTransient<IFakulteTurManager, FakulteTurManager>();
             services.AddTransient<IDonemManager, DonemManager>();
             services.AddTransient<IDonemTipManager, DonemTipManager>();
+            services.AddTransient<IOgrenimDurumManager, OgrenimDurumManager>();
+            services.AddTransient<IKayitNedenManager, KayitNedenManager>();
             services.AddTransient<IUserProfileManager, UserProfileManager>();
 
 

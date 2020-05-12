@@ -1,15 +1,21 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Semerkand.Shared.DataInterfaces;
 using Semerkand.Shared.DataModels;
 using Semerkand.Shared.Dto.Definitions;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 namespace Semerkand.Storage.Stores
 {
-    public class DonemTipStore : BaseStore<DonemTip, DonemTipDto>, IDonemTipStore
+    public class OgrenimDurumStore : BaseStore<OgrenimDurum, OgrenimDurumDto>, IOgrenimDurumStore
     {
         //private readonly IApplicationDbContext _db;
         //private readonly IMapper _autoMapper;
 
-        public DonemTipStore(IApplicationDbContext db, IMapper autoMapper) : base(db, autoMapper)
+        public OgrenimDurumStore(IApplicationDbContext db, IMapper autoMapper) : base(db, autoMapper)
         {
             //_db = db;
             //_autoMapper = autoMapper;

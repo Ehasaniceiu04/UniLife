@@ -3,7 +3,7 @@ using Semerkand.Shared.Dto.Definitions;
 
 namespace Semerkand.Shared.DataInterfaces
 {
-    public interface IDonemTipStore : IBaseStore<DonemTip, DonemTipDto>
+    public interface IKayitNedenStore : IBaseStore<KayitNeden, KayitNedenDto>
     {
     }
 }

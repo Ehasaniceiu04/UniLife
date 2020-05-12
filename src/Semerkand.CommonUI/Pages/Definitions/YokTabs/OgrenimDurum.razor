@@ -1,0 +1,176 @@
+﻿@inject HttpClient Http;
+@using Semerkand.Shared.Dto.Definitions
+@inject IMatToaster matToaster
+
+@using System.Net
+
+<ControlSection>
+    <SfGrid Width="100%" Height="85%" AllowResizing="true" @ref="UniGrid" DataSource="@ogrenimDurumDtos" Toolbar="@(new List<string>() { "Add" })" AllowPaging="true" AllowFiltering="true">
+        <GridEvents OnActionComplete="ActionCompletedHandler" TValue="OgrenimDurumDto"></GridEvents>
+        <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
+        <GridColumns>
+            <GridColumn Visible="false" Field=@nameof(OgrenimDurumDto.Id) AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+            <GridColumn Field=@nameof(OgrenimDurumDto.Ad) HeaderText="Öğrenim Durum" Width="170"></GridColumn>
+            <GridColumn HeaderText="Manage Records" Width="150">
+                <GridCommandColumns>
+                    <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-edit", CssClass = "e-flat" })"></GridCommandColumn>
+                    <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-delete", CssClass = "e-flat" })"></GridCommandColumn>
+                    <GridCommandColumn Type="CommandButtonType.Save" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-update", CssClass = "e-flat" })"></GridCommandColumn>
+                    <GridCommandColumn Type="CommandButtonType.Cancel" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-cancel-icon", CssClass = "e-flat" })"></GridCommandColumn>
+                </GridCommandColumns>
+            </GridColumn>
+        </GridColumns>
+    </SfGrid>
+</ControlSection>
+
+<style type="text/css" class="cssStyles">
+    .e-grid .e-altrow {
+        background-color: #fafafa;
+    }
+</style>
+
+
+@code{
+
+    SfGrid<OgrenimDurumDto> UniGrid;
+
+    List<OgrenimDurumDto> ogrenimDurumDtos = new List<OgrenimDurumDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ReadOgrenimDurums();
+    }
+
+    async Task ReadOgrenimDurums()
+    {
+        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/ogrenimDurum");
+
+        if (apiResponse.StatusCode == Status200OK)
+        {
+            matToaster.Add(apiResponse.Message, MatToastType.Success, "Öğrenim Durum getirildi");
+            ogrenimDurumDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<OgrenimDurumDto[]>(apiResponse.Result.ToString()).ToList<OgrenimDurumDto>();
+        }
+        else
+        {
+            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Öğrenim Durum bilgisi getirilirken hata oluştu!");
+        }
+    }
+
+    public void ActionCompletedHandler(ActionEventArgs<OgrenimDurumDto> args)
+    {
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
+        {
+
+        }
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+        {
+            if (args.Action == "edit")
+            {
+                Update(args.Data);
+            }
+            else if (args.Action == "add")
+            {
+                Create(args.Data);
+            }
+
+        }
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
+        {
+            Delete(args.Data);
+        }
+    }
+
+    public async Task Create(OgrenimDurumDto ogrenimDurumDto)
+    {
+        try
+        {
+            ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/ogrenimDurum", ogrenimDurumDto);
+            if (apiResponse.StatusCode == Status200OK)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success);
+                //todo = Newtonsoft.Json.JsonConvert.DeserializeObject<OgrenimDurumDto>(apiResponse.Result.ToString());
+                //todos.Add(todo);
+                //todo = new TodoDto(); //reset todo after insert
+            }
+            else
+            {
+                //TODO Ahmet 1**
+                //TODO Ahmet 2**
+                ogrenimDurumDtos.Remove(ogrenimDurumDto);
+                UniGrid.Refresh();
+                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "ogrenimDurum Creation Failed");
+            }
+        }
+        catch (Exception ex)
+        {
+            //TODO Ahmet 1**: liste içinden değinde gride eklediğini sil demeli !!
+            //TODO Ahmet 2**: Dbden hata geldiği zaman Bu hata sebebini mantıklı şekilde buraya vermemiz gerekiyor. Aynı Idli kayıt gönder patlatıyon.
+
+            ogrenimDurumDtos.Remove(ogrenimDurumDto);
+            UniGrid.Refresh();
+            matToaster.Add(ex.Message, MatToastType.Danger, "OgrenimDurum Creation Failed");
+        }
+    }
+
+
+    public async void Update(OgrenimDurumDto ogrenimDurumDto)
+    {
+        //this updates the IsCompleted flag only
+        try
+        {
+            ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>("api/ogrenimDurum", ogrenimDurumDto);
+
+            if (!apiResponse.IsError)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success);
+            }
+            else
+            {
+                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "OgrenimDurum Save Failed");
+                //update failed gridi boz !
+            }
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.Message, MatToastType.Danger, "OgrenimDurum Save Failed");
+            //update failed gridi boz !
+        }
+    }
+
+    public async Task Delete(OgrenimDurumDto ogrenimDurumDto)
+    {
+        try
+        {
+            var response = await Http.DeleteAsync("api/ogrenimDurum/" + ogrenimDurumDto.Id);
+            if (response.StatusCode == (HttpStatusCode)Status200OK)
+            {
+                matToaster.Add("OgrenimDurum Deleted", MatToastType.Success);
+                ogrenimDurumDtos.Remove(ogrenimDurumDto);
+            }
+            else
+            {
+                matToaster.Add("OgrenimDurum Delete Failed: " + response.StatusCode, MatToastType.Danger);
+            }
+            //deleteDialogOpen = false;
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.Message, MatToastType.Danger, "OgrenimDurum Save Failed");
+        }
+    }
+
+
+    //[Inject]
+    //protected IJSRuntime JsRuntime { get; set; }
+
+    //protected override async Task OnAfterRenderAsync(bool firstRender)
+    //{
+    //    if (firstRender)
+    //    {
+    //        var Locale = await Http.GetJsonAsync<object>("tr.json");
+    //        this.JsRuntime.Sf().LoadLocaleData(Locale).SetCuldurume("tr");
+
+    //        //this.JsRuntime.Sf().LoadLocaleData("tr.json").SetCuldurume("tr");
+    //    }
+    //}
+}

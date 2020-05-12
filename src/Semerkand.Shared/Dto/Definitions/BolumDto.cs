@@ -26,6 +26,6 @@ namespace Semerkand.Shared.Dto.Definitions
         public string DiplomaAdEn { get; set; }
 
         public virtual ICollection<ProgramDto> Programs { get; set; }
-        public virtual ICollection<ApplicationUserDto> Ogrencis { get; set; }
+        public virtual ICollection<OgrenciDto> Ogrencis { get; set; }
     }
 }

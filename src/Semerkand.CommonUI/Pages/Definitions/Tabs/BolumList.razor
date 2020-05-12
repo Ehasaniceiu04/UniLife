@@ -65,9 +65,12 @@
             matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Bölüm bilgisi getirilirken hata oluştu!");
         }
     }
+    public void ActionBeginHandler(ActionEventArgs<FakulteDto> args)
+    {
 
-    public void ActionCompletedHandler(ActionEventArgs<BolumDto>
-        args)
+    }
+
+    public void ActionCompletedHandler(ActionEventArgs<BolumDto> args)
     {
         if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
         {

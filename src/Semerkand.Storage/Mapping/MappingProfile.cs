@@ -39,6 +39,7 @@ namespace Semerkand.Storage.Mapping
             CreateMap<Donem , DonemDto>().ReverseMap();
             CreateMap<DonemTip, DonemTipDto>().ReverseMap();
             CreateMap<Ogrenci, OgrenciDto>().ReverseMap();
+            CreateMap<KayitNeden, KayitNedenDto>().ReverseMap();
         }
     }
 }
