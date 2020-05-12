@@ -36,6 +36,8 @@ namespace Semerkand.Storage
         public DbSet<Ders> Derss{ get; set; }
         public DbSet<OgrenimTur> OgrenimTurs{ get; set; }
         public DbSet<FakulteTur> FakulteTurs { get; set; }
+        public DbSet<Donem> Donems{ get; set; }
+        public DbSet<DonemTip> DonemTips{ get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IUserSession userSession) : base(options)
         {
