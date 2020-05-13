@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Semerkand.Server.Middleware.Wrappers;
-using Semerkand.Shared;
-using Semerkand.Shared.Dto;
+﻿using Semerkand.Server.Middleware.Wrappers;
 using Semerkand.Shared.Dto.Email;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Semerkand.Server.Managers
 {

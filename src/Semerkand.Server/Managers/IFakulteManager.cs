@@ -1,7 +1,6 @@
-﻿using System.Threading.Tasks;
-using Semerkand.Server.Middleware.Wrappers;
+﻿using Semerkand.Server.Middleware.Wrappers;
 using Semerkand.Shared.Dto.Definitions;
-using Semerkand.Shared.Dto.Sample;
+using System.Threading.Tasks;
 
 namespace Semerkand.Server.Managers
 {
