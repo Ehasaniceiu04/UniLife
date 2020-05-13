@@ -71,5 +71,18 @@ namespace Semerkand.Server.Managers
                 return new ApiResponse(Status400BadRequest, "Failed to update MufredatDto");
             }
         }
+
+        public async Task<ApiResponse> Cokla(int id)
+        {
+            try
+            {
+                await _mufredatStore.Cokla(id);
+                return new ApiResponse(Status200OK, "Cokla MufredatDto");
+            }
+            catch (InvalidDataException dataException)
+            {
+                return new ApiResponse(Status400BadRequest, "Failed to Cokla MufredatDto");
+            }
+        }
     }
 }

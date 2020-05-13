@@ -5,8 +5,6 @@ namespace Semerkand.Shared.Dto.Definitions
 {
     public class BolumDto : EntityDto<int>
     {
-        [Required]
-        [MaxLength(400)]
         public string Ad { get; set; }
 
         public string KisaAd { get; set; }

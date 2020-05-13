@@ -6,15 +6,22 @@
 @using Newtonsoft.Json
 
     <ControlSection>
-        <SfGrid @ref="DonemGrid" DataSource="@donemDtos" Toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Update", "Cancel" })" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
+        <SfGrid @ref="DonemGrid" DataSource="@donemDtos" Toolbar="@(new List<string>() { "Add"})" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
             <GridEvents OnActionComplete="ActionCompletedHandler" TValue="DonemDto"></GridEvents>
             <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
             <GridColumns>
                 <GridColumn Visible="false" Field=@nameof(DonemDto.Id) HeaderText="Bölüm ID" AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
-                <GridColumn Field=@nameof(DonemDto.Ad) HeaderText="Bölüm İsim" ValidationRules="@(new { required=true})" Width="170"></GridColumn>
+                <GridColumn Field=@nameof(DonemDto.Ad) HeaderText="Donem" ValidationRules="@(new { required=true})" Width="170"></GridColumn>
                 @*<GridColumn Field=@nameof(DonemDto.DonemTip.UniversiteId) HeaderText="Üniversite" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@universiteDtos" Width="150"></GridColumn>*@
-                <GridColumn Field=@nameof(DonemDto.DonemTipId) HeaderText="Fakülte" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@donemTipDtos" Width="150"></GridColumn>
-
+                <GridColumn Field=@nameof(DonemDto.DonemTipId) HeaderText="Donem Tipi" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@donemTipDtos" Width="150"></GridColumn>
+                <GridColumn HeaderText="Manage Records" Width="150">
+                    <GridCommandColumns>
+                        <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-edit", CssClass = "e-flat" })"></GridCommandColumn>
+                        <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-delete", CssClass = "e-flat" })"></GridCommandColumn>
+                        <GridCommandColumn Type="CommandButtonType.Save" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-update", CssClass = "e-flat" })"></GridCommandColumn>
+                        <GridCommandColumn Type="CommandButtonType.Cancel" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-cancel-icon", CssClass = "e-flat" })"></GridCommandColumn>
+                    </GridCommandColumns>
+                </GridColumn>
             </GridColumns>
         </SfGrid>
     </ControlSection>

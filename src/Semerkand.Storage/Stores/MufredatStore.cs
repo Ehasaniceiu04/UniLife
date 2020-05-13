@@ -2,10 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using Semerkand.Shared.DataInterfaces;
 using Semerkand.Shared.DataModels;
+using Semerkand.Shared.Dto;
 using Semerkand.Shared.Dto.Definitions;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
 namespace Semerkand.Storage.Stores
@@ -69,6 +71,41 @@ namespace Semerkand.Storage.Stores
 
             _db.Mufredats.Remove(mufredat);
             await _db.SaveChangesAsync(CancellationToken.None);
+        }
+
+        public async Task Cokla(int id)
+        {
+            //using (var context = (_db as ApplicationDbContext).Database.BeginTransaction())
+            //using (var context = _db.Database.BeginTransaction())
+            using (var context = _db.Context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var mufredat = _db.Mufredats.AsNoTracking().SingleOrDefault(t => t.Id == id);
+
+                    var derss = await _db.Derss.AsNoTracking().Where(t => t.MufredatID == id).ToListAsync();
+
+                    if (mufredat == null)
+                        throw new InvalidDataException($"Unable to find Mufredat with ID: {id}");
+
+                    mufredat.Id = 0;
+                    _db.Mufredats.Add(mufredat);
+                    await _db.SaveChangesAsync(CancellationToken.None);
+
+                    derss.ForEach(x => { x.Id = 0; x.MufredatID = mufredat.Id; });
+                    _db.Derss.AddRange(derss);
+                    await _db.SaveChangesAsync(CancellationToken.None);
+
+                    context.Commit();
+                }
+                catch (System.Exception)
+                {
+
+                    throw;
+                }
+            }
+            
+
         }
     }
 }

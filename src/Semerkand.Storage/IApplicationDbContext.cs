@@ -30,6 +30,10 @@ namespace Semerkand.Storage
         public DbSet<DonemTip> DonemTips{ get; set; }
         public DbSet<OgrenimDurum> OgrenimDurums { get; set; }
 
+        //TODO Bunu böyle bırakacakmıyız.
+        public Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade Database { get; set; }
+        //TODO Bunu böyle bırakacakmıyız.
+        public DbContext Context { get; set; }
 
         public void SetGlobalQueryForSoftDelete<T>(ModelBuilder builder) where T : class, ISoftDelete;
 

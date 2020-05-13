@@ -14,6 +14,7 @@
                 <GridColumn Field=@nameof(HarcDto.Ad) HeaderText="Harc İsim" ValidationRules="@(new { required=true})" Width="170"></GridColumn>
                 @*<GridColumn Field=@nameof(HarcDto.Fakulte.UniversiteId) HeaderText="Üniversite" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@universiteDtos" Width="150"></GridColumn>*@
                 <GridColumn Field=@nameof(HarcDto.ProgramId) HeaderText="Program" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@programDtos" Width="150"></GridColumn>
+                <GridColumn Field=@nameof(HarcDto.DonemId) HeaderText="Donem" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@donemDtos" Width="150"></GridColumn>
 
             </GridColumns>
         </SfGrid>
@@ -26,6 +27,7 @@
     List<HarcDto> harcDtos = new List<HarcDto>();
 
     List<ProgramDto> programDtos = new List<ProgramDto>();
+    List<DonemDto> donemDtos = new List<DonemDto>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -33,6 +35,8 @@
 
         ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/program");
         programDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<ProgramDto[]>(apiResponse.Result.ToString()).ToList<ProgramDto>();
+        ApiResponseDto apiResponseDonem = await Http.GetFromJsonAsync<ApiResponseDto>("api/Donem");
+        donemDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<DonemDto[]>(apiResponseDonem.Result.ToString()).ToList<DonemDto>();
 
     }
 

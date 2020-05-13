@@ -19,5 +19,6 @@ namespace Semerkand.Shared.DataInterfaces
         Task<Mufredat> Update(MufredatDto mufredatDto);
 
         Task DeleteById(int id);
+        Task Cokla(int id);
     }
 }

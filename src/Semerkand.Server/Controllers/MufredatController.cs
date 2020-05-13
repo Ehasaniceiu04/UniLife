@@ -58,5 +58,16 @@ namespace Semerkand.Server.Controllers
         [Authorize(Permissions.Mufredat.Delete)]
         public async Task<ApiResponse> Delete(int id)
             => await _mufredatManager.Delete(id);
+
+
+        // Müfredat çokla: api/Mufredat/Cokla/5
+        //[HttpGet("{id}")]
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("Cokla/{id}")]
+        public async Task<ApiResponse> Cokla(int id)
+            => ModelState.IsValid ?
+                await _mufredatManager.Cokla(id) :
+                new ApiResponse(Status400BadRequest, "MUfreadt Model is Invalid");
     }
 }

@@ -14,6 +14,7 @@ using ApiLogItem = Semerkand.Shared.DataModels.ApiLogItem;
 using Message = Semerkand.Shared.DataModels.Message;
 using UserProfile = Semerkand.Shared.DataModels.UserProfile;
 using System.Runtime.CompilerServices;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Semerkand.Storage
 {
@@ -42,12 +43,20 @@ namespace Semerkand.Storage
 
         public DbSet<KayitNeden> KayitNedens { get; set; }
 
+
+        //TODO Bunu böyle bırakacakmıyız.
+        DatabaseFacade IApplicationDbContext.Database { get => base.Database; set => throw new NotImplementedException(); }
+        //TODO Bunu böyle bırakacakmıyız.
+        public DbContext Context { get => this; set => throw new NotImplementedException(); }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IUserSession userSession) : base(options)
         {
             _userSession = userSession;
         }
 
-        
+        //public Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade Database { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //Fluent API Does not follow foreign key naming convention

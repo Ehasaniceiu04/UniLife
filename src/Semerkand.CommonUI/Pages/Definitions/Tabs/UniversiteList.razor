@@ -9,7 +9,7 @@
             <GridEvents OnActionComplete="ActionCompletedHandler" TValue="UniversiteDto"></GridEvents>
             <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
             <GridColumns>
-                <GridColumn Visible="false" Field=@nameof(UniversiteDto.Id) HeaderText="Üniversite ID" AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+                <GridColumn Visible="false" Field=@nameof(UniversiteDto.Id) HeaderText="Üniversite ID" Edit="false" AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
                 <GridColumn Field=@nameof(UniversiteDto.Ad) HeaderText="Üniversite İsim" Width="170"></GridColumn>
                 <GridColumn HeaderText="Manage Records" Width="150">
                     <GridCommandColumns>
