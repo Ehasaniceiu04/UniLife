@@ -25,11 +25,11 @@
                 <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
                 <GridColumns>
                     <GridColumn Visible="false" Field=@nameof(MufredatDto.Id) HeaderText="Müfredat ID" AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
-                    <GridColumn Field=@nameof(MufredatDto.Ad) Visible="false" AllowEditing="true" HeaderText="Müfredat İsim" ValidationRules="@(new { required=true})"></GridColumn>
+                    <GridColumn Field=@nameof(MufredatDto.Ad) AllowEditing="true" HeaderText="Müfredat İsim" ValidationRules="@(new { required=true})"></GridColumn>
                     <GridColumn Field=@nameof(MufredatDto.Yil) HeaderText="Müfredat Yıl" ValidationRules="@(new { required=true})" Width="60"></GridColumn>
                     <GridColumn Field=@nameof(MufredatDto.BasTarih) HeaderText="BasTarih" EditType="EditType.DatePickerEdit" ValidationRules="@(new { required=true})"></GridColumn>
                     <GridColumn Field=@nameof(MufredatDto.BitTarih) HeaderText="Bit Tarih" EditType="EditType.DatePickerEdit"></GridColumn>
-                    <GridColumn Field=@nameof(MufredatDto.KararTarih) HeaderText="Bit Tarih" EditType="EditType.DatePickerEdit"></GridColumn>
+                    <GridColumn Field=@nameof(MufredatDto.KararTarih) HeaderText="KararTarih" EditType="EditType.DatePickerEdit"></GridColumn>
                     <GridColumn Field=@nameof(HarcDto.ProgramId) HeaderText="Program" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@programDtos"></GridColumn>
                     <GridColumn HeaderText="Manage Records" Width="150">
                         <GridCommandColumns>
@@ -71,7 +71,7 @@
     List<MufredatDto> mufredatDtos = new List<MufredatDto>();
     List<ProgramDto> programDtos = new List<ProgramDto>();
 
-    private List<Object> Toolbaritems = new List<Object>() { "Add", "Search", "Paste", "Copy", "ColumnChooser", new ItemModel() { Text = "Click", TooltipText = "Click", PrefixIcon = "e-cut-icon tb-icons", Id = "Click" } };
+    private List<Object> Toolbaritems = new List<Object>() { "Add", "Search", "Paste", "Copy", "ColumnChooser", new ItemModel() { Text = "Ders Oluştur", TooltipText = "Click", PrefixIcon = "e-icons e-DoubleArrowRight", Id = "DersOlustur" } };
 
     bool multiDialogOpen = false;
 
@@ -144,7 +144,7 @@
 
     public void ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
     {
-        if (args.Item.Id == "Click")
+        if (args.Item.Id == "DersOlustur")
         {
             //You can customized your code here....
         }
@@ -162,9 +162,14 @@
         if (args.CommandColumn.Title == "DersOlus")
         {
             mufredatDto = args.RowData;
-            //SelectedMufredat = mufredatDto.DeepClone();
+            //appState.MufredatState = mufredatDto.DeepClone();
+            mufredatDto.Program = programDtos.FirstOrDefault(x => x.Id == mufredatDto.ProgramId);
+            if (mufredatDto.Program ==null)
+            {
+                matToaster.Add("Program Bulunamadı", MatToastType.Danger, "Müfredat ders ekleme hatası");
+                return;
+            }
             appState.MufredatState = mufredatDto;
-            //StateHasChanged();
             base.InvokeAsync(StateHasChanged);
             TabDegis.InvokeAsync(1);
 

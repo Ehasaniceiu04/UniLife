@@ -14,24 +14,22 @@
                     </ChildContent>
                     <ContentTemplate>
                         <Mufredat TabDegis="TabDegis"></Mufredat>
-                        <p>muf state @appState.MufredatState?.Ad</p>
                     </ContentTemplate>
                 </TabItem>
                 <TabItem>
                     <ChildContent>
-                        <TabHeader Text="Bağlı Ders"></TabHeader>
+                        <TabHeader Text="Bağlı Ders Oluştur"></TabHeader>
                     </ChildContent>
                     <ContentTemplate>
-                        <p>muf state @appState.MufredatState?.Ad</p>
-                        <Dersler></Dersler>
+                        <BagliDersOlustur TabDegis="TabDegis"></BagliDersOlustur>
                     </ContentTemplate>
                 </TabItem>
                 <TabItem>
                     <ChildContent>
-                        <TabHeader Text="Dersler"></TabHeader>
+                        <TabHeader Text="Bağlı Dersler"></TabHeader>
                     </ChildContent>
                     <ContentTemplate>
-                        <Dersler></Dersler>
+                        <Dersler TabDegis="TabDegis"></Dersler>
                     </ContentTemplate>
                 </TabItem>
             </TabItems>
@@ -71,9 +69,9 @@
     public void TabDegis(int tabIndex)
     {
         Tab.EnableTab(0, true);
-        Tab.EnableTab(1, true);
-        Tab.EnableTab(2, false);
-        Tab.Select(1);
+        Tab.EnableTab(1, tabIndex>0);
+        Tab.EnableTab(2, tabIndex>0);
+        Tab.Select(tabIndex);
     }
 
     SfTab Tab;
@@ -81,7 +79,7 @@
     public void TabCreate()
     {
         Tab.EnableTab(0, true);
-        Tab.EnableTab(1, true);
+        Tab.EnableTab(1, false);
         Tab.EnableTab(2, false);
     }
 }

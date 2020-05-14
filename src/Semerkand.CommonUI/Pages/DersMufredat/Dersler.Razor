@@ -1,10 +1,12 @@
 ﻿@page "/dersler"
+@using Syncfusion.Blazor.SplitButtons
 @inject HttpClient Http;
 @using Semerkand.Shared.Dto.Definitions
 @inject IMatToaster matToaster
 @using Syncfusion.Blazor.DropDowns
 @using System.Net
 @using Newtonsoft.Json
+@inject AppState appState
 
 <div class="col-lg-12 control-section">
     <div class="content-wrapper">
@@ -22,6 +24,18 @@
             </SfGrid>
 
         </div>
+        <br />
+        <hr />
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-lg-4 col-md-4 text-center">
+                <SfProgressButton OnClick="FarkliMufredat" CssClass="center-block e-danger" Content="< Faklı Müfredat"></SfProgressButton>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-lg-4 col-md-4 text-center">
+                <SfProgressButton OnClick="KaydetYeni" CssClass="center-block e-warning" Content="Bağlı Ders Oluştur">
+                    <ProgressButtonSpinSettings Position="SpinPosition.Bottom"></ProgressButtonSpinSettings>
+                </SfProgressButton>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -35,6 +49,23 @@
 
     [CascadingParameter]
     public MufredatDto SelectedMufredat { get; set; }
+
+
+    [Parameter]
+    public EventCallback<int> TabDegis { get; set; }
+
+    protected async Task KaydetYeni()
+    {
+        await TabDegis.InvokeAsync(1);
+    }
+    protected async Task FarkliMufredat()
+    {
+        //appstate temizle
+        appState.MufredatState = null;
+        
+        //sayfada müfredata dön sonraki iki tabı kapa
+        await TabDegis.InvokeAsync(0);
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -65,7 +96,7 @@
         var asd = args;
     }
 
-    public void ActionCompletedHandler(ActionEventArgs<DersDto>args)
+    public void ActionCompletedHandler(ActionEventArgs<DersDto> args)
     {
         if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
         {

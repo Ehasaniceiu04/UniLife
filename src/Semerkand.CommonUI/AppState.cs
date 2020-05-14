@@ -20,7 +20,6 @@ namespace Semerkand.CommonUI
         public MufredatDto MufredatState { get; set; }
 
 
-
         public AppState(IUserProfileApi userProfileApi)
         {
             _userProfileApi = userProfileApi;
