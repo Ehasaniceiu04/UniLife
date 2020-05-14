@@ -33,6 +33,9 @@
 
     List<MufredatDto> mufredatDtos = new List<MufredatDto>();
 
+    [CascadingParameter]
+    public MufredatDto SelectedMufredat { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         await ReadDersler();

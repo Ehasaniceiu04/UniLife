@@ -6,32 +6,45 @@
 @using Syncfusion.Blazor.Navigations
 @using System.Net
 @using Newtonsoft.Json
+@inject AppState appState
+
+<style>
+    .e-DoubleArrowRight:before {
+        content: '\e7bb';
+        color: #e83e8c;
+    }
+</style>
 
 <div class="col-lg-12 control-section">
     <div class="content-wrapper">
         <div class="row">
-            <SfGrid @ref="MufredatGrid" ID="MufredatGrid" ShowColumnChooser="true" DataSource="@mufredatDtos" AllowSorting="true" AllowFiltering="true" AllowPaging="true" Toolbar="Toolbaritems">
-                <GridEvents CommandClicked="CommandClickHandler" OnToolbarClick="ToolbarClickHandler" OnActionComplete="ActionCompletedHandler" TValue="MufredatDto"></GridEvents>
+
+            <SfGrid @ref="MufredatGrid" ID="MufredatGrid" ShowColumnChooser="true" DataSource="@mufredatDtos" AllowSorting="true" AllowFiltering="true" AllowPaging="true" Toolbar="Toolbaritems"
+                    ContextMenuItems="@(new List<ContextMenuItemModel>() { new ContextMenuItemModel { Text = "Ders Tanımla", Target = ".e-content", Id = "copywithheader" } })">
+                <GridEvents ContextMenuItemClicked="OnContextMenuClick" CommandClicked="CommandClickHandler" OnToolbarClick="ToolbarClickHandler" OnActionComplete="ActionCompletedHandler" TValue="MufredatDto"></GridEvents>
                 <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
                 <GridColumns>
                     <GridColumn Visible="false" Field=@nameof(MufredatDto.Id) HeaderText="Müfredat ID" AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
-                    <GridColumn Field=@nameof(MufredatDto.Ad) HeaderText="Müfredat İsim" ValidationRules="@(new { required=true})"></GridColumn>
-                    <GridColumn Field=@nameof(MufredatDto.Yil) HeaderText="Müfredat Yıl" ValidationRules="@(new { required=true})"></GridColumn>
+                    <GridColumn Field=@nameof(MufredatDto.Ad) Visible="false" AllowEditing="true" HeaderText="Müfredat İsim" ValidationRules="@(new { required=true})"></GridColumn>
+                    <GridColumn Field=@nameof(MufredatDto.Yil) HeaderText="Müfredat Yıl" ValidationRules="@(new { required=true})" Width="60"></GridColumn>
                     <GridColumn Field=@nameof(MufredatDto.BasTarih) HeaderText="BasTarih" EditType="EditType.DatePickerEdit" ValidationRules="@(new { required=true})"></GridColumn>
                     <GridColumn Field=@nameof(MufredatDto.BitTarih) HeaderText="Bit Tarih" EditType="EditType.DatePickerEdit"></GridColumn>
                     <GridColumn Field=@nameof(MufredatDto.KararTarih) HeaderText="Bit Tarih" EditType="EditType.DatePickerEdit"></GridColumn>
                     <GridColumn Field=@nameof(HarcDto.ProgramId) HeaderText="Program" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@programDtos"></GridColumn>
                     <GridColumn HeaderText="Manage Records" Width="150">
                         <GridCommandColumns>
-                            <GridCommandColumn Type="CommandButtonType.None" Title="Copy" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-copy", CssClass = "e-flat" })"></GridCommandColumn>
-                            <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-edit", CssClass = "e-flat" })"></GridCommandColumn>
-                            <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-delete", CssClass = "e-flat" })"></GridCommandColumn>
-                            <GridCommandColumn Type="CommandButtonType.Save" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-update", CssClass = "e-flat" })"></GridCommandColumn>
-                            <GridCommandColumn Type="CommandButtonType.Cancel" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-cancel-icon", CssClass = "e-flat" })"></GridCommandColumn>
+                            <GridCommandColumn Type="CommandButtonType.None" Title="DersOlus" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
+                            <GridCommandColumn Type="CommandButtonType.None" Title="Clone" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-copy", CssClass="e-flat" })"></GridCommandColumn>
+                            <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-edit", CssClass="e-flat" })"></GridCommandColumn>
+                            <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-delete", CssClass="e-flat" })"></GridCommandColumn>
+                            <GridCommandColumn Type="CommandButtonType.Save" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-update", CssClass="e-flat" })"></GridCommandColumn>
+                            <GridCommandColumn Type="CommandButtonType.Cancel" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-cancel-icon", CssClass="e-flat" })"></GridCommandColumn>
                         </GridCommandColumns>
                     </GridColumn>
                 </GridColumns>
             </SfGrid>
+
+            @*<input type="text" @bind-value="appState.MufredatState.Ad" />*@
         </div>
     </div>
 </div>
@@ -51,6 +64,10 @@
     SfGrid<MufredatDto> MufredatGrid;
 
     public MufredatDto mufredatDto { get; set; } = new MufredatDto(); // Holds Mufredat being actively modified or created
+    //[CascadingParameter]
+    //public MufredatDto SelectedMufredat { get; set; }
+
+
     List<MufredatDto> mufredatDtos = new List<MufredatDto>();
     List<ProgramDto> programDtos = new List<ProgramDto>();
 
@@ -115,6 +132,15 @@
         }
     }
 
+    //Sağ Click için
+    public void OnContextMenuClick(ContextMenuClickEventArgs args)
+    {
+        if (args.Item.Id == "copywithheader")
+        {
+            //this.DefaultGrid.Copy(true);
+        }
+    }
+
 
     public void ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
     {
@@ -128,15 +154,29 @@
     {
         //Perform your custom command button click operation here. And also with the value in “args” you can differentiate the buttons, if having multiple custom command buttons.
 
-        if (args.CommandColumn.Title == "Copy")
+        if (args.CommandColumn.Title == "Clone")
         {
             mufredatDto = args.RowData;
             multiDialogOpen = true;
         }
+        if (args.CommandColumn.Title == "DersOlus")
+        {
+            mufredatDto = args.RowData;
+            //SelectedMufredat = mufredatDto.DeepClone();
+            appState.MufredatState = mufredatDto;
+            //StateHasChanged();
+            base.InvokeAsync(StateHasChanged);
+            TabDegis.InvokeAsync(1);
+
+        }
     }
 
-    public void ActionCompletedHandler(ActionEventArgs<MufredatDto>
-args)
+    [Parameter]
+    public EventCallback<int> TabDegis { get; set; }
+
+
+
+    public void ActionCompletedHandler(ActionEventArgs<MufredatDto> args)
     {
         if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
         {

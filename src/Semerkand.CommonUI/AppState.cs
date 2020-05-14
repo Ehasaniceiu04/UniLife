@@ -7,6 +7,7 @@ using Semerkand.CommonUI.Services.Contracts;
 using Semerkand.Shared.Dto;
 using Semerkand.Shared.Dto.Account;
 using Newtonsoft.Json;
+using Semerkand.Shared.Dto.Definitions;
 
 namespace Semerkand.CommonUI
 {
@@ -16,6 +17,9 @@ namespace Semerkand.CommonUI
         private readonly IUserProfileApi _userProfileApi;
 
         public UserProfileDto UserProfile { get; set; }
+        public MufredatDto MufredatState { get; set; }
+
+
 
         public AppState(IUserProfileApi userProfileApi)
         {

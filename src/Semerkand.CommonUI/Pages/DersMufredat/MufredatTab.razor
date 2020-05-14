@@ -1,0 +1,88 @@
+﻿@page "/MufredatTab"
+@using Syncfusion.Blazor.Navigations
+@using Semerkand.Shared.Dto.Definitions
+@inject AppState appState
+
+@*<CascadingValue Value="SelectedMufredat">*@
+    <div class="control-section e-tab-section">
+        <SfTab @ref="Tab" CssClass="BlazorTab" LoadOn="ContentLoad.Demand">
+            <TabEvents Created="TabCreate"></TabEvents>
+            <TabItems>
+                <TabItem>
+                    <ChildContent>
+                        <TabHeader Text="Müfredat"></TabHeader>
+                    </ChildContent>
+                    <ContentTemplate>
+                        <Mufredat TabDegis="TabDegis"></Mufredat>
+                        <p>muf state @appState.MufredatState?.Ad</p>
+                    </ContentTemplate>
+                </TabItem>
+                <TabItem>
+                    <ChildContent>
+                        <TabHeader Text="Bağlı Ders"></TabHeader>
+                    </ChildContent>
+                    <ContentTemplate>
+                        <p>muf state @appState.MufredatState?.Ad</p>
+                        <Dersler></Dersler>
+                    </ContentTemplate>
+                </TabItem>
+                <TabItem>
+                    <ChildContent>
+                        <TabHeader Text="Dersler"></TabHeader>
+                    </ChildContent>
+                    <ContentTemplate>
+                        <Dersler></Dersler>
+                    </ContentTemplate>
+                </TabItem>
+            </TabItems>
+        </SfTab>
+    </div>
+@*</CascadingValue>*@
+
+
+<style>
+    /*.tab_content .e-content .e-item {
+        font-size: 12px;
+        padding: 10px;
+        text-align: justify;
+        background-color: red;
+    }*/
+
+    .e-tab .e-tab-header::before {
+        border-color: #69e0f0;
+        border-style: solid;
+    }
+
+    .e-tab .e-tab-header .e-toolbar-item.e-active {
+        border: 1px solid #dee2e6;
+        background-color: #69e0f0;
+    }
+
+    .e-tab .e-tab-header:not(.e-vertical) .e-toolbar-item.e-active {
+        border-bottom: 1px solid #69e0f0;
+    }
+</style>
+
+
+@code{
+
+    //public MufredatDto SelectedMufredat { get; set; } = new MufredatDto();
+
+    public void TabDegis(int tabIndex)
+    {
+        Tab.EnableTab(0, true);
+        Tab.EnableTab(1, true);
+        Tab.EnableTab(2, false);
+        Tab.Select(1);
+    }
+
+    SfTab Tab;
+
+    public void TabCreate()
+    {
+        Tab.EnableTab(0, true);
+        Tab.EnableTab(1, true);
+        Tab.EnableTab(2, false);
+    }
+}
+
