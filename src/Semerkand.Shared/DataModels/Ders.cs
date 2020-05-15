@@ -13,11 +13,11 @@ namespace Semerkand.Shared.DataModels
         public int DonemTipId { get; set; }
         public virtual DonemTip DonemTip { get; set; }
 
-        public int MufredatID { get; set; }
+        public int MufredatId { get; set; }
         public virtual Mufredat Mufredat { get; set; }
         public string KisaAd { get; set; }
         public int Akts { get; set; }
-        public int GeçmeNotu { get; set; }
+        public int GecmeNotu { get; set; }
         public string OptikKod { get; set; }
         public string AdEn { get; set; }
         public int UygSaat { get; set; }

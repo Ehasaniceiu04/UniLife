@@ -159,7 +159,7 @@
             </div>
             <div class="col-xs-4 col-sm-4 col-lg-4 col-md-4">
                 @*<SfNumericTextBox TValue="int?" Value="@dersDto.GeçmeNotu" CssClass="e-style" ValidateDecimalOnType=true Decimals=1 Format="n1" Placeholder="GeçmeNotu" FloatLabelType="@FloatLabelType.Auto"></SfNumericTextBox>*@
-                <MatTextField Style="width:90%" Label="GeçmeNotu" @bind-Value="@dersDto.GeçmeNotu"></MatTextField>
+                <MatTextField Style="width:90%" Label="GeçmeNotu" @bind-Value="@dersDto.GecmeNotu"></MatTextField>
 
             </div>
         </div>
@@ -192,7 +192,7 @@
                 <SfNumericTextBox TValue="int?" Value="@dersDto.Akts" CssClass="e-style" ValidateDecimalOnType=true Decimals=1 Format="n1" Placeholder="Akts" FloatLabelType="@FloatLabelType.Auto"></SfNumericTextBox>
             </div>
             <div class="col-xs-4 col-sm-4 col-lg-4 col-md-4">
-                <SfNumericTextBox TValue="int?" Value="@dersDto.GeçmeNotu" CssClass="e-style" ValidateDecimalOnType=true Decimals=1 Format="n1" Placeholder="GeçmeNotu" FloatLabelType="@FloatLabelType.Auto"></SfNumericTextBox>
+                <SfNumericTextBox TValue="int?" Value="@dersDto.GecmeNotu" CssClass="e-style" ValidateDecimalOnType=true Decimals=1 Format="n1" Placeholder="GeçmeNotu" FloatLabelType="@FloatLabelType.Auto"></SfNumericTextBox>
 
             </div>
         </div>
@@ -226,16 +226,22 @@
     protected async Task KaydetDersler()
     {
         //kaydet
-        dersDto.MufredatID = appState.MufredatState.Id;
-        await Create(dersDto);
-        //derslere git
-        await TabDegis.InvokeAsync(2);
+        dersDto.MufredatId = appState.MufredatState.Id;
+        var createResult= await Create(dersDto);
+        if (createResult)
+        {
+            //base.InvokeAsync(StateHasChanged);
+            //derslere git
+            await TabDegis.InvokeAsync(2);
+        }
+
     }
     protected async Task KaydetYeni()
     {
         //Kaydet
-        dersDto.MufredatID = appState.MufredatState.Id;
+        dersDto.MufredatId = appState.MufredatState.Id;
         await Create(dersDto);
+        //base.InvokeAsync(StateHasChanged);
         //sayfada kal
         //await TabDegis.InvokeAsync(1);
     }
@@ -248,7 +254,7 @@
         await TabDegis.InvokeAsync(0);
     }
 
-    public async Task Create(DersDto dersDto)
+    public async Task<bool> Create(DersDto dersDto)
     {
         try
         {
@@ -257,15 +263,18 @@
             if (apiResponse.StatusCode == Status200OK)
             {
                 matToaster.Add(apiResponse.Message, MatToastType.Success);
+                return true;
             }
             else
             {
                 matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Ders oluşturulurken hata oluştu");
+                return false;
             }
         }
         catch (Exception ex)
         {
             matToaster.Add(ex.Message, MatToastType.Danger, "Ders oluşturulurken hata oluştu");
+            return false;
         }
     }
 

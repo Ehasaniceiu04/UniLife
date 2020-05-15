@@ -7,7 +7,6 @@
 @using System.Net
 @using Newtonsoft.Json
 @inject AppState appState
-
 <style>
     .e-DoubleArrowRight:before {
         content: '\e7bb';
@@ -19,19 +18,20 @@
     <div class="content-wrapper">
         <div class="row">
 
-            <SfGrid @ref="MufredatGrid" ID="MufredatGrid" ShowColumnChooser="true" DataSource="@mufredatDtos" AllowSorting="true" AllowFiltering="true" AllowPaging="true" Toolbar="Toolbaritems"
+            <SfGrid Width="100%" @ref="MufredatGrid" ID="MufredatGrid" ShowColumnChooser="true" DataSource="@mufredatDtos" AllowSorting="true" AllowFiltering="true" AllowPaging="true" Toolbar="Toolbaritems"
                     ContextMenuItems="@(new List<ContextMenuItemModel>() { new ContextMenuItemModel { Text = "Ders Tanımla", Target = ".e-content", Id = "copywithheader" } })">
+                
                 <GridEvents ContextMenuItemClicked="OnContextMenuClick" CommandClicked="CommandClickHandler" OnToolbarClick="ToolbarClickHandler" OnActionComplete="ActionCompletedHandler" TValue="MufredatDto"></GridEvents>
                 <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
                 <GridColumns>
-                    <GridColumn Visible="false" Field=@nameof(MufredatDto.Id) HeaderText="Müfredat ID" AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
-                    <GridColumn Field=@nameof(MufredatDto.Ad) AllowEditing="true" HeaderText="Müfredat İsim" ValidationRules="@(new { required=true})"></GridColumn>
-                    <GridColumn Field=@nameof(MufredatDto.Yil) HeaderText="Müfredat Yıl" ValidationRules="@(new { required=true})" Width="60"></GridColumn>
-                    <GridColumn Field=@nameof(MufredatDto.BasTarih) HeaderText="BasTarih" EditType="EditType.DatePickerEdit" ValidationRules="@(new { required=true})"></GridColumn>
-                    <GridColumn Field=@nameof(MufredatDto.BitTarih) HeaderText="Bit Tarih" EditType="EditType.DatePickerEdit"></GridColumn>
+                    <GridColumn AutoFit="true" Visible="false" Field=@nameof(MufredatDto.Id) HeaderText="Müfredat ID" AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(MufredatDto.Ad) AllowEditing="true" HeaderText="Müfredat İsim" ValidationRules="@(new { required=true})"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(MufredatDto.Yil) HeaderText="Müfredat Yıl" ValidationRules="@(new { required=true})"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(MufredatDto.BasTarih) HeaderText="BasTarih" EditType="EditType.DatePickerEdit" ValidationRules="@(new { required=true})"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(MufredatDto.BitTarih) HeaderText="Bit Tarih" EditType="EditType.DatePickerEdit"></GridColumn>
                     <GridColumn Field=@nameof(MufredatDto.KararTarih) HeaderText="KararTarih" EditType="EditType.DatePickerEdit"></GridColumn>
                     <GridColumn Field=@nameof(HarcDto.ProgramId) HeaderText="Program" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@programDtos"></GridColumn>
-                    <GridColumn HeaderText="Manage Records" Width="150">
+                    <GridColumn HeaderText="Manage Records">
                         <GridCommandColumns>
                             <GridCommandColumn Type="CommandButtonType.None" Title="DersOlus" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
                             <GridCommandColumn Type="CommandButtonType.None" Title="Clone" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-copy", CssClass="e-flat" })"></GridCommandColumn>
@@ -64,8 +64,8 @@
     SfGrid<MufredatDto> MufredatGrid;
 
     public MufredatDto mufredatDto { get; set; } = new MufredatDto(); // Holds Mufredat being actively modified or created
-    //[CascadingParameter]
-    //public MufredatDto SelectedMufredat { get; set; }
+                                                                      //[CascadingParameter]
+                                                                      //public MufredatDto SelectedMufredat { get; set; }
 
 
     List<MufredatDto> mufredatDtos = new List<MufredatDto>();
@@ -164,7 +164,7 @@
             mufredatDto = args.RowData;
             //appState.MufredatState = mufredatDto.DeepClone();
             mufredatDto.Program = programDtos.FirstOrDefault(x => x.Id == mufredatDto.ProgramId);
-            if (mufredatDto.Program ==null)
+            if (mufredatDto.Program == null)
             {
                 matToaster.Add("Program Bulunamadı", MatToastType.Danger, "Müfredat ders ekleme hatası");
                 return;
@@ -214,15 +214,14 @@
             if (apiResponse.StatusCode == Status200OK)
             {
                 matToaster.Add(apiResponse.Message, MatToastType.Success);
-                //todo = Newtonsoft.Json.JsonConvert.DeserializeObject<MufredatDto>
-                //(apiResponse.Result.ToString());
-                //todos.Add(todo);
-                //todo = new TodoDto(); //reset todo after insert
+                var recordedDto= Newtonsoft.Json.JsonConvert.DeserializeObject<MufredatDto>(apiResponse.Result.ToString());
+
+                mufredatDtos.FirstOrDefault(x => x.Id == 0).Id = recordedDto.Id;
+                MufredatGrid.Refresh();
+                //base.InvokeAsync(StateHasChanged);
             }
             else
             {
-                //TODO Ahmet 1**
-                //TODO Ahmet 2**
                 mufredatDtos.Remove(mufredatDto);
                 MufredatGrid.Refresh();
                 matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Müfredat Creation Failed");
@@ -230,9 +229,6 @@
         }
         catch (Exception ex)
         {
-            //TODO Ahmet 1**: liste içinden değinde gride eklediğini sil demeli !!
-            //TODO Ahmet 2**: Dbden hata geldiği zaman Bu hata sebebini mantıklı şekilde buraya vermemiz gerekiyor. Aynı Idli kayıt gönder patlatıyon.
-
             mufredatDtos.Remove(mufredatDto);
             MufredatGrid.Refresh();
             matToaster.Add(ex.Message, MatToastType.Danger, "Müfredat Creation Failed");

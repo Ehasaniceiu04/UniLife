@@ -83,7 +83,7 @@ namespace Semerkand.Storage.Stores
                 {
                     var mufredat = _db.Mufredats.AsNoTracking().SingleOrDefault(t => t.Id == id);
 
-                    var derss = await _db.Derss.AsNoTracking().Where(t => t.MufredatID == id).ToListAsync();
+                    var derss = await _db.Derss.AsNoTracking().Where(t => t.MufredatId == id).ToListAsync();
 
                     if (mufredat == null)
                         throw new InvalidDataException($"Unable to find Mufredat with ID: {id}");
@@ -92,7 +92,7 @@ namespace Semerkand.Storage.Stores
                     _db.Mufredats.Add(mufredat);
                     await _db.SaveChangesAsync(CancellationToken.None);
 
-                    derss.ForEach(x => { x.Id = 0; x.MufredatID = mufredat.Id; });
+                    derss.ForEach(x => { x.Id = 0; x.MufredatId = mufredat.Id; });
                     _db.Derss.AddRange(derss);
                     await _db.SaveChangesAsync(CancellationToken.None);
 

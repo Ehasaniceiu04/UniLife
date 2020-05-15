@@ -16,17 +16,7 @@
                 <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog"></GridEditSettings>
                 <GridColumns>
                     <GridColumn Field=@nameof(Order.OrderID) HeaderText="Order ID" IsPrimaryKey="true" TextAlign="@TextAlign.Right" ValidationRules="@(new { required=true, number=true})" HeaderTextAlign="@TextAlign.Right" Width="140"></GridColumn>
-                    <GridColumn Field=@nameof(Order.CustomerID) HeaderText="Customer Name" ValidationRules="@(new { required=true})" Width="150">
-                        <EditTemplate>
-                            @{
-                                Order Order = (context as Order);
-                                <div class="form-group col-md-6">
-                                                                <label>Customer Name</label>
-                                    <SfTextBox Value="@(Order.CustomerID)" Enabled="@true"></SfTextBox>
-                                </div>
-                            }
-                        </EditTemplate>
-                    </GridColumn>
+                    <GridColumn Field=@nameof(Order.CustomerID) HeaderText="Customer Name" ValidationRules="@(new { required=true})" Width="150"></GridColumn>
                     <GridColumn Field=@nameof(Order.Freight) HeaderText="Freight" EditType="EditType.NumericEdit" Format="C2" Width="140" TextAlign="@TextAlign.Right" HeaderTextAlign="@TextAlign.Right"></GridColumn>
                     <GridColumn Field=@nameof(Order.OrderDate) HeaderText="Order Date" EditType="EditType.DatePickerEdit" ValidationRules="@(new { required=true})" Format="d" TextAlign="TextAlign.Right" Type="ColumnType.Date" Width="160"></GridColumn>
                     <GridColumn Field=@nameof(Order.ShipCountry) HeaderText="Ship Country" EditType="EditType.DropDownEdit" Width="150"></GridColumn>

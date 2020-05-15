@@ -6,6 +6,7 @@
 @*<CascadingValue Value="SelectedMufredat">*@
     <div class="control-section e-tab-section">
         <SfTab @ref="Tab" CssClass="BlazorTab" LoadOn="ContentLoad.Demand">
+            @*Selected="OnTabSelected" Selecting="OnTabSelecting"*@
             <TabEvents Created="TabCreate"></TabEvents>
             <TabItems>
                 <TabItem>
@@ -16,14 +17,14 @@
                         <Mufredat TabDegis="TabDegis"></Mufredat>
                     </ContentTemplate>
                 </TabItem>
-                <TabItem>
+                @*<TabItem>
                     <ChildContent>
                         <TabHeader Text="Bağlı Ders Oluştur"></TabHeader>
                     </ChildContent>
                     <ContentTemplate>
                         <BagliDersOlustur TabDegis="TabDegis"></BagliDersOlustur>
                     </ContentTemplate>
-                </TabItem>
+                </TabItem>*@
                 <TabItem>
                     <ChildContent>
                         <TabHeader Text="Bağlı Dersler"></TabHeader>
@@ -64,23 +65,28 @@
 
 @code{
 
-    //public MufredatDto SelectedMufredat { get; set; } = new MufredatDto();
+    SfTab Tab;
 
     public void TabDegis(int tabIndex)
     {
         Tab.EnableTab(0, true);
         Tab.EnableTab(1, tabIndex>0);
-        Tab.EnableTab(2, tabIndex>0);
         Tab.Select(tabIndex);
     }
-
-    SfTab Tab;
 
     public void TabCreate()
     {
         Tab.EnableTab(0, true);
         Tab.EnableTab(1, false);
-        Tab.EnableTab(2, false);
     }
+
+    //public void OnTabSelected(SelectEventArgs args)
+    //{
+    //    //StateHasChanged();
+    //}
+    //public void OnTabSelecting(SelectingEventArgs args)
+    //{
+    //    //StateHasChanged();
+    //}
 }
 

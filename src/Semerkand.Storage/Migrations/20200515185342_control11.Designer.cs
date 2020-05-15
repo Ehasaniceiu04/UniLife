@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Semerkand.Storage;
@@ -9,9 +10,10 @@ using Semerkand.Storage;
 namespace Semerkand.Storage.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200515185342_control11")]
+    partial class control11
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -466,7 +468,7 @@ namespace Semerkand.Storage.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<int>("MufredatId")
+                    b.Property<int>("MufredatID")
                         .HasColumnType("integer");
 
                     b.Property<int>("MyProperty")
@@ -491,7 +493,7 @@ namespace Semerkand.Storage.Migrations
 
                     b.HasIndex("DonemTipId");
 
-                    b.HasIndex("MufredatId");
+                    b.HasIndex("MufredatID");
 
                     b.ToTable("Derss");
                 });
@@ -1413,7 +1415,7 @@ namespace Semerkand.Storage.Migrations
 
                     b.HasOne("Semerkand.Shared.DataModels.Mufredat", "Mufredat")
                         .WithMany("Derss")
-                        .HasForeignKey("MufredatId")
+                        .HasForeignKey("MufredatID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

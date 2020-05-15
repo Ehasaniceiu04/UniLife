@@ -41,7 +41,7 @@
                             </div>
                             <div class="col-sm-6 pb-3">
                                 <label for="UniversiteId">Üniversite</label>
-                                <SfDropDownList CssClass="form-control" Value="@(fakulteInfo.UniversiteId.ToString())" TValue="string" TItem="UniversiteDto" Index="0" DataSource="universiteDtos">
+                                <SfDropDownList ID="UniversiteId" CssClass="form-control" Value="@(fakulteInfo.UniversiteId.ToString())" TValue="string" TItem="UniversiteDto" Index="0" DataSource="universiteDtos">
                                     <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
                                 </SfDropDownList>
                             </div>
