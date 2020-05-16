@@ -70,5 +70,15 @@ namespace Semerkand.Storage.Stores
             _db.Derss.Remove(ders);
             await _db.SaveChangesAsync(CancellationToken.None);
         }
+
+        public async Task<List<DersDto>> GetDersByMufredatId(int mufredatId)
+        {
+            var derss = await _db.Derss.Where(t => t.MufredatId == mufredatId).ToListAsync();
+
+            if (derss == null)
+                throw new InvalidDataException($"Unable to find Ders with mufredatId: {mufredatId}");
+
+            return _autoMapper.Map<List<DersDto>>(derss);
+        }
     }
 }

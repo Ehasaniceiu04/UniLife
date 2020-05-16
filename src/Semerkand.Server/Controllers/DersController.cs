@@ -37,6 +37,15 @@ namespace Semerkand.Server.Controllers
                 await _dersManager.Get(id) :
                 new ApiResponse(Status400BadRequest, "Ders Model is Invalid");
 
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("GetDersByMufredatId/{mufredatId}")]
+        public async Task<ApiResponse> GetDersByMufredatId(int mufredatId)
+            => ModelState.IsValid ?
+                await _dersManager.GetDersByMufredatId(mufredatId) :
+                new ApiResponse(Status400BadRequest, "Ders Model is Invalid");
+
+
         // POST: api/Ders
         [HttpPost]
         [AllowAnonymous]

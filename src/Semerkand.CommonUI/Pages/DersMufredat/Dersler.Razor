@@ -4,6 +4,7 @@
 @using Syncfusion.Blazor.DropDowns
 @using Syncfusion.Blazor.Inputs
 @using System.Net
+@inject AppState appState
 @using Syncfusion.Blazor.Inputs
 
 @using Newtonsoft.Json
@@ -46,9 +47,10 @@
                             </div>
                             <div class="col-sm-6 pb-3">
                                 <label for="MufredatID">MufredatID</label>
-                                <SfDropDownList ID="MufredatID" CssClass="form-control" Value="@(dersDto.MufredatId.ToString())" TValue="string" TItem="MufredatDto" Index="0" DataSource="mufredatDtos">
+                                <SfDropDownList ID="MufredatID" CssClass="form-control" Value="@(appState.MufredatState.Id.ToString())" TValue="string" TItem="MufredatDto" Index="0" DataSource="@(mufredatDtos.Where(x=>x.Id==appState.MufredatState.Id))">
                                     <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
                                 </SfDropDownList>
+                                @*<SfTextBox ID="MufredatId" CssClass="form-control" Value="@(dersDto.MufredatId.ToString())" Enabled="@false" Placeholder="@(appState.MufredatState.Ad)"></SfTextBox>*@
                             </div>
                             <div class="col-sm-6 pb-3">
                                 <label for="DonemTipId">DonemTipId</label>
@@ -117,7 +119,7 @@
 
             <GridColumn Field=@nameof(DersDto.Kod) HeaderText="Kod" ValidationRules="@(new { required=true})"></GridColumn>
             <GridColumn Field=@nameof(DersDto.KisaAd) HeaderText="Kısa Ad"></GridColumn>
-            <GridColumn Field=@nameof(DersDto.MufredatId) HeaderText="Müfredat" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@mufredatDtos" Width="150"></GridColumn>
+            <GridColumn Field=@nameof(DersDto.MufredatId) HeaderText="Müfredat" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="mufredatDtos" Width="150"></GridColumn>
             <GridColumn Field=@nameof(DersDto.DonemTipId) HeaderText="Dönem Tip" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@donemTipDtos" Width="150"></GridColumn>
             <GridColumn Field=@nameof(DersDto.Akts) HeaderText="Akts"></GridColumn>
             <GridColumn Field=@nameof(DersDto.GecmeNotu) HeaderText="GeçmeNotu"></GridColumn>
@@ -154,6 +156,7 @@
     List<DersDto> dersDtos = new List<DersDto>();
 
     List<MufredatDto> mufredatDtos = new List<MufredatDto>();
+
     List<DonemTipDto> donemTipDtos = new List<DonemTipDto>();
 
     public string[] MenuItems = new string[] { "Group", "Ungroup", "ColumnChooser", "Filter" };
@@ -171,7 +174,7 @@
 
     async Task ReadDerss()
     {
-        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/ders");
+        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/ders/GetDersByMufredatId/" + appState.MufredatState.Id);
 
         if (apiResponse.StatusCode == Status200OK)
         {

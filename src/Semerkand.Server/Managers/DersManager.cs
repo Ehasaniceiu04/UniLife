@@ -71,5 +71,17 @@ namespace Semerkand.Server.Managers
                 return new ApiResponse(Status400BadRequest, "Failed to update DersDto");
             }
         }
+
+        public async Task<ApiResponse> GetDersByMufredatId(int mufredatId)
+        {
+            try
+            {
+                return new ApiResponse(Status200OK, "Retrieved DersDto", await _dersStore.GetDersByMufredatId(mufredatId));
+            }
+            catch (Exception e)
+            {
+                return new ApiResponse(Status400BadRequest, "Failed to Retrieve DersDto");
+            }
+        }
     }
 }
