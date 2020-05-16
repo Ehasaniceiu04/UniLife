@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Semerkand.Shared.DataInterfaces;
 using Semerkand.Shared.DataModels;
 using Semerkand.Shared.Dto.Definitions;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -69,6 +70,17 @@ namespace Semerkand.Storage.Stores
 
             _db.Bolums.Remove(bolum);
             await _db.SaveChangesAsync(CancellationToken.None);
+        }
+
+        public async Task<List<BolumDto>> GetDersByMufredatId(string[] fakulteIds)
+        {
+            int[] myInts = Array.ConvertAll(fakulteIds, int.Parse);
+            var bolums= await _db.Bolums.Where(t => myInts.Contains(t.FakulteId)).ToListAsync();
+
+            if (bolums == null)
+                throw new InvalidDataException($"Unable to find Bolums with IDs:...");
+
+            return _autoMapper.Map<List<BolumDto>>(bolums);
         }
     }
 }

@@ -19,5 +19,6 @@ namespace Semerkand.Shared.DataInterfaces
         Task<Bolum> Update(BolumDto bolumDto);
 
         Task DeleteById(int id);
+        Task<List<BolumDto>> GetDersByMufredatId(string[] fakulteIds);
     }
 }

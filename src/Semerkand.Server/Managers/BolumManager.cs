@@ -71,5 +71,17 @@ namespace Semerkand.Server.Managers
                 return new ApiResponse(Status400BadRequest, "Failed to update BolumDto");
             }
         }
+
+        public async Task<ApiResponse> GetDersByMufredatId(string[] fakulteIds)
+        {
+            try
+            {
+                return new ApiResponse(Status200OK, "Retrieved BolumDtos", await _bolumStore.GetDersByMufredatId(fakulteIds));
+            }
+            catch (Exception e)
+            {
+                return new ApiResponse(Status400BadRequest, "Failed to Retrieve BolumDtos");
+            }
+        }
     }
 }

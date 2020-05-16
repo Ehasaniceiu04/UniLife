@@ -10,31 +10,31 @@
 @using Syncfusion.Blazor.Buttons
 
 <div class="row">
-    <div class="col-6 bg-success">
+    <div class="col-6 bg-light">
         <SfMultiSelect @ref="CokluFakulte" TValue="string[]" CssClass="e-small" Placeholder="Fakulteleri Seçiniz" Mode="@VisualMode.CheckBox" DataSource="@fakulteDtos" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Fakulteleri Seçiniz" PopupHeight="350px">
             <MultiSelectEvents TValue="string[]" ValueChange="FakulteToBolum"></MultiSelectEvents>
             <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
         </SfMultiSelect>
-        <SfMultiSelect @ref="CokluBolum" TValue="string[]" CssClass="e-small" Placeholder="Bölümleri Seçiniz" Mode="@VisualMode.CheckBox" DataSource="@bolumDtos" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Fakulteleri Seçiniz" PopupHeight="350px">
-            <MultiSelectFieldSettings Text="Name" Value="Code"></MultiSelectFieldSettings>
+        <SfMultiSelect @ref="CokluBolum" TValue="string[]" CssClass="e-small" Placeholder="Bölümleri Seçiniz" Mode="@VisualMode.CheckBox" DataSource="@bolumDtos" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Bölümleri Seçiniz" PopupHeight="350px">
+            <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
         </SfMultiSelect>
-        <SfMultiSelect @ref="CokluProgram" TValue="string[]" CssClass="e-small" Placeholder="Programları Seçiniz" Mode="@VisualMode.CheckBox" DataSource="@CokluProgram" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Fakulteleri Seçiniz" PopupHeight="350px">
-            <MultiSelectFieldSettings Text="Name" Value="Code"></MultiSelectFieldSettings>
+        @*<SfMultiSelect @ref="CokluProgram" TValue="string[]" CssClass="e-small" Placeholder="Programları Seçiniz" Mode="@VisualMode.CheckBox" DataSource="@CokluProgram" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Fakulteleri Seçiniz" PopupHeight="350px">
+            <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
         </SfMultiSelect>
         <SfMultiSelect @ref="CokluMufredat" TValue="string[]" CssClass="e-small" Placeholder="Müfredatları Seçiniz" Mode="@VisualMode.CheckBox" DataSource="@CokluMufredat" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Fakulteleri Seçiniz" PopupHeight="350px">
-            <MultiSelectFieldSettings Text="Name" Value="Code"></MultiSelectFieldSettings>
+            <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
         </SfMultiSelect>
         <SfMultiSelect @ref="CokluDonem" TValue="string[]" CssClass="e-small" Placeholder="Dönemleri Seçiniz" Mode="@VisualMode.CheckBox" DataSource="@CokluDonem" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Fakulteleri Seçiniz" PopupHeight="350px">
-            <MultiSelectFieldSettings Text="Name" Value="Code"></MultiSelectFieldSettings>
+            <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
         </SfMultiSelect>
         <SfMultiSelect @ref="CokluSınif" TValue="string[]" CssClass="e-small" Placeholder="Sınıfları Seçiniz" Mode="@VisualMode.CheckBox" DataSource="@CokluSınif" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Fakulteleri Seçiniz" PopupHeight="350px">
-            <MultiSelectFieldSettings Text="Name" Value="Code"></MultiSelectFieldSettings>
-        </SfMultiSelect>
+            <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
+        </SfMultiSelect>*@
         <SfTextBox Placeholder="Ders Kod" CssClass="e-small" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
         <SfTextBox Placeholder="Ders Ad" CssClass="e-small" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
     </div>
-    <div class="col-6 bg-warning">
-        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+    <div class="col-6 bg-white">
+        
     </div>
 </div>
 
@@ -47,6 +47,8 @@
     SfMultiSelect<string[]> CokluMufredat;
     SfMultiSelect<string[]> CokluDonem;
     SfMultiSelect<string[]> CokluSınif;
+
+    string[] seciliFakulteler;
 
 
 
@@ -76,23 +78,30 @@
         }
     }
 
-    public async void FakulteToBolum()
+    //public async void FakulteToBolum()
+    //{
+    //    seciliFakulteler = CokluFakulte.Value;
+    //    await ReadBolums();
+    //}
+    private void FakulteToBolum(MultiSelectChangeEventArgs<string[]> args)
     {
-        var seciliFakulteler = CokluFakulte.Value;
-        await ReadBolums();
+        seciliFakulteler = args.Value;
+        StateHasChanged();
+        ReadBolums();
     }
 
     async Task ReadBolums()
     {
-        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/bolum");
+        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/bolum/GetBolumByFakulteIds/"+ string.Join(',', seciliFakulteler));
 
         if (apiResponse.StatusCode == Status200OK)
         {
-            fakulteDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<FakulteDto[]>(apiResponse.Result.ToString()).ToList<FakulteDto>();
+            bolumDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<BolumDto[]>(apiResponse.Result.ToString()).ToList<BolumDto>();
+            StateHasChanged();
         }
         else
         {
-            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "fakulte getirilirken hata oluştu!");
+            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Bölüm getirilirken hata oluştu!");
         }
     }
 

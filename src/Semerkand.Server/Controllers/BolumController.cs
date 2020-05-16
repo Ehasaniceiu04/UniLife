@@ -62,12 +62,12 @@ namespace Semerkand.Server.Controllers
 
 
 
-        //[HttpGet]
-        //[AllowAnonymous]
-        //[Route("GetBolumByFakulteIds/{fakulteIds}")]
-        //public async Task<ApiResponse> GetBolumByFakulteIds(string[] fakulteIds)
-        //    => ModelState.IsValid ?
-        //        await _dersManager.GetDersByMufredatId(fakulteIds.Replace(' ').Split) :
-        //        new ApiResponse(Status400BadRequest, "Ders Model is Invalid");
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("GetBolumByFakulteIds/{fakulteIds}")]
+        public async Task<ApiResponse> GetBolumByFakulteIds(string fakulteIds)
+        => ModelState.IsValid ?
+                await _bolumManager.GetDersByMufredatId(fakulteIds.Replace(" ", "").Split(',')) :
+                new ApiResponse(Status400BadRequest, "Bolum Model is Invalid");
     }
 }

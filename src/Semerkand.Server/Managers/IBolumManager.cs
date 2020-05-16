@@ -15,5 +15,6 @@ namespace Semerkand.Server.Managers
         Task<ApiResponse> Create(BolumDto bolumDto);
         Task<ApiResponse> Update(BolumDto bolumDto);
         Task<ApiResponse> Delete(int id);
+        Task<ApiResponse> GetDersByMufredatId(string[] fakulteIds);
     }
 }
