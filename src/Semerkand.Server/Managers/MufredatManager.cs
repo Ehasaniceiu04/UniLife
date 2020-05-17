@@ -84,5 +84,17 @@ namespace Semerkand.Server.Managers
                 return new ApiResponse(Status400BadRequest, "Failed to Cokla MufredatDto");
             }
         }
+
+        public async Task<ApiResponse> GetMufredatByProgramIds(string[] programIds)
+        {
+            try
+            {
+                return new ApiResponse(Status200OK, "Retrieved MufredatDtos", await _mufredatStore.GetMufredatByProgramIds(programIds));
+            }
+            catch (Exception e)
+            {
+                return new ApiResponse(Status400BadRequest, "Failed to Retrieve MufredatDtos");
+            }
+        }
     }
 }

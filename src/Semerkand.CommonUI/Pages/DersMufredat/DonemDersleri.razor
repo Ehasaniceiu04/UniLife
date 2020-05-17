@@ -9,32 +9,87 @@
 @*@using Syncfusion.Blazor.DropDowns*@
 @using Syncfusion.Blazor.Buttons
 
+<style>
+    textarea.e-input,
+    .e-float-input textarea,
+    .e-float-input.e-control-wrapper textarea,
+    .e-input-group textarea,
+    .e-input-group.e-control-wrapper textarea {
+        resize: none;
+    }
+</style>
+
 <div class="row">
-    <div class="col-6 bg-light">
-        <SfMultiSelect @ref="CokluFakulte" TValue="string[]" CssClass="e-small" Placeholder="Fakulteleri Seçiniz" Mode="@VisualMode.CheckBox" DataSource="@fakulteDtos" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Fakulteleri Seçiniz" PopupHeight="350px">
-            <MultiSelectEvents TValue="string[]" ValueChange="FakulteToBolum"></MultiSelectEvents>
-            <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
-        </SfMultiSelect>
-        <SfMultiSelect @ref="CokluBolum" TValue="string[]" CssClass="e-small" Placeholder="Bölümleri Seçiniz" Mode="@VisualMode.CheckBox" DataSource="@bolumDtos" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Bölümleri Seçiniz" PopupHeight="350px">
-            <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
-        </SfMultiSelect>
-        @*<SfMultiSelect @ref="CokluProgram" TValue="string[]" CssClass="e-small" Placeholder="Programları Seçiniz" Mode="@VisualMode.CheckBox" DataSource="@CokluProgram" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Fakulteleri Seçiniz" PopupHeight="350px">
-            <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
-        </SfMultiSelect>
-        <SfMultiSelect @ref="CokluMufredat" TValue="string[]" CssClass="e-small" Placeholder="Müfredatları Seçiniz" Mode="@VisualMode.CheckBox" DataSource="@CokluMufredat" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Fakulteleri Seçiniz" PopupHeight="350px">
-            <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
-        </SfMultiSelect>
-        <SfMultiSelect @ref="CokluDonem" TValue="string[]" CssClass="e-small" Placeholder="Dönemleri Seçiniz" Mode="@VisualMode.CheckBox" DataSource="@CokluDonem" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Fakulteleri Seçiniz" PopupHeight="350px">
-            <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
-        </SfMultiSelect>
-        <SfMultiSelect @ref="CokluSınif" TValue="string[]" CssClass="e-small" Placeholder="Sınıfları Seçiniz" Mode="@VisualMode.CheckBox" DataSource="@CokluSınif" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Fakulteleri Seçiniz" PopupHeight="350px">
-            <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
-        </SfMultiSelect>*@
-        <SfTextBox Placeholder="Ders Kod" CssClass="e-small" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
-        <SfTextBox Placeholder="Ders Ad" CssClass="e-small" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
+    <div class="col-sm-12 col-md-6 bg-light">
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <div class="form-row">
+                    <SfMultiSelect @ref="CokluFakulte" TValue="string[]" CssClass="e-small col-sm-12" MaximumSelectionLength=1 Placeholder="Fakulteleri Seçiniz" Mode="@VisualMode.CheckBox" DataSource="@fakulteDtos" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Fakulteleri Seçiniz" PopupHeight="350px">
+                        <MultiSelectEvents TValue="string[]" ValueChange="FakulteToBolum"></MultiSelectEvents>
+                        <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
+                    </SfMultiSelect>
+                    <SfMultiSelect @ref="CokluBolum" TValue="string[]" CssClass="e-small col-sm-12" MaximumSelectionLength=1 Placeholder="Bölümleri Seçiniz" Mode="@VisualMode.CheckBox" DataSource="@bolumDtos" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Bölümleri Seçiniz" PopupHeight="350px">
+                        <MultiSelectEvents TValue="string[]" ValueChange="BolumToProgram"></MultiSelectEvents>
+                        <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
+                    </SfMultiSelect>
+                    <SfMultiSelect @ref="CokluProgram" TValue="string[]" CssClass="e-small col-sm-12" MaximumSelectionLength=1 Placeholder="Programları Seçiniz" Mode="@VisualMode.CheckBox" DataSource="@programDtos" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Programları Seçiniz" PopupHeight="350px">
+                        <MultiSelectEvents TValue="string[]" ValueChange="ProgramToMufredat"></MultiSelectEvents>
+                        <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
+                    </SfMultiSelect>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="form-row">
+                    <SfMultiSelect @ref="CokluDonem" TValue="string[]" CssClass="e-small col-sm-12" Placeholder="Dönemleri Seçiniz" Mode="@VisualMode.CheckBox" DataSource="@donemDtos" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Dönemleri Seçiniz" PopupHeight="350px">
+                        <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
+                    </SfMultiSelect>
+                    <SfMultiSelect @ref="CokluSinif" TValue="string[]" CssClass="e-small col-sm-12" Placeholder="Sınıfları Seçiniz" Mode="@VisualMode.CheckBox" DataSource="@sinifDtos" ShowSelectAll="true" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Sınıfları Seçiniz" PopupHeight="350px">
+                        <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
+                    </SfMultiSelect>
+                    <SfCheckBox @ref="isIntibak" Label="İntibakı Yapılmayanlar" CssClass="e-small col-sm-6" Value="true"></SfCheckBox>
+                    <SfCheckBox @ref="isActive" Label="Sadece Aktifler" CssClass="e-small col-sm-6" Value="true"></SfCheckBox>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-row">
+                    <SfMultiSelect @ref="CokluMufredat" TValue="string[]" CssClass="e-small col-sm-12" MaximumSelectionLength=1 Placeholder="Müfredatları Seçiniz" Mode="@VisualMode.CheckBox" DataSource="@mufredatDtos" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Müfredatları Seçiniz" PopupHeight="350px">
+                        <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
+                    </SfMultiSelect>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-row">
+                    <SfTextBox Placeholder="Ders Kod" CssClass="e-small col-sm-3"></SfTextBox>
+                    <SfTextBox Placeholder="Ders Ad" CssClass="e-small col-sm-6"></SfTextBox>
+                    <SfButton Type="submit" OnClick="MufredatDersRefresh" CssClass="e-success col-sm-3">Yenile</SfButton>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-12">
+                <div class="form-row">
+                    <SfGrid DataSource="@DersDtos" RowHeight="20" ContextMenuItems="@(new List<object>() { "AutoFit", "AutoFitAll", "SortAscending", "SortDescending","Copy", "Edit", "Delete", "Save", "Cancel","PdfExport", "ExcelExport", "CsvExport", "FirstPage", "PrevPage","LastPage", "NextPage"})" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
+                        @*<GridEvents OnActionComplete="ActionCompletedHandler" TValue="ProgramDto"></GridEvents>*@
+                        <GridSelectionSettings CheckboxOnly="true" PersistSelection="true"></GridSelectionSettings>
+                        <GridColumns>
+                            <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
+                            <GridColumn Visible="false" Field=@nameof(DersDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+                            <GridColumn AutoFit="true" Field=@nameof(DersDto.Kod) HeaderText="Ders Kodu"></GridColumn>
+                            <GridColumn Field=@nameof(DersDto.Ad) HeaderText="Ders Adı"></GridColumn>
+                            <GridColumn AutoFit="true" Field=@nameof(DersDto.Zorunlu) HeaderText="Z"></GridColumn>
+                            <GridColumn AutoFit="true" Field=@nameof(DersDto.Kredi) HeaderText="Krd"></GridColumn>
+                            <GridColumn AutoFit="true" Field=@nameof(DersDto.Akts) HeaderText="Akts"></GridColumn>
+                            <GridColumn AutoFit="true" Field=@nameof(DersDto.Sinif) HeaderText="Sinif"></GridColumn>
+                        </GridColumns>
+                    </SfGrid>
+                </div>
+                    
+                </div>
+            </div>
     </div>
-    <div class="col-6 bg-white">
-        
+    <div class="col-sm-12 col-md-6 bg-white">
+
     </div>
 </div>
 
@@ -46,24 +101,53 @@
     SfMultiSelect<string[]> CokluProgram;
     SfMultiSelect<string[]> CokluMufredat;
     SfMultiSelect<string[]> CokluDonem;
-    SfMultiSelect<string[]> CokluSınif;
-
-    string[] seciliFakulteler;
+    SfMultiSelect<string[]> CokluSinif;
 
 
+    SfCheckBox isIntibak;
+    SfCheckBox isActive;
+
+    //string[] seciliFakulteler;
+    //string[] seciliBolumler;
+    //string[] seciliProgramlar;
+    //string[] seciliMufredatlar;
+    //string[] seciliDonemler;
+    //string[] seciliSiniflar;
 
     List<FakulteDto> fakulteDtos = new List<FakulteDto>();
     List<BolumDto> bolumDtos = new List<BolumDto>();
     List<ProgramDto> programDtos = new List<ProgramDto>();
     List<MufredatDto> mufredatDtos = new List<MufredatDto>();
     List<DonemDto> donemDtos = new List<DonemDto>();
-    List<SinifDto> sinifDtos = new List<SinifDto>();
+    //List<SinifDto> sinifDtos = new List<SinifDto>();
+    List<SinifDto> sinifDtos = new List<SinifDto>
+    {
+        new SinifDto() { Ad = "0", Id = 0 },
+        new SinifDto() { Ad = "1", Id = 1 },
+        new SinifDto() { Ad = "2", Id = 2 },
+        new SinifDto() { Ad = "3", Id = 3 },
+        new SinifDto() { Ad = "4", Id = 4 },
+        new SinifDto() { Ad = "5", Id = 5 },
+        new SinifDto() { Ad = "6", Id = 6 },
+        new SinifDto() { Ad = "7", Id = 7 },
+        new SinifDto() { Ad = "8", Id = 8 },
+        new SinifDto() { Ad = "9", Id = 9 },
+    };
+
+
+
+
 
     protected override async Task OnInitializedAsync()
     {
         await ReadFakultes();
+        await ReadDonems();
+
+
 
     }
+
+
     async Task ReadFakultes()
     {
         ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/fakulte");
@@ -71,6 +155,11 @@
         if (apiResponse.StatusCode == Status200OK)
         {
             fakulteDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<FakulteDto[]>(apiResponse.Result.ToString()).ToList<FakulteDto>();
+            if (fakulteDtos.Count > 1)
+            {
+                fakulteDtos.Add(new FakulteDto() { Ad = "Tümü", Id = 0 });
+            }
+
         }
         else
         {
@@ -78,25 +167,36 @@
         }
     }
 
-    //public async void FakulteToBolum()
-    //{
-    //    seciliFakulteler = CokluFakulte.Value;
-    //    await ReadBolums();
-    //}
-    private void FakulteToBolum(MultiSelectChangeEventArgs<string[]> args)
+    private async void FakulteToBolum(MultiSelectChangeEventArgs<string[]> args)
     {
-        seciliFakulteler = args.Value;
-        StateHasChanged();
-        ReadBolums();
+        //seciliFakulteler = args.Value;
+
+        if (args.Value == null)
+        {
+            bolumDtos = new List<BolumDto>();
+            programDtos = new List<ProgramDto>();
+            mufredatDtos = new List<MufredatDto>();
+            StateHasChanged();
+        }
+        else
+        {
+            await ReadBolums();
+        }
+
     }
 
     async Task ReadBolums()
     {
-        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/bolum/GetBolumByFakulteIds/"+ string.Join(',', seciliFakulteler));
+        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/bolum/GetBolumByFakulteIds/" + string.Join(',', CokluFakulte.Value));
 
         if (apiResponse.StatusCode == Status200OK)
         {
             bolumDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<BolumDto[]>(apiResponse.Result.ToString()).ToList<BolumDto>();
+            if (bolumDtos.Count > 0)
+            {
+                bolumDtos.Add(new BolumDto() { Ad = "Tümü", Id = 0 });
+
+            }
             StateHasChanged();
         }
         else
@@ -105,42 +205,117 @@
         }
     }
 
+    private async void BolumToProgram(MultiSelectChangeEventArgs<string[]> args)
+    {
+
+        if (args.Value == null)
+        {
+            programDtos = new List<ProgramDto>();
+            mufredatDtos = new List<MufredatDto>();
+            StateHasChanged();
+        }
+        else
+        {
+            await ReadPrograms();
+        }
+
+    }
+
+    async Task ReadPrograms()
+    {
+        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/program/GetProgramByBolumIds/" + string.Join(',', CokluBolum.Value));
+
+        if (apiResponse.StatusCode == Status200OK)
+        {
+            programDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<ProgramDto[]>(apiResponse.Result.ToString()).ToList<ProgramDto>();
+            if (programDtos.Count > 0)
+            {
+                programDtos.Add(new ProgramDto() { Ad = "Tümü", Id = 0 });
+            }
+
+            StateHasChanged();
+        }
+        else
+        {
+            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "program getirilirken hata oluştu!");
+        }
+    }
+
+    private async void ProgramToMufredat(MultiSelectChangeEventArgs<string[]> args)
+    {
+        if (args.Value == null)
+        {
+            mufredatDtos = new List<MufredatDto>();
+            StateHasChanged();
+        }
+        else
+        {
+            await ReadMufredats();
+        }
+    }
+    async Task ReadMufredats()
+    {
+        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/mufredat/GetMufredatByProgramIds/" + string.Join(',', CokluProgram.Value));
+
+        if (apiResponse.StatusCode == Status200OK)
+        {
+            mufredatDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<MufredatDto[]>(apiResponse.Result.ToString()).ToList<MufredatDto>();
+            if (mufredatDtos.Count>0)
+            {
+                mufredatDtos.Add(new MufredatDto() { Ad = "Tümü", Id = 0 });
+            }
+            StateHasChanged();
+        }
+        else
+        {
+            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "mufredat getirilirken hata oluştu!");
+        }
+    }
+
+    async Task ReadDonems()
+    {
+        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/donem");
+
+        if (apiResponse.StatusCode == Status200OK)
+        {
+            donemDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<DonemDto[]>(apiResponse.Result.ToString()).ToList<DonemDto>();
+            //donemDtos.Add(new DonemDto() { Ad = "Tümü", Id = 0 });
+        }
+        else
+        {
+            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "donem getirilirken hata oluştu!");
+        }
+    }
 
 
-    public bool ShowSelectAllCheckBox { get; set; } = true;
+    public bool ShowSelectAllCheckBox { get; set; } = false;
     public bool EnableSelectionOrders { get; set; } = true;
     public bool EnableDropDownIcon { get; set; } = true;
     private bool checkSelectAll { get; set; } = true;
     private bool dropdownButton { get; set; } = true;
     private bool selectionReorder { get; set; } = true;
 
-    public class Countries
+
+    //MufredatGrid
+    public List<DersDto> DersDtos = new List<DersDto>();
+
+    async Task MufredatDersRefresh()
     {
-        public string Name { get; set; }
-        public string Code { get; set; }
+        DersAcDto dersAcDto = new DersAcDto();
+        dersAcDto.MufredatSecilen = CokluMufredat.Value;
+        dersAcDto.MufredatSecenektekiler = mufredatDtos.Select(x=>x.Id);
+        dersAcDto.DonemSecilen = Convert.ToInt32(CokluDonem.Value.First());
+        dersAcDto.SinifSecilen = CokluSinif.Value;
+        dersAcDto.IsIntibak = isIntibak.Checked;
+        dersAcDto.IsActive = isActive.Checked;
+
+        ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/ders/GetAcilacakDers", dersAcDto);
+
+        //ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/ders");
+        DersDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<DersDto[]>(apiResponse.Result.ToString()).ToList<DersDto>();
     }
-    List<Countries> Country = new List<Countries>
-{
-        new Countries() { Name = "Australia", Code = "AU" },
-        new Countries() { Name = "Bermuda", Code = "BM" },
-        new Countries() { Name = "Canada", Code = "CA" },
-        new Countries() { Name = "Cameroon", Code = "CM" },
-        new Countries() { Name = "Denmark", Code = "DK" },
-        new Countries() { Name = "France", Code = "FR" },
-        new Countries() { Name = "Finland", Code = "FI" },
-        new Countries() { Name = "Germany", Code = "DE" },
-        new Countries() { Name = "Greenland", Code = "GL" },
-        new Countries() { Name = "Hong Kong", Code = "HK" },
-        new Countries() { Name = "India", Code = "IN" },
-        new Countries() { Name = "Italy", Code = "IT" },
-        new Countries() { Name = "Japan", Code = "JP" },
-        new Countries() { Name = "Mexico", Code = "MX" },
-        new Countries() { Name = "Norway", Code = "NO" },
-        new Countries() { Name = "Poland", Code = "PL" },
-        new Countries() { Name = "Switzerland", Code = "CH" },
-        new Countries() { Name = "United Kingdom", Code = "GB" },
-        new Countries() { Name = "United States", Code = "US" },
-    };
+
+
 }
 <style>
     .property-section .e-checkbox-wrapper {

@@ -16,6 +16,7 @@ namespace Semerkand.Server.Controllers
     public class KeyValuesController : ControllerBase
     {
         private readonly IKayitNedenManager _kayitNedenManager;
+        //private readonly ISinifManager _sinifManager;
 
         public KeyValuesController(IKayitNedenManager kayitNedenManager)
         {

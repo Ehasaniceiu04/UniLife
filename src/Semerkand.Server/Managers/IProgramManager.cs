@@ -15,5 +15,6 @@ namespace Semerkand.Server.Managers
         Task<ApiResponse> Create(ProgramDto programDto);
         Task<ApiResponse> Update(ProgramDto programDto);
         Task<ApiResponse> Delete(int id);
+        Task<ApiResponse> GetProgramByBolumIds(string[] bolumIds);
     }
 }

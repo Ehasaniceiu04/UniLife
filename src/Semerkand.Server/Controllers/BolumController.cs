@@ -67,7 +67,7 @@ namespace Semerkand.Server.Controllers
         [Route("GetBolumByFakulteIds/{fakulteIds}")]
         public async Task<ApiResponse> GetBolumByFakulteIds(string fakulteIds)
         => ModelState.IsValid ?
-                await _bolumManager.GetDersByMufredatId(fakulteIds.Replace(" ", "").Split(',')) :
+                await _bolumManager.GetBolumByFakulteId(fakulteIds.Replace(" ", "").Split(',')) :
                 new ApiResponse(Status400BadRequest, "Bolum Model is Invalid");
     }
 }

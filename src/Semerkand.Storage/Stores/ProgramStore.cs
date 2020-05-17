@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Semerkand.Shared.DataInterfaces;
 using Semerkand.Shared.DataModels;
 using Semerkand.Shared.Dto.Definitions;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -69,6 +70,26 @@ namespace Semerkand.Storage.Stores
 
             _db.Programs.Remove(program);
             await _db.SaveChangesAsync(CancellationToken.None);
+        }
+
+        public async Task<List<Program>> GetProgramByBolumIds(string[] bolumIds)
+        {
+            int[] myInts = Array.ConvertAll(bolumIds, int.Parse);
+
+            List<Program> programs;
+            if (myInts.Contains(0))
+            {
+                programs = await _db.Programs.ToListAsync();
+            }
+            else
+            {
+                programs = await _db.Programs.Where(t => myInts.Contains(t.BolumId)).ToListAsync();
+            }
+
+            if (programs == null)
+                throw new InvalidDataException($"Unable to find Program with IDs:...");
+
+            return _autoMapper.Map<List<Program>>(programs);
         }
     }
 }

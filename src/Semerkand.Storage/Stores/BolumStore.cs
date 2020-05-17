@@ -72,10 +72,19 @@ namespace Semerkand.Storage.Stores
             await _db.SaveChangesAsync(CancellationToken.None);
         }
 
-        public async Task<List<BolumDto>> GetDersByMufredatId(string[] fakulteIds)
+        public async Task<List<BolumDto>> GetBolumByFakulteId(string[] fakulteIds)
         {
             int[] myInts = Array.ConvertAll(fakulteIds, int.Parse);
-            var bolums= await _db.Bolums.Where(t => myInts.Contains(t.FakulteId)).ToListAsync();
+
+            List<Bolum> bolums;
+            if (myInts.Contains(0))
+            {
+                bolums = await _db.Bolums.ToListAsync();
+            }
+            else
+            {
+                bolums = await _db.Bolums.Where(t => myInts.Contains(t.FakulteId)).ToListAsync();
+            }            
 
             if (bolums == null)
                 throw new InvalidDataException($"Unable to find Bolums with IDs:...");

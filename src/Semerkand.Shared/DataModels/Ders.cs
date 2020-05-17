@@ -27,6 +27,5 @@ namespace Semerkand.Shared.DataModels
         public bool Durum { get; set; }
         public int Zorunlu { get; set; }
         public int Sinif { get; set; }
-        public int MyProperty { get; set; }
     }
 }

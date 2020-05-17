@@ -67,5 +67,14 @@ namespace Semerkand.Server.Controllers
         [Authorize(Permissions.Ders.Delete)]
         public async Task<ApiResponse> Delete(int id)
             => await _dersManager.Delete(id);
+
+        
+        //    [HttpGet]
+        //[AllowAnonymous]
+        //[Route("GetMufredatByProgramIds/{programIds}")]
+        //public async Task<ApiResponse> GetAcilacakDers(string programIds)
+        //=> ModelState.IsValid ?
+        //        await _mufredatManager.GetMufredatByProgramIds(programIds.Replace(" ", "").Split(',')) :
+        //        new ApiResponse(Status400BadRequest, "Mufredat Model is Invalid");
     }
 }

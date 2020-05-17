@@ -20,5 +20,6 @@ namespace Semerkand.Shared.DataInterfaces
 
         Task DeleteById(int id);
         Task Cokla(int id);
+        Task<List<Mufredat>> GetMufredatByProgramIds(string[] programIds);
     }
 }

@@ -13,5 +13,6 @@ namespace Semerkand.Server.Managers
         Task<ApiResponse> Delete(int id);
 
         Task<ApiResponse> Cokla(int id);
+        Task<ApiResponse> GetMufredatByProgramIds(string[] programIds);
     }
 }

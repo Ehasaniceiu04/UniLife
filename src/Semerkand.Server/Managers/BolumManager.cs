@@ -72,11 +72,11 @@ namespace Semerkand.Server.Managers
             }
         }
 
-        public async Task<ApiResponse> GetDersByMufredatId(string[] fakulteIds)
+        public async Task<ApiResponse> GetBolumByFakulteId(string[] fakulteIds)
         {
             try
             {
-                return new ApiResponse(Status200OK, "Retrieved BolumDtos", await _bolumStore.GetDersByMufredatId(fakulteIds));
+                return new ApiResponse(Status200OK, "Retrieved BolumDtos", await _bolumStore.GetBolumByFakulteId(fakulteIds));
             }
             catch (Exception e)
             {

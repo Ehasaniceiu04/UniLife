@@ -69,5 +69,14 @@ namespace Semerkand.Server.Controllers
             => ModelState.IsValid ?
                 await _mufredatManager.Cokla(id) :
                 new ApiResponse(Status400BadRequest, "MUfreadt Model is Invalid");
+
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("GetMufredatByProgramIds/{programIds}")]
+        public async Task<ApiResponse> GetMufredatByProgramIds(string programIds)
+        => ModelState.IsValid ?
+                await _mufredatManager.GetMufredatByProgramIds(programIds.Replace(" ", "").Split(',')) :
+                new ApiResponse(Status400BadRequest, "Mufredat Model is Invalid");
     }
 }

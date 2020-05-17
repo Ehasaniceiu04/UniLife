@@ -71,5 +71,17 @@ namespace Semerkand.Server.Managers
                 return new ApiResponse(Status400BadRequest, "Failed to update ProgramDto");
             }
         }
+
+        public async Task<ApiResponse> GetProgramByBolumIds(string[] bolumIds)
+        {
+            try
+            {
+                return new ApiResponse(Status200OK, "Retrieved ProgramDtos", await _programStore.GetProgramByBolumIds(bolumIds));
+            }
+            catch (Exception e)
+            {
+                return new ApiResponse(Status400BadRequest, "Failed to Retrieve ProgramDtos");
+            }
+        }
     }
 }

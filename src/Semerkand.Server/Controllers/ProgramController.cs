@@ -58,5 +58,13 @@ namespace Semerkand.Server.Controllers
         [Authorize(Permissions.Program.Delete)]
         public async Task<ApiResponse> Delete(int id)
             => await _programManager.Delete(id);
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("GetProgramByBolumIds/{bolumIds}")]
+        public async Task<ApiResponse> GetProgramByBolumIds(string bolumIds)
+        => ModelState.IsValid ?
+                await _programManager.GetProgramByBolumIds(bolumIds.Replace(" ", "").Split(',')) :
+                new ApiResponse(Status400BadRequest, "Program Model is Invalid");
     }
 }

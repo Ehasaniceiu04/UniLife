@@ -4,6 +4,7 @@ using Semerkand.Shared.DataInterfaces;
 using Semerkand.Shared.DataModels;
 using Semerkand.Shared.Dto;
 using Semerkand.Shared.Dto.Definitions;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -106,6 +107,26 @@ namespace Semerkand.Storage.Stores
             }
             
 
+        }
+
+        public async Task<List<Mufredat>> GetMufredatByProgramIds(string[] programIds)
+        {
+            int[] myInts = Array.ConvertAll(programIds, int.Parse);
+            List<Mufredat> mufredats;
+            if (myInts.Contains(0))
+            {
+                mufredats = await _db.Mufredats.ToListAsync();
+            }
+            else
+            {
+                mufredats = await _db.Mufredats.Where(t => myInts.Contains(t.ProgramId)).ToListAsync();
+            }
+            
+
+            if (mufredats == null)
+                throw new InvalidDataException($"Unable to find Mufredats with IDs:...");
+
+            return _autoMapper.Map<List<Mufredat>>(mufredats);
         }
     }
 }
