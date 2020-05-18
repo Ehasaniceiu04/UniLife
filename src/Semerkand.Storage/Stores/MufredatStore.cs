@@ -113,7 +113,7 @@ namespace Semerkand.Storage.Stores
         {
             int[] myInts = Array.ConvertAll(programIds, int.Parse);
             List<Mufredat> mufredats;
-            if (myInts.Contains(0))
+            if (myInts.Contains(55555))
             {
                 mufredats = await _db.Mufredats.ToListAsync();
             }

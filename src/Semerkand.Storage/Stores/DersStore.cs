@@ -87,7 +87,7 @@ namespace Semerkand.Storage.Stores
             var derss = from ders in _db.Derss
                         join m in _db.Mufredats on ders.MufredatId equals m.Id
                         where
-                            (dersAcDto.MufredatSecilen.Contains(0) ? dersAcDto.MufredatSecenektekiler.Contains(ders.MufredatId) : dersAcDto.MufredatSecilen.Contains(ders.MufredatId))
+                            (dersAcDto.MufredatSecilen.Contains(55555) ? dersAcDto.MufredatSecenektekiler.Contains(ders.MufredatId) : dersAcDto.MufredatSecilen.Contains(ders.MufredatId))
                             && (m.Aktif == dersAcDto.IsActive) && (m.Aktif == dersAcDto.IsIntibak)//TODO : intibak ve aktif konusu konuslacak
                             && (dersAcDto.SinifSecilen.Contains(ders.Sinif))
                             && (ders.DonemTipId == dersAcDto.DonemTipSecilen)

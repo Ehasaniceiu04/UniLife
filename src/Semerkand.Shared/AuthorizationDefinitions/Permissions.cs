@@ -12,6 +12,17 @@ namespace Semerkand.Shared.AuthorizationDefinitions
 
     public static class Permissions
     {
+        public static class DersAcilan
+        {
+            [Description("Create a new DersAcilan")]
+            public const string Create = nameof(DersAcilan) + "." + nameof(Actions.Create);
+            [Description("Read DersAcilans")]
+            public const string Read = nameof(DersAcilan) + "." + nameof(Actions.Read);
+            [Description("Edit existing DersAcilans")]
+            public const string Update = nameof(DersAcilan) + "." + nameof(Actions.Update);
+            [Description("Delete any DersAcilan")]
+            public const string Delete = nameof(DersAcilan) + "." + nameof(Actions.Delete);
+        }
         public static class Donem
         {
             [Description("Create a new Donem")]

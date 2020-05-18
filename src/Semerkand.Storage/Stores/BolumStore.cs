@@ -77,7 +77,7 @@ namespace Semerkand.Storage.Stores
             int[] myInts = Array.ConvertAll(fakulteIds, int.Parse);
 
             List<Bolum> bolums;
-            if (myInts.Contains(0))
+            if (myInts.Contains(55555))
             {
                 bolums = await _db.Bolums.ToListAsync();
             }
