@@ -6,6 +6,7 @@ using Semerkand.Shared.Dto.Definitions;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using System.Threading.Tasks;
 namespace Semerkand.Storage.Stores
@@ -79,6 +80,24 @@ namespace Semerkand.Storage.Stores
                 throw new InvalidDataException($"Unable to find Ders with mufredatId: {mufredatId}");
 
             return _autoMapper.Map<List<DersDto>>(derss);
+        }
+
+        public async Task<List<DersDto>> GetAcilacakDers(DersAcDto dersAcDto)
+        {
+            var derss = from ders in _db.Derss
+                        join m in _db.Mufredats on ders.MufredatId equals m.Id
+                        where
+                            (dersAcDto.MufredatSecilen.Contains(0) ? dersAcDto.MufredatSecenektekiler.Contains(ders.MufredatId) : dersAcDto.MufredatSecilen.Contains(ders.MufredatId))
+                            && (m.Aktif == dersAcDto.IsActive) && (m.Aktif == dersAcDto.IsIntibak)//TODO : intibak ve aktif konusu konuslacak
+                            && (dersAcDto.SinifSecilen.Contains(ders.Sinif))
+                            && (ders.DonemTipId == dersAcDto.DonemTipSecilen)
+                            && (string.IsNullOrWhiteSpace(dersAcDto.DersAd) ? true : dersAcDto.DersAd == ders.Ad)
+                            && (string.IsNullOrWhiteSpace(dersAcDto.DersKod) ? true : dersAcDto.DersKod == ders.Kod)
+                        select ders;
+
+            return _autoMapper.Map<List<DersDto>>(await derss.ToListAsync()) ;
+
+
         }
     }
 }

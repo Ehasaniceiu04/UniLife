@@ -1,14 +1,11 @@
-﻿using Semerkand.Server.Managers;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Semerkand.Server.Managers;
 using Semerkand.Server.Middleware.Wrappers;
 using Semerkand.Shared.AuthorizationDefinitions;
-using Semerkand.Shared.Dto.Sample;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+using Semerkand.Shared.Dto.Definitions;
 using System.Threading.Tasks;
 using static Microsoft.AspNetCore.Http.StatusCodes;
-using Semerkand.Shared.Dto.Definitions;
-using Semerkand.Shared.DataModels;
-using Semerkand.CommonUI.Pages.Definitions.Tabs;
 
 namespace Semerkand.Server.Controllers
 {
@@ -68,13 +65,13 @@ namespace Semerkand.Server.Controllers
         public async Task<ApiResponse> Delete(int id)
             => await _dersManager.Delete(id);
 
-        
-        //    [HttpGet]
-        //[AllowAnonymous]
-        //[Route("GetMufredatByProgramIds/{programIds}")]
-        //public async Task<ApiResponse> GetAcilacakDers(string programIds)
-        //=> ModelState.IsValid ?
-        //        await _mufredatManager.GetMufredatByProgramIds(programIds.Replace(" ", "").Split(',')) :
-        //        new ApiResponse(Status400BadRequest, "Mufredat Model is Invalid");
+
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("GetAcilacakDers")]
+        public async Task<ApiResponse> GetAcilacakDers([FromBody] DersAcDto dersAcDto)
+            => ModelState.IsValid ?
+                    await _dersManager.GetAcilacakDers(dersAcDto) :
+                    new ApiResponse(Status400BadRequest, "DersAcDto Model is Invalid");
     }
 }

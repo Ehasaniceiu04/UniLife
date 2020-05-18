@@ -8,10 +8,10 @@ namespace Semerkand.Shared.Dto.Definitions
 {
     public class DersAcDto
     {
-        public string[] MufredatSecilen { get; set; }
+        public int[] MufredatSecilen { get; set; }
         public IEnumerable<int> MufredatSecenektekiler { get; set; }
-        public int DonemSecilen { get; set; }
-        public string[] SinifSecilen{ get; set; }
+        public int DonemTipSecilen { get; set; }
+        public int[] SinifSecilen{ get; set; }
         public bool IsIntibak { get; set; }
         public bool IsActive { get; set; }
         public string DersKod { get; set; }

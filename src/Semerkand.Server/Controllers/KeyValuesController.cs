@@ -41,7 +41,7 @@ namespace Semerkand.Server.Controllers
         [HttpGet("{id}")]
         [AllowAnonymous]
         [Route("GetKayitNeden")]
-        public async Task<ApiResponse> Get(int id)
+        public async Task<ApiResponse> GetKayitNeden(int id)
             => ModelState.IsValid ?
                 await _kayitNedenManager.Get(id) :
                 new ApiResponse(Status400BadRequest, "OgrenimTur Model is Invalid");
@@ -50,7 +50,7 @@ namespace Semerkand.Server.Controllers
         [HttpPost]
         [AllowAnonymous]
         [Route("PostKayitNeden")]
-        public async Task<ApiResponse> Post([FromBody] KayitNedenDto kayitNedenDto)
+        public async Task<ApiResponse> PostKayitNeden([FromBody] KayitNedenDto kayitNedenDto)
             => ModelState.IsValid ?
                 await _kayitNedenManager.Create(kayitNedenDto) :
                 new ApiResponse(Status400BadRequest, "KayitNeden Model is Invalid");
@@ -59,16 +59,18 @@ namespace Semerkand.Server.Controllers
         [HttpPut]
         [AllowAnonymous]
         [Route("PutKayitNeden")]
-        public async Task<ApiResponse> Put([FromBody] KayitNedenDto kayitNedenDto)
+        public async Task<ApiResponse> PutKayitNeden([FromBody] KayitNedenDto kayitNedenDto)
             => ModelState.IsValid ?
                 await _kayitNedenManager.Update(kayitNedenDto) :
                 new ApiResponse(Status400BadRequest, "KayitNeden Model is Invalid");
 
         // DELETE: api/OgrenimTur/5
-        [HttpDelete("{id}")]
+        [HttpDelete]
         [Authorize(Permissions.Universite.Delete)]
-        [Route("DeleteKayitNeden")]
-        public async Task<ApiResponse> Delete(int id)
+        [Route("DeleteKayitNeden/{id}")]
+        public async Task<ApiResponse> DeleteKayitNeden(int id)
             => await _kayitNedenManager.Delete(id);
+
+
     }
 }

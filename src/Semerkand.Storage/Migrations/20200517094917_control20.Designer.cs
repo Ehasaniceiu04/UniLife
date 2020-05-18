@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Semerkand.Storage;
@@ -9,9 +10,10 @@ using Semerkand.Storage;
 namespace Semerkand.Storage.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200517094917_control20")]
+    partial class control20
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -491,96 +493,6 @@ namespace Semerkand.Storage.Migrations
                     b.HasIndex("MufredatId");
 
                     b.ToTable("Derss");
-                });
-
-            modelBuilder.Entity("Semerkand.Shared.DataModels.DersAcilan", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Ad")
-                        .IsRequired()
-                        .HasColumnType("character varying(300)")
-                        .HasMaxLength(300);
-
-                    b.Property<string>("AdEn")
-                        .HasColumnType("text");
-
-                    b.Property<int>("Akts")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp without time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.Property<int>("DersId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("DonemTipId")
-                        .HasColumnType("integer");
-
-                    b.Property<bool>("Durum")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("GecmeNotu")
-                        .HasColumnType("integer");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("KisaAd")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Kod")
-                        .HasColumnType("text");
-
-                    b.Property<double>("Kredi")
-                        .HasColumnType("double precision");
-
-                    b.Property<int>("LabSaat")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid>("ModifiedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("ModifiedOn")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp without time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.Property<string>("OptikKod")
-                        .HasColumnType("text");
-
-                    b.Property<int>("ProgramId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Sinif")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("TeoSaat")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("UygSaat")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Zorunlu")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DersId");
-
-                    b.HasIndex("DonemTipId");
-
-                    b.HasIndex("ProgramId");
-
-                    b.ToTable("DersAcilan");
                 });
 
             modelBuilder.Entity("Semerkand.Shared.DataModels.Donem", b =>
@@ -1504,27 +1416,6 @@ namespace Semerkand.Storage.Migrations
                     b.HasOne("Semerkand.Shared.DataModels.Mufredat", "Mufredat")
                         .WithMany("Derss")
                         .HasForeignKey("MufredatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Semerkand.Shared.DataModels.DersAcilan", b =>
-                {
-                    b.HasOne("Semerkand.Shared.DataModels.Ders", "Ders")
-                        .WithMany("DersAcilans")
-                        .HasForeignKey("DersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Semerkand.Shared.DataModels.DonemTip", "DonemTip")
-                        .WithMany("DersAcilans")
-                        .HasForeignKey("DonemTipId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Semerkand.Shared.DataModels.Program", "Program")
-                        .WithMany("DersAcilans")
-                        .HasForeignKey("ProgramId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

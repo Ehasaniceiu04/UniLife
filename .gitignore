@@ -346,4 +346,3 @@ healthchecksdb
 /src/BlazorBoilerplate.Server/*.db
 *.rsa
 /src/BlazorBoilerplate.Server/appsettings.Local.json
-src/Semerkand.Storage/Stores/BaseStore.cs

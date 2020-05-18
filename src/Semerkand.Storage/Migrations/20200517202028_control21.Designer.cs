@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Semerkand.Storage;
@@ -9,9 +10,10 @@ using Semerkand.Storage;
 namespace Semerkand.Storage.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200517202028_control21")]
+    partial class control21
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1284,6 +1286,9 @@ namespace Semerkand.Storage.Migrations
                     b.Property<string>("OsymTur")
                         .HasColumnType("text");
 
+                    b.Property<int?>("ProgramId")
+                        .HasColumnType("integer");
+
                     b.Property<int>("ProgramTipId")
                         .HasColumnType("integer");
 
@@ -1299,6 +1304,8 @@ namespace Semerkand.Storage.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BolumId");
+
+                    b.HasIndex("ProgramId");
 
                     b.ToTable("Programs");
                 });
@@ -1517,13 +1524,13 @@ namespace Semerkand.Storage.Migrations
                         .IsRequired();
 
                     b.HasOne("Semerkand.Shared.DataModels.DonemTip", "DonemTip")
-                        .WithMany("DersAcilans")
+                        .WithMany()
                         .HasForeignKey("DonemTipId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Semerkand.Shared.DataModels.Program", "Program")
-                        .WithMany("DersAcilans")
+                        .WithMany()
                         .HasForeignKey("ProgramId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1636,6 +1643,10 @@ namespace Semerkand.Storage.Migrations
                         .HasForeignKey("BolumId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Semerkand.Shared.DataModels.Program", null)
+                        .WithMany("Programs")
+                        .HasForeignKey("ProgramId");
                 });
 
             modelBuilder.Entity("Semerkand.Shared.DataModels.UserProfile", b =>

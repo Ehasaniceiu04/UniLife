@@ -46,5 +46,7 @@ namespace Semerkand.Shared.DataModels
 
         public virtual ICollection<Ogrenci> Ogrencis { get; set; }
         public virtual ICollection<Harc> Harcs { get; set; }
+
+        public virtual ICollection<DersAcilan> DersAcilans{ get; set; }
     }
 }

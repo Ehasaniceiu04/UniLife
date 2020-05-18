@@ -8,7 +8,7 @@
 @page "/MultiSelect-Dropdown/CheckBox"
 @*@using Syncfusion.Blazor.DropDowns*@
 @using Syncfusion.Blazor.Buttons
-
+@using Syncfusion.Blazor.SplitButtons
 <style>
     textarea.e-input,
     .e-float-input textarea,
@@ -20,7 +20,7 @@
 </style>
 
 <div class="row">
-    <div class="col-sm-12 col-md-6 bg-light">
+    <div class="col-sm-12 col-md-6">
         <div class="row">
             <div class="col-sm-12 col-md-6">
                 <div class="form-row">
@@ -40,7 +40,7 @@
             </div>
             <div class="col-sm-12 col-md-6">
                 <div class="form-row">
-                    <SfMultiSelect @ref="CokluDonem" TValue="string[]" CssClass="e-small col-sm-12" Placeholder="Dönemleri Seçiniz" Mode="@VisualMode.CheckBox" DataSource="@donemDtos" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Dönemleri Seçiniz" PopupHeight="350px">
+                    <SfMultiSelect @ref="CokluDonemTip" TValue="string[]" CssClass="e-small col-sm-12" MaximumSelectionLength=1 Placeholder="Dönemleri Seçiniz" Mode="@VisualMode.CheckBox" DataSource="@donemTipDtos" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Dönemleri Seçiniz" PopupHeight="350px">
                         <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
                     </SfMultiSelect>
                     <SfMultiSelect @ref="CokluSinif" TValue="string[]" CssClass="e-small col-sm-12" Placeholder="Sınıfları Seçiniz" Mode="@VisualMode.CheckBox" DataSource="@sinifDtos" ShowSelectAll="true" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Sınıfları Seçiniz" PopupHeight="350px">
@@ -50,7 +50,7 @@
                     <SfCheckBox @ref="isActive" Label="Sadece Aktifler" CssClass="e-small col-sm-6" Value="true"></SfCheckBox>
                 </div>
             </div>
-            <div class="col-12">
+            <div class="col-12 pb-1">
                 <div class="form-row">
                     <SfMultiSelect @ref="CokluMufredat" TValue="string[]" CssClass="e-small col-sm-12" MaximumSelectionLength=1 Placeholder="Müfredatları Seçiniz" Mode="@VisualMode.CheckBox" DataSource="@mufredatDtos" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Müfredatları Seçiniz" PopupHeight="350px">
                         <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
@@ -69,7 +69,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="form-row">
-                    <SfGrid DataSource="@DersDtos" RowHeight="20" ContextMenuItems="@(new List<object>() { "AutoFit", "AutoFitAll", "SortAscending", "SortDescending","Copy", "Edit", "Delete", "Save", "Cancel","PdfExport", "ExcelExport", "CsvExport", "FirstPage", "PrevPage","LastPage", "NextPage"})" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
+                    <SfGrid ID="DersGrid" @ref="DersGrid" DataSource="@DersDtos" RowHeight="20" ContextMenuItems="@(new List<object>() { "AutoFit", "AutoFitAll", "SortAscending", "SortDescending","Copy", "Edit", "Delete", "Save", "Cancel","PdfExport", "ExcelExport", "CsvExport", "FirstPage", "PrevPage","LastPage", "NextPage"})" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
                         @*<GridEvents OnActionComplete="ActionCompletedHandler" TValue="ProgramDto"></GridEvents>*@
                         <GridSelectionSettings CheckboxOnly="true" PersistSelection="true"></GridSelectionSettings>
                         <GridColumns>
@@ -84,14 +84,100 @@
                         </GridColumns>
                     </SfGrid>
                 </div>
-                    
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 text-center">
+                <SfProgressButton OnClick="SeciliDersleriSagla" Content="Seçilenleri Ekle >" CssClass="center-block e-primary">
+                    <ProgressButtonSpinSettings Position="SpinPosition.Right"></ProgressButtonSpinSettings>
+                </SfProgressButton>
+            </div>
+        </div>
+    </div>
+    @*Right part*@
+    <div class="col-sm-12 col-md-6">
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <div class="form-row">
+                    <SfMultiSelect @ref="CokluFakulte2" TValue="string[]" CssClass="e-small col-sm-12" MaximumSelectionLength=1 Placeholder="Fakulteleri Seçiniz" Mode="@VisualMode.CheckBox" DataSource="@fakulteDtos2" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Fakulteleri Seçiniz" PopupHeight="350px">
+                        <MultiSelectEvents TValue="string[]" ValueChange="Fakulte2ToBolum2"></MultiSelectEvents>
+                        <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
+                    </SfMultiSelect>
+                    <SfMultiSelect @ref="CokluBolum2" TValue="string[]" CssClass="e-small col-sm-12" MaximumSelectionLength=1 Placeholder="Bölümleri Seçiniz" Mode="@VisualMode.Delimiter" DataSource="@bolumDtos2" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Bölümleri Seçiniz" PopupHeight="350px">
+                        <MultiSelectEvents TValue="string[]" ValueChange="Bolum2ToProgram2"></MultiSelectEvents>
+                        <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
+                    </SfMultiSelect>
+                    <SfMultiSelect @ref="CokluProgram2" TValue="string[]" CssClass="e-small col-sm-12" MaximumSelectionLength=1 Placeholder="Programları Seçiniz" Mode="@VisualMode.CheckBox" DataSource="@programDtos2" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Programları Seçiniz" PopupHeight="350px">
+                        <MultiSelectEvents TValue="string[]" ValueChange="Program2ToMufredat2"></MultiSelectEvents>
+                        <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
+                    </SfMultiSelect>
+
+                    <SfMultiSelect @ref="CokluSinif2" TValue="string[]" CssClass="e-small col-sm-12" Placeholder="Sınıfları Seçiniz" Mode="@VisualMode.CheckBox" DataSource="@sinifDtos" ShowSelectAll="true" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Sınıfları Seçiniz" PopupHeight="350px">
+                        <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
+                    </SfMultiSelect>
                 </div>
             </div>
-    </div>
-    <div class="col-sm-12 col-md-6 bg-white">
+            <div class="col-sm-12 col-md-6">
+                <div class="form-row">
+                    <SfMultiSelect @ref="CokluDonemTip2" TValue="string[]" MaximumSelectionLength=1 CssClass="e-small kirmizi col-sm-12" Placeholder="Dönemleri Seçiniz" Mode="@VisualMode.CheckBox" DataSource="@donemTipDtos2" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Dönemleri Seçiniz" PopupHeight="350px">
+                        <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
+                    </SfMultiSelect>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-row">
+                    <SfTextBox Placeholder="Ders Kod" CssClass="e-small col-sm-3"></SfTextBox>
+                    <SfTextBox Placeholder="Ders Ad" CssClass="e-small col-sm-6"></SfTextBox>
+                    @*<SfButton Type="submit" OnClick="MufredatDersRefresh" CssClass="e-success col-sm-3">Yenile</SfButton>*@
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-12">
+                <div class="form-row">
+                    <SfGrid ID="DersAcGrid" @ref="DersAcGrid" DataSource="@DersAcDtos" RowHeight="20" ContextMenuItems="@(new List<object>() { "AutoFit", "AutoFitAll", "SortAscending", "SortDescending","Copy", "Edit", "Delete", "Save", "Cancel","PdfExport", "ExcelExport", "CsvExport", "FirstPage", "PrevPage","LastPage", "NextPage"})" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
+                        @*<GridEvents OnActionComplete="ActionCompletedHandler" TValue="ProgramDto"></GridEvents>*@
+                        <GridSelectionSettings CheckboxOnly="true" PersistSelection="true"></GridSelectionSettings>
+                        <GridColumns>
+                            <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
+                            <GridColumn Visible="false" Field=@nameof(DersDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+                            <GridColumn AutoFit="true" Field=@nameof(DersDto.Kod) HeaderText="Ders Kodu"></GridColumn>
+                            <GridColumn Field=@nameof(DersDto.Ad) HeaderText="Ders Adı"></GridColumn>
+                            <GridColumn AutoFit="true" Field=@nameof(DersDto.Zorunlu) HeaderText="Z"></GridColumn>
+                            <GridColumn AutoFit="true" Field=@nameof(DersDto.Kredi) HeaderText="Krd"></GridColumn>
+                            <GridColumn AutoFit="true" Field=@nameof(DersDto.Akts) HeaderText="Akts"></GridColumn>
+                            <GridColumn AutoFit="true" Field=@nameof(DersDto.Sinif) HeaderText="Sinif"></GridColumn>
+                        </GridColumns>
+                    </SfGrid>
+                </div>
 
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 text-center">
+                <SfProgressButton OnClick="ConfirmDersleriAc" Content="Ekle >" CssClass="center-block e-primary">
+                    <ProgressButtonSpinSettings Position="SpinPosition.Center"></ProgressButtonSpinSettings>
+                </SfProgressButton>
+            </div>
+        </div>
     </div>
+
 </div>
+
+
+<MatDialog @bind-IsOpen="@dersAcConfirm" Style="z-index:100">
+    <MatDialogTitle><MatIcon Icon="warning"></MatIcon> Ders Açma İşlemi</MatDialogTitle>
+    <MatDialogContent>
+        Ders açma işlemini gerçekleştirmek istiyor musunuz?
+        Burda Eit olmayan controlleri kullanıcıya gösterebilriz.
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="@(e => { dersAcConfirm = false; })">Kapat</MatButton>
+        <MatButton OnClick="@SaglananDersleriAc">Onayla</MatButton>
+    </MatDialogActions>
+</MatDialog>
 
 
 @code{
@@ -100,8 +186,15 @@
     SfMultiSelect<string[]> CokluBolum;
     SfMultiSelect<string[]> CokluProgram;
     SfMultiSelect<string[]> CokluMufredat;
-    SfMultiSelect<string[]> CokluDonem;
+    SfMultiSelect<string[]> CokluDonemTip;
     SfMultiSelect<string[]> CokluSinif;
+
+    SfMultiSelect<string[]> CokluFakulte2;
+    SfMultiSelect<string[]> CokluBolum2;
+    SfMultiSelect<string[]> CokluProgram2;
+    SfMultiSelect<string[]> CokluDonemTip2;
+    SfMultiSelect<string[]> CokluSinif2;
+
 
 
     SfCheckBox isIntibak;
@@ -111,17 +204,24 @@
     //string[] seciliBolumler;
     //string[] seciliProgramlar;
     //string[] seciliMufredatlar;
-    //string[] seciliDonemler;
+    //string[] seciliDonemTipler;
     //string[] seciliSiniflar;
 
     List<FakulteDto> fakulteDtos = new List<FakulteDto>();
     List<BolumDto> bolumDtos = new List<BolumDto>();
     List<ProgramDto> programDtos = new List<ProgramDto>();
     List<MufredatDto> mufredatDtos = new List<MufredatDto>();
-    List<DonemDto> donemDtos = new List<DonemDto>();
-    //List<SinifDto> sinifDtos = new List<SinifDto>();
+    List<DonemTipDto> donemTipDtos = new List<DonemTipDto>();
+
+
+    List<FakulteDto> fakulteDtos2 = new List<FakulteDto>();
+    List<BolumDto> bolumDtos2 = new List<BolumDto>();
+    List<ProgramDto> programDtos2 = new List<ProgramDto>();
+    List<MufredatDto> mufredatDtos2 = new List<MufredatDto>();
+    List<DonemTipDto> donemTipDtos2 = new List<DonemTipDto>();
+
     List<SinifDto> sinifDtos = new List<SinifDto>
-    {
+{
         new SinifDto() { Ad = "0", Id = 0 },
         new SinifDto() { Ad = "1", Id = 1 },
         new SinifDto() { Ad = "2", Id = 2 },
@@ -141,7 +241,7 @@
     protected override async Task OnInitializedAsync()
     {
         await ReadFakultes();
-        await ReadDonems();
+        await ReadDonemTips();
 
 
 
@@ -155,9 +255,11 @@
         if (apiResponse.StatusCode == Status200OK)
         {
             fakulteDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<FakulteDto[]>(apiResponse.Result.ToString()).ToList<FakulteDto>();
+            fakulteDtos2 = fakulteDtos.DeepClone();
             if (fakulteDtos.Count > 1)
             {
                 fakulteDtos.Add(new FakulteDto() { Ad = "Tümü", Id = 0 });
+                fakulteDtos2.Add(new FakulteDto() { Ad = "Tümü", Id = 0 });
             }
 
         }
@@ -185,6 +287,25 @@
 
     }
 
+    private async void Fakulte2ToBolum2(MultiSelectChangeEventArgs<string[]> args)
+    {
+        //seciliFakulteler = args.Value;
+
+        if (args.Value == null)
+        {
+            bolumDtos2 = new List<BolumDto>();
+            programDtos2 = new List<ProgramDto>();
+            mufredatDtos2 = new List<MufredatDto>();
+            StateHasChanged();
+        }
+        else
+        {
+            await ReadBolums2();
+        }
+
+    }
+
+
     async Task ReadBolums()
     {
         ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/bolum/GetBolumByFakulteIds/" + string.Join(',', CokluFakulte.Value));
@@ -205,9 +326,28 @@
         }
     }
 
+    async Task ReadBolums2()
+    {
+        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/bolum/GetBolumByFakulteIds/" + string.Join(',', CokluFakulte2.Value));
+
+        if (apiResponse.StatusCode == Status200OK)
+        {
+            bolumDtos2 = Newtonsoft.Json.JsonConvert.DeserializeObject<BolumDto[]>(apiResponse.Result.ToString()).ToList<BolumDto>();
+            if (bolumDtos2.Count > 0)
+            {
+                bolumDtos2.Add(new BolumDto() { Ad = "Tümü", Id = 0 });
+
+            }
+            StateHasChanged();
+        }
+        else
+        {
+            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Bölüm getirilirken hata oluştu!");
+        }
+    }
+
     private async void BolumToProgram(MultiSelectChangeEventArgs<string[]> args)
     {
-
         if (args.Value == null)
         {
             programDtos = new List<ProgramDto>();
@@ -218,7 +358,20 @@
         {
             await ReadPrograms();
         }
+    }
 
+    private async void Bolum2ToProgram2(MultiSelectChangeEventArgs<string[]> args)
+    {
+        if (args.Value == null)
+        {
+            programDtos2 = new List<ProgramDto>();
+            mufredatDtos2 = new List<MufredatDto>();
+            StateHasChanged();
+        }
+        else
+        {
+            await ReadPrograms2();
+        }
     }
 
     async Task ReadPrograms()
@@ -241,6 +394,26 @@
         }
     }
 
+    async Task ReadPrograms2()
+    {
+        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/program/GetProgramByBolumIds/" + string.Join(',', CokluBolum2.Value));
+
+        if (apiResponse.StatusCode == Status200OK)
+        {
+            programDtos2 = Newtonsoft.Json.JsonConvert.DeserializeObject<ProgramDto[]>(apiResponse.Result.ToString()).ToList<ProgramDto>();
+            if (programDtos2.Count > 0)
+            {
+                programDtos2.Add(new ProgramDto() { Ad = "Tümü", Id = 0 });
+            }
+
+            StateHasChanged();
+        }
+        else
+        {
+            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "program getirilirken hata oluştu!");
+        }
+    }
+
     private async void ProgramToMufredat(MultiSelectChangeEventArgs<string[]> args)
     {
         if (args.Value == null)
@@ -253,6 +426,21 @@
             await ReadMufredats();
         }
     }
+
+    private async void Program2ToMufredat2(MultiSelectChangeEventArgs<string[]> args)
+    {
+        if (args.Value == null)
+        {
+            mufredatDtos2 = new List<MufredatDto>();
+            StateHasChanged();
+        }
+        else
+        {
+            await ReadMufredats2();
+        }
+    }
+
+
     async Task ReadMufredats()
     {
         ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/mufredat/GetMufredatByProgramIds/" + string.Join(',', CokluProgram.Value));
@@ -260,7 +448,7 @@
         if (apiResponse.StatusCode == Status200OK)
         {
             mufredatDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<MufredatDto[]>(apiResponse.Result.ToString()).ToList<MufredatDto>();
-            if (mufredatDtos.Count>0)
+            if (mufredatDtos.Count > 0)
             {
                 mufredatDtos.Add(new MufredatDto() { Ad = "Tümü", Id = 0 });
             }
@@ -272,18 +460,38 @@
         }
     }
 
-    async Task ReadDonems()
+    async Task ReadMufredats2()
     {
-        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/donem");
+        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/mufredat/GetMufredatByProgramIds/" + string.Join(',', CokluProgram2.Value));
 
         if (apiResponse.StatusCode == Status200OK)
         {
-            donemDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<DonemDto[]>(apiResponse.Result.ToString()).ToList<DonemDto>();
-            //donemDtos.Add(new DonemDto() { Ad = "Tümü", Id = 0 });
+            mufredatDtos2 = Newtonsoft.Json.JsonConvert.DeserializeObject<MufredatDto[]>(apiResponse.Result.ToString()).ToList<MufredatDto>();
+            if (mufredatDtos2.Count > 0)
+            {
+                mufredatDtos2.Add(new MufredatDto() { Ad = "Tümü", Id = 0 });
+            }
+            StateHasChanged();
         }
         else
         {
-            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "donem getirilirken hata oluştu!");
+            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "mufredat getirilirken hata oluştu!");
+        }
+    }
+
+    async Task ReadDonemTips()
+    {
+        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/donemtip");
+
+        if (apiResponse.StatusCode == Status200OK)
+        {
+            donemTipDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<DonemTipDto[]>(apiResponse.Result.ToString()).ToList<DonemTipDto>();
+            //donemDtos.Add(new DonemDto() { Ad = "Tümü", Id = 0 });
+            donemTipDtos2 = donemTipDtos.DeepClone();
+        }
+        else
+        {
+            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "DonemTip getirilirken hata oluştu!");
         }
     }
 
@@ -297,15 +505,30 @@
 
 
     //MufredatGrid
+
+    SfGrid<DersDto> DersGrid;
+    SfGrid<DersDto> DersAcGrid;
     public List<DersDto> DersDtos = new List<DersDto>();
+    public List<DersDto> DersAcDtos = new List<DersDto>();
+
+    bool dersAcConfirm = false;
+
 
     async Task MufredatDersRefresh()
     {
+        ////multiselectleri Sağtarafa aktar
+        //fakulteDtos2 = fakulteDtos.DeepClone();
+        //bolumDtos2 = bolumDtos2.DeepClone();
+
+        //CokluFakulte2Value = CokluBolum.Value;
+        //CokluBolum2.Value = CokluBolum.Value;
+        //StateHasChanged();
+
         DersAcDto dersAcDto = new DersAcDto();
-        dersAcDto.MufredatSecilen = CokluMufredat.Value;
-        dersAcDto.MufredatSecenektekiler = mufredatDtos.Select(x=>x.Id);
-        dersAcDto.DonemSecilen = Convert.ToInt32(CokluDonem.Value.First());
-        dersAcDto.SinifSecilen = CokluSinif.Value;
+        dersAcDto.MufredatSecilen = Array.ConvertAll(CokluMufredat.Value, int.Parse);
+        dersAcDto.MufredatSecenektekiler = mufredatDtos.Select(x => x.Id);
+        dersAcDto.DonemTipSecilen = Convert.ToInt32(CokluDonemTip.Value.First());
+        dersAcDto.SinifSecilen = Array.ConvertAll(CokluSinif.Value, int.Parse);
         dersAcDto.IsIntibak = isIntibak.Checked;
         dersAcDto.IsActive = isActive.Checked;
 
@@ -315,6 +538,26 @@
         DersDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<DersDto[]>(apiResponse.Result.ToString()).ToList<DersDto>();
     }
 
+
+    async Task SeciliDersleriSagla()
+    {
+        //get selected derses
+        List<DersDto> dersRows = await DersGrid.GetSelectedRecords();
+        DersAcDtos = dersRows;
+        //go store and replicate as dersAc
+    }
+
+    async Task ConfirmDersleriAc()
+    {
+        //Confirm
+        dersAcConfirm = true;
+    }
+
+    async Task SaglananDersleriAc()
+    {
+        //call api make the rest
+        List<DersDto> dersAcRows = await DersAcGrid.GetSelectedRecords();
+    }
 
 }
 <style>

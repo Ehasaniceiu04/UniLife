@@ -8,5 +8,7 @@ namespace Semerkand.Shared.DataModels
         public string Ad { get; set; }
 
         public virtual ICollection<Ders> Derss { get; set; }
+
+        public virtual ICollection<DersAcilan> DersAcilans { get; set; }
     }
 }

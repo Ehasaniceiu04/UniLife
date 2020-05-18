@@ -43,8 +43,8 @@ namespace Semerkand.Server.Managers
 
         public async Task<ApiResponse> Create(DersDto dersDto)
         {
-            var universite = await _dersStore.Create(dersDto);
-            return new ApiResponse(Status200OK, "Created DersDto", universite);
+            var ders = await _dersStore.Create(dersDto);
+            return new ApiResponse(Status200OK, "Created Ders", ders);
         }
 
         public async Task<ApiResponse> Update(DersDto dersDto)
@@ -82,6 +82,12 @@ namespace Semerkand.Server.Managers
             {
                 return new ApiResponse(Status400BadRequest, "Failed to Retrieve DersDto");
             }
+        }
+
+        public async Task<ApiResponse> GetAcilacakDers(DersAcDto dersAcDto)
+        {
+            var derss = await _dersStore.GetAcilacakDers(dersAcDto);
+            return new ApiResponse(Status200OK, "Selected DersDto", derss);
         }
     }
 }
