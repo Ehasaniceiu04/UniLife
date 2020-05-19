@@ -26,8 +26,14 @@ namespace Semerkand.Shared.DataModels
 
         public virtual Tenant Tenant { get; set; }
 
-        public int? OgrenciId { get; set; }
 
+        //---zero to one ilişki---// ApplicationUsera bağlı birtane öğrenci olabilir, olmayabilirde. dikkat fluentide var.
+        public int? OgrenciId { get; set; }
         public virtual Ogrenci Ogrenci { get; set; }
+        //---zero to one ilişki---//
+
+        ////---Zero to many ilişki---//ApplicationUser a bağlı birden fazla öğrenci olabilir, hiç olmayabilirde/ bunu yapınca öğrenciye bir tane nullable id atıyor.
+        //public virtual ICollection<Ogrenci> Ogrencis { get; set; }
+        ////---Zero to many ilişki---//
     }
 }

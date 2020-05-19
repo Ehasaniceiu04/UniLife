@@ -34,13 +34,13 @@ namespace Semerkand.Server.Controllers
                 await _dersAcilanManager.Get(id) :
                 new ApiResponse(Status400BadRequest, "DersAcilan Model is Invalid");
 
-        [HttpGet]
-        [AllowAnonymous]
-        [Route("GetDersAcilanByMufredatId/{mufredatId}")]
-        public async Task<ApiResponse> GetDersAcilanByMufredatId(int mufredatId)
-            => ModelState.IsValid ?
-                await _dersAcilanManager.GetDersAcilanByMufredatId(mufredatId) :
-                new ApiResponse(Status400BadRequest, "DersAcilan Model is Invalid");
+        //[HttpGet]
+        //[AllowAnonymous]
+        //[Route("GetDersAcilanByMufredatId/{mufredatId}")]
+        //public async Task<ApiResponse> GetDersAcilanByMufredatId(int mufredatId)
+        //    => ModelState.IsValid ?
+        //        await _dersAcilanManager.GetDersAcilanByMufredatId(mufredatId) :
+        //        new ApiResponse(Status400BadRequest, "DersAcilan Model is Invalid");
 
 
         // POST: api/DersAcilan
@@ -64,6 +64,14 @@ namespace Semerkand.Server.Controllers
         [Authorize(Permissions.DersAcilan.Delete)]
         public async Task<ApiResponse> Delete(int id)
             => await _dersAcilanManager.Delete(id);
+
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("CreateDersAcilanByDers")]
+        public async Task<ApiResponse> CreateDersAcilanByDers([FromBody] DersAcDto dersAcDto)
+            => ModelState.IsValid ?
+                    await _dersAcilanManager.CreateDersAcilanByDers(dersAcDto) :
+                    new ApiResponse(Status400BadRequest, "DersAcDto Model is Invalid");
 
 
     }

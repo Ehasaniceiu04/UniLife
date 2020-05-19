@@ -136,13 +136,13 @@
                 @*<SfTextBox CssClass="e-rtl" Placeholder="Kod" Value="@dersDto.Kod" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>*@
             </div>
             <div class="col-xs-4 col-sm-4 col-lg-4 col-md-4">
-                <MatSelect Label="Dönem Tipi" Outlined="true" @bind-Value="@dersDto.DonemTipId">
-                    @foreach (var item in donemTipDtos)
+                <MatSelect Label="Dönem i" Outlined="true" @bind-Value="@dersDto.DonemId">
+                    @foreach (var item in donemDtos)
                     {
                         <MatOption TValue="int" Value="item.Id">@item.Ad</MatOption>
                     }
                 </MatSelect>
-                @*<SfDropDownList TValue="string" TItem="DonemTipDto" Placeholder="Dönem Tipi" DataSource="@donemTipDtos" FloatLabelType="@FloatLabelType.Auto">
+                @*<SfDropDownList TValue="string" TItem="DonemDto" Placeholder="Dönem i" DataSource="@donemDtos" FloatLabelType="@FloatLabelType.Auto">
                         <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
                     </SfDropDownList>*@
             </div>
@@ -165,7 +165,7 @@
         </div>
         <div class="row">
             <div class="col-xs-4 col-sm-4 col-lg-4 col-md-4">
-                <b>Eski tip</b>
+                <b>Eski </b>
                 <hr />
             </div>
         </div>
@@ -178,7 +178,7 @@
                 <SfTextBox Placeholder="Kod" Value="@dersDto.Kod" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
             </div>
             <div class="col-xs-4 col-sm-4 col-lg-4 col-md-4">
-                <SfDropDownList TValue="string" TItem="DonemTipDto" Placeholder="Dönem Tipi" DataSource="@donemTipDtos" FloatLabelType="@FloatLabelType.Auto">
+                <SfDropDownList TValue="string" TItem="DonemDto" Placeholder="Dönem i" DataSource="@donemDtos" FloatLabelType="@FloatLabelType.Auto">
                     <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
                 </SfDropDownList>
             </div>
@@ -311,12 +311,12 @@
 
     public DersDto dersDto { get; set; } = new DersDto();
 
-    List<DonemTipDto> donemTipDtos = new List<DonemTipDto>();
+    List<DonemDto> donemDtos = new List<DonemDto>();
 
     protected override async Task OnInitializedAsync()
     {
-        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/donemtip");
-        donemTipDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<DonemTipDto[]>(apiResponse.Result.ToString()).ToList<DonemTipDto>();
+        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/donem");
+        donemDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<DonemDto[]>(apiResponse.Result.ToString()).ToList<DonemDto>();
     }
 
 

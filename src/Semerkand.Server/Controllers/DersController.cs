@@ -68,10 +68,10 @@ namespace Semerkand.Server.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [Route("GetAcilacakDers")]
-        public async Task<ApiResponse> GetAcilacakDers([FromBody] DersAcDto dersAcDto)
+        [Route("GetAcilacakDersByFilterDto")]
+        public async Task<ApiResponse> GetAcilacakDersByFilterDto([FromBody] DersFilterDto dersFilterDto)
             => ModelState.IsValid ?
-                    await _dersManager.GetAcilacakDers(dersAcDto) :
-                    new ApiResponse(Status400BadRequest, "DersAcDto Model is Invalid");
+                    await _dersManager.GetAcilacakDersByFilterDto(dersFilterDto) :
+                    new ApiResponse(Status400BadRequest, "DersFilterDto Model is Invalid");
     }
 }

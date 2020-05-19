@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Semerkand.Storage;
@@ -9,9 +10,10 @@ using Semerkand.Storage;
 namespace Semerkand.Storage.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200518234610_control24")]
+    partial class control24
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -437,6 +439,9 @@ namespace Semerkand.Storage.Migrations
                     b.Property<int>("DonemId")
                         .HasColumnType("integer");
 
+                    b.Property<int?>("DonemTipId")
+                        .HasColumnType("integer");
+
                     b.Property<bool>("Durum")
                         .HasColumnType("boolean");
 
@@ -488,6 +493,8 @@ namespace Semerkand.Storage.Migrations
 
                     b.HasIndex("DonemId");
 
+                    b.HasIndex("DonemTipId");
+
                     b.HasIndex("MufredatId");
 
                     b.ToTable("Derss");
@@ -523,6 +530,9 @@ namespace Semerkand.Storage.Migrations
                         .HasColumnType("integer");
 
                     b.Property<int>("DonemId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("DonemTipId")
                         .HasColumnType("integer");
 
                     b.Property<bool>("Durum")
@@ -577,6 +587,8 @@ namespace Semerkand.Storage.Migrations
                     b.HasIndex("DersId");
 
                     b.HasIndex("DonemId");
+
+                    b.HasIndex("DonemTipId");
 
                     b.HasIndex("ProgramId");
 
@@ -1501,6 +1513,10 @@ namespace Semerkand.Storage.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Semerkand.Shared.DataModels.DonemTip", null)
+                        .WithMany("Derss")
+                        .HasForeignKey("DonemTipId");
+
                     b.HasOne("Semerkand.Shared.DataModels.Mufredat", "Mufredat")
                         .WithMany("Derss")
                         .HasForeignKey("MufredatId")
@@ -1521,6 +1537,10 @@ namespace Semerkand.Storage.Migrations
                         .HasForeignKey("DonemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Semerkand.Shared.DataModels.DonemTip", null)
+                        .WithMany("DersAcilans")
+                        .HasForeignKey("DonemTipId");
 
                     b.HasOne("Semerkand.Shared.DataModels.Program", "Program")
                         .WithMany("DersAcilans")

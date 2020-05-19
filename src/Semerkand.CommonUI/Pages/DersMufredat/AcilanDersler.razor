@@ -1,0 +1,171 @@
+﻿@page "/acilandersler"
+@inject HttpClient Http;
+@using Semerkand.Shared.Dto.Definitions
+@inject IMatToaster matToaster
+@using Syncfusion.Blazor.DropDowns
+@using System.Net
+@using Newtonsoft.Json
+
+    <ControlSection>
+        <SfGrid @ref="DersAcilanGrid" DataSource="@dersAcilanDtos" Toolbar="@(new List<string>() { "Add"})" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
+            <GridEvents OnActionComplete="ActionCompletedHandler" TValue="DersAcilanDto"></GridEvents>
+            <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
+            <GridColumns>
+                <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Açılan Ders ID" Edit="false" AllowEditing="false" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+                <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Açılan Ders İsim" ValidationRules="@(new { required=true})"></GridColumn>
+                <GridColumn Field=@nameof(DersAcilanDto.KisaAd) HeaderText="KisaAd" ValidationRules="@(new { required=true})"></GridColumn>
+                <GridColumn Field=@nameof(DersAcilanDto.Kod) HeaderText="Kod"></GridColumn>
+                <GridColumn Field=@nameof(DersAcilanDto.AdEn) HeaderText="AdEn"></GridColumn>
+                
+                @*<GridColumn HeaderText="Manage Records" Width="150">
+                    <GridCommandColumns>
+                        <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-edit", CssClass = "e-flat" })"></GridCommandColumn>
+                        <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-delete", CssClass = "e-flat" })"></GridCommandColumn>
+                        <GridCommandColumn Type="CommandButtonType.Save" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-update", CssClass = "e-flat" })"></GridCommandColumn>
+                        <GridCommandColumn Type="CommandButtonType.Cancel" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-cancel-icon", CssClass = "e-flat" })"></GridCommandColumn>
+                    </GridCommandColumns>
+                </GridColumn>*@
+
+            </GridColumns>
+        </SfGrid>
+    </ControlSection>
+            
+@code{
+
+    SfGrid<DersAcilanDto> DersAcilanGrid;
+
+    List<DersAcilanDto> dersAcilanDtos = new List<DersAcilanDto>();
+
+    List<FakulteDto> fakulteDtos = new List<FakulteDto>();
+    List<OgrenimTurDto> ogrenimTurDtos = new List<OgrenimTurDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ReadDersAcilans();
+
+        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/fakulte");
+        fakulteDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<FakulteDto[]>(apiResponse.Result.ToString()).ToList<FakulteDto>();
+        ApiResponseDto apiResponseOgrTur = await Http.GetFromJsonAsync<ApiResponseDto>("api/ogrenimtur");
+        ogrenimTurDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<OgrenimTurDto[]>(apiResponseOgrTur.Result.ToString()).ToList<OgrenimTurDto>();
+
+    }
+
+    async Task ReadDersAcilans()
+    {
+
+        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/dersAcilan");
+
+        if (apiResponse.StatusCode == Status200OK)
+        {
+            matToaster.Add(apiResponse.Message, MatToastType.Success, "Açılan Dersler getirildi");
+            dersAcilanDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<DersAcilanDto[]>(apiResponse.Result.ToString()).ToList<DersAcilanDto>();
+        }
+        else
+        {
+            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Açılan Ders bilgisi getirilirken hata oluştu!");
+        }
+    }
+    public void ActionBeginHandler(ActionEventArgs<FakulteDto> args)
+    {
+
+    }
+
+    public void ActionCompletedHandler(ActionEventArgs<DersAcilanDto> args)
+    {
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
+        {
+
+        }
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+        {
+            if (args.Action == "edit")
+            {
+                Update(args.Data);
+            }
+            else if (args.Action == "add")
+            {
+                Create(args.Data);
+            }
+
+        }
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
+        {
+            Delete(args.Data);
+        }
+    }
+
+    public async Task Create(DersAcilanDto dersAcilanDto)
+    {
+        try
+        {
+            ApiResponseDto<DersAcilanDto> apiResponse = await Http.PostJsonAsync<ApiResponseDto<DersAcilanDto>>
+                ("api/dersAcilan", dersAcilanDto);
+            if (apiResponse.StatusCode == Status200OK)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success);
+                dersAcilanDtos.FirstOrDefault(x => x.Id == 0).Id = apiResponse.Result.Id;
+                DersAcilanGrid.Refresh();
+            }
+            else
+            {
+                dersAcilanDtos.Remove(dersAcilanDto);
+                DersAcilanGrid.Refresh();
+                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Açılan Ders Creation Failed");
+            }
+        }
+        catch (Exception ex)
+        {
+            dersAcilanDtos.Remove(dersAcilanDto);
+            DersAcilanGrid.Refresh();
+            matToaster.Add(ex.Message, MatToastType.Danger, "Açılan Ders Creation Failed");
+        }
+    }
+
+    public async void Update(DersAcilanDto dersAcilanDto)
+    {
+        //this updates the IsCompleted flag only
+        try
+        {
+            ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>
+                ("api/dersAcilan", dersAcilanDto);
+
+            if (!apiResponse.IsError)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success);
+            }
+            else
+            {
+                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Açılan Ders Save Failed");
+                //update failed gridi boz !
+            }
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.Message, MatToastType.Danger, "Açılan Ders Save Failed");
+            //update failed gridi boz !
+        }
+    }
+
+    public async Task Delete(DersAcilanDto dersAcilanDto)
+    {
+        try
+        {
+            var response = await Http.DeleteAsync("api/dersAcilan/" + dersAcilanDto.Id);
+            if (response.StatusCode == (HttpStatusCode)Status200OK)
+            {
+                matToaster.Add("Açılan Ders Deleted", MatToastType.Success);
+                dersAcilanDtos.Remove(dersAcilanDto);
+            }
+            else
+            {
+                matToaster.Add("Açılan Ders Delete Failed: " + response.StatusCode, MatToastType.Danger);
+            }
+            //deleteDialogOpen = false;
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.Message, MatToastType.Danger, "Açılan Ders Save Failed");
+        }
+    }
+
+}

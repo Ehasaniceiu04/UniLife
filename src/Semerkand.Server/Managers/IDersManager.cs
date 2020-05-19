@@ -12,6 +12,6 @@ namespace Semerkand.Server.Managers
         Task<ApiResponse> Update(DersDto dersDto);
         Task<ApiResponse> Delete(int id);
         Task<ApiResponse> GetDersByMufredatId(int mufredatId);
-        Task<ApiResponse> GetAcilacakDers(DersAcDto dersAcDto);
+        Task<ApiResponse> GetAcilacakDersByFilterDto(DersFilterDto dersFilterDto);
     }
 }

@@ -8,13 +8,13 @@ namespace Semerkand.Shared.Dto.Definitions
 {
     public class DersAcDto
     {
-        public int[] MufredatSecilen { get; set; }
-        public IEnumerable<int> MufredatSecenektekiler { get; set; }
-        public int DonemTipSecilen { get; set; }
-        public int[] SinifSecilen{ get; set; }
-        public bool IsIntibak { get; set; }
-        public bool IsActive { get; set; }
-        public string DersKod { get; set; }
-        public string DersAd { get; set; }
+        public int[] RefProgramSecilen { get; set; }
+        public IEnumerable<int> RefProgramSecenektekiler { get; set; }
+        public int[] AcProgramSecilen { get; set; }
+        public IEnumerable<int> AcProgramSecenektekiler { get; set; }
+
+        public IEnumerable<int> DersAcIds { get; set; }
+
+        public int AcDonemSecilen { get; set; }
     }
 }

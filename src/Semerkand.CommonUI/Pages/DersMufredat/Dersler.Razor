@@ -53,8 +53,8 @@
                                 @*<SfTextBox ID="MufredatId" CssClass="form-control" Value="@(dersDto.MufredatId.ToString())" Enabled="@false" Placeholder="@(appState.MufredatState.Ad)"></SfTextBox>*@
                             </div>
                             <div class="col-sm-6 pb-3">
-                                <label for="DonemTipId">DonemTipId</label>
-                                <SfDropDownList ID="DonemTipId" CssClass="form-control" Value="@(dersDto.DonemTipId.ToString())" TValue="string" TItem="DonemTipDto" Index="0" DataSource="donemTipDtos">
+                                <label for="DonemId">DonemId</label>
+                                <SfDropDownList ID="DonemId" CssClass="form-control" Value="@(dersDto.DonemId.ToString())" TValue="string" TItem="DonemDto" Index="0" DataSource="donemDtos">
                                     <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
                                 </SfDropDownList>
                             </div>
@@ -120,7 +120,7 @@
             <GridColumn Field=@nameof(DersDto.Kod) HeaderText="Kod" ValidationRules="@(new { required=true})"></GridColumn>
             <GridColumn Field=@nameof(DersDto.KisaAd) HeaderText="Kısa Ad"></GridColumn>
             <GridColumn Field=@nameof(DersDto.MufredatId) HeaderText="Müfredat" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="mufredatDtos" Width="150"></GridColumn>
-            <GridColumn Field=@nameof(DersDto.DonemTipId) HeaderText="Dönem Tip" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@donemTipDtos" Width="150"></GridColumn>
+            <GridColumn Field=@nameof(DersDto.DonemId) HeaderText="Dönem" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@donemDtos" Width="150"></GridColumn>
             <GridColumn Field=@nameof(DersDto.Akts) HeaderText="Akts"></GridColumn>
             <GridColumn Field=@nameof(DersDto.GecmeNotu) HeaderText="GeçmeNotu"></GridColumn>
             <GridColumn Field=@nameof(DersDto.OptikKod) HeaderText="OptikKod"></GridColumn>
@@ -157,7 +157,7 @@
 
     List<MufredatDto> mufredatDtos = new List<MufredatDto>();
 
-    List<DonemTipDto> donemTipDtos = new List<DonemTipDto>();
+    List<DonemDto> donemDtos = new List<DonemDto>();
 
     public string[] MenuItems = new string[] { "Group", "Ungroup", "ColumnChooser", "Filter" };
 
@@ -167,8 +167,8 @@
 
         ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/mufredat");
         mufredatDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<MufredatDto[]>(apiResponse.Result.ToString()).ToList<MufredatDto>();
-        ApiResponseDto apiResponseDersTur = await Http.GetFromJsonAsync<ApiResponseDto>("api/donemtip");
-        donemTipDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<DonemTipDto[]>(apiResponseDersTur.Result.ToString()).ToList<DonemTipDto>();
+        ApiResponseDto apiResponseDersTur = await Http.GetFromJsonAsync<ApiResponseDto>("api/donem");
+        donemDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<DonemDto[]>(apiResponseDersTur.Result.ToString()).ToList<DonemDto>();
 
     }
 

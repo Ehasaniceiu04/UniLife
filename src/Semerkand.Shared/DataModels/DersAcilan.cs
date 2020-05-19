@@ -23,8 +23,8 @@ namespace Semerkand.Shared.DataModels
         public virtual Program Program { get; set; }
         //External
 
-        public int DonemTipId { get; set; }
-        public virtual DonemTip DonemTip { get; set; }
+        public int DonemId { get; set; }
+        public virtual Donem Donem { get; set; }
         
         public string KisaAd { get; set; }
         public int Akts { get; set; }

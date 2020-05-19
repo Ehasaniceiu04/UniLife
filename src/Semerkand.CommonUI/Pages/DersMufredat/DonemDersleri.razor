@@ -55,7 +55,7 @@
             </div>
             <div class="col-sm-12 col-md-6">
                 <div class="form-row">
-                    <SfMultiSelect @ref="CokluDonemTip" TValue="string[]" CssClass="e-small col-sm-12" MaximumSelectionLength=1 Placeholder="Dönemleri Seçiniz" Mode="@VisualMode.CheckBox" DataSource="@donemTipDtos" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Dönemleri Seçiniz" PopupHeight="350px">
+                    <SfMultiSelect @ref="CokluDonem" TValue="string[]" CssClass="e-small col-sm-12" MaximumSelectionLength=1 Placeholder="Dönemleri Seçiniz" Mode="@VisualMode.CheckBox" DataSource="@donemDtos" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Dönemleri Seçiniz" PopupHeight="350px">
                         <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
                     </SfMultiSelect>
                     <SfMultiSelect @ref="CokluSinif" TValue="string[]" CssClass="e-small col-sm-12" Placeholder="Sınıfları Seçiniz" Mode="@VisualMode.CheckBox" DataSource="@sinifDtos" ShowSelectAll="true" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Sınıfları Seçiniz" PopupHeight="350px">
@@ -140,7 +140,7 @@
             </div>
             <div class="col-sm-12 col-md-6">
                 <div class="form-row">
-                    <SfMultiSelect @ref="CokluDonemTip2" TValue="string[]" MaximumSelectionLength=1 CssClass="e-small kirmizi col-sm-12" Placeholder="Dönemleri Seçiniz" Mode="@VisualMode.CheckBox" DataSource="@donemTipDtos2" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Dönemleri Seçiniz" PopupHeight="350px">
+                    <SfMultiSelect @ref="CokluDonem2" TValue="string[]" MaximumSelectionLength=1 CssClass="e-small kirmizi col-sm-12" Placeholder="Dönemleri Seçiniz" Mode="@VisualMode.CheckBox" DataSource="@donemDtos2" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Dönemleri Seçiniz" PopupHeight="350px">
                         <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
                     </SfMultiSelect>
                 </div>
@@ -197,13 +197,16 @@
                 <p>Eşit olmayan kontroller ver yinede devam etmek istiyor musunuz?</p>
             </div>
         }
+    <div class="col-12">
+        @foreach (var item in NotEqualControls)
+        {
         <div class="col-12">
-            @foreach (var item in NotEqualControls)
-            {
-                <p>@(item.ToString())</p>
-            }
+            <p>@(item.ToString())</p>
         </div>
-    </MatDialogContent>
+                
+                }
+            </div>
+</MatDialogContent>
     <MatDialogActions>
         <MatButton OnClick="@(e => { dersAcConfirm = false; NotEqualControls = new List<string>(); })">Kapat</MatButton>
         <MatButton OnClick="@SaglananDersleriAc">Onayla</MatButton>
@@ -228,13 +231,13 @@
     SfMultiSelect<string[]> CokluBolum;
     SfMultiSelect<string[]> CokluProgram;
     SfMultiSelect<string[]> CokluMufredat;
-    SfMultiSelect<string[]> CokluDonemTip;
+    SfMultiSelect<string[]> CokluDonem;
     SfMultiSelect<string[]> CokluSinif;
 
     SfMultiSelect<string[]> CokluFakulte2;
     SfMultiSelect<string[]> CokluBolum2;
     SfMultiSelect<string[]> CokluProgram2;
-    SfMultiSelect<string[]> CokluDonemTip2;
+    SfMultiSelect<string[]> CokluDonem2;
     SfMultiSelect<string[]> CokluSinif2;
 
 
@@ -248,7 +251,7 @@
     //    public string[] seciliBolumler;
     //    public string[] seciliProgramlar;
     //    public string[] seciliMufredatlar;
-    //    public string[] seciliDonemTipler;
+    //    public string[] seciliDonemler;
     //    public string[] seciliSiniflar;
     //}
 
@@ -260,14 +263,14 @@
     List<BolumDto> bolumDtos = new List<BolumDto>();
     List<ProgramDto> programDtos = new List<ProgramDto>();
     List<MufredatDto> mufredatDtos = new List<MufredatDto>();
-    List<DonemTipDto> donemTipDtos = new List<DonemTipDto>();
+    List<DonemDto> donemDtos = new List<DonemDto>();
 
 
     List<FakulteDto> fakulteDtos2 = new List<FakulteDto>();
     List<BolumDto> bolumDtos2 = new List<BolumDto>();
     List<ProgramDto> programDtos2 = new List<ProgramDto>();
     List<MufredatDto> mufredatDtos2 = new List<MufredatDto>();
-    List<DonemTipDto> donemTipDtos2 = new List<DonemTipDto>();
+    List<DonemDto> donemDtos2 = new List<DonemDto>();
 
     List<SinifDto> sinifDtos = new List<SinifDto>
 {
@@ -291,7 +294,7 @@
     protected override async Task OnInitializedAsync()
     {
         await ReadFakultes();
-        await ReadDonemTips();
+        await ReadDonems();
 
 
 
@@ -529,19 +532,19 @@
         }
     }
 
-    async Task ReadDonemTips()
+    async Task ReadDonems()
     {
-        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/donemtip");
+        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/donem");
 
         if (apiResponse.StatusCode == Status200OK)
         {
-            donemTipDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<DonemTipDto[]>(apiResponse.Result.ToString()).ToList<DonemTipDto>();
+            donemDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<DonemDto[]>(apiResponse.Result.ToString()).ToList<DonemDto>();
             //donemDtos.Insert(0,new DonemDto() { Ad = "Tümü", Id = 55555 });
-            donemTipDtos2 = donemTipDtos.DeepClone();
+            donemDtos2 = donemDtos.DeepClone();
         }
         else
         {
-            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "DonemTip getirilirken hata oluştu!");
+            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Donem getirilirken hata oluştu!");
         }
     }
 
@@ -587,7 +590,7 @@
             willUyari = true;
             uyariText += "Lütfen müfredat mufredat seçimi yapınız,";
         }
-        if (CokluDonemTip.Value == null)
+        if (CokluDonem.Value == null)
         {
             willUyari = true;
             uyariText += "Lütfen müfredat dönem seçimi yapınız,";
@@ -617,7 +620,7 @@
             uyariText += "Lütfen açılacak program seçimi yapınız,";
         }
 
-        if (CokluDonemTip2.Value == null)
+        if (CokluDonem2.Value == null)
         {
             willUyari = true;
             uyariText += "Lütfen açılacak dönem seçimi yapınız,";
@@ -640,18 +643,19 @@
         else
         {
 
-            DersAcDto dersAcDto = new DersAcDto();
-            dersAcDto.MufredatSecilen = Array.ConvertAll(CokluMufredat.Value, int.Parse);
-            dersAcDto.MufredatSecenektekiler = mufredatDtos.Select(x => x.Id);
-            dersAcDto.DonemTipSecilen = Convert.ToInt32(CokluDonemTip.Value.First());
-            dersAcDto.SinifSecilen = Array.ConvertAll(CokluSinif.Value, int.Parse);
-            dersAcDto.IsIntibak = isIntibak.Checked;
-            dersAcDto.IsActive = isActive.Checked;
+            DersFilterDto dersFilterDto = new DersFilterDto();
+            dersFilterDto.MufredatSecilen = Array.ConvertAll(CokluMufredat.Value, int.Parse);
+            dersFilterDto.MufredatSecenektekiler = mufredatDtos.Select(x => x.Id);
+            dersFilterDto.DonemSecilen = Convert.ToInt32(CokluDonem.Value.First());
+            dersFilterDto.SinifSecilen = Array.ConvertAll(CokluSinif.Value, int.Parse);
+            dersFilterDto.IsIntibak = isIntibak.Checked;
+            dersFilterDto.IsActive = isActive.Checked;
 
-            ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/ders/GetAcilacakDers", dersAcDto);
+            ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/ders/GetAcilacakDersByFilterDto", dersFilterDto);
 
             //ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/ders");
             DersDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<DersDto[]>(apiResponse.Result.ToString()).ToList<DersDto>();
+            DersAcDtos = new List<DersDto>();
         }
 
     }
@@ -689,7 +693,7 @@
             {
                 NotEqualControls.Add("programlar eşit değil");
             }
-            @if (CokluDonemTip.Value?.First() != CokluDonemTip2.Value?.First())
+            @if (CokluDonem.Value?.First() != CokluDonem2.Value?.First())
             {
                 NotEqualControls.Add("Dönemler eşit değil");
             }
@@ -707,9 +711,17 @@
     async Task SaglananDersleriAc()
     {
         //call api make the rest
-        IEnumerable<int> dersAcIds = DersAcDtos.Select(x=>x.Id);
+        //IEnumerable<int> dersAcIds = DersAcDtos.Select(x=>x.Id);
 
-        //ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/dersacilan/CreateDersAcilan", DersAcDtos);
+        DersAcDto dersAcDto = new DersAcDto();
+        dersAcDto.DersAcIds = DersAcDtos.Select(x => x.Id);
+        dersAcDto.RefProgramSecilen = Array.ConvertAll(CokluProgram.Value, int.Parse);
+        dersAcDto.RefProgramSecenektekiler = programDtos.Select(x => x.Id);
+        dersAcDto.AcProgramSecilen = Array.ConvertAll(CokluProgram2.Value, int.Parse);
+        dersAcDto.AcProgramSecenektekiler = programDtos2.Select(x => x.Id);
+        dersAcDto.AcDonemSecilen = Convert.ToInt32(CokluDonem2.Value.First());
+
+        ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/dersacilan/CreateDersAcilanByDers", dersAcDto);
 
         //herşey bittimi
         dersAcConfirm = false;

@@ -22,8 +22,8 @@ namespace Semerkand.Shared.Dto.Definitions
         public virtual ProgramDto Program { get; set; }
         //External
 
-        public int DonemTipId { get; set; }
-        public virtual DonemTipDto DonemTip { get; set; }
+        public int DonemId { get; set; }
+        public virtual DonemDto Donem { get; set; }
 
         public string KisaAd { get; set; }
         public int Akts { get; set; }

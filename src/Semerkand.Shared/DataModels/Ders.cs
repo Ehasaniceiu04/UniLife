@@ -11,8 +11,8 @@ namespace Semerkand.Shared.DataModels
         public string Ad { get; set; }
         public string Kod { get; set; }
 
-        public int DonemTipId { get; set; }
-        public virtual DonemTip DonemTip { get; set; }
+        public int DonemId { get; set; }
+        public virtual Donem Donem { get; set; }
 
         public int MufredatId { get; set; }
         public virtual Mufredat Mufredat { get; set; }

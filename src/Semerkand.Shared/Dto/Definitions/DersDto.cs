@@ -7,8 +7,8 @@ namespace Semerkand.Shared.Dto.Definitions
         public string Ad { get; set; }
         public string Kod { get; set; }
 
-        public int DonemTipId { get; set; }
-        public virtual DonemTipDto DonemTip { get; set; }
+        public int DonemId { get; set; }
+        public virtual DonemDto Donem { get; set; }
 
         public int MufredatId { get; set; }
         public virtual MufredatDto Mufredat { get; set; }

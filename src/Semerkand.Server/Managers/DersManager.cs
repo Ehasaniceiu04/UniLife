@@ -84,9 +84,9 @@ namespace Semerkand.Server.Managers
             }
         }
 
-        public async Task<ApiResponse> GetAcilacakDers(DersAcDto dersAcDto)
+        public async Task<ApiResponse> GetAcilacakDersByFilterDto(DersFilterDto dersFilterDto)
         {
-            var derss = await _dersStore.GetAcilacakDers(dersAcDto);
+            var derss = await _dersStore.GetAcilacakDersByFilterDto(dersFilterDto);
             return new ApiResponse(Status200OK, "Selected DersDto", derss);
         }
     }

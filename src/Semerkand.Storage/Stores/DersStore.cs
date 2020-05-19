@@ -82,17 +82,17 @@ namespace Semerkand.Storage.Stores
             return _autoMapper.Map<List<DersDto>>(derss);
         }
 
-        public async Task<List<DersDto>> GetAcilacakDers(DersAcDto dersAcDto)
+        public async Task<List<DersDto>> GetAcilacakDersByFilterDto(DersFilterDto dersFilterDto)
         {
             var derss = from ders in _db.Derss
                         join m in _db.Mufredats on ders.MufredatId equals m.Id
                         where
-                            (dersAcDto.MufredatSecilen.Contains(55555) ? dersAcDto.MufredatSecenektekiler.Contains(ders.MufredatId) : dersAcDto.MufredatSecilen.Contains(ders.MufredatId))
-                            && (m.Aktif == dersAcDto.IsActive) && (m.Aktif == dersAcDto.IsIntibak)//TODO : intibak ve aktif konusu konuslacak
-                            && (dersAcDto.SinifSecilen.Contains(ders.Sinif))
-                            && (ders.DonemTipId == dersAcDto.DonemTipSecilen)
-                            && (string.IsNullOrWhiteSpace(dersAcDto.DersAd) ? true : dersAcDto.DersAd == ders.Ad)
-                            && (string.IsNullOrWhiteSpace(dersAcDto.DersKod) ? true : dersAcDto.DersKod == ders.Kod)
+                            (dersFilterDto.MufredatSecilen.Contains(55555) ? dersFilterDto.MufredatSecenektekiler.Contains(ders.MufredatId) : dersFilterDto.MufredatSecilen.Contains(ders.MufredatId))
+                            && (m.Aktif == dersFilterDto.IsActive) && (m.Aktif == dersFilterDto.IsIntibak)//TODO : intibak ve aktif konusu konuslacak
+                            && (dersFilterDto.SinifSecilen.Contains(ders.Sinif))
+                            && (ders.DonemId == dersFilterDto.DonemSecilen)
+                            && (string.IsNullOrWhiteSpace(dersFilterDto.DersAd) ? true : dersFilterDto.DersAd == ders.Ad)
+                            && (string.IsNullOrWhiteSpace(dersFilterDto.DersKod) ? true : dersFilterDto.DersKod == ders.Kod)
                         select ders;
 
             return _autoMapper.Map<List<DersDto>>(await derss.ToListAsync()) ;
