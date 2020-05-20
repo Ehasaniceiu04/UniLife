@@ -8,5 +8,6 @@ namespace Semerkand.Server.Managers
     public interface IDersAcilanManager : IBaseManager<DersAcilan, DersAcilanDto>
     {
         Task<ApiResponse> CreateDersAcilanByDers(DersAcDto dersAcDto);
+        Task<ApiResponse> GetAcilanDersByFilterDto(DersAcilanFilterDto dersAcilanFilterDto);
     }
 }

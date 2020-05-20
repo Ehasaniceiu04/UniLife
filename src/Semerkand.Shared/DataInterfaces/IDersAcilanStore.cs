@@ -9,5 +9,6 @@ namespace Semerkand.Shared.DataInterfaces
     {
         //BUlk insering bilgilerini dönebiliriz List<DersAcilan> 
         Task<bool> CreateDersAcilanByDers(DersAcDto dersAcDto);
+        Task<List<DersAcilanDto>> GetAcilanDersByFilterDto(DersAcilanFilterDto dersAcilanFilterDto);
     }
 }

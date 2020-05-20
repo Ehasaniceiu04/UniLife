@@ -74,5 +74,15 @@ namespace Semerkand.Server.Controllers
                     new ApiResponse(Status400BadRequest, "DersAcDto Model is Invalid");
 
 
+        
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("GetAcilanDersByFilterDto")]
+        public async Task<ApiResponse> GetAcilanDersByFilterDto([FromBody] DersAcilanFilterDto dersAcilanFilterDto)
+            => ModelState.IsValid ?
+                    await _dersAcilanManager.GetAcilanDersByFilterDto(dersAcilanFilterDto) :
+                    new ApiResponse(Status400BadRequest, "DersAcilanFilterDto Model is Invalid");
+
+
     }
 }

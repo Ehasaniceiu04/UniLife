@@ -25,6 +25,10 @@ namespace Semerkand.Server.Managers
             return new ApiResponse(Status200OK, "Bulk create result", boolResult);
         }
 
-
+        public async Task<ApiResponse> GetAcilanDersByFilterDto(DersAcilanFilterDto dersAcilanFilterDto)
+        {
+            var dersAcilans = await _dersAcilanStore.GetAcilanDersByFilterDto(dersAcilanFilterDto);
+            return new ApiResponse(Status200OK, "Selected DersAcilanDto", dersAcilans);
+        }
     }
 }

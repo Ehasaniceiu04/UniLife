@@ -91,8 +91,8 @@ namespace Semerkand.Storage.Stores
                             && (m.Aktif == dersFilterDto.IsActive) && (m.Aktif == dersFilterDto.IsIntibak)//TODO : intibak ve aktif konusu konuslacak
                             && (dersFilterDto.SinifSecilen.Contains(ders.Sinif))
                             && (ders.DonemId == dersFilterDto.DonemSecilen)
-                            && (string.IsNullOrWhiteSpace(dersFilterDto.DersAd) ? true : dersFilterDto.DersAd == ders.Ad)
-                            && (string.IsNullOrWhiteSpace(dersFilterDto.DersKod) ? true : dersFilterDto.DersKod == ders.Kod)
+                            && (string.IsNullOrWhiteSpace(dersFilterDto.DersAd) ? true : ders.Ad.Contains(dersFilterDto.DersAd))
+                            && (string.IsNullOrWhiteSpace(dersFilterDto.DersKod) ? true : ders.Kod.Contains(dersFilterDto.DersKod))
                         select ders;
 
             return _autoMapper.Map<List<DersDto>>(await derss.ToListAsync()) ;

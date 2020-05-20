@@ -5,7 +5,7 @@
 
 @*<CascadingValue Value="SelectedMufredat">*@
     <div class="control-section e-tab-section">
-        <SfTab @ref="Tab" CssClass="BlazorTab" LoadOn="ContentLoad.Demand">
+        <SfTab @ref="Tab" CssClass="BlazorTab" LoadOn="ContentLoad.Dynamic">
             @*Selected="OnTabSelected" Selecting="OnTabSelecting"*@
             <TabEvents Created="TabCreate"></TabEvents>
             <TabItems>
@@ -82,7 +82,7 @@
 
     //public void OnTabSelected(SelectEventArgs args)
     //{
-    //    //StateHasChanged();
+    //    StateHasChanged();
     //}
     //public void OnTabSelecting(SelectingEventArgs args)
     //{

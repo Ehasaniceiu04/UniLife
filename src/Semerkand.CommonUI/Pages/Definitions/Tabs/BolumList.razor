@@ -6,11 +6,11 @@
 @using Newtonsoft.Json
 
     <ControlSection>
-        <SfGrid @ref="BolumGrid" DataSource="@bolumDtos" Toolbar="@(new List<string>() { "Add"})" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
+        <SfGrid @ref="BolumGrid" DataSource="@bolumDtos" Toolbar="@(new List<string>() { "Add"})" AllowSorting="true" AllowFiltering="true" AllowPaging="true" Width="100%">
             <GridEvents OnActionComplete="ActionCompletedHandler" TValue="BolumDto"></GridEvents>
             <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
             <GridColumns>
-                <GridColumn Visible="false" Field=@nameof(BolumDto.Id) HeaderText="Bölüm ID" Edit="false" AllowEditing="false" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+                <GridColumn Visible="false" Field=@nameof(BolumDto.Id) HeaderText="Bölüm ID" Edit="false" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
                 <GridColumn Field=@nameof(BolumDto.Ad) HeaderText="Bölüm İsim" ValidationRules="@(new { required=true})"></GridColumn>
                 <GridColumn Field=@nameof(BolumDto.KisaAd) HeaderText="KisaAd" ValidationRules="@(new { required=true})"></GridColumn>
                 <GridColumn Field=@nameof(BolumDto.Kod) HeaderText="Kod"></GridColumn>
@@ -71,10 +71,7 @@
             matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Bölüm bilgisi getirilirken hata oluştu!");
         }
     }
-    public void ActionBeginHandler(ActionEventArgs<FakulteDto> args)
-    {
 
-    }
 
     public void ActionCompletedHandler(ActionEventArgs<BolumDto> args)
     {

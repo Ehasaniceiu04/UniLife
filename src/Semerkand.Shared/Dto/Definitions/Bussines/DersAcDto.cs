@@ -8,9 +8,9 @@ namespace Semerkand.Shared.Dto.Definitions
 {
     public class DersAcDto
     {
-        public int[] RefProgramSecilen { get; set; }
+        public int RefProgramSecilen { get; set; }
         public IEnumerable<int> RefProgramSecenektekiler { get; set; }
-        public int[] AcProgramSecilen { get; set; }
+        public int AcProgramSecilen { get; set; }
         public IEnumerable<int> AcProgramSecenektekiler { get; set; }
 
         public IEnumerable<int> DersAcIds { get; set; }
