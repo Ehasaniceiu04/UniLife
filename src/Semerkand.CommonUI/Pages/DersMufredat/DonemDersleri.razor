@@ -16,6 +16,15 @@
     .e-input-group.e-control-wrapper textarea {
         resize: none;
     }
+
+
+    .server-action-menu {
+        background-color: transparent;
+        background-image: linear-gradient(to bottom, rgba(30, 87, 153, 0.2) 0%, rgba(125, 185, 232, 0) 100%);
+        background-repeat: repeat;
+        border-radius: 10px;
+        padding: 5px;
+    }
 </style>
 
 
@@ -28,153 +37,159 @@
 
 <div class="row">
     <div class="col-sm-12 col-md-6">
-        <div class="row">
-            <div class="col-sm-12 text-center">
-                <p>Müfredat Dersleri</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12 col-md-6">
-                <div class="form-row">
-                    @*@bind-Value="forvalidation.seciliFakulteler"*@
-                    <SfMultiSelect @ref="CokluFakulte" TValue="int[]" CssClass="e-small col-sm-12" MaximumSelectionLength=1 Placeholder="Fakulteleri Seçiniz" Mode="@VisualMode.Delimiter" DataSource="@fakulteDtos" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Fakulteleri Seçiniz" PopupHeight="350px">
-                        <MultiSelectEvents TValue="int[]" ValueChange="FakulteToBolum"></MultiSelectEvents>
-                        <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
-                    </SfMultiSelect>
-                    <SfMultiSelect @ref="CokluBolum" TValue="int[]" CssClass="e-small col-sm-12" MaximumSelectionLength=1 Placeholder="Bölümleri Seçiniz" Mode="@VisualMode.Delimiter" DataSource="@bolumDtos" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Bölümleri Seçiniz" PopupHeight="350px">
-                        <MultiSelectEvents TValue="int[]" ValueChange="BolumToProgram"></MultiSelectEvents>
-                        <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
-                    </SfMultiSelect>
-                    <SfMultiSelect @ref="CokluProgram" TValue="int[]" CssClass="e-small col-sm-12" MaximumSelectionLength=1 Placeholder="Programları Seçiniz" Mode="@VisualMode.Delimiter" DataSource="@programDtos" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Programları Seçiniz" PopupHeight="350px">
-                        <MultiSelectEvents TValue="int[]" ValueChange="ProgramToMufredat"></MultiSelectEvents>
-                        <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
-                    </SfMultiSelect>
+        <div class="server-action-menu">
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <p>Müfredat Dersleri</p>
                 </div>
             </div>
-            <div class="col-sm-12 col-md-6">
-                <div class="form-row">
-                    <SfMultiSelect @ref="CokluDonem" TValue="int[]" CssClass="e-small col-sm-12" MaximumSelectionLength=1 Placeholder="Dönemleri Seçiniz" Mode="@VisualMode.Delimiter" DataSource="@donemDtos" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Dönemleri Seçiniz" PopupHeight="350px">
-                        <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
-                    </SfMultiSelect>
-                    <SfMultiSelect @ref="CokluSinif" TValue="int[]" CssClass="e-small col-sm-12" Placeholder="Sınıfları Seçiniz" Mode="@VisualMode.CheckBox" DataSource="@sinifDtos" ShowSelectAll="true" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Sınıfları Seçiniz" PopupHeight="350px">
-                        <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
-                    </SfMultiSelect>
-                    <SfCheckBox @ref="isIntibak" Label="İntibakı Yapılmayanlar" CssClass="e-small col-sm-6" Value="true"></SfCheckBox>
-                    <SfCheckBox @ref="isActive" Label="Sadece Aktifler" CssClass="e-small col-sm-6" Value="true"></SfCheckBox>
+            <div class="row">
+                <div class="col-sm-12 col-md-6">
+                    <div class="form-row">
+                        @*@bind-Value="forvalidation.seciliFakulteler"*@
+                        <SfMultiSelect @ref="CokluFakulte" TValue="int[]" CssClass="e-small col-sm-12" MaximumSelectionLength=1 Placeholder="Fakulteleri Seçiniz" Mode="@VisualMode.Delimiter" DataSource="@fakulteDtos" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Fakulteleri Seçiniz" PopupHeight="350px">
+                            <MultiSelectEvents TValue="int[]" ValueChange="FakulteToBolum"></MultiSelectEvents>
+                            <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
+                        </SfMultiSelect>
+                        <SfMultiSelect @ref="CokluBolum" TValue="int[]" CssClass="e-small col-sm-12" MaximumSelectionLength=1 Placeholder="Bölümleri Seçiniz" Mode="@VisualMode.Delimiter" DataSource="@bolumDtos" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Bölümleri Seçiniz" PopupHeight="350px">
+                            <MultiSelectEvents TValue="int[]" ValueChange="BolumToProgram"></MultiSelectEvents>
+                            <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
+                        </SfMultiSelect>
+                        <SfMultiSelect @ref="CokluProgram" TValue="int[]" CssClass="e-small col-sm-12" MaximumSelectionLength=1 Placeholder="Programları Seçiniz" Mode="@VisualMode.Delimiter" DataSource="@programDtos" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Programları Seçiniz" PopupHeight="350px">
+                            <MultiSelectEvents TValue="int[]" ValueChange="ProgramToMufredat"></MultiSelectEvents>
+                            <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
+                        </SfMultiSelect>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <div class="form-row">
+                        <SfMultiSelect @ref="CokluDonem" TValue="int[]" CssClass="e-small col-sm-12" MaximumSelectionLength=1 Placeholder="Dönemleri Seçiniz" Mode="@VisualMode.Delimiter" DataSource="@donemDtos" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Dönemleri Seçiniz" PopupHeight="350px">
+                            <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
+                        </SfMultiSelect>
+                        <SfMultiSelect @ref="CokluSinif" TValue="int[]" CssClass="e-small col-sm-12" Placeholder="Sınıfları Seçiniz" Mode="@VisualMode.CheckBox" DataSource="@sinifDtos" ShowSelectAll="true" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Sınıfları Seçiniz" PopupHeight="350px">
+                            <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
+                        </SfMultiSelect>
+                        <SfCheckBox @ref="isIntibak" Label="İntibakı Yapılmayanlar" CssClass="e-small col-sm-6" Value="true"></SfCheckBox>
+                        <SfCheckBox @ref="isActive" Label="Sadece Aktifler" CssClass="e-small col-sm-6" Value="true"></SfCheckBox>
+                    </div>
+                </div>
+                <div class="col-12 pb-1">
+                    <div class="form-row">
+                        <SfMultiSelect @ref="CokluMufredat" TValue="int[]" CssClass="e-small col-sm-12" MaximumSelectionLength=1 Placeholder="Müfredatları Seçiniz" Mode="@VisualMode.Delimiter" DataSource="@mufredatDtos" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Müfredatları Seçiniz" PopupHeight="350px">
+                            <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
+                        </SfMultiSelect>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-row">
+                        <SfTextBox @ref="DersKod" Placeholder="Ders Kod" CssClass="e-small col-sm-3"></SfTextBox>
+                        <SfTextBox @ref="DersAd" Placeholder="Ders Ad" CssClass="e-small col-sm-6"></SfTextBox>
+                        <SfButton Type="submit" OnClick="MufredatDersRefresh" CssClass="e-small e-success col-sm-3">Yenile</SfButton>
+                    </div>
                 </div>
             </div>
-            <div class="col-12 pb-1">
-                <div class="form-row">
-                    <SfMultiSelect @ref="CokluMufredat" TValue="int[]" CssClass="e-small col-sm-12" MaximumSelectionLength=1 Placeholder="Müfredatları Seçiniz" Mode="@VisualMode.Delimiter" DataSource="@mufredatDtos" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Müfredatları Seçiniz" PopupHeight="350px">
-                        <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
-                    </SfMultiSelect>
-                </div>
-            </div>
-            <div class="col-12">
-                <div class="form-row">
-                    <SfTextBox @ref="DersKod" Placeholder="Ders Kod" CssClass="e-small col-sm-3"></SfTextBox>
-                    <SfTextBox @ref="DersAd" Placeholder="Ders Ad" CssClass="e-small col-sm-6"></SfTextBox>
-                    <SfButton Type="submit" OnClick="MufredatDersRefresh" CssClass="e-small e-success col-sm-3">Yenile</SfButton>
-                </div>
-            </div>
-        </div>
-        <br />
-        <div class="row">
-            <div class="col-12">
-                <div class="form-row">
-                    <SfGrid ID="DersGrid" @ref="DersGrid" DataSource="@DersDtos" RowHeight="20" ContextMenuItems="@(new List<object>() { "AutoFit", "AutoFitAll", "SortAscending", "SortDescending","Copy", "Edit", "Delete", "Save", "Cancel","PdfExport", "ExcelExport", "CsvExport", "FirstPage", "PrevPage","LastPage", "NextPage"})" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
-                        @*<GridEvents OnActionComplete="ActionCompletedHandler" TValue="ProgramDto"></GridEvents>*@
-                        <GridSelectionSettings CheckboxOnly="true" PersistSelection="true"></GridSelectionSettings>
-                        <GridColumns>
-                            <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
-                            <GridColumn Visible="false" Field=@nameof(DersDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
-                            <GridColumn AutoFit="true" Field=@nameof(DersDto.Kod) HeaderText="Ders Kodu"></GridColumn>
-                            <GridColumn Field=@nameof(DersDto.Ad) HeaderText="Ders Adı"></GridColumn>
-                            <GridColumn AutoFit="true" Field=@nameof(DersDto.Zorunlu) HeaderText="Z"></GridColumn>
-                            <GridColumn AutoFit="true" Field=@nameof(DersDto.Kredi) HeaderText="Krd"></GridColumn>
-                            <GridColumn AutoFit="true" Field=@nameof(DersDto.Akts) HeaderText="Akts"></GridColumn>
-                            <GridColumn AutoFit="true" Field=@nameof(DersDto.Sinif) HeaderText="Sinif"></GridColumn>
-                        </GridColumns>
-                    </SfGrid>
-                </div>
+            <br />
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-row">
+                        <SfGrid ID="DersGrid" @ref="DersGrid" DataSource="@DersDtos" RowHeight="20" ContextMenuItems="@(new List<object>() { "AutoFit", "AutoFitAll", "SortAscending", "SortDescending","Copy", "Edit", "Delete", "Save", "Cancel","PdfExport", "ExcelExport", "CsvExport", "FirstPage", "PrevPage","LastPage", "NextPage"})" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
+                            @*<GridEvents OnActionComplete="ActionCompletedHandler" TValue="ProgramDto"></GridEvents>*@
+                            <GridSelectionSettings CheckboxOnly="true" PersistSelection="true"></GridSelectionSettings>
+                            <GridColumns>
+                                <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
+                                <GridColumn Visible="false" Field=@nameof(DersDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+                                <GridColumn AutoFit="true" Field=@nameof(DersDto.Kod) HeaderText="Ders Kodu"></GridColumn>
+                                <GridColumn Field=@nameof(DersDto.Ad) HeaderText="Ders Adı"></GridColumn>
+                                <GridColumn AutoFit="true" Field=@nameof(DersDto.Zorunlu) HeaderText="Z"></GridColumn>
+                                <GridColumn AutoFit="true" Field=@nameof(DersDto.Kredi) HeaderText="Krd"></GridColumn>
+                                <GridColumn AutoFit="true" Field=@nameof(DersDto.Akts) HeaderText="Akts"></GridColumn>
+                                <GridColumn AutoFit="true" Field=@nameof(DersDto.Sinif) HeaderText="Sinif"></GridColumn>
+                            </GridColumns>
+                        </SfGrid>
+                    </div>
 
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <SfProgressButton OnClick="ConfirmDersleriAc" Content="Seçilenleri Ekle >" CssClass="center-block e-primary">
+                        <ProgressButtonSpinSettings Position="SpinPosition.Right"></ProgressButtonSpinSettings>
+                    </SfProgressButton>
+                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-sm-12 text-center">
-                <SfProgressButton OnClick="ConfirmDersleriAc" Content="Seçilenleri Ekle >" CssClass="center-block e-primary">
-                    <ProgressButtonSpinSettings Position="SpinPosition.Right"></ProgressButtonSpinSettings>
-                </SfProgressButton>
-            </div>
-        </div>
+        
     </div>
     @*Right part*@
     <div class="col-sm-12 col-md-6">
-        <div class="row">
-            <div class="col-sm-12 text-center">
-                <p>Açılan Dersler</p>
+        <div class="server-action-menu">
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <p>Açılan Dersler</p>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12 col-md-6">
-                <div class="form-row pb-1">
-                    <SfMultiSelect @ref="CokluFakulte2" TValue="int[]" CssClass="e-small col-sm-12" MaximumSelectionLength=1 Placeholder="Fakulteleri Seçiniz" Mode="@VisualMode.Delimiter" DataSource="@fakulteDtos2" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Fakulteleri Seçiniz" PopupHeight="350px">
-                        <MultiSelectEvents TValue="int[]" ValueChange="Fakulte2ToBolum2"></MultiSelectEvents>
-                        <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
-                    </SfMultiSelect>
-                    <SfMultiSelect @ref="CokluBolum2" TValue="int[]" CssClass="e-small col-sm-12" MaximumSelectionLength=1 Placeholder="Bölümleri Seçiniz" Mode="@VisualMode.Delimiter" DataSource="@bolumDtos2" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Bölümleri Seçiniz" PopupHeight="350px">
-                        <MultiSelectEvents TValue="int[]" ValueChange="Bolum2ToProgram2"></MultiSelectEvents>
-                        <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
-                    </SfMultiSelect>
-                    <SfMultiSelect @ref="CokluProgram2" TValue="int[]" CssClass="e-small col-sm-12" MaximumSelectionLength=1 Placeholder="Programları Seçiniz" Mode="@VisualMode.Delimiter" DataSource="@programDtos2" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Programları Seçiniz" PopupHeight="350px">
-                        <MultiSelectEvents TValue="int[]" ValueChange="Program2ToMufredat2"></MultiSelectEvents>
-                        <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
-                    </SfMultiSelect>
+            <div class="row">
+                <div class="col-sm-12 col-md-6">
+                    <div class="form-row pb-1">
+                        <SfMultiSelect @ref="CokluFakulte2" TValue="int[]" CssClass="e-small col-sm-12" MaximumSelectionLength=1 Placeholder="Fakulteleri Seçiniz" Mode="@VisualMode.Delimiter" DataSource="@fakulteDtos2" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Fakulteleri Seçiniz" PopupHeight="350px">
+                            <MultiSelectEvents TValue="int[]" ValueChange="Fakulte2ToBolum2"></MultiSelectEvents>
+                            <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
+                        </SfMultiSelect>
+                        <SfMultiSelect @ref="CokluBolum2" TValue="int[]" CssClass="e-small col-sm-12" MaximumSelectionLength=1 Placeholder="Bölümleri Seçiniz" Mode="@VisualMode.Delimiter" DataSource="@bolumDtos2" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Bölümleri Seçiniz" PopupHeight="350px">
+                            <MultiSelectEvents TValue="int[]" ValueChange="Bolum2ToProgram2"></MultiSelectEvents>
+                            <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
+                        </SfMultiSelect>
+                        <SfMultiSelect @ref="CokluProgram2" TValue="int[]" CssClass="e-small col-sm-12" MaximumSelectionLength=1 Placeholder="Programları Seçiniz" Mode="@VisualMode.Delimiter" DataSource="@programDtos2" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Programları Seçiniz" PopupHeight="350px">
+                            <MultiSelectEvents TValue="int[]" ValueChange="Program2ToMufredat2"></MultiSelectEvents>
+                            <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
+                        </SfMultiSelect>
 
-                    <SfMultiSelect @ref="CokluSinif2" TValue="int[]" CssClass="e-small col-sm-12" Placeholder="Sınıfları Seçiniz" Mode="@VisualMode.CheckBox" DataSource="@sinifDtos" ShowSelectAll="true" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Sınıfları Seçiniz" PopupHeight="350px">
-                        <MultiSelectEvents TValue="int[]" ValueChange="RestControlChange"></MultiSelectEvents>
-                        <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
-                    </SfMultiSelect>
+                        <SfMultiSelect @ref="CokluSinif2" TValue="int[]" CssClass="e-small col-sm-12" Placeholder="Sınıfları Seçiniz" Mode="@VisualMode.CheckBox" DataSource="@sinifDtos" ShowSelectAll="true" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Sınıfları Seçiniz" PopupHeight="350px">
+                            <MultiSelectEvents TValue="int[]" ValueChange="RestControlChange"></MultiSelectEvents>
+                            <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
+                        </SfMultiSelect>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <div class="form-row">
+                        <SfMultiSelect @ref="CokluDonem2" TValue="int[]" MaximumSelectionLength=1 CssClass="e-small kirmizi col-sm-12" Placeholder="Dönemleri Seçiniz" Mode="@VisualMode.Delimiter" DataSource="@donemDtos2" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Dönemleri Seçiniz" PopupHeight="350px">
+                            <MultiSelectEvents TValue="int[]" ValueChange="RestControlChange"></MultiSelectEvents>
+                            <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
+                        </SfMultiSelect>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-row">
+                        <SfTextBox @ref="DersKod2" OnChange="RestControlChange" Placeholder="Ders Kod" CssClass="e-small col-sm-3"></SfTextBox>
+                        <SfTextBox @ref="DersAd2" OnChange="RestControlChange" Placeholder="Ders Ad" CssClass="e-small col-sm-6"></SfTextBox>
+                        @*<SfButton Type="submit" OnClick="MufredatDersRefresh" CssClass="e-success col-sm-3">Yenile</SfButton>*@
+                    </div>
                 </div>
             </div>
-            <div class="col-sm-12 col-md-6">
-                <div class="form-row">
-                    <SfMultiSelect @ref="CokluDonem2" TValue="int[]" MaximumSelectionLength=1 CssClass="e-small kirmizi col-sm-12" Placeholder="Dönemleri Seçiniz" Mode="@VisualMode.Delimiter" DataSource="@donemDtos2" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Dönemleri Seçiniz" PopupHeight="350px">
-                        <MultiSelectEvents TValue="int[]" ValueChange="RestControlChange"></MultiSelectEvents>
-                        <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
-                    </SfMultiSelect>
-                </div>
-            </div>
-            <div class="col-12">
-                <div class="form-row">
-                    <SfTextBox @ref="DersKod2" OnChange="RestControlChange" Placeholder="Ders Kod" CssClass="e-small col-sm-3"></SfTextBox>
-                    <SfTextBox @ref="DersAd2" OnChange="RestControlChange" Placeholder="Ders Ad" CssClass="e-small col-sm-6"></SfTextBox>
-                    @*<SfButton Type="submit" OnClick="MufredatDersRefresh" CssClass="e-success col-sm-3">Yenile</SfButton>*@
-                </div>
-            </div>
-        </div>
-        <br />
-        <div class="row">
-            <div class="col-12">
-                <div class="form-row">
-                    <SfGrid ID="DersAcGrid" @ref="DersAcGrid" DataSource="@DersAcDtos" RowHeight="20" ContextMenuItems="@(new List<object>() { "AutoFit", "AutoFitAll", "SortAscending", "SortDescending","Copy", "Edit", "Delete", "Save", "Cancel","PdfExport", "ExcelExport", "CsvExport", "FirstPage", "PrevPage","LastPage", "NextPage"})" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
-                        @*<GridEvents OnActionComplete="ActionCompletedHandler" TValue="ProgramDto"></GridEvents>*@
-                        <GridSelectionSettings CheckboxOnly="true" PersistSelection="true"></GridSelectionSettings>
-                        <GridColumns>
-                            <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
-                            <GridColumn Visible="false" Field=@nameof(DersDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
-                            <GridColumn AutoFit="true" Field=@nameof(DersDto.Kod) HeaderText="Ders Kodu"></GridColumn>
-                            <GridColumn Field=@nameof(DersDto.Ad) HeaderText="Ders Adı"></GridColumn>
-                            <GridColumn AutoFit="true" Field=@nameof(DersDto.Zorunlu) HeaderText="Z"></GridColumn>
-                            <GridColumn AutoFit="true" Field=@nameof(DersDto.Kredi) HeaderText="Krd"></GridColumn>
-                            <GridColumn AutoFit="true" Field=@nameof(DersDto.Akts) HeaderText="Akts"></GridColumn>
-                            <GridColumn AutoFit="true" Field=@nameof(DersDto.Sinif) HeaderText="Sinif"></GridColumn>
-                        </GridColumns>
-                    </SfGrid>
-                </div>
+            <br />
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-row">
+                        <SfGrid ID="DersAcGrid" @ref="DersAcGrid" DataSource="@DersAcDtos" RowHeight="20" ContextMenuItems="@(new List<object>() { "AutoFit", "AutoFitAll", "SortAscending", "SortDescending","Copy", "Edit", "Delete", "Save", "Cancel","PdfExport", "ExcelExport", "CsvExport", "FirstPage", "PrevPage","LastPage", "NextPage"})" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
+                            @*<GridEvents OnActionComplete="ActionCompletedHandler" TValue="ProgramDto"></GridEvents>*@
+                            <GridSelectionSettings CheckboxOnly="true" PersistSelection="true"></GridSelectionSettings>
+                            <GridColumns>
+                                <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
+                                <GridColumn Visible="false" Field=@nameof(DersDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+                                <GridColumn AutoFit="true" Field=@nameof(DersDto.Kod) HeaderText="Ders Kodu"></GridColumn>
+                                <GridColumn Field=@nameof(DersDto.Ad) HeaderText="Ders Adı"></GridColumn>
+                                <GridColumn AutoFit="true" Field=@nameof(DersDto.Zorunlu) HeaderText="Z"></GridColumn>
+                                <GridColumn AutoFit="true" Field=@nameof(DersDto.Kredi) HeaderText="Krd"></GridColumn>
+                                <GridColumn AutoFit="true" Field=@nameof(DersDto.Akts) HeaderText="Akts"></GridColumn>
+                                <GridColumn AutoFit="true" Field=@nameof(DersDto.Sinif) HeaderText="Sinif"></GridColumn>
+                            </GridColumns>
+                        </SfGrid>
+                    </div>
 
+                </div>
             </div>
         </div>
+        
     </div>
 
 </div>

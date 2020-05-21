@@ -11,6 +11,8 @@ using Semerkand.Shared.Dto.Admin;
 using Semerkand.Storage.Core;
 using Microsoft.AspNetCore.Identity;
 using static Microsoft.AspNetCore.Http.StatusCodes;
+using Semerkand.Shared.Dto.Definitions;
+using Microsoft.EntityFrameworkCore;
 
 namespace Semerkand.Server.Managers
 {
@@ -205,6 +207,35 @@ namespace Semerkand.Server.Managers
             catch (Exception ex)
             {
                 return new ApiResponse(Status500InternalServerError, ex.GetBaseException().Message);
+            }
+        }
+
+        public async Task<ApiResponse> GetOgrenciUsers(int pageSize, int pageNumber)
+        {
+            // get paginated list of ogrenci users
+            try
+            {
+                var userList = _userManager.Users.AsQueryable();
+                var listResponse = userList.Where(x => x.OgrenciId != null).OrderBy(x => x.Id).Skip(pageNumber * pageSize).Take(pageSize);
+
+                var ogrenciDtoList = new List<OgrenciDto>(); // This sucks, but Select isn't async happy, and the passing into a 'ProcessEventAsync' is another level of misdirection
+                foreach (var applicationUser in listResponse)
+                {
+                    ogrenciDtoList.Add(new OgrenciDto
+                    {
+                        Ad = applicationUser.FirstName,
+                        Soyadi = applicationUser.LastName,
+                        TCKN = applicationUser.UserName,
+                        Email = applicationUser.Email,
+                        ApplicationUserId = applicationUser.Id
+                        //Roles = await _userManager.GetRolesAsync(applicationUser).ConfigureAwait(true) as List<string>
+                    });
+                }
+                return new ApiResponse(Status200OK, "Ogrenci list fetched", ogrenciDtoList);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(null, ex);
             }
         }
     }

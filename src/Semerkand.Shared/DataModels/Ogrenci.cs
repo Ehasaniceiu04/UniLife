@@ -19,6 +19,8 @@ namespace Semerkand.Shared.DataModels
 
         public string OgrNo { get; set; }
 
+        [MaxLength(11)]
+        public string TCKN { get; set; }
 
         public int FakulteId { get; set; }
         public virtual Fakulte Fakulte{ get; set; }

@@ -18,6 +18,9 @@ namespace Semerkand.Shared.DataModels
         [MaxLength(64)]
         public string FullName { get; set; }
 
+        [MaxLength(11)]
+        public string TCKN { get; set; }
+
         public ICollection<ApiLogItem> ApiLogItems { get; set; }
 
         public UserProfile Profile { get; set; }

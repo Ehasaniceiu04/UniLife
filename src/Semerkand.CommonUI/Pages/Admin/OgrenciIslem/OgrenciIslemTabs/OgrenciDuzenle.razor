@@ -1,0 +1,480 @@
+﻿@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Buttons
+@using Semerkand.Shared.Dto.Definitions
+@inject IMatToaster matToaster
+@inject HttpClient Http;
+
+<ControlSection>
+    <div class="row info-panel">
+        <div class="col-sm-12 col-md-12">
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <p>Akademik Bilgiler</p>
+                </div>
+            </div>
+            <div class="server-action-menu">
+                <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                        <div class="form-row form-group form-inline ">
+                            <label class="col-sm-2" for="OgrNo">Öğrenci NO:</label>
+                            <SfAutoComplete ID="OgrNo" TValue="string" TItem="EmployeeData" cssClass="template e-small col-sm-5 pb-1" Placeholder="Öğrenci Seçiniz" DataSource="@Data">
+                                <AutoCompleteTemplates TItem="EmployeeData">
+                                    <ItemTemplate>
+                                        <div>
+                                            <img class="empImage" src="_content/Semerkand.CommonUI/images/ogrenci/2.png" asp-append-version="true" alt="image" />
+                                            <div class="ename  pb-2"> @((context as EmployeeData).FirstName) </div>
+                                            <div class="job"> @((context as EmployeeData).Designation) </div>
+                                        </div>
+                                    </ItemTemplate>
+                                    <HeaderTemplate>
+                                        <div class="header"> <span>Resim</span> <span class="info">Öğrenci</span></div>
+                                    </HeaderTemplate>
+                                </AutoCompleteTemplates>
+                                <AutoCompleteFieldSettings Value="FirstName"></AutoCompleteFieldSettings>
+                            </SfAutoComplete>
+                            <label class="col-sm-2" for="DosNo">Dosya NO:</label>
+                            <SfTextBox ID="DosNo" Placeholder="Dosya No" CssClass="e-small col-sm-2"></SfTextBox>
+                            <SfCheckBox Label="Durum" CssClass="e-small col-sm-1" Checked="true"></SfCheckBox>
+                            @*</div>
+                                <div class="form-row form-group form-inline">*@
+                            <label class="col-sm-2" for="CokluFakulte">Fakulte:</label>
+                            <SfMultiSelect ID="CokluFakulte" @ref="CokluFakulte" TValue="int[]" CssClass="e-small col-sm-10 pb-1" MaximumSelectionLength=1 Placeholder="Fakulteleri Seçiniz" Mode="@VisualMode.Delimiter" DataSource="@fakulteDtos" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Fakulteleri Seçiniz" PopupHeight="350px">
+                                <MultiSelectEvents TValue="int[]" ValueChange="FakulteToBolum"></MultiSelectEvents>
+                                <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
+                            </SfMultiSelect>
+                            <label class="col-sm-2" for="CokluBolum">Bolum:</label>
+                            <SfMultiSelect ID="CokluBolum" @ref="CokluBolum" TValue="int[]" CssClass="e-small col-sm-10 pb-1" MaximumSelectionLength=1 Placeholder="Bölümleri Seçiniz" Mode="@VisualMode.Delimiter" DataSource="@bolumDtos" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Bölümleri Seçiniz" PopupHeight="350px">
+                                <MultiSelectEvents TValue="int[]" ValueChange="BolumToProgram"></MultiSelectEvents>
+                                <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
+                            </SfMultiSelect>
+                            <label class="col-sm-2" for="CokluProgram">Program:</label>
+                            <SfMultiSelect ID="CokluProgram" @ref="CokluProgram" TValue="int[]" CssClass="e-small col-sm-10 pb-1" MaximumSelectionLength=1 Placeholder="Programları Seçiniz" Mode="@VisualMode.Delimiter" DataSource="@programDtos" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Programları Seçiniz" PopupHeight="350px">
+                                <MultiSelectEvents TValue="int[]" ValueChange="ProgramToMufredat"></MultiSelectEvents>
+                                <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
+                            </SfMultiSelect>
+                            <label class="col-sm-2" for="CokluMufredat">Mufredat:</label>
+                            <SfMultiSelect ID="CokluMufredat" @ref="CokluMufredat" TValue="int[]" CssClass="e-small col-sm-10 pb-1" MaximumSelectionLength=1 Placeholder="Müfredatları Seçiniz" Mode="@VisualMode.Delimiter" DataSource="@mufredatDtos" ShowSelectAll="@ShowSelectAllCheckBox" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Müfredatları Seçiniz" PopupHeight="350px">
+                                <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
+                            </SfMultiSelect>
+                            <label class="col-sm-2" for="CokluSinif">Sınıf:</label>
+                            <SfMultiSelect ID="CokluSinif" @ref="CokluSinif" TValue="int[]" CssClass="e-small col-sm-5 pb-1" MaximumSelectionLength=1 Placeholder="Sınıfları Seçiniz" Mode="@VisualMode.Delimiter" DataSource="@sinifDtos" ShowSelectAll="true" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Sınıfları Seçiniz" PopupHeight="350px">
+                                <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
+                            </SfMultiSelect>
+                            <label class="col-sm-2" for="ilDonem">ilave Dönem:</label>
+                            <SfTextBox ID="ilDonem" Placeholder="ilave Dönem" CssClass="e-small col-sm-3"></SfTextBox>
+                            <label class="col-sm-2" for="KayNeden">Kayıt Neden:</label>
+                            <SfDropDownList ID="KayNeden" TItem="GameFields" CssClass="e-small col-sm-10 pb-1" TValue="string" PopupHeight="230px" Index="2" Placeholder="Select a game" @bind-Value="@DropVal" DataSource="@Games">
+                                <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
+                                <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
+                            </SfDropDownList>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+</ControlSection>
+
+
+
+
+@code {
+
+    private string textValue { get; set; }
+    public class GameFields
+    {
+        public string ID { get; set; }
+        public string Text { get; set; }
+    }
+    private List<GameFields> Games = new List<GameFields>() {
+        new GameFields(){ ID= "Game1", Text= "American Football" },
+        new GameFields(){ ID= "Game2", Text= "Badminton" },
+        new GameFields(){ ID= "Game3", Text= "Basketball" },
+        new GameFields(){ ID= "Game4", Text= "Cricket" },
+        new GameFields(){ ID= "Game5", Text= "Football" },
+        new GameFields(){ ID= "Game6", Text= "Golf" },
+        new GameFields(){ ID= "Game7", Text= "Hockey" },
+        new GameFields(){ ID= "Game8", Text= "Rugby"},
+        new GameFields(){ ID= "Game9", Text= "Snooker" },
+        new GameFields(){ ID= "Game10", Text= "Tennis"},
+     };
+    public string DropVal;
+    public string ChangeValue { get; set; } = "Basketball";
+    public void OnChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<string> args)
+    {
+        var asd = args;
+    }
+
+
+
+    Type models = typeof(EmployeeData);
+    public class EmployeeData
+    {
+        public string FirstName { get; set; }
+        public string Designation { get; set; }
+        public string Eimg { get; set; }
+    }
+    List<EmployeeData> Data = new List<EmployeeData>
+{
+        new EmployeeData() { FirstName = "Andrew Fuller",  Designation = "Team Lead", Eimg= "7" },
+        new EmployeeData() { FirstName = "Anne Dodsworth", Designation = "Developer", Eimg= "1" },
+        new EmployeeData() { FirstName = "Janet Leverling", Designation = "HR", Eimg= "3" },
+        new EmployeeData() { FirstName = "Laura Callahan", Designation = "Product Manager", Eimg= "2" },
+        new EmployeeData() { FirstName = "Margaret Peacock", Designation = "Developer", Eimg= "6" },
+        new EmployeeData() { FirstName = "Michael Suyama", Designation = "Team Lead", Eimg= "9" },
+        new EmployeeData() { FirstName = "Nancy Davolio", Designation = "Product Manager", Eimg= "4" },
+        new EmployeeData() { FirstName = "Robert King", Designation = "Developer", Eimg= "8" },
+        new EmployeeData() { FirstName = "Steven Buchanan", Designation = "CEO", Eimg= "10" },
+    };
+
+    SfMultiSelect<int[]> CokluFakulte;
+    SfMultiSelect<int[]> CokluBolum;
+    SfMultiSelect<int[]> CokluProgram;
+    SfMultiSelect<int[]> CokluMufredat;
+    SfMultiSelect<int[]> CokluSinif;
+
+    public bool ShowSelectAllCheckBox { get; set; } = false;
+    public bool EnableSelectionOrders { get; set; } = false;
+    public bool EnableDropDownIcon { get; set; } = true;
+
+    List<FakulteDto> fakulteDtos = new List<FakulteDto>();
+    List<BolumDto> bolumDtos = new List<BolumDto>();
+    List<ProgramDto> programDtos = new List<ProgramDto>();
+    List<MufredatDto> mufredatDtos = new List<MufredatDto>();
+    List<SinifDto> sinifDtos = new List<SinifDto>
+    {
+            new SinifDto() { Ad = "0", Id = 0 },
+            new SinifDto() { Ad = "1", Id = 1 },
+            new SinifDto() { Ad = "2", Id = 2 },
+            new SinifDto() { Ad = "3", Id = 3 },
+            new SinifDto() { Ad = "4", Id = 4 },
+            new SinifDto() { Ad = "5", Id = 5 },
+            new SinifDto() { Ad = "6", Id = 6 },
+            new SinifDto() { Ad = "7", Id = 7 },
+            new SinifDto() { Ad = "8", Id = 8 },
+            new SinifDto() { Ad = "9", Id = 9 },
+        };
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ReadFakultes();
+
+    }
+
+    async Task ReadFakultes()
+    {
+        ApiResponseDto<List<FakulteDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<FakulteDto>>>("api/fakulte");
+
+        if (apiResponse.StatusCode == Status200OK)
+        {
+            fakulteDtos = apiResponse.Result;
+
+        }
+        else
+        {
+            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "fakulte getirilirken hata oluştu!");
+        }
+    }
+
+
+    private async void FakulteToBolum(MultiSelectChangeEventArgs<int[]> args)
+    {
+        //seciliFakulteler = args.Value;
+
+        if (args.Value == null)
+        {
+            bolumDtos = new List<BolumDto>();
+            programDtos = new List<ProgramDto>();
+            mufredatDtos = new List<MufredatDto>();
+            StateHasChanged();
+        }
+        else
+        {
+            await ReadBolums();
+        }
+
+    }
+    async Task ReadBolums()
+    {
+        ApiResponseDto<List<BolumDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<BolumDto>>>("api/bolum/GetBolumByFakulteIds/" + string.Join(',', CokluFakulte.Value));
+
+        if (apiResponse.StatusCode == Status200OK)
+        {
+            bolumDtos = apiResponse.Result;
+            StateHasChanged();
+        }
+        else
+        {
+            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Bölüm getirilirken hata oluştu!");
+        }
+    }
+
+    private async void BolumToProgram(MultiSelectChangeEventArgs<int[]> args)
+    {
+
+        if (args.Value == null)
+        {
+            programDtos = new List<ProgramDto>();
+            mufredatDtos = new List<MufredatDto>();
+            StateHasChanged();
+        }
+        else
+        {
+            await ReadPrograms();
+        }
+    }
+
+    async Task ReadPrograms()
+    {
+        ApiResponseDto<List<ProgramDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<ProgramDto>>>("api/program/GetProgramByBolumIds/" + string.Join(',', CokluBolum.Value));
+
+        if (apiResponse.StatusCode == Status200OK)
+        {
+            programDtos = apiResponse.Result;
+            StateHasChanged();
+        }
+        else
+        {
+            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "program getirilirken hata oluştu!");
+        }
+    }
+
+    private async void ProgramToMufredat(MultiSelectChangeEventArgs<int[]> args)
+    {
+        if (args.Value == null)
+        {
+            mufredatDtos = new List<MufredatDto>();
+            StateHasChanged();
+        }
+        else
+        {
+            await ReadMufredats();
+        }
+    }
+
+    async Task ReadMufredats()
+    {
+        ApiResponseDto<List<MufredatDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<MufredatDto>>>("api/mufredat/GetMufredatByProgramIds/" + string.Join(',', CokluProgram.Value));
+
+        if (apiResponse.StatusCode == Status200OK)
+        {
+            mufredatDtos = apiResponse.Result;
+            StateHasChanged();
+        }
+        else
+        {
+            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "mufredat getirilirken hata oluştu!");
+        }
+    }
+}
+
+<style>
+    textarea.e-input,
+    .e-float-input textarea,
+    .e-float-input.e-control-wrapper textarea,
+    .e-input-group textarea,
+    .e-input-group.e-control-wrapper textarea {
+        resize: none;
+    }
+
+    .server-action-menu {
+        background-color: transparent;
+        background-image: linear-gradient(to bottom, rgba(30, 87, 153, 0.2) 0%, rgba(125, 185, 232, 0) 100%);
+        background-repeat: repeat;
+        border-radius: 10px;
+        padding: 5px;
+    }
+
+
+    /*Autocomplate start*/
+    .content {
+        max-width: 270px;
+        margin: 25px 300px;
+        padding-top: 55px;
+    }
+
+    .header {
+        font-weight: 600;
+        color: rgba(0, 0, 0, .54);
+        height: 48px;
+        padding: 15px 0 0 16px;
+        font-size: 16px;
+        background-color: #f5f5f5;
+        font-family: "Segoe UI", "GeezaPro", "DejaVu Serif";
+    }
+
+    .fabric .header {
+        background-color: #fff;
+        border-bottom: 1px solid #ccc;
+        color: #0078d7;
+        font-weight: 400;
+    }
+
+    .bootstrap .header {
+        background-color: #fff;
+        border-bottom: 1px solid #ccc;
+        color: #777;
+        font-family: "Helvetica Neue", "Helvetica", "Arial", "sans-serif";
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 30px;
+        height: 30px;
+        padding: 0 0 0 24px;
+    }
+
+    .e-bigger.bootstrap .header {
+        line-height: 44px;
+        height: 44px;
+        font-size: 13px;
+    }
+
+    .highcontrast .header {
+        color: #fff;
+        background-color: #000;
+    }
+
+    .bootstrap4 .header {
+        color: #6c757d;
+    }
+
+    .bootstrap .info,
+    .e-bigger.bootstrap .info {
+        margin-left: 25px;
+    }
+
+    .bootstrap .job {
+        opacity: .54;
+        font-size: 14px;
+        margin-top: -25px;
+        margin-bottom: 20px;
+    }
+
+    .e-bigger.bootstrap .job {
+        font-size: 15px;
+        margin-top: -32px;
+        margin-bottom: 17px;
+    }
+
+    .bootstrap .ename {
+        font-size: 15px;
+        margin-top: 20px;
+        opacity: .87;
+        padding: 3px 0 20px;
+    }
+
+    .e-bigger.bootstrap .ename {
+        font-size: 16px;
+        padding-bottom: 15px;
+    }
+
+    .bootstrap .empImage,
+    .e-bigger.bootstrap .empImage {
+        margin: 0px 10px 0 20px;
+    }
+
+    .bootstrap .value {
+        margin-top: 3px;
+        margin-left: 3px;
+    }
+
+    .e-bigger.bootstrap .value {
+        margin-top: 5px;
+        margin-left: 5px;
+    }
+
+    .bootstrap .name {
+        padding: 9px 42px;
+    }
+
+    .e-bigger.bootstrap .name {
+        padding: 12px 42px;
+    }
+
+    .info {
+        margin-left: 34px;
+    }
+
+    .ename {
+        display: block !important;
+        opacity: .87;
+        font-size: 16px;
+        margin-top: 8px;
+    }
+
+    .name {
+        padding: 5px 42px;
+        opacity: .87;
+        line-height: 1.063em;
+    }
+
+    .job {
+        opacity: .54;
+        font-size: 14px;
+        margin-top: -15px;
+        margin-bottom: 7px;
+    }
+
+    .empImage {
+        margin: 6px 16px;
+        float: left;
+        width: 50px;
+        height: 50px;
+    }
+
+    .value {
+        border-radius: 50%;
+        float: left;
+        margin-top: 2px;
+        margin-left: 2px;
+    }
+
+    .e-bigger:not(.bootstrap) .value {
+        margin-top: 7px;
+    }
+
+    .e-bigger:not(.bootstrap) .name {
+        padding: 11px 42px;
+    }
+
+    .template.e-popup .e-list-item * {
+        display: block;
+        text-indent: 0;
+    }
+
+    .e-bigger:not(.bootstrap) .template .e-dropdownbase .e-list-item {
+        line-height: 42px;
+        height: 80px;
+    }
+
+    .e-bigger:not(.bootstrap) .template.e-popup .empImage {
+        margin: 10px 16px;
+    }
+
+    .bootstrap4 .template.e-popup .empImage {
+        margin: 0px 16px;
+    }
+
+    .bootstrap4 .template.e-popup .job {
+        margin-top: 0;
+    }
+
+    .e-bigger.bootstrap4 .template.e-popup .job {
+        margin-top: -15px;
+    }
+
+    .template .e-dropdownbase.e-content {
+        max-height: 200px !important;
+    }
+    /*Autocomplate end*/
+
+</style>

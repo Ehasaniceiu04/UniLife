@@ -21,6 +21,6 @@ namespace Semerkand.Server.Managers
         Task<ApiResponse> UpdateRoleAsync([FromBody] RoleDto newRole);
 
         Task<ApiResponse> DeleteRoleAsync(string name);
-
+        Task<ApiResponse> GetOgrenciUsers(int pageSize, int pageNumber);
     }
 }

@@ -1,0 +1,40 @@
+﻿@inject HttpClient Http
+@using Semerkand.Shared.Dto.Definitions
+@inject IMatToaster matToaster
+@inject Microsoft.AspNetCore.Components.NavigationManager UriHelper
+
+<div style="display:inline-flex">
+    <div style="float:left;padding:45px;padding-top:70px"><img class="photo" src="@UriHelper.ToAbsoluteUri($"https://blazor.syncfusion.com/demos/images/Grid/1.png")" alt="@OgrenciDto.Id" /></div>
+    <div style="padding-top:42px">
+        <span style="font-size: x-large;font-weight: bold;">@OgrenciDto.Ad</span><br />
+        <h5 style="font-weight:400 !important;">@OgrenciDto.Program.Ad</h5><br />
+        <span class="title">Country:</span> <span class="content">@OgrenciDto.Fakulte.Ad</span><br />
+        <span class="title">Postal Code:</span> <span class="content">@OgrenciDto.Bolum.Ad</span><br />
+        <span class="title">Mail:</span> <span class="content ">@OgrenciDto.Email</span>
+    </div>
+</div>
+
+@code{
+    [Parameter]
+    public OgrenciDto OgrenciDto { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ReadOgrenci();
+    }
+
+    async Task ReadOgrenci()
+    {
+
+        ApiResponseDto<OgrenciDto> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<OgrenciDto>>($"api/ogrenci" + OgrenciDto.Id);
+
+        if (apiResponse.StatusCode == Status200OK)
+        {
+            OgrenciDto = apiResponse.Result;
+        }
+        else
+        {
+            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Öğrenci bilgisi getirilirken hata oluştu!");
+        }
+    }
+}

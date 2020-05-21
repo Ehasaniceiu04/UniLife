@@ -1,19 +1,26 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Semerkand.Shared.Dto.Definitions
 {
-    public class OgrenciDto : EntityDto<int>
+    public class OgrenciDto : EntityDto<int> //, BaseDto
     {
         public Guid ApplicationUserId { get; set; }
 
         public virtual ApplicationUserDto ApplicationUser { get; set; }
 
         [Required]
-        [MaxLength(300)]
+        [StringLength(64, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
+        [RegularExpression(@"[^\s]+", ErrorMessage = "Boşluk bırakmayınız.")]
+        [Display(Name = "Ad")]
         public string Ad { get; set; }
 
+        public string Soyadi { get; set; }
         public string OgrNo { get; set; }
+
+        [MaxLength(11)]
+        public string TCKN { get; set; }
 
 
         public int FakulteId { get; set; }
@@ -33,5 +40,23 @@ namespace Semerkand.Shared.Dto.Definitions
         public DateTime KayitTarih { get; set; }
         public DateTime? AyrilTarih { get; set; }
         public string AnaOgrNo { get; set; }
+
+        //from UserInfoDTO
+        public bool IsAuthenticated { get; set; }
+
+        [Required]
+        [StringLength(20, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
+        [RegularExpression(@"[^\s]+", ErrorMessage = "Spaces are not permitted.")]
+        [Display(Name = "KullanıcıTCKN")]
+        public string UserName { get; set; }
+        public int TenantId { get; set; }
+        [Required]
+        [DataType(DataType.EmailAddress)]
+        [EmailAddress]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+        public List<string> Roles { get; set; }
+        public List<KeyValuePair<string, string>> ExposedClaims { get; set; }
+        public bool DisableTenantFilter { get; set; }
     }
 }

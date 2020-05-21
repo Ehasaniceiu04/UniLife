@@ -26,6 +26,11 @@ namespace Semerkand.Server.Controllers
         [Authorize]
         public async Task<ApiResponse> GetUsers([FromQuery] int pageSize = 10, [FromQuery] int pageNumber = 0)
             => await _adminManager.GetUsers(pageSize, pageNumber);
+        
+        [HttpGet("GetOgrenciUsers")]
+        [Authorize]
+        public async Task<ApiResponse> GetOgrenciUsers([FromQuery] int pageSize = 10, [FromQuery] int pageNumber = 0)
+            => await _adminManager.GetOgrenciUsers(pageSize, pageNumber);
 
         [HttpGet("Permissions")]
         [Authorize]
