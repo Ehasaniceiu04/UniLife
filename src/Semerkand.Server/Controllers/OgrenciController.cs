@@ -35,6 +35,15 @@ namespace Semerkand.Server.Controllers
                 await _ogrenciManager.Get(id) :
                 new ApiResponse(Status400BadRequest, "Ogrenci Model is Invalid");
 
+        // GET: api/Ogrenci/5
+        [HttpGet]
+        [Route("GetOgrenciWithRelations/{id}")]
+        [AllowAnonymous]
+        public async Task<ApiResponse> GetOgrenciWithRelations(int id)
+            => ModelState.IsValid ?
+                await _ogrenciManager.GetOgrenciWithRelations(id) :
+                new ApiResponse(Status400BadRequest, "Ogrenci Model is Invalid");
+
         // POST: api/Ogrenci
         [HttpPost]
         [AllowAnonymous]

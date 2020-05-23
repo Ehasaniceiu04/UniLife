@@ -68,5 +68,11 @@ namespace Semerkand.Shared.Dto.Definitions
         public List<string> Roles { get; set; }
         public List<KeyValuePair<string, string>> ExposedClaims { get; set; }
         public bool DisableTenantFilter { get; set; }
+
+        //Bussines needs
+        public string FakulteAdi { get; set; }
+        public object MufredatAdi { get; set; }
+        public object ProgramAdi { get; set; }
+        public object BolumAdi { get; set; }
     }
 }

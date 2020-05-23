@@ -35,7 +35,7 @@ namespace Semerkand.Storage
         //TODO Bunu böyle bırakacakmıyız.
         public Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade Database { get; set; }
         //TODO Bunu böyle bırakacakmıyız.
-        public DbContext Context { get; set; }
+        public ApplicationDbContext Context { get; set; }
 
         public void SetGlobalQueryForSoftDelete<T>(ModelBuilder builder) where T : class, ISoftDelete;
 

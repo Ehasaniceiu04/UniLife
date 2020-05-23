@@ -7,5 +7,6 @@ namespace Semerkand.Server.Managers
 {
     public interface IOgrenciManager : IBaseManager<Ogrenci, OgrenciDto>
     {
+        Task<ApiResponse> GetOgrenciWithRelations(int id);
     }
 }

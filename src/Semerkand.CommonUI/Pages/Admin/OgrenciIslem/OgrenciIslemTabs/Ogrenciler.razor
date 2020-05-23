@@ -8,81 +8,117 @@
 @using Semerkand.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs.OgrencilerTabs
 @using Syncfusion.Blazor.SplitButtons
 
-    <ControlSection>
-        <div class="row">
-            <SfGrid AllowSorting="true" AllowFiltering="true" AllowPaging="true" DataSource="@OgrGridDtos">
-                <GridTemplates>
-                    <DetailTemplate>
-                        @{
-                            var ogrenciDto = (context as Semerkand.Shared.Dto.Definitions.OgrenciDto);
-                        }
-                        <div style="padding:20px">
-                            <SfTab>
-                                <TabItems>
-                                    <TabItem>
-                                        <ChildContent>
-                                            <TabHeader Text="Details"></TabHeader>
-                                        </ChildContent>
-                                        <ContentTemplate>
-                                            <OgrenciBilgi OgrenciDto="ogrenciDto"></OgrenciBilgi>
-                                        </ContentTemplate>
-                                    </TabItem>
-                                    <TabItem>
-                                        <ChildContent>
-                                            <TabHeader Text="Sales"></TabHeader>
-                                        </ChildContent>
-                                        <ContentTemplate>
-                                            Burada elemanlar bir tane daha grid koymuş. düşünülebilir.
-                                        </ContentTemplate>
-                                    </TabItem>
-                                    <TabItem>
-                                        <ChildContent>
-                                            <TabHeader Text="Report"></TabHeader>
-                                        </ChildContent>
-                                        <ContentTemplate>
-                                            Burada Chart vardı öğrencinin devamsızlık vs tutulabilir. Şekil şş
-                                        </ContentTemplate>
-                                    </TabItem>
-                                </TabItems>
-                            </SfTab>
-                        </div>
-                    </DetailTemplate>
-                </GridTemplates>
-                <GridColumns>
-                    <GridColumn Visible="false" Field=@nameof(OgrenciDto.ApplicationUserId) HeaderText="AppUserId" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
-                    <GridColumn Field=@nameof(OgrenciDto.Ad) HeaderText="Ad" Width="110"> </GridColumn>
-                    <GridColumn Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad" Width="110"></GridColumn>
-                    <GridColumn Field=@nameof(OgrenciDto.TCKN) HeaderText="TCKN" Width="110"></GridColumn>
-                    <GridColumn Field=@nameof(OgrenciDto.Email) HeaderText="Email"></GridColumn>
-                    <GridColumn Field=@nameof(OgrenciDto.OgrNo) HeaderText="Öğrenci No" Width="110"></GridColumn>
-                </GridColumns>
-            </SfGrid>
+
+
+@using Syncfusion.Blazor.Charts
+@using GridData
+@inherits Semerkand.CommonUI.Components.SampleBaseComponent;
+
+<ControlSection>
+    <div class="row">
+        <SfGrid @ref="OgrGrid" AllowSorting="true" AllowFiltering="true" AllowPaging="true" DataSource="@OgrGridDtos">
+            <GridEvents TValue="OgrenciDto" RowDataBound="RowBound"></GridEvents>
+            <GridTemplates>
+                <DetailTemplate>
+                    @{
+                        var ogrenciDto = (context as Semerkand.Shared.Dto.Definitions.OgrenciDto);
+
+                        //SampleChart için
+                        var chartQuery = $"new sf.data.Query().where('EmployeeID', 'equal', {ogrenciDto.Id}, false)";
+
+                    }
+                    <div style="padding:20px">
+                        <SfTab LoadOn="ContentLoad.Dynamic">
+                            <TabItems>
+                                <TabItem>
+                                    <ChildContent>
+                                        <TabHeader Text="Details"></TabHeader>
+                                    </ChildContent>
+                                    <ContentTemplate>
+                                        <OgrenciBilgi OgrenciDto="ogrenciDto"></OgrenciBilgi>
+                                    </ContentTemplate>
+                                </TabItem>
+                                <TabItem>
+                                    <ChildContent>
+                                        <TabHeader Text="Roles"></TabHeader>
+                                    </ChildContent>
+                                    <ContentTemplate>
+                                        <OgrenciRoles></OgrenciRoles>
+                                        Burada elemanlar bir tane daha grid koymuş. düşünülebilir.
+                                    </ContentTemplate>
+                                </TabItem>
+                                <TabItem>
+                                    <ChildContent>
+                                        <TabHeader Text="Report"></TabHeader>
+                                    </ChildContent>
+                                    <ContentTemplate>
+                                        öğrencinin aylık devamsızlık vs tutulabilir. Şekil şş
+                                        <div style="padding-top: 35px; padding-left:20px;">
+                                            <SfChart Height="390px" Title="Sales Report" DataSource="@OrderData">
+                                                <ChartPrimaryXAxis Title="City" LabelRotation="45" ValueType="Syncfusion.Blazor.Charts.ValueType.Category">
+                                                </ChartPrimaryXAxis>
+                                                <ChartPrimaryYAxis Title="Sales in millions" Interval="300"></ChartPrimaryYAxis>
+                                                <ChartSeriesCollection>
+                                                    <ChartSeries XName="ShipCity" YName="Freight" Type="ChartSeriesType.Column" Query="@chartQuery">
+                                                    </ChartSeries>
+                                                </ChartSeriesCollection>
+                                                <ChartTooltipSettings Enable="true"></ChartTooltipSettings>
+                                            </SfChart>
+                                        </div>
+                                    </ContentTemplate>
+                                </TabItem>
+                            </TabItems>
+                        </SfTab>
+                    </div>
+                </DetailTemplate>
+            </GridTemplates>
+            <GridColumns>
+                <GridColumn Visible="false" Field=@nameof(OgrenciDto.ApplicationUserId) HeaderText="AppUserId" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+                <GridColumn Field=@nameof(OgrenciDto.Ad) HeaderText="Ad"> </GridColumn>
+                <GridColumn Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad"></GridColumn>
+                <GridColumn Field=@nameof(OgrenciDto.TCKN) HeaderText="TCKN"></GridColumn>
+                <GridColumn Field=@nameof(OgrenciDto.Email) HeaderText="Email"></GridColumn>
+                <GridColumn Field=@nameof(OgrenciDto.OgrNo) HeaderText="Öğrenci No"></GridColumn>
+            </GridColumns>
+        </SfGrid>
+    </div>
+
+    <div class="row">
+        <div class="col-12 text-right">
+            <SfProgressButton OnClick="KaydetDevam" Content="Kaydet ve Devamet >" CssClass="center-block e-primary">
+                <ProgressButtonSpinSettings Position="SpinPosition.Right"></ProgressButtonSpinSettings>
+            </SfProgressButton>
         </div>
-
-        <div class="row">
-            <div class="col-12 text-right">
-                <SfProgressButton OnClick="KaydetDevam" Content="Kaydet ve Devamet >" CssClass="center-block e-primary">
-                    <ProgressButtonSpinSettings Position="SpinPosition.Right"></ProgressButtonSpinSettings>
-                </SfProgressButton>
-            </div>
-        </div>
+    </div>
 
 
 
-    </ControlSection>
+</ControlSection>
 
 @code{
+    //Sample Chart için
+    public List<EmployeeOrders> OrderData { get; set; }
+
+
+    public SfGrid<OgrenciDto> OgrGrid;
+
     public List<OgrenciDto> OgrGridDtos { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
+        //SampleChartİçin
+        OrderData = EmployeeOrders.GetAllRecords();
+
+
         await ReadOgrencis();
     }
 
     async Task ReadOgrencis()
     {
 
-        ApiResponseDto<List<OgrenciDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDto>>>($"api/Admin/GetOgrenciUsers?pageSize={10}&pageNumber={0}");
+        //ApiResponseDto<List<OgrenciDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDto>>>($"api/Admin/GetOgrenciUsers?pageSize={10}&pageNumber={0}");
+        ApiResponseDto<List<OgrenciDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDto>>>("api/ogrenci");
+
 
         if (apiResponse.StatusCode == Status200OK)
         {
@@ -98,6 +134,24 @@
     async Task KaydetDevam()
     {
 
+    }
+
+    public void RowBound(RowDataBoundEventArgs<OgrenciDto> args)
+    {
+        this.OgrGrid.DetailCollapseAll();
+
+        //if (args.Data.Freight < 25)
+        //{
+        //    args.Row.AddClass(new string[] { "below-25" });
+        //}
+        //else if (args.Data.Freight < 35)
+        //{
+        //    args.Row.AddClass(new string[] { "below-35" });
+        //}
+        //else
+        //{
+        //    args.Row.AddClass(new string[] { "above-35" });
+        //}
     }
 
 }

@@ -19,5 +19,16 @@ namespace Semerkand.Server.Managers
             
         }
 
+        public async Task<ApiResponse> GetOgrenciWithRelations(int id)
+        {
+            try
+            {
+                return new ApiResponse(Status200OK, "Retrieved OgrenciDto", await _ogrenciStore.GetOgrenciWithRelations(id));
+            }
+            catch (Exception e)
+            {
+                return new ApiResponse(Status400BadRequest, "Failed to Retrieve OgrenciDto");
+            }
+        }
     }
 }
