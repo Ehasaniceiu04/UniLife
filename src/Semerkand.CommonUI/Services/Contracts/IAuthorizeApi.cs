@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Semerkand.Shared.Dto;
 using Semerkand.Shared.Dto.Account;
+using Semerkand.Shared.Dto.Definitions;
 
 namespace Semerkand.CommonUI.Services.Contracts
 {
@@ -8,6 +9,7 @@ namespace Semerkand.CommonUI.Services.Contracts
     {
         Task<ApiResponseDto> Login(LoginDto loginParameters);
         Task<ApiResponseDto> Create(RegisterDto registerParameters);
+        Task<ApiResponseDto> Create(OgrenciDto ogrenciDto);
         Task<ApiResponseDto> Register(RegisterDto registerParameters);
         Task<ApiResponseDto> ForgotPassword(ForgotPasswordDto forgotPasswordParameters);
         Task<ApiResponseDto> ResetPassword(ResetPasswordDto resetPasswordParameters);

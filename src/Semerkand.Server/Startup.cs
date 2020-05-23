@@ -404,6 +404,7 @@ namespace Semerkand.Server
             services.AddTransient<IDonemTipManager, DonemTipManager>();
             services.AddTransient<IOgrenimDurumManager, OgrenimDurumManager>();
             services.AddTransient<IKayitNedenManager, KayitNedenManager>();
+            services.AddTransient<IOgrenciManager, OgrenciManager>();
             services.AddTransient<IUserProfileManager, UserProfileManager>();
 
 

@@ -7,6 +7,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Semerkand.Shared.DataModels;
 using Semerkand.Shared.Dto.Account;
+using Semerkand.Shared.Dto.Definitions;
 
 namespace Semerkand.Server.Managers
 {
@@ -31,6 +32,7 @@ namespace Semerkand.Server.Managers
         // Admin policies. 
 
         Task<ApiResponse> Create(RegisterDto parameters);
+        Task<ApiResponse> CreateOgrenci(OgrenciDto ogrenciDto);
 
         Task<ApiResponse> Delete(string id);
 

@@ -16,6 +16,9 @@ using Semerkand.Shared.Dto.Account;
 using Semerkand.Shared.Dto.Email;
 using IdentityModel;
 using Microsoft.EntityFrameworkCore;
+using Semerkand.Shared.Dto.Definitions;
+using Semerkand.Shared.DataInterfaces;
+using Semerkand.Shared.Dto;
 
 namespace Semerkand.Server.Managers
 {
@@ -26,6 +29,7 @@ namespace Semerkand.Server.Managers
         private readonly RoleManager<IdentityRole<Guid>> _roleManager;
         private readonly IEmailManager _emailManager;
         private readonly IUserProfileStore _userProfileStore;
+        private readonly IOgrenciStore _ogrenciStore;
         private readonly IConfiguration _configuration;
         private readonly SignInManager<ApplicationUser> _signInManager;
 
@@ -37,7 +41,8 @@ namespace Semerkand.Server.Managers
             RoleManager<IdentityRole<Guid>> roleManager,
             IEmailManager emailManager,
             IUserProfileStore userProfileStore,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            IOgrenciStore ogrenciStore)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -46,6 +51,7 @@ namespace Semerkand.Server.Managers
             _emailManager = emailManager;
             _userProfileStore = userProfileStore;
             _configuration = configuration;
+            _ogrenciStore = ogrenciStore;
         }
 
         public async Task<ApiResponse> ConfirmEmail(ConfirmEmailDto parameters)
@@ -347,6 +353,126 @@ namespace Semerkand.Server.Managers
             }
         }
 
+        public async Task<ApiResponse> CreateOgrenci(OgrenciDto ogrenciDto)
+        {
+            try
+            {
+                Guid possibleUserId = Guid.NewGuid();
+
+
+
+                var user = new ApplicationUser
+                {
+                    UserName = ogrenciDto.OgrNo,
+                    FirstName = ogrenciDto.Ad,
+                    LastName = ogrenciDto.Soyad,
+                    FullName = ogrenciDto.Ad+" "+ogrenciDto.Soyad,
+                    UserType = (int)UserType.Ogrenci,
+                    Email = ogrenciDto.Email,
+                    TCKN = ogrenciDto.TCKN,
+                    Id = possibleUserId
+                };
+
+                //user.UserName = ogrenciDto.OgrNo;
+                var result = await _userManager.CreateAsync(user, ogrenciDto.TCKN); //tckn yi pasword yaptık.
+                if (!result.Succeeded)
+                {
+                    return new ApiResponse(Status400BadRequest, "Öğrenci kullanıcı kaydı başarısız oldu: " + string.Join(",", result.Errors.Select(i => i.Description)));
+                }
+                else
+                {
+                    var claimsResult = _userManager.AddClaimsAsync(user, new Claim[]{
+                        new Claim(Policies.IsUser, string.Empty),
+                        new Claim(JwtClaimTypes.Name, ogrenciDto.OgrNo),
+                        new Claim(JwtClaimTypes.Email, ogrenciDto.Email),
+                        new Claim(JwtClaimTypes.EmailVerified, "false", ClaimValueTypes.Boolean)
+                    }).Result;
+                }
+
+
+                try
+                {
+                    //Öğrenci Kaydı ekleme
+                    ogrenciDto.ApplicationUserId = possibleUserId;
+                    Ogrenci ogrCreateResult = await _ogrenciStore.Create(ogrenciDto);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogInformation("Kullanıcının öğrenci kaydı başarısız oldu: {0} inner:{1} stacktrace:{2}", ex.Message, ex.InnerException, ex.StackTrace);
+                    return new ApiResponse(Status400BadRequest, "Kullanıcının öğrenci kaydı başarısız oldu: " + ex.Message);
+                }
+
+
+
+
+                //Role - Here we tie the new user to the "User" role
+                await _userManager.AddToRoleAsync(user, "User");
+
+                
+
+
+
+                if (Convert.ToBoolean(_configuration["Semerkand:RequireConfirmedEmail"] ?? "false"))
+                {
+                    try
+                    {
+                        // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
+                        var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                        string callbackUrl = string.Format("{0}/Account/ConfirmEmail/{1}?token={2}", _configuration["Semerkand:ApplicationUrl"], user.Id, token);
+
+                        var email = new EmailMessageDto();
+                        email.ToAddresses.Add(new EmailAddressDto(user.Email, user.Email));
+                        email = EmailTemplates.BuildNewUserConfirmationEmail(email, user.UserName, user.Email, callbackUrl, user.Id.ToString(), token); //Replace First UserName with Name if you want to add name to Registration Form
+
+                        _logger.LogInformation("Yeni öğrenci kullanıcı oluşturuldu: {0}", user);
+                        await _emailManager.SendEmailAsync(email);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogInformation("Yeni öğrenci kullanıcı emaili gönderilemedi: {0}", ex.Message);
+                    }
+
+
+
+                    return new ApiResponse(Status200OK, "Yeni öğrenci kullanıcısı oluşturuldu");
+                }
+
+                try
+                {
+                    var email = new EmailMessageDto();
+                    email.ToAddresses.Add(new EmailAddressDto(user.Email, user.Email));
+                    email.BuildNewUserEmail(user.FullName, user.UserName, user.Email, ogrenciDto.TCKN);
+
+                    _logger.LogInformation("Yeni öğrenci kullanıcı oluşturuldu: {0}", user);
+                    await _emailManager.SendEmailAsync(email);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogInformation("Yeni öğrenci kullanıcı emaili gönderilemedi: {0}", ex.Message);
+                }
+
+                var ogrenciDto1 = new OgrenciDto
+                {
+                    ApplicationUserId = user.Id,
+                    IsAuthenticated = false,
+                    OgrNo = user.UserName,
+                    Email = user.Email,
+                    Ad = user.FirstName,
+                    Soyad = user.LastName,
+                    TCKN = user.TCKN,
+                    //ExposedClaims = user.Claims.ToDictionary(c => c.Type, c => c.Value),
+                    Roles = new List<string> { "User" }
+                };
+
+                return new ApiResponse(Status200OK, "Yeni öğrenci kullanıcı oluşturuldu", ogrenciDto1);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Yeni öğrenci kullanıcısı oluşturulamadı: {ex.Message}");
+                return new ApiResponse(Status400BadRequest, "Yeni öğrenci kullanıcısı oluşturulamadı.");
+            }
+        }
+
         public async Task<ApiResponse> Delete(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
@@ -579,5 +705,6 @@ namespace Semerkand.Server.Managers
 
             return null;
         }
+
     }
 }

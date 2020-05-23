@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Identity;
 using static Microsoft.AspNetCore.Http.StatusCodes;
 using Semerkand.Shared.Dto.Definitions;
 using Microsoft.EntityFrameworkCore;
+using Semerkand.Shared.Dto;
 
 namespace Semerkand.Server.Managers
 {
@@ -216,7 +217,7 @@ namespace Semerkand.Server.Managers
             try
             {
                 var userList = _userManager.Users.AsQueryable();
-                var listResponse = userList.Where(x => x.OgrenciId != null).OrderBy(x => x.Id).Skip(pageNumber * pageSize).Take(pageSize);
+                var listResponse = userList.Where(x => x.UserType == (int)UserType.Ogrenci).OrderBy(x => x.Id).Skip(pageNumber * pageSize).Take(pageSize);
 
                 var ogrenciDtoList = new List<OgrenciDto>(); // This sucks, but Select isn't async happy, and the passing into a 'ProcessEventAsync' is another level of misdirection
                 foreach (var applicationUser in listResponse)
@@ -224,10 +225,11 @@ namespace Semerkand.Server.Managers
                     ogrenciDtoList.Add(new OgrenciDto
                     {
                         Ad = applicationUser.FirstName,
-                        Soyadi = applicationUser.LastName,
+                        Soyad = applicationUser.LastName,
                         TCKN = applicationUser.UserName,
                         Email = applicationUser.Email,
-                        ApplicationUserId = applicationUser.Id
+                        ApplicationUserId = applicationUser.Id,
+                        OgrNo = applicationUser.UserName
                         //Roles = await _userManager.GetRolesAsync(applicationUser).ConfigureAwait(true) as List<string>
                     });
                 }

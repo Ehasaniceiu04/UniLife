@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 using static Microsoft.AspNetCore.Http.StatusCodes;
+using Semerkand.Shared.Dto.Definitions;
 
 namespace Semerkand.Server.Controllers
 {
@@ -80,6 +81,13 @@ namespace Semerkand.Server.Controllers
         [Authorize(Permissions.User.Create)]
         public async Task<ApiResponse> Create(RegisterDto parameters)
         =>  ModelState.IsValid ? await _accountManager.Create(parameters) : _invalidUserModel;
+
+        ///----------Admin OgrenciUser Management Interface Methods
+        // POST: api/Account/Create
+        [HttpPost("CreateOgrenci")]
+        [Authorize(Permissions.User.Create)]
+        public async Task<ApiResponse> CreateOgrenci(OgrenciDto ogrenciDto)
+        => ModelState.IsValid ? await _accountManager.CreateOgrenci(ogrenciDto) : _invalidUserModel;
 
         // DELETE: api/Account/5
         [HttpDelete("{id}")]

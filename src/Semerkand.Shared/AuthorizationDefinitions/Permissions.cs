@@ -12,6 +12,17 @@ namespace Semerkand.Shared.AuthorizationDefinitions
 
     public static class Permissions
     {
+        public static class Ogrenci
+        {
+            [Description("Create a new Ogrenci")]
+            public const string Create = nameof(Ogrenci) + "." + nameof(Actions.Create);
+            [Description("Read Ogrencis")]
+            public const string Read = nameof(Ogrenci) + "." + nameof(Actions.Read);
+            [Description("Edit existing Ogrencis")]
+            public const string Update = nameof(Ogrenci) + "." + nameof(Actions.Update);
+            [Description("Delete any Ogrenci")]
+            public const string Delete = nameof(Ogrenci) + "." + nameof(Actions.Delete);
+        }
         public static class DersAcilan
         {
             [Description("Create a new DersAcilan")]

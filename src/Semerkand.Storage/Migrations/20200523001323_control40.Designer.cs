@@ -10,8 +10,8 @@ using Semerkand.Storage;
 namespace Semerkand.Storage.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200517205920_control22")]
-    partial class control22
+    [Migration("20200523001323_control40")]
+    partial class control40
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -284,6 +284,10 @@ namespace Semerkand.Storage.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
 
+                    b.Property<string>("TCKN")
+                        .HasColumnType("character varying(11)")
+                        .HasMaxLength(11);
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("boolean");
 
@@ -436,7 +440,7 @@ namespace Semerkand.Storage.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<int>("DonemTipId")
+                    b.Property<int>("DonemId")
                         .HasColumnType("integer");
 
                     b.Property<bool>("Durum")
@@ -488,7 +492,7 @@ namespace Semerkand.Storage.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DonemTipId");
+                    b.HasIndex("DonemId");
 
                     b.HasIndex("MufredatId");
 
@@ -524,7 +528,7 @@ namespace Semerkand.Storage.Migrations
                     b.Property<int>("DersId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("DonemTipId")
+                    b.Property<int>("DonemId")
                         .HasColumnType("integer");
 
                     b.Property<bool>("Durum")
@@ -578,11 +582,11 @@ namespace Semerkand.Storage.Migrations
 
                     b.HasIndex("DersId");
 
-                    b.HasIndex("DonemTipId");
+                    b.HasIndex("DonemId");
 
                     b.HasIndex("ProgramId");
 
-                    b.ToTable("DersAcilan");
+                    b.ToTable("DersAcilans");
                 });
 
             modelBuilder.Entity("Semerkand.Shared.DataModels.Donem", b =>
@@ -906,6 +910,9 @@ namespace Semerkand.Storage.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
+                    b.Property<int>("Kod")
+                        .HasColumnType("integer");
+
                     b.Property<Guid>("ModifiedBy")
                         .HasColumnType("uuid");
 
@@ -1065,6 +1072,12 @@ namespace Semerkand.Storage.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
+                    b.Property<bool>("Durum")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Eimg")
+                        .HasColumnType("text");
+
                     b.Property<int>("FakulteId")
                         .HasColumnType("integer");
 
@@ -1074,7 +1087,7 @@ namespace Semerkand.Storage.Migrations
                     b.Property<int>("KayitNedenId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("KayitTarih")
+                    b.Property<DateTime?>("KayitTarih")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid>("ModifiedBy")
@@ -1085,6 +1098,9 @@ namespace Semerkand.Storage.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
+                    b.Property<int>("MufredatId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("OgrNo")
                         .HasColumnType("text");
 
@@ -1093,6 +1109,16 @@ namespace Semerkand.Storage.Migrations
 
                     b.Property<int>("ProgramId")
                         .HasColumnType("integer");
+
+                    b.Property<int>("Sinif")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Soyad")
+                        .HasColumnType("text");
+
+                    b.Property<string>("TCKN")
+                        .HasColumnType("character varying(11)")
+                        .HasMaxLength(11);
 
                     b.HasKey("Id");
 
@@ -1105,11 +1131,13 @@ namespace Semerkand.Storage.Migrations
 
                     b.HasIndex("KayitNedenId");
 
+                    b.HasIndex("MufredatId");
+
                     b.HasIndex("OgrenimDurumId");
 
                     b.HasIndex("ProgramId");
 
-                    b.ToTable("Ogrenci");
+                    b.ToTable("Ogrencis");
                 });
 
             modelBuilder.Entity("Semerkand.Shared.DataModels.OgrenimDurum", b =>
@@ -1132,6 +1160,9 @@ namespace Semerkand.Storage.Migrations
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
+
+                    b.Property<int>("Kod")
+                        .HasColumnType("integer");
 
                     b.Property<Guid>("ModifiedBy")
                         .HasColumnType("uuid");
@@ -1497,9 +1528,9 @@ namespace Semerkand.Storage.Migrations
 
             modelBuilder.Entity("Semerkand.Shared.DataModels.Ders", b =>
                 {
-                    b.HasOne("Semerkand.Shared.DataModels.DonemTip", "DonemTip")
-                        .WithMany("Derss")
-                        .HasForeignKey("DonemTipId")
+                    b.HasOne("Semerkand.Shared.DataModels.Donem", "Donem")
+                        .WithMany()
+                        .HasForeignKey("DonemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1518,9 +1549,9 @@ namespace Semerkand.Storage.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Semerkand.Shared.DataModels.DonemTip", "DonemTip")
-                        .WithMany("DersAcilans")
-                        .HasForeignKey("DonemTipId")
+                    b.HasOne("Semerkand.Shared.DataModels.Donem", "Donem")
+                        .WithMany()
+                        .HasForeignKey("DonemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1615,6 +1646,12 @@ namespace Semerkand.Storage.Migrations
                     b.HasOne("Semerkand.Shared.DataModels.KayitNeden", "KayitNeden")
                         .WithMany()
                         .HasForeignKey("KayitNedenId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Semerkand.Shared.DataModels.Mufredat", "Mufredat")
+                        .WithMany("Ogrencis")
+                        .HasForeignKey("MufredatId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

@@ -3,5 +3,6 @@
     public class KayitNedenDto : EntityDto<int>
     {
         public string Ad { get; set; }
+        public int Kod { get; set; }
     }
 }

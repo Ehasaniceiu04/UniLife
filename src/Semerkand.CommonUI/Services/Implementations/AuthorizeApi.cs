@@ -12,6 +12,7 @@ using System.Linq;
 using System.Net;
 
 using static Microsoft.AspNetCore.Http.StatusCodes;
+using Semerkand.Shared.Dto.Definitions;
 
 namespace Semerkand.CommonUI.Services.Implementations
 {
@@ -98,6 +99,10 @@ namespace Semerkand.CommonUI.Services.Implementations
         {
             return await _httpClient.PostJsonAsync<ApiResponseDto>("api/Account/Create", registerParameters);
         }
+        public async Task<ApiResponseDto> Create(OgrenciDto ogrenciDto)
+        {
+            return await _httpClient.PostJsonAsync<ApiResponseDto>("api/Account/CreateOgrenci", ogrenciDto);
+        }
 
         public async Task<ApiResponseDto> Register(RegisterDto registerParameters)
         {
@@ -143,5 +148,7 @@ namespace Semerkand.CommonUI.Services.Implementations
         {
             return await _httpClient.PostJsonAsync<ApiResponseDto>("api/Account/UpdateUser", userInfo);
         }
+
+        
     }
 }

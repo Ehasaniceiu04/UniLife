@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Semerkand.Shared.Dto.Account;
+using Semerkand.Shared.Dto.Definitions;
 
 namespace Semerkand.CommonUI.States
 {
@@ -39,6 +40,12 @@ namespace Semerkand.CommonUI.States
         public async Task<ApiResponseDto> Create(RegisterDto registerParameters)
         {
             ApiResponseDto apiResponse = await _authorizeApi.Create(registerParameters);
+            return apiResponse;
+        }
+
+        public async Task<ApiResponseDto> Create(OgrenciDto ogrenciDto)
+        {
+            ApiResponseDto apiResponse = await _authorizeApi.Create(ogrenciDto);
             return apiResponse;
         }
 

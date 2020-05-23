@@ -41,6 +41,7 @@ namespace Semerkand.Storage
         public DbSet<Donem> Donems{ get; set; }
         public DbSet<DonemTip> DonemTips{ get; set; }
         public DbSet<OgrenimDurum> OgrenimDurums{ get; set; }
+        public DbSet<Ogrenci> Ogrencis { get; set; }
 
         public DbSet<KayitNeden> KayitNedens { get; set; }
 
@@ -72,10 +73,10 @@ namespace Semerkand.Storage
                 .HasForeignKey<Tenant>(t => t.OwnerUserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<ApplicationUser>()
-                .HasOne(a => a.Ogrenci)
-                .WithOne(o => o.ApplicationUser)
-                .IsRequired(false);
+            //modelBuilder.Entity<ApplicationUser>()
+            //    .HasOne(a => a.Ogrenci)
+            //    .WithOne(o => o.ApplicationUser)
+            //    .IsRequired(false);
 
             modelBuilder.ShadowProperties();
 

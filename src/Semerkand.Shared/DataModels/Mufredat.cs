@@ -29,5 +29,6 @@ namespace Semerkand.Shared.DataModels
         public int FinalBaraj { get; set; }
 
         public virtual ICollection<Ders> Derss { get; set; }
+        public virtual ICollection<Ogrenci> Ogrencis { get; set; }
     }
 }

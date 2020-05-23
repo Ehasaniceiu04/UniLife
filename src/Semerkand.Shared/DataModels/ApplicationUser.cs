@@ -21,6 +21,8 @@ namespace Semerkand.Shared.DataModels
         [MaxLength(11)]
         public string TCKN { get; set; }
 
+        public int UserType { get; set; } // 1:ogrenci 2:Akademisyen 3:İdari personel
+
         public ICollection<ApiLogItem> ApiLogItems { get; set; }
 
         public UserProfile Profile { get; set; }
@@ -29,11 +31,13 @@ namespace Semerkand.Shared.DataModels
 
         public virtual Tenant Tenant { get; set; }
 
+        public virtual ICollection<Ogrenci> Ogrencis { get; set; }
 
-        //---zero to one ilişki---// ApplicationUsera bağlı birtane öğrenci olabilir, olmayabilirde. dikkat fluentide var.
-        public int? OgrenciId { get; set; }
-        public virtual Ogrenci Ogrenci { get; set; }
-        //---zero to one ilişki---//
+
+        ////---zero to one ilişki---// ApplicationUsera bağlı birtane öğrenci olabilir, olmayabilirde. dikkat fluentide var.
+        //public int? OgrenciId { get; set; }
+        //public virtual Ogrenci Ogrenci { get; set; }
+        ////---zero to one ilişki---//
 
         ////---Zero to many ilişki---//ApplicationUser a bağlı birden fazla öğrenci olabilir, hiç olmayabilirde/ bunu yapınca öğrenciye bir tane nullable id atıyor.
         //public virtual ICollection<Ogrenci> Ogrencis { get; set; }

@@ -11,44 +11,54 @@ namespace Semerkand.Shared.Dto.Definitions
         public virtual ApplicationUserDto ApplicationUser { get; set; }
 
         [Required]
-        [StringLength(64, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
+        [StringLength(64, ErrorMessage = "{0} uzunluğu {2} ila {1} arasında olmalıdır.", MinimumLength = 2)]
         [RegularExpression(@"[^\s]+", ErrorMessage = "Boşluk bırakmayınız.")]
         [Display(Name = "Ad")]
         public string Ad { get; set; }
 
-        public string Soyadi { get; set; }
+        public string Soyad { get; set; }
         public string OgrNo { get; set; }
 
         [MaxLength(11)]
+        [Required]
         public string TCKN { get; set; }
 
-
-        public int FakulteId { get; set; }
+        [Required]
+        public int? FakulteId { get; set; }
         public virtual FakulteDto Fakulte { get; set; }
-        public int BolumId { get; set; }
+        [Required]
+        public int? BolumId { get; set; }
         public virtual BolumDto Bolum { get; set; }
-        public int ProgramId { get; set; }
+        [Required]
+        public int? ProgramId { get; set; }
         public virtual ProgramDto Program { get; set; }
+        [Required]
+        public int? MufredatId { get; set; }
+        public virtual MufredatDto Mufredat { get; set; }
 
-        public int KayitNedenId { get; set; }
+        public string Eimg { get; set; }
+        [Required]
+        public int? KayitNedenId { get; set; }
         public virtual KayitNedenDto KayitNeden { get; set; }
-
-        public int OgrenimDurumId { get; set; }
+        [Required]
+        public int? OgrenimDurumId { get; set; }
         public virtual OgrenimDurumDto OgrenimDurum { get; set; }
+        public bool Durum { get; set; }
 
         public string AskerDurum { get; set; }
-        public DateTime KayitTarih { get; set; }
+        public DateTime? KayitTarih { get; set; }
         public DateTime? AyrilTarih { get; set; }
         public string AnaOgrNo { get; set; }
+        public int? Sinif { get; set; }
 
         //from UserInfoDTO
         public bool IsAuthenticated { get; set; }
 
-        [Required]
-        [StringLength(20, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
-        [RegularExpression(@"[^\s]+", ErrorMessage = "Spaces are not permitted.")]
-        [Display(Name = "KullanıcıTCKN")]
-        public string UserName { get; set; }
+        //[Required]
+        //[StringLength(20, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
+        //[RegularExpression(@"[^\s]+", ErrorMessage = "Spaces are not permitted.")]
+        //[Display(Name = "KullanıcıTCKN")]
+        //public string UserName { get; set; }
         public int TenantId { get; set; }
         [Required]
         [DataType(DataType.EmailAddress)]
