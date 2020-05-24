@@ -366,7 +366,7 @@ namespace Semerkand.Server.Managers
                     UserName = ogrenciDto.OgrNo,
                     FirstName = ogrenciDto.Ad,
                     LastName = ogrenciDto.Soyad,
-                    FullName = ogrenciDto.Ad+" "+ogrenciDto.Soyad,
+                    FullName = ogrenciDto.Ad + " " + ogrenciDto.Soyad,
                     UserType = (int)UserType.Ogrenci,
                     Email = ogrenciDto.Email,
                     TCKN = ogrenciDto.TCKN,
@@ -408,7 +408,7 @@ namespace Semerkand.Server.Managers
                 //Role - Here we tie the new user to the "User" role
                 await _userManager.AddToRoleAsync(user, "User");
 
-                
+
 
 
 
@@ -478,7 +478,7 @@ namespace Semerkand.Server.Managers
             var user = await _userManager.FindByIdAsync(id);
             if (user == null)
             {
-                var asd= new ApiResponse(Status404NotFound, "User does not exist");
+                var asd = new ApiResponse(Status404NotFound, "User does not exist");
                 return asd;
             }
             try
@@ -567,6 +567,54 @@ namespace Semerkand.Server.Managers
             }
             return new ApiResponse(Status200OK, "User Updated");
         }
+
+
+        public async Task<ApiResponse> UpdateRoleFromUser(OgrenciDto ogrenciDto)
+        {
+            // retrieve full user object for updating
+            var appUser = await _userManager.FindByIdAsync(ogrenciDto.ApplicationUserId.ToString()).ConfigureAwait(true);
+
+
+            if (ogrenciDto.Roles != null)
+            {
+                try
+                {
+                    var rolesToAdd = new List<string>();
+                    var currentUserRoles = (List<string>)(await _userManager.GetRolesAsync(appUser).ConfigureAwait(true));
+                    foreach (var newUserRole in ogrenciDto.Roles)
+                    {
+                        if (!currentUserRoles.Contains(newUserRole))
+                        {
+                            rolesToAdd.Add(newUserRole);
+                        }
+                    }
+                    await _userManager.AddToRolesAsync(appUser, rolesToAdd).ConfigureAwait(true);
+                    //HACK to switch to claims auth
+                    foreach (var role in rolesToAdd)
+                    {
+                        await _userManager.AddClaimAsync(appUser, new Claim($"Is{role}", "true")).ConfigureAwait(true);
+                    }
+
+                    var rolesToRemove = currentUserRoles
+                        .Where(role => !ogrenciDto.Roles.Contains(role)).ToList();
+
+                    await _userManager.RemoveFromRolesAsync(appUser, rolesToRemove).ConfigureAwait(true);
+
+                    //HACK to switch to claims auth
+                    foreach (var role in rolesToRemove)
+                    {
+                        await _userManager.RemoveClaimAsync(appUser, new Claim($"Is{role}", "true")).ConfigureAwait(true);
+                    }
+                }
+                catch
+                {
+                    return new ApiResponse(Status500InternalServerError, "Roller güncellenirken hata oluştu!");
+                }
+            }
+            return new ApiResponse(Status200OK, "Roller Güncellendi.");
+        }
+
+
 
         public async Task<ApiResponse> AdminResetUserPasswordAsync(Guid id, string newPassword, ClaimsPrincipal userClaimsPrincipal)
         {

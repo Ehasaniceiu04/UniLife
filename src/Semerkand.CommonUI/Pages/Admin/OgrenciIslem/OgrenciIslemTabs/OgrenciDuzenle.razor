@@ -8,7 +8,7 @@
 @inject AuthenticationStateProvider authStateProvider
 
 
-    <EditForm Model=@ogrenciDto OnSubmit="KaydetDevam">
+    <EditForm Model=@_OgrenciDto OnSubmit="KaydetDevam">
         <DataAnnotationsValidator />
         <ValidationSummary />
 
@@ -25,51 +25,51 @@
                             <div class="col-sm-12 col-md-6">
                                 <div class="form-row form-group form-inline ">
                                     <label class="col-sm-2" for="OgrNo">Öğrenci NO:</label>
-                                    <SfTextBox @bind-Value="@ogrenciDto.OgrNo" ID="OgrNo" CssClass="col-sm-4"></SfTextBox>
+                                    <SfTextBox @bind-Value="@_OgrenciDto.OgrNo" ID="OgrNo" CssClass="col-sm-4"></SfTextBox>
                                     <label class="col-sm-2" for="DosNo">Dosya NO:</label>
                                     <SfTextBox ID="DosNo" CssClass="col-sm-2"></SfTextBox>
-                                    <SfCheckBox Label="Durum" CssClass="col-sm-1" Checked="@ogrenciDto.Durum"></SfCheckBox>
+                                    <SfCheckBox Label="Durum" CssClass="col-sm-1" Checked="@_OgrenciDto.Durum"></SfCheckBox>
                                     <label class="col-sm-2" for="TCKN">TCKN:</label>
-                                    <SfTextBox @bind-Value="@ogrenciDto.TCKN" ID="TCKN" CssClass="col-sm-4"></SfTextBox>
+                                    <SfTextBox @bind-Value="@_OgrenciDto.TCKN" ID="TCKN" CssClass="col-sm-4"></SfTextBox>
                                     <label class="col-sm-2" for="Seri">Kimlik Seri:</label>
                                     <SfTextBox ID="Seri" CssClass="col-sm-4"></SfTextBox>
                                     <label class="col-sm-2" for="Adi">Adı:</label>
-                                    <SfTextBox @bind-Value="@ogrenciDto.Ad" ID="Adı" CssClass="col-sm-4"></SfTextBox>
+                                    <SfTextBox @bind-Value="@_OgrenciDto.Ad" ID="Adı" CssClass="col-sm-4"></SfTextBox>
                                     <label class="col-sm-2" for="Soyadi">Soyadı:</label>
-                                    <SfTextBox @bind-Value="@ogrenciDto.Soyad" ID="Soyadi" CssClass="col-sm-4"></SfTextBox>
+                                    <SfTextBox @bind-Value="@_OgrenciDto.Soyad" ID="Soyadi" CssClass="col-sm-4"></SfTextBox>
                                     <label class="col-sm-2" for="Email">Email:</label>
-                                    <SfTextBox @bind-Value="@ogrenciDto.Email" ID="Email" CssClass="col-sm-10"></SfTextBox>
+                                    <SfTextBox @bind-Value="@_OgrenciDto.Email" ID="Email" CssClass="col-sm-10"></SfTextBox>
                                     <label class="col-sm-2" for="DropFakulte">Fakulte:</label>
                                     <SfDropDownList ID="DropFakulte" @ref="DropFakulte" TItem="FakulteDto" CssClass="col-sm-10 pb-1"
                                                     TValue="int?" PopupHeight="230px" Index="2" Placeholder="Fakulte"
-                                                    @bind-Value="@ogrenciDto.FakulteId" DataSource="@fakulteDtos">
+                                                    @bind-Value="@_OgrenciDto.FakulteId" DataSource="@fakulteDtos">
                                         <DropDownListEvents TValue="int?" ValueChange="FakulteToBolum"></DropDownListEvents>
                                         <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                                     </SfDropDownList>
                                     <label class="col-sm-2" for="DropBolum">Bolum:</label>
                                     <SfDropDownList ID="DropBolum" @ref="DropBolum" TItem="BolumDto" CssClass="col-sm-10 pb-1"
                                                     TValue="int?" PopupHeight="230px" Index="2" Placeholder="Bölüm"
-                                                    @bind-Value="@ogrenciDto.BolumId" DataSource="@bolumDtos">
+                                                    @bind-Value="@_OgrenciDto.BolumId" DataSource="@bolumDtos">
                                         <DropDownListEvents TValue="int?" ValueChange="BolumToProgram"></DropDownListEvents>
                                         <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                                     </SfDropDownList>
                                     <label class="col-sm-2" for="DropProgram">Program:</label>
                                     <SfDropDownList ID="DropProgram" @ref="DropProgram" TItem="ProgramDto" CssClass="col-sm-10 pb-1"
                                                     TValue="int?" PopupHeight="230px" Index="2" Placeholder="Bölüm"
-                                                    @bind-Value="@ogrenciDto.ProgramId" DataSource="@programDtos">
+                                                    @bind-Value="@_OgrenciDto.ProgramId" DataSource="@programDtos">
                                         <DropDownListEvents TValue="int?" ValueChange="ProgramToMufredat"></DropDownListEvents>
                                         <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                                     </SfDropDownList>
                                     <label class="col-sm-2" for="DropMufredat">Mufredat:</label>
                                     <SfDropDownList ID="DropMufredat" @ref="DropMufredat" TItem="MufredatDto" CssClass="col-sm-10 pb-1"
                                                     TValue="int?" PopupHeight="230px" Index="2" Placeholder="Bölüm"
-                                                    @bind-Value="@ogrenciDto.MufredatId" DataSource="@mufredatDtos">
+                                                    @bind-Value="@_OgrenciDto.MufredatId" DataSource="@mufredatDtos">
                                         <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                                     </SfDropDownList>
                                     <label class="col-sm-2" for="DropSinif">Sınıf:</label>
                                     <SfDropDownList ID="DropSinif" @ref="DropSinif" TItem="SinifDto" CssClass="col-sm-10 pb-1"
                                                     TValue="int?" PopupHeight="230px" Index="2" Placeholder="Bölüm"
-                                                    @bind-Value="@ogrenciDto.Sinif" DataSource="@sinifDtos">
+                                                    @bind-Value="@_OgrenciDto.Sinif" DataSource="@sinifDtos">
                                         <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                                     </SfDropDownList>
                                     <label class="col-sm-2" for="ilDonem">ilave Dönem:</label>
@@ -82,8 +82,8 @@
                                 <div class="form-row form-group form-inline ">
                                     <label class="col-sm-2" for="DropKayitNeden">Kayıt Neden:</label>
                                     <SfDropDownList ID="DropKayitNeden" @ref="DropKayitNeden" TItem="KayitNedenDto" CssClass="col-sm-4 pb-1"
-                                                    TValue="int?" PopupHeight="230px" Index="2" Placeholder="Bölüm"
-                                                    @bind-Value="@ogrenciDto.KayitNedenId" DataSource="@kayitNedenDtos">
+                                                    TValue="int?" PopupHeight="230px" Index="-1" Placeholder="Kayıt Neden"
+                                                    @bind-Value="@_OgrenciDto.KayitNedenId" DataSource="@kayitNedenDtos">
                                         <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                                     </SfDropDownList>
                                     <label class="col-sm-2" for="KayTarih">Kayıt Tarihi:</label>
@@ -91,7 +91,7 @@
                                     <label class="col-sm-2" for="ogrDurum">Öğrenim Durum:</label>
                                     <SfDropDownList ID="DropOgrenimDurum" @ref="DropOgrenimDurum" TItem="OgrenimDurumDto" CssClass="col-sm-4 pb-1"
                                                     TValue="int?" PopupHeight="230px" Index="2" Placeholder="Bölüm"
-                                                    @bind-Value="@ogrenciDto.OgrenimDurumId" DataSource="@ogrenimDurumDtos">
+                                                    @bind-Value="@_OgrenciDto.OgrenimDurumId" DataSource="@ogrenimDurumDtos">
                                         <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                                     </SfDropDownList>
                                     <label class="col-sm-2" for="AyrTarih">Ayrılma Tarihi:</label>
@@ -188,8 +188,8 @@
     }
 
     //Sonradan doldurulacak dropdownlar
-
-    public OgrenciDto ogrenciDto { get; set; } = new OgrenciDto();
+    [Parameter]
+    public OgrenciDto _OgrenciDto { get; set; } = new OgrenciDto();
 
 
     SfDropDownList<int?, FakulteDto> DropFakulte;
@@ -237,6 +237,7 @@
         await ReadFakultes();
         await ReadKayitNedens();
         await ReadOgrenimDurums();
+        _OgrenciDto.KayitNedenId = 1;
 
     }
 
@@ -379,11 +380,11 @@
     {
         try
         {
-            var apiResponse = await ((IdentityAuthenticationStateProvider)authStateProvider).Create(ogrenciDto);
+            var apiResponse = await ((IdentityAuthenticationStateProvider)authStateProvider).Create(_OgrenciDto);
             if (apiResponse.IsSuccessStatusCode)
             {
                 matToaster.Add(apiResponse.Message, MatToastType.Success);
-                //ogrenciDto = Newtonsoft.Json.JsonConvert.DeserializeObject<OgrenciDto>(apiResponse.Result.ToString());
+                //_OgrenciDto = Newtonsoft.Json.JsonConvert.DeserializeObject<OgrenciDto>(apiResponse.Result.ToString());
                 //userInfoDtos.Add(userInfoDto);
                 //registerParameters = new RegisterDto(); //reset create user object after insert
                 //createUserDialogOpen = false;

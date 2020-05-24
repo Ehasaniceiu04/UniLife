@@ -2,7 +2,7 @@
 
 namespace Semerkand.Shared.Dto
 {
-    public abstract class BaseDto : IMementoDto
+    public abstract class BaseDto : EntityDto<int> ,IMementoDto
     {
         private static readonly Mapper _mapper = new Mapper();
         private object state;

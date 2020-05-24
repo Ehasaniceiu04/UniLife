@@ -23,6 +23,8 @@ namespace Semerkand.Storage.Stores
         {
 
             var ogrenciDetail = await (from o in _db.Ogrencis.Where(x => x.Id == id)
+                                       //join ur in _db.Context.UserRoles on o.ApplicationUserId equals ur.UserId
+                                       //join r in _db.Context.Roles on ur.RoleId equals r.Id
                                        join f in _db.Fakultes on o.FakulteId equals f.Id
                                        join b in _db.Bolums on o.BolumId equals b.Id
                                        join p in _db.Programs on o.ProgramId equals p.Id
@@ -37,7 +39,8 @@ namespace Semerkand.Storage.Stores
                                            ProgramAdi = p.Ad,
                                            MufredatAdi = m.Ad,
                                            Email = o.Email,
-                                           OgrNo = o.OgrNo
+                                           OgrNo = o.OgrNo,
+                                           //Roles = r.Name
                                        }).FirstOrDefaultAsync();
 
 

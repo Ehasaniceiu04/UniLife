@@ -240,5 +240,20 @@ namespace Semerkand.Server.Managers
                 throw new Exception(null, ex);
             }
         }
+
+        public async Task<ApiResponse> GetRolesByUserId(Guid userId)
+        {
+            try
+            {
+                var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == userId);
+
+                var Roles = await _userManager.GetRolesAsync(user).ConfigureAwait(true) as List<string>;
+                return new ApiResponse(Status200OK, "User Roles fetched", Roles);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(null, ex);
+            }
+        }
     }
 }

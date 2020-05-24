@@ -8,6 +8,7 @@ using System;
 using System.Threading.Tasks;
 using static Microsoft.AspNetCore.Http.StatusCodes;
 using Semerkand.Shared.Dto.Definitions;
+using System.Collections.Generic;
 
 namespace Semerkand.Server.Controllers
 {
@@ -109,6 +110,14 @@ namespace Semerkand.Server.Controllers
         // PUT: api/Account/5
         public async Task<ApiResponse> Update([FromBody] UserInfoDto userInfo)
         =>  ModelState.IsValid ? await _accountManager.Update(userInfo) : _invalidUserModel;
+
+        [HttpPut]
+        [Authorize(Permissions.User.Update)]
+        [Route("UpdateRoleFromUser")]
+        // PUT: api/Account/5
+        public async Task<ApiResponse> UpdateRoleFromUser([FromBody] OgrenciDto ogrenciDto)
+        => ModelState.IsValid ? await _accountManager.UpdateRoleFromUser(ogrenciDto) : _invalidUserModel;
+
 
         [HttpPost("AdminUserPasswordReset/{id}")]
         [Authorize(Permissions.User.Update)]

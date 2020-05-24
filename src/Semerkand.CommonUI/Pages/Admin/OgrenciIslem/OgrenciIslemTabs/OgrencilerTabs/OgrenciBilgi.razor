@@ -4,21 +4,21 @@
 @inject Microsoft.AspNetCore.Components.NavigationManager UriHelper
 
 <div style="display:inline-flex">
-    <div style="float:left;padding:45px;padding-top:70px"><img class="photo" src="@UriHelper.ToAbsoluteUri($"https://blazor.syncfusion.com/demos/images/Grid/1.png")" alt="@OgrenciDto.Id" /></div>
+    <div style="float:left;padding:45px;padding-top:70px"><img class="photo" src="@UriHelper.ToAbsoluteUri($"https://blazor.syncfusion.com/demos/images/Grid/1.png")" alt="@_OgrenciDto.Id" /></div>
     <div style="padding-top:42px">
-        <span style="font-size: x-large;font-weight: bold;">@OgrenciDto.Ad @OgrenciDto.Soyad </span><br />
-        <h5 style="font-weight:400 !important;">@OgrenciDto.ProgramAdi</h5><br />
-        <span class="title">Fakulte:</span> <span class="content">@OgrenciDto.FakulteAdi</span><br />
-                                                                                               <span class="title">OgrNo:</span> <span class="content">@OgrenciDto.OgrNo</span><br />
-        <span class="title">Bolum:</span> <span class="content">@OgrenciDto.BolumAdi</span><br />
-        <span id="mufredat" class="title">Müfredat:</span> <span class="content">@OgrenciDto.MufredatAdi</span><br />
-        <span class="title">Mail:</span> <span class="content ">@OgrenciDto.Email</span>
+        <span style="font-size: x-large;font-weight: bold;">@_OgrenciDto.Ad @_OgrenciDto.Soyad </span><br />
+        <h5 style="font-weight:400 !important;">@_OgrenciDto.ProgramAdi</h5><br />
+        <span class="title">Fakulte:</span> <span class="content">@_OgrenciDto.FakulteAdi</span><br />
+                                                                                               <span class="title">OgrNo:</span> <span class="content">@_OgrenciDto.OgrNo</span><br />
+        <span class="title">Bolum:</span> <span class="content">@_OgrenciDto.BolumAdi</span><br />
+        <span id="mufredat" class="title">Müfredat:</span> <span class="content">@_OgrenciDto.MufredatAdi</span><br />
+        <span class="title">Mail:</span> <span class="content ">@_OgrenciDto.Email</span>
     </div>
 </div>
 
 @code{
     [Parameter]
-    public OgrenciDto OgrenciDto { get; set; }
+    public OgrenciDto _OgrenciDto { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -29,11 +29,11 @@
     {
         try
         {
-            ApiResponseDto<OgrenciDto> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<OgrenciDto>>("api/ogrenci/GetOgrenciWithRelations/" + OgrenciDto.Id);
+            ApiResponseDto<OgrenciDto> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<OgrenciDto>>("api/ogrenci/GetOgrenciWithRelations/" + _OgrenciDto.Id);
 
             if (apiResponse.StatusCode == Status200OK)
             {
-                OgrenciDto = apiResponse.Result;
+                _OgrenciDto = apiResponse.Result;
             }
             else
             {

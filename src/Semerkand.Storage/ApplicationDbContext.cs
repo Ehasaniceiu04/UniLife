@@ -49,7 +49,7 @@ namespace Semerkand.Storage
         //TODO Bunu böyle bırakacakmıyız.
         DatabaseFacade IApplicationDbContext.Database { get => base.Database; set => throw new NotImplementedException(); }
         //TODO Bunu böyle bırakacakmıyız.
-        public DbContext Context { get => this; set => throw new NotImplementedException(); }
+        public ApplicationDbContext Context { get => this; set => throw new NotImplementedException(); }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IUserSession userSession) : base(options)
         {

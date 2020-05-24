@@ -5,6 +5,7 @@ using Semerkand.Shared.AuthorizationDefinitions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using System;
 
 namespace Semerkand.Server.Controllers
 {
@@ -63,5 +64,14 @@ namespace Semerkand.Server.Controllers
         [Authorize(Permissions.Role.Delete)]
         public async Task<ApiResponse> DeleteRoleAsync(string name)
             => await _adminManager.DeleteRoleAsync(name);
+
+        //Benim show buradan aşşa
+
+        [HttpGet]
+        [Route("GetRolesByUserId/{userId:guid}")]
+        [Authorize]
+        public async Task<ApiResponse> GetRolesByUserId(Guid userId)
+            => await _adminManager.GetRolesByUserId(userId);
+        
     }
 }

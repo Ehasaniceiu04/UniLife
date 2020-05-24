@@ -42,6 +42,8 @@ namespace Semerkand.Server.Managers
 
         Task<ApiResponse> Update(UserInfoDto userInfo);
 
+        Task<ApiResponse> UpdateRoleFromUser(OgrenciDto ogrenciDto);
+
         Task<ApiResponse> AdminResetUserPasswordAsync(Guid id, string newPassword, ClaimsPrincipal userClaimsPrincipal);
         
         Task<ApplicationUser> RegisterNewUserAsync(string userName, string email, string password, bool requireConfirmEmail);

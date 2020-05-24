@@ -6,7 +6,7 @@
 @using Newtonsoft.Json
 @using Semerkand.Shared.Dto.Definitions
 @using Semerkand.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs.OgrencilerTabs
-@using Syncfusion.Blazor.SplitButtons
+
 
 
 
@@ -17,7 +17,7 @@
 <ControlSection>
     <div class="row">
         <SfGrid @ref="OgrGrid" AllowSorting="true" AllowFiltering="true" AllowPaging="true" DataSource="@OgrGridDtos">
-            <GridEvents TValue="OgrenciDto" RowDataBound="RowBound"></GridEvents>
+            <GridEvents TValue="OgrenciDto" RowDataBound="RowBound" CommandClicked="CommandClickHandler"></GridEvents>
             <GridTemplates>
                 <DetailTemplate>
                     @{
@@ -35,7 +35,7 @@
                                         <TabHeader Text="Details"></TabHeader>
                                     </ChildContent>
                                     <ContentTemplate>
-                                        <OgrenciBilgi OgrenciDto="ogrenciDto"></OgrenciBilgi>
+                                        <OgrenciBilgi _OgrenciDto="ogrenciDto"></OgrenciBilgi>
                                     </ContentTemplate>
                                 </TabItem>
                                 <TabItem>
@@ -43,8 +43,7 @@
                                         <TabHeader Text="Roles"></TabHeader>
                                     </ChildContent>
                                     <ContentTemplate>
-                                        <OgrenciRoles></OgrenciRoles>
-                                        Burada elemanlar bir tane daha grid koymuş. düşünülebilir.
+                                        <OgrenciRoles _OgrenciDto="ogrenciDto"></OgrenciRoles>
                                     </ContentTemplate>
                                 </TabItem>
                                 <TabItem>
@@ -79,17 +78,22 @@
                 <GridColumn Field=@nameof(OgrenciDto.TCKN) HeaderText="TCKN"></GridColumn>
                 <GridColumn Field=@nameof(OgrenciDto.Email) HeaderText="Email"></GridColumn>
                 <GridColumn Field=@nameof(OgrenciDto.OgrNo) HeaderText="Öğrenci No"></GridColumn>
+                <GridColumn>
+                    <GridCommandColumns>
+                        <GridCommandColumn Type="CommandButtonType.None" Title="Akademik Bilgiler" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>                        
+                    </GridCommandColumns>
+                </GridColumn>
             </GridColumns>
         </SfGrid>
     </div>
 
-    <div class="row">
+    @*<div class="row">
         <div class="col-12 text-right">
             <SfProgressButton OnClick="KaydetDevam" Content="Kaydet ve Devamet >" CssClass="center-block e-primary">
                 <ProgressButtonSpinSettings Position="SpinPosition.Right"></ProgressButtonSpinSettings>
             </SfProgressButton>
         </div>
-    </div>
+    </div>*@
 
 
 
@@ -103,6 +107,8 @@
     public SfGrid<OgrenciDto> OgrGrid;
 
     public List<OgrenciDto> OgrGridDtos { get; set; }
+
+    public OgrenciDto _OgrenciDto { get; set; } = new OgrenciDto();
 
     protected override async Task OnInitializedAsync()
     {
@@ -154,6 +160,19 @@
         //}
     }
 
+    [Parameter]
+    public EventCallback<OgrenciDto> OgrenciToAkademik { get; set; }
+
+    public void CommandClickHandler(CommandClickEventArgs<OgrenciDto> args)
+    {
+        if (args.CommandColumn.Title == "Akademik Bilgiler")
+        {
+            _OgrenciDto = args.RowData;
+            OgrenciToAkademik.InvokeAsync(_OgrenciDto);
+
+        }
+    }
+
 }
 
 
@@ -182,5 +201,10 @@
 
     .e-tab .e-tab-header {
         border: 0;
+    }
+
+    .e-DoubleArrowRight:before {
+        content: '\e7bb';
+        color: #e83e8c;
     }
 </style>

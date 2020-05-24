@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Semerkand.Shared.Dto.Definitions
 {
-    public class OgrenciDto : EntityDto<int> //, BaseDto
+    public class OgrenciDto : BaseDto
     {
         public Guid ApplicationUserId { get; set; }
 
