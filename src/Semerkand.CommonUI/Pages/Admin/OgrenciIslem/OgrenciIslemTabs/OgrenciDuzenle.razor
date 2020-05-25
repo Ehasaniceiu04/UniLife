@@ -157,10 +157,18 @@
 
 </EditForm>
 
-
+<SfProgressButton OnClick="Napan" Content="napan >" CssClass="center-block e-primary">
+    <ProgressButtonSpinSettings Position="SpinPosition.Right"></ProgressButtonSpinSettings>
+</SfProgressButton>
 
 
 @code {
+
+    public void Napan() {
+        StateHasChanged();
+        DropMufredat.Refresh();
+        DropProgram.Refresh();
+    }
 
     private string textValue { get; set; }
     public class GameFields
@@ -232,18 +240,34 @@
 
 
 
-    protected override async Task OnInitializedAsync()
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    await ReadFakultes().ConfigureAwait(true);
+    //    await ReadKayitNedens().ConfigureAwait(true);
+    //    await ReadOgrenimDurums().ConfigureAwait(true);
+    //    if (_OgrenciDto.Id != 0)
+    //    {
+    //        await ReadBolums(_OgrenciDto.FakulteId).ConfigureAwait(true);
+    //        await ReadPrograms(_OgrenciDto.BolumId).ConfigureAwait(true);
+    //        await ReadMufredats(_OgrenciDto.ProgramId).ConfigureAwait(true);
+    //    }
+    //    StateHasChanged();
+
+    //}
+
+
+    protected override void OnInitialized()
     {
-        await ReadFakultes();
-        await ReadKayitNedens();
-        await ReadOgrenimDurums();
+        ReadFakultes().ConfigureAwait(true);
+        ReadKayitNedens().ConfigureAwait(true);
+        ReadOgrenimDurums().ConfigureAwait(true);
         if (_OgrenciDto.Id != 0)
         {
-            await ReadBolums(_OgrenciDto.FakulteId);
-            await ReadPrograms(_OgrenciDto.BolumId);
-            await ReadPrograms(_OgrenciDto.ProgramId);
+            ReadBolums(_OgrenciDto.FakulteId).ConfigureAwait(true);
+            ReadPrograms(_OgrenciDto.BolumId).ConfigureAwait(true);
+            ReadMufredats(_OgrenciDto.ProgramId).ConfigureAwait(true);
         }
-
+        //StateHasChanged();
     }
 
     async Task ReadFakultes()
@@ -253,7 +277,7 @@
         if (apiResponse.StatusCode == Status200OK)
         {
             fakulteDtos = apiResponse.Result;
-
+            StateHasChanged();
         }
         else
         {
@@ -263,7 +287,7 @@
 
 
 
-    private async Task FakulteToBolum(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
+    private void FakulteToBolum(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
     {
         if (_OgrenciDto.Id == 0)
         {
@@ -273,17 +297,13 @@
             _OgrenciDto.BolumId = null;
             _OgrenciDto.ProgramId = null;
             _OgrenciDto.MufredatId = null;
-            //DropBolum.Refresh();
-            //DropProgram.Refresh();
-            //DropMufredat.Refresh();
-            StateHasChanged();
-            await ReadBolums(args.Value);
+            ReadBolums(args.Value).ConfigureAwait(true);
         }
         else
         {
-            await ReadBolums(_OgrenciDto.FakulteId);
+            ReadBolums(_OgrenciDto.FakulteId).ConfigureAwait(true);
         }
-
+        StateHasChanged();
 
 
     }
@@ -306,7 +326,7 @@
         if (apiResponse.StatusCode == Status200OK)
         {
             bolumDtos = apiResponse.Result;
-            //StateHasChanged();
+            StateHasChanged();
 
         }
         else
@@ -315,21 +335,22 @@
         }
     }
 
-    private async void BolumToProgram(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
+    private void BolumToProgram(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
     {
+
         if (_OgrenciDto.Id == 0)
         {
             programDtos = new List<ProgramDto>();
             mufredatDtos = new List<MufredatDto>();
             _OgrenciDto.ProgramId = null;
             _OgrenciDto.MufredatId = null;
-            StateHasChanged();
-            await ReadPrograms(args.Value);
+            ReadPrograms(args.Value).ConfigureAwait(true);
         }
         else
         {
-            await ReadPrograms(_OgrenciDto.BolumId);
+            ReadPrograms(_OgrenciDto.BolumId).ConfigureAwait(true);
         }
+        //StateHasChanged();
     }
 
     async Task ReadPrograms(int? bolumId)
@@ -357,19 +378,21 @@
         }
     }
 
-    private async void ProgramToMufredat(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
+    private void ProgramToMufredat(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
     {
+
+
         if (_OgrenciDto.Id == 0)
         {
             mufredatDtos = new List<MufredatDto>();
             _OgrenciDto.MufredatId = null;
-            StateHasChanged();
-            await ReadMufredats(args.Value);
+            ReadMufredats(args.Value).ConfigureAwait(true);
         }
         else
         {
-            await ReadMufredats(_OgrenciDto.ProgramId);
+            ReadMufredats(_OgrenciDto.ProgramId).ConfigureAwait(true);
         }
+        //StateHasChanged();
     }
 
     async Task ReadMufredats(int? programId)
@@ -409,13 +432,11 @@
                 //userInfoDtos.Add(userInfoDto);
                 //registerParameters = new RegisterDto(); //reset create user object after insert
                 //createUserDialogOpen = false;
-                //UserGrid.Refresh();
             }
             else
             {
                 matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Öğrenci kullanıcısı oluşturulurken hata oluştu");
                 //userInfoDtos.Remove(userInfoDto);
-                //UserGrid.Refresh();
             }
         }
         catch (Exception ex)
@@ -454,7 +475,7 @@
             matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Kayit neden getirilirken hata oluştu!");
         }
     }
-    }
+}
 
 <style>
     textarea.e-input,
