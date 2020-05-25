@@ -8,154 +8,154 @@
 @inject AuthenticationStateProvider authStateProvider
 
 
-    <EditForm Model=@_OgrenciDto OnSubmit="KaydetDevam">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
+<EditForm Model=@_OgrenciDto OnSubmit="KaydetDevam">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
 
-        <ControlSection>
-            <div class="row info-panel">
-                <div class="col-sm-12 col-md-12">
-                    <div class="row">
-                        <div class="col-sm-12 text-center">
-                            <p>Akademik Bilgiler</p>
-                        </div>
+    <ControlSection>
+        <div class="row info-panel">
+            <div class="col-sm-12 col-md-12">
+                <div class="row">
+                    <div class="col-sm-12 text-center">
+                        <p>Akademik Bilgiler</p>
                     </div>
-                    <div class="server-action-menu">
-                        <div class="row">
-                            <div class="col-sm-12 col-md-6">
-                                <div class="form-row form-group form-inline ">
-                                    <label class="col-sm-2" for="OgrNo">Öğrenci NO:</label>
-                                    <SfTextBox @bind-Value="@_OgrenciDto.OgrNo" ID="OgrNo" CssClass="col-sm-4"></SfTextBox>
-                                    <label class="col-sm-2" for="DosNo">Dosya NO:</label>
-                                    <SfTextBox ID="DosNo" CssClass="col-sm-2"></SfTextBox>
-                                    <SfCheckBox Label="Durum" CssClass="col-sm-1" Checked="@_OgrenciDto.Durum"></SfCheckBox>
-                                    <label class="col-sm-2" for="TCKN">TCKN:</label>
-                                    <SfTextBox @bind-Value="@_OgrenciDto.TCKN" ID="TCKN" CssClass="col-sm-4"></SfTextBox>
-                                    <label class="col-sm-2" for="Seri">Kimlik Seri:</label>
-                                    <SfTextBox ID="Seri" CssClass="col-sm-4"></SfTextBox>
-                                    <label class="col-sm-2" for="Adi">Adı:</label>
-                                    <SfTextBox @bind-Value="@_OgrenciDto.Ad" ID="Adı" CssClass="col-sm-4"></SfTextBox>
-                                    <label class="col-sm-2" for="Soyadi">Soyadı:</label>
-                                    <SfTextBox @bind-Value="@_OgrenciDto.Soyad" ID="Soyadi" CssClass="col-sm-4"></SfTextBox>
-                                    <label class="col-sm-2" for="Email">Email:</label>
-                                    <SfTextBox @bind-Value="@_OgrenciDto.Email" ID="Email" CssClass="col-sm-10"></SfTextBox>
-                                    <label class="col-sm-2" for="DropFakulte">Fakulte:</label>
-                                    <SfDropDownList ID="DropFakulte" @ref="DropFakulte" TItem="FakulteDto" CssClass="col-sm-10 pb-1"
-                                                    TValue="int?" PopupHeight="230px" Index="2" Placeholder="Fakulte"
-                                                    @bind-Value="@_OgrenciDto.FakulteId" DataSource="@fakulteDtos">
-                                        <DropDownListEvents TValue="int?" ValueChange="FakulteToBolum"></DropDownListEvents>
-                                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                                    </SfDropDownList>
-                                    <label class="col-sm-2" for="DropBolum">Bolum:</label>
-                                    <SfDropDownList ID="DropBolum" @ref="DropBolum" TItem="BolumDto" CssClass="col-sm-10 pb-1"
-                                                    TValue="int?" PopupHeight="230px" Index="2" Placeholder="Bölüm"
-                                                    @bind-Value="@_OgrenciDto.BolumId" DataSource="@bolumDtos">
-                                        <DropDownListEvents TValue="int?" ValueChange="BolumToProgram"></DropDownListEvents>
-                                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                                    </SfDropDownList>
-                                    <label class="col-sm-2" for="DropProgram">Program:</label>
-                                    <SfDropDownList ID="DropProgram" @ref="DropProgram" TItem="ProgramDto" CssClass="col-sm-10 pb-1"
-                                                    TValue="int?" PopupHeight="230px" Index="2" Placeholder="Bölüm"
-                                                    @bind-Value="@_OgrenciDto.ProgramId" DataSource="@programDtos">
-                                        <DropDownListEvents TValue="int?" ValueChange="ProgramToMufredat"></DropDownListEvents>
-                                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                                    </SfDropDownList>
-                                    <label class="col-sm-2" for="DropMufredat">Mufredat:</label>
-                                    <SfDropDownList ID="DropMufredat" @ref="DropMufredat" TItem="MufredatDto" CssClass="col-sm-10 pb-1"
-                                                    TValue="int?" PopupHeight="230px" Index="2" Placeholder="Bölüm"
-                                                    @bind-Value="@_OgrenciDto.MufredatId" DataSource="@mufredatDtos">
-                                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                                    </SfDropDownList>
-                                    <label class="col-sm-2" for="DropSinif">Sınıf:</label>
-                                    <SfDropDownList ID="DropSinif" @ref="DropSinif" TItem="SinifDto" CssClass="col-sm-10 pb-1"
-                                                    TValue="int?" PopupHeight="230px" Index="2" Placeholder="Bölüm"
-                                                    @bind-Value="@_OgrenciDto.Sinif" DataSource="@sinifDtos">
-                                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                                    </SfDropDownList>
-                                    <label class="col-sm-2" for="ilDonem">ilave Dönem:</label>
-                                    <SfTextBox ID="ilDonem" Placeholder="ilave Dönem" CssClass="col-sm-3"></SfTextBox>
-
-                                </div>
+                </div>
+                <div class="server-action-menu">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-row form-group form-inline ">
+                                <label class="col-sm-2" for="OgrNo">Öğrenci NO:</label>
+                                <SfTextBox @bind-Value="@_OgrenciDto.OgrNo" ID="OgrNo" CssClass="col-sm-4"></SfTextBox>
+                                <label class="col-sm-2" for="DosNo">Dosya NO:</label>
+                                <SfTextBox ID="DosNo" CssClass="col-sm-2"></SfTextBox>
+                                <SfCheckBox Label="Durum" CssClass="col-sm-1" Checked="@_OgrenciDto.Durum"></SfCheckBox>
+                                <label class="col-sm-2" for="TCKN">TCKN:</label>
+                                <SfTextBox @bind-Value="@_OgrenciDto.TCKN" ID="TCKN" CssClass="col-sm-4"></SfTextBox>
+                                <label class="col-sm-2" for="Seri">Kimlik Seri:</label>
+                                <SfTextBox ID="Seri" CssClass="col-sm-4"></SfTextBox>
+                                <label class="col-sm-2" for="Adi">Adı:</label>
+                                <SfTextBox @bind-Value="@_OgrenciDto.Ad" ID="Adı" CssClass="col-sm-4"></SfTextBox>
+                                <label class="col-sm-2" for="Soyadi">Soyadı:</label>
+                                <SfTextBox @bind-Value="@_OgrenciDto.Soyad" ID="Soyadi" CssClass="col-sm-4"></SfTextBox>
+                                <label class="col-sm-2" for="Email">Email:</label>
+                                <SfTextBox @bind-Value="@_OgrenciDto.Email" ID="Email" CssClass="col-sm-10"></SfTextBox>
+                                <label class="col-sm-2" for="DropFakulte">Fakulte:</label>
+                                <SfDropDownList ID="DropFakulte" @ref="DropFakulte" TItem="FakulteDto" CssClass="col-sm-10 pb-1"
+                                                TValue="int?" PopupHeight="230px" Placeholder="Fakulte"
+                                                @bind-Value="@_OgrenciDto.FakulteId" DataSource="@fakulteDtos">
+                                    <DropDownListEvents TValue="int?" ValueChange="FakulteToBolum"></DropDownListEvents>
+                                    <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                                </SfDropDownList>
+                                <label class="col-sm-2" for="DropBolum">Bolum:</label>
+                                <SfDropDownList ID="DropBolum" @ref="DropBolum" TItem="BolumDto" CssClass="col-sm-10 pb-1"
+                                                TValue="int?" PopupHeight="230px" Placeholder="Bölüm"
+                                                @bind-Value="@_OgrenciDto.BolumId" DataSource="@bolumDtos">
+                                    <DropDownListEvents TValue="int?" ValueChange="BolumToProgram"></DropDownListEvents>
+                                    <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                                </SfDropDownList>
+                                <label class="col-sm-2" for="DropProgram">Program:</label>
+                                <SfDropDownList ID="DropProgram" @ref="DropProgram" TItem="ProgramDto" CssClass="col-sm-10 pb-1"
+                                                TValue="int?" PopupHeight="230px" Placeholder="Bölüm"
+                                                @bind-Value="@_OgrenciDto.ProgramId" DataSource="@programDtos">
+                                    <DropDownListEvents TValue="int?" ValueChange="ProgramToMufredat"></DropDownListEvents>
+                                    <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                                </SfDropDownList>
+                                <label class="col-sm-2" for="DropMufredat">Mufredat:</label>
+                                <SfDropDownList ID="DropMufredat" @ref="DropMufredat" TItem="MufredatDto" CssClass="col-sm-10 pb-1"
+                                                TValue="int?" PopupHeight="230px" Placeholder="Bölüm"
+                                                @bind-Value="@_OgrenciDto.MufredatId" DataSource="@mufredatDtos">
+                                    <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                                </SfDropDownList>
+                                <label class="col-sm-2" for="DropSinif">Sınıf:</label>
+                                <SfDropDownList ID="DropSinif" @ref="DropSinif" TItem="SinifDto" CssClass="col-sm-10 pb-1"
+                                                TValue="int?" PopupHeight="230px" Placeholder="Bölüm"
+                                                @bind-Value="@_OgrenciDto.Sinif" DataSource="@sinifDtos">
+                                    <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                                </SfDropDownList>
+                                <label class="col-sm-2" for="ilDonem">ilave Dönem:</label>
+                                <SfTextBox ID="ilDonem" Placeholder="ilave Dönem" CssClass="col-sm-3"></SfTextBox>
 
                             </div>
-                            <div class="col-sm-12 col-md-6">
-                                <div class="form-row form-group form-inline ">
-                                    <label class="col-sm-2" for="DropKayitNeden">Kayıt Neden:</label>
-                                    <SfDropDownList ID="DropKayitNeden" @ref="DropKayitNeden" TItem="KayitNedenDto" CssClass="col-sm-4 pb-1"
-                                                    TValue="int?" PopupHeight="230px" Index="-1" Placeholder="Kayıt Neden"
-                                                    @bind-Value="@_OgrenciDto.KayitNedenId" DataSource="@kayitNedenDtos">
-                                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                                    </SfDropDownList>
-                                    <label class="col-sm-2" for="KayTarih">Kayıt Tarihi:</label>
-                                    <SfDatePicker ID="KayTarih" TValue="DateTime?" CssClass="col-sm-4 pb-1" Placeholder="Kayıt Tarihi"></SfDatePicker>
-                                    <label class="col-sm-2" for="ogrDurum">Öğrenim Durum:</label>
-                                    <SfDropDownList ID="DropOgrenimDurum" @ref="DropOgrenimDurum" TItem="OgrenimDurumDto" CssClass="col-sm-4 pb-1"
-                                                    TValue="int?" PopupHeight="230px" Index="2" Placeholder="Bölüm"
-                                                    @bind-Value="@_OgrenciDto.OgrenimDurumId" DataSource="@ogrenimDurumDtos">
-                                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                                    </SfDropDownList>
-                                    <label class="col-sm-2" for="AyrTarih">Ayrılma Tarihi:</label>
-                                    <SfDatePicker ID="AyrTarih" TValue="DateTime?" CssClass="col-sm-4 pb-1" Placeholder="Ayrılma Tarihi"></SfDatePicker>
 
-                                    <label class="col-sm-2" for="ogrentip">Öğrenim Tipi:</label>
-                                    <SfDropDownList ID="ogrentip" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Index="2" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
-                                        <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
-                                        <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
-                                    </SfDropDownList>
-                                    <label class="col-sm-2" for="notsis">Not Sistemi:</label>
-                                    <SfDropDownList ID="notsis" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Index="2" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
-                                        <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
-                                        <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
-                                    </SfDropDownList>
-                                    <label class="col-sm-2" for="ogrtip">Öğrenci Tipi:</label>
-                                    <SfDropDownList ID="ogrtip" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Index="2" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
-                                        <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
-                                        <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
-                                    </SfDropDownList>
-                                    <label class="col-sm-2" for="orthestip">Ort. Hesap Tip:</label>
-                                    <SfDropDownList ID="orthestip" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Index="2" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
-                                        <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
-                                        <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
-                                    </SfDropDownList>
-                                    <label class="col-sm-2" for="derskayislemtur">Ders Kayıt İşlem Türü:</label>
-                                    <SfDropDownList ID="derskayislemtur" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Index="2" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
-                                        <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
-                                        <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
-                                    </SfDropDownList>
-                                    <label class="col-sm-2" for="anaProNeden">Ana Program Okuma Nedeni:</label>
-                                    <SfDropDownList ID="anaProNeden" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Index="2" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
-                                        <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
-                                        <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
-                                    </SfDropDownList>
-                                    <label class="col-sm-2" for="danis">Danışmanı:</label>
-                                    <SfTextBox ID="danis" CssClass="col-sm-4"></SfTextBox>
-                                    <label class="col-sm-2" for="digDanisman">Diğer Danışman:</label>
-                                    <SfTextBox ID="digDanisman" CssClass="col-sm-4"></SfTextBox>
-                                    <label class="col-sm-2" for="capYan">Çap Yandal Durum:</label>
-                                    <SfDropDownList ID="capYan" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Index="2" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
-                                        <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
-                                        <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
-                                    </SfDropDownList>
-                                </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-row form-group form-inline ">
+                                <label class="col-sm-2" for="DropKayitNeden">Kayıt Neden:</label>
+                                <SfDropDownList ID="DropKayitNeden" @ref="DropKayitNeden" TItem="KayitNedenDto" CssClass="col-sm-4 pb-1"
+                                                TValue="int?" PopupHeight="230px" Placeholder="Kayıt Neden"
+                                                @bind-Value="@_OgrenciDto.KayitNedenId" DataSource="@kayitNedenDtos">
+                                    <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                                </SfDropDownList>
+                                <label class="col-sm-2" for="KayTarih">Kayıt Tarihi:</label>
+                                <SfDatePicker ID="KayTarih" TValue="DateTime?" CssClass="col-sm-4 pb-1" Placeholder="Kayıt Tarihi"></SfDatePicker>
+                                <label class="col-sm-2" for="ogrDurum">Öğrenim Durum:</label>
+                                <SfDropDownList ID="DropOgrenimDurum" @ref="DropOgrenimDurum" TItem="OgrenimDurumDto" CssClass="col-sm-4 pb-1"
+                                                TValue="int?" PopupHeight="230px" Placeholder="Bölüm"
+                                                @bind-Value="@_OgrenciDto.OgrenimDurumId" DataSource="@ogrenimDurumDtos">
+                                    <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                                </SfDropDownList>
+                                <label class="col-sm-2" for="AyrTarih">Ayrılma Tarihi:</label>
+                                <SfDatePicker ID="AyrTarih" TValue="DateTime?" CssClass="col-sm-4 pb-1" Placeholder="Ayrılma Tarihi"></SfDatePicker>
 
+                                <label class="col-sm-2" for="ogrentip">Öğrenim Tipi:</label>
+                                <SfDropDownList ID="ogrentip" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
+                                    <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
+                                    <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
+                                </SfDropDownList>
+                                <label class="col-sm-2" for="notsis">Not Sistemi:</label>
+                                <SfDropDownList ID="notsis" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
+                                    <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
+                                    <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
+                                </SfDropDownList>
+                                <label class="col-sm-2" for="ogrtip">Öğrenci Tipi:</label>
+                                <SfDropDownList ID="ogrtip" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
+                                    <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
+                                    <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
+                                </SfDropDownList>
+                                <label class="col-sm-2" for="orthestip">Ort. Hesap Tip:</label>
+                                <SfDropDownList ID="orthestip" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
+                                    <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
+                                    <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
+                                </SfDropDownList>
+                                <label class="col-sm-2" for="derskayislemtur">Ders Kayıt İşlem Türü:</label>
+                                <SfDropDownList ID="derskayislemtur" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
+                                    <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
+                                    <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
+                                </SfDropDownList>
+                                <label class="col-sm-2" for="anaProNeden">Ana Program Okuma Nedeni:</label>
+                                <SfDropDownList ID="anaProNeden" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
+                                    <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
+                                    <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
+                                </SfDropDownList>
+                                <label class="col-sm-2" for="danis">Danışmanı:</label>
+                                <SfTextBox ID="danis" CssClass="col-sm-4"></SfTextBox>
+                                <label class="col-sm-2" for="digDanisman">Diğer Danışman:</label>
+                                <SfTextBox ID="digDanisman" CssClass="col-sm-4"></SfTextBox>
+                                <label class="col-sm-2" for="capYan">Çap Yandal Durum:</label>
+                                <SfDropDownList ID="capYan" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
+                                    <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
+                                    <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
+                                </SfDropDownList>
                             </div>
-                        </div>
 
-                    </div>
-                    <div class="row">
-                        <div class="col-12 text-right">
-                            <SfProgressButton Content="Kaydet ve Devamet >" CssClass="center-block e-primary">
-                                <ProgressButtonSpinSettings Position="SpinPosition.Right"></ProgressButtonSpinSettings>
-                            </SfProgressButton>
                         </div>
                     </div>
-
 
                 </div>
-            </div>
-        </ControlSection>
+                <div class="row">
+                    <div class="col-12 text-right">
+                        <SfProgressButton Content="Kaydet ve Devamet >" CssClass="center-block e-primary">
+                            <ProgressButtonSpinSettings Position="SpinPosition.Right"></ProgressButtonSpinSettings>
+                        </SfProgressButton>
+                    </div>
+                </div>
 
-    </EditForm>
+
+            </div>
+        </div>
+    </ControlSection>
+
+</EditForm>
 
 
 
@@ -237,7 +237,12 @@
         await ReadFakultes();
         await ReadKayitNedens();
         await ReadOgrenimDurums();
-        _OgrenciDto.KayitNedenId = 1;
+        if (_OgrenciDto.Id != 0)
+        {
+            await ReadBolums(_OgrenciDto.FakulteId);
+            await ReadPrograms(_OgrenciDto.BolumId);
+            await ReadPrograms(_OgrenciDto.ProgramId);
+        }
 
     }
 
@@ -256,61 +261,53 @@
         }
     }
 
-    async Task ReadKayitNedens()
-    {
-        ApiResponseDto<List<KayitNedenDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<KayitNedenDto>>>("api/KeyValues/GetKayitNeden");
-
-        if (apiResponse.StatusCode == Status200OK)
-        {
-            kayitNedenDtos = apiResponse.Result;
-
-        }
-        else
-        {
-            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Kayit neden getirilirken hata oluştu!");
-        }
-    }
-    async Task ReadOgrenimDurums()
-    {
-        ApiResponseDto<List<OgrenimDurumDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenimDurumDto>>>("api/ogrenimdurum");
-
-        if (apiResponse.StatusCode == Status200OK)
-        {
-            ogrenimDurumDtos = apiResponse.Result;
-
-        }
-        else
-        {
-            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Kayit neden getirilirken hata oluştu!");
-        }
-    }
 
 
     private async Task FakulteToBolum(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
     {
-        if (args.Value == null)
+        if (_OgrenciDto.Id == 0)
         {
             bolumDtos = new List<BolumDto>();
             programDtos = new List<ProgramDto>();
             mufredatDtos = new List<MufredatDto>();
+            _OgrenciDto.BolumId = null;
+            _OgrenciDto.ProgramId = null;
+            _OgrenciDto.MufredatId = null;
+            //DropBolum.Refresh();
+            //DropProgram.Refresh();
+            //DropMufredat.Refresh();
             StateHasChanged();
+            await ReadBolums(args.Value);
         }
         else
         {
-            await ReadBolums();
+            await ReadBolums(_OgrenciDto.FakulteId);
         }
+
+
+
     }
 
 
 
-    async Task ReadBolums()
+    async Task ReadBolums(int? fakulteId)
     {
-        ApiResponseDto<List<BolumDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<BolumDto>>>("api/bolum/GetBolumByFakulteIds/" + string.Join(',', DropFakulte.Value));
+        ApiResponseDto<List<BolumDto>> apiResponse;
+        //if (fakulteId == null)
+        //{
+        //    apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<BolumDto>>>("api/bolum/GetBolumByFakulteIds/" + string.Join(',', DropFakulte.Value));
+        //}
+        //else
+        //{
+        apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<BolumDto>>>("api/bolum/GetBolumByFakulteIds/" + string.Join(',', fakulteId));
+        //}
+
 
         if (apiResponse.StatusCode == Status200OK)
         {
             bolumDtos = apiResponse.Result;
-            StateHasChanged();
+            //StateHasChanged();
+
         }
         else
         {
@@ -320,22 +317,34 @@
 
     private async void BolumToProgram(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
     {
-
-        if (args.Value == null)
+        if (_OgrenciDto.Id == 0)
         {
             programDtos = new List<ProgramDto>();
             mufredatDtos = new List<MufredatDto>();
+            _OgrenciDto.ProgramId = null;
+            _OgrenciDto.MufredatId = null;
             StateHasChanged();
+            await ReadPrograms(args.Value);
         }
         else
         {
-            await ReadPrograms();
+            await ReadPrograms(_OgrenciDto.BolumId);
         }
     }
 
-    async Task ReadPrograms()
+    async Task ReadPrograms(int? bolumId)
     {
-        ApiResponseDto<List<ProgramDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<ProgramDto>>>("api/program/GetProgramByBolumIds/" + string.Join(',', DropBolum.Value));
+        ApiResponseDto<List<ProgramDto>> apiResponse;
+        if (bolumId == null)
+        {
+            //apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<ProgramDto>>>("api/program/GetProgramByBolumIds/" + string.Join(',', DropBolum.Value));
+            return;
+        }
+        else
+        {
+            apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<ProgramDto>>>("api/program/GetProgramByBolumIds/" + string.Join(',', bolumId));
+        }
+
 
         if (apiResponse.StatusCode == Status200OK)
         {
@@ -350,20 +359,32 @@
 
     private async void ProgramToMufredat(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
     {
-        if (args.Value == null)
+        if (_OgrenciDto.Id == 0)
         {
             mufredatDtos = new List<MufredatDto>();
+            _OgrenciDto.MufredatId = null;
             StateHasChanged();
+            await ReadMufredats(args.Value);
         }
         else
         {
-            await ReadMufredats();
+            await ReadMufredats(_OgrenciDto.ProgramId);
         }
     }
 
-    async Task ReadMufredats()
+    async Task ReadMufredats(int? programId)
     {
-        ApiResponseDto<List<MufredatDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<MufredatDto>>>("api/mufredat/GetMufredatByProgramIds/" + string.Join(',', DropProgram.Value));
+        ApiResponseDto<List<MufredatDto>> apiResponse;
+        if (programId == null)
+        {
+            //apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<MufredatDto>>>("api/mufredat/GetMufredatByProgramIds/" + string.Join(',', DropProgram.Value));
+            return;
+        }
+        else
+        {
+            apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<MufredatDto>>>("api/mufredat/GetMufredatByProgramIds/" + string.Join(',', programId));
+        }
+
 
         if (apiResponse.StatusCode == Status200OK)
         {
@@ -403,7 +424,37 @@
         }
 
     }
-}
+
+
+    async Task ReadKayitNedens()
+    {
+        ApiResponseDto<List<KayitNedenDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<KayitNedenDto>>>("api/KeyValues/GetKayitNeden");
+
+        if (apiResponse.StatusCode == Status200OK)
+        {
+            kayitNedenDtos = apiResponse.Result;
+
+        }
+        else
+        {
+            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Kayit neden getirilirken hata oluştu!");
+        }
+    }
+    async Task ReadOgrenimDurums()
+    {
+        ApiResponseDto<List<OgrenimDurumDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenimDurumDto>>>("api/ogrenimdurum");
+
+        if (apiResponse.StatusCode == Status200OK)
+        {
+            ogrenimDurumDtos = apiResponse.Result;
+
+        }
+        else
+        {
+            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Kayit neden getirilirken hata oluştu!");
+        }
+    }
+    }
 
 <style>
     textarea.e-input,
