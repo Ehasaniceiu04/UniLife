@@ -6,7 +6,7 @@
 <div class="control-section e-tab-section">
     <SfTab @ref="Tab" CssClass="BlazorTab" LoadOn="ContentLoad.Dynamic">
         @*Selected="OnTabSelected" Selecting="OnTabSelecting"*@
-        <TabEvents Created="TabCreate"></TabEvents>
+        <TabEvents Created="TabCreate" Selecting="OnTabSelecting"></TabEvents>
         <TabItems>
             <TabItem>
                 <ChildContent>
@@ -68,10 +68,13 @@
     //{
     //    StateHasChanged();
     //}
-    //public void OnTabSelecting(SelectingEventArgs args)
-    //{
-    //    //StateHasChanged();
-    //}
+    public void OnTabSelecting(SelectingEventArgs args)
+    {
+        if (args.IsSwiped)
+        {
+            args.Cancel = true;
+        }
+    }
 }
 
 

@@ -27,13 +27,13 @@ namespace Semerkand.Storage.Stores
         {
             //return await _autoMapper.ProjectTo<BolumDto>(_db.Bolums).ToListAsync();
             //var asd=  _autoMapper.Map<List<BolumDto>>(await _db.Bolums.Include("Universite").ToListAsync());
-            var asd = _autoMapper.Map<List<TDto>>(await (_db as ApplicationDbContext).Set<T>().ToListAsync());
+            var asd = _autoMapper.Map<List<TDto>>(await _db.Context.Set<T>().ToListAsync());
             return asd;
         }
 
         public async Task<TDto> GetById(int id)
         {
-            var t = await (_db as ApplicationDbContext).Set<T>().SingleOrDefaultAsync(t => t.Id == id);
+            var t = await _db.Context.Set<T>().SingleOrDefaultAsync(t => t.Id == id);
 
             if (t == null)
                 throw new InvalidDataException($"Unable to find T with ID: {id}");
@@ -44,19 +44,20 @@ namespace Semerkand.Storage.Stores
         public async Task<T> Create(TDto tDto)
         {
             var t = _autoMapper.Map<TDto, T>(tDto);
-            await (_db as ApplicationDbContext).Set<T>().AddAsync(t);
+            await _db.Context.Set<T>().AddAsync(t);
             await _db.SaveChangesAsync(CancellationToken.None);
             return t;
         }
 
         public async Task<T> Update(TDto tDto)
         {
-            var t = await (_db as ApplicationDbContext).Set<T>().SingleOrDefaultAsync(t => t.Id == tDto.Id);
+            var t = await _db.Context.Set<T>().SingleOrDefaultAsync(t => t.Id == tDto.Id);
             if (t == null)
                 throw new InvalidDataException($"Unable to find T with ID: {tDto.Id}");
 
             t = _autoMapper.Map(tDto, t);
-            (_db as ApplicationDbContext).Set<T>().Update(t);
+            _db.Context.Set<T>().Update(t);
+            _db.Context.Entry<T>(t).State= EntityState.Modified;
             await _db.SaveChangesAsync(CancellationToken.None);
 
             return t;
@@ -64,12 +65,12 @@ namespace Semerkand.Storage.Stores
 
         public async Task DeleteById(int id)
         {
-            var t = (_db as ApplicationDbContext).Set<T>().SingleOrDefault(t => t.Id == id);
+            var t = _db.Context.Set<T>().SingleOrDefault(t => t.Id == id);
 
             if (t == null)
                 throw new InvalidDataException($"Unable to find T with ID: {id}");
 
-            (_db as ApplicationDbContext).Set<T>().Remove(t);
+            _db.Context.Set<T>().Remove(t);
             await _db.SaveChangesAsync(CancellationToken.None);
         }
     }

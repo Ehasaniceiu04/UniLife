@@ -76,6 +76,13 @@ namespace Semerkand.Server.Controllers
         public async Task<ApiResponse> UpdateUser(UserInfoDto userInfo)
         => ModelState.IsValid ? await _accountManager.UpdateUser(userInfo) : _invalidUserModel;
 
+        [HttpPost("UpdateOgrenciUser")]
+        [Authorize]
+        public async Task<ApiResponse> UpdateOgrenciUser(OgrenciDto ogrenciDto)
+        => ModelState.IsValid ? await _accountManager.UpdateOgrenciUser(ogrenciDto) : _invalidUserModel;
+
+
+
         ///----------Admin User Management Interface Methods
         // POST: api/Account/Create
         [HttpPost("Create")]

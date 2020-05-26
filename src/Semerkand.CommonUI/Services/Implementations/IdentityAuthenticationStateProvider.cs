@@ -118,5 +118,12 @@ namespace Semerkand.CommonUI.States
             NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
             return apiResponse;
         }
+
+        public async Task<ApiResponseDto> UpdateOgrenciUser(OgrenciDto ogrenciDto)
+        {
+            ApiResponseDto apiResponse = await _authorizeApi.UpdateOgrenciUser(ogrenciDto);
+            NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+            return apiResponse;
+        }
     }
 }

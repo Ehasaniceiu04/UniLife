@@ -28,7 +28,10 @@ namespace Semerkand.Server.Managers
         Task<ApiResponse> UserInfo(ClaimsPrincipal userClaimsPrincipal);
 
         Task<ApiResponse> UpdateUser(UserInfoDto userInfo);
-        
+
+
+        Task<ApiResponse> UpdateOgrenciUser(OgrenciDto ogrenciDto);
+
         // Admin policies. 
 
         Task<ApiResponse> Create(RegisterDto parameters);
@@ -47,5 +50,6 @@ namespace Semerkand.Server.Managers
         Task<ApiResponse> AdminResetUserPasswordAsync(Guid id, string newPassword, ClaimsPrincipal userClaimsPrincipal);
         
         Task<ApplicationUser> RegisterNewUserAsync(string userName, string email, string password, bool requireConfirmEmail);
+        
     }
 }

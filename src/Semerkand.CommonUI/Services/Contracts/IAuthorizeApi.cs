@@ -17,6 +17,8 @@ namespace Semerkand.CommonUI.Services.Contracts
         Task<ApiResponseDto> ConfirmEmail(ConfirmEmailDto confirmEmailParameters);
         Task<UserInfoDto> GetUserInfo();
         Task<ApiResponseDto> UpdateUser(UserInfoDto userInfo);
+        Task<ApiResponseDto> UpdateOgrenciUser(OgrenciDto ogrenciDto);
+        
         Task<UserInfoDto> GetUser();
     }
 }

@@ -264,6 +264,49 @@ namespace Semerkand.Server.Managers
 
             return new ApiResponse(Status200OK, "User Updated Successfully");
         }
+        public async Task<ApiResponse> UpdateOgrenciUser(OgrenciDto ogrenciDto)
+        {
+            var user = await _userManager.FindByIdAsync(ogrenciDto.ApplicationUserId.ToString());
+
+            if (user == null)
+            {
+                _logger.LogInformation("Bu kullanıcı mevcut değil: {0}", ogrenciDto.OgrNo);
+                return new ApiResponse(Status404NotFound, "User does not exist");
+            }
+
+            user.FirstName = ogrenciDto.Ad;
+            user.LastName = ogrenciDto.Soyad;
+            user.Email = ogrenciDto.Email;
+            user.TCKN = ogrenciDto.TCKN;
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (!result.Succeeded)
+            {
+                _logger.LogInformation("Kullanıcı güncellemesi hatası: {0}", string.Join(",", result.Errors.Select(i => i.Description)));
+                return new ApiResponse(Status400BadRequest, "Kullanıcı güncellemesi Hatası!");
+            }
+
+            try
+            {
+                //var existingOgrenci =await _ogrenciStore.GetById(ogrenciDto.Id);
+                var ogrenciResult = await _ogrenciStore.Update(ogrenciDto);
+                if (ogrenciResult.Id == 0)
+                {
+                    _logger.LogInformation("Ögrenci Accountmanager _ogrenciStore.Update çalışmadı");
+                    return new ApiResponse(Status400BadRequest, "Öğrenci kullanıcı güncellemesi Hatası!");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation("Accountmanager _ogrenciStore.Update güncelleme hatsı: {0} inner {1} stacktrace:{2}", ex.Message,ex.InnerException,ex.StackTrace);
+                return new ApiResponse(Status400BadRequest, "Öğrenci kullanıcı güncellemesi hatası oluştu: {0}", ex.Message);
+            }
+
+
+            return new ApiResponse(Status200OK, "Kullanıcı bilgileri güncellendi");
+        }
+
 
         public async Task<ApiResponse> Create(RegisterDto parameters)
         {
@@ -754,5 +797,6 @@ namespace Semerkand.Server.Managers
             return null;
         }
 
+        
     }
 }

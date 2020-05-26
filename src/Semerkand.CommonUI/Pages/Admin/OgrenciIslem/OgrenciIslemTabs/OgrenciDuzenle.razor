@@ -8,7 +8,7 @@
 @inject AuthenticationStateProvider authStateProvider
 
 
-<EditForm Model=@_OgrenciDto OnSubmit="KaydetDevam">
+<EditForm Model=@_OgrenciDto OnValidSubmit="Kaydet">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
@@ -28,7 +28,7 @@
                                 <SfTextBox @bind-Value="@_OgrenciDto.OgrNo" ID="OgrNo" CssClass="col-sm-4"></SfTextBox>
                                 <label class="col-sm-2" for="DosNo">Dosya NO:</label>
                                 <SfTextBox ID="DosNo" CssClass="col-sm-2"></SfTextBox>
-                                <SfCheckBox Label="Durum" CssClass="col-sm-1" Checked="@_OgrenciDto.Durum"></SfCheckBox>
+                                <SfCheckBox Label="Durum" CssClass="col-sm-1" @bind-Checked="@_OgrenciDto.Durum"></SfCheckBox>
                                 <label class="col-sm-2" for="TCKN">TCKN:</label>
                                 <SfTextBox @bind-Value="@_OgrenciDto.TCKN" ID="TCKN" CssClass="col-sm-4"></SfTextBox>
                                 <label class="col-sm-2" for="Seri">Kimlik Seri:</label>
@@ -144,7 +144,7 @@
                 </div>
                 <div class="row">
                     <div class="col-12 text-right">
-                        <SfProgressButton Content="Kaydet ve Devamet >" CssClass="center-block e-primary">
+                        <SfProgressButton Content="Kaydet" CssClass="center-block e-primary">
                             <ProgressButtonSpinSettings Position="SpinPosition.Right"></ProgressButtonSpinSettings>
                         </SfProgressButton>
                     </div>
@@ -157,18 +157,10 @@
 
 </EditForm>
 
-<SfProgressButton OnClick="Napan" Content="napan >" CssClass="center-block e-primary">
-    <ProgressButtonSpinSettings Position="SpinPosition.Right"></ProgressButtonSpinSettings>
-</SfProgressButton>
 
 
 @code {
 
-    public void Napan() {
-        StateHasChanged();
-        DropMufredat.Refresh();
-        DropProgram.Refresh();
-    }
 
     private string textValue { get; set; }
     public class GameFields
@@ -289,14 +281,14 @@
 
     private void FakulteToBolum(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
     {
+        bolumDtos = new List<BolumDto>();
+        programDtos = new List<ProgramDto>();
+        mufredatDtos = new List<MufredatDto>();
+        _OgrenciDto.BolumId = null;
+        _OgrenciDto.ProgramId = null;
+        _OgrenciDto.MufredatId = null;
         if (_OgrenciDto.Id == 0)
         {
-            bolumDtos = new List<BolumDto>();
-            programDtos = new List<ProgramDto>();
-            mufredatDtos = new List<MufredatDto>();
-            _OgrenciDto.BolumId = null;
-            _OgrenciDto.ProgramId = null;
-            _OgrenciDto.MufredatId = null;
             ReadBolums(args.Value).ConfigureAwait(true);
         }
         else
@@ -337,13 +329,13 @@
 
     private void BolumToProgram(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
     {
-
+        programDtos = new List<ProgramDto>();
+        mufredatDtos = new List<MufredatDto>();
+        _OgrenciDto.ProgramId = null;
+        _OgrenciDto.MufredatId = null;
         if (_OgrenciDto.Id == 0)
         {
-            programDtos = new List<ProgramDto>();
-            mufredatDtos = new List<MufredatDto>();
-            _OgrenciDto.ProgramId = null;
-            _OgrenciDto.MufredatId = null;
+
             ReadPrograms(args.Value).ConfigureAwait(true);
         }
         else
@@ -380,12 +372,11 @@
 
     private void ProgramToMufredat(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
     {
-
-
+        mufredatDtos = new List<MufredatDto>();
+        _OgrenciDto.MufredatId = null;
         if (_OgrenciDto.Id == 0)
         {
-            mufredatDtos = new List<MufredatDto>();
-            _OgrenciDto.MufredatId = null;
+
             ReadMufredats(args.Value).ConfigureAwait(true);
         }
         else
@@ -420,31 +411,65 @@
         }
     }
 
-    async Task KaydetDevam()
+    async Task Kaydet()
     {
         try
         {
-            var apiResponse = await ((IdentityAuthenticationStateProvider)authStateProvider).Create(_OgrenciDto);
-            if (apiResponse.IsSuccessStatusCode)
+            if (_OgrenciDto.Id ==0)
             {
-                matToaster.Add(apiResponse.Message, MatToastType.Success);
-                //_OgrenciDto = Newtonsoft.Json.JsonConvert.DeserializeObject<OgrenciDto>(apiResponse.Result.ToString());
-                //userInfoDtos.Add(userInfoDto);
-                //registerParameters = new RegisterDto(); //reset create user object after insert
-                //createUserDialogOpen = false;
+                var apiResponse = await ((IdentityAuthenticationStateProvider)authStateProvider).Create(_OgrenciDto);
+                if (apiResponse.IsSuccessStatusCode)
+                {
+                    matToaster.Add(apiResponse.Message, MatToastType.Success);
+                }
+                else
+                {
+                    matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Öğrenci kullanıcısı oluşturulurken hata oluştu");
+                }
             }
             else
             {
-                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Öğrenci kullanıcısı oluşturulurken hata oluştu");
-                //userInfoDtos.Remove(userInfoDto);
+                ApiResponseDto apiResponse = await ((IdentityAuthenticationStateProvider)authStateProvider).UpdateOgrenciUser(_OgrenciDto);
+
+                if (apiResponse.StatusCode == Status200OK)
+                {
+                    matToaster.Add("Öğrenci bilgileri güncellendi", MatToastType.Success);
+                }
+                else
+                {
+                    matToaster.Add(apiResponse.Message, MatToastType.Danger, "Güncelleme başarısız oldu!");
+                }
             }
+
         }
         catch (Exception ex)
         {
-            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Öğrenci kullanıcısı oluşturulurken hata oluştu");
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Öğrenci ile ilgili değişiklikler kayıt edilirken hata oluştu");
         }
 
     }
+
+    //async Task Duzenle()
+    //{
+    //    try
+    //    {
+    //        ApiResponseDto apiResponse = await ((IdentityAuthenticationStateProvider)authStateProvider).UpdateOgrenciUser(_OgrenciDto);
+
+    //        if (apiResponse.StatusCode == Status200OK)
+    //        {
+    //            matToaster.Add("Öğrenci bilgileri güncellendi", MatToastType.Success);
+    //        }
+    //        else
+    //        {
+    //            matToaster.Add(apiResponse.Message, MatToastType.Danger, "Güncelleme başarısız oldu!");
+    //        }
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        matToaster.Add(ex.Message, MatToastType.Danger, "Güncelleme başarısız oldu!");
+    //    }
+
+    //}
 
 
     async Task ReadKayitNedens()

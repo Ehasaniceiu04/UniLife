@@ -6,7 +6,7 @@
 @using Newtonsoft.Json
 @using Semerkand.Shared.Dto.Definitions
 @using Semerkand.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs.OgrencilerTabs
-
+@using Syncfusion.Blazor.SplitButtons
 
 
 
@@ -80,20 +80,27 @@
                 <GridColumn Field=@nameof(OgrenciDto.OgrNo) HeaderText="Öğrenci No"></GridColumn>
                 <GridColumn>
                     <GridCommandColumns>
-                        <GridCommandColumn Type="CommandButtonType.None" Title="Akademik Bilgiler" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>                        
+                        <GridCommandColumn Type="CommandButtonType.None" Title="Akademik Bilgiler" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
                     </GridCommandColumns>
                 </GridColumn>
             </GridColumns>
         </SfGrid>
     </div>
-
-    @*<div class="row">
+    <div class="row">
         <div class="col-12 text-right">
-            <SfProgressButton OnClick="KaydetDevam" Content="Kaydet ve Devamet >" CssClass="center-block e-primary">
+            <SfProgressButton OnClick="AddNew" Content="Yeni Öğrenci Kaydı >" CssClass="center-block e-primary">
                 <ProgressButtonSpinSettings Position="SpinPosition.Right"></ProgressButtonSpinSettings>
             </SfProgressButton>
         </div>
-    </div>*@
+    </div>
+
+    @*<div class="row">
+            <div class="col-12 text-right">
+                <SfProgressButton OnClick="KaydetDevam" Content="Kaydet ve Devamet >" CssClass="center-block e-primary">
+                    <ProgressButtonSpinSettings Position="SpinPosition.Right"></ProgressButtonSpinSettings>
+                </SfProgressButton>
+            </div>
+        </div>*@
 
 
 
@@ -172,8 +179,11 @@
 
         }
     }
-    public int Id { get; set; }
-    public string Name { get; set; }
+
+    async Task AddNew()
+    {
+        await OgrenciToAkademik.InvokeAsync(new OgrenciDto());
+    }
 }
 
 

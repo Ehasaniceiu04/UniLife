@@ -69,10 +69,19 @@ namespace Semerkand.Shared.Dto.Definitions
         public List<KeyValuePair<string, string>> ExposedClaims { get; set; }
         public bool DisableTenantFilter { get; set; }
 
+        //UserProfile
+        public string LastPageVisited { get; set; } = "/";
+        public bool IsNavOpen { get; set; } = true;
+        public bool IsNavMinified { get; set; } = false;
+        public int Count { get; set; } = 0;
+        public DateTime LastUpdatedDate { get; set; } = DateTime.MinValue;
+
         //Bussines needs
         public string FakulteAdi { get; set; }
         public object MufredatAdi { get; set; }
         public object ProgramAdi { get; set; }
         public object BolumAdi { get; set; }
+
+        
     }
 }

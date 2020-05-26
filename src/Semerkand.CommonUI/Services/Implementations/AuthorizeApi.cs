@@ -149,6 +149,11 @@ namespace Semerkand.CommonUI.Services.Implementations
             return await _httpClient.PostJsonAsync<ApiResponseDto>("api/Account/UpdateUser", userInfo);
         }
 
-        
+        public async Task<ApiResponseDto> UpdateOgrenciUser(OgrenciDto ogrenciDto)
+        {
+            return await _httpClient.PostJsonAsync<ApiResponseDto>("api/Account/UpdateOgrenciUser", ogrenciDto);
+        }
+
+
     }
 }

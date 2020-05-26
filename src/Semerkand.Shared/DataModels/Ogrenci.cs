@@ -49,6 +49,13 @@ namespace Semerkand.Shared.DataModels
         public string AnaOgrNo { get; set; }
         public int Sinif { get; set; }
 
+        //UserProfile
+        public string LastPageVisited { get; set; } = "/";
+        public bool IsNavOpen { get; set; } = true;
+        public bool IsNavMinified { get; set; } = false;
+        public int Count { get; set; } = 0;
+        public DateTime LastUpdatedDate { get; set; } = DateTime.MinValue;
+
 
 
     }

@@ -23,7 +23,8 @@ namespace Semerkand.Server.Controllers
 
         // GET: api/Ogrenci
         [HttpGet]
-        [AllowAnonymous]
+        //[AllowAnonymous]
+        [Authorize(Permissions.Ogrenci.Read)]
         public async Task<ApiResponse> Get()
             => await _ogrenciManager.Get();
 
