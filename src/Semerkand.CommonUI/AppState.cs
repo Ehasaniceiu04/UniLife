@@ -17,6 +17,7 @@ namespace Semerkand.CommonUI
         private readonly IUserProfileApi _userProfileApi;
 
         public UserProfileDto UserProfile { get; set; }
+        //public OgrenciDto OgrenciUserProfile { get; set; }
         public MufredatDto MufredatState { get; set; }
 
 
@@ -40,12 +41,33 @@ namespace Semerkand.CommonUI
                 UserProfile.IsNavOpen = value;
             }
         }
+
+        //public bool IsNavOpenOgrenci
+        //{
+        //    get
+        //    {
+        //        if (OgrenciUserProfile == null)
+        //        {
+        //            return true;
+        //        }
+        //        return OgrenciUserProfile.IsNavOpen;
+        //    }
+        //    set
+        //    {
+        //        OgrenciUserProfile.IsNavOpen = value;
+        //    }
+        //}
+
         public bool IsNavMinified { get; set; }
 
         public async Task UpdateUserProfile()
         {
             await _userProfileApi.Upsert(UserProfile);
         }
+        //public async Task UpdateOgrenciUserProfile()
+        //{
+        //    await _userProfileApi.UpsertOgrenci(OgrenciUserProfile);
+        //}
 
         public async Task<UserProfileDto> GetUserProfile()
         {
@@ -63,12 +85,34 @@ namespace Semerkand.CommonUI
             return new UserProfileDto();
         }
 
+        //public async Task<OgrenciDto> GetOgrenciUserProfile()
+        //{
+        //    if (OgrenciUserProfile != null && OgrenciUserProfile.ApplicationUserId != Guid.Empty)
+        //    {
+        //        return OgrenciUserProfile;
+        //    }
+
+        //    ApiResponseDto apiResponse = await _userProfileApi.GetOgrenci();
+
+        //    if (apiResponse.StatusCode == Status200OK)
+        //    {
+        //        return JsonConvert.DeserializeObject<OgrenciDto>(apiResponse.Result.ToString());
+        //    }
+        //    return new OgrenciDto();
+        //}
+
         public async Task UpdateUserProfileCount(int count)
         {
             UserProfile.Count = count;
             await UpdateUserProfile();
             NotifyStateChanged();
         }
+        //public async Task UpdateOgrenciUserProfileCount(int count)
+        //{
+        //    OgrenciUserProfile.Count = count;
+        //    await UpdateOgrenciUserProfile();
+        //    NotifyStateChanged();
+        //}
 
         public async Task<int> GetUserProfileCount()
         {
@@ -80,6 +124,16 @@ namespace Semerkand.CommonUI
 
             return UserProfile.Count;
         }
+        //public async Task<int> GetOgrenciUserProfileCount()
+        //{
+        //    if (OgrenciUserProfile == null)
+        //    {
+        //        OgrenciUserProfile = await GetOgrenciUserProfile();
+        //        return OgrenciUserProfile.Count;
+        //    }
+
+        //    return OgrenciUserProfile.Count;
+        //}
 
         public async Task SaveLastVisitedUri(string uri)
         {
