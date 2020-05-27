@@ -69,7 +69,7 @@ namespace Semerkand.Server.Controllers
 
         [HttpGet]
         [Route("GetRolesByUserId/{userId:guid}")]
-        [Authorize]
+        [Authorize(Permissions.Role.Read)]
         public async Task<ApiResponse> GetRolesByUserId(Guid userId)
             => await _adminManager.GetRolesByUserId(userId);
         

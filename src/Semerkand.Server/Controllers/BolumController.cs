@@ -39,7 +39,7 @@ namespace Semerkand.Server.Controllers
 
         // POST: api/Bolum
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Permissions.Bolum.Create)]
         public async Task<ApiResponse> Post([FromBody] BolumDto bolumDto)
             => ModelState.IsValid ?
                 await _bolumManager.Create(bolumDto) :
@@ -47,7 +47,7 @@ namespace Semerkand.Server.Controllers
 
         // Put: api/Bolum
         [HttpPut]
-        [AllowAnonymous]
+        [Authorize(Permissions.Bolum.Update)]
         public async Task<ApiResponse> Put([FromBody] BolumDto bolumDto)
             => ModelState.IsValid ?
                 await _bolumManager.Update(bolumDto) :
@@ -63,7 +63,7 @@ namespace Semerkand.Server.Controllers
 
 
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize(Permissions.Bolum.Read)]
         [Route("GetBolumByFakulteIds/{fakulteIds}")]
         public async Task<ApiResponse> GetBolumByFakulteIds(string fakulteIds)
         => ModelState.IsValid ?

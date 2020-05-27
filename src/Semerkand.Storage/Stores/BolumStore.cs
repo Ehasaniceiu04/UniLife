@@ -91,5 +91,6 @@ namespace Semerkand.Storage.Stores
 
             return _autoMapper.Map<List<BolumDto>>(bolums);
         }
+
     }
 }

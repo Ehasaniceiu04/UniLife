@@ -294,10 +294,10 @@ namespace Semerkand.Server
                 }
             });
 
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
+            //services.Configure<CookiePolicyOptions>(options =>
+            //{
+            //    options.MinimumSameSitePolicy = SameSiteMode.None;
+            //});
 
             //services.ConfigureExternalCookie(options =>
             // {
@@ -465,15 +465,15 @@ namespace Semerkand.Server
 
 
             services.AddRazorPages();
-            services.AddServerSideBlazor(); //For dev show error.
+            //services.AddServerSideBlazor(); //For dev show error.
 
-            //services.AddServerSideBlazor().AddCircuitOptions(o =>
-            //{
-            //    if (_environment.IsDevelopment()) //only add details when debugging
-            //    {
-            //        o.DetailedErrors = true;
-            //    }
-            //});
+            services.AddServerSideBlazor().AddCircuitOptions(o =>
+            {
+                if (_environment.IsDevelopment()) //only add details when debugging
+                {
+                    o.DetailedErrors = true;
+                }
+            });
 
 
             // Authentication providers
