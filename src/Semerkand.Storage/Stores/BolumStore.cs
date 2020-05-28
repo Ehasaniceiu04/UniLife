@@ -92,5 +92,9 @@ namespace Semerkand.Storage.Stores
             return _autoMapper.Map<List<BolumDto>>(bolums);
         }
 
+        public IQueryable<Bolum> GetAllQueryable()
+        {
+            return _db.Bolums.AsQueryable();
+        }
     }
 }

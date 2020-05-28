@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Semerkand.Shared.Dto.Definitions
 {
-    public class OgrenciDto : BaseDto
+    public class OgrenciDto : EntityDto<int>
     {
         public Guid ApplicationUserId { get; set; }
 
@@ -65,14 +65,14 @@ namespace Semerkand.Shared.Dto.Definitions
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
-        public List<string> Roles { get; set; }
-        public List<KeyValuePair<string, string>> ExposedClaims { get; set; }
+        public virtual List<string> Roles { get; set; }
+        public virtual List<KeyValuePair<string, string>> ExposedClaims { get; set; }
         public bool DisableTenantFilter { get; set; }
         //Bussines needs
         public string FakulteAdi { get; set; }
-        public object MufredatAdi { get; set; }
-        public object ProgramAdi { get; set; }
-        public object BolumAdi { get; set; }
+        public string MufredatAdi { get; set; }
+        public string ProgramAdi { get; set; }
+        public string BolumAdi { get; set; }
 
         
     }

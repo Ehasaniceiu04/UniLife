@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Semerkand.Shared.DataInterfaces;
 using Semerkand.Shared.DataModels;
 using Semerkand.Shared.Dto.Definitions;
+using Semerkand.Storage.Extensions;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,12 +21,25 @@ namespace Semerkand.Storage.Stores
             _autoMapper = autoMapper;
         }
 
+        public async Task<List<OgrenciDto>> GetOgrenciQuery(OgrenciDto ogrenci)
+        {
+            List<OgrenciDto> result = _autoMapper.Map<List<OgrenciDto>>(await _db.Ogrencis.AsQueryable().WhereIf(!string.IsNullOrEmpty(ogrenci.Soyad), x => x.Soyad.StartsWith(ogrenci.Soyad)).ToListAsync());
+
+
+            //var ogrenciDto = await _autoMapper.ProjectTo<OgrenciDto>(_db.Ogrencis).FirstOrDefaultAsync(x => x.Id == id); //_db.Ogrencis.SingleOrDefaultAsync(t => t.Id == id);
+
+            if (result == null)
+                throw new InvalidDataException($"Unable to find Ogrenci with filters:");
+
+            return result;
+        }
+
         public async Task<OgrenciDto> GetOgrenciWithRelations(int id)
         {
 
             var ogrenciDetail = await (from o in _db.Ogrencis.Where(x => x.Id == id)
-                                       //join ur in _db.Context.UserRoles on o.ApplicationUserId equals ur.UserId
-                                       //join r in _db.Context.Roles on ur.RoleId equals r.Id
+                                           //join ur in _db.Context.UserRoles on o.ApplicationUserId equals ur.UserId
+                                           //join r in _db.Context.Roles on ur.RoleId equals r.Id
                                        join f in _db.Fakultes on o.FakulteId equals f.Id
                                        join b in _db.Bolums on o.BolumId equals b.Id
                                        join p in _db.Programs on o.ProgramId equals p.Id

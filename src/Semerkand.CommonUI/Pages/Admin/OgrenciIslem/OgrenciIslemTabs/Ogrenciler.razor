@@ -7,17 +7,15 @@
 @using Semerkand.Shared.Dto.Definitions
 @using Semerkand.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs.OgrencilerTabs
 @using Syncfusion.Blazor.SplitButtons
+@using System.Reflection;
 
 
-
-@using Syncfusion.Blazor.Charts
-@using GridData
-@inherits Semerkand.CommonUI.Components.SampleBaseComponent;
 
 <ControlSection>
     <div class="row">
-        <SfGrid @ref="OgrGrid" AllowSorting="true" AllowFiltering="true" AllowPaging="true" DataSource="@OgrGridDtos">
-            <GridEvents TValue="OgrenciDto" RowDataBound="RowBound" CommandClicked="CommandClickHandler"></GridEvents>
+        <SfGrid ID="OgrGrid" @ref="OgrGrid" AllowSorting="true" AllowFiltering="true" AllowPaging="true" DataSource="@OgrGridDtos">
+            @*OnActionFailure="ActionFailureHandler"  OnActionBegin="ActionBeginHandler" DetailDataBound="DetailDataBound" RowDataBound="RowBound"*@
+            <GridEvents TValue="OgrenciDto" CommandClicked="CommandClickHandler" OnActionBegin="ActionBeginHandler" OnActionComplete="ActionCompletedHandler"></GridEvents>
             <GridTemplates>
                 <DetailTemplate>
                     @{
@@ -35,7 +33,7 @@
                                         <TabHeader Text="Details"></TabHeader>
                                     </ChildContent>
                                     <ContentTemplate>
-                                        <OgrenciBilgi _OgrenciDto="ogrenciDto"></OgrenciBilgi>
+                                        <OgrenciBilgi _OgrenciDto="ogrenciDto.DeepClone()"></OgrenciBilgi>
                                     </ContentTemplate>
                                 </TabItem>
                                 <TabItem>
@@ -51,19 +49,6 @@
                                         <TabHeader Text="Report"></TabHeader>
                                     </ChildContent>
                                     <ContentTemplate>
-                                        öğrencinin aylık devamsızlık vs tutulabilir. Şekil şş
-                                        <div style="padding-top: 35px; padding-left:20px;">
-                                            <SfChart Height="390px" Title="Sales Report" DataSource="@OrderData">
-                                                <ChartPrimaryXAxis Title="City" LabelRotation="45" ValueType="Syncfusion.Blazor.Charts.ValueType.Category">
-                                                </ChartPrimaryXAxis>
-                                                <ChartPrimaryYAxis Title="Sales in millions" Interval="300"></ChartPrimaryYAxis>
-                                                <ChartSeriesCollection>
-                                                    <ChartSeries XName="ShipCity" YName="Freight" Type="ChartSeriesType.Column" Query="@chartQuery">
-                                                    </ChartSeries>
-                                                </ChartSeriesCollection>
-                                                <ChartTooltipSettings Enable="true"></ChartTooltipSettings>
-                                            </SfChart>
-                                        </div>
                                     </ContentTemplate>
                                 </TabItem>
                             </TabItems>
@@ -94,41 +79,26 @@
         </div>
     </div>
 
-    @*<div class="row">
-            <div class="col-12 text-right">
-                <SfProgressButton OnClick="KaydetDevam" Content="Kaydet ve Devamet >" CssClass="center-block e-primary">
-                    <ProgressButtonSpinSettings Position="SpinPosition.Right"></ProgressButtonSpinSettings>
-                </SfProgressButton>
-            </div>
-        </div>*@
-
-
 
 </ControlSection>
 
 @code{
-    //Sample Chart için
-    public List<EmployeeOrders> OrderData { get; set; }
 
 
     public SfGrid<OgrenciDto> OgrGrid;
 
-    public List<OgrenciDto> OgrGridDtos { get; set; }
+
+    List<OgrenciDto> OgrGridDtos = new List<OgrenciDto>();
 
     public OgrenciDto _OgrenciDto { get; set; } = new OgrenciDto();
 
     protected override async Task OnInitializedAsync()
     {
-        //SampleChartİçin
-        OrderData = EmployeeOrders.GetAllRecords();
-
-
         await ReadOgrencis();
     }
 
     async Task ReadOgrencis()
     {
-
         //ApiResponseDto<List<OgrenciDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDto>>>($"api/Admin/GetOgrenciUsers?pageSize={10}&pageNumber={0}");
         ApiResponseDto<List<OgrenciDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDto>>>("api/ogrenci");
 
@@ -144,14 +114,62 @@
         }
     }
 
-    async Task KaydetDevam()
+
+
+    public async void ActionCompletedHandler(ActionEventArgs<OgrenciDto> args)
+    {
+        var FilterApplied = OgrGrid.FilterSettings.Columns; // to get filtered column details
+                                                            //var GroupingApplied = OgrGrid.GroupSettings.Columns; // to get grouped column details
+                                                            //var SortingApplied = OgrGrid.SortSettings.Columns; // to get sorted column details
+                                                            //var Columns = await OgrGrid.GetColumns(); // to get columsn details like visibility and other properties
+
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Filtering)
+        {
+            await ProceedFilter(FilterApplied);
+        }
+    }
+
+    async Task ProceedFilter(List<GridFilterColumn> filtreler)
+    {
+        string query = "?";
+        foreach (var item in filtreler)
+        {
+            query += item.Field + "=" + item.Value.ToString();
+        }
+
+        ApiResponseDto<List<OgrenciDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDto>>>("api/ogrenci/GetOgrenciQuery"+query);
+
+    }
+
+
+
+    //public void ActionFailureHandler(Syncfusion.Blazor.Grids.FailureEventArgs args)
+    //{
+    //}
+
+
+    public void ActionBeginHandler(ActionEventArgs<OgrenciDto> args)
     {
 
     }
 
+
+
     public void RowBound(RowDataBoundEventArgs<OgrenciDto> args)
     {
-        this.OgrGrid.DetailCollapseAll();
+        //Elementin non-public / nonpublic elemanını alıyoruz.
+        //PropertyInfo pInfo = args.Row.GetType().GetProperty("ClassList",
+        //   System.Reflection.BindingFlags.Public |
+        //   System.Reflection.BindingFlags.NonPublic |
+        //   System.Reflection.BindingFlags.Instance);
+
+        //List<string> ClassList = (List<string>)pInfo.GetValue(args.Row, null);
+
+        //if (ClassList.Count < 2)
+        //{
+        //    this.OgrGrid.DetailCollapseAll();
+        //}
+
 
         //if (args.Data.Freight < 25)
         //{
@@ -179,6 +197,7 @@
 
         }
     }
+
 
     async Task AddNew()
     {

@@ -332,6 +332,10 @@ namespace Semerkand.Server
             });
 
             services.AddControllers().AddNewtonsoftJson();
+            ////Bunu syncfusiongrid dataadaptoru anlas?n diye yapmak gerekbiliyor.
+            //services.AddControllers().AddNewtonsoftJson(options => {
+            //    options.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver();
+            //});
 
 
             //#region Localization

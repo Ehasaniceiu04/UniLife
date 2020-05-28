@@ -8,5 +8,6 @@ namespace Semerkand.Shared.DataInterfaces
     public interface IOgrenciStore : IBaseStore<Ogrenci, OgrenciDto>
     {
         Task<OgrenciDto> GetOgrenciWithRelations(int id);
+        Task<List<OgrenciDto>> GetOgrenciQuery(OgrenciDto ogrenci);
     }
 }

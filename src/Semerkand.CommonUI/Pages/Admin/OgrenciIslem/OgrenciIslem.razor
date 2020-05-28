@@ -2,6 +2,7 @@
 @using Syncfusion.Blazor.Navigations
 @using Semerkand.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs
 @using Semerkand.Shared.Dto.Definitions
+@attribute [Authorize(Policy = Policies.IsAdmin)]
 
 <div class="control-section e-tab-section">
     <SfTab @ref="Tab" CssClass="BlazorTab" LoadOn="ContentLoad.Dynamic">

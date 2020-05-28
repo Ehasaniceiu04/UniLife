@@ -16,5 +16,7 @@ namespace Semerkand.Server.Managers
         Task<ApiResponse> Update(BolumDto bolumDto);
         Task<ApiResponse> Delete(int id);
         Task<ApiResponse> GetBolumByFakulteId(string[] fakulteIds);
+
+        IQueryable<Semerkand.Shared.DataModels.Bolum> GetAllQueryable();
     }
 }

@@ -9,6 +9,9 @@ using static Microsoft.AspNetCore.Http.StatusCodes;
 using Semerkand.Shared.Dto.Definitions;
 using Semerkand.Shared.DataModels;
 using Semerkand.CommonUI.Pages.Definitions.Tabs;
+using System.Linq;
+using System;
+using System.Collections.Generic;
 
 namespace Semerkand.Server.Controllers
 {
@@ -69,5 +72,30 @@ namespace Semerkand.Server.Controllers
         => ModelState.IsValid ?
                 await _bolumManager.GetBolumByFakulteId(fakulteIds.Replace(" ", "").Split(',')) :
                 new ApiResponse(Status400BadRequest, "Bolum Model is Invalid");
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("GetAllQueryble")]
+        public object GetAllQueryble()
+        {
+            IQueryable<Bolum> data = _bolumManager.GetAllQueryable();
+            var count = data.Count();
+            var queryString = Request.Query;
+            if (queryString.Keys.Contains("$inlinecount"))
+            {
+                Microsoft.Extensions.Primitives.StringValues Take;
+                Microsoft.Extensions.Primitives.StringValues Skip;
+                Microsoft.Extensions.Primitives.StringValues Fiter;
+                string filter = (queryString.TryGetValue("$filter", out Fiter)) ? Fiter[0].ToString() : "";
+                int skip = (queryString.TryGetValue("$skip", out Skip)) ? Convert.ToInt32(Skip[0]) : 0;
+                int top = (queryString.TryGetValue("$top", out Take)) ? Convert.ToInt32(Take[0]) : data.Count();
+                var asd = new { Items = data.Skip(skip).Take(top), Count = count };
+                return asd;
+            }
+            else
+            {
+                return data;
+            }
+        }
     }
 }

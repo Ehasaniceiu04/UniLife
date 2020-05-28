@@ -83,5 +83,17 @@ namespace Semerkand.Server.Managers
                 return new ApiResponse(Status400BadRequest, "Failed to Retrieve BolumDtos");
             }
         }
+
+        public System.Linq.IQueryable<Semerkand.Shared.DataModels.Bolum> GetAllQueryable()
+        {
+            try
+            {
+                return _bolumStore.GetAllQueryable();
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
     }
 }

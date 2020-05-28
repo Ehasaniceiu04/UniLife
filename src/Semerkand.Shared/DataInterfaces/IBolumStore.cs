@@ -20,5 +20,6 @@ namespace Semerkand.Shared.DataInterfaces
 
         Task DeleteById(int id);
         Task<List<BolumDto>> GetBolumByFakulteId(string[] fakulteIds);
+        IQueryable<Bolum> GetAllQueryable();
     }
 }

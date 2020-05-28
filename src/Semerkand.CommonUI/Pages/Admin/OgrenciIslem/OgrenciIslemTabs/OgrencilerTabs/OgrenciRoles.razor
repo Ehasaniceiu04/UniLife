@@ -34,7 +34,7 @@
         foreach (var role in roleSelections)
             role.IsSelected = _OgrenciDto.Roles.Contains(role.Name);
 
-        _OgrenciDto.SaveState();
+        //_OgrenciDto.SaveState();
     }
 
     public async Task PopulateRoleList()
@@ -96,7 +96,7 @@
             else
             {
                 matToaster.Add("Hata", MatToastType.Danger, apiResponse.StatusCode.ToString());
-                _OgrenciDto.RestoreState();
+                //_OgrenciDto.RestoreState();
 
             }
         }
@@ -106,7 +106,7 @@
         }
         finally
         {
-            _OgrenciDto.ClearState();
+            //_OgrenciDto.ClearState();
         }
     }
 }
