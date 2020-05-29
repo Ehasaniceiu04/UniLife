@@ -22,7 +22,7 @@
                     <TabHeader Text="Akademik Bilgiler"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
-                    <OgrenciDuzenle _OgrenciDto="_OgrenciDto"></OgrenciDuzenle>
+                    <OgrenciDuzenle AkademikToOgrenci="TabDegis" _OgrenciDto="_OgrenciDto"></OgrenciDuzenle>
                 </ContentTemplate>
             </TabItem>
             <TabItem>
@@ -49,6 +49,7 @@
     {
         Tab.EnableTab(0, true);
         Tab.EnableTab(1, tabIndex > 0);
+        Tab.EnableTab(2, tabIndex > 0);
         Tab.Select(tabIndex);
     }
 
@@ -61,7 +62,7 @@
     public void TabCreate()
     {
         Tab.EnableTab(0, true);
-        Tab.EnableTab(1, true);
+        Tab.EnableTab(1, false);
         Tab.EnableTab(2, false);
     }
 
