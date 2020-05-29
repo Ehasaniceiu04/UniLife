@@ -7,6 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using static Microsoft.AspNetCore.Http.StatusCodes;
 using Semerkand.Shared.Dto.Definitions;
+using Microsoft.AspNetCore.Builder;
+using Semerkand.Storage;
+using System.Collections.Generic;
+using Semerkand.Shared.DataModels;
 
 namespace Semerkand.Server.Controllers
 {
@@ -15,10 +19,12 @@ namespace Semerkand.Server.Controllers
     public class OgrenciController : ControllerBase
     {
         private readonly IOgrenciManager _ogrenciManager;
+        private readonly IApplicationDbContext _applicationDbContext;
 
-        public OgrenciController(IOgrenciManager ogrenciManager)
+        public OgrenciController(IOgrenciManager ogrenciManager, IApplicationDbContext applicationDbContext)
         {
             _ogrenciManager = ogrenciManager;
+            _applicationDbContext = applicationDbContext;
         }
 
         // GET: api/Ogrenci
@@ -52,6 +58,16 @@ namespace Semerkand.Server.Controllers
         {
             return await _ogrenciManager.GetOgrenciQuery(Ogrenci);
         }
+
+        [Microsoft.AspNet.OData.EnableQuery()]
+        [HttpGet]
+        [Route("GetOgrenciOdata")]
+        [AllowAnonymous]
+        public ApiResponse GetOgrenciOdata()
+        {
+            return new ApiResponse(Status200OK, "Created Dto", _applicationDbContext.Ogrencis);
+        }
+
 
         // POST: api/Ogrenci
         [HttpPost]

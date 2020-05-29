@@ -49,6 +49,8 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using System.Reflection;
 using Syncfusion.Blazor;
+using Microsoft.AspNet.OData.Extensions;
+using Microsoft.AspNet.OData.Builder;
 //using System.Globalization;
 //using System.Collections.Generic;
 //using Microsoft.AspNetCore.Localization;
@@ -331,7 +333,13 @@ namespace Semerkand.Server
                 };
             });
 
-            services.AddControllers().AddNewtonsoftJson();
+            ////Eskisi buydu
+            //services.AddControllers().AddNewtonsoftJson();
+
+            //ODATALI
+            services.AddControllers(action => action.EnableEndpointRouting = false).AddNewtonsoftJson();
+            services.AddOData();
+
             ////Bunu syncfusiongrid dataadaptoru anlas?n diye yapmak gerekbiliyor.
             //services.AddControllers().AddNewtonsoftJson(options => {
             //    options.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver();
@@ -516,9 +524,16 @@ namespace Semerkand.Server
                 databaseInitializer.SeedAsync().Wait();
             }
 
+            app.UseWhen(context => context.Request.Path.StartsWithSegments("/api"), applicationBuilder =>
+            {
+                // A REST API global exception handler and response wrapper for a consistent API
+                // Configure API Loggin in appsettings.json - Logs most API calls. Great for debugging and user activity audits
+                applicationBuilder.UseMiddleware<APIResponseRequestLoggingMiddleware>(Convert.ToBoolean(Configuration["Semerkand:EnableAPILogging:Enabled"] ?? "true"));
+            });
+
             // A REST API global exception handler and response wrapper for a consistent API
             // Configure API Loggin in appsettings.json - Logs most API calls. Great for debugging and user activity audits
-            app.UseMiddleware<APIResponseRequestLoggingMiddleware>(Convert.ToBoolean(Configuration["Semerkand:EnableAPILogging:Enabled"] ?? "true"));
+            //app.UseMiddleware<APIResponseRequestLoggingMiddleware>(Convert.ToBoolean(Configuration["Semerkand:EnableAPILogging:Enabled"] ?? "true"));
 
 
             //#region Localization
@@ -563,6 +578,8 @@ namespace Semerkand.Server
             {
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapControllers();
+                endpoints.Expand().Select().Count().OrderBy().Filter().MaxTop(2000);
+                endpoints.MapODataRoute("odata", "odata", GetEdmModel());
                 // new SignalR endpoint routing setup
                 endpoints.MapHub<Hubs.ChatHub>("/chathub");
 
@@ -574,6 +591,13 @@ namespace Semerkand.Server
 #endif
             });
 
+        }
+
+        private Microsoft.OData.Edm.IEdmModel GetEdmModel()
+        {
+            var builder = new ODataConventionModelBuilder();
+            builder.EntitySet<Ogrenci>("Ogrencis");
+            return builder.GetEdmModel();
         }
     }
 }
