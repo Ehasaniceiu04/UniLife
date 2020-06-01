@@ -1,1 +1,228 @@
-﻿
+﻿@using Semerkand.Shared.Dto.Definitions
+@inject Microsoft.AspNetCore.Components.NavigationManager UriHelper
+@inject AppState appState
+@using Syncfusion.Blazor.Navigations
+@using Semerkand.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs.DersKayitTabs
+@inject HttpClient Http;
+
+<Divider></Divider>
+
+<div class="table-responsive">
+    <table class="table">
+        <colgroup>
+            <col width="25%">
+            <col width="45%">
+            <col width="30%">
+        </colgroup>
+        <tbody>
+            <tr>
+                <td rowspan="4" style="text-align: center;">
+                    <img class="photo" src="@UriHelper.ToAbsoluteUri($"https://blazor.syncfusion.com/demos/images/Grid/1.png")" alt="@_OgrenciDto.Id" />
+                </td>
+                <td>
+                    <span style="font-weight: 500;">Ad Soyad: </span> @_OgrenciDto.Ad @_OgrenciDto.Soyad
+                </td>
+                <td>
+                    <span style="font-weight: 500;">Gereken Toplam Ücret: </span> @_OgrenciDto.GerekenTopUcret
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span style="font-weight: 500;">Kayıt Tarih: </span> @(_OgrenciDto.KayitTarih==null?"":_OgrenciDto.KayitTarih.Value.ToShortDateString())
+                </td>
+                <td>
+                    <span style="font-weight: 500;">Ödenen Toplam Ücret: </span> @_OgrenciDto.OdenenTopUcret
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span style="font-weight: 500;">Bağlı Müfredat: </span> @_OgrenciDto.MufredatAdi
+                </td>
+                <td>
+                    <span style="font-weight: 500;">Genel Bakiye: </span> @_OgrenciDto.GenelBakiye
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>
+
+<b class="hr anim"></b>
+
+
+
+<SfTab HeaderPlacement="HeaderPosition.Left" EnablePersistence="true">
+    <TabItems>
+        @if (ogrenciProgramSure >= 1)
+        {
+            <TabItem>
+                <ChildContent>
+                    <TabHeader Text="1. Sınıf"></TabHeader>
+                </ChildContent>
+                <ContentTemplate>
+                    <SinifGrid Sinif="1" DersAcilanDtos="@(ListDersAcilan.Where(x=>x.Sinif==1).ToList())"></SinifGrid>
+                </ContentTemplate>
+            </TabItem>
+        }
+        @if (ogrenciProgramSure >= 2)
+        {
+            <TabItem>
+                <ChildContent>
+                    <TabHeader Text="2. Sınıf"></TabHeader>
+                </ChildContent>
+                <ContentTemplate>
+                    <SinifGrid Sinif="2" DersAcilanDtos="@(ListDersAcilan.Where(x=>x.Sinif==2).ToList())"></SinifGrid>
+                </ContentTemplate>
+            </TabItem>
+        }
+        @if (ogrenciProgramSure >= 3)
+        {
+            <TabItem>
+                <ChildContent>
+                    <TabHeader Text="3. Sınıf"></TabHeader>
+                </ChildContent>
+                <ContentTemplate>
+                    <SinifGrid Sinif="3" DersAcilanDtos="@(ListDersAcilan.Where(x=>x.Sinif==3).ToList())"></SinifGrid>
+                </ContentTemplate>
+            </TabItem>
+        }
+        @if (ogrenciProgramSure >= 4)
+        {
+            <TabItem>
+                <ChildContent>
+                    <TabHeader Text="4. Sınıf"></TabHeader>
+                </ChildContent>
+                <ContentTemplate>
+                    <SinifGrid Sinif="4" DersAcilanDtos="@(ListDersAcilan.Where(x=>x.Sinif==4).ToList())"></SinifGrid>
+                </ContentTemplate>
+            </TabItem>
+        }
+        @if (ogrenciProgramSure >= 5)
+        {
+            <TabItem>
+                <ChildContent>
+                    <TabHeader Text="5. Sınıf"></TabHeader>
+                </ChildContent>
+                <ContentTemplate>
+                    <SinifGrid Sinif="5" DersAcilanDtos="@(ListDersAcilan.Where(x=>x.Sinif==5).ToList())"></SinifGrid>
+                </ContentTemplate>
+            </TabItem>
+        }
+        @if (ogrenciProgramSure >= 6)
+        {
+            <TabItem>
+                <ChildContent>
+                    <TabHeader Text="6. Sınıf"></TabHeader>
+                </ChildContent>
+                <ContentTemplate>
+                    <SinifGrid Sinif="6" DersAcilanDtos="@(ListDersAcilan.Where(x=>x.Sinif==6).ToList())"></SinifGrid>
+                </ContentTemplate>
+            </TabItem>
+        }
+        @if (ogrenciProgramSure >= 7)
+        {
+            <TabItem>
+                <ChildContent>
+                    <TabHeader Text="7. Sınıf"></TabHeader>
+                </ChildContent>
+                <ContentTemplate>
+                    <SinifGrid Sinif="7" DersAcilanDtos="@(ListDersAcilan.Where(x=>x.Sinif==7).ToList())"></SinifGrid>
+                </ContentTemplate>
+            </TabItem>
+        }
+        @if (ogrenciProgramSure >= 8)
+        {
+            <TabItem>
+                <ChildContent>
+                    <TabHeader Text="8. Sınıf"></TabHeader>
+                </ChildContent>
+                <ContentTemplate>
+                    <SinifGrid Sinif="8" DersAcilanDtos="@(ListDersAcilan.Where(x=>x.Sinif==8).ToList())"></SinifGrid>
+                </ContentTemplate>
+            </TabItem>
+        }
+        @if (ogrenciProgramSure >= 9)
+        {
+            <TabItem>
+                <ChildContent>
+                    <TabHeader Text="9. Sınıf"></TabHeader>
+                </ChildContent>
+                <ContentTemplate>
+                    <SinifGrid Sinif="9" DersAcilanDtos="@(ListDersAcilan.Where(x=>x.Sinif==9).ToList())"></SinifGrid>
+                </ContentTemplate>
+            </TabItem>
+        }
+
+
+    </TabItems>
+</SfTab>
+
+
+
+
+@code{
+
+    [Parameter]
+    public OgrenciDto _OgrenciDto { get; set; } = new OgrenciDto();
+
+    int ogrenciProgramSure;
+    List<DersAcilanDto> ListDersAcilan = new List<DersAcilanDto>();
+
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    _OgrenciDto = appState.OgrenciState;
+    //    await GetMufredatAcilanDerss();
+    //    await SetOgrenciProgramSure();
+    //}
+
+    protected override void OnInitialized()
+    {
+        _OgrenciDto = appState.OgrenciState;
+        GetMufredatAcilanDerss();
+        SetOgrenciProgramSure();
+    }
+
+    void GetMufredatAcilanDerss()
+    {
+        ApiResponseDto<List<DersAcilanDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<DersAcilanDto>>>($"api/dersacilan/GetAcilanDersByMufredatId/{_OgrenciDto.MufredatId}").Result;
+        ListDersAcilan = apiResponse.Result;
+    }
+
+    void SetOgrenciProgramSure()
+    {
+        ApiResponseDto<ProgramDto> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<ProgramDto>>($"api/program/{_OgrenciDto.ProgramId}").Result;
+        ogrenciProgramSure = apiResponse.Result.NormalSure;
+    }
+
+    //async Task GetMufredatAcilanDerss()
+    //{
+    //    ApiResponseDto<List<DersAcilanDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<DersAcilanDto>>>($"api/dersacilan/GetAcilanDersByMufredatId/{_OgrenciDto.MufredatId}");
+    //    ListDersAcilan = apiResponse.Result;
+    //}
+
+    //async Task SetOgrenciProgramSure()
+    //{
+    //    ApiResponseDto<ProgramDto> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<ProgramDto>>($"api/program/{_OgrenciDto.ProgramId}");
+    //    ogrenciProgramSure = apiResponse.Result.NormalSure;
+    //}
+}
+
+
+
+<style type="text/css" class="cssStyles">
+    .detailtable td {
+        font-size: 13px;
+        padding: 4px;
+        max-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .photo {
+        width: 100px;
+        height: 100px;
+        border-radius: 50px;
+        box-shadow: inset 0 0 1px #e0e0e0, inset 0 0 14px rgba(0,0,0,0.2);
+    }
+</style>

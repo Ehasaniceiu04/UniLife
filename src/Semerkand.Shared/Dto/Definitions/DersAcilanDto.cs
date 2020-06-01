@@ -20,6 +20,8 @@ namespace Semerkand.Shared.Dto.Definitions
 
         public int ProgramId { get; set; }
         public virtual ProgramDto Program { get; set; }
+        public int MufredatId { get; set; }
+        public virtual MufredatDto Mufredat { get; set; }
         //External
 
         public int DonemId { get; set; }
@@ -37,5 +39,8 @@ namespace Semerkand.Shared.Dto.Definitions
         public bool Durum { get; set; }
         public int Zorunlu { get; set; }
         public int Sinif { get; set; }
+
+        public int? ODTekrar { get; set; }
+        public int? ADKayit { get; set; }
     }
 }

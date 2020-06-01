@@ -27,5 +27,6 @@ namespace Semerkand.Shared.Dto.Definitions
         public int FinalBaraj { get; set; }
 
         public virtual ICollection<DersDto> Derss { get; set; }
+        public virtual ICollection<DersAcilanDto> DersAcilans { get; set; }
     }
 }

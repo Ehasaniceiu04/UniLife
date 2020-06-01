@@ -8,6 +8,7 @@
 @using Semerkand.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs.OgrencilerTabs
 @using Syncfusion.Blazor.SplitButtons
 @using System.Reflection;
+@inject AppState appState
 
 
 
@@ -61,7 +62,6 @@
                 <GridColumn Field=@nameof(OgrenciDto.Ad) HeaderText="Ad"> </GridColumn>
                 <GridColumn Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad"></GridColumn>
                 <GridColumn Field=@nameof(OgrenciDto.TCKN) HeaderText="TCKN"></GridColumn>
-                @*<GridColumn Field=@nameof(OgrenciDto.Email) HeaderText="Email"></GridColumn>*@
                 <GridColumn Field=@nameof(OgrenciDto.OgrNo) HeaderText="Öğrenci No"></GridColumn>
                 <GridColumn>
                     <GridCommandColumns>
@@ -123,23 +123,23 @@
                                                             //var SortingApplied = OgrGrid.SortSettings.Columns; // to get sorted column details
                                                             //var Columns = await OgrGrid.GetColumns(); // to get columsn details like visibility and other properties
 
-        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Filtering)
-        {
-            await ProceedFilter(FilterApplied);
-        }
+        //if (args.RequestType == Syncfusion.Blazor.Grids.Action.Filtering)
+        //{
+        //    await ProceedFilter(FilterApplied);
+        //}
     }
 
-    async Task ProceedFilter(List<GridFilterColumn> filtreler)
-    {
-        string query = "?";
-        foreach (var item in filtreler)
-        {
-            query += item.Field + "=" + item.Value.ToString();
-        }
+    //async Task ProceedFilter(List<GridFilterColumn> filtreler)
+    //{
+    //    string query = "?";
+    //    foreach (var item in filtreler)
+    //    {
+    //        query += item.Field + "=" + item.Value.ToString();
+    //    }
 
-        ApiResponseDto<List<OgrenciDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDto>>>("api/ogrenci/GetOgrenciQuery"+query);
+    //    ApiResponseDto<List<OgrenciDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDto>>>("api/ogrenci/GetOgrenciQuery" + query);
 
-    }
+    //}
 
 
 
@@ -155,35 +155,35 @@
 
 
 
-    public void RowBound(RowDataBoundEventArgs<OgrenciDto> args)
-    {
-        //Elementin non-public / nonpublic elemanını alıyoruz.
-        //PropertyInfo pInfo = args.Row.GetType().GetProperty("ClassList",
-        //   System.Reflection.BindingFlags.Public |
-        //   System.Reflection.BindingFlags.NonPublic |
-        //   System.Reflection.BindingFlags.Instance);
+    //public void RowBound(RowDataBoundEventArgs<OgrenciDto> args)
+    //{
+    //    //Elementin non-public / nonpublic elemanını alıyoruz.
+    //    //PropertyInfo pInfo = args.Row.GetType().GetProperty("ClassList",
+    //    //   System.Reflection.BindingFlags.Public |
+    //    //   System.Reflection.BindingFlags.NonPublic |
+    //    //   System.Reflection.BindingFlags.Instance);
 
-        //List<string> ClassList = (List<string>)pInfo.GetValue(args.Row, null);
+    //    //List<string> ClassList = (List<string>)pInfo.GetValue(args.Row, null);
 
-        //if (ClassList.Count < 2)
-        //{
-        //    this.OgrGrid.DetailCollapseAll();
-        //}
+    //    //if (ClassList.Count < 2)
+    //    //{
+    //    //    this.OgrGrid.DetailCollapseAll();
+    //    //}
 
 
-        //if (args.Data.Freight < 25)
-        //{
-        //    args.Row.AddClass(new string[] { "below-25" });
-        //}
-        //else if (args.Data.Freight < 35)
-        //{
-        //    args.Row.AddClass(new string[] { "below-35" });
-        //}
-        //else
-        //{
-        //    args.Row.AddClass(new string[] { "above-35" });
-        //}
-    }
+    //    //if (args.Data.Freight < 25)
+    //    //{
+    //    //    args.Row.AddClass(new string[] { "below-25" });
+    //    //}
+    //    //else if (args.Data.Freight < 35)
+    //    //{
+    //    //    args.Row.AddClass(new string[] { "below-35" });
+    //    //}
+    //    //else
+    //    //{
+    //    //    args.Row.AddClass(new string[] { "above-35" });
+    //    //}
+    //}
 
     [Parameter]
     public EventCallback<OgrenciDto> OgrenciToAkademik { get; set; }
@@ -193,6 +193,7 @@
         if (args.CommandColumn.Title == "Akademik Bilgiler")
         {
             _OgrenciDto = args.RowData;
+            appState.OgrenciState = _OgrenciDto;
             OgrenciToAkademik.InvokeAsync(_OgrenciDto);
 
         }

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Semerkand.Storage;
@@ -9,9 +10,10 @@ using Semerkand.Storage;
 namespace Semerkand.Storage.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200530183051_control50")]
+    partial class control50
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -504,9 +506,6 @@ namespace Semerkand.Storage.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int?>("ADKayit")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Ad")
                         .IsRequired()
                         .HasColumnType("character varying(300)")
@@ -561,12 +560,6 @@ namespace Semerkand.Storage.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<int>("MufredatId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("ODTekrar")
-                        .HasColumnType("integer");
-
                     b.Property<string>("OptikKod")
                         .HasColumnType("text");
 
@@ -591,52 +584,9 @@ namespace Semerkand.Storage.Migrations
 
                     b.HasIndex("DonemId");
 
-                    b.HasIndex("MufredatId");
-
                     b.HasIndex("ProgramId");
 
                     b.ToTable("DersAcilans");
-                });
-
-            modelBuilder.Entity("Semerkand.Shared.DataModels.DersKayit", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp without time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.Property<int>("DersAcilanId")
-                        .HasColumnType("integer");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<Guid>("ModifiedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("ModifiedOn")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp without time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.Property<int>("OgrenciId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DersAcilanId");
-
-                    b.HasIndex("OgrenciId");
-
-                    b.ToTable("DersKayit");
                 });
 
             modelBuilder.Entity("Semerkand.Shared.DataModels.Donem", b =>
@@ -1616,30 +1566,9 @@ namespace Semerkand.Storage.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Semerkand.Shared.DataModels.Mufredat", "Mufredat")
-                        .WithMany("DersAcilans")
-                        .HasForeignKey("MufredatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Semerkand.Shared.DataModels.Program", "Program")
                         .WithMany("DersAcilans")
                         .HasForeignKey("ProgramId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Semerkand.Shared.DataModels.DersKayit", b =>
-                {
-                    b.HasOne("Semerkand.Shared.DataModels.DersAcilan", "DersAcilan")
-                        .WithMany("DersKayits")
-                        .HasForeignKey("DersAcilanId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Semerkand.Shared.DataModels.Ogrenci", "Ogrenci")
-                        .WithMany("DersKayits")
-                        .HasForeignKey("OgrenciId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

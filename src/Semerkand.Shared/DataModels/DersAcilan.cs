@@ -21,6 +21,8 @@ namespace Semerkand.Shared.DataModels
 
         public int ProgramId { get; set; }
         public virtual Program Program { get; set; }
+        public int MufredatId { get; set; }
+        public virtual Mufredat Mufredat{ get; set; }
         //External
 
         public int DonemId { get; set; }
@@ -38,5 +40,10 @@ namespace Semerkand.Shared.DataModels
         public bool Durum { get; set; }
         public int Zorunlu { get; set; }
         public int Sinif { get; set; }
+
+        public int? ODTekrar { get; set; }
+        public int? ADKayit { get; set; }
+
+        public virtual ICollection<DersKayit> DersKayits { get; set; }
     }
 }

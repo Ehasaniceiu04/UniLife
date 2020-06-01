@@ -83,6 +83,14 @@ namespace Semerkand.Server.Controllers
                     await _dersAcilanManager.GetAcilanDersByFilterDto(dersAcilanFilterDto) :
                     new ApiResponse(Status400BadRequest, "DersAcilanFilterDto Model is Invalid");
 
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("GetAcilanDersByMufredatId/{mufredatId}")]
+        public async Task<ApiResponse> GetAcilanDersByMufredatId(int mufredatId)
+            => ModelState.IsValid ?
+                    await _dersAcilanManager.GetAcilanDersByMufredatId(mufredatId) :
+                    new ApiResponse(Status400BadRequest, "DersAcilan Model is Invalid");
+
 
     }
 }

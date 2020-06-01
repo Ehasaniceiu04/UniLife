@@ -1,0 +1,100 @@
+﻿@import url(https://fonts.googleapis.com/css?family=Lato:100);
+
+.hr {
+    width: 100%;
+    height: 1px;
+    display: block;
+    position: relative;
+    margin-bottom: 0em;
+    padding: 2em 0;
+}
+
+    .hr:after, .hr:before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 1px;
+        bottom: 50%;
+        left: 0;
+    }
+
+    .hr:before {
+        background: -webkit-gradient(linear, left top, right top, from(#10111f), color-stop(50%, #10111f), color-stop(50%, transparent), to(transparent));
+        background: linear-gradient(90deg, #10111f 0%, #10111f 50%, transparent 50%, transparent 100%);
+        background-size: 15px;
+        background-position: center;
+        z-index: 1;
+    }
+
+    .hr:after {
+        -webkit-transition: opacity 0.3s ease, -webkit-animation 0.3s ease;
+        transition: opacity 0.3s ease, -webkit-animation 0.3s ease;
+        transition: opacity 0.3s ease, animation 0.3s ease;
+        transition: opacity 0.3s ease, animation 0.3s ease, -webkit-animation 0.3s ease;
+        background: -webkit-gradient(linear, left top, right top, color-stop(5%, #62efab), color-stop(15%, #f2ea7d), color-stop(25%, #f2ea7d), color-stop(35%, #ff8797), color-stop(45%, #ff8797), color-stop(55%, #e1a4f4), color-stop(65%, #e1a4f4), color-stop(75%, #82fff4), color-stop(85%, #82fff4), color-stop(95%, #62efab));
+        background: linear-gradient(to right, #62efab 5%, #f2ea7d 15%, #f2ea7d 25%, #ff8797 35%, #ff8797 45%, #e1a4f4 55%, #e1a4f4 65%, #82fff4 75%, #82fff4 85%, #62efab 95%);
+        background-size: 200%;
+        background-position: 0%;
+        -webkit-animation: bar 15s linear infinite;
+        animation: bar 15s linear infinite;
+    }
+
+@-webkit-keyframes bar {
+    0% {
+        background-position: 0%;
+    }
+
+    100% {
+        background-position: 200%;
+    }
+}
+
+@keyframes bar {
+    0% {
+        background-position: 0%;
+    }
+
+    100% {
+        background-position: 200%;
+    }
+}
+
+.hr.anim:before {
+    background: -webkit-gradient(linear, left top, right top, from(#10111f), color-stop(5%, #10111f), color-stop(5%, transparent), color-stop(10%, transparent), color-stop(10%, #10111f), color-stop(15%, #10111f), color-stop(15%, transparent), color-stop(20%, transparent), color-stop(20%, #10111f), color-stop(25%, #10111f), color-stop(25%, transparent), color-stop(30%, transparent), color-stop(30%, #10111f), color-stop(35%, #10111f), color-stop(35%, transparent), color-stop(40%, transparent), color-stop(40%, #10111f), color-stop(45%, #10111f), color-stop(45%, transparent), color-stop(50%, transparent), color-stop(50%, #10111f), color-stop(55%, #10111f), color-stop(55%, transparent), color-stop(60%, transparent), color-stop(60%, #10111f), color-stop(65%, #10111f), color-stop(65%, transparent), color-stop(70%, transparent), color-stop(70%, #10111f), color-stop(75%, #10111f), color-stop(75%, transparent), color-stop(80%, transparent), color-stop(80%, #10111f), color-stop(85%, #10111f), color-stop(85%, transparent), color-stop(90%, transparent), color-stop(90%, #10111f), color-stop(95%, #10111f), color-stop(95%, transparent), to(transparent));
+    background: linear-gradient(90deg, #10111f 0%, #10111f 5%, transparent 5%, transparent 10%, #10111f 10%, #10111f 15%, transparent 15%, transparent 20%, #10111f 20%, #10111f 25%, transparent 25%, transparent 30%, #10111f 30%, #10111f 35%, transparent 35%, transparent 40%, #10111f 40%, #10111f 45%, transparent 45%, transparent 50%, #10111f 50%, #10111f 55%, transparent 55%, transparent 60%, #10111f 60%, #10111f 65%, transparent 65%, transparent 70%, #10111f 70%, #10111f 75%, transparent 75%, transparent 80%, #10111f 80%, #10111f 85%, transparent 85%, transparent 90%, #10111f 90%, #10111f 95%, transparent 95%, transparent 100%);
+    background-size: 150px;
+    background-position: center;
+    z-index: 1;
+    -webkit-animation: bar 120s linear infinite;
+    animation: bar 120s linear infinite;
+}
+
+.hr.anim:hover:before {
+    -webkit-animation-duration: 20s;
+    animation-duration: 20s;
+}
+
+.hr.anim:hover:after {
+    -webkit-animation-duration: 2s;
+    animation-duration: 2s;
+}
+
+body {
+    background: #10111f;
+    padding: 4em;
+    font-family: Lato;
+    font-weight: 100;
+    color: #696b89;
+    text-indent: 1em;
+    line-height: 1;
+}
+
+h1,
+h2 {
+    line-height: 1;
+    margin-bottom: -0.5em;
+}
+
+h2 {
+    margin-top: 5em;
+}

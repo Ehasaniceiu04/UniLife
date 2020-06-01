@@ -30,5 +30,7 @@ namespace Semerkand.Shared.DataModels
 
         public virtual ICollection<Ders> Derss { get; set; }
         public virtual ICollection<Ogrenci> Ogrencis { get; set; }
+
+        public virtual ICollection<DersAcilan> DersAcilans{ get; set; }
     }
 }

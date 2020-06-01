@@ -45,6 +45,7 @@ namespace Semerkand.Storage.Stores
                                       LabSaat = d.LabSaat,
                                       OptikKod = d.OptikKod,
                                       ProgramId = p.Id,
+                                      MufredatId = d.MufredatId,
                                       Sinif = d.Sinif,
                                       TeoSaat = d.TeoSaat,
                                       UygSaat = d.UygSaat,
@@ -71,6 +72,7 @@ namespace Semerkand.Storage.Stores
                                       LabSaat = d.LabSaat,
                                       OptikKod = d.OptikKod,
                                       ProgramId = p.Id,
+                                      MufredatId = d.MufredatId,
                                       Sinif = d.Sinif,
                                       TeoSaat = d.TeoSaat,
                                       UygSaat = d.UygSaat,
@@ -97,6 +99,7 @@ namespace Semerkand.Storage.Stores
                                       LabSaat = d.LabSaat,
                                       OptikKod = d.OptikKod,
                                       ProgramId = p.Id,
+                                      MufredatId = d.MufredatId,
                                       Sinif = d.Sinif,
                                       TeoSaat = d.TeoSaat,
                                       UygSaat = d.UygSaat,
@@ -121,6 +124,7 @@ namespace Semerkand.Storage.Stores
                                       LabSaat = d.LabSaat,
                                       OptikKod = d.OptikKod,
                                       ProgramId = dersAcDto.AcProgramSecilen,
+                                      MufredatId = d.MufredatId,
                                       Sinif = d.Sinif,
                                       TeoSaat = d.TeoSaat,
                                       UygSaat = d.UygSaat,
@@ -161,6 +165,14 @@ namespace Semerkand.Storage.Stores
                                   && (dersAcilanFilterDto.DonemSecilen == 0 ? true : (d.DonemId == dersAcilanFilterDto.DonemSecilen))
                                   && (string.IsNullOrWhiteSpace(dersAcilanFilterDto.DersAd) ? true : d.Ad.Contains(dersAcilanFilterDto.DersAd))
                                   && (string.IsNullOrWhiteSpace(dersAcilanFilterDto.DersKod) ? true : d.Kod.Contains(dersAcilanFilterDto.DersKod))
+                              select d;
+
+            return _autoMapper.Map<List<DersAcilanDto>>(await dersAcilans.ToListAsync());
+        }
+
+        public async Task<List<DersAcilanDto>> GetAcilanDersByMufredatId(int mufredatId)
+        {
+            var dersAcilans = from d in _db.DersAcilans.Where(x => x.MufredatId == mufredatId)
                               select d;
 
             return _autoMapper.Map<List<DersAcilanDto>>(await dersAcilans.ToListAsync());

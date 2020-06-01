@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Semerkand.Storage;
@@ -9,9 +10,10 @@ using Semerkand.Storage;
 namespace Semerkand.Storage.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200531203521_control52")]
+    partial class control52
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -561,9 +563,6 @@ namespace Semerkand.Storage.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<int>("MufredatId")
-                        .HasColumnType("integer");
-
                     b.Property<int?>("ODTekrar")
                         .HasColumnType("integer");
 
@@ -590,8 +589,6 @@ namespace Semerkand.Storage.Migrations
                     b.HasIndex("DersId");
 
                     b.HasIndex("DonemId");
-
-                    b.HasIndex("MufredatId");
 
                     b.HasIndex("ProgramId");
 
@@ -1613,12 +1610,6 @@ namespace Semerkand.Storage.Migrations
                     b.HasOne("Semerkand.Shared.DataModels.Donem", "Donem")
                         .WithMany()
                         .HasForeignKey("DonemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Semerkand.Shared.DataModels.Mufredat", "Mufredat")
-                        .WithMany("DersAcilans")
-                        .HasForeignKey("MufredatId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

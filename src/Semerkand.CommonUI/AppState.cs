@@ -20,6 +20,8 @@ namespace Semerkand.CommonUI
         //public OgrenciDto OgrenciUserProfile { get; set; }
         public MufredatDto MufredatState { get; set; }
 
+        public OgrenciDto OgrenciState { get; set; }
+
 
         public AppState(IUserProfileApi userProfileApi)
         {

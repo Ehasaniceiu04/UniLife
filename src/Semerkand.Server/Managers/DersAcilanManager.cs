@@ -30,5 +30,11 @@ namespace Semerkand.Server.Managers
             var dersAcilans = await _dersAcilanStore.GetAcilanDersByFilterDto(dersAcilanFilterDto);
             return new ApiResponse(Status200OK, "Selected DersAcilanDto", dersAcilans);
         }
+
+        public async Task<ApiResponse> GetAcilanDersByMufredatId(int mufredatId)
+        {
+            var dersAcilans = await _dersAcilanStore.GetAcilanDersByMufredatId(mufredatId);
+            return new ApiResponse(Status200OK, "Selected DersAcilanDto", dersAcilans);
+        }
     }
 }
