@@ -45,6 +45,7 @@ namespace Semerkand.Storage.Stores
         {
             var t = _autoMapper.Map<TDto, T>(tDto);
             await _db.Context.Set<T>().AddAsync(t);
+            _db.Context.Entry<T>(t).State = EntityState.Added;
             await _db.SaveChangesAsync(CancellationToken.None);
             return t;
         }

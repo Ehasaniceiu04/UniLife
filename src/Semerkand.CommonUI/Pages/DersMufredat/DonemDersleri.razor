@@ -746,6 +746,7 @@
             dersAcDto.AcProgramSecilen = CokluProgram2.Value.First();
             dersAcDto.AcProgramSecenektekiler = programDtos2.Select(x => x.Id);
             dersAcDto.AcDonemSecilen = CokluDonem2.Value.First();
+            dersAcDto.AcSinifSecilenler = CokluSinif2.Value.ToArray();
 
             ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/dersacilan/CreateDersAcilanByDers", dersAcDto);
 

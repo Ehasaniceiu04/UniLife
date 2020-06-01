@@ -47,8 +47,7 @@
     </table>
 </div>
 
-<b class="hr anim"></b>
-
+<b class="hr anim" style="padding-top: 10px;padding-bottom: 10px;"></b>
 
 
 <SfTab HeaderPlacement="HeaderPosition.Left" EnablePersistence="true">
@@ -178,11 +177,12 @@
     protected override void OnInitialized()
     {
         _OgrenciDto = appState.OgrenciState;
-        GetMufredatAcilanDerss();
+        GetAcilanDerssByMufredat();
         SetOgrenciProgramSure();
+        SetMufredatAd();
     }
 
-    void GetMufredatAcilanDerss()
+    void GetAcilanDerssByMufredat()
     {
         ApiResponseDto<List<DersAcilanDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<DersAcilanDto>>>($"api/dersacilan/GetAcilanDersByMufredatId/{_OgrenciDto.MufredatId}").Result;
         ListDersAcilan = apiResponse.Result;
@@ -193,6 +193,13 @@
         ApiResponseDto<ProgramDto> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<ProgramDto>>($"api/program/{_OgrenciDto.ProgramId}").Result;
         ogrenciProgramSure = apiResponse.Result.NormalSure;
     }
+
+    void SetMufredatAd()
+    {
+        ApiResponseDto<MufredatDto> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<MufredatDto>>($"api/mufredat/{_OgrenciDto.MufredatId}").Result;
+        _OgrenciDto.MufredatAdi = apiResponse.Result.Ad;
+    }
+
 
     //async Task GetMufredatAcilanDerss()
     //{

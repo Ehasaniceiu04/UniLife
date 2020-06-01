@@ -13,6 +13,8 @@ namespace Semerkand.Shared.Dto.Definitions
         public int AcProgramSecilen { get; set; }
         public IEnumerable<int> AcProgramSecenektekiler { get; set; }
 
+        public IEnumerable<int> AcSinifSecilenler { get; set; }
+
         public IEnumerable<int> DersAcIds { get; set; }
 
         public int AcDonemSecilen { get; set; }

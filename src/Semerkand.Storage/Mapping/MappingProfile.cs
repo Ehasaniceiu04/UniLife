@@ -33,6 +33,7 @@ namespace Semerkand.Storage.Mapping
             CreateMap<Mufredat, MufredatDto>().ReverseMap();
             CreateMap<Ders, DersDto>().ReverseMap();
             CreateMap<DersAcilan, DersAcilanDto>().ReverseMap();
+            CreateMap<DersKayit, DersKayitDto>().ReverseMap();
             CreateMap<Mufredat, MufredatDto>().ReverseMap();
             CreateMap<OgrenimTur, OgrenimTurDto > ().ReverseMap();
             CreateMap<OgrenimDurum, OgrenimDurumDto>().ReverseMap();
