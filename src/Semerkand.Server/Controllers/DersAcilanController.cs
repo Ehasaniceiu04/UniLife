@@ -4,6 +4,8 @@ using Semerkand.Server.Managers;
 using Semerkand.Server.Middleware.Wrappers;
 using Semerkand.Shared.AuthorizationDefinitions;
 using Semerkand.Shared.Dto.Definitions;
+using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using static Microsoft.AspNetCore.Http.StatusCodes;
 
@@ -36,10 +38,10 @@ namespace Semerkand.Server.Controllers
 
         //[HttpGet]
         //[AllowAnonymous]
-        //[Route("GetDersAcilanByMufredatId/{mufredatId}")]
-        //public async Task<ApiResponse> GetDersAcilanByMufredatId(int mufredatId)
+        //[Route("GetListOfDersByIds/{Ids}")]
+        //public async Task<ApiResponse> GetListOfDersByIds(IEnumerable<int> Ids)
         //    => ModelState.IsValid ?
-        //        await _dersAcilanManager.GetDersAcilanByMufredatId(mufredatId) :
+        //        await _dersAcilanManager.GetListOfDersByIds(Ids) :
         //        new ApiResponse(Status400BadRequest, "DersAcilan Model is Invalid");
 
 
@@ -91,6 +93,8 @@ namespace Semerkand.Server.Controllers
                     await _dersAcilanManager.GetAcilanDersByMufredatId(mufredatId) :
                     new ApiResponse(Status400BadRequest, "DersAcilan Model is Invalid");
 
+
+        
 
     }
 }

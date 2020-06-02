@@ -24,6 +24,7 @@ namespace Semerkand.Storage
         public DbSet<Mufredat> Mufredats { get; set; }
         public DbSet<Ders> Derss { get; set; }
         public DbSet<DersAcilan> DersAcilans { get; set; }
+        public DbSet<DersKayit> DersKayits { get; set; }
         public DbSet<OgrenimTur> OgrenimTurs{ get; set; }
         public DbSet<FakulteTur> FakulteTurs{ get; set; }
         public DbSet<Donem> Donems{ get; set; }

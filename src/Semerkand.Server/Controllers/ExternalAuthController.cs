@@ -1,19 +1,8 @@
-﻿using Semerkand.Shared;
-using Semerkand.Shared.Dto.ExternalAuth;
-using IdentityModel;
-using IdentityServer4;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using Semerkand.Server.Managers;
-using Semerkand.Shared.DataModels;
+using System;
+using System.Threading.Tasks;
 
 namespace Semerkand.Server.Controllers
 {
@@ -27,7 +16,7 @@ namespace Semerkand.Server.Controllers
         {
             _externalAuthManager = externalAuthManager;
         }
-        
+
         [HttpGet("challenge/{provider}")]
         [AllowAnonymous]
         public async Task<IActionResult> Challenge(string provider)

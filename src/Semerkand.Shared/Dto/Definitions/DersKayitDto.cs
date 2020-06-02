@@ -9,9 +9,9 @@ namespace Semerkand.Shared.Dto.Definitions
     public class DersKayitDto : EntityDto<int>
     {
         public int DersAcilanId { get; set; }
-        public DersAcilanDto DersAcilan { get; set; }
+        public virtual DersAcilanDto DersAcilan { get; set; }
 
         public int OgrenciId { get; set; }
-        public OgrenciDto Ogrenci { get; set; }
+        public virtual OgrenciDto Ogrenci { get; set; }
     }
 }

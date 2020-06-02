@@ -4,6 +4,7 @@ using Semerkand.Server.Managers;
 using Semerkand.Server.Middleware.Wrappers;
 using Semerkand.Shared.AuthorizationDefinitions;
 using Semerkand.Shared.Dto.Definitions;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using static Microsoft.AspNetCore.Http.StatusCodes;
 
@@ -65,16 +66,24 @@ namespace Semerkand.Server.Controllers
         public async Task<ApiResponse> Delete(int id)
             => await _dersKayitManager.Delete(id);
 
-        //[HttpPost]
-        //[AllowAnonymous]
-        //[Route("CreateDersKayitByDers")]
-        //public async Task<ApiResponse> CreateDersKayitByDers([FromBody] DersAcDto dersAcDto)
-        //    => ModelState.IsValid ?
-        //            await _dersKayitManager.CreateDersKayitByDers(dersAcDto) :
-        //            new ApiResponse(Status400BadRequest, "DersAcDto Model is Invalid");
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("OgrenciKayitToDerss")]
+        public async Task<ApiResponse> OgrenciKayitToDerss([FromBody] List<DersKayitDto> ogrenciDersKayitDtos)
+        {
+            if (ModelState.IsValid)
+            {
+                return await _dersKayitManager.OgrenciKayitToDerss(ogrenciDersKayitDtos);
+            }
+            else
+            {
+                return new ApiResponse(Status400BadRequest, "DersKayitDto Model is Invalid");
+            }
+        }
+                    
 
 
-        
+
         //[HttpPost]
         //[AllowAnonymous]
         //[Route("GetAcilanDersByFilterDto")]

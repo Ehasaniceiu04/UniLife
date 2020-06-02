@@ -1,16 +1,36 @@
 ﻿@inject HttpClient Http;
 @using Semerkand.Shared.Dto.Definitions
+@using Syncfusion.Blazor.SplitButtons
+@using Semerkand.CommonUI.Extensions
+@using Semerkand.Shared.Dto.Definitions.Bussines
+@using Syncfusion.Blazor.Buttons
 
 <Divider5></Divider5>
 
 <ControlSection>
-    <div class="server-action-menu">
+    <div class="server-action-menu" style="padding-top: 10px;">
         <div class="row">
+            <div class="col-sm-12 text-center">
+                @foreach (var item in donemTipDtos)
+                {
+                    <SfRadioButton Label="@item.Ad" @ref="donemRadio" Name="donemRadio" Value="@item.Id.ToString()" OnChange="onChange" Checked="@item.isActiveDonemTip"></SfRadioButton>
+                }
+                <br />
+                <legend>Açılan Dersler</legend>
+            </div>
+        </div>
+        <div class="row">
+
             <div class="col-sm-12 col-md-12">
-                <SfGrid ID="DersAcilanGrid" @ref="DersAcilanGrid" DataSource="@DersAcilanDtos" RowHeight="20" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
+                <SfGrid ID="DersAcilanGrid" @ref="DersAcilanGrid" DataSource="@DersAcilanDtos" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
                     @*<GridEvents OnActionComplete="ActionCompletedHandler" TValue="ProgramDto"></GridEvents>*@
-                    <GridEvents TValue="DersAcilanDto"  CommandClicked="CommandClickHandler"></GridEvents>
+                    <GridEvents TValue="DersAcilanDto" CommandClicked="CommandClickHandler"></GridEvents>
                     <GridColumns>
+                        <GridColumn Width="50" AutoFit="true">
+                            <GridCommandColumns>
+                                <GridCommandColumn Type="CommandButtonType.None" Title="Kayıt Ol" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowDown", CssClass="e-flat" })"></GridCommandColumn>
+                            </GridCommandColumns>
+                        </GridColumn>
                         <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
                         <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kodu"></GridColumn>
                         <GridColumn Field=@nameof(DersDto.Ad) HeaderText="Ders Adı"></GridColumn>
@@ -20,11 +40,6 @@
                         <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
                         <GridColumn Field=@nameof(DersAcilanDto.ODTekrar) HeaderText="Önceki Dönemler Tekrar Durumu"></GridColumn>
                         <GridColumn Field=@nameof(DersAcilanDto.ADKayit) HeaderText="Aktif Dönem Kayıt Durumu"></GridColumn>
-                        <GridColumn>
-                            <GridCommandColumns>
-                                <GridCommandColumn Type="CommandButtonType.None" Title="Kayıt Ol" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowDown", CssClass="e-flat" })"></GridCommandColumn>
-                            </GridCommandColumns>
-                        </GridColumn>
                     </GridColumns>
                 </SfGrid>
             </div>
@@ -37,25 +52,66 @@
     </div>
     <div class="server-action-menu">
         <div class="row">
+            <div class="col-sm-12 text-center">
+                <legend>Kayıt Dersleri</legend>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-sm-12 col-md-12">
-                <SfGrid ID="DersKayitGrid" @ref="DersKayitGrid" DataSource="@DersKayitDtos" RowHeight="20" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
-                    <GridEvents TValue="DersAcilanDto"  CommandClicked="CommandClickHandlerKayit"></GridEvents>
+                <SfGrid ID="DersKayitGrid" @ref="DersKayitGrid" DataSource="@DersKayitDtos" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
+                    <GridEvents TValue="DersAcilanDto" CommandClicked="CommandClickHandlerKayit"></GridEvents>
+                    <GridAggregates>
+                        <GridAggregate>
+                            <GridAggregateColumns>
+                                <GridAggregateColumn Field=@nameof(DersAcilanDto.Akts) Type="AggregateType.Sum" Format="N2">
+                                    <FooterTemplate>
+                                        @{
+                                            var aggregate = (context as AggregateTemplateContext);
+                                            <div>
+                                                <p>Toplam: @aggregate.Sum</p>
+                                            </div>
+                                        }
+                                    </FooterTemplate>
+                                </GridAggregateColumn>
+                                <GridAggregateColumn Field=@nameof(DersAcilanDto.Kredi) Type="AggregateType.Sum" Format="N2">
+                                    <FooterTemplate>
+                                        @{
+                                            var aggregate = (context as AggregateTemplateContext);
+                                            <div>
+                                                <p>Toplam: @aggregate.Sum</p>
+                                            </div>
+                                        }
+                                    </FooterTemplate>
+                                </GridAggregateColumn>
+                            </GridAggregateColumns>
+                        </GridAggregate>
+
+                    </GridAggregates>
                     <GridColumns>
-                        <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
-                        <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kodu"></GridColumn>
-                        <GridColumn Field=@nameof(DersDto.Ad) HeaderText="Ders Adı"></GridColumn>
-                        <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Zorunlu) HeaderText="Z/S"></GridColumn>
-                        <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kredi) HeaderText="Krd"></GridColumn>
-                        <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Akts) HeaderText="Akts"></GridColumn>
-                        <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
-                        <GridColumn>
+                        <GridColumn Width="50">
                             <GridCommandColumns>
                                 <GridCommandColumn Type="CommandButtonType.None" Title="Kayıt Kaldır" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowUP", CssClass="e-flat" })"></GridCommandColumn>
                             </GridCommandColumns>
                         </GridColumn>
+                        <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+
+                        <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kodu"></GridColumn>
+                        <GridColumn Field=@nameof(DersDto.Ad) HeaderText="Ders Adı"></GridColumn>
+                        <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Zorunlu) HeaderText="Z/S"></GridColumn>
+                        <GridColumn Field=@nameof(DersAcilanDto.Kredi) Format="N2" HeaderText="Krd"></GridColumn>
+                        <GridColumn Field=@nameof(DersAcilanDto.Akts) Format="N2" HeaderText="Akts"></GridColumn>
+                        <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
+
                     </GridColumns>
                 </SfGrid>
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6 text-right">
+            <SfProgressButton Content="Kayıt Ol" OnClick="KayıtOl" CssClass="center-block e-primary">
+                <ProgressButtonSpinSettings Position="SpinPosition.Center"></ProgressButtonSpinSettings>
+            </SfProgressButton>
         </div>
     </div>
 
@@ -77,22 +133,54 @@
     public int Sinif { get; set; }
 
     [Parameter]
+    public int DonemTipId { get; set; }
+
+    [Parameter]
     public List<DersAcilanDto> DersAcilanDtos { get; set; } = new List<DersAcilanDto>();
+
+    [Parameter]
+    public int OgrenciId { get; set; }
 
     public List<DersAcilanDto> DersKayitDtos = new List<DersAcilanDto>();
 
     bool dialog;
     string dialogText = "";
 
+    List<DonemTipDto> donemTipDtos = new List<DonemTipDto>();
+    SfRadioButton donemRadio;
+
+    protected override async Task OnInitializedAsync()
+    {
+        //await ReadKayitli();
+        await GetDonemTips();
+    }
+
+    async Task GetDonemTips()
+    {
+        ApiResponseDto<List<DonemTipDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<DonemTipDto>>>("api/donemTip");
+        donemTipDtos = apiResponse.Result;
+    }
+
+    //async Task ReadKayitli()
+    //{
+    //    ApiResponseDto<List<DersAcilanDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<DersAcilanDto>>>("api/dersAcilan/GetListOfDersByIds");
+    //}
+
 
     public void CommandClickHandler(CommandClickEventArgs<DersAcilanDto> args)
     {
+        /// oka bastıkmı varsa zaten uyarı veriyoruz onu vermeye devam edecek
+        // eğer atma başrılı olursa üsttegi giridn satırı boyayacaz
+        // ilk açılıştada alttaki gidin idlerini üsttekilerde aratacaz varsa boyayacaz
+
+
+
         if (args.CommandColumn.Title == "Kayıt Ol")
         {
-            if (DersKayitDtos.Any(x=>x.Id == args.RowData.Id))
+            if (DersKayitDtos.Any(x => x.Id == args.RowData.Id))
             {
                 dialog = true;
-                dialogText = $"{args.RowData.Ad} isimli ders zaten ekli!";
+                dialogText = $"{args.RowData.Kod} kodlu, {args.RowData.Ad} isimli ders zaten ekli!";
             }
             else
             {
@@ -111,6 +199,24 @@
         }
     }
 
+    async Task KayıtOl()
+    {
+        string obj = await donemRadio.GetSelectedValue();
+
+        List<DersKayitDto> ogrenciDersKayitDtos = new List<DersKayitDto>();
+        foreach (var item in DersKayitDtos)
+        {
+            ogrenciDersKayitDtos.Add(new DersKayitDto { DersAcilanId = item.Id, OgrenciId = OgrenciId });
+        }
+
+        ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/DersKayit/OgrenciKayitToDerss", ogrenciDersKayitDtos);
+    }
+
+    public async void onChange()
+    {
+        string obj = await donemRadio.GetSelectedValue();
+    }
+
 }
 
 <style>
@@ -126,6 +232,7 @@
         content: '\e7bf';
         color: #e83e8c;
     }
+
     .e-DoubleArrowUP:before {
         content: '\e7c5';
         color: #e83e8c;

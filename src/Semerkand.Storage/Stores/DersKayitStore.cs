@@ -21,5 +21,11 @@ namespace Semerkand.Storage.Stores
             _autoMapper = autoMapper;
         }
 
+        public async Task OgrenciKayitToDerss(IEnumerable<DersKayitDto> dersKayitDtos)
+        {
+            var dersKayits = _autoMapper.Map<IEnumerable<DersKayitDto>, IEnumerable<DersKayit>>(dersKayitDtos);
+            _db.DersKayits.AddRange(dersKayits);
+            await _db.SaveChangesAsync(CancellationToken.None);
+        }
     }
 }

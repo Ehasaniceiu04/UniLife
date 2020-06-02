@@ -30,6 +30,7 @@ namespace Semerkand.Storage
             services.AddTransient<IMufredatStore, MufredatStore>();
             services.AddTransient<IDersStore, DersStore>();
             services.AddTransient<IDersAcilanStore, DersAcilanStore>();
+            services.AddTransient<IDersKayitStore, DersKayitStore>();
             services.AddTransient<IOgrenimTurStore, OgrenimTurStore>();
             services.AddTransient<IFakulteTurStore, FakulteTurStore>();
             services.AddTransient<IDonemStore, DonemStore>();
