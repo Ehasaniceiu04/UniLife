@@ -5,6 +5,7 @@
 @using Semerkand.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs.DersKayitTabs
 @inject HttpClient Http;
 @using Syncfusion.Blazor.DropDowns;
+@using Syncfusion.Blazor.Buttons
 
 <Divider />
 
@@ -43,13 +44,13 @@
                     <span style="font-weight: 500;">Genel Bakiye: </span> @_OgrenciDto.GenelBakiye
                 </td>
                 @*<td rowspan="4">
-                    <SfDropDownList ID="DropDonemTip" @ref="DropDonemTip" TItem="DonemTipDto" CssClass="col-sm-10 pb-1"
-                                    TValue="int?" PopupHeight="230px" @bind-Value="aktifdonemTipId"
-                                    DataSource="@donemTipDtos">
-                        <DropDownListEvents TValue="int?" ValueChange="AcilanDersleriYenile"></DropDownListEvents>
-                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                    </SfDropDownList>
-                </td>*@
+                        <SfDropDownList ID="DropDonemTip" @ref="DropDonemTip" TItem="DonemTipDto" CssClass="col-sm-10 pb-1"
+                                        TValue="int?" PopupHeight="230px" @bind-Value="aktifdonemTipId"
+                                        DataSource="@donemTipDtos">
+                            <DropDownListEvents TValue="int?" ValueChange="AcilanDersleriYenile"></DropDownListEvents>
+                            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                        </SfDropDownList>
+                    </td>*@
             </tr>
 
         </tbody>
@@ -60,9 +61,22 @@
 
 <b class="hr anim" style="padding-top: 10px;padding-bottom: 10px;"></b>
 
+<div class="row">
+    <div class="col-sm-12 text-center">
+        @foreach (var item in donemDtos)
+        {
+            <SfRadioButton Label="@item.Ad" @ref="donemRadio" Name="donemRadio" Value="@item.Id.ToString()" OnChange="onDonemChange" Checked="@item.Durum"></SfRadioButton>
+        }
+    </div>
+</div>
 
+<br />
 
-<SfTab HeaderPlacement="HeaderPosition.Top" EnablePersistence="true">
+<SfTab @ref="Tab" HeaderPlacement="HeaderPosition.Left" LoadOn="ContentLoad.Dynamic">
+    @*<TabAnimationSettings>
+        <TabAnimationPrevious Effect="@PreviousEffect"></TabAnimationPrevious>
+        <TabAnimationNext Effect="@NextEffect"></TabAnimationNext>
+    </TabAnimationSettings>*@
     <TabItems>
         @if (ogrenciProgramSure >= 1)
         {
@@ -71,7 +85,7 @@
                     <TabHeader Text="1. Sınıf"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
-                    <SinifGrid Sinif="1" OgrenciId="_OgrenciDto.Id"  DersAcilanDtos="@(ListDersAcilan.Where(x=>x.Sinif==1).ToList())"></SinifGrid>
+                    <SinifGrid Sinif="1" OgrenciId="_OgrenciDto.Id" DersAcilanDtos="@(ListDersAcilan.Where(x => x.Sinif == 1 && x.DonemId == appState.DersKayitDonemIdState).ToList())"></SinifGrid>
                 </ContentTemplate>
             </TabItem>
         }
@@ -82,7 +96,7 @@
                     <TabHeader Text="2. Sınıf"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
-                    <SinifGrid Sinif="2" OgrenciId="_OgrenciDto.Id" DersAcilanDtos="@(ListDersAcilan.Where(x=>x.Sinif==2).ToList())"></SinifGrid>
+                    <SinifGrid Sinif="2" OgrenciId="_OgrenciDto.Id" DersAcilanDtos="@(ListDersAcilan.Where(x => x.Sinif == 2 && x.DonemId == appState.DersKayitDonemIdState).ToList())"></SinifGrid>
                 </ContentTemplate>
             </TabItem>
         }
@@ -93,7 +107,7 @@
                     <TabHeader Text="3. Sınıf"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
-                    <SinifGrid Sinif="3" OgrenciId="_OgrenciDto.Id" DersAcilanDtos="@(ListDersAcilan.Where(x=>x.Sinif==3).ToList())"></SinifGrid>
+                    <SinifGrid Sinif="3" OgrenciId="_OgrenciDto.Id" DersAcilanDtos="@(ListDersAcilan.Where(x => x.Sinif == 3 && x.DonemId == appState.DersKayitDonemIdState).ToList())"></SinifGrid>
                 </ContentTemplate>
             </TabItem>
         }
@@ -104,7 +118,7 @@
                     <TabHeader Text="4. Sınıf"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
-                    <SinifGrid Sinif="4" OgrenciId="_OgrenciDto.Id" DersAcilanDtos="@(ListDersAcilan.Where(x=>x.Sinif==4).ToList())"></SinifGrid>
+                    <SinifGrid Sinif="4" OgrenciId="_OgrenciDto.Id" DersAcilanDtos="@(ListDersAcilan.Where(x => x.Sinif == 4 && x.DonemId == appState.DersKayitDonemIdState).ToList())"></SinifGrid>
                 </ContentTemplate>
             </TabItem>
         }
@@ -115,7 +129,7 @@
                     <TabHeader Text="5. Sınıf"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
-                    <SinifGrid Sinif="5" OgrenciId="_OgrenciDto.Id" DersAcilanDtos="@(ListDersAcilan.Where(x=>x.Sinif==5).ToList())"></SinifGrid>
+                    <SinifGrid Sinif="5" OgrenciId="_OgrenciDto.Id" DersAcilanDtos="@(ListDersAcilan.Where(x => x.Sinif == 5 && x.DonemId == appState.DersKayitDonemIdState).ToList())"></SinifGrid>
                 </ContentTemplate>
             </TabItem>
         }
@@ -126,7 +140,7 @@
                     <TabHeader Text="6. Sınıf"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
-                    <SinifGrid Sinif="6" OgrenciId="_OgrenciDto.Id" DersAcilanDtos="@(ListDersAcilan.Where(x=>x.Sinif==6).ToList())"></SinifGrid>
+                    <SinifGrid Sinif="6" OgrenciId="_OgrenciDto.Id" DersAcilanDtos="@(ListDersAcilan.Where(x => x.Sinif == 6 && x.DonemId == appState.DersKayitDonemIdState).ToList())"></SinifGrid>
                 </ContentTemplate>
             </TabItem>
         }
@@ -137,7 +151,7 @@
                     <TabHeader Text="7. Sınıf"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
-                    <SinifGrid Sinif="7" OgrenciId="_OgrenciDto.Id" DersAcilanDtos="@(ListDersAcilan.Where(x=>x.Sinif==7).ToList())"></SinifGrid>
+                    <SinifGrid Sinif="7" OgrenciId="_OgrenciDto.Id" DersAcilanDtos="@(ListDersAcilan.Where(x => x.Sinif == 7 && x.DonemId == appState.DersKayitDonemIdState).ToList())"></SinifGrid>
                 </ContentTemplate>
             </TabItem>
         }
@@ -148,7 +162,7 @@
                     <TabHeader Text="8. Sınıf"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
-                    <SinifGrid Sinif="8" OgrenciId="_OgrenciDto.Id" DersAcilanDtos="@(ListDersAcilan.Where(x=>x.Sinif==8).ToList())"></SinifGrid>
+                    <SinifGrid Sinif="8" OgrenciId="_OgrenciDto.Id" DersAcilanDtos="@(ListDersAcilan.Where(x => x.Sinif == 8 && x.DonemId == appState.DersKayitDonemIdState).ToList())"></SinifGrid>
                 </ContentTemplate>
             </TabItem>
         }
@@ -159,7 +173,7 @@
                     <TabHeader Text="9. Sınıf"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
-                    <SinifGrid Sinif="9" OgrenciId="_OgrenciDto.Id" DersAcilanDtos="@(ListDersAcilan.Where(x=>x.Sinif==9).ToList())"></SinifGrid>
+                    <SinifGrid Sinif="9" OgrenciId="_OgrenciDto.Id" DersAcilanDtos="@(ListDersAcilan.Where(x => x.Sinif == 9 && x.DonemId == appState.DersKayitDonemIdState).ToList())"></SinifGrid>
                 </ContentTemplate>
             </TabItem>
         }
@@ -174,10 +188,9 @@
 @code{
 
 
-    SfDropDownList<int?, DonemTipDto> DropDonemTip;
-    List<DonemTipDto> donemTipDtos = new List<DonemTipDto>();
-    //int aktifdonemTipId=1;
-
+    List<DonemDto> donemDtos = new List<DonemDto>();
+    SfRadioButton donemRadio = new SfRadioButton();
+    int selectedDonem;
 
 
     [Parameter]
@@ -185,6 +198,12 @@
 
     int ogrenciProgramSure;
     List<DersAcilanDto> ListDersAcilan = new List<DersAcilanDto>();
+    List<DersAcilanDto> DersKayitDtos = new List<DersAcilanDto>();
+
+
+    SfTab Tab;
+    public string PreviousEffect { get; set; }
+    public string NextEffect { get; set; }
 
     //protected override async Task OnInitializedAsync()
     //{
@@ -196,11 +215,30 @@
     protected override void OnInitialized()
     {
         _OgrenciDto = appState.OgrenciState;
-        ReadDonem();
+        GetDonems();
         GetAcilanDerssByMufredat();
         SetOgrenciProgramSure();
         SetMufredatAd();
 
+    }
+
+    void GetDonems()
+    {
+        ApiResponseDto<List<DonemDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<DonemDto>>>("api/donem/current").Result;
+        donemDtos = apiResponse.Result;
+
+        appState.DersKayitDonemIdState = donemDtos.FirstOrDefault(x => x.Durum).Id;
+    }
+
+
+    public async void onDonemChange()
+    {
+        appState.DersKayitDonemIdState = Convert.ToInt32(await donemRadio.GetSelectedValue());
+        //this.NextEffect = "FadeZoomIn";
+        Tab.Refresh();
+        await Tab.Select(Tab.SelectedItem - 1);
+        await Tab.Select(Tab.SelectedItem+1);
+        //this.NextEffect = "SlideRightIn";
     }
 
     void AcilanDersleriYenile()
@@ -209,19 +247,13 @@
     }
 
 
-    void ReadDonem()
-    {
-        ApiResponseDto<List<DonemTipDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<DonemTipDto>>>("api/donemtip").Result;
-        donemTipDtos = apiResponse.Result;
-
-        //aktifdonemTipId = donemTipDtos.FirstOrDefault(x => x.isActiveDonemTip = true).Id;
-    }
-
-
     void GetAcilanDerssByMufredat()
     {
         ApiResponseDto<List<DersAcilanDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<DersAcilanDto>>>($"api/dersacilan/GetAcilanDersByMufredatId/{_OgrenciDto.MufredatId}").Result;
         ListDersAcilan = apiResponse.Result;
+
+        ApiResponseDto<List<DersAcilanDto>> apiResponseKayitli = Http.GetFromJsonAsync<ApiResponseDto<List<DersAcilanDto>>>($"api/dersAcilan/GetKayitliDerssByOgrenciIdDonemId/{_OgrenciDto.Id}/{appState.DersKayitDonemIdState}").Result;
+        DersKayitDtos = apiResponseKayitli.Result;
     }
 
     void SetOgrenciProgramSure()

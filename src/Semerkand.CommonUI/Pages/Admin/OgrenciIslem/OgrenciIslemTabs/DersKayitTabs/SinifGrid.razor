@@ -3,7 +3,9 @@
 @using Syncfusion.Blazor.SplitButtons
 @using Semerkand.CommonUI.Extensions
 @using Semerkand.Shared.Dto.Definitions.Bussines
-@using Syncfusion.Blazor.Buttons
+@inject AppState appState
+@inject IMatToaster matToaster
+@using System.Net
 
 <Divider5></Divider5>
 
@@ -11,11 +13,7 @@
     <div class="server-action-menu" style="padding-top: 10px;">
         <div class="row">
             <div class="col-sm-12 text-center">
-                @foreach (var item in donemTipDtos)
-                {
-                    <SfRadioButton Label="@item.Ad" @ref="donemRadio" Name="donemRadio" Value="@item.Id.ToString()" OnChange="onChange" Checked="@item.isActiveDonemTip"></SfRadioButton>
-                }
-                <br />
+
                 <legend>Açılan Dersler</legend>
             </div>
         </div>
@@ -26,17 +24,17 @@
                     @*<GridEvents OnActionComplete="ActionCompletedHandler" TValue="ProgramDto"></GridEvents>*@
                     <GridEvents TValue="DersAcilanDto" CommandClicked="CommandClickHandler"></GridEvents>
                     <GridColumns>
-                        <GridColumn Width="50" AutoFit="true">
+                        <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+                        <GridColumn Width="50">
                             <GridCommandColumns>
                                 <GridCommandColumn Type="CommandButtonType.None" Title="Kayıt Ol" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowDown", CssClass="e-flat" })"></GridCommandColumn>
                             </GridCommandColumns>
                         </GridColumn>
-                        <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
                         <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kodu"></GridColumn>
                         <GridColumn Field=@nameof(DersDto.Ad) HeaderText="Ders Adı"></GridColumn>
                         <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Zorunlu) HeaderText="Z/S"></GridColumn>
-                        <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kredi) HeaderText="Krd"></GridColumn>
-                        <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Akts) HeaderText="Akts"></GridColumn>
+                        <GridColumn Field=@nameof(DersAcilanDto.Kredi) HeaderText="Krd"></GridColumn>
+                        <GridColumn Field=@nameof(DersAcilanDto.Akts) HeaderText="Akts"></GridColumn>
                         <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
                         <GridColumn Field=@nameof(DersAcilanDto.ODTekrar) HeaderText="Önceki Dönemler Tekrar Durumu"></GridColumn>
                         <GridColumn Field=@nameof(DersAcilanDto.ADKayit) HeaderText="Aktif Dönem Kayıt Durumu"></GridColumn>
@@ -58,7 +56,7 @@
         </div>
         <div class="row">
             <div class="col-sm-12 col-md-12">
-                <SfGrid ID="DersKayitGrid" @ref="DersKayitGrid" DataSource="@DersKayitDtos" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
+                <SfGrid ID="DersKayitGrid" @ref="DersKayitGrid" DataSource="@(DersKayitDtos.Where(x=>x.DonemId== appState.DersKayitDonemIdState))" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
                     <GridEvents TValue="DersAcilanDto" CommandClicked="CommandClickHandlerKayit"></GridEvents>
                     <GridAggregates>
                         <GridAggregate>
@@ -88,13 +86,12 @@
 
                     </GridAggregates>
                     <GridColumns>
+                        <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
                         <GridColumn Width="50">
                             <GridCommandColumns>
                                 <GridCommandColumn Type="CommandButtonType.None" Title="Kayıt Kaldır" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowUP", CssClass="e-flat" })"></GridCommandColumn>
                             </GridCommandColumns>
                         </GridColumn>
-                        <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
-
                         <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kodu"></GridColumn>
                         <GridColumn Field=@nameof(DersDto.Ad) HeaderText="Ders Adı"></GridColumn>
                         <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Zorunlu) HeaderText="Z/S"></GridColumn>
@@ -132,8 +129,9 @@
     [Parameter]
     public int Sinif { get; set; }
 
-    [Parameter]
-    public int DonemTipId { get; set; }
+
+    //[Parameter]
+    //public int DonemTipId { get; set; }
 
     [Parameter]
     public List<DersAcilanDto> DersAcilanDtos { get; set; } = new List<DersAcilanDto>();
@@ -141,35 +139,35 @@
     [Parameter]
     public int OgrenciId { get; set; }
 
-    public List<DersAcilanDto> DersKayitDtos = new List<DersAcilanDto>();
+    [Parameter]
+    public List<DersAcilanDto> DersKayitDtos { get; set; } = new List<DersAcilanDto>();
 
     bool dialog;
     string dialogText = "";
 
-    List<DonemTipDto> donemTipDtos = new List<DonemTipDto>();
-    SfRadioButton donemRadio;
+
 
     protected override async Task OnInitializedAsync()
     {
-        //await ReadKayitli();
-        await GetDonemTips();
+        await ReadKayitli();
     }
 
-    async Task GetDonemTips()
-    {
-        ApiResponseDto<List<DonemTipDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<DonemTipDto>>>("api/donemTip");
-        donemTipDtos = apiResponse.Result;
-    }
-
-    //async Task ReadKayitli()
+    //protected override void OnInitialized()
     //{
-    //    ApiResponseDto<List<DersAcilanDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<DersAcilanDto>>>("api/dersAcilan/GetListOfDersByIds");
+
     //}
+
+
+    async Task ReadKayitli()
+    {
+        ApiResponseDto<List<DersAcilanDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<DersAcilanDto>>>($"api/dersAcilan/GetKayitliDerssByOgrenciId/{OgrenciId}/{Sinif}/{appState.DersKayitDonemIdState}");
+        DersKayitDtos = apiResponse.Result;
+    }
 
 
     public void CommandClickHandler(CommandClickEventArgs<DersAcilanDto> args)
     {
-        /// oka bastıkmı varsa zaten uyarı veriyoruz onu vermeye devam edecek
+        // oka bastıkmı varsa zaten uyarı veriyoruz onu vermeye devam edecek
         // eğer atma başrılı olursa üsttegi giridn satırı boyayacaz
         // ilk açılıştada alttaki gidin idlerini üsttekilerde aratacaz varsa boyayacaz
 
@@ -190,18 +188,28 @@
         }
     }
 
-    public void CommandClickHandlerKayit(CommandClickEventArgs<DersAcilanDto> args)
+    public async Task CommandClickHandlerKayit(CommandClickEventArgs<DersAcilanDto> args)
     {
         if (args.CommandColumn.Title == "Kayıt Kaldır")
         {
-            DersKayitDtos.RemoveAll(x => x.Id == args.RowData.Id);
-            DersKayitGrid.Refresh();
+            var response = await Http.DeleteAsync($"api/DersKayit/DeleteByOgrId_DersId/{OgrenciId}/{args.RowData.Id}");
+
+            if (response.StatusCode == (HttpStatusCode)Status200OK)
+            {
+                matToaster.Add("Ders kayıdı kaldırıldı", MatToastType.Success);
+                DersKayitDtos.RemoveAll(x => x.Id == args.RowData.Id);
+                DersKayitGrid.Refresh();
+                StateHasChanged();
+            }
+            else
+            {
+                matToaster.Add("Ders kayıdı Failed: " + response.StatusCode, MatToastType.Danger);
+            }
         }
     }
 
     async Task KayıtOl()
     {
-        string obj = await donemRadio.GetSelectedValue();
 
         List<DersKayitDto> ogrenciDersKayitDtos = new List<DersKayitDto>();
         foreach (var item in DersKayitDtos)
@@ -210,12 +218,12 @@
         }
 
         ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/DersKayit/OgrenciKayitToDerss", ogrenciDersKayitDtos);
+
+        DersKayitGrid.Refresh();
+        StateHasChanged();
     }
 
-    public async void onChange()
-    {
-        string obj = await donemRadio.GetSelectedValue();
-    }
+
 
 }
 

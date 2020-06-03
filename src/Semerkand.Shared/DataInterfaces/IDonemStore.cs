@@ -19,5 +19,6 @@ namespace Semerkand.Shared.DataInterfaces
         Task<Donem> Update(DonemDto donemDto);
 
         Task DeleteById(int id);
+        Task<List<DonemDto>> Current();
     }
 }

@@ -158,7 +158,7 @@ namespace Semerkand.Storage.Stores
                     _db.DersAcilans.AddRange(sonuc);
                     await _db.SaveChangesAsync(CancellationToken.None);
 
-                    
+
 
                     context.Commit();
 
@@ -175,7 +175,7 @@ namespace Semerkand.Storage.Stores
         public async Task<List<DersAcilanDto>> GetAcilanDersByFilterDto(DersAcilanFilterDto dersAcilanFilterDto)
         {
             var dersAcilans = from d in _db.DersAcilans
-                              //join p in _db.Programs on d.ProgramId equals p.Id
+                                  //join p in _db.Programs on d.ProgramId equals p.Id
                               where
                                   (dersAcilanFilterDto.ProgramSecilen.Contains(55555) ? dersAcilanFilterDto.ProgramSecenektekiler.Contains(d.ProgramId) : dersAcilanFilterDto.ProgramSecilen.Contains(d.ProgramId))
                                   && (dersAcilanFilterDto.SinifSecilen == null ? true : (dersAcilanFilterDto.SinifSecilen.Contains(d.Sinif)))
@@ -191,6 +191,24 @@ namespace Semerkand.Storage.Stores
         {
             var dersAcilans = from d in _db.DersAcilans.Where(x => x.MufredatId == mufredatId)
                               select d;
+
+            return _autoMapper.Map<List<DersAcilanDto>>(await dersAcilans.ToListAsync());
+        }
+
+        public async Task<List<DersAcilanDto>> GetKayitliDerssByOgrenciId(int ogrenciId, int sinif, int donemId)
+        {
+            var dersAcilans = from a in _db.DersAcilans.Where(x => x.Sinif == sinif && x.DonemId == donemId)
+                              join k in _db.DersKayits.Where(x => x.OgrenciId == ogrenciId) on a.Id equals k.DersAcilanId
+                              select a;
+
+            return _autoMapper.Map<List<DersAcilanDto>>(await dersAcilans.ToListAsync());
+        }
+
+        public async Task<List<DersAcilanDto>> GetKayitliDerssByOgrenciIdDonemId(int ogrenciId, int donemId)
+        {
+            var dersAcilans = from a in _db.DersAcilans.Where(x => x.DonemId == donemId)
+                              join k in _db.DersKayits.Where(x => x.OgrenciId == ogrenciId) on a.Id equals k.DersAcilanId
+                              select a;
 
             return _autoMapper.Map<List<DersAcilanDto>>(await dersAcilans.ToListAsync());
         }

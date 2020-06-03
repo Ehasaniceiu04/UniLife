@@ -9,6 +9,7 @@ using Semerkand.Shared.Dto.Account;
 using Newtonsoft.Json;
 using Semerkand.Shared.Dto.Definitions;
 using System.Collections.Generic;
+using Syncfusion.Blazor.CircularGauge;
 
 namespace Semerkand.CommonUI
 {
@@ -22,6 +23,10 @@ namespace Semerkand.CommonUI
         public MufredatDto MufredatState { get; set; }
 
         public OgrenciDto OgrenciState { get; set; }
+
+        public DonemDto DonemState { get; set; }
+
+        public int DersKayitDonemIdState { get; set; }
 
         public AppState(IUserProfileApi userProfileApi)
         {

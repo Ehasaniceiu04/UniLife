@@ -70,5 +70,12 @@ namespace Semerkand.Storage.Stores
             _db.Donems.Remove(donem);
             await _db.SaveChangesAsync(CancellationToken.None);
         }
+
+        public async Task<List<DonemDto>> Current()
+        {
+            //var asd = _autoMapper.Map<List<DonemDto>>((await _db.Donems.Where(e => !_db.Donems.Any(e2 => e2.Yil > e.Yil)).ToListAsync()));
+            var asd = _autoMapper.Map<List<DonemDto>>((await _db.Donems.Where(e => e.Yil == _db.Donems.Max(e2 => (int)e2.Yil)).ToListAsync()));
+            return asd;
+        }
     }
 }

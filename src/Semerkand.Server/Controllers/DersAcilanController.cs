@@ -4,6 +4,7 @@ using Semerkand.Server.Managers;
 using Semerkand.Server.Middleware.Wrappers;
 using Semerkand.Shared.AuthorizationDefinitions;
 using Semerkand.Shared.Dto.Definitions;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -36,13 +37,22 @@ namespace Semerkand.Server.Controllers
                 await _dersAcilanManager.Get(id) :
                 new ApiResponse(Status400BadRequest, "DersAcilan Model is Invalid");
 
-        //[HttpGet]
-        //[AllowAnonymous]
-        //[Route("GetListOfDersByIds/{Ids}")]
-        //public async Task<ApiResponse> GetListOfDersByIds(IEnumerable<int> Ids)
-        //    => ModelState.IsValid ?
-        //        await _dersAcilanManager.GetListOfDersByIds(Ids) :
-        //        new ApiResponse(Status400BadRequest, "DersAcilan Model is Invalid");
+        [Obsolete("öğrencinin kayıtlı olduğu dersleri sınıf componentinden çekersen kullanabilirsin. Biz parenttan yolluyoruz.")]
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("GetKayitliDerssByOgrenciId/{ogrenciId}/{sinif}/{donemId}")]
+        public async Task<ApiResponse> GetKayitliDerssByOgrenciId(int ogrenciId,int sinif,int donemId)
+            => ModelState.IsValid ?
+                await _dersAcilanManager.GetKayitliDerssByOgrenciId(ogrenciId, sinif, donemId) :
+                new ApiResponse(Status400BadRequest, "DersAcilan Model is Invalid");
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("GetKayitliDerssByOgrenciIdDonemId/{ogrenciId}/{donemId}")]
+        public async Task<ApiResponse> GetKayitliDerssByOgrenciIdDonemId(int ogrenciId, int donemId)
+            => ModelState.IsValid ?
+                await _dersAcilanManager.GetKayitliDerssByOgrenciIdDonemId(ogrenciId, donemId) :
+                new ApiResponse(Status400BadRequest, "DersAcilan Model is Invalid");
 
 
         // POST: api/DersAcilan

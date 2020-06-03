@@ -11,5 +11,7 @@ namespace Semerkand.Shared.DataInterfaces
         Task<bool> CreateDersAcilanByDers(DersAcDto dersAcDto);
         Task<List<DersAcilanDto>> GetAcilanDersByFilterDto(DersAcilanFilterDto dersAcilanFilterDto);
         Task<List<DersAcilanDto>> GetAcilanDersByMufredatId(int mufredatId);
+        Task<List<DersAcilanDto>> GetKayitliDerssByOgrenciId(int ogrenciId, int sinif,int donemId);
+        Task<List<DersAcilanDto>> GetKayitliDerssByOgrenciIdDonemId(int ogrenciId, int donemId);
     }
 }

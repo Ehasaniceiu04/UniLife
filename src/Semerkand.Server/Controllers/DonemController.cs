@@ -29,6 +29,14 @@ namespace Semerkand.Server.Controllers
         public async Task<ApiResponse> Get()
             => await _donemManager.Get();
 
+        // GET: api/Donem
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("Current")]
+        public async Task<ApiResponse> Current()
+            => await _donemManager.Current();
+
+
         // GET: api/Donem/5
         [HttpGet("{id}")]
         [AllowAnonymous]

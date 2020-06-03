@@ -80,8 +80,12 @@ namespace Semerkand.Server.Controllers
                 return new ApiResponse(Status400BadRequest, "DersKayitDto Model is Invalid");
             }
         }
-                    
 
+        [HttpDelete]
+        [Route("DeleteByOgrId_DersId/{ogrenciId}/{dersId}")]
+        [Authorize(Permissions.DersKayit.Delete)]
+        public async Task<ApiResponse> DeleteByOgrId_DersId(int ogrenciId,int dersId)
+            => await _dersKayitManager.DeleteByOgrId_DersId(ogrenciId, dersId);
 
 
         //[HttpPost]

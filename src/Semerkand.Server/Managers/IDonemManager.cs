@@ -11,5 +11,6 @@ namespace Semerkand.Server.Managers
         Task<ApiResponse> Create(DonemDto donemDto);
         Task<ApiResponse> Update(DonemDto donemDto);
         Task<ApiResponse> Delete(int id);
+        Task<ApiResponse> Current();
     }
 }

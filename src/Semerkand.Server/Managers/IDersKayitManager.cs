@@ -9,5 +9,6 @@ namespace Semerkand.Server.Managers
     public interface IDersKayitManager : IBaseManager<DersKayit, DersKayitDto>
     {
         Task<ApiResponse> OgrenciKayitToDerss(IEnumerable<DersKayitDto> dersKayitDtos);
+        Task<ApiResponse> DeleteByOgrId_DersId(int ogrenciId, int dersId);
     }
 }

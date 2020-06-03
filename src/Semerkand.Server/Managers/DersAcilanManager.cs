@@ -36,5 +36,17 @@ namespace Semerkand.Server.Managers
             var dersAcilans = await _dersAcilanStore.GetAcilanDersByMufredatId(mufredatId);
             return new ApiResponse(Status200OK, "Selected DersAcilanDto", dersAcilans);
         }
+
+        public async Task<ApiResponse> GetKayitliDerssByOgrenciId(int ogrenciId, int sinif,int donemId)
+        {
+            var dersAcilans = await _dersAcilanStore.GetKayitliDerssByOgrenciId(ogrenciId,sinif, donemId);
+            return new ApiResponse(Status200OK, "Selected DersAcilanDto", dersAcilans);
+        }
+
+        public async Task<ApiResponse> GetKayitliDerssByOgrenciIdDonemId(int ogrenciId, int donemId)
+        {
+            var dersAcilans = await _dersAcilanStore.GetKayitliDerssByOgrenciIdDonemId(ogrenciId, donemId);
+            return new ApiResponse(Status200OK, "Selected DersAcilanDto", dersAcilans);
+        }
     }
 }

@@ -9,6 +9,7 @@ namespace Semerkand.Shared.DataModels
     {
         public int DonemTipId { get; set; }
         public DonemTip DonemTip { get; set; }
+        public int Yil { get; set; }
         public string Ad { get; set; }
         public string KisaAd { get; set; }
         public string AdEn { get; set; }

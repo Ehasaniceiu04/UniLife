@@ -8,6 +8,7 @@ namespace Semerkand.Shared.Dto.Definitions
     {
         public int DonemTipId { get; set; }
         public DonemTipDto DonemTip { get; set; }
+        public int Yil { get; set; }
         public string Ad { get; set; }
         public string KisaAd { get; set; }
         public string AdEn { get; set; }

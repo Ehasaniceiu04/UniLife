@@ -71,5 +71,17 @@ namespace Semerkand.Server.Managers
                 return new ApiResponse(Status400BadRequest, "Failed to update DonemDto");
             }
         }
+
+        public async Task<ApiResponse> Current()
+        {
+            try
+            {
+                return new ApiResponse(Status200OK, "Retrieved DonemDtos", await _donemStore.Current());
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse(Status400BadRequest, ex.Message);
+            }
+        }
     }
 }

@@ -66,6 +66,11 @@
         Tab.EnableTab(2, false);
     }
 
+    public async void onDonemChange()
+    {
+        await Tab.Select(Tab.SelectedItem);
+    }
+
     //public void OnTabSelected(SelectEventArgs args)
     //{
     //    StateHasChanged();
