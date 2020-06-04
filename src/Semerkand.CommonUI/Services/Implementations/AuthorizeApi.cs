@@ -10,6 +10,7 @@ using Semerkand.Shared.Dto.Account;
 using Microsoft.JSInterop;
 using System.Linq;
 using System.Net;
+using Semerkand.CommonUI.Extensions;
 
 using static Microsoft.AspNetCore.Http.StatusCodes;
 using Semerkand.Shared.Dto.Definitions;
@@ -131,7 +132,7 @@ namespace Semerkand.CommonUI.Services.Implementations
         public async Task<UserInfoDto> GetUserInfo()
         {
             UserInfoDto userInfo = new UserInfoDto { IsAuthenticated = false, Roles = new List<string>() };
-            ApiResponseDto apiResponse = await _httpClient.GetJsonAsync<ApiResponseDto>("api/Account/UserInfo");
+            ApiResponseDto apiResponse = await _httpClient.GetJsonAsyncExtension<ApiResponseDto>("api/Account/UserInfo");
 
             if (apiResponse.StatusCode == Status200OK)
             {
@@ -143,7 +144,7 @@ namespace Semerkand.CommonUI.Services.Implementations
 
         public async Task<UserInfoDto> GetUser()
         {
-            ApiResponseDto apiResponse = await _httpClient.GetJsonAsync<ApiResponseDto>("api/Account/GetUser");
+            ApiResponseDto apiResponse = await _httpClient.GetJsonAsyncExtension<ApiResponseDto>("api/Account/GetUser");
             UserInfoDto user = JsonConvert.DeserializeObject<UserInfoDto>(apiResponse.Result.ToString());
             return user;
         }

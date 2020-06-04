@@ -22,7 +22,7 @@ namespace Semerkand.Shared.Dto.Definitions
         public int TeoSaat { get; set; }
         public double Kredi { get; set; }
         public bool Durum { get; set; }
-        public int Zorunlu { get; set; }
+        public bool Zorunlu { get; set; }
         public int Sinif { get; set; }
     }
 }

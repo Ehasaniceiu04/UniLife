@@ -28,13 +28,14 @@
                     }
                     <div style="padding:20px">
                         <SfTab LoadOn="ContentLoad.Dynamic">
+                            <TabEvents Selecting="OnTabSelecting"></TabEvents>
                             <TabItems>
                                 <TabItem>
                                     <ChildContent>
                                         <TabHeader Text="Details"></TabHeader>
                                     </ChildContent>
                                     <ContentTemplate>
-                                        <OgrenciBilgi _OgrenciDto="ogrenciDto.DeepClone()"></OgrenciBilgi>
+                                        <OgrenciBilgi _OgrenciDto="ogrenciDto"></OgrenciBilgi>
                                     </ContentTemplate>
                                 </TabItem>
                                 <TabItem>
@@ -203,6 +204,13 @@
     async Task AddNew()
     {
         await OgrenciToAkademik.InvokeAsync(new OgrenciDto());
+    }
+    public void OnTabSelecting(SelectingEventArgs args)
+    {
+        if (args.IsSwiped)
+        {
+            args.Cancel = true;
+        }
     }
 }
 

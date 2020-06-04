@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Semerkand.Shared.Dto.Account;
+using Semerkand.CommonUI.Extensions;
 
 namespace Semerkand.CommonUI.Services.Implementations
 {
@@ -18,7 +19,7 @@ namespace Semerkand.CommonUI.Services.Implementations
 
         public async Task<ApiResponseDto> Get()
         {
-            return await _httpClient.GetJsonAsync<ApiResponseDto>("api/UserProfile/Get");
+            return await _httpClient.GetJsonAsyncExtension<ApiResponseDto>("api/UserProfile/Get");
         }
 
         public async Task<ApiResponseDto> Upsert(UserProfileDto userProfile)

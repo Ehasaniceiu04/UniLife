@@ -37,7 +37,9 @@ namespace Semerkand.Shared.Dto.Definitions
         public int TeoSaat { get; set; }
         public double Kredi { get; set; }
         public bool Durum { get; set; }
-        public int Zorunlu { get; set; }
+        public bool Zorunlu { get; set; }
+        public int? SecmeliId { get; set; }
+        public string SecmeliAd { get; set; }
         public int Sinif { get; set; }
 
         public int? ODTekrar { get; set; }

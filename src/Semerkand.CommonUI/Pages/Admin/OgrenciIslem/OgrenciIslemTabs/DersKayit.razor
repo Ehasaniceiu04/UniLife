@@ -72,11 +72,12 @@
 
 <br />
 
-<SfTab @ref="Tab" HeaderPlacement="HeaderPosition.Left" LoadOn="ContentLoad.Dynamic">
+<SfTab @ref="Tab" HeaderPlacement="HeaderPosition.Left" SelectedItem="@selectedItem" LoadOn="ContentLoad.Dynamic">
     @*<TabAnimationSettings>
-        <TabAnimationPrevious Effect="@PreviousEffect"></TabAnimationPrevious>
-        <TabAnimationNext Effect="@NextEffect"></TabAnimationNext>
-    </TabAnimationSettings>*@
+            <TabAnimationPrevious Effect="@PreviousEffect"></TabAnimationPrevious>
+            <TabAnimationNext Effect="@NextEffect"></TabAnimationNext>
+        </TabAnimationSettings>*@
+    <TabEvents Selecting="OnTabSelecting"></TabEvents>
     <TabItems>
         @if (ogrenciProgramSure >= 1)
         {
@@ -231,21 +232,24 @@
     }
 
 
+    double selectedItem=0;
     public async void onDonemChange()
     {
         appState.DersKayitDonemIdState = Convert.ToInt32(await donemRadio.GetSelectedValue());
         //this.NextEffect = "FadeZoomIn";
         Tab.Refresh();
-        if (Tab.SelectedItem == 0)
-        {
-            await Tab.Select(Tab.SelectedItem + 1);
-            await Tab.Select(Tab.SelectedItem - 1);
-        }
-        else
-        {
-            await Tab.Select(Tab.SelectedItem - 1);
-            await Tab.Select(Tab.SelectedItem + 1);
-        }
+        selectedItem = Tab.SelectedItem;
+
+        //if (Tab.SelectedItem == 0)
+        //{
+        //    await Tab.Select(Tab.SelectedItem + 1);
+        //    await Tab.Select(Tab.SelectedItem - 1);
+        //}
+        //else
+        //{
+        //    await Tab.Select(Tab.SelectedItem - 1);
+        //    await Tab.Select(Tab.SelectedItem + 1);
+        //}
 
         //this.NextEffect = "SlideRightIn";
     }
@@ -289,6 +293,14 @@
     //    ApiResponseDto<ProgramDto> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<ProgramDto>>($"api/program/{_OgrenciDto.ProgramId}");
     //    ogrenciProgramSure = apiResponse.Result.NormalSure;
     //}
+
+    public void OnTabSelecting(SelectingEventArgs args)
+    {
+        if (args.IsSwiped)
+        {
+            args.Cancel = true;
+        }
+    }
 }
 
 

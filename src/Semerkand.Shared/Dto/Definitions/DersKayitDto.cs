@@ -13,5 +13,8 @@ namespace Semerkand.Shared.Dto.Definitions
 
         public int OgrenciId { get; set; }
         public virtual OgrenciDto Ogrenci { get; set; }
+
+        public int? DersSecilenId { get; set; } //zorunluysa hem DersAcilanId a hem buraya, seçmeliyse burada seçilen DersAcilanId a yerine seçilen.
+        public string DersSecilenAd { get; set; }
     }
 }
