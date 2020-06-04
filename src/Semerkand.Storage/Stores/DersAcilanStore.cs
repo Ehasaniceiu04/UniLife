@@ -21,6 +21,13 @@ namespace Semerkand.Storage.Stores
             _autoMapper = autoMapper;
         }
 
+        public async Task<List<DersAcilanDto>> ByZorunlu(bool isZorunlu)
+        {
+            var dersAcilans = _db.DersAcilans.Where(x => x.Zorunlu == isZorunlu);
+
+            return _autoMapper.Map<List<DersAcilanDto>>(await dersAcilans.ToListAsync());
+        }
+
         public async Task<bool> CreateDersAcilanByDers(DersAcDto dersAcDto)
         {
             using (var context = _db.Context.Database.BeginTransaction())

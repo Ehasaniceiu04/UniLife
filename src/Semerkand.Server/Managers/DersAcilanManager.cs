@@ -19,6 +19,12 @@ namespace Semerkand.Server.Managers
             
         }
 
+        public async Task<ApiResponse> ByZorunlu(bool isZorunlu)
+        {
+            var dersAcilans = await _dersAcilanStore.ByZorunlu(isZorunlu);
+            return new ApiResponse(Status200OK, "Selected DersAcilanDto", dersAcilans);
+        }
+
         public async Task<ApiResponse> CreateDersAcilanByDers(DersAcDto dersAcDto)
         {
             var boolResult = await _dersAcilanStore.CreateDersAcilanByDers(dersAcDto);

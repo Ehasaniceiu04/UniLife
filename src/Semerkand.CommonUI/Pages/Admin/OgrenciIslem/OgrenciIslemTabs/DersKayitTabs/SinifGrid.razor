@@ -25,13 +25,14 @@
                     <GridEvents TValue="DersAcilanDto" CommandClicked="CommandClickHandler"></GridEvents>
                     <GridColumns>
                         <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
-                        <GridColumn Width="50">
+                        <GridColumn Width="100">
                             <GridCommandColumns>
                                 <GridCommandColumn Type="CommandButtonType.None" Title="Kayıt Ol" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowDown", CssClass="e-flat" })"></GridCommandColumn>
+                                <GridCommandColumn Type="CommandButtonType.None" Title="Seçmeli Al" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-StrokeColor", CssClass="e-flat" })"></GridCommandColumn>
                             </GridCommandColumns>
                         </GridColumn>
                         <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kodu"></GridColumn>
-                        <GridColumn Field=@nameof(DersDto.Ad) HeaderText="Ders Adı"></GridColumn>
+                        <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Adı"></GridColumn>
                         <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Zorunlu) HeaderText="Z/S"></GridColumn>
                         <GridColumn Field=@nameof(DersAcilanDto.Kredi) HeaderText="Krd"></GridColumn>
                         <GridColumn Field=@nameof(DersAcilanDto.Akts) HeaderText="Akts"></GridColumn>
@@ -57,7 +58,7 @@
         <div class="row">
             <div class="col-sm-12 col-md-12">
                 <SfGrid ID="DersKayitGrid" @ref="DersKayitGrid" DataSource="@(DersKayitDtos.Where(x=>x.DonemId== appState.DersKayitDonemIdState))" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
-                    <GridEvents TValue="DersAcilanDto" CommandClicked="CommandClickHandlerKayit"></GridEvents>
+                    <GridEvents TValue="DersAcilanDto" QueryCellInfo="QueryCellInfoHandler" CommandClicked="CommandClickHandlerKayit"></GridEvents>
                     <GridAggregates>
                         <GridAggregate>
                             <GridAggregateColumns>
@@ -93,7 +94,9 @@
                             </GridCommandColumns>
                         </GridColumn>
                         <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kodu"></GridColumn>
-                        <GridColumn Field=@nameof(DersDto.Ad) HeaderText="Ders Adı"></GridColumn>
+                        <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Adı"></GridColumn>
+                        <GridColumn Field=@nameof(DersAcilanDto.SecmeliAd) HeaderText="Yerine Ders"></GridColumn>
+                        <GridColumn Visible="false" Field=@nameof(DersAcilanDto.SecmeliId) HeaderText="Yerine id"></GridColumn>
                         <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Zorunlu) HeaderText="Z/S"></GridColumn>
                         <GridColumn Field=@nameof(DersAcilanDto.Kredi) Format="N2" HeaderText="Krd"></GridColumn>
                         <GridColumn Field=@nameof(DersAcilanDto.Akts) Format="N2" HeaderText="Akts"></GridColumn>
@@ -111,17 +114,63 @@
             </SfProgressButton>
         </div>
     </div>
-
-
-
-
 </ControlSection>
+
+
+<MatDialog @bind-IsOpen="@secmeliDersDialogOpen">
+    <MatDialogTitle>Seçmeli Dersler</MatDialogTitle>
+    <MatDialogContent>
+
+        
+
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="@(e => { secmeliDersDialogOpen = false; })">Cancel</MatButton>
+    </MatDialogActions>
+</MatDialog>
 
 <Dialog Baslik="Ders mevcut" @bind-isDialogOpen="@dialog">
     <p>@dialogText</p>
 </Dialog>
 
+
+<Dialog Baslik="Seçmeli Dersler" @bind-isDialogOpen="@secmeliDersDialogOpen">
+    <SfGrid ID="SecmeliDersGrid" @ref="SecmeliDersGrid" DataSource="@SecmeliDerslerDtos" RowHeight="20" AllowSorting="true" AllowPaging="true">
+        @*<GridEvents OnActionComplete="ActionCompletedHandler" TValue="ProgramDto"></GridEvents>*@
+        <GridEvents TValue="DersAcilanDto" CommandClicked="CommandClickHandlerSecmeli"></GridEvents>
+        <GridColumns>
+            <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+            <GridColumn Width="50">
+                <GridCommandColumns>
+                    <GridCommandColumn Type="CommandButtonType.None" Title="Kayıt Ol Secmeli" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowDown", CssClass="e-flat" })"></GridCommandColumn>
+                </GridCommandColumns>
+            </GridColumn>
+            <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kodu"></GridColumn>
+            <GridColumn Field=@nameof(DersDto.Ad) HeaderText="Ders Adı"></GridColumn>
+            <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Zorunlu) HeaderText="Z/S"></GridColumn>
+            <GridColumn Field=@nameof(DersAcilanDto.Kredi) HeaderText="Krd"></GridColumn>
+            <GridColumn Field=@nameof(DersAcilanDto.Akts) HeaderText="Akts"></GridColumn>
+            <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
+            <GridColumn Field=@nameof(DersAcilanDto.ODTekrar) HeaderText="Önceki Dönemler Tekrar Durumu"></GridColumn>
+            <GridColumn Field=@nameof(DersAcilanDto.ADKayit) HeaderText="Aktif Dönem Kayıt Durumu"></GridColumn>
+        </GridColumns>
+    </SfGrid>
+</Dialog>
+
 @code{
+
+    bool secmeliDersDialogOpen;
+    List<DersAcilanDto> SecmeliDerslerDtos = new List<DersAcilanDto>();
+    SfGrid<DersAcilanDto> SecmeliDersGrid;
+    public void QueryCellInfoHandler(QueryCellInfoEventArgs<DersAcilanDto> args)
+    {
+        if (!string.IsNullOrWhiteSpace(args.Data.SecmeliAd))
+        {
+            args.Cell.AddClass(new string[] { "below-35" });
+        }
+    }
+
+
 
     SfGrid<DersAcilanDto> DersAcilanGrid;
     SfGrid<DersAcilanDto> DersKayitGrid;
@@ -165,7 +214,7 @@
     }
 
 
-    public void CommandClickHandler(CommandClickEventArgs<DersAcilanDto> args)
+    public async Task CommandClickHandler(CommandClickEventArgs<DersAcilanDto> args)
     {
         // oka bastıkmı varsa zaten uyarı veriyoruz onu vermeye devam edecek
         // eğer atma başrılı olursa üsttegi giridn satırı boyayacaz
@@ -186,7 +235,35 @@
                 DersKayitGrid.Refresh();
             }
         }
+
+        if (args.CommandColumn.Title == "Seçmeli Al")
+        {
+            if (DersKayitDtos.Any(x => x.Id == args.RowData.Id))
+            {
+                dialog = true;
+                dialogText = $"{args.RowData.Kod} kodlu, {args.RowData.Ad} isimli ders yerine seçim zaten yapılmış!";
+            }
+            else
+            {
+                secmeliDersDialogOpen = true;
+                //Modal içinde girden seçmeli ders seçtiriyoruz.
+                ApiResponseDto<List<DersAcilanDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<DersAcilanDto>>>($"api/dersAcilan/ByZorunlu/{false}");
+                SecmeliDerslerDtos = apiResponse.Result;
+            }
+        }
     }
+
+    public async Task CommandClickHandlerSecmeli(CommandClickEventArgs<DersAcilanDto> args)
+    {
+        secmeliDersDialogOpen = false;
+        if (args.CommandColumn.Title == "Kayıt Ol Secmeli")
+        {
+            DersKayitDtos.Add(args.RowData);
+            DersKayitGrid.Refresh();
+        }
+    }
+
+
 
     public async Task CommandClickHandlerKayit(CommandClickEventArgs<DersAcilanDto> args)
     {
@@ -207,6 +284,8 @@
             }
         }
     }
+
+
 
     async Task KayıtOl()
     {
@@ -245,4 +324,12 @@
         content: '\e7c5';
         color: #e83e8c;
     }
+    .e-StrokeColor:before {
+        content: '\e704';
+        color: #3210c9;
+    }
+
+    .e-grid .e-gridcontent .e-rowcell.below-35 {
+        color: orangered;
+    } 
 </style>

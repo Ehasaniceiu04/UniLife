@@ -12,5 +12,6 @@ namespace Semerkand.Server.Managers
         Task<ApiResponse> GetAcilanDersByMufredatId(int mufredatId);
         Task<ApiResponse> GetKayitliDerssByOgrenciId(int ogrenciId, int sinif,int donemId);
         Task<ApiResponse> GetKayitliDerssByOgrenciIdDonemId(int ogrenciId, int donemId);
+        Task<ApiResponse> ByZorunlu(bool isZorunlu);
     }
 }

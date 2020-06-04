@@ -54,6 +54,17 @@ namespace Semerkand.Server.Controllers
                 await _dersAcilanManager.GetKayitliDerssByOgrenciIdDonemId(ogrenciId, donemId) :
                 new ApiResponse(Status400BadRequest, "DersAcilan Model is Invalid");
 
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("ByZorunlu/{isZorunlu}")]
+        public async Task<ApiResponse> ByZorunlu(bool isZorunlu)
+            => ModelState.IsValid ?
+                await _dersAcilanManager.ByZorunlu(isZorunlu) :
+                new ApiResponse(Status400BadRequest, "DersAcilan Model is Invalid");
+
+
+        
+
 
         // POST: api/DersAcilan
         [HttpPost]
