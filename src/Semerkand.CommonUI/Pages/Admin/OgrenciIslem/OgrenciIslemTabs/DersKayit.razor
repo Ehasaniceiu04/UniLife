@@ -236,8 +236,17 @@
         appState.DersKayitDonemIdState = Convert.ToInt32(await donemRadio.GetSelectedValue());
         //this.NextEffect = "FadeZoomIn";
         Tab.Refresh();
-        await Tab.Select(Tab.SelectedItem - 1);
-        await Tab.Select(Tab.SelectedItem+1);
+        if (Tab.SelectedItem == 0)
+        {
+            await Tab.Select(Tab.SelectedItem + 1);
+            await Tab.Select(Tab.SelectedItem - 1);
+        }
+        else
+        {
+            await Tab.Select(Tab.SelectedItem - 1);
+            await Tab.Select(Tab.SelectedItem + 1);
+        }
+
         //this.NextEffect = "SlideRightIn";
     }
 
