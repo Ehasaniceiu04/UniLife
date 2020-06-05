@@ -108,10 +108,10 @@ namespace Semerkand.Server.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        [Route("GetAcilanDersByMufredatId/{mufredatId}")]
-        public async Task<ApiResponse> GetAcilanDersByMufredatId(int mufredatId)
+        [Route("GetAcilanDersByMufredatId/{mufredatId}/{sinif}/{donemId}")]
+        public async Task<ApiResponse> GetAcilanDersByMufredatId(int mufredatId,int sinif,int donemId)
             => ModelState.IsValid ?
-                    await _dersAcilanManager.GetAcilanDersByMufredatId(mufredatId) :
+                    await _dersAcilanManager.GetAcilanDersByMufredatId(mufredatId, sinif, donemId) :
                     new ApiResponse(Status400BadRequest, "DersAcilan Model is Invalid");
 
 

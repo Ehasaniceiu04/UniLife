@@ -38,8 +38,8 @@ namespace Semerkand.Shared.Dto.Definitions
         public double Kredi { get; set; }
         public bool Durum { get; set; }
         public bool Zorunlu { get; set; }
-        public int? SecmeliId { get; set; }
-        public string SecmeliAd { get; set; }
+        public int? YerineSecilenId { get; set; }
+        public string YerineSecilenAd { get; set; }
         public int Sinif { get; set; }
 
         public int? ODTekrar { get; set; }

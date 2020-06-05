@@ -65,7 +65,7 @@
     <div class="col-sm-12 text-center">
         @foreach (var item in donemDtos)
         {
-            <SfRadioButton Label="@item.Ad" @ref="donemRadio" Name="donemRadio" Value="@item.Id.ToString()" OnChange="onDonemChange" Checked="@item.Durum"></SfRadioButton>
+            <SfRadioButton Label="@item.Ad" @ref="donemRadio" Name="donemRadio" Value="@item.Id.ToString()" @onclick="onClick" Checked="@item.Durum"></SfRadioButton>
         }
     </div>
 </div>
@@ -86,7 +86,7 @@
                     <TabHeader Text="1. Sınıf"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
-                    <SinifGrid Sinif="1" OgrenciId="_OgrenciDto.Id" DersAcilanDtos="@(ListDersAcilan.Where(x => x.Sinif == 1 && x.DonemId == appState.DersKayitDonemIdState).ToList())"></SinifGrid>
+                    <SinifGrid Sinif="1"></SinifGrid>
                 </ContentTemplate>
             </TabItem>
         }
@@ -97,7 +97,15 @@
                     <TabHeader Text="2. Sınıf"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
-                    <SinifGrid Sinif="2" OgrenciId="_OgrenciDto.Id" DersAcilanDtos="@(ListDersAcilan.Where(x => x.Sinif == 2 && x.DonemId == appState.DersKayitDonemIdState).ToList())"></SinifGrid>
+                    @if (IsChecked)
+                    {
+                        <SinifGrid Sinif="2"></SinifGrid>
+                    }
+                    else
+                    {
+                        <SinifGrid Sinif="2"></SinifGrid>
+                    }
+
                 </ContentTemplate>
             </TabItem>
         }
@@ -108,7 +116,7 @@
                     <TabHeader Text="3. Sınıf"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
-                    <SinifGrid Sinif="3" OgrenciId="_OgrenciDto.Id" DersAcilanDtos="@(ListDersAcilan.Where(x => x.Sinif == 3 && x.DonemId == appState.DersKayitDonemIdState).ToList())"></SinifGrid>
+                    <SinifGrid Sinif="3"></SinifGrid>
                 </ContentTemplate>
             </TabItem>
         }
@@ -119,7 +127,7 @@
                     <TabHeader Text="4. Sınıf"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
-                    <SinifGrid Sinif="4" OgrenciId="_OgrenciDto.Id" DersAcilanDtos="@(ListDersAcilan.Where(x => x.Sinif == 4 && x.DonemId == appState.DersKayitDonemIdState).ToList())"></SinifGrid>
+                    <SinifGrid Sinif="4"></SinifGrid>
                 </ContentTemplate>
             </TabItem>
         }
@@ -130,7 +138,7 @@
                     <TabHeader Text="5. Sınıf"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
-                    <SinifGrid Sinif="5" OgrenciId="_OgrenciDto.Id" DersAcilanDtos="@(ListDersAcilan.Where(x => x.Sinif == 5 && x.DonemId == appState.DersKayitDonemIdState).ToList())"></SinifGrid>
+                    <SinifGrid Sinif="5"></SinifGrid>
                 </ContentTemplate>
             </TabItem>
         }
@@ -141,7 +149,7 @@
                     <TabHeader Text="6. Sınıf"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
-                    <SinifGrid Sinif="6" OgrenciId="_OgrenciDto.Id" DersAcilanDtos="@(ListDersAcilan.Where(x => x.Sinif == 6 && x.DonemId == appState.DersKayitDonemIdState).ToList())"></SinifGrid>
+                    <SinifGrid Sinif="6"></SinifGrid>
                 </ContentTemplate>
             </TabItem>
         }
@@ -152,7 +160,7 @@
                     <TabHeader Text="7. Sınıf"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
-                    <SinifGrid Sinif="7" OgrenciId="_OgrenciDto.Id" DersAcilanDtos="@(ListDersAcilan.Where(x => x.Sinif == 7 && x.DonemId == appState.DersKayitDonemIdState).ToList())"></SinifGrid>
+                    <SinifGrid Sinif="7"></SinifGrid>
                 </ContentTemplate>
             </TabItem>
         }
@@ -163,7 +171,7 @@
                     <TabHeader Text="8. Sınıf"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
-                    <SinifGrid Sinif="8" OgrenciId="_OgrenciDto.Id" DersAcilanDtos="@(ListDersAcilan.Where(x => x.Sinif == 8 && x.DonemId == appState.DersKayitDonemIdState).ToList())"></SinifGrid>
+                    <SinifGrid Sinif="8"></SinifGrid>
                 </ContentTemplate>
             </TabItem>
         }
@@ -174,7 +182,7 @@
                     <TabHeader Text="9. Sınıf"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
-                    <SinifGrid Sinif="9" OgrenciId="_OgrenciDto.Id" DersAcilanDtos="@(ListDersAcilan.Where(x => x.Sinif == 9 && x.DonemId == appState.DersKayitDonemIdState).ToList())"></SinifGrid>
+                    <SinifGrid Sinif="9"></SinifGrid>
                 </ContentTemplate>
             </TabItem>
         }
@@ -187,7 +195,7 @@
 
 
 @code{
-
+    public bool IsChecked { get; set; } = true;
 
     List<DonemDto> donemDtos = new List<DonemDto>();
     SfRadioButton donemRadio = new SfRadioButton();
@@ -217,7 +225,7 @@
     {
         _OgrenciDto = appState.OgrenciState;
         GetDonems();
-        GetAcilanDerssByMufredat();
+        //GetAcilanDerssByMufredat();
         SetOgrenciProgramSure();
         SetMufredatAd();
 
@@ -232,14 +240,13 @@
     }
 
 
-    double selectedItem=0;
+    double selectedItem;
     public async void onDonemChange()
     {
+        IsChecked = !IsChecked;
         appState.DersKayitDonemIdState = Convert.ToInt32(await donemRadio.GetSelectedValue());
         //this.NextEffect = "FadeZoomIn";
-        Tab.Refresh();
-        selectedItem = Tab.SelectedItem;
-
+        //Tab.Refresh();
         //if (Tab.SelectedItem == 0)
         //{
         //    await Tab.Select(Tab.SelectedItem + 1);
@@ -254,20 +261,28 @@
         //this.NextEffect = "SlideRightIn";
     }
 
+
+    private async Task onClick(Microsoft.AspNetCore.Components.Web.MouseEventArgs args)
+    {
+
+        appState.DersKayitDonemIdState = Convert.ToInt32(await donemRadio.GetSelectedValue());
+        IsChecked = !IsChecked;
+    }
+
     void AcilanDersleriYenile()
     {
 
     }
 
 
-    void GetAcilanDerssByMufredat()
-    {
-        ApiResponseDto<List<DersAcilanDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<DersAcilanDto>>>($"api/dersacilan/GetAcilanDersByMufredatId/{_OgrenciDto.MufredatId}").Result;
-        ListDersAcilan = apiResponse.Result;
+    //void GetAcilanDerssByMufredat()
+    //{
+    //    ApiResponseDto<List<DersAcilanDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<DersAcilanDto>>>($"api/dersacilan/GetAcilanDersByMufredatId/{_OgrenciDto.MufredatId}").Result;
+    //    ListDersAcilan = apiResponse.Result;
 
-        ApiResponseDto<List<DersAcilanDto>> apiResponseKayitli = Http.GetFromJsonAsync<ApiResponseDto<List<DersAcilanDto>>>($"api/dersAcilan/GetKayitliDerssByOgrenciIdDonemId/{_OgrenciDto.Id}/{appState.DersKayitDonemIdState}").Result;
-        DersKayitDtos = apiResponseKayitli.Result;
-    }
+    //    ApiResponseDto<List<DersAcilanDto>> apiResponseKayitli = Http.GetFromJsonAsync<ApiResponseDto<List<DersAcilanDto>>>($"api/dersAcilan/GetKayitliDerssByOgrenciIdDonemId/{_OgrenciDto.Id}/{appState.DersKayitDonemIdState}").Result;
+    //    DersKayitDtos = apiResponseKayitli.Result;
+    //}
 
     void SetOgrenciProgramSure()
     {

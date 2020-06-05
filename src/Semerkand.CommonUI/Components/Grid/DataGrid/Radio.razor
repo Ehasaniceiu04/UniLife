@@ -1,0 +1,14 @@
+﻿@page "/radio" 
+
+@using Syncfusion.Blazor.Buttons
+
+<SfRadioButton Label="Credit/Debit Card" Name="payment" Value="credit/debit" @onclick="onClick"></SfRadioButton>
+<br />
+<SfRadioButton Label="Net Banking" Name="payment" Value="netbanking" @onclick="onClick"></SfRadioButton>
+
+@code {
+    private void onClick(Microsoft.AspNetCore.Components.Web.MouseEventArgs args)
+    {
+        //onclick Event triggered
+    }
+}

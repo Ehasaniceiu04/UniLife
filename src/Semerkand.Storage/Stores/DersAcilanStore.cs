@@ -194,9 +194,9 @@ namespace Semerkand.Storage.Stores
             return _autoMapper.Map<List<DersAcilanDto>>(await dersAcilans.ToListAsync());
         }
 
-        public async Task<List<DersAcilanDto>> GetAcilanDersByMufredatId(int mufredatId)
+        public async Task<List<DersAcilanDto>> GetAcilanDersByMufredatId(int mufredatId,int sinif,int donemId)
         {
-            var dersAcilans = from d in _db.DersAcilans.Where(x => x.MufredatId == mufredatId)
+            var dersAcilans = from d in _db.DersAcilans.Where(x => x.MufredatId == mufredatId && x.Sinif==sinif && x.DonemId== donemId)
                               select d;
 
             return _autoMapper.Map<List<DersAcilanDto>>(await dersAcilans.ToListAsync());
@@ -206,7 +206,23 @@ namespace Semerkand.Storage.Stores
         {
             var dersAcilans = from a in _db.DersAcilans.Where(x => x.Sinif == sinif && x.DonemId == donemId)
                               join k in _db.DersKayits.Where(x => x.OgrenciId == ogrenciId) on a.Id equals k.DersAcilanId
-                              select a;
+                              select new DersAcilanDto { 
+                                Id=a.Id,
+                                Kod=a.Kod,
+                                Ad=a.Ad,
+                                YerineSecilenId=k.DersYerineSecilenId,
+                                YerineSecilenAd=k.DersYerineSecilenAd,
+                                Zorunlu=a.Zorunlu,
+                                Kredi=a.Kredi,
+                                Akts=a.Akts,
+                                DersId=a.DersId,
+                                ProgramId=a.ProgramId,
+                                DonemId=a.DonemId,
+                                KisaAd=a.KisaAd,
+                                GecmeNotu = a.GecmeNotu,
+                                Durum=a.Durum,
+                                Sinif=a.Sinif
+                              };
 
             return _autoMapper.Map<List<DersAcilanDto>>(await dersAcilans.ToListAsync());
         }

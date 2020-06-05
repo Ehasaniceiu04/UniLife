@@ -37,9 +37,9 @@ namespace Semerkand.Server.Managers
             return new ApiResponse(Status200OK, "Selected DersAcilanDto", dersAcilans);
         }
 
-        public async Task<ApiResponse> GetAcilanDersByMufredatId(int mufredatId)
+        public async Task<ApiResponse> GetAcilanDersByMufredatId(int mufredatId,int sinif,int donemId)
         {
-            var dersAcilans = await _dersAcilanStore.GetAcilanDersByMufredatId(mufredatId);
+            var dersAcilans = await _dersAcilanStore.GetAcilanDersByMufredatId(mufredatId, sinif, donemId);
             return new ApiResponse(Status200OK, "Selected DersAcilanDto", dersAcilans);
         }
 
