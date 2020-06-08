@@ -149,9 +149,11 @@
 
 
 <Dialog Baslik="Seçmeli Dersler" @bind-isDialogOpen="@secmeliDersDialogOpen">
-    <SfGrid ID="SecmeliDersGrid" @ref="SecmeliDersGrid" DataSource="@SecmeliDerslerDtos" RowHeight="20" AllowSorting="true" AllowPaging="true">
-        @*<GridEvents OnActionComplete="ActionCompletedHandler" TValue="ProgramDto"></GridEvents>*@
-        <GridEvents TValue="DersAcilanDto" CommandClicked="CommandClickHandlerSecmeli"></GridEvents>
+    <div class="row">
+        <SfGrid ID="SecmeliDersGrid" @ref="SecmeliDersGrid" DataSource="@SecmeliDerslerDtos" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowFiltering="true">
+            @*<GridEvents OnActionComplete="ActionCompletedHandler" TValue="ProgramDto"></GridEvents>*@
+            <GridEvents TValue="DersAcilanDto" CommandClicked="CommandClickHandlerSecmeli"></GridEvents>
+            @*<GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.CheckBox"></GridFilterSettings>*@
         <GridColumns>
             <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
             <GridColumn Width="50">
@@ -159,16 +161,18 @@
                     <GridCommandColumn Type="CommandButtonType.None" Title="Kayıt Ol Secmeli" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowDown", CssClass="e-flat" })"></GridCommandColumn>
                 </GridCommandColumns>
             </GridColumn>
-            <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kodu"></GridColumn>
-            <GridColumn Field=@nameof(DersDto.Ad) HeaderText="Ders Adı"></GridColumn>
+            <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kod) HeaderText="Kod"></GridColumn>
+            <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Adı"></GridColumn>
+            <GridColumn Field=@nameof(DersAcilanDto.FakulteAd) HeaderText="Fakulte Ad"></GridColumn>
+            <GridColumn Field=@nameof(DersAcilanDto.ProgramAd) HeaderText="Program Ad"></GridColumn>
             <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Zorunlu) HeaderText="Z/S"></GridColumn>
-            <GridColumn Field=@nameof(DersAcilanDto.Kredi) HeaderText="Krd"></GridColumn>
-            <GridColumn Field=@nameof(DersAcilanDto.Akts) HeaderText="Akts"></GridColumn>
+            <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kredi) HeaderText="Krd"></GridColumn>
+            <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Akts) HeaderText="Akts"></GridColumn>
             <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
-            <GridColumn Field=@nameof(DersAcilanDto.ODTekrar) HeaderText="Önceki Dönemler Tekrar Durumu"></GridColumn>
-            <GridColumn Field=@nameof(DersAcilanDto.ADKayit) HeaderText="Aktif Dönem Kayıt Durumu"></GridColumn>
         </GridColumns>
-    </SfGrid>
+        </SfGrid>
+    </div>
+    
 </Dialog>
 
 @code{
@@ -209,15 +213,26 @@
 
 
 
+
+    [Inject]
+    protected IJSRuntime JsRuntime { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var Locale = await Http.GetJsonAsyncExtension<object>("tr.json");
+            this.JsRuntime.Sf().LoadLocaleData(Locale).SetCulture("tr");
+
+            //this.JsRuntime.Sf().LoadLocaleData("tr.json").SetCulture("tr");
+        }
+    }
+
+
     protected override async Task OnInitializedAsync()
     {
         await ReadAcilan();
         await ReadKayitli();
-
-    }
-
-    protected override void OnInitialized()
-    {
 
     }
 
@@ -381,5 +396,14 @@
 
     .e-grid .e-gridcontent .e-rowcell.below-35 {
         color: orangered;
+    }
+
+    .mdc-dialog .mdc-dialog__container {
+        width: 100%;
+    }
+
+    .mdc-dialog .mdc-dialog__surface {
+        max-width: none;
+        width: 70%;
     }
 </style>

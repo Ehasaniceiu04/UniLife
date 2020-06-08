@@ -20,8 +20,11 @@ namespace Semerkand.Shared.Dto.Definitions
 
         public int ProgramId { get; set; }
         public virtual ProgramDto Program { get; set; }
+        public string ProgramAd { get; set; }
         public int MufredatId { get; set; }
         public virtual MufredatDto Mufredat { get; set; }
+
+        public string FakulteAd { get; set; }
         //External
 
         public int DonemId { get; set; }

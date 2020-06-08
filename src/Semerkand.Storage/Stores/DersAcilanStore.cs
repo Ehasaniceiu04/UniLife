@@ -23,7 +23,27 @@ namespace Semerkand.Storage.Stores
 
         public async Task<List<DersAcilanDto>> ByZorunlu(bool isZorunlu)
         {
-            var dersAcilans = _db.DersAcilans.Where(x => x.Zorunlu == isZorunlu);
+            var dersAcilans = from da in _db.DersAcilans.Where(x => x.Zorunlu == isZorunlu)
+                              join p in _db.Programs on da.ProgramId equals p.Id
+                              join f in _db.Fakultes on p.FakulteId equals f.Id
+                              select new DersAcilanDto
+                              {
+                                  Id = da.Id,
+                                  Kod = da.Kod,
+                                  Ad = da.Ad,
+                                  ProgramAd=p.Ad,
+                                  FakulteAd=f.Ad,
+                                  Zorunlu = da.Zorunlu,
+                                  Kredi = da.Kredi,
+                                  Akts = da.Akts,
+                                  DersId = da.DersId,
+                                  ProgramId = da.ProgramId,
+                                  DonemId = da.DonemId,
+                                  KisaAd = da.KisaAd,
+                                  GecmeNotu = da.GecmeNotu,
+                                  Durum = da.Durum,
+                                  Sinif = da.Sinif
+                              };
 
             return _autoMapper.Map<List<DersAcilanDto>>(await dersAcilans.ToListAsync());
         }
