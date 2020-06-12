@@ -25,6 +25,8 @@ namespace Semerkand.Shared.DataModels
         public virtual Mufredat Mufredat{ get; set; }
         //External
 
+        public int OgretmenId { get; set; }
+        public Ogretmen Ogretmen { get; set; }
         public int DonemId { get; set; }
         public virtual Donem Donem { get; set; }
         

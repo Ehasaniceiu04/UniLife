@@ -25,7 +25,12 @@ namespace Semerkand.Shared.Dto.Definitions
         public virtual MufredatDto Mufredat { get; set; }
 
         public string FakulteAd { get; set; }
+
+        //public int  { get; set; }
         //External
+
+        public int OgretmenId { get; set; }
+        public OgretmenDto Ogretmen { get; set; }
 
         public int DonemId { get; set; }
         public virtual DonemDto Donem { get; set; }

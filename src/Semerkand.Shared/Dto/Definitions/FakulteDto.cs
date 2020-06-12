@@ -38,8 +38,8 @@ namespace Semerkand.Shared.Dto.Definitions
         public int BirimID { get; set; }
 
 
-        public virtual ICollection<Bolum> Bolums { get; set; }
+        public virtual ICollection<BolumDto> Bolums { get; set; }
 
-        public virtual ICollection<Ogrenci> Ogrencis { get; set; }
+        public virtual ICollection<OgrenciDto> Ogrencis { get; set; }
     }
 }

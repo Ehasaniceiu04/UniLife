@@ -32,6 +32,8 @@ namespace Semerkand.Storage
         public DbSet<DonemTip> DonemTips{ get; set; }
         public DbSet<OgrenimDurum> OgrenimDurums { get; set; }
         public DbSet<Ogrenci> Ogrencis { get; set; }
+        public DbSet<Ogretmen> Ogretmens { get; set; }
+
 
         //TODO Bunu böyle bırakacakmıyız.
         public Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade Database { get; set; }

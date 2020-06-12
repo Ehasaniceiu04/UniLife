@@ -248,17 +248,17 @@ namespace Semerkand.Server
                 options.ApiName = IdentityServerConfig.ApiName;
             });
 
-            //https://docs.microsoft.com/en-us/aspnet/core/security/authentication/social/google-logins?view=aspnetcore-3.1
-            if (Convert.ToBoolean(Configuration["ExternalAuthProviders:Google:Enabled"] ?? "false"))
-            {
-                authBuilder.AddGoogle(options =>
-                {
-                    options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+            ////https://docs.microsoft.com/en-us/aspnet/core/security/authentication/social/google-logins?view=aspnetcore-3.1
+            //if (Convert.ToBoolean(Configuration["ExternalAuthProviders:Google:Enabled"] ?? "false"))
+            //{
+            //    authBuilder.AddGoogle(options =>
+            //    {
+            //        options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
 
-                    options.ClientId = Configuration["ExternalAuthProviders:Google:ClientId"];
-                    options.ClientSecret = Configuration["ExternalAuthProviders:Google:ClientSecret"];
-                });
-            }
+            //        options.ClientId = Configuration["ExternalAuthProviders:Google:ClientId"];
+            //        options.ClientSecret = Configuration["ExternalAuthProviders:Google:ClientSecret"];
+            //    });
+            //}
 
             //Add Policies / Claims / Authorization - https://stormpath.com/blog/tutorial-policy-based-authorization-asp-net-core
             services.AddAuthorization(options =>
@@ -525,6 +525,7 @@ namespace Semerkand.Server
                 databaseInitializer.SeedAsync().Wait();
             }
 
+            //odatalari loglamiyoruz (APIResponseRequestLoggingMiddleware den ayirdik).
             app.UseWhen(context => context.Request.Path.StartsWithSegments("/api"), applicationBuilder =>
             {
                 // A REST API global exception handler and response wrapper for a consistent API
