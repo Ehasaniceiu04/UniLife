@@ -1,0 +1,322 @@
+﻿@inject HttpClient Http;
+@using UniLife.Shared.Dto.Definitions
+@inject IMatToaster matToaster
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Inputs
+@using System.Net
+@inject AppState appState
+@using Syncfusion.Blazor.Inputs
+
+@using Newtonsoft.Json
+
+@*<style>
+        .e-dialog {
+            max-width: 30%;
+        }
+    </style>*@
+
+    <ControlSection>
+        <div class="col-xs-12 col-sm-12 col-lg-12 col-md-12">
+            <MatBlazor.MatHeadline5>Program : @(appState.MufredatState==null?"Müfredat seçmelisiniz.": appState.MufredatState.Program.Ad)</MatBlazor.MatHeadline5>
+            <MatBlazor.MatHeadline5>Müfredat : @(appState.MufredatState == null ? "Müfredat seçmelisiniz." : appState.MufredatState?.Ad)</MatBlazor.MatHeadline5>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-lg-12 col-md-12">
+            <SfGrid ShowColumnChooser="true" @ref="DersGrid" DataSource="@dersDtos" Toolbar="@(new List<string>() { "Add", "Edit", "Delete","ColumnChooser" })" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowGrouping="true" ColumnMenuItems=@MenuItems ShowColumnMenu="true" Width="100%">
+                @*<SfDataManager AdaptorInstance="@typeof(CustomAdaptor)" Adaptor="Adaptors.CustomAdaptor"></SfDataManager>*@
+                <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.CheckBox"></GridFilterSettings>
+                <GridGroupSettings ShowGroupedColumn="true"></GridGroupSettings>
+                <GridEvents OnActionComplete="ActionCompletedHandler" TValue="DersDto"></GridEvents>
+                <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
+                    <Template>
+                        @{
+                            DersDto dersDto = (context as DersDto);
+
+
+                            <div class="col-md-10 offset-md-1">
+                                <div class="form-row mt-4">
+                                    <div class="col-sm-5 pb-3">
+                                        <label for="Id">Id</label>
+                                        <SfTextBox ID="Id" CssClass="form-control" Value="@(dersDto.Id.ToString())" Enabled="@false"></SfTextBox>
+                                    </div>
+                                    <div class="col-sm-3 pb-3">
+                                        <label for="Ad">Ad</label>
+                                        <SfTextBox ID="Ad" Placeholder="Ad" CssClass="form-control" Value="@(dersDto.Ad)"></SfTextBox>
+                                    </div>
+                                    <div class="col-sm-4 pb-3">
+                                        <label for="Kod">Kod</label>
+                                        <SfTextBox ID="Kod" CssClass="form-control" Value="@(dersDto.Kod)" Enabled="@true"></SfTextBox>
+                                    </div>
+                                    <div class="col-sm-6 pb-3">
+                                        <label for="KisaAd">KisaAd</label>
+                                        <SfTextBox ID="KisaAd" CssClass="form-control" Value="@(dersDto.KisaAd)" Enabled="@true"></SfTextBox>
+                                    </div>
+                                    <div class="col-sm-6 pb-3">
+                                        <label for="MufredatID">MufredatID</label>
+                                        <SfDropDownList ID="MufredatID" CssClass="form-control" Value="@(appState.MufredatState.Id.ToString())" TValue="string" TItem="MufredatDto" Index="0" DataSource="@(mufredatDtos.Where(x=>x.Id==appState.MufredatState.Id))">
+                                            <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
+                                        </SfDropDownList>
+                                        @*<SfTextBox ID="MufredatId" CssClass="form-control" Value="@(dersDto.MufredatId.ToString())" Enabled="@false" Placeholder="@(appState.MufredatState.Ad)"></SfTextBox>*@
+                                    </div>
+                                    <div class="col-sm-6 pb-3">
+                                        <label for="DonemId">DonemId</label>
+                                        <SfDropDownList ID="DonemId" CssClass="form-control" Value="@(dersDto.DonemId.ToString())" TValue="string" TItem="DonemDto" Index="0" DataSource="donemDtos">
+                                            <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
+                                        </SfDropDownList>
+                                    </div>
+                                    <div class="col-sm-6 pb-3">
+                                        <label for="Akts">Akts</label>
+                                        <SfTextBox ID="Akts" CssClass="form-control" Value="@(dersDto.Akts.ToString())" Enabled="@true"></SfTextBox>
+                                    </div>
+                                    <div class="col-sm-4 pb-2">
+                                        <label for="KisaAd">Kısa Ad</label>
+                                        <SfTextBox ID="KisaAd" CssClass="form-control" Value="@(dersDto.KisaAd)" Enabled="@true"></SfTextBox>
+                                    </div>
+                                    <div class="col-sm-4 pb-2">
+                                        <label for="AdEn">AdEn</label>
+                                        <SfTextBox ID="AdEn" CssClass="form-control" Value="@(dersDto.AdEn)" Enabled="@true"></SfTextBox>
+                                    </div>
+                                    <div class="col-sm-4 pb-2">
+                                        <label for="GecmeNotu">GecmeNotu</label>
+                                        <SfTextBox ID="GecmeNotu" CssClass="form-control" Value="@(dersDto.GecmeNotu.ToString())" Enabled="@true"></SfTextBox>
+                                    </div>
+
+                                    <div class="col-12 pb-2">
+                                        <div class="form-row">
+                                            <label class="col-md col-form-label" for="OptikKod">OptikKod</label>
+                                            <SfTextBox ID="OptikKod" CssClass="form-control col-sm-2" Value="@(dersDto.OptikKod)" Enabled="@true"></SfTextBox>
+                                            <label class="col-md col-form-label" for="AdEn">AdEn</label>
+                                            <SfTextBox ID="AdEn" CssClass="form-control col-sm-2" Value="@(dersDto.AdEn)" Enabled="@true"></SfTextBox>
+                                            <label class="col-md col-form-label" for="UygSaat">UygSaat</label>
+                                            <SfTextBox ID="UygSaat" CssClass="form-control col-sm-2" Value="@(dersDto.UygSaat.ToString())" Enabled="@true"></SfTextBox>
+                                            <label class="col-md col-form-label" for="LabSaat">LabSaat</label>
+                                            <SfTextBox ID="LabSaat" CssClass="form-control col-sm-2" Value="@(dersDto.LabSaat.ToString())" Enabled="@true"></SfTextBox>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 pb-2">
+                                        <div class="form-row">
+                                            <label class="col-md col-form-label" for="Durum">Durum</label>
+                                            <SfTextBox ID="Durum" CssClass="form-control col-md-2" Value="@(dersDto.Durum.ToString())" Enabled="@true"></SfTextBox>
+                                            <label class="col-md col-form-label" for="Sinif">Sinif</label>
+                                            <SfTextBox ID="Sinif" CssClass="form-control col-md-2" Value="@(dersDto.Sinif.ToString())" Enabled="@true"></SfTextBox>
+                                            <label class="col-md col-form-label" for="TeoSaat">TeoSaat</label>
+                                            <SfTextBox ID="TeoSaat" CssClass="form-control col-md-2" Value="@(dersDto.TeoSaat.ToString())" Enabled="@true"></SfTextBox>
+                                            <label class="col-md col-form-label" for="Kredi">Kredi</label>
+                                            <SfTextBox ID="Kredi" CssClass="form-control col-md-2" Value="@(dersDto.Kredi.ToString())" Enabled="@true"></SfTextBox>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </Template>
+
+                </GridEditSettings>
+                <GridColumns>
+                    <GridColumn Field=@nameof(DersDto.Id) HeaderText="ders Id" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+                    <GridColumn Field=@nameof(DersDto.Ad) HeaderText="Ders" ValidationRules="@(new { required=true})"></GridColumn>
+
+                    <GridColumn Field=@nameof(DersDto.Kod) HeaderText="Kod" ValidationRules="@(new { required=true})"></GridColumn>
+                    <GridColumn Field=@nameof(DersDto.KisaAd) HeaderText="Kısa Ad"></GridColumn>
+                    <GridColumn Field=@nameof(DersDto.MufredatId) HeaderText="Müfredat" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="mufredatDtos" Width="150"></GridColumn>
+                    <GridColumn Field=@nameof(DersDto.DonemId) HeaderText="Dönem" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@donemDtos" Width="150"></GridColumn>
+                    <GridColumn Visible="false" Field=@nameof(DersDto.Akts) HeaderText="Akts"></GridColumn>
+                    <GridColumn Visible="false" Field=@nameof(DersDto.GecmeNotu) HeaderText="GeçmeNotu"></GridColumn>
+                    <GridColumn Visible="false" Field=@nameof(DersDto.OptikKod) HeaderText="OptikKod"></GridColumn>
+                    <GridColumn Visible="false" Field=@nameof(DersDto.AdEn) HeaderText="AdEn"></GridColumn>
+                    <GridColumn Visible="false" Field=@nameof(DersDto.UygSaat) HeaderText="UygSaat"></GridColumn>
+                    <GridColumn Visible="false" Field=@nameof(DersDto.LabSaat) HeaderText="LabSaat"></GridColumn>
+                    <GridColumn Visible="false" Field=@nameof(DersDto.TeoSaat) HeaderText="TeoSaat"></GridColumn>
+                    <GridColumn Visible="false" Field=@nameof(DersDto.Kredi) HeaderText="Kredi"></GridColumn>
+                    <GridColumn Visible="false" Field=@nameof(DersDto.Durum) HeaderText="Durum" EditType="EditType.BooleanEdit"></GridColumn>
+                    <GridColumn Visible="false" Field=@nameof(DersDto.Zorunlu) HeaderText="Zorunlu"></GridColumn>
+                    <GridColumn Field=@nameof(DersDto.Sinif) HeaderText="Sinif"></GridColumn>
+                    <GridColumn HeaderText="ops">
+                        <GridCommandColumns>
+                            <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-edit", CssClass="e-flat" })"></GridCommandColumn>
+                            <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-delete", CssClass="e-flat" })"></GridCommandColumn>
+                            <GridCommandColumn Type="CommandButtonType.Save" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-update", CssClass="e-flat" })"></GridCommandColumn>
+                            <GridCommandColumn Type="CommandButtonType.Cancel" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-cancel-icon", CssClass="e-flat" })"></GridCommandColumn>
+                        </GridCommandColumns>
+                    </GridColumn>
+                </GridColumns>
+            </SfGrid>
+        </div>
+        
+    </ControlSection>
+
+
+@code{
+
+
+    [Parameter]
+    public EventCallback<int> TabDegis { get; set; }
+
+    SfGrid<DersDto> DersGrid;
+
+    List<DersDto> dersDtos = new List<DersDto>();
+
+    List<MufredatDto> mufredatDtos = new List<MufredatDto>();
+
+    List<DonemDto> donemDtos = new List<DonemDto>();
+
+    public string[] MenuItems = new string[] { "Group", "Ungroup", "ColumnChooser", "Filter" };
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ReadDerss();
+
+        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/mufredat");
+        mufredatDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<MufredatDto[]>(apiResponse.Result.ToString()).ToList<MufredatDto>();
+        ApiResponseDto apiResponseDersTur = await Http.GetFromJsonAsync<ApiResponseDto>("api/donem");
+        donemDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<DonemDto[]>(apiResponseDersTur.Result.ToString()).ToList<DonemDto>();
+
+    }
+
+    async Task ReadDerss()
+    {
+        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/ders/GetDersByMufredatId/" + appState.MufredatState.Id);
+
+        if (apiResponse.StatusCode == Status200OK)
+        {
+            matToaster.Add(apiResponse.Message, MatToastType.Success, "ders getirildi");
+            dersDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<DersDto[]>(apiResponse.Result.ToString()).ToList<DersDto>();
+            DersGrid.Refresh();
+        }
+        else
+        {
+            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "ders bilgisi getirilirken hata oluştu!");
+        }
+    }
+
+
+
+    public void ActionBeginHandler(ActionEventArgs<DersDto> args)
+    {
+
+    }
+
+    public async void ActionCompletedHandler(ActionEventArgs<DersDto> args)
+    {
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
+        {
+
+        }
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+        {
+            if (args.Action == "edit")
+            {
+                Update(args.Data);
+            }
+            else if (args.Action == "add")
+            {
+                await Create(args.Data);
+            }
+
+        }
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
+        {
+            await Delete(args.Data);
+        }
+    }
+
+    public async Task Create(DersDto dersDto)
+    {
+        try
+        {
+            ApiResponseDto<DersDto> apiResponse = await Http.PostJsonAsync<ApiResponseDto<DersDto>>
+                ("api/ders", dersDto);
+            if (apiResponse.StatusCode == Status200OK)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success);
+                dersDtos.FirstOrDefault(x => x.Id == 0).Id = apiResponse.Result.Id;
+                //DersGrid.Refresh();
+            }
+            else
+            {
+                //TODO Ahmet 1**
+                //TODO Ahmet 2**
+                dersDtos.Remove(dersDto);
+                //DersGrid.Refresh();
+                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "ders Creation Failed");
+            }
+        }
+        catch (Exception ex)
+        {
+            //TODO Ahmet 1**: liste içinden değinde gride eklediğini sil demeli !!
+            //TODO Ahmet 2**: Dbden hata geldiği zaman Bu hata sebebini mantıklı şekilde buraya vermemiz gerekiyor. Aynı Idli kayıt gönder patlatıyon.
+
+            dersDtos.Remove(dersDto);
+            DersGrid.Refresh();
+            matToaster.Add(ex.Message, MatToastType.Danger, "Universite Creation Failed");
+        }
+    }
+
+
+    public async void Update(DersDto dersDto)
+    {
+        //this updates the IsCompleted flag only
+        try
+        {
+            ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>
+                ("api/ders", dersDto);
+
+            if (!apiResponse.IsError)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success);
+            }
+            else
+            {
+                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Universite Save Failed");
+                //update failed gridi boz !
+            }
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.Message, MatToastType.Danger, "Universite Save Failed");
+            //update failed gridi boz !
+        }
+    }
+
+    public async Task Delete(DersDto dersDto)
+    {
+        try
+        {
+            var response = await Http.DeleteAsync("api/ders/" + dersDto.Id);
+            if (response.StatusCode == (HttpStatusCode)Status200OK)
+            {
+                matToaster.Add("Universite Deleted", MatToastType.Success);
+                dersDtos.Remove(dersDto);
+            }
+            else
+            {
+                matToaster.Add("Universite Delete Failed: " + response.StatusCode, MatToastType.Danger);
+            }
+            //deleteDialogOpen = false;
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.Message, MatToastType.Danger, "Universite Save Failed");
+        }
+    }
+
+
+    //[Inject]
+    //protected IJSRuntime JsRuntime { get; set; }
+
+    //protected override async Task OnAfterRenderAsync(bool firstRender)
+    //{
+    //    if (firstRender)
+    //    {
+    //        var Locale = await Http.GetJsonAsyncExtension<object>
+    //("tr.json");
+    //        this.JsRuntime.Sf().LoadLocaleData(Locale).SetCulture("tr");
+
+    //        //this.JsRuntime.Sf().LoadLocaleData("tr.json").SetCulture("tr");
+    //    }
+    //}
+
+
+
+}

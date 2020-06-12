@@ -1,7 +1,7 @@
 ﻿@using Syncfusion.Blazor.DropDowns
 @using Syncfusion.Blazor.Inputs
 @using Syncfusion.Blazor.Buttons
-@using Semerkand.Shared.Dto.Definitions
+@using UniLife.Shared.Dto.Definitions
 @inject IMatToaster matToaster
 @inject HttpClient Http;
 @using Syncfusion.Blazor.SplitButtons
@@ -23,7 +23,7 @@
                                 <AutoCompleteTemplates TItem="OgrenciDto">
                                     <ItemTemplate>
                                         <div>
-                                            <img class="empImage" src="_content/Semerkand.CommonUI/images/ogrenci/2.png" asp-append-version="true" alt="image" />
+                                            <img class="empImage" src="_content/UniLife.CommonUI/images/ogrenci/2.png" asp-append-version="true" alt="image" />
                                             <div class="ename  pb-2"> @((context as OgrenciDto).Ad) </div>
                                             <div class="job pb-2"> @((context as OgrenciDto).Program?.Ad) </div>
                                             <div class="job"> @((context as OgrenciDto).OgrNo) </div>
@@ -40,7 +40,7 @@
                                 <AutoCompleteTemplates TItem="OgrenciDto">
                                     <ItemTemplate>
                                         <div>
-                                            <img class="empImage" src="_content/Semerkand.CommonUI/images/ogrenci/2.png" asp-append-version="true" alt="image" />
+                                            <img class="empImage" src="_content/UniLife.CommonUI/images/ogrenci/2.png" asp-append-version="true" alt="image" />
                                             <div class="ename  pb-2"> @((context as OgrenciDto).Ad) </div>
                                             <div class="job pb-2"> @((context as OgrenciDto).Program?.Ad) </div>
                                             <div class="job"> @((context as OgrenciDto).OgrNo) </div>
@@ -138,7 +138,7 @@
                                 <AutoCompleteTemplates TItem="OgrenciDto">
                                     <ItemTemplate>
                                         <div>
-                                            <img class="empImage" src="_content/Semerkand.CommonUI/images/ogrenci/2.png" asp-append-version="true" alt="image" />
+                                            <img class="empImage" src="_content/UniLife.CommonUI/images/ogrenci/2.png" asp-append-version="true" alt="image" />
                                             <div class="ename  pb-2"> @((context as OgrenciDto).Ad) </div>
                                             <div class="job"> @((context as OgrenciDto).Program.Ad) </div>
                                         </div>
@@ -154,7 +154,7 @@
                                 <AutoCompleteTemplates TItem="OgrenciDto">
                                     <ItemTemplate>
                                         <div>
-                                            <img class="empImage" src="_content/Semerkand.CommonUI/images/ogrenci/2.png" asp-append-version="true" alt="image" />
+                                            <img class="empImage" src="_content/UniLife.CommonUI/images/ogrenci/2.png" asp-append-version="true" alt="image" />
                                             <div class="ename  pb-2"> @((context as OgrenciDto).Ad) </div>
                                             <div class="job"> @((context as OgrenciDto).Program.Ad) </div>
                                         </div>

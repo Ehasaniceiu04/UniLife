@@ -15,9 +15,9 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development #Consider changing this in Production
       - Serilog__MinimumLevel__Default=Debug #Consider changing this in Production
       - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=blazor_boilerplate;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourVeryStrong(!)Password;Integrated Security=false
-      - Semerkand__UseSqlServer=true
-      - Semerkand__ApplicationUrl=blazorboilerplate
-      - Semerkand__IS4ApplicationUrl=blazorboilerplate
+      - UniLife__UseSqlServer=true
+      - UniLife__ApplicationUrl=blazorboilerplate
+      - UniLife__IS4ApplicationUrl=blazorboilerplate
     networks:
       - bb
     restart: on-failure

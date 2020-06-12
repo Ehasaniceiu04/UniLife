@@ -1,0 +1,68 @@
+﻿@inherits UniLife.CommonUI.Components.StyleComponentBase
+
+<style data-name="Divider">
+
+.hr {
+  width: 100%;
+  height: 1px;
+  display: block;
+  position: relative;
+  margin-bottom: 0em;
+  padding: 2em 0;
+}
+.hr:after, .hr:before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  bottom: 50%;
+  left: 0;
+}
+.hr:before {
+  background: -webkit-gradient(linear, left top, right top, from(#ffffff), color-stop(50%, #ffffff), color-stop(50%, transparent), to(transparent));
+  background: linear-gradient(90deg, #ffffff 0%, #ffffff 50%, transparent 50%, transparent 100%);
+  background-size: 15px;
+  background-position: center;
+  z-index: 1;
+}
+    .hr:after {
+        -webkit-transition: opacity 0.3s ease, -webkit-animation 0.3s ease;
+        transition: opacity 0.3s ease, -webkit-animation 0.3s ease;
+        transition: opacity 0.3s ease, animation 0.3s ease;
+        transition: opacity 0.3s ease, animation 0.3s ease, -webkit-animation 0.3s ease;
+        background: -webkit-gradient(linear, left top, right top, color-stop(5%, #1a07ed), color-stop(15%, #5016a1), color-stop(25%, #5016a1), color-stop(35%, #40070f), color-stop(45%, #40070f), color-stop(55%, #2f093b), color-stop(65%, #2f093b), color-stop(75%, #043834), color-stop(85%, #043834), color-stop(95%, #1a07ed));
+        background: linear-gradient(to right, #1a07ed 5%, #5016a1 15%, #5016a1 25%, #40070f 35%, #40070f 45%, #2f093b 55%, #2f093b 65%, #043834 75%, #043834 85%, #1a07ed 95%);
+        background-size: 200%;
+        background-position: 0%;
+        -webkit-animation: bar 15s linear infinite;
+        animation: bar 15s linear infinite;
+    }
+
+@keyframes bar {
+  0% {
+    background-position: 0%;
+  }
+  100% {
+    background-position: 200%;
+  }
+}
+.hr.anim:before {
+  background: -webkit-gradient(linear, left top, right top, from(#ffffff), color-stop(5%, #ffffff), color-stop(5%, transparent), color-stop(10%, transparent), color-stop(10%, #ffffff), color-stop(15%, #ffffff), color-stop(15%, transparent), color-stop(20%, transparent), color-stop(20%, #ffffff), color-stop(25%, #ffffff), color-stop(25%, transparent), color-stop(30%, transparent), color-stop(30%, #ffffff), color-stop(35%, #ffffff), color-stop(35%, transparent), color-stop(40%, transparent), color-stop(40%, #ffffff), color-stop(45%, #ffffff), color-stop(45%, transparent), color-stop(50%, transparent), color-stop(50%, #ffffff), color-stop(55%, #ffffff), color-stop(55%, transparent), color-stop(60%, transparent), color-stop(60%, #ffffff), color-stop(65%, #ffffff), color-stop(65%, transparent), color-stop(70%, transparent), color-stop(70%, #ffffff), color-stop(75%, #ffffff), color-stop(75%, transparent), color-stop(80%, transparent), color-stop(80%, #ffffff), color-stop(85%, #ffffff), color-stop(85%, transparent), color-stop(90%, transparent), color-stop(90%, #ffffff), color-stop(95%, #ffffff), color-stop(95%, transparent), to(transparent));
+  background: linear-gradient(90deg, #ffffff 0%, #ffffff 5%, transparent 5%, transparent 10%, #ffffff 10%, #ffffff 15%, transparent 15%, transparent 20%, #ffffff 20%, #ffffff 25%, transparent 25%, transparent 30%, #ffffff 30%, #ffffff 35%, transparent 35%, transparent 40%, #ffffff 40%, #ffffff 45%, transparent 45%, transparent 50%, #ffffff 50%, #ffffff 55%, transparent 55%, transparent 60%, #ffffff 60%, #ffffff 65%, transparent 65%, transparent 70%, #ffffff 70%, #ffffff 75%, transparent 75%, transparent 80%, #ffffff 80%, #ffffff 85%, transparent 85%, transparent 90%, #ffffff 90%, #ffffff 95%, transparent 95%, transparent 100%);
+  background-size: 150px;
+  background-position: center;
+  z-index: 1;
+  -webkit-animation: bar 120s linear infinite;
+          animation: bar 120s linear infinite;
+}
+.hr.anim:hover:before {
+  -webkit-animation-duration: 20s;
+          animation-duration: 20s;
+}
+.hr.anim:hover:after {
+  -webkit-animation-duration: 2s;
+          animation-duration: 2s;
+}
+
+
+</style>

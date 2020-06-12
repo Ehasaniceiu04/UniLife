@@ -1,4 +1,4 @@
-# <img src="https://github.com/enkodellc/blazorboilerplate/blob/master/src/Semerkand.CommonUI/wwwroot/images/Blazor-Boilerplate-Title.png" alt="Blazor Boilerplate" style="max-wdith:100%"/>
+# <img src="https://github.com/enkodellc/blazorboilerplate/blob/master/src/UniLife.CommonUI/wwwroot/images/Blazor-Boilerplate-Title.png" alt="Blazor Boilerplate" style="max-wdith:100%"/>
 
 Blazor is a web framework designed to run in the browser on a WebAssembly-based .NET runtime. Blazor Boilerplate aka Blazor Starter Template is a SPA admin template that is able to BOTH (WebAssembly / Core-Hosted) and Server-Side Blazor with a .NET Core 3.1 Server. The UI for this application is by Material Design provided mostly by MatBlazor.
 Version 0.2.3 and below utilize AspNETCore Authorization / Authentication. Version 0.3.0 and up will be using Identity Server 4. Version 0.6.0 and up are capable of both CSB and SSB!    
@@ -14,7 +14,7 @@ Version 0.2.3 and below utilize AspNETCore Authorization / Authentication. Versi
 [![GitHub Issues](https://img.shields.io/github/issues/enkodellc/blazorboilerplate.svg)](https://github.com/enkodellc/blazorboilerplate/issues)
 [![MIT](https://img.shields.io/github/license/SamProf/MatBlazor.svg)](LICENSE)
 [![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.me/enkodellc)
-[![Gitter](https://badges.gitter.im/Semerkand/community.svg)](https://gitter.im/blazorboilerplate/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+[![Gitter](https://badges.gitter.im/UniLife/community.svg)](https://gitter.im/blazorboilerplate/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 ## Goals
 - This repository is community driven. It is not and never will be controlled by a corporation. It's success is dependent on people using it, reviewing it, offering suggestions and most importantly contributing. Please join the [gitter discussion](https://gitter.im/blazorboilerplate/community) 
@@ -44,7 +44,7 @@ Complete all Blazor dependencies.
 [https://blazorboilerplate.com/swagger/index.html](https://blazorboilerplate.com/swagger/index.html)
 
 ## Publish on IIS - What works for me on my Windows Server 2016 & SQL Server 2014 (Enkodellc)
-1. Publish Semerkand.Server project to your IIS website folder using CSB or SSB.
+1. Publish UniLife.Server project to your IIS website folder using CSB or SSB.
 2. Install your SSL. Make sure your SSL is in the **WebHosting** Certificate Store.
     - A free certificate from [Let's Encrypt](https://letsencrypt.org/) will work. 
     - For steps 2 & 3 the utility [win-acme](https://github.com/win-acme/win-acme) installs the
@@ -112,18 +112,18 @@ This project is licensed under the terms of the [MIT license](LICENSE).
 - Make sure you have all pre-requisites installed.
 - Keep It Simple Stupid: If you are running into issues with SQL / connection string. First CHECK both appsettings.json (appsettings.production.json for production) and (appsettings.development.json for development). 
 - Test out with SQLlite / file db. Then test out with a known good connection string.
-- Go back to the Origin: Semerkand was built off of [BlazorWithIdentity](https://github.com/stavroskasidis/BlazorWithIdentity) so first step is to run this and try and publish. The reasoning is that this is a very lean project to reduce the amount of code and resources requiring debugging.
-- If still failing get on [Gitter Semerkand](https://gitter.im/blazorboilerplate/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+- Go back to the Origin: UniLife was built off of [BlazorWithIdentity](https://github.com/stavroskasidis/BlazorWithIdentity) so first step is to run this and try and publish. The reasoning is that this is a very lean project to reduce the amount of code and resources requiring debugging.
+- If still failing get on [Gitter UniLife](https://gitter.im/blazorboilerplate/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
  for Blazor Boilerplate or  [Gitter aspnet/Blazor](https://gitter.im/aspnet/Blazor?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge).
 - Debugging is very limited on WebAssembly / Client-side Blazor. Use Debug_SSB for debugging the UI. Just be aware of browser caching issues when switching modes.
  The server side of the project can easily be debugged, just not there yet on the client-side code.
 - If you are getting compiler errors try and close VS delete your .vs directory in the solution folder. If that doesn't work delete the solution and redownload the repo.
  
 ### Postgres Support
-*Note this might be out of date.. Delete Existing Migrations in the Semerkand.Server/Migrations Folder and then create your own migrations:  
+*Note this might be out of date.. Delete Existing Migrations in the UniLife.Server/Migrations Folder and then create your own migrations:  
   -`dotnet ef --startup-project ..\BlazerBoilerplate.Server migrations add InitialApplicationDbMigration --context ApplicationDbContext -o Migrations\ApplicationDb`  
-  -`dotnet ef --startup-project ..\Semerkand.Server\ migrations add InitialConfigurationDbMigration --context ConfigurationDbContext  -o Migrations\ConfigurationDb`  
-  -`dotnet ef --startup-project ..\Semerkand.Server\ migrations add PersistedGrantDbContext --context PersistedGrantDbContext -o Migrations\PersistedGrantDb`  
+  -`dotnet ef --startup-project ..\UniLife.Server\ migrations add InitialConfigurationDbMigration --context ConfigurationDbContext  -o Migrations\ConfigurationDb`  
+  -`dotnet ef --startup-project ..\UniLife.Server\ migrations add PersistedGrantDbContext --context PersistedGrantDbContext -o Migrations\PersistedGrantDb`  
 
 ### Docker Support
 - Prerequisite: Install [Docker Desktop](https://go.microsoft.com/fwlink/?linkid=847268) 
@@ -223,7 +223,7 @@ This project is licensed under the terms of the [MIT license](LICENSE).
 
 ### 0.2.0 
 - CRUD Todo List example
-- Restructure Project Refactor Semerkand.Shared for N-Tier Design
+- Restructure Project Refactor UniLife.Shared for N-Tier Design
 - Automapper for Client (dto) / Server Models
 - Removed old Migrations. Recommend to delete your database to start new.
 - Implement ShadowProperties for Auditable, SoftDelete Interfaces for Models (In Progress)

@@ -1,0 +1,163 @@
+﻿@inject HttpClient Http;
+@using UniLife.Shared.Dto.Definitions
+@inject IMatToaster matToaster
+@using Syncfusion.Blazor.DropDowns
+@using System.Net
+@using Newtonsoft.Json
+
+    <ControlSection>
+        <SfGrid @ref="DonemGrid" DataSource="@donemDtos" Toolbar="@(new List<string>() { "Add"})" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
+            <GridEvents OnActionComplete="ActionCompletedHandler" TValue="DonemDto"></GridEvents>
+            <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
+            <GridColumns>
+                <GridColumn Visible="false" Field=@nameof(DonemDto.Id) HeaderText="Bölüm ID" AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+                <GridColumn Field=@nameof(DonemDto.Ad) HeaderText="Donem" ValidationRules="@(new { required=true})" Width="170"></GridColumn>
+                <GridColumn Field=@nameof(DonemDto.Yil) HeaderText="Yil" ValidationRules="@(new { required=true})"></GridColumn>
+                <GridColumn Field=@nameof(DonemDto.Durum) HeaderText="Durum" DisplayAsCheckBox="true" EditType="EditType.BooleanEdit"></GridColumn>
+                @*<GridColumn Field=@nameof(DonemDto.DonemTip.UniversiteId) HeaderText="Üniversite" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@universiteDtos" Width="150"></GridColumn>*@
+                <GridColumn Field=@nameof(DonemDto.DonemTipId) HeaderText="Donem Tipi" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@donemTipDtos" Width="150"></GridColumn>
+                <GridColumn HeaderText="Manage Records" Width="150">
+                    <GridCommandColumns>
+                        <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-edit", CssClass = "e-flat" })"></GridCommandColumn>
+                        <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-delete", CssClass = "e-flat" })"></GridCommandColumn>
+                        <GridCommandColumn Type="CommandButtonType.Save" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-update", CssClass = "e-flat" })"></GridCommandColumn>
+                        <GridCommandColumn Type="CommandButtonType.Cancel" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-cancel-icon", CssClass = "e-flat" })"></GridCommandColumn>
+                    </GridCommandColumns>
+                </GridColumn>
+            </GridColumns>
+        </SfGrid>
+    </ControlSection>
+            
+@code{
+
+    SfGrid<DonemDto> DonemGrid;
+
+    List<DonemDto> donemDtos = new List<DonemDto>();
+
+    List<DonemTipDto> donemTipDtos = new List<DonemTipDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ReadDonems();
+
+        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/donemtip");
+        donemTipDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<DonemTipDto[]>(apiResponse.Result.ToString()).ToList<DonemTipDto>();
+
+    }
+
+    async Task ReadDonems()
+    {
+
+        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/donem");
+
+        if (apiResponse.StatusCode == Status200OK)
+        {
+            matToaster.Add(apiResponse.Message, MatToastType.Success, "Bölümler getirildi");
+            donemDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<DonemDto[]>(apiResponse.Result.ToString()).ToList<DonemDto>();
+        }
+        else
+        {
+            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Bölüm bilgisi getirilirken hata oluştu!");
+        }
+    }
+
+    public void ActionCompletedHandler(ActionEventArgs<DonemDto>
+        args)
+    {
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
+        {
+
+        }
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+        {
+            if (args.Action == "edit")
+            {
+                Update(args.Data);
+            }
+            else if (args.Action == "add")
+            {
+                Create(args.Data);
+            }
+
+        }
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
+        {
+            Delete(args.Data);
+        }
+    }
+
+    public async Task Create(DonemDto donemDto)
+    {
+        try
+        {
+            ApiResponseDto<DonemDto> apiResponse = await Http.PostJsonAsync<ApiResponseDto<DonemDto>>
+                ("api/donem", donemDto);
+            if (apiResponse.StatusCode == Status200OK)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success);
+                donemDtos.FirstOrDefault(x => x.Id == 0).Id = apiResponse.Result.Id;
+                DonemGrid.Refresh();
+            }
+            else
+            {
+                donemDtos.Remove(donemDto);
+                DonemGrid.Refresh();
+                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Bölüm Creation Failed");
+            }
+        }
+        catch (Exception ex)
+        {
+            donemDtos.Remove(donemDto);
+            DonemGrid.Refresh();
+            matToaster.Add(ex.Message, MatToastType.Danger, "Bölüm Creation Failed");
+        }
+    }
+
+    public async void Update(DonemDto donemDto)
+    {
+        //this updates the IsCompleted flag only
+        try
+        {
+            ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>
+                ("api/donem", donemDto);
+
+            if (!apiResponse.IsError)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success);
+            }
+            else
+            {
+                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Bölüm Save Failed");
+                //update failed gridi boz !
+            }
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.Message, MatToastType.Danger, "Bölüm Save Failed");
+            //update failed gridi boz !
+        }
+    }
+
+    public async Task Delete(DonemDto donemDto)
+    {
+        try
+        {
+            var response = await Http.DeleteAsync("api/donem/" + donemDto.Id);
+            if (response.StatusCode == (HttpStatusCode)Status200OK)
+            {
+                matToaster.Add("Bölüm Deleted", MatToastType.Success);
+                donemDtos.Remove(donemDto);
+            }
+            else
+            {
+                matToaster.Add("Bölüm Delete Failed: " + response.StatusCode, MatToastType.Danger);
+            }
+            //deleteDialogOpen = false;
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.Message, MatToastType.Danger, "Bölüm Save Failed");
+        }
+    }
+
+}

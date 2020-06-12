@@ -1,0 +1,174 @@
+﻿@inject HttpClient Http;
+@using UniLife.Shared.Dto.Definitions
+@inject IMatToaster matToaster
+@using Syncfusion.Blazor.DropDowns
+@using System.Net
+@using Newtonsoft.Json
+
+    <ControlSection>
+        <SfGrid @ref="BolumGrid" DataSource="@bolumDtos" Toolbar="@(new List<string>() { "Add"})" AllowSorting="true" AllowFiltering="true" AllowPaging="true" Width="100%">
+            <GridEvents OnActionComplete="ActionCompletedHandler" TValue="BolumDto"></GridEvents>
+            <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
+            <GridColumns>
+                <GridColumn Visible="false" Field=@nameof(BolumDto.Id) HeaderText="Bölüm ID" Edit="false" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+                <GridColumn Field=@nameof(BolumDto.Ad) HeaderText="Bölüm İsim" ValidationRules="@(new { required=true})"></GridColumn>
+                <GridColumn Field=@nameof(BolumDto.KisaAd) HeaderText="KisaAd" ValidationRules="@(new { required=true})"></GridColumn>
+                <GridColumn Field=@nameof(BolumDto.Kod) HeaderText="Kod"></GridColumn>
+                <GridColumn Field=@nameof(BolumDto.AdEn) HeaderText="AdEn"></GridColumn>
+                <GridColumn Field=@nameof(BolumDto.OsymKod) HeaderText="OsymKod"></GridColumn>
+                <GridColumn Field=@nameof(BolumDto.OgrenimTurId) HeaderText="Ogrenim Tür" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@ogrenimTurDtos"></GridColumn>
+                <GridColumn Field=@nameof(BolumDto.FakulteId) HeaderText="Fakülte" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@fakulteDtos"></GridColumn>
+                <GridColumn Field=@nameof(BolumDto.OgrenimSure) HeaderText="OgrenimSure"></GridColumn>
+                <GridColumn Field=@nameof(BolumDto.Durum) EditType="EditType.BooleanEdit" HeaderText="Durum"></GridColumn>
+                <GridColumn Field=@nameof(BolumDto.DiplomaAd) HeaderText="DiplomaAd"></GridColumn>
+                <GridColumn Field=@nameof(BolumDto.IsBologna) EditType="EditType.BooleanEdit" HeaderText="IsBologna"></GridColumn>
+                <GridColumn Field=@nameof(BolumDto.DiplomaAdEn) HeaderText="DiplomaAdEn"></GridColumn>
+                <GridColumn HeaderText="Manage Records" Width="150">
+                    <GridCommandColumns>
+                        <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-edit", CssClass = "e-flat" })"></GridCommandColumn>
+                        <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-delete", CssClass = "e-flat" })"></GridCommandColumn>
+                        <GridCommandColumn Type="CommandButtonType.Save" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-update", CssClass = "e-flat" })"></GridCommandColumn>
+                        <GridCommandColumn Type="CommandButtonType.Cancel" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-cancel-icon", CssClass = "e-flat" })"></GridCommandColumn>
+                    </GridCommandColumns>
+                </GridColumn>
+
+            </GridColumns>
+        </SfGrid>
+    </ControlSection>
+            
+@code{
+
+    SfGrid<BolumDto> BolumGrid;
+
+    List<BolumDto> bolumDtos = new List<BolumDto>();
+
+    List<FakulteDto> fakulteDtos = new List<FakulteDto>();
+    List<OgrenimTurDto> ogrenimTurDtos = new List<OgrenimTurDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ReadBolums();
+
+        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/fakulte");
+        fakulteDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<FakulteDto[]>(apiResponse.Result.ToString()).ToList<FakulteDto>();
+        ApiResponseDto apiResponseOgrTur = await Http.GetFromJsonAsync<ApiResponseDto>("api/ogrenimtur");
+        ogrenimTurDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<OgrenimTurDto[]>(apiResponseOgrTur.Result.ToString()).ToList<OgrenimTurDto>();
+
+    }
+
+    async Task ReadBolums()
+    {
+
+        ApiResponseDto<List<BolumDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<BolumDto>>>("api/bolum");
+
+        if (apiResponse.StatusCode == Status200OK)
+        {
+            matToaster.Add(apiResponse.Message, MatToastType.Success, "Bölümler getirildi");
+            bolumDtos = apiResponse.Result;
+        }
+        else
+        {
+            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Bölüm bilgisi getirilirken hata oluştu!");
+        }
+    }
+
+
+    public void ActionCompletedHandler(ActionEventArgs<BolumDto> args)
+    {
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
+        {
+
+        }
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+        {
+            if (args.Action == "edit")
+            {
+                Update(args.Data);
+            }
+            else if (args.Action == "add")
+            {
+                Create(args.Data);
+            }
+
+        }
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
+        {
+            Delete(args.Data);
+        }
+    }
+
+    public async Task Create(BolumDto bolumDto)
+    {
+        try
+        {
+            ApiResponseDto<BolumDto> apiResponse = await Http.PostJsonAsync<ApiResponseDto<BolumDto>>
+                ("api/bolum", bolumDto);
+            if (apiResponse.StatusCode == Status200OK)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success);
+                bolumDtos.FirstOrDefault(x => x.Id == 0).Id = apiResponse.Result.Id;
+                BolumGrid.Refresh();
+            }
+            else
+            {
+                bolumDtos.Remove(bolumDto);
+                BolumGrid.Refresh();
+                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Bölüm Creation Failed");
+            }
+        }
+        catch (Exception ex)
+        {
+            bolumDtos.Remove(bolumDto);
+            BolumGrid.Refresh();
+            matToaster.Add(ex.Message, MatToastType.Danger, "Bölüm Creation Failed");
+        }
+    }
+
+    public async void Update(BolumDto bolumDto)
+    {
+        //this updates the IsCompleted flag only
+        try
+        {
+            ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>
+                ("api/bolum", bolumDto);
+
+            if (!apiResponse.IsError)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success);
+            }
+            else
+            {
+                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Bölüm Save Failed");
+                //update failed gridi boz !
+            }
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.Message, MatToastType.Danger, "Bölüm Save Failed");
+            //update failed gridi boz !
+        }
+    }
+
+    public async Task Delete(BolumDto bolumDto)
+    {
+        try
+        {
+            var response = await Http.DeleteAsync("api/bolum/" + bolumDto.Id);
+            if (response.StatusCode == (HttpStatusCode)Status200OK)
+            {
+                matToaster.Add("Bölüm Deleted", MatToastType.Success);
+                bolumDtos.Remove(bolumDto);
+            }
+            else
+            {
+                matToaster.Add("Bölüm Delete Failed: " + response.StatusCode, MatToastType.Danger);
+            }
+            //deleteDialogOpen = false;
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.Message, MatToastType.Danger, "Bölüm Save Failed");
+        }
+    }
+
+}

@@ -1,0 +1,62 @@
+﻿@page "/tanimlar"
+@inject HttpClient Http;
+@using UniLife.Shared.Dto.Definitions
+@using UniLife.CommonUI.Pages
+@using UniLife.CommonUI.Pages.Definitions.Tabs 
+@inject IMatToaster matToaster
+
+    <MatTabGroup>
+
+        <MatTab Label="Üniversite">
+
+            <UniversiteList></UniversiteList>
+        </MatTab>
+        <MatTab Label="Fakülte">
+            @*<UniLife.CommonUI.Pages.Definations.Tabs.GenericDefination ApiAdres="api/universite"
+                                                                         EntityName="Universite">
+                <GridColumn Field=@nameof(UniversiteDto.Ad) HeaderText="Üniversite İsim" ValidationRules="@(new { required=true})" Width="170"></GridColumn>
+
+            </UniLife.CommonUI.Pages.Definations.Tabs.GenericDefination>*@
+
+
+            <FakulteList></FakulteList>
+
+
+        </MatTab>
+        <MatTab Label="Bölüm">
+            <BolumList></BolumList>
+        </MatTab>
+        <MatTab Label="Program">
+            <ProgramList></ProgramList>
+        </MatTab>
+        @*<MatTab Label="Müfredat">
+             <LabelContent>
+                Third <MatIcon Icon="@MatIconNames.Close"></MatIcon>
+            </LabelContent>
+            <ChildContent>
+                Ders
+            </ChildContent>
+            <SfCalendar TValue="DateTime?" Value="@DateValue"></SfCalendar>
+            <DialogEditing></DialogEditing>
+
+
+        </MatTab>*@
+        <MatTab Label="Harç">
+            <HarcList></HarcList>
+        </MatTab>
+        <MatTab Label="Donem">
+            <Donem></Donem>
+        </MatTab>
+
+    </MatTabGroup>
+
+
+@*<button @onclick="@Switch">Switch</button>*@
+
+@code{
+    public bool Visible { get; set; }
+    public DateTime? DateValue { get; set; } = DateTime.Now;
+    
+
+
+}
