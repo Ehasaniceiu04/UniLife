@@ -21,7 +21,7 @@ namespace UniLife.Shared.Dto.Definitions
         public int ProgramTurId { get; set; }
         public string Adres { get; set; }
         public string Iletisim { get; set; }
-        public int FakulteId { get; set; }
+        public int? FakulteId { get; set; }
         public bool IsHazırlık { get; set; }
         public int AzamiSure { get; set; }
         public int NormalSure { get; set; }

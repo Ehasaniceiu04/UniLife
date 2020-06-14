@@ -10,7 +10,7 @@
                 </Template>
             </GridColumn>*@
 
-                @*çalışıyor*@
+                
                 @*<GridColumn Field=@nameof(FakulteDto.UniversiteId) HeaderText="Üniversite" ForeignKeyValue="Ad" ForeignKeyField="Id" Width="150" DataSource="universiteDtos">
                 <EditTemplate Context="FakulteDtoContext">
                     <SfDropDownList ID="UniversiteId" TValue="string" TItem="UniversiteDto" Index="0" DataSource="universiteDtos">
@@ -31,6 +31,18 @@
                     </SfDropDownList>
                 </Template>
             </GridColumn>*@
+
+            @*çalışıyor*@@*çalışıyor*@@*çalışıyor*@
+
+            <GridColumn Field=@nameof(ProgramDto.FakulteId) HeaderText="Fakülte" EditType="EditType.DropDownEdit" ForeignKeyValue="Ad" ForeignKeyField="Id" Width="150" DataSource="@fakulteDtos">
+                    <EditTemplate>
+                        <SfDropDownList ID="FakulteId" Placeholder="Fakülte Seçiniz" TItem="FakulteDto" TValue="int?" DataSource="@fakulteDtos">
+                            <DropDownListEvents TValue="int?" ValueChange="ValueChange"></DropDownListEvents>
+                            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                        </SfDropDownList>
+                    </EditTemplate>
+                </GridColumn>
+
 
 
 

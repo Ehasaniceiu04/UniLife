@@ -599,6 +599,7 @@ namespace UniLife.Server
         {
             var builder = new ODataConventionModelBuilder();
             builder.EntitySet<Ogrenci>("Ogrencis");
+            builder.EntitySet<Bolum>("Bolums");
             return builder.GetEdmModel();
         }
     }
