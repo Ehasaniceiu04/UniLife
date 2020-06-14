@@ -25,8 +25,9 @@ namespace UniLife.Shared.DataModels
         public int LabSaat { get; set; }
         public int TeoSaat { get; set; }
         public double Kredi { get; set; }
-        public bool Durum { get; set; }
+        public bool Durum { get; set; } = true;
         public bool Zorunlu { get; set; }
+        public string SecmeliKodu { get; set; }
         public int Sinif { get; set; }
 
         public virtual ICollection<DersAcilan> DersAcilans { get; set; }

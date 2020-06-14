@@ -76,7 +76,7 @@
     public void ValueChange(@Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
     {
         OData<BolumDto> apiResponse = Http.GetFromJsonAsync<OData<BolumDto>>($"odata/bolums?$select=Ad,Id&$filter=FakulteId eq {args.Value}").Result;
-        //bolumDtos = apiResponse;
+        bolumDtos = apiResponse.Value;
         Enabled = true;
     }
 

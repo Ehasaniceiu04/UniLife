@@ -9,114 +9,6 @@
 @using Syncfusion.Blazor.DropDowns
 @using Syncfusion.Blazor.SplitButtons
 
-<style>
-    .mdc-select__anchor {
-        width: 90%;
-    }
-
-    .e-input-picture::before {
-        content: '\e335';
-        font-family: e-icons;
-    }
-
-    .e-input-calendar::before {
-        content: '\e901';
-        font-family: e-icons;
-        font-size: 13px;
-    }
-
-
-    .custom-padding-05 {
-        padding-top: 5px;
-    }
-
-    @@media only screen and (max-width: 480px) {
-        .content-wrapper {
-            width: 92%;
-        }
-
-        .col-xs-4,
-        .col-xs-4,
-        .col-xs-12 {
-            padding: 10px 5px;
-            width: 100%;
-        }
-
-        .content-wrapper div.row {
-            padding: 0px;
-        }
-    }
-
-    #description td {
-        vertical-align: top;
-    }
-
-    .e-outline.e-float-input,
-    .e-outline.e-float-input.e-control-wrapper {
-        margin-top: 0;
-    }
-
-    .fabric .row.material2,
-    .bootstrap .row.material2,
-    .bootstrap4 .row.material2,
-    .highcontrast .row.material2 {
-        display: none;
-    }
-
-    .e-upload-picture::before {
-        content: '\e335';
-        font-family: e-icons;
-    }
-
-    .bootstrap4 .e-upload-picture::before {
-        content: '\e769';
-        font-family: e-icons;
-    }
-
-    .e-btn.e-primary, .e-css.e-btn.e-primary {
-        background-color: #00A6B6;
-        border-color: #00A6B6;
-    }
-
-    .e-float-input.e-input-group input, .e-float-input.e-input-group textarea {
-        border: 0;
-        color: royalblue;
-        font-size: large;
-    }
-
-
-
-    .e-numeric.e-style .e-control.e-numerictextbox {
-        color: royalblue;
-        font-size: xx-large;
-        border: 0px;
-    }
-
-    .e-input-group.e-style.e-control-wrapper:not(.e-success):not(.e-warning):not(.e-error):not(.e-float-icon-left), .e-float-input.e-control-wrapper:hover:not(.e-success):not(.e-warning):not(.e-error):not(.e-disabled):not(.e-float-icon-left) {
-        border-color: royalblue;
-    }
-
-    .e-control-wrapper.e-numeric.e-float-input.e-style .e-spin-down {
-        color: royalblue;
-    }
-
-    .e-control-wrapper.e-numeric.e-float-input.e-style .e-float-line::before {
-        background: royalblue;
-    }
-
-    .e-control-wrapper.e-numeric.e-float-input.e-style .e-float-line::after {
-        background: royalblue;
-    }
-
-    .e-control-wrapper.e-numeric.e-float-input.e-style .e-spin-up {
-        color: royalblue;
-    }
-
-    .e-control-wrapper.e-numeric.e-float-input.e-style.e-input-group .e-float-text.e-label-top {
-        color: royalblue;
-        font-size: medium;
-    }
-</style>
 
 <div class="col-lg-12 control-section">
     <div class="content-wrapper">
@@ -227,7 +119,7 @@
     {
         //kaydet
         dersDto.MufredatId = appState.MufredatState.Id;
-        var createResult= await Create(dersDto);
+        var createResult = await Create(dersDto);
         if (createResult)
         {
             //base.InvokeAsync(StateHasChanged);
@@ -334,3 +226,115 @@
     //    }
     //}
 }
+
+
+
+
+<style>
+    .mdc-select__anchor {
+        width: 90%;
+    }
+
+    .e-input-picture::before {
+        content: '\e335';
+        font-family: e-icons;
+    }
+
+    .e-input-calendar::before {
+        content: '\e901';
+        font-family: e-icons;
+        font-size: 13px;
+    }
+
+
+    .custom-padding-05 {
+        padding-top: 5px;
+    }
+
+    @@media only screen and (max-width: 480px) {
+        .content-wrapper {
+            width: 92%;
+        }
+
+        .col-xs-4,
+        .col-xs-4,
+        .col-xs-12 {
+            padding: 10px 5px;
+            width: 100%;
+        }
+
+        .content-wrapper div.row {
+            padding: 0px;
+        }
+    }
+
+    #description td {
+        vertical-align: top;
+    }
+
+    .e-outline.e-float-input,
+    .e-outline.e-float-input.e-control-wrapper {
+        margin-top: 0;
+    }
+
+    .fabric .row.material2,
+    .bootstrap .row.material2,
+    .bootstrap4 .row.material2,
+    .highcontrast .row.material2 {
+        display: none;
+    }
+
+    .e-upload-picture::before {
+        content: '\e335';
+        font-family: e-icons;
+    }
+
+    .bootstrap4 .e-upload-picture::before {
+        content: '\e769';
+        font-family: e-icons;
+    }
+
+    .e-btn.e-primary, .e-css.e-btn.e-primary {
+        background-color: #00A6B6;
+        border-color: #00A6B6;
+    }
+
+    .e-float-input.e-input-group input, .e-float-input.e-input-group textarea {
+        border: 0;
+        color: royalblue;
+        font-size: large;
+    }
+
+
+
+    .e-numeric.e-style .e-control.e-numerictextbox {
+        color: royalblue;
+        font-size: xx-large;
+        border: 0px;
+    }
+
+    .e-input-group.e-style.e-control-wrapper:not(.e-success):not(.e-warning):not(.e-error):not(.e-float-icon-left), .e-float-input.e-control-wrapper:hover:not(.e-success):not(.e-warning):not(.e-error):not(.e-disabled):not(.e-float-icon-left) {
+        border-color: royalblue;
+    }
+
+    .e-control-wrapper.e-numeric.e-float-input.e-style .e-spin-down {
+        color: royalblue;
+    }
+
+    .e-control-wrapper.e-numeric.e-float-input.e-style .e-float-line::before {
+        background: royalblue;
+    }
+
+    .e-control-wrapper.e-numeric.e-float-input.e-style .e-float-line::after {
+        background: royalblue;
+    }
+
+    .e-control-wrapper.e-numeric.e-float-input.e-style .e-spin-up {
+        color: royalblue;
+    }
+
+    .e-control-wrapper.e-numeric.e-float-input.e-style.e-input-group .e-float-text.e-label-top {
+        color: royalblue;
+        font-size: medium;
+    }
+</style>

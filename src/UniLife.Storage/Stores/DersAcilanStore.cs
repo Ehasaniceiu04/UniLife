@@ -34,6 +34,7 @@ namespace UniLife.Storage.Stores
                                   ProgramAd=p.Ad,
                                   FakulteAd=f.Ad,
                                   Zorunlu = da.Zorunlu,
+                                  SecmeliKodu = da.SecmeliKodu,
                                   Kredi = da.Kredi,
                                   Akts = da.Akts,
                                   DersId = da.DersId,
@@ -55,7 +56,6 @@ namespace UniLife.Storage.Stores
                 //try
                 //{
                     IQueryable<DersAcilan> acilacakDersler;
-                    IQueryable<DersAcilan> silinecekDersler;
 
                     if (dersAcDto.RefProgramSecilen == 55555 && dersAcDto.AcProgramSecilen != 55555)
                     {
@@ -81,7 +81,8 @@ namespace UniLife.Storage.Stores
                                               Sinif = d.Sinif,
                                               TeoSaat = d.TeoSaat,
                                               UygSaat = d.UygSaat,
-                                              Zorunlu = d.Zorunlu
+                                              Zorunlu = d.Zorunlu,
+                                              SecmeliKodu =d.SecmeliKodu
                                           };
                     }
                     else if (dersAcDto.RefProgramSecilen != 55555 && dersAcDto.AcProgramSecilen == 55555)
@@ -108,7 +109,8 @@ namespace UniLife.Storage.Stores
                                               Sinif = d.Sinif,
                                               TeoSaat = d.TeoSaat,
                                               UygSaat = d.UygSaat,
-                                              Zorunlu = d.Zorunlu
+                                              Zorunlu = d.Zorunlu,
+                                              SecmeliKodu = d.SecmeliKodu
                                           };
                     }
                     else if (dersAcDto.RefProgramSecilen == 55555 && dersAcDto.AcProgramSecilen == 55555)
@@ -135,7 +137,8 @@ namespace UniLife.Storage.Stores
                                               Sinif = d.Sinif,
                                               TeoSaat = d.TeoSaat,
                                               UygSaat = d.UygSaat,
-                                              Zorunlu = d.Zorunlu
+                                              Zorunlu = d.Zorunlu,
+                                              SecmeliKodu = d.SecmeliKodu
                                           };
                     }
                     else if (dersAcDto.RefProgramSecilen != 55555 && dersAcDto.AcProgramSecilen != 55555)
@@ -160,7 +163,8 @@ namespace UniLife.Storage.Stores
                                               Sinif = d.Sinif,
                                               TeoSaat = d.TeoSaat,
                                               UygSaat = d.UygSaat,
-                                              Zorunlu = d.Zorunlu
+                                              Zorunlu = d.Zorunlu,
+                                              SecmeliKodu = d.SecmeliKodu
                                           };
 
                     }
@@ -232,7 +236,8 @@ namespace UniLife.Storage.Stores
                                 YerineSecilenId=k.DersYerineSecilenId,
                                 YerineSecilenAd=k.DersYerineSecilenAd,
                                 Zorunlu=a.Zorunlu,
-                                Kredi=a.Kredi,
+                                SecmeliKodu = a.SecmeliKodu,
+                                Kredi =a.Kredi,
                                 Akts=a.Akts,
                                 DersId=a.DersId,
                                 ProgramId=a.ProgramId,

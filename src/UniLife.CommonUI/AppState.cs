@@ -23,6 +23,8 @@ namespace UniLife.CommonUI
         public MufredatDto MufredatState { get; set; }
 
         public OgrenciDto OgrenciState { get; set; }
+        public OgretmenDto OgretmenState { get; set; }
+        
 
         public DonemDto DonemState { get; set; }
 

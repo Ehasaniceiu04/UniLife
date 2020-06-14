@@ -41,6 +41,7 @@ namespace UniLife.Shared.DataModels
         public double Kredi { get; set; }
         public bool Durum { get; set; }
         public bool Zorunlu { get; set; }
+        public string SecmeliKodu { get; set; }
         public int Sinif { get; set; }
 
         public int? ODTekrar { get; set; }

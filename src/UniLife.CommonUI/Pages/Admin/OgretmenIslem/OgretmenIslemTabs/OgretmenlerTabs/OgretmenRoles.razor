@@ -1,0 +1,112 @@
+﻿@using UniLife.Shared.Dto.Definitions
+@inject HttpClient Http
+@inject IMatToaster matToaster
+@using Syncfusion.Blazor.SplitButtons
+
+<MatChipSet>
+    @foreach (var role in roleSelections.OrderBy(x => x.Name))
+    {
+        <MatChip Label="@role.Name" LeadingIcon="@( (role.IsSelected) ? "done" : "")" @onclick="@(()=>UpdateUserRoleLocal(role))" />
+    }
+</MatChipSet>
+<SfProgressButton OnClick="UpdateUserRolesAsync" Content="Rolleri Kaydet" CssClass="center-block e-primary">
+    <ProgressButtonSpinSettings Position="SpinPosition.Center"></ProgressButtonSpinSettings>
+</SfProgressButton>
+
+@code{
+    [Parameter]
+    public OgretmenDto _OgretmenDto { get; set; }
+
+    List<RoleSelection> roleSelections { get; set; } = new List<RoleSelection>();
+
+    public class RoleSelection
+    {
+        public bool IsSelected { get; set; }
+        public string Name { get; set; }
+    };
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetRolesforOgretmen();
+        await PopulateRoleList();
+
+        foreach (var role in roleSelections)
+            role.IsSelected = _OgretmenDto.Roles.Contains(role.Name);
+
+        //_OgretmenDto.SaveState();
+    }
+
+    public async Task PopulateRoleList()
+    {
+        try
+        {
+            var roleNames = new List<string>();
+            var response = await Http.GetFromJsonAsync<ApiResponseDto<List<string>>>("api/Account/ListRoles");
+
+            roleNames = response.Result;
+
+            roleSelections = new List<RoleSelection>();// clear out list
+
+            // initialize selection list with all un-selected
+            foreach (string role in roleNames)
+            {
+                roleSelections.Add(new RoleSelection
+                {
+                    Name = role,
+                    IsSelected = false
+                });
+            }
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Rol bilgileri getirilirken hata oluştu");
+        }
+    }
+
+    protected void UpdateUserRoleLocal(RoleSelection roleSelectionItem)
+    {
+        roleSelectionItem.IsSelected = !roleSelectionItem.IsSelected;
+    }
+
+    async Task GetRolesforOgretmen()
+    {
+        ApiResponseDto<List<string>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<string>>>("api/admin/GetRolesByUserId/" + _OgretmenDto.ApplicationUserId);
+
+        if (apiResponse.StatusCode == Status200OK)
+        {
+            _OgretmenDto.Roles = apiResponse.Result;
+        }
+        else
+        {
+            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Akademisyene ait role bilgileri getirilemedi!");
+        }
+    }
+
+    public async Task UpdateUserRolesAsync()
+    {
+        try
+        {
+            _OgretmenDto.Roles = roleSelections.Where(x => x.IsSelected == true).Select(x => x.Name).ToList();
+
+            var apiResponse = await Http.PutJsonAsync<ApiResponseDto>("api/Account/UpdateRoleFromUser", _OgretmenDto);
+
+            if (apiResponse.IsSuccessStatusCode)
+                matToaster.Add("Roller Güncellendi", MatToastType.Success);
+            else
+            {
+                matToaster.Add("Hata", MatToastType.Danger, apiResponse.StatusCode.ToString());
+                //_OgretmenDto.RestoreState();
+
+            }
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Roller güncellenemedi");
+        }
+        finally
+        {
+            //_OgretmenDto.ClearState();
+        }
+    }
+}

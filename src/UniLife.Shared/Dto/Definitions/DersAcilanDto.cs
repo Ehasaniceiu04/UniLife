@@ -29,7 +29,7 @@ namespace UniLife.Shared.Dto.Definitions
         //public int  { get; set; }
         //External
 
-        public int OgretmenId { get; set; }
+        public int? OgretmenId { get; set; }
         public OgretmenDto Ogretmen { get; set; }
 
         public int DonemId { get; set; }
@@ -46,6 +46,7 @@ namespace UniLife.Shared.Dto.Definitions
         public double Kredi { get; set; }
         public bool Durum { get; set; }
         public bool Zorunlu { get; set; }
+        public string SecmeliKodu { get; set; }
         public int? YerineSecilenId { get; set; }
         public string YerineSecilenAd { get; set; }
         public int Sinif { get; set; }

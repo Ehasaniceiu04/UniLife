@@ -306,8 +306,9 @@
         {
             secmeliDersDialogOpen = true;
             //Modal içinde girden seçmeli ders seçtiriyoruz.
-            ApiResponseDto<List<DersAcilanDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<DersAcilanDto>>>($"api/dersAcilan/ByZorunlu/{false}");
-            SecmeliDerslerDtos = apiResponse.Result;
+            //ApiResponseDto<List<DersAcilanDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<DersAcilanDto>>>($"api/dersAcilan/ByZorunlu/{false}");
+            OData<DersAcilanDto> apiResponse = await Http.GetFromJsonAsync<OData<DersAcilanDto>>($"odata/dersAcilans?$filter=Zorunlu eq false and SecmeliKodu eq '{args.SecmeliKodu}'");
+            SecmeliDerslerDtos = apiResponse.Value;
             foreach (var item in SecmeliDerslerDtos)
             {
                 item.YerineSecilenAd = args.Ad;

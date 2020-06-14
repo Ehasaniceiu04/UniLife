@@ -1,0 +1,198 @@
+﻿@using Syncfusion.Blazor.Navigations
+@inject Microsoft.AspNetCore.Components.NavigationManager UriHelper
+@attribute [Authorize(Policy = Policies.IsAdmin)]
+@inject HttpClient Http
+@inject IMatToaster matToaster
+@using Newtonsoft.Json
+@using UniLife.Shared.Dto.Definitions
+@using UniLife.CommonUI.Pages.Admin.OgretmenIslem.OgretmenIslemTabs.OgretmenlerTabs
+@using Syncfusion.Blazor.SplitButtons
+@using System.Reflection;
+@inject AppState appState
+
+
+
+<ControlSection>
+    <div class="row">
+        <SfGrid ID="OgrGrid" @ref="OgrGrid" AllowSorting="true" AllowFiltering="true" AllowPaging="true" DataSource="@OgrGridDtos">
+            @*OnActionFailure="ActionFailureHandler"  OnActionBegin="ActionBeginHandler" DetailDataBound="DetailDataBound" RowDataBound="RowBound"*@
+            <GridEvents TValue="OgretmenDto" CommandClicked="CommandClickHandler" OnActionBegin="ActionBeginHandler" OnActionComplete="ActionCompletedHandler"></GridEvents>
+            <GridTemplates>
+                <DetailTemplate>
+                    @{
+                        var ogretmenDto = (context as UniLife.Shared.Dto.Definitions.OgretmenDto);
+
+                        //SampleChart için
+                        var chartQuery = $"new sf.data.Query().where('EmployeeID', 'equal', {ogretmenDto.Id}, false)";
+
+                    }
+                    <div style="padding:20px">
+                        <SfTab LoadOn="ContentLoad.Dynamic">
+                            <TabEvents Selecting="OnTabSelecting"></TabEvents>
+                            <TabItems>
+                                <TabItem>
+                                    <ChildContent>
+                                        <TabHeader Text="Details"></TabHeader>
+                                    </ChildContent>
+                                    <ContentTemplate>
+                                        <OgretmenBilgi _OgretmenDto="ogretmenDto"></OgretmenBilgi>
+                                    </ContentTemplate>
+                                </TabItem>
+                                <TabItem>
+                                    <ChildContent>
+                                        <TabHeader Text="Roles"></TabHeader>
+                                    </ChildContent>
+                                    <ContentTemplate>
+                                        <OgretmenRoles _OgretmenDto="ogretmenDto"></OgretmenRoles>
+                                    </ContentTemplate>
+                                </TabItem>
+                                <TabItem>
+                                    <ChildContent>
+                                        <TabHeader Text="Report"></TabHeader>
+                                    </ChildContent>
+                                    <ContentTemplate>
+                                    </ContentTemplate>
+                                </TabItem>
+                            </TabItems>
+                        </SfTab>
+                    </div>
+                </DetailTemplate>
+            </GridTemplates>
+            <GridColumns>
+                <GridColumn Visible="false" Field=@nameof(OgretmenDto.ApplicationUserId) HeaderText="AppUserId" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+                <GridColumn Field=@nameof(OgretmenDto.Ad) HeaderText="Ad"> </GridColumn>
+                <GridColumn Field=@nameof(OgretmenDto.Soyad) HeaderText="Soyad"></GridColumn>
+                <GridColumn Field=@nameof(OgretmenDto.TCKN) HeaderText="TCKN"></GridColumn>
+                @*<GridColumn Field=@nameof(OgretmenDto.OgrNo) HeaderText="Öğrenci No"></GridColumn>*@
+                <GridColumn>
+                    <GridCommandColumns>
+                        <GridCommandColumn Type="CommandButtonType.None" Title="Akademik Bilgiler" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
+                    </GridCommandColumns>
+                </GridColumn>
+            </GridColumns>
+        </SfGrid>
+    </div>
+    <div class="row">
+        <div class="col-12 text-right">
+            <SfProgressButton OnClick="AddNew" Content="Yeni Öğrenci Kaydı >" CssClass="center-block e-primary">
+                <ProgressButtonSpinSettings Position="SpinPosition.Right"></ProgressButtonSpinSettings>
+            </SfProgressButton>
+        </div>
+    </div>
+
+
+</ControlSection>
+
+@code{
+
+
+    public SfGrid<OgretmenDto> OgrGrid;
+
+
+    List<OgretmenDto> OgrGridDtos = new List<OgretmenDto>();
+
+    public OgretmenDto _OgretmenDto { get; set; } = new OgretmenDto();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ReadOgretmens();
+    }
+
+    async Task ReadOgretmens()
+    {
+        //ApiResponseDto<List<OgretmenDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgretmenDto>>>($"api/Admin/GetOgretmenUsers?pageSize={10}&pageNumber={0}");
+        ApiResponseDto<List<OgretmenDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgretmenDto>>>("api/ogretmen");
+
+
+        if (apiResponse.StatusCode == Status200OK)
+        {
+            matToaster.Add(apiResponse.Message, MatToastType.Success, "Öğretmenler getirildi");
+            OgrGridDtos = apiResponse.Result;
+        }
+        else
+        {
+            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Öğretmen bilgisi getirilirken hata oluştu!");
+        }
+    }
+
+
+
+    public async void ActionCompletedHandler(ActionEventArgs<OgretmenDto> args)
+    {
+        var FilterApplied = OgrGrid.FilterSettings.Columns; // to get filtered column details
+                                                            //var GroupingApplied = OgrGrid.GroupSettings.Columns; // to get grouped column details
+                                                            //var SortingApplied = OgrGrid.SortSettings.Columns; // to get sorted column details
+                                                            //var Columns = await OgrGrid.GetColumns(); // to get columsn details like visibility and other properties
+
+    }
+
+
+
+    public void ActionBeginHandler(ActionEventArgs<OgretmenDto> args)
+    {
+
+    }
+
+
+
+    [Parameter]
+    public EventCallback<OgretmenDto> OgretmenToBilgiler { get; set; }
+
+    public void CommandClickHandler(CommandClickEventArgs<OgretmenDto> args)
+    {
+        if (args.CommandColumn.Title == "Akademik Bilgiler")
+        {
+            _OgretmenDto = args.RowData;
+            appState.OgretmenState = _OgretmenDto;
+            OgretmenToBilgiler.InvokeAsync(_OgretmenDto);
+
+        }
+    }
+
+
+    async Task AddNew()
+    {
+        await OgretmenToAkademik.InvokeAsync(new OgretmenDto());
+    }
+    public void OnTabSelecting(SelectingEventArgs args)
+    {
+        if (args.IsSwiped)
+        {
+            args.Cancel = true;
+        }
+    }
+}
+
+
+
+<style type="text/css" class="cssStyles">
+    .photo {
+        width: 100px;
+        height: 100px;
+        border-radius: 50px;
+        box-shadow: inset 0 0 1px #e0e0e0, inset 0 0 14px rgba(0,0,0,0.2);
+    }
+
+    .title {
+        font-size: medium;
+        font-weight: 400;
+    }
+
+    .content {
+        font-size: medium;
+        color: #6c757d
+    }
+
+    .e-tab .e-content {
+        overflow-y: hidden;
+    }
+
+    .e-tab .e-tab-header {
+        border: 0;
+    }
+
+    .e-DoubleArrowRight:before {
+        content: '\e7bb';
+        color: #e83e8c;
+    }
+</style>

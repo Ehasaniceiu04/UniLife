@@ -1,0 +1,47 @@
+﻿@inject HttpClient Http
+@using UniLife.Shared.Dto.Definitions
+@inject IMatToaster matToaster
+@inject Microsoft.AspNetCore.Components.NavigationManager UriHelper
+
+<div style="display:inline-flex">
+    <div style="float:left;padding:45px;padding-top:70px"><img class="photo" src="@UriHelper.ToAbsoluteUri($"https://blazor.syncfusion.com/demos/images/Grid/1.png")" alt="@_OgretmenDto.Id" /></div>
+    <div style="padding-top:42px">
+        <span style="font-size: x-large;font-weight: bold;">@_OgretmenDto.Ad @_OgretmenDto.Soyad </span><br />
+        <h5 style="font-weight:400 !important;">@_OgretmenDto.TCKN</h5><br />
+        <span class="title">Mail:</span> <span class="content ">@_OgretmenDto.Email</span>
+    </div>
+</div>
+
+@code{
+    [Parameter]
+    public OgretmenDto _OgretmenDto { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ReadOgretmen();
+    }
+
+    async Task ReadOgretmen()
+    {
+        try
+        {
+            ApiResponseDto<OgretmenDto> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<OgretmenDto>>("api/ogretmen/GetOgretmenWithRelations/" + _OgretmenDto.Id);
+
+            if (apiResponse.StatusCode == Status200OK)
+            {
+                _OgretmenDto = apiResponse.Result;
+            }
+            else
+            {
+                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Öğrenci bilgisi getirilirken hata oluştu!");
+            }
+        }
+        catch (Exception ex)
+        {
+
+            matToaster.Add("İncelenmek üzere kayıt edilmiştir. " + ex.Message, MatToastType.Danger, "Hata oluştu!");
+        }
+
+
+    }
+}
