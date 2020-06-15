@@ -14,7 +14,7 @@
 
 <ControlSection>
     <div class="row">
-        <SfGrid ID="OgrGrid" @ref="OgrGrid" AllowSorting="true" AllowFiltering="true" AllowPaging="true" DataSource="@OgrGridDtos">
+        <SfGrid ID="AkaGrid" @ref="AkaGrid" AllowSorting="true" AllowFiltering="true" AllowPaging="true" DataSource="@AkaGridDtos">
             @*OnActionFailure="ActionFailureHandler"  OnActionBegin="ActionBeginHandler" DetailDataBound="DetailDataBound" RowDataBound="RowBound"*@
             <GridEvents TValue="AkademisyenDto" CommandClicked="CommandClickHandler" OnActionBegin="ActionBeginHandler" OnActionComplete="ActionCompletedHandler"></GridEvents>
             <GridTemplates>
@@ -63,7 +63,7 @@
                 <GridColumn Field=@nameof(AkademisyenDto.Ad) HeaderText="Ad"> </GridColumn>
                 <GridColumn Field=@nameof(AkademisyenDto.Soyad) HeaderText="Soyad"></GridColumn>
                 <GridColumn Field=@nameof(AkademisyenDto.TCKN) HeaderText="TCKN"></GridColumn>
-                @*<GridColumn Field=@nameof(AkademisyenDto.OgrNo) HeaderText="Öğrenci No"></GridColumn>*@
+                <GridColumn Field=@nameof(AkademisyenDto.OgrtNo) HeaderText="Akademisyen No"></GridColumn>
                 <GridColumn>
                     <GridCommandColumns>
                         <GridCommandColumn Type="CommandButtonType.None" Title="Akademik Bilgiler" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
@@ -74,7 +74,7 @@
     </div>
     <div class="row">
         <div class="col-12 text-right">
-            <SfProgressButton OnClick="AddNew" Content="Yeni Öğrenci Kaydı >" CssClass="center-block e-primary">
+            <SfProgressButton OnClick="AddNew" Content="Yeni Akademisyen Kaydı >" CssClass="center-block e-primary">
                 <ProgressButtonSpinSettings Position="SpinPosition.Right"></ProgressButtonSpinSettings>
             </SfProgressButton>
         </div>
@@ -86,10 +86,10 @@
 @code{
 
 
-    public SfGrid<AkademisyenDto> OgrGrid;
+    public SfGrid<AkademisyenDto> AkaGrid;
 
 
-    List<AkademisyenDto> OgrGridDtos = new List<AkademisyenDto>();
+    List<AkademisyenDto> AkaGridDtos = new List<AkademisyenDto>();
 
     public AkademisyenDto _AkademisyenDto { get; set; } = new AkademisyenDto();
 
@@ -107,7 +107,7 @@
         if (apiResponse.StatusCode == Status200OK)
         {
             matToaster.Add(apiResponse.Message, MatToastType.Success, "Akademisyenler getirildi");
-            OgrGridDtos = apiResponse.Result;
+            AkaGridDtos = apiResponse.Result;
         }
         else
         {
@@ -119,10 +119,10 @@
 
     public async void ActionCompletedHandler(ActionEventArgs<AkademisyenDto> args)
     {
-        var FilterApplied = OgrGrid.FilterSettings.Columns; // to get filtered column details
-                                                            //var GroupingApplied = OgrGrid.GroupSettings.Columns; // to get grouped column details
-                                                            //var SortingApplied = OgrGrid.SortSettings.Columns; // to get sorted column details
-                                                            //var Columns = await OgrGrid.GetColumns(); // to get columsn details like visibility and other properties
+        var FilterApplied = AkaGrid.FilterSettings.Columns; // to get filtered column details
+                                                            //var GroupingApplied = AkaGrid.GroupSettings.Columns; // to get grouped column details
+                                                            //var SortingApplied = AkaGrid.SortSettings.Columns; // to get sorted column details
+                                                            //var Columns = await AkaGrid.GetColumns(); // to get columsn details like visibility and other properties
 
     }
 

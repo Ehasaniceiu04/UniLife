@@ -104,7 +104,7 @@ namespace UniLife.Server.Controllers
 
         ///----------Admin OgrenciUser Management Interface Methods
         // POST: api/Account/Create
-        [HttpPost("CreateOgrenci")]
+        [HttpPost("CreateAkademisyen")]
         [Authorize(Permissions.User.Create)]
         public async Task<ApiResponse> CreateAkademisyen(AkademisyenDto akademisyenDto)
         => ModelState.IsValid ? await _accountManager.CreateAkademisyen(akademisyenDto) : _invalidUserModel;
