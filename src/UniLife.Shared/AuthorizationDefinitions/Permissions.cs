@@ -12,6 +12,18 @@ namespace UniLife.Shared.AuthorizationDefinitions
 
     public static class Permissions
     {
+
+        public static class Personel
+        {
+            [Description("Create a new Personel")]
+            public const string Create = nameof(Personel) + "." + nameof(Actions.Create);
+            [Description("Read Personels")]
+            public const string Read = nameof(Personel) + "." + nameof(Actions.Read);
+            [Description("Edit existing Personels")]
+            public const string Update = nameof(Personel) + "." + nameof(Actions.Update);
+            [Description("Delete any Personel")]
+            public const string Delete = nameof(Personel) + "." + nameof(Actions.Delete);
+        }
         public static class Akademisyen
         {
             [Description("Create a new Akademisyen")]

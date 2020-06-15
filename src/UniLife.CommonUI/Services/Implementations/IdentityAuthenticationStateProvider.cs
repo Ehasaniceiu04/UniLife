@@ -9,6 +9,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using UniLife.Shared.Dto.Account;
 using UniLife.Shared.Dto.Definitions;
+using UniLife.Shared.DataModels;
 
 namespace UniLife.CommonUI.States
 {
@@ -52,6 +53,12 @@ namespace UniLife.CommonUI.States
         public async Task<ApiResponseDto> Create(AkademisyenDto akademisyenDto)
         {
             ApiResponseDto apiResponse = await _authorizeApi.Create(akademisyenDto);
+            return apiResponse;
+        }
+
+        public async Task<ApiResponseDto> Create(PersonelDto personelDto)
+        {
+            ApiResponseDto apiResponse = await _authorizeApi.Create(personelDto);
             return apiResponse;
         }
 
@@ -135,6 +142,13 @@ namespace UniLife.CommonUI.States
         public async Task<ApiResponseDto> UpdateAkademisyenUser(AkademisyenDto akademisyenDto)
         {
             ApiResponseDto apiResponse = await _authorizeApi.UpdateAkademisyenUser(akademisyenDto);
+            NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+            return apiResponse;
+        }
+
+        public async Task<ApiResponseDto> UpdatePersonelUser(PersonelDto personelDto)
+        {
+            ApiResponseDto apiResponse = await _authorizeApi.UpdatePersonelUser(personelDto);
             NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
             return apiResponse;
         }

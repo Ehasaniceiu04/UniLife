@@ -32,12 +32,14 @@ namespace UniLife.Server.Managers
 
         Task<ApiResponse> UpdateOgrenciUser(OgrenciDto ogrenciDto);
         Task<ApiResponse> UpdateAkademisyenUser(AkademisyenDto AkademisyenDto);
+        Task<ApiResponse> UpdatePersonelUser(PersonelDto personelDto);
 
         // Admin policies. 
 
         Task<ApiResponse> Create(RegisterDto parameters);
         Task<ApiResponse> CreateOgrenci(OgrenciDto ogrenciDto);
         Task<ApiResponse> CreateAkademisyen(AkademisyenDto akademisyenDto);
+        Task<ApiResponse> CreatePersonel(PersonelDto personelDto);
 
         Task<ApiResponse> Delete(string id);
 
@@ -49,6 +51,7 @@ namespace UniLife.Server.Managers
 
         Task<ApiResponse> UpdateRoleFromOgrenciUser(OgrenciDto ogrenciDto);
         Task<ApiResponse> UpdateRoleFromAkademisyenUser(AkademisyenDto akademisyenDto);
+        Task<ApiResponse> UpdateRoleFromPersonelUser(PersonelDto personelDto);
 
         Task<ApiResponse> AdminResetUserPasswordAsync(Guid id, string newPassword, ClaimsPrincipal userClaimsPrincipal);
         

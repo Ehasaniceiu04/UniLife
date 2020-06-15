@@ -86,6 +86,11 @@ namespace UniLife.Server.Controllers
         public async Task<ApiResponse> UpdateAkademisyenUser(AkademisyenDto akademisyenDto)
         => ModelState.IsValid ? await _accountManager.UpdateAkademisyenUser(akademisyenDto) : _invalidUserModel;
 
+        [HttpPost("UpdatePersonelUser")]
+        [Authorize]
+        public async Task<ApiResponse> UpdatePersonelUser(PersonelDto personelDto)
+        => ModelState.IsValid ? await _accountManager.UpdatePersonelUser(personelDto) : _invalidUserModel;
+
 
 
         ///----------Admin User Management Interface Methods
@@ -102,12 +107,19 @@ namespace UniLife.Server.Controllers
         public async Task<ApiResponse> CreateOgrenci(OgrenciDto ogrenciDto)
         => ModelState.IsValid ? await _accountManager.CreateOgrenci(ogrenciDto) : _invalidUserModel;
 
-        ///----------Admin OgrenciUser Management Interface Methods
+        ///----------Admin AkademisyenUser Management Interface Methods
         // POST: api/Account/Create
         [HttpPost("CreateAkademisyen")]
         [Authorize(Permissions.User.Create)]
         public async Task<ApiResponse> CreateAkademisyen(AkademisyenDto akademisyenDto)
         => ModelState.IsValid ? await _accountManager.CreateAkademisyen(akademisyenDto) : _invalidUserModel;
+
+        ///----------Admin PersonelUser Management Interface Methods
+        // POST: api/Account/Create
+        [HttpPost("CreatePersonel")]
+        [Authorize(Permissions.User.Create)]
+        public async Task<ApiResponse> CreatePersonel(PersonelDto personelDto)
+        => ModelState.IsValid ? await _accountManager.CreatePersonel(personelDto) : _invalidUserModel;
 
         // DELETE: api/Account/5
         [HttpDelete("{id}")]
@@ -136,6 +148,20 @@ namespace UniLife.Server.Controllers
         // PUT: api/Account/5
         public async Task<ApiResponse> UpdateRoleFromUser([FromBody] OgrenciDto ogrenciDto)
         => ModelState.IsValid ? await _accountManager.UpdateRoleFromOgrenciUser(ogrenciDto) : _invalidUserModel;
+
+        [HttpPut]
+        [Authorize(Permissions.User.Update)]
+        [Route("UpdateRoleFromAkademisyenUser")]
+        // PUT: api/Account/5
+        public async Task<ApiResponse> UpdateRoleFromAkademisyenUser([FromBody] AkademisyenDto akademisyenDto)
+        => ModelState.IsValid ? await _accountManager.UpdateRoleFromAkademisyenUser(akademisyenDto) : _invalidUserModel;
+
+        [HttpPut]
+        [Authorize(Permissions.User.Update)]
+        [Route("UpdateRoleFromPersonelUser")]
+        // PUT: api/Account/5
+        public async Task<ApiResponse> UpdateRoleFromPersonelUser([FromBody] PersonelDto personelDto)
+        => ModelState.IsValid ? await _accountManager.UpdateRoleFromPersonelUser(personelDto) : _invalidUserModel;
 
 
         [HttpPost("AdminUserPasswordReset/{id}")]

@@ -419,6 +419,7 @@ namespace UniLife.Server
             services.AddTransient<IKayitNedenManager, KayitNedenManager>();
             services.AddTransient<IOgrenciManager, OgrenciManager>();
             services.AddTransient<IAkademisyenManager, AkademisyenManager>();
+            services.AddTransient<IPersonelManager, PersonelManager>();
             services.AddTransient<IUserProfileManager, UserProfileManager>();
 
 

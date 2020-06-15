@@ -24,7 +24,9 @@ namespace UniLife.CommonUI
 
         public OgrenciDto OgrenciState { get; set; }
         public AkademisyenDto AkademisyenState { get; set; }
+        public PersonelDto PersonelState { get; set; }
         
+
 
         public DonemDto DonemState { get; set; }
 

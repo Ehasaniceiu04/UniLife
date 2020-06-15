@@ -44,6 +44,7 @@ namespace UniLife.Storage
         public DbSet<OgrenimDurum> OgrenimDurums{ get; set; }
         public DbSet<Ogrenci> Ogrencis { get; set; }
         public DbSet<Akademisyen> Akademisyens{ get; set; }
+        public DbSet<Personel> Personels{ get; set; }
 
         public DbSet<KayitNeden> KayitNedens { get; set; }
 

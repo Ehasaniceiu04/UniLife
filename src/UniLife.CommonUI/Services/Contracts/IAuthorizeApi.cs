@@ -12,6 +12,7 @@ namespace UniLife.CommonUI.Services.Contracts
         Task<ApiResponseDto> Create(RegisterDto registerParameters);
         Task<ApiResponseDto> Create(OgrenciDto ogrenciDto);
         Task<ApiResponseDto> Create(AkademisyenDto akademisyenDto);
+        Task<ApiResponseDto> Create(PersonelDto personelDto);
         Task<ApiResponseDto> Register(RegisterDto registerParameters);
         Task<ApiResponseDto> ForgotPassword(ForgotPasswordDto forgotPasswordParameters);
         Task<ApiResponseDto> ResetPassword(ResetPasswordDto resetPasswordParameters);
@@ -21,6 +22,7 @@ namespace UniLife.CommonUI.Services.Contracts
         Task<ApiResponseDto> UpdateUser(UserInfoDto userInfo);
         Task<ApiResponseDto> UpdateOgrenciUser(OgrenciDto ogrenciDto);
         Task<ApiResponseDto> UpdateAkademisyenUser(AkademisyenDto akademisyenDto);
+        Task<ApiResponseDto> UpdatePersonelUser(PersonelDto personelDto);
 
         Task<UserInfoDto> GetUser();
     }

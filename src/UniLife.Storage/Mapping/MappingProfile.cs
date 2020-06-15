@@ -41,6 +41,8 @@ namespace UniLife.Storage.Mapping
             CreateMap<Donem , DonemDto>().ReverseMap();
             CreateMap<DonemTip, DonemTipDto>().ReverseMap();
             CreateMap<Ogrenci, OgrenciDto>().ReverseMap();
+            CreateMap<Akademisyen, AkademisyenDto>().ReverseMap();
+            CreateMap<Personel, PersonelDto>().ReverseMap();
             CreateMap<KayitNeden, KayitNedenDto>().ReverseMap();
         }
     }

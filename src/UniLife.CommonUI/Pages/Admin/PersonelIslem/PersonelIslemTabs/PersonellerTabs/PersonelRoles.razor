@@ -15,7 +15,7 @@
 
 @code{
     [Parameter]
-    public AkademisyenDto _AkademisyenDto { get; set; }
+    public PersonelDto _PersonelDto { get; set; }
 
     List<RoleSelection> roleSelections { get; set; } = new List<RoleSelection>();
 
@@ -28,13 +28,13 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await GetRolesforAkademisyen();
+        await GetRolesforPersonel();
         await PopulateRoleList();
 
         foreach (var role in roleSelections)
-            role.IsSelected = _AkademisyenDto.Roles.Contains(role.Name);
+            role.IsSelected = _PersonelDto.Roles.Contains(role.Name);
 
-        //_AkademisyenDto.SaveState();
+        //_PersonelDto.SaveState();
     }
 
     public async Task PopulateRoleList()
@@ -69,17 +69,17 @@
         roleSelectionItem.IsSelected = !roleSelectionItem.IsSelected;
     }
 
-    async Task GetRolesforAkademisyen()
+    async Task GetRolesforPersonel()
     {
-        ApiResponseDto<List<string>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<string>>>("api/admin/GetRolesByUserId/" + _AkademisyenDto.ApplicationUserId);
+        ApiResponseDto<List<string>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<string>>>("api/admin/GetRolesByUserId/" + _PersonelDto.ApplicationUserId);
 
         if (apiResponse.StatusCode == Status200OK)
         {
-            _AkademisyenDto.Roles = apiResponse.Result;
+            _PersonelDto.Roles = apiResponse.Result;
         }
         else
         {
-            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Akademisyene ait role bilgileri getirilemedi!");
+            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Personele ait role bilgileri getirilemedi!");
         }
     }
 
@@ -87,16 +87,16 @@
     {
         try
         {
-            _AkademisyenDto.Roles = roleSelections.Where(x => x.IsSelected == true).Select(x => x.Name).ToList();
+            _PersonelDto.Roles = roleSelections.Where(x => x.IsSelected == true).Select(x => x.Name).ToList();
 
-            var apiResponse = await Http.PutJsonAsync<ApiResponseDto>("api/Account/UpdateRoleFromAkademisyenUser", _AkademisyenDto);
+            var apiResponse = await Http.PutJsonAsync<ApiResponseDto>("api/Account/UpdateRoleFromPersonelUser", _PersonelDto);
 
             if (apiResponse.IsSuccessStatusCode)
                 matToaster.Add("Roller Güncellendi", MatToastType.Success);
             else
             {
                 matToaster.Add("Hata", MatToastType.Danger, apiResponse.StatusCode.ToString());
-                //_AkademisyenDto.RestoreState();
+                //_PersonelDto.RestoreState();
 
             }
         }
@@ -106,7 +106,7 @@
         }
         finally
         {
-            //_AkademisyenDto.ClearState();
+            //_PersonelDto.ClearState();
         }
     }
 }

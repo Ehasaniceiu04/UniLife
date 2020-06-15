@@ -114,6 +114,11 @@ namespace UniLife.CommonUI.Services.Implementations
             return await _httpClient.PostJsonAsync<ApiResponseDto>("api/Account/CreateAkademisyen", akademisyenDto);
         }
 
+        public async Task<ApiResponseDto> Create(PersonelDto personelDto)
+        {
+            return await _httpClient.PostJsonAsync<ApiResponseDto>("api/Account/CreatePersonel", personelDto);
+        }
+
         public async Task<ApiResponseDto> Register(RegisterDto registerParameters)
         {
             return await _httpClient.PostJsonAsync<ApiResponseDto>("api/Account/Register", registerParameters);
@@ -167,6 +172,11 @@ namespace UniLife.CommonUI.Services.Implementations
         public async Task<ApiResponseDto> UpdateAkademisyenUser(AkademisyenDto akademisyenDto)
         {
             return await _httpClient.PostJsonAsync<ApiResponseDto>("api/Account/UpdateAkademisyenUser", akademisyenDto);
+        }
+
+        public async Task<ApiResponseDto> UpdatePersonelUser(PersonelDto personelDto)
+        {
+            return await _httpClient.PostJsonAsync<ApiResponseDto>("api/Account/UpdatePersonelUser", personelDto);
         }
 
 

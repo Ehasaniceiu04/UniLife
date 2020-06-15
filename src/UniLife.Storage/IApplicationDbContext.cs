@@ -33,7 +33,7 @@ namespace UniLife.Storage
         public DbSet<OgrenimDurum> OgrenimDurums { get; set; }
         public DbSet<Ogrenci> Ogrencis { get; set; }
         public DbSet<Akademisyen> Akademisyens { get; set; }
-
+        public DbSet<Personel> Personels { get; set; }
 
         //TODO Bunu böyle bırakacakmıyız.
         public Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade Database { get; set; }
