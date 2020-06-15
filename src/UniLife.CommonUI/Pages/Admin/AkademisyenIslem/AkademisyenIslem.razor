@@ -1,6 +1,6 @@
 ﻿@page "/admin/akademisyen_islem"
 @using Syncfusion.Blazor.Navigations
-@using UniLife.CommonUI.Pages.Admin.OgretmenIslem.OgretmenIslemTabs
+@using UniLife.CommonUI.Pages.Admin.AkademisyenIslem.AkademisyenIslemTabs
 @using UniLife.Shared.Dto.Definitions
 @attribute [Authorize(Policy = Policies.IsAdmin)]
 
@@ -13,7 +13,7 @@
                     <TabHeader Text="Akademisyenler"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
-                    <Ogretmenler OgretmenToBilgiler="OgretmenToBilgiler"></Ogretmenler>
+                    <Akademisyenler AkademisyenToBilgiler="AkademisyenToBilgiler"></Akademisyenler>
                 </ContentTemplate>
             </TabItem>
             <TabItem>
@@ -34,7 +34,7 @@
 @code{
 
     SfTab Tab;
-    public OgretmenDto _OgretmenDto { get; set; } = new OgretmenDto();
+    public AkademisyenDto _AkademisyenDto { get; set; } = new AkademisyenDto();
 
     public void TabDegis(int tabIndex)
     {
@@ -43,9 +43,9 @@
         Tab.Select(tabIndex);
     }
 
-    public void OgretmenToBilgiler(OgretmenDto ogretmenDto)
+    public void AkademisyenToBilgiler(AkademisyenDto akademisyenDto)
     {
-        _OgretmenDto = ogretmenDto;
+        _AkademisyenDto = akademisyenDto;
         TabDegis(1);
     }
 

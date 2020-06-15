@@ -43,7 +43,7 @@ namespace UniLife.Storage
         public DbSet<DonemTip> DonemTips{ get; set; }
         public DbSet<OgrenimDurum> OgrenimDurums{ get; set; }
         public DbSet<Ogrenci> Ogrencis { get; set; }
-        public DbSet<Ogretmen> Ogretmens{ get; set; }
+        public DbSet<Akademisyen> Akademisyens{ get; set; }
 
         public DbSet<KayitNeden> KayitNedens { get; set; }
 

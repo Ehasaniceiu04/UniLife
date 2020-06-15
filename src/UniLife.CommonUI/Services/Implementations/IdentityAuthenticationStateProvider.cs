@@ -49,6 +49,12 @@ namespace UniLife.CommonUI.States
             return apiResponse;
         }
 
+        public async Task<ApiResponseDto> Create(AkademisyenDto akademisyenDto)
+        {
+            ApiResponseDto apiResponse = await _authorizeApi.Create(akademisyenDto);
+            return apiResponse;
+        }
+
         public async Task<ApiResponseDto> Logout()
         {
             _appState.UserProfile = null;
@@ -122,6 +128,13 @@ namespace UniLife.CommonUI.States
         public async Task<ApiResponseDto> UpdateOgrenciUser(OgrenciDto ogrenciDto)
         {
             ApiResponseDto apiResponse = await _authorizeApi.UpdateOgrenciUser(ogrenciDto);
+            NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+            return apiResponse;
+        }
+
+        public async Task<ApiResponseDto> UpdateAkademisyenUser(AkademisyenDto akademisyenDto)
+        {
+            ApiResponseDto apiResponse = await _authorizeApi.UpdateAkademisyenUser(akademisyenDto);
             NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
             return apiResponse;
         }

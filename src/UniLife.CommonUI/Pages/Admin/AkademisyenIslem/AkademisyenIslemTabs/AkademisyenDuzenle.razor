@@ -20,29 +20,29 @@
                     </div>
                 </div>*@
             <div class="server-action-menu">
-                @*Model=@_OgretmenDto OnValidSubmit="Kaydet"*@
+                @*Model=@_AkademisyenDto OnValidSubmit="Kaydet"*@
                 <EditForm EditContext="@EC">
                     <DataAnnotationsValidator />
                     <ValidationSummary />
                     <div class="row">
                         <div class="col-sm-12 col-md-6">
                             <div class="form-row form-group form-inline ">
-                                <label class="col-sm-2" for="OgrNo">Öğrenci NO:</label>
-                                <SfTextBox @bind-Value="@_OgretmenDto.OgrNo" ID="OgrNo" CssClass="col-sm-4"></SfTextBox>
+                                <label class="col-sm-2" for="OgrtNo">Akademisyen NO:</label>
+                                <SfTextBox @bind-Value="@_AkademisyenDto.OgrtNo" ID="OgrtNo" CssClass="col-sm-4"></SfTextBox>
                                 <label class="col-sm-2" for="DosNo">Dosya NO:</label>
                                 <SfTextBox ID="DosNo" CssClass="col-sm-2"></SfTextBox>
-                                <SfCheckBox Label="Durum" CssClass="col-sm-1" @bind-Checked="@_OgretmenDto.Durum"></SfCheckBox>
+                                <SfCheckBox Label="Durum" CssClass="col-sm-1" @bind-Checked="@_AkademisyenDto.Durum"></SfCheckBox>
                                 <label class="col-sm-2" for="TCKN">TCKN:</label>
-                                <SfTextBox @bind-Value="@_OgretmenDto.TCKN" ID="TCKN" CssClass="col-sm-4"></SfTextBox>
+                                <SfTextBox @bind-Value="@_AkademisyenDto.TCKN" ID="TCKN" CssClass="col-sm-4"></SfTextBox>
                                 <label class="col-sm-2" for="Seri">Kimlik Seri:</label>
                                 <SfTextBox ID="Seri" CssClass="col-sm-4"></SfTextBox>
                                 <label class="col-sm-2" for="Adi">Adı:</label>
-                                <SfTextBox @bind-Value="@_OgretmenDto.Ad" ID="Adı" CssClass="col-sm-4"></SfTextBox>
+                                <SfTextBox @bind-Value="@_AkademisyenDto.Ad" ID="Adı" CssClass="col-sm-4"></SfTextBox>
                                 <label class="col-sm-2" for="Soyadi">Soyadı:</label>
-                                <SfTextBox @bind-Value="@_OgretmenDto.Soyad" ID="Soyadi" CssClass="col-sm-4"></SfTextBox>
+                                <SfTextBox @bind-Value="@_AkademisyenDto.Soyad" ID="Soyadi" CssClass="col-sm-4"></SfTextBox>
                                 <label class="col-sm-2" for="Email">Email:</label>
-                                <SfTextBox @bind-Value="@_OgretmenDto.Email" ID="Email" CssClass="col-sm-10"></SfTextBox>
-                                
+                                <SfTextBox @bind-Value="@_AkademisyenDto.Email" ID="Email" CssClass="col-sm-10"></SfTextBox>
+
                             </div>
 
                         </div>
@@ -50,10 +50,10 @@
                             <div class="form-row form-group form-inline ">
                                 
                                 <label class="col-sm-2" for="KayTarih">Kayıt Tarihi:</label>
-                                <SfDatePicker ID="KayTarih" TValue="DateTime?" @bind-Value="@_OgretmenDto.KayitTarih" CssClass="col-sm-4 pb-1" Placeholder="Kayıt Tarihi"></SfDatePicker>
+                                <SfDatePicker ID="KayTarih" TValue="DateTime?" @bind-Value="@_AkademisyenDto.KayitTarih" CssClass="col-sm-4 pb-1" Placeholder="Kayıt Tarihi"></SfDatePicker>
                                 
                                 <label class="col-sm-2" for="AyrTarih">Ayrılma Tarihi:</label>
-                                <SfDatePicker ID="AyrTarih" TValue="DateTime?" @bind-Value="@_OgretmenDto.AyrilTarih" CssClass="col-sm-4 pb-1" Placeholder="Ayrılma Tarihi"></SfDatePicker>
+                                <SfDatePicker ID="AyrTarih" TValue="DateTime?" @bind-Value="@_AkademisyenDto.AyrilTarih" CssClass="col-sm-4 pb-1" Placeholder="Ayrılma Tarihi"></SfDatePicker>
 
                                 
                             </div>
@@ -66,7 +66,7 @@
 
             <div class="row">
                 <div class="col-6 text-left">
-                    <SfProgressButton Content="< Farklı Öğrenci Seç" OnClick="GoBackOgretmen" CssClass="center-block e-primary">
+                    <SfProgressButton Content="< Farklı Öğrenci Seç" OnClick="GoBackAkademisyen" CssClass="center-block e-primary">
                         <ProgressButtonSpinSettings Position="SpinPosition.Left"></ProgressButtonSpinSettings>
                     </SfProgressButton>
                 </div>
@@ -102,31 +102,31 @@
         var asd = args;
     }
 
-    //Sonradan doldurulacak dropdownlar
+
     [Parameter]
-    public OgretmenDto _OgretmenDto { get; set; } = new OgretmenDto();
+    public AkademisyenDto _AkademisyenDto { get; set; } = new AkademisyenDto();
 
 
     protected override void OnInitialized()
     {
-        EC = new EditContext(_OgretmenDto);
+        EC = new EditContext(_AkademisyenDto);
     }
 
     [Parameter]
-    public EventCallback<int> BilgilerToOgretmen { get; set; }
+    public EventCallback<int> BilgilerToAkademisyen { get; set; }
 
-    async Task GoBackOgretmen()
+    async Task GoBackAkademisyen()
     {
-        await BilgilerToOgretmen.InvokeAsync(0);
+        await BilgilerToAkademisyen.InvokeAsync(0);
     }
 
     async Task Kaydet()
     {
         try
         {
-            if (_OgretmenDto.Id == 0)
+            if (_AkademisyenDto.Id == 0)
             {
-                var apiResponse = await ((IdentityAuthenticationStateProvider)authStateProvider).Create(_OgretmenDto);
+                var apiResponse = await ((IdentityAuthenticationStateProvider)authStateProvider).Create(_AkademisyenDto);
                 if (apiResponse.IsSuccessStatusCode)
                 {
                     matToaster.Add(apiResponse.Message, MatToastType.Success);
@@ -138,7 +138,7 @@
             }
             else
             {
-                ApiResponseDto apiResponse = await ((IdentityAuthenticationStateProvider)authStateProvider).UpdateOgretmenUser(_OgretmenDto);
+                ApiResponseDto apiResponse = await ((IdentityAuthenticationStateProvider)authStateProvider).UpdateAkademisyenUser(_AkademisyenDto);
 
                 if (apiResponse.StatusCode == Status200OK)
                 {
@@ -158,36 +158,6 @@
 
     }
 
-
-
-    async Task ReadKayitNedens()
-    {
-        ApiResponseDto<List<KayitNedenDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<KayitNedenDto>>>("api/KeyValues/GetKayitNeden");
-
-        if (apiResponse.StatusCode == Status200OK)
-        {
-            kayitNedenDtos = apiResponse.Result;
-
-        }
-        else
-        {
-            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Kayit neden getirilirken hata oluştu!");
-        }
-    }
-    async Task ReadOgrenimDurums()
-    {
-        ApiResponseDto<List<OgrenimDurumDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenimDurumDto>>>("api/ogrenimdurum");
-
-        if (apiResponse.StatusCode == Status200OK)
-        {
-            ogrenimDurumDtos = apiResponse.Result;
-
-        }
-        else
-        {
-            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Kayit neden getirilirken hata oluştu!");
-        }
-    }
 }
 
 <style>

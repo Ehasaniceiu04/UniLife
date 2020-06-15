@@ -15,7 +15,7 @@
 
 @code{
     [Parameter]
-    public OgretmenDto _OgretmenDto { get; set; }
+    public AkademisyenDto _AkademisyenDto { get; set; }
 
     List<RoleSelection> roleSelections { get; set; } = new List<RoleSelection>();
 
@@ -28,13 +28,13 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await GetRolesforOgretmen();
+        await GetRolesforAkademisyen();
         await PopulateRoleList();
 
         foreach (var role in roleSelections)
-            role.IsSelected = _OgretmenDto.Roles.Contains(role.Name);
+            role.IsSelected = _AkademisyenDto.Roles.Contains(role.Name);
 
-        //_OgretmenDto.SaveState();
+        //_AkademisyenDto.SaveState();
     }
 
     public async Task PopulateRoleList()
@@ -69,13 +69,13 @@
         roleSelectionItem.IsSelected = !roleSelectionItem.IsSelected;
     }
 
-    async Task GetRolesforOgretmen()
+    async Task GetRolesforAkademisyen()
     {
-        ApiResponseDto<List<string>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<string>>>("api/admin/GetRolesByUserId/" + _OgretmenDto.ApplicationUserId);
+        ApiResponseDto<List<string>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<string>>>("api/admin/GetRolesByUserId/" + _AkademisyenDto.ApplicationUserId);
 
         if (apiResponse.StatusCode == Status200OK)
         {
-            _OgretmenDto.Roles = apiResponse.Result;
+            _AkademisyenDto.Roles = apiResponse.Result;
         }
         else
         {
@@ -87,16 +87,16 @@
     {
         try
         {
-            _OgretmenDto.Roles = roleSelections.Where(x => x.IsSelected == true).Select(x => x.Name).ToList();
+            _AkademisyenDto.Roles = roleSelections.Where(x => x.IsSelected == true).Select(x => x.Name).ToList();
 
-            var apiResponse = await Http.PutJsonAsync<ApiResponseDto>("api/Account/UpdateRoleFromUser", _OgretmenDto);
+            var apiResponse = await Http.PutJsonAsync<ApiResponseDto>("api/Account/UpdateRoleFromUser", _AkademisyenDto);
 
             if (apiResponse.IsSuccessStatusCode)
                 matToaster.Add("Roller Güncellendi", MatToastType.Success);
             else
             {
                 matToaster.Add("Hata", MatToastType.Danger, apiResponse.StatusCode.ToString());
-                //_OgretmenDto.RestoreState();
+                //_AkademisyenDto.RestoreState();
 
             }
         }
@@ -106,7 +106,7 @@
         }
         finally
         {
-            //_OgretmenDto.ClearState();
+            //_AkademisyenDto.ClearState();
         }
     }
 }

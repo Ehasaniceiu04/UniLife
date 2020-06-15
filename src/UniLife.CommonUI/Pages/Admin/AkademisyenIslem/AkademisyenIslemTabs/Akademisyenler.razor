@@ -5,7 +5,7 @@
 @inject IMatToaster matToaster
 @using Newtonsoft.Json
 @using UniLife.Shared.Dto.Definitions
-@using UniLife.CommonUI.Pages.Admin.OgretmenIslem.OgretmenIslemTabs.OgretmenlerTabs
+@using UniLife.CommonUI.Pages.Admin.AkademisyenIslem.AkademisyenIslemTabs.AkademisyenlerTabs
 @using Syncfusion.Blazor.SplitButtons
 @using System.Reflection;
 @inject AppState appState
@@ -16,14 +16,14 @@
     <div class="row">
         <SfGrid ID="OgrGrid" @ref="OgrGrid" AllowSorting="true" AllowFiltering="true" AllowPaging="true" DataSource="@OgrGridDtos">
             @*OnActionFailure="ActionFailureHandler"  OnActionBegin="ActionBeginHandler" DetailDataBound="DetailDataBound" RowDataBound="RowBound"*@
-            <GridEvents TValue="OgretmenDto" CommandClicked="CommandClickHandler" OnActionBegin="ActionBeginHandler" OnActionComplete="ActionCompletedHandler"></GridEvents>
+            <GridEvents TValue="AkademisyenDto" CommandClicked="CommandClickHandler" OnActionBegin="ActionBeginHandler" OnActionComplete="ActionCompletedHandler"></GridEvents>
             <GridTemplates>
                 <DetailTemplate>
                     @{
-                        var ogretmenDto = (context as UniLife.Shared.Dto.Definitions.OgretmenDto);
+                        var akademisyenDto = (context as UniLife.Shared.Dto.Definitions.AkademisyenDto);
 
                         //SampleChart için
-                        var chartQuery = $"new sf.data.Query().where('EmployeeID', 'equal', {ogretmenDto.Id}, false)";
+                        var chartQuery = $"new sf.data.Query().where('EmployeeID', 'equal', {akademisyenDto.Id}, false)";
 
                     }
                     <div style="padding:20px">
@@ -35,7 +35,7 @@
                                         <TabHeader Text="Details"></TabHeader>
                                     </ChildContent>
                                     <ContentTemplate>
-                                        <OgretmenBilgi _OgretmenDto="ogretmenDto"></OgretmenBilgi>
+                                        <AkademisyenBilgi _AkademisyenDto="akademisyenDto"></AkademisyenBilgi>
                                     </ContentTemplate>
                                 </TabItem>
                                 <TabItem>
@@ -43,7 +43,7 @@
                                         <TabHeader Text="Roles"></TabHeader>
                                     </ChildContent>
                                     <ContentTemplate>
-                                        <OgretmenRoles _OgretmenDto="ogretmenDto"></OgretmenRoles>
+                                        <AkademisyenRoles _AkademisyenDto="akademisyenDto"></AkademisyenRoles>
                                     </ContentTemplate>
                                 </TabItem>
                                 <TabItem>
@@ -59,11 +59,11 @@
                 </DetailTemplate>
             </GridTemplates>
             <GridColumns>
-                <GridColumn Visible="false" Field=@nameof(OgretmenDto.ApplicationUserId) HeaderText="AppUserId" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
-                <GridColumn Field=@nameof(OgretmenDto.Ad) HeaderText="Ad"> </GridColumn>
-                <GridColumn Field=@nameof(OgretmenDto.Soyad) HeaderText="Soyad"></GridColumn>
-                <GridColumn Field=@nameof(OgretmenDto.TCKN) HeaderText="TCKN"></GridColumn>
-                @*<GridColumn Field=@nameof(OgretmenDto.OgrNo) HeaderText="Öğrenci No"></GridColumn>*@
+                <GridColumn Visible="false" Field=@nameof(AkademisyenDto.ApplicationUserId) HeaderText="AppUserId" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+                <GridColumn Field=@nameof(AkademisyenDto.Ad) HeaderText="Ad"> </GridColumn>
+                <GridColumn Field=@nameof(AkademisyenDto.Soyad) HeaderText="Soyad"></GridColumn>
+                <GridColumn Field=@nameof(AkademisyenDto.TCKN) HeaderText="TCKN"></GridColumn>
+                @*<GridColumn Field=@nameof(AkademisyenDto.OgrNo) HeaderText="Öğrenci No"></GridColumn>*@
                 <GridColumn>
                     <GridCommandColumns>
                         <GridCommandColumn Type="CommandButtonType.None" Title="Akademik Bilgiler" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
@@ -86,38 +86,38 @@
 @code{
 
 
-    public SfGrid<OgretmenDto> OgrGrid;
+    public SfGrid<AkademisyenDto> OgrGrid;
 
 
-    List<OgretmenDto> OgrGridDtos = new List<OgretmenDto>();
+    List<AkademisyenDto> OgrGridDtos = new List<AkademisyenDto>();
 
-    public OgretmenDto _OgretmenDto { get; set; } = new OgretmenDto();
+    public AkademisyenDto _AkademisyenDto { get; set; } = new AkademisyenDto();
 
     protected override async Task OnInitializedAsync()
     {
-        await ReadOgretmens();
+        await ReadAkademisyens();
     }
 
-    async Task ReadOgretmens()
+    async Task ReadAkademisyens()
     {
-        //ApiResponseDto<List<OgretmenDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgretmenDto>>>($"api/Admin/GetOgretmenUsers?pageSize={10}&pageNumber={0}");
-        ApiResponseDto<List<OgretmenDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgretmenDto>>>("api/ogretmen");
+        //ApiResponseDto<List<AkademisyenDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<AkademisyenDto>>>($"api/Admin/GetAkademisyenUsers?pageSize={10}&pageNumber={0}");
+        ApiResponseDto<List<AkademisyenDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<AkademisyenDto>>>("api/akademisyen");
 
 
         if (apiResponse.StatusCode == Status200OK)
         {
-            matToaster.Add(apiResponse.Message, MatToastType.Success, "Öğretmenler getirildi");
+            matToaster.Add(apiResponse.Message, MatToastType.Success, "Akademisyenler getirildi");
             OgrGridDtos = apiResponse.Result;
         }
         else
         {
-            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Öğretmen bilgisi getirilirken hata oluştu!");
+            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Akademisyen bilgisi getirilirken hata oluştu!");
         }
     }
 
 
 
-    public async void ActionCompletedHandler(ActionEventArgs<OgretmenDto> args)
+    public async void ActionCompletedHandler(ActionEventArgs<AkademisyenDto> args)
     {
         var FilterApplied = OgrGrid.FilterSettings.Columns; // to get filtered column details
                                                             //var GroupingApplied = OgrGrid.GroupSettings.Columns; // to get grouped column details
@@ -128,7 +128,7 @@
 
 
 
-    public void ActionBeginHandler(ActionEventArgs<OgretmenDto> args)
+    public void ActionBeginHandler(ActionEventArgs<AkademisyenDto> args)
     {
 
     }
@@ -136,15 +136,15 @@
 
 
     [Parameter]
-    public EventCallback<OgretmenDto> OgretmenToBilgiler { get; set; }
+    public EventCallback<AkademisyenDto> AkademisyenToBilgiler { get; set; }
 
-    public void CommandClickHandler(CommandClickEventArgs<OgretmenDto> args)
+    public void CommandClickHandler(CommandClickEventArgs<AkademisyenDto> args)
     {
         if (args.CommandColumn.Title == "Akademik Bilgiler")
         {
-            _OgretmenDto = args.RowData;
-            appState.OgretmenState = _OgretmenDto;
-            OgretmenToBilgiler.InvokeAsync(_OgretmenDto);
+            _AkademisyenDto = args.RowData;
+            appState.AkademisyenState = _AkademisyenDto;
+            AkademisyenToBilgiler.InvokeAsync(_AkademisyenDto);
 
         }
     }
@@ -152,7 +152,7 @@
 
     async Task AddNew()
     {
-        await OgretmenToAkademik.InvokeAsync(new OgretmenDto());
+        await AkademisyenToBilgiler.InvokeAsync(new AkademisyenDto());
     }
     public void OnTabSelecting(SelectingEventArgs args)
     {

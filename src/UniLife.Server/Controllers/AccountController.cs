@@ -81,6 +81,11 @@ namespace UniLife.Server.Controllers
         public async Task<ApiResponse> UpdateOgrenciUser(OgrenciDto ogrenciDto)
         => ModelState.IsValid ? await _accountManager.UpdateOgrenciUser(ogrenciDto) : _invalidUserModel;
 
+        [HttpPost("UpdateAkademisyenUser")]
+        [Authorize]
+        public async Task<ApiResponse> UpdateAkademisyenUser(AkademisyenDto akademisyenDto)
+        => ModelState.IsValid ? await _accountManager.UpdateAkademisyenUser(akademisyenDto) : _invalidUserModel;
+
 
 
         ///----------Admin User Management Interface Methods
@@ -96,6 +101,13 @@ namespace UniLife.Server.Controllers
         [Authorize(Permissions.User.Create)]
         public async Task<ApiResponse> CreateOgrenci(OgrenciDto ogrenciDto)
         => ModelState.IsValid ? await _accountManager.CreateOgrenci(ogrenciDto) : _invalidUserModel;
+
+        ///----------Admin OgrenciUser Management Interface Methods
+        // POST: api/Account/Create
+        [HttpPost("CreateOgrenci")]
+        [Authorize(Permissions.User.Create)]
+        public async Task<ApiResponse> CreateAkademisyen(AkademisyenDto akademisyenDto)
+        => ModelState.IsValid ? await _accountManager.CreateAkademisyen(akademisyenDto) : _invalidUserModel;
 
         // DELETE: api/Account/5
         [HttpDelete("{id}")]
@@ -123,7 +135,7 @@ namespace UniLife.Server.Controllers
         [Route("UpdateRoleFromUser")]
         // PUT: api/Account/5
         public async Task<ApiResponse> UpdateRoleFromUser([FromBody] OgrenciDto ogrenciDto)
-        => ModelState.IsValid ? await _accountManager.UpdateRoleFromUser(ogrenciDto) : _invalidUserModel;
+        => ModelState.IsValid ? await _accountManager.UpdateRoleFromOgrenciUser(ogrenciDto) : _invalidUserModel;
 
 
         [HttpPost("AdminUserPasswordReset/{id}")]

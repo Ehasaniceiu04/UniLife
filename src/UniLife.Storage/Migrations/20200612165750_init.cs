@@ -360,7 +360,7 @@ namespace UniLife.Storage.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Ogretmens",
+                name: "Akademisyens",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -383,9 +383,9 @@ namespace UniLife.Storage.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Ogretmens", x => x.Id);
+                    table.PrimaryKey("PK_Akademisyens", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Ogretmens_AspNetUsers_ApplicationUserId",
+                        name: "FK_Akademisyens_AspNetUsers_ApplicationUserId",
                         column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -832,7 +832,7 @@ namespace UniLife.Storage.Migrations
                     DersId = table.Column<int>(nullable: false),
                     ProgramId = table.Column<int>(nullable: false),
                     MufredatId = table.Column<int>(nullable: false),
-                    OgretmenId = table.Column<int>(nullable: false),
+                    AkademisyenId = table.Column<int>(nullable: false),
                     DonemId = table.Column<int>(nullable: false),
                     KisaAd = table.Column<string>(nullable: true),
                     Akts = table.Column<int>(nullable: false),
@@ -876,9 +876,9 @@ namespace UniLife.Storage.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_DersAcilans_Ogretmens_OgretmenId",
-                        column: x => x.OgretmenId,
-                        principalTable: "Ogretmens",
+                        name: "FK_DersAcilans_Akademisyens_AkademisyenId",
+                        column: x => x.AkademisyenId,
+                        principalTable: "Akademisyens",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -990,9 +990,9 @@ namespace UniLife.Storage.Migrations
                 column: "MufredatId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DersAcilans_OgretmenId",
+                name: "IX_DersAcilans_AkademisyenId",
                 table: "DersAcilans",
-                column: "OgretmenId");
+                column: "AkademisyenId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DersAcilans_ProgramId",
@@ -1100,8 +1100,8 @@ namespace UniLife.Storage.Migrations
                 column: "ProgramId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ogretmens_ApplicationUserId",
-                table: "Ogretmens",
+                name: "IX_Akademisyens_ApplicationUserId",
+                table: "Akademisyens",
                 column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
@@ -1176,7 +1176,7 @@ namespace UniLife.Storage.Migrations
                 name: "Derss");
 
             migrationBuilder.DropTable(
-                name: "Ogretmens");
+                name: "Akademisyens");
 
             migrationBuilder.DropTable(
                 name: "KayitNedens");

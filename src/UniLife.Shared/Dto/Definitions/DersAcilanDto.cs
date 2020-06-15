@@ -29,8 +29,8 @@ namespace UniLife.Shared.Dto.Definitions
         //public int  { get; set; }
         //External
 
-        public int? OgretmenId { get; set; }
-        public OgretmenDto Ogretmen { get; set; }
+        public int? AkademisyenId { get; set; }
+        public AkademisyenDto Akademisyen { get; set; }
 
         public int DonemId { get; set; }
         public virtual DonemDto Donem { get; set; }

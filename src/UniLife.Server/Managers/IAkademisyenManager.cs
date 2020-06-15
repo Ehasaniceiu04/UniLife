@@ -3,7 +3,7 @@ using UniLife.Shared.Dto.Definitions;
 
 namespace UniLife.Server.Managers
 {
-    public interface IOgretmenManager : IBaseManager<Ogretmen, OgretmenDto>
+    public interface IAkademisyenManager : IBaseManager<Akademisyen, AkademisyenDto>
     {
     }
 }

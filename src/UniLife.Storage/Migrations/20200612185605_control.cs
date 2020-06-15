@@ -7,21 +7,21 @@ namespace UniLife.Storage.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_DersAcilans_Ogretmens_OgretmenId",
+                name: "FK_DersAcilans_Akademisyens_AkademisyenId",
                 table: "DersAcilans");
 
             migrationBuilder.AlterColumn<int>(
-                name: "OgretmenId",
+                name: "AkademisyenId",
                 table: "DersAcilans",
                 nullable: true,
                 oldClrType: typeof(int),
                 oldType: "integer");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_DersAcilans_Ogretmens_OgretmenId",
+                name: "FK_DersAcilans_Akademisyens_AkademisyenId",
                 table: "DersAcilans",
-                column: "OgretmenId",
-                principalTable: "Ogretmens",
+                column: "AkademisyenId",
+                principalTable: "Akademisyens",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
         }
@@ -29,11 +29,11 @@ namespace UniLife.Storage.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_DersAcilans_Ogretmens_OgretmenId",
+                name: "FK_DersAcilans_Akademisyens_AkademisyenId",
                 table: "DersAcilans");
 
             migrationBuilder.AlterColumn<int>(
-                name: "OgretmenId",
+                name: "AkademisyenId",
                 table: "DersAcilans",
                 type: "integer",
                 nullable: false,
@@ -41,10 +41,10 @@ namespace UniLife.Storage.Migrations
                 oldNullable: true);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_DersAcilans_Ogretmens_OgretmenId",
+                name: "FK_DersAcilans_Akademisyens_AkademisyenId",
                 table: "DersAcilans",
-                column: "OgretmenId",
-                principalTable: "Ogretmens",
+                column: "AkademisyenId",
+                principalTable: "Akademisyens",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
         }

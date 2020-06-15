@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace UniLife.Shared.Dto.Definitions
 {
-    public class OgretmenDto : EntityDto<int>
+    public class AkademisyenDto : EntityDto<int>
     {
         public Guid ApplicationUserId { get; set; }
 

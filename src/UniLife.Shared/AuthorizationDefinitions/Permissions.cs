@@ -12,16 +12,16 @@ namespace UniLife.Shared.AuthorizationDefinitions
 
     public static class Permissions
     {
-        public static class Ogretmen
+        public static class Akademisyen
         {
-            [Description("Create a new Ogretmen")]
-            public const string Create = nameof(Ogretmen) + "." + nameof(Actions.Create);
-            [Description("Read Ogretmens")]
-            public const string Read = nameof(Ogretmen) + "." + nameof(Actions.Read);
-            [Description("Edit existing Ogretmens")]
-            public const string Update = nameof(Ogretmen) + "." + nameof(Actions.Update);
-            [Description("Delete any Ogretmen")]
-            public const string Delete = nameof(Ogretmen) + "." + nameof(Actions.Delete);
+            [Description("Create a new Akademisyen")]
+            public const string Create = nameof(Akademisyen) + "." + nameof(Actions.Create);
+            [Description("Read Akademisyens")]
+            public const string Read = nameof(Akademisyen) + "." + nameof(Actions.Read);
+            [Description("Edit existing Akademisyens")]
+            public const string Update = nameof(Akademisyen) + "." + nameof(Actions.Update);
+            [Description("Delete any Akademisyen")]
+            public const string Delete = nameof(Akademisyen) + "." + nameof(Actions.Delete);
         }
         public static class DersKayit
         {

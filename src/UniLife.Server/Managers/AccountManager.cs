@@ -30,6 +30,7 @@ namespace UniLife.Server.Managers
         private readonly IEmailManager _emailManager;
         private readonly IUserProfileStore _userProfileStore;
         private readonly IOgrenciStore _ogrenciStore;
+        private readonly IAkademisyenStore _akademisyenStore;
         private readonly IConfiguration _configuration;
         private readonly SignInManager<ApplicationUser> _signInManager;
 
@@ -42,7 +43,8 @@ namespace UniLife.Server.Managers
             IEmailManager emailManager,
             IUserProfileStore userProfileStore,
             IConfiguration configuration,
-            IOgrenciStore ogrenciStore)
+            IOgrenciStore ogrenciStore,
+            IAkademisyenStore akademisyenStore)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -52,6 +54,7 @@ namespace UniLife.Server.Managers
             _userProfileStore = userProfileStore;
             _configuration = configuration;
             _ogrenciStore = ogrenciStore;
+            _akademisyenStore = akademisyenStore;
         }
 
         public async Task<ApiResponse> ConfirmEmail(ConfirmEmailDto parameters)
@@ -307,6 +310,48 @@ namespace UniLife.Server.Managers
             return new ApiResponse(Status200OK, "Kullanıcı bilgileri güncellendi");
         }
 
+        public async Task<ApiResponse> UpdateAkademisyenUser(AkademisyenDto akademisyenDto)
+        {
+            var user = await _userManager.FindByIdAsync(akademisyenDto.ApplicationUserId.ToString());
+
+            if (user == null)
+            {
+                _logger.LogInformation("Bu kullanıcı mevcut değil: {0}", akademisyenDto.OgrtNo);
+                return new ApiResponse(Status404NotFound, "User does not exist");
+            }
+
+            user.FirstName = akademisyenDto.Ad;
+            user.LastName = akademisyenDto.Soyad;
+            user.Email = akademisyenDto.Email;
+            user.TCKN = akademisyenDto.TCKN;
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (!result.Succeeded)
+            {
+                _logger.LogInformation("Kullanıcı güncellemesi hatası: {0}", string.Join(",", result.Errors.Select(i => i.Description)));
+                return new ApiResponse(Status400BadRequest, "Kullanıcı güncellemesi Hatası!");
+            }
+
+            try
+            {
+                var akademisyenResult = await _akademisyenStore.Update(akademisyenDto);
+                if (akademisyenResult.Id == 0)
+                {
+                    _logger.LogInformation("Akademisyen Accountmanager _akademisyenStore.Update çalışmadı");
+                    return new ApiResponse(Status400BadRequest, "Akademisyen kullanıcı güncellemesi Hatası!");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation("Accountmanager _akademisyenStore.Update güncelleme hatsı: {0} inner {1} stacktrace:{2}", ex.Message, ex.InnerException, ex.StackTrace);
+                return new ApiResponse(Status400BadRequest, "Akademisyen kullanıcı güncellemesi hatası oluştu: {0}", ex.Message);
+            }
+
+
+            return new ApiResponse(Status200OK, "Kullanıcı bilgileri güncellendi");
+        }
+
 
         public async Task<ApiResponse> Create(RegisterDto parameters)
         {
@@ -516,6 +561,125 @@ namespace UniLife.Server.Managers
             }
         }
 
+        public async Task<ApiResponse> CreateAkademisyen(AkademisyenDto akademisyenDto)
+        {
+            try
+            {
+                Guid possibleUserId = Guid.NewGuid();
+
+
+
+                var user = new ApplicationUser
+                {
+                    UserName = akademisyenDto.OgrtNo,
+                    FirstName = akademisyenDto.Ad,
+                    LastName = akademisyenDto.Soyad,
+                    FullName = akademisyenDto.Ad + " " + akademisyenDto.Soyad,
+                    UserType = (int)UserType.Akademisyen,
+                    Email = akademisyenDto.Email,
+                    TCKN = akademisyenDto.TCKN,
+                    Id = possibleUserId
+                };
+
+                var result = await _userManager.CreateAsync(user, akademisyenDto.TCKN); //tckn yi pasword yaptık.
+                if (!result.Succeeded)
+                {
+                    return new ApiResponse(Status400BadRequest, "Öğrenci kullanıcı kaydı başarısız oldu: " + string.Join(",", result.Errors.Select(i => i.Description)));
+                }
+                else
+                {
+                    var claimsResult = _userManager.AddClaimsAsync(user, new Claim[]{
+                        new Claim(Policies.IsUser, string.Empty),
+                        new Claim(JwtClaimTypes.Name, akademisyenDto.OgrtNo),
+                        new Claim(JwtClaimTypes.Email, akademisyenDto.Email),
+                        new Claim(JwtClaimTypes.EmailVerified, "false", ClaimValueTypes.Boolean)
+                    }).Result;
+                }
+
+
+                try
+                {
+                    //Akademisyen Kaydı ekleme
+                    akademisyenDto.ApplicationUserId = possibleUserId;
+                    Akademisyen ogrCreateResult = await _akademisyenStore.Create(akademisyenDto);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogInformation("Kullanıcının akademisyen kaydı başarısız oldu: {0} inner:{1} stacktrace:{2}", ex.Message, ex.InnerException, ex.StackTrace);
+                    return new ApiResponse(Status400BadRequest, "Kullanıcının akademisyen kaydı başarısız oldu: " + ex.Message);
+                }
+
+
+
+
+                //Role - Here we tie the new user to the "User" role
+                await _userManager.AddToRoleAsync(user, "User");
+
+
+
+
+
+                if (Convert.ToBoolean(_configuration["UniLife:RequireConfirmedEmail"] ?? "false"))
+                {
+                    try
+                    {
+                        // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
+                        var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                        string callbackUrl = string.Format("{0}/Account/ConfirmEmail/{1}?token={2}", _configuration["UniLife:ApplicationUrl"], user.Id, token);
+
+                        var email = new EmailMessageDto();
+                        email.ToAddresses.Add(new EmailAddressDto(user.Email, user.Email));
+                        email = EmailTemplates.BuildNewUserConfirmationEmail(email, user.UserName, user.Email, callbackUrl, user.Id.ToString(), token); //Replace First UserName with Name if you want to add name to Registration Form
+
+                        _logger.LogInformation("Yeni öğrenci kullanıcı oluşturuldu: {0}", user);
+                        await _emailManager.SendEmailAsync(email);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogInformation("Yeni öğrenci kullanıcı emaili gönderilemedi: {0}", ex.Message);
+                    }
+
+
+
+                    return new ApiResponse(Status200OK, "Yeni öğrenci kullanıcısı oluşturuldu");
+                }
+
+                try
+                {
+                    var email = new EmailMessageDto();
+                    email.ToAddresses.Add(new EmailAddressDto(user.Email, user.Email));
+                    email.BuildNewUserEmail(user.FullName, user.UserName, user.Email, akademisyenDto.TCKN);
+
+                    _logger.LogInformation("Yeni öğrenci kullanıcı oluşturuldu: {0}", user);
+                    await _emailManager.SendEmailAsync(email);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogInformation("Yeni öğrenci kullanıcı emaili gönderilemedi: {0}", ex.Message);
+                }
+
+                var akademisyenDto1 = new AkademisyenDto
+                {
+                    ApplicationUserId = user.Id,
+                    IsAuthenticated = false,
+                    OgrtNo = user.UserName,
+                    Email = user.Email,
+                    Ad = user.FirstName,
+                    Soyad = user.LastName,
+                    TCKN = user.TCKN,
+                    //ExposedClaims = user.Claims.ToDictionary(c => c.Type, c => c.Value),
+                    Roles = new List<string> { "User" }
+                };
+
+                return new ApiResponse(Status200OK, "Yeni akademisyen kullanıcı oluşturuldu", akademisyenDto1);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Yeni akademisyen kullanıcısı oluşturulamadı: {ex.Message}");
+                return new ApiResponse(Status400BadRequest, "Yeni akademisyen kullanıcısı oluşturulamadı.");
+            }
+        }
+
         public async Task<ApiResponse> Delete(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
@@ -612,7 +776,7 @@ namespace UniLife.Server.Managers
         }
 
 
-        public async Task<ApiResponse> UpdateRoleFromUser(OgrenciDto ogrenciDto)
+        public async Task<ApiResponse> UpdateRoleFromOgrenciUser(OgrenciDto ogrenciDto)
         {
             // retrieve full user object for updating
             var appUser = await _userManager.FindByIdAsync(ogrenciDto.ApplicationUserId.ToString()).ConfigureAwait(true);
@@ -640,6 +804,51 @@ namespace UniLife.Server.Managers
 
                     var rolesToRemove = currentUserRoles
                         .Where(role => !ogrenciDto.Roles.Contains(role)).ToList();
+
+                    await _userManager.RemoveFromRolesAsync(appUser, rolesToRemove).ConfigureAwait(true);
+
+                    //HACK to switch to claims auth
+                    foreach (var role in rolesToRemove)
+                    {
+                        await _userManager.RemoveClaimAsync(appUser, new Claim($"Is{role}", "true")).ConfigureAwait(true);
+                    }
+                }
+                catch
+                {
+                    return new ApiResponse(Status500InternalServerError, "Roller güncellenirken hata oluştu!");
+                }
+            }
+            return new ApiResponse(Status200OK, "Roller Güncellendi.");
+        }
+
+        public async Task<ApiResponse> UpdateRoleFromAkademisyenUser(AkademisyenDto akademisyenDto)
+        {
+            // retrieve full user object for updating
+            var appUser = await _userManager.FindByIdAsync(akademisyenDto.ApplicationUserId.ToString()).ConfigureAwait(true);
+
+
+            if (akademisyenDto.Roles != null)
+            {
+                try
+                {
+                    var rolesToAdd = new List<string>();
+                    var currentUserRoles = (List<string>)(await _userManager.GetRolesAsync(appUser).ConfigureAwait(true));
+                    foreach (var newUserRole in akademisyenDto.Roles)
+                    {
+                        if (!currentUserRoles.Contains(newUserRole))
+                        {
+                            rolesToAdd.Add(newUserRole);
+                        }
+                    }
+                    await _userManager.AddToRolesAsync(appUser, rolesToAdd).ConfigureAwait(true);
+                    //HACK to switch to claims auth
+                    foreach (var role in rolesToAdd)
+                    {
+                        await _userManager.AddClaimAsync(appUser, new Claim($"Is{role}", "true")).ConfigureAwait(true);
+                    }
+
+                    var rolesToRemove = currentUserRoles
+                        .Where(role => !akademisyenDto.Roles.Contains(role)).ToList();
 
                     await _userManager.RemoveFromRolesAsync(appUser, rolesToRemove).ConfigureAwait(true);
 

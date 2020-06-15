@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace UniLife.Shared.DataModels
 {
-    public class Ogretmen : Entity<int>, IAuditable, ISoftDelete
+    public class Akademisyen : Entity<int>, IAuditable, ISoftDelete
     {
         public Guid ApplicationUserId{ get; set; }
 

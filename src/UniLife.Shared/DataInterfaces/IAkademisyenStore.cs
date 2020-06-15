@@ -3,7 +3,7 @@ using UniLife.Shared.Dto.Definitions;
 
 namespace UniLife.Shared.DataInterfaces
 {
-    public interface IOgretmenStore : IBaseStore<Ogretmen, OgretmenDto>
+    public interface IAkademisyenStore : IBaseStore<Akademisyen, AkademisyenDto>
     {
     }
 }

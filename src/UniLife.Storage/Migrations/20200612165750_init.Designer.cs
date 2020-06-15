@@ -569,7 +569,7 @@ namespace UniLife.Storage.Migrations
                     b.Property<int?>("ODTekrar")
                         .HasColumnType("integer");
 
-                    b.Property<int>("OgretmenId")
+                    b.Property<int>("AkademisyenId")
                         .HasColumnType("integer");
 
                     b.Property<string>("OptikKod")
@@ -598,7 +598,7 @@ namespace UniLife.Storage.Migrations
 
                     b.HasIndex("MufredatId");
 
-                    b.HasIndex("OgretmenId");
+                    b.HasIndex("AkademisyenId");
 
                     b.HasIndex("ProgramId");
 
@@ -1291,7 +1291,7 @@ namespace UniLife.Storage.Migrations
                     b.ToTable("OgrenimTurs");
                 });
 
-            modelBuilder.Entity("UniLife.Shared.DataModels.Ogretmen", b =>
+            modelBuilder.Entity("UniLife.Shared.DataModels.Akademisyen", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1354,7 +1354,7 @@ namespace UniLife.Storage.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("Ogretmens");
+                    b.ToTable("Akademisyens");
                 });
 
             modelBuilder.Entity("UniLife.Shared.DataModels.Program", b =>
@@ -1707,9 +1707,9 @@ namespace UniLife.Storage.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("UniLife.Shared.DataModels.Ogretmen", "Ogretmen")
+                    b.HasOne("UniLife.Shared.DataModels.Akademisyen", "Akademisyen")
                         .WithMany()
-                        .HasForeignKey("OgretmenId")
+                        .HasForeignKey("AkademisyenId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1843,7 +1843,7 @@ namespace UniLife.Storage.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("UniLife.Shared.DataModels.Ogretmen", b =>
+            modelBuilder.Entity("UniLife.Shared.DataModels.Akademisyen", b =>
                 {
                     b.HasOne("UniLife.Shared.DataModels.ApplicationUser", "ApplicationUser")
                         .WithMany()
