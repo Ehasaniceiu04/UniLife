@@ -10,8 +10,8 @@ using UniLife.Storage;
 namespace UniLife.Storage.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200614180712_control1")]
-    partial class control1
+    [Migration("20200615100328_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -170,6 +170,72 @@ namespace UniLife.Storage.Migrations
                         .IsUnique();
 
                     b.ToTable("Tenants");
+                });
+
+            modelBuilder.Entity("UniLife.Shared.DataModels.Akademisyen", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Ad")
+                        .IsRequired()
+                        .HasColumnType("character varying(300)")
+                        .HasMaxLength(300);
+
+                    b.Property<Guid>("ApplicationUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("AyrilTarih")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<bool>("Durum")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Eimg")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("KayitTarih")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid>("ModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<string>("OgrtNo")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Soyad")
+                        .HasColumnType("text");
+
+                    b.Property<string>("TCKN")
+                        .HasColumnType("character varying(11)")
+                        .HasMaxLength(11);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("Akademisyens");
                 });
 
             modelBuilder.Entity("UniLife.Shared.DataModels.ApiLogItem", b =>
@@ -520,6 +586,9 @@ namespace UniLife.Storage.Migrations
                     b.Property<string>("AdEn")
                         .HasColumnType("text");
 
+                    b.Property<int?>("AkademisyenId")
+                        .HasColumnType("integer");
+
                     b.Property<int>("Akts")
                         .HasColumnType("integer");
 
@@ -572,14 +641,14 @@ namespace UniLife.Storage.Migrations
                     b.Property<int?>("ODTekrar")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("AkademisyenId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("OptikKod")
                         .HasColumnType("text");
 
                     b.Property<int>("ProgramId")
                         .HasColumnType("integer");
+
+                    b.Property<string>("SecmeliKodu")
+                        .HasColumnType("text");
 
                     b.Property<int>("Sinif")
                         .HasColumnType("integer");
@@ -595,13 +664,13 @@ namespace UniLife.Storage.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AkademisyenId");
+
                     b.HasIndex("DersId");
 
                     b.HasIndex("DonemId");
 
                     b.HasIndex("MufredatId");
-
-                    b.HasIndex("AkademisyenId");
 
                     b.HasIndex("ProgramId");
 
@@ -1294,72 +1363,6 @@ namespace UniLife.Storage.Migrations
                     b.ToTable("OgrenimTurs");
                 });
 
-            modelBuilder.Entity("UniLife.Shared.DataModels.Akademisyen", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Ad")
-                        .IsRequired()
-                        .HasColumnType("character varying(300)")
-                        .HasMaxLength(300);
-
-                    b.Property<Guid>("ApplicationUserId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime?>("AyrilTarih")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp without time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.Property<bool>("Durum")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Eimg")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime?>("KayitTarih")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<Guid>("ModifiedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("ModifiedOn")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp without time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.Property<string>("OgrtNo")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Soyad")
-                        .HasColumnType("text");
-
-                    b.Property<string>("TCKN")
-                        .HasColumnType("character varying(11)")
-                        .HasMaxLength(11);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.ToTable("Akademisyens");
-                });
-
             modelBuilder.Entity("UniLife.Shared.DataModels.Program", b =>
                 {
                     b.Property<int>("Id")
@@ -1653,6 +1656,15 @@ namespace UniLife.Storage.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("UniLife.Shared.DataModels.Akademisyen", b =>
+                {
+                    b.HasOne("UniLife.Shared.DataModels.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("UniLife.Shared.DataModels.ApiLogItem", b =>
                 {
                     b.HasOne("UniLife.Shared.DataModels.ApplicationUser", null)
@@ -1692,6 +1704,10 @@ namespace UniLife.Storage.Migrations
 
             modelBuilder.Entity("UniLife.Shared.DataModels.DersAcilan", b =>
                 {
+                    b.HasOne("UniLife.Shared.DataModels.Akademisyen", "Akademisyen")
+                        .WithMany()
+                        .HasForeignKey("AkademisyenId");
+
                     b.HasOne("UniLife.Shared.DataModels.Ders", "Ders")
                         .WithMany("DersAcilans")
                         .HasForeignKey("DersId")
@@ -1709,10 +1725,6 @@ namespace UniLife.Storage.Migrations
                         .HasForeignKey("MufredatId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("UniLife.Shared.DataModels.Akademisyen", "Akademisyen")
-                        .WithMany()
-                        .HasForeignKey("AkademisyenId");
 
                     b.HasOne("UniLife.Shared.DataModels.Program", "Program")
                         .WithMany("DersAcilans")
@@ -1840,15 +1852,6 @@ namespace UniLife.Storage.Migrations
                     b.HasOne("UniLife.Shared.DataModels.Program", "Program")
                         .WithMany("Ogrencis")
                         .HasForeignKey("ProgramId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("UniLife.Shared.DataModels.Akademisyen", b =>
-                {
-                    b.HasOne("UniLife.Shared.DataModels.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

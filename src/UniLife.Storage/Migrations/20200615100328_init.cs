@@ -225,6 +225,39 @@ namespace UniLife.Storage.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Akademisyens",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ApplicationUserId = table.Column<Guid>(nullable: false),
+                    Ad = table.Column<string>(maxLength: 300, nullable: false),
+                    Soyad = table.Column<string>(nullable: true),
+                    OgrtNo = table.Column<string>(nullable: true),
+                    TCKN = table.Column<string>(maxLength: 11, nullable: true),
+                    Email = table.Column<string>(nullable: true),
+                    Eimg = table.Column<string>(nullable: true),
+                    Durum = table.Column<bool>(nullable: false),
+                    KayitTarih = table.Column<DateTime>(nullable: true),
+                    AyrilTarih = table.Column<DateTime>(nullable: true),
+                    CreatedBy = table.Column<Guid>(nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    ModifiedBy = table.Column<Guid>(nullable: false),
+                    ModifiedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Akademisyens", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Akademisyens_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ApiLogs",
                 columns: table => new
                 {
@@ -354,39 +387,6 @@ namespace UniLife.Storage.Migrations
                     table.ForeignKey(
                         name: "FK_Messages_AspNetUsers_UserID",
                         column: x => x.UserID,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Akademisyens",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ApplicationUserId = table.Column<Guid>(nullable: false),
-                    Ad = table.Column<string>(maxLength: 300, nullable: false),
-                    Soyad = table.Column<string>(nullable: true),
-                    OgrtNo = table.Column<string>(nullable: true),
-                    TCKN = table.Column<string>(maxLength: 11, nullable: true),
-                    Email = table.Column<string>(nullable: true),
-                    Eimg = table.Column<string>(nullable: true),
-                    Durum = table.Column<bool>(nullable: false),
-                    KayitTarih = table.Column<DateTime>(nullable: true),
-                    AyrilTarih = table.Column<DateTime>(nullable: true),
-                    CreatedBy = table.Column<Guid>(nullable: false),
-                    CreatedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
-                    IsDeleted = table.Column<bool>(nullable: false),
-                    ModifiedBy = table.Column<Guid>(nullable: false),
-                    ModifiedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Akademisyens", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Akademisyens_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -716,6 +716,7 @@ namespace UniLife.Storage.Migrations
                     Kredi = table.Column<double>(nullable: false),
                     Durum = table.Column<bool>(nullable: false),
                     Zorunlu = table.Column<bool>(nullable: false),
+                    SecmeliKodu = table.Column<string>(nullable: true),
                     Sinif = table.Column<int>(nullable: false),
                     CreatedBy = table.Column<Guid>(nullable: false),
                     CreatedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
@@ -832,7 +833,7 @@ namespace UniLife.Storage.Migrations
                     DersId = table.Column<int>(nullable: false),
                     ProgramId = table.Column<int>(nullable: false),
                     MufredatId = table.Column<int>(nullable: false),
-                    AkademisyenId = table.Column<int>(nullable: false),
+                    AkademisyenId = table.Column<int>(nullable: true),
                     DonemId = table.Column<int>(nullable: false),
                     KisaAd = table.Column<string>(nullable: true),
                     Akts = table.Column<int>(nullable: false),
@@ -845,6 +846,7 @@ namespace UniLife.Storage.Migrations
                     Kredi = table.Column<double>(nullable: false),
                     Durum = table.Column<bool>(nullable: false),
                     Zorunlu = table.Column<bool>(nullable: false),
+                    SecmeliKodu = table.Column<string>(nullable: true),
                     Sinif = table.Column<int>(nullable: false),
                     ODTekrar = table.Column<int>(nullable: true),
                     ADKayit = table.Column<int>(nullable: true),
@@ -857,6 +859,12 @@ namespace UniLife.Storage.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DersAcilans", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DersAcilans_Akademisyens_AkademisyenId",
+                        column: x => x.AkademisyenId,
+                        principalTable: "Akademisyens",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_DersAcilans_Derss_DersId",
                         column: x => x.DersId,
@@ -873,12 +881,6 @@ namespace UniLife.Storage.Migrations
                         name: "FK_DersAcilans_Mufredats_MufredatId",
                         column: x => x.MufredatId,
                         principalTable: "Mufredats",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_DersAcilans_Akademisyens_AkademisyenId",
-                        column: x => x.AkademisyenId,
-                        principalTable: "Akademisyens",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -921,6 +923,11 @@ namespace UniLife.Storage.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Akademisyens_ApplicationUserId",
+                table: "Akademisyens",
+                column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApiLogs_ApplicationUserId",
@@ -975,6 +982,11 @@ namespace UniLife.Storage.Migrations
                 column: "OgrenimTurId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_DersAcilans_AkademisyenId",
+                table: "DersAcilans",
+                column: "AkademisyenId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_DersAcilans_DersId",
                 table: "DersAcilans",
                 column: "DersId");
@@ -988,11 +1000,6 @@ namespace UniLife.Storage.Migrations
                 name: "IX_DersAcilans_MufredatId",
                 table: "DersAcilans",
                 column: "MufredatId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_DersAcilans_AkademisyenId",
-                table: "DersAcilans",
-                column: "AkademisyenId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DersAcilans_ProgramId",
@@ -1100,11 +1107,6 @@ namespace UniLife.Storage.Migrations
                 column: "ProgramId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Akademisyens_ApplicationUserId",
-                table: "Akademisyens",
-                column: "ApplicationUserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Programs_BolumId",
                 table: "Programs",
                 column: "BolumId");
@@ -1173,10 +1175,10 @@ namespace UniLife.Storage.Migrations
                 name: "Ogrencis");
 
             migrationBuilder.DropTable(
-                name: "Derss");
+                name: "Akademisyens");
 
             migrationBuilder.DropTable(
-                name: "Akademisyens");
+                name: "Derss");
 
             migrationBuilder.DropTable(
                 name: "KayitNedens");
@@ -1185,13 +1187,13 @@ namespace UniLife.Storage.Migrations
                 name: "OgrenimDurums");
 
             migrationBuilder.DropTable(
+                name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
                 name: "Donems");
 
             migrationBuilder.DropTable(
                 name: "Mufredats");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "DonemTips");

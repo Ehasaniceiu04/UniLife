@@ -18,7 +18,7 @@ namespace UniLife.Shared.Dto.Definitions
         public virtual FakulteDto Fakulte { get; set; }
 
         public int OgrenimSure { get; set; }
-        public bool Durum { get; set; }
+        public bool Durum { get; set; } = true;
         public string DiplomaAd { get; set; }
         public bool IsBologna { get; set; }
         public string DiplomaAdEn { get; set; }

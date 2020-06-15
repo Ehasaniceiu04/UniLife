@@ -15,7 +15,7 @@ namespace UniLife.Shared.Dto.Definitions
         public string KisaAdEn { get; set; }
         public DateTime BasTarih { get; set; }
         public DateTime BitTarih { get; set; }
-        public bool Durum { get; set; }
+        public bool Durum { get; set; } = true;
         public bool YokSisDurum { get; set; }
         public int YilTip { get; set; }
 
