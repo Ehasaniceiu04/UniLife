@@ -6,52 +6,50 @@
 @using System.Net
 @using Newtonsoft.Json
 
-    <ControlSection>
-        <SfGrid @ref="DersAcilanGrid" DataSource="@dersAcilanDtos" Toolbar="@(new List<string>() { "Add"})" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
-            <GridEvents OnActionComplete="ActionCompletedHandler" TValue="DersAcilanDto"></GridEvents>
-            <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
-            <GridColumns>
-                <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Açılan Ders ID" Edit="false" AllowEditing="false" TextAlign="TextAlign.Left" Width="140"></GridColumn>
-                <GridColumn Field=@nameof(DersAcilanDto.Kod) HeaderText="Kod"></GridColumn>
-                <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Açılan Ders İsim" ValidationRules="@(new { required=true})"></GridColumn>
-                <GridColumn Field=@nameof(DersAcilanDto.Kredi) HeaderText="T+U TODO"></GridColumn>
-                <GridColumn Field=@nameof(DersAcilanDto.Kredi) HeaderText="Kr"></GridColumn>
-                <GridColumn Field=@nameof(DersAcilanDto.Akts) HeaderText="Akts"></GridColumn>
-                <GridColumn Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
-                <GridColumn Field=@nameof(DersAcilanDto.Zorunlu) HeaderText="Z" DisplayAsCheckBox="true"></GridColumn>
-                <GridColumn Field=@nameof(DersAcilanDto.ProgramAd) HeaderText="Program"></GridColumn>
-                @*<GridColumn Field=@nameof(DersAcilanDto.AkademisyenId) HeaderText="Öğrt Görev" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@universiteDtos" Width="150"></GridColumn>*@
-                @*<GridColumn HeaderText="Manage Records" Width="150">
+<ControlSection>
+    <SfGrid @ref="DersAcilanGrid" DataSource="@dersAcilanDtos" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
+        <GridEvents OnActionComplete="ActionCompletedHandler" TValue="DersAcilanDto"></GridEvents>
+        <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
+        <GridColumns>
+            <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Açılan Ders ID" Edit="false" AllowEditing="false" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+            <GridColumn Field=@nameof(DersAcilanDto.Kod) HeaderText="Kod"></GridColumn>
+            <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Açılan Ders İsim" ValidationRules="@(new { required=true})"></GridColumn>
+            @*<GridColumn Field=@nameof(DersAcilanDto.Kredi) HeaderText="T+U TODO"></GridColumn>*@
+            <GridColumn Field=@nameof(DersAcilanDto.Kredi) HeaderText="Kr"></GridColumn>
+            <GridColumn Field=@nameof(DersAcilanDto.Akts) HeaderText="Akts"></GridColumn>
+            <GridColumn Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
+            <GridColumn Field=@nameof(DersAcilanDto.Zorunlu) HeaderText="Z" EditType="EditType.BooleanEdit" DisplayAsCheckBox="true"></GridColumn>
+            @*<GridColumn Field=@nameof(DersAcilanDto.ProgramAd) HeaderText="Program"></GridColumn>*@
+            <GridColumn Field=@nameof(DersAcilanDto.ProgramId) HeaderText="Program" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@programDtos" Width="150"></GridColumn>
+            <GridColumn Field=@nameof(DersAcilanDto.AkademisyenId) HeaderText="Öğrt Görev" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@akademisyenDtos" Width="150"></GridColumn>
+            <GridColumn>
             <GridCommandColumns>
                 <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-edit", CssClass = "e-flat" })"></GridCommandColumn>
                 <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-delete", CssClass = "e-flat" })"></GridCommandColumn>
                 <GridCommandColumn Type="CommandButtonType.Save" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-update", CssClass = "e-flat" })"></GridCommandColumn>
                 <GridCommandColumn Type="CommandButtonType.Cancel" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-cancel-icon", CssClass = "e-flat" })"></GridCommandColumn>
             </GridCommandColumns>
-        </GridColumn>*@
+        </GridColumn>
 
-            </GridColumns>
-        </SfGrid>
-    </ControlSection>
-            
+        </GridColumns>
+    </SfGrid>
+</ControlSection>
+
 @code{
 
     SfGrid<DersAcilanDto> DersAcilanGrid;
 
     List<DersAcilanDto> dersAcilanDtos = new List<DersAcilanDto>();
 
-    List<FakulteDto> fakulteDtos = new List<FakulteDto>();
-    List<OgrenimTurDto> ogrenimTurDtos = new List<OgrenimTurDto>();
+    List<ProgramDto> programDtos = new List<ProgramDto>();
+    List<AkademisyenDto> akademisyenDtos = new List<AkademisyenDto>();
 
     protected override async Task OnInitializedAsync()
     {
         await ReadDersAcilans();
 
-        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/fakulte");
-        fakulteDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<FakulteDto[]>(apiResponse.Result.ToString()).ToList<FakulteDto>();
-        ApiResponseDto apiResponseOgrTur = await Http.GetFromJsonAsync<ApiResponseDto>("api/ogrenimtur");
-        ogrenimTurDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<OgrenimTurDto[]>(apiResponseOgrTur.Result.ToString()).ToList<OgrenimTurDto>();
-
+        await ReadPrograms();
+        await ReadAkademisyens();
     }
 
     async Task ReadDersAcilans()
@@ -69,10 +67,19 @@
             matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Açılan Ders bilgisi getirilirken hata oluştu!");
         }
     }
-    public void ActionBeginHandler(ActionEventArgs<FakulteDto> args)
-    {
 
+    async Task ReadPrograms()
+    {
+        ApiResponseDto<List<ProgramDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<ProgramDto>>>("api/program");
+        programDtos = apiResponse.Result;
     }
+    async Task ReadAkademisyens()
+    {
+        ApiResponseDto<List<AkademisyenDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<AkademisyenDto>>>("api/akademisyen");
+        akademisyenDtos = apiResponse.Result;
+    }
+
+
 
     public void ActionCompletedHandler(ActionEventArgs<DersAcilanDto> args)
     {

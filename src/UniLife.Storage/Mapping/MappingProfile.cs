@@ -32,7 +32,7 @@ namespace UniLife.Storage.Mapping
             CreateMap<Harc, HarcDto>().ReverseMap();
             CreateMap<Mufredat, MufredatDto>().ReverseMap();
             CreateMap<Ders, DersDto>().ReverseMap();
-            CreateMap<DersAcilan, DersAcilanDto>().ReverseMap();
+            CreateMap<DersAcilan, DersAcilanDto>().ReverseMap().ForMember(c => c.Program, o => o.Ignore());
             CreateMap<DersKayit, DersKayitDto>().ReverseMap();
             CreateMap<Mufredat, MufredatDto>().ReverseMap();
             CreateMap<OgrenimTur, OgrenimTurDto > ().ReverseMap();

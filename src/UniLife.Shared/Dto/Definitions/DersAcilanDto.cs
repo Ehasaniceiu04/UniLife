@@ -20,7 +20,7 @@ namespace UniLife.Shared.Dto.Definitions
 
         public int ProgramId { get; set; }
         public virtual ProgramDto Program { get; set; }
-        public string ProgramAd { get; set; }
+        public virtual string ProgramAd { get; set; }
         public int MufredatId { get; set; }
         public virtual MufredatDto Mufredat { get; set; }
 
