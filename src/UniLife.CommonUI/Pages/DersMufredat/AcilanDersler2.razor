@@ -1,4 +1,4 @@
-﻿@page "/acilandersler"
+﻿@page "/acilandersler2"
 @inject HttpClient Http;
 @using UniLife.Shared.Dto.Definitions
 @inject IMatToaster matToaster
@@ -6,43 +6,28 @@
 @using System.Net
 @using Newtonsoft.Json
 
-<ControlSection>
-    <SfGrid @ref="DersAcilanGrid" DataSource="@dersAcilanDtos" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
-        <GridEvents OnActionComplete="ActionCompletedHandler" TValue="DersAcilanDto"></GridEvents>
-        <GridEditSettings ShowDeleteConfirmDialog="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
-        <GridColumns>
-            <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Açılan Ders ID" Edit="false" AllowEditing="false" TextAlign="TextAlign.Left" Width="140"></GridColumn>
-            <GridColumn Field=@nameof(DersAcilanDto.Kod) HeaderText="Kod"></GridColumn>
-            <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Açılan Ders İsim" ValidationRules="@(new { required=true})"></GridColumn>
-            @*<GridColumn Field=@nameof(DersAcilanDto.Kredi) HeaderText="T+U TODO"></GridColumn>*@
-            <GridColumn Field=@nameof(DersAcilanDto.Kredi) HeaderText="Kr"></GridColumn>
-            <GridColumn Field=@nameof(DersAcilanDto.Akts) HeaderText="Akts"></GridColumn>
-            <GridColumn Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
-            <GridColumn Field=@nameof(DersAcilanDto.Zorunlu) HeaderText="Z" EditType="EditType.BooleanEdit" DisplayAsCheckBox="true"></GridColumn>
-            <GridColumn Field=@nameof(DersAcilanDto.ProgramId) EditType="EditType.DropDownEdit" HeaderText="Program" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@programDtos" Width="150"></GridColumn>
-                @*<GridColumn Field=@nameof(DersAcilanDto.ProgramAd) HeaderText="Program"></GridColumn>*@
-                @*<GridColumn Field=@nameof(DersAcilanDto.ProgramId) HeaderText="Program" ForeignKeyValue="Ad" DataSource="@programDtos" Width="150"></GridColumn>*@
-                @*<GridColumn Field=@nameof(DersAcilanDto.ProgramId) Format="N" EditType="EditType.DropDownEdit" HeaderText="Program" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@programDtos" Width="150">
-                <FilterTemplate>
-                    <SfDropDownList PlaceHolder="Program Adı" ID="ProgramId" Value="@((int?)(context as PredicateModel).Value)" DataSource="@programDtos" TValue="int?" TItem="ProgramDto">
-                        <DropDownListEvents ValueChange="@Change" TValue="int?"></DropDownListEvents>
-                        <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
-                    </SfDropDownList>
-                </FilterTemplate>
-            </GridColumn>*@
-                <GridColumn Field=@nameof(DersAcilanDto.AkademisyenId) HeaderText="Öğrt Görev" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@akademisyenDtos" Width="150"></GridColumn>
-                <GridColumn>
-                    <GridCommandColumns>
-                        <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-edit", CssClass = "e-flat" })"></GridCommandColumn>
-                        <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-delete", CssClass = "e-flat" })"></GridCommandColumn>
-                        <GridCommandColumn Type="CommandButtonType.Save" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-update", CssClass = "e-flat" })"></GridCommandColumn>
-                        <GridCommandColumn Type="CommandButtonType.Cancel" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-cancel-icon", CssClass = "e-flat" })"></GridCommandColumn>
-                    </GridCommandColumns>
-                </GridColumn>
 
-        </GridColumns>
-    </SfGrid>
-</ControlSection>
+<SfGrid DataSource="@dersAcilanDtos" Height="315" AllowFiltering="true" Toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Update", "Cancel" })">
+    <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog"></GridEditSettings>
+    <GridEvents OnActionComplete="ActionCompletedHandler" TValue="DersAcilanDto"></GridEvents>
+    <GridColumns>
+        @*<GridColumn Field=@nameof(DersAcilanDto.Id) HeaderText="Order ID" IsPrimaryKey="true" TextAlign="TextAlign.Right" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(DersAcilanDto.ProgramId) HeaderText="Program" ForeignKeyValue="Ad" DataSource="@programDtos" Width="150"></GridColumn>*@
+
+
+        <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Açılan Ders ID" Edit="false" AllowEditing="false" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+        <GridColumn Field=@nameof(DersAcilanDto.Kod) HeaderText="Kod"></GridColumn>
+        @*<GridColumn Field=@nameof(DersAcilanDto.Kredi) HeaderText="T+U TODO"></GridColumn>*@
+        <GridColumn Field=@nameof(DersAcilanDto.Kredi) HeaderText="Kr"></GridColumn>
+        <GridColumn Field=@nameof(DersAcilanDto.Akts) HeaderText="Akts"></GridColumn>
+        <GridColumn Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
+        <GridColumn Field=@nameof(DersAcilanDto.Zorunlu) HeaderText="Z" EditType="EditType.BooleanEdit" DisplayAsCheckBox="true"></GridColumn>
+        @*<GridColumn Field=@nameof(DersAcilanDto.ProgramAd) HeaderText="Program"></GridColumn>*@
+        <GridColumn Field=@nameof(DersAcilanDto.ProgramId) HeaderText="Program" ForeignKeyValue="Ad" DataSource="@programDtos" Width="150"></GridColumn>
+       
+        
+    </GridColumns>
+</SfGrid>
 
 @code{
 

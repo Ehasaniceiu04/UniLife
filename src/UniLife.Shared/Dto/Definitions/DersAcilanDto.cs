@@ -18,7 +18,7 @@ namespace UniLife.Shared.Dto.Definitions
         public int DersId { get; set; }
         public virtual DersDto Ders { get; set; }
 
-        public int ProgramId { get; set; }
+        public int? ProgramId { get; set; }
         public virtual ProgramDto Program { get; set; }
         public virtual string ProgramAd { get; set; }
         public int MufredatId { get; set; }
@@ -26,13 +26,16 @@ namespace UniLife.Shared.Dto.Definitions
 
         public string FakulteAd { get; set; }
 
-        //public int  { get; set; }
+        public int? FakulteId { get; set; }
+        public int? BolumId { get; set; }
+
         //External
 
         public int? AkademisyenId { get; set; }
         public AkademisyenDto Akademisyen { get; set; }
+        public string AkademisyenAd { get; set; }
 
-        public int DonemId { get; set; }
+        public int? DonemId { get; set; }
         public virtual DonemDto Donem { get; set; }
 
         public string KisaAd { get; set; }
@@ -49,7 +52,7 @@ namespace UniLife.Shared.Dto.Definitions
         public string SecmeliKodu { get; set; }
         public int? YerineSecilenId { get; set; }
         public string YerineSecilenAd { get; set; }
-        public int Sinif { get; set; }
+        public int? Sinif { get; set; }
 
         public int? ODTekrar { get; set; }
         public int? ADKayit { get; set; }

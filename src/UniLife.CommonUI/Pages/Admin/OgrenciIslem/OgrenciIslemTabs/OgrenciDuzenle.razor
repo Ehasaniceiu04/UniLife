@@ -44,34 +44,34 @@
                                 <SfTextBox @bind-Value="@_OgrenciDto.Email" ID="Email" CssClass="col-sm-10"></SfTextBox>
                                 <label class="col-sm-2" for="DropFakulte">Fakulte:</label>
                                 <SfDropDownList ID="DropFakulte" @ref="DropFakulte" TItem="FakulteDto" CssClass="col-sm-10 pb-1"
-                                                TValue="int?" PopupHeight="230px" Placeholder="Fakulte"
+                                                TValue="int?" PopupHeight="230px" Placeholder="Fakülte Seçiniz"
                                                 @bind-Value="@_OgrenciDto.FakulteId" DataSource="@fakulteDtos">
                                     <DropDownListEvents TValue="int?" ValueChange="FakulteToBolum"></DropDownListEvents>
                                     <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                                 </SfDropDownList>
                                 <label class="col-sm-2" for="DropBolum">Bolum:</label>
                                 <SfDropDownList ID="DropBolum" @ref="DropBolum" TItem="BolumDto" CssClass="col-sm-10 pb-1"
-                                                TValue="int?" PopupHeight="230px" Placeholder="Bölüm"
+                                                TValue="int?" PopupHeight="230px" Placeholder="Bölüm Seçiniz"
                                                 @bind-Value="@_OgrenciDto.BolumId" DataSource="@bolumDtos">
                                     <DropDownListEvents TValue="int?" ValueChange="BolumToProgram"></DropDownListEvents>
                                     <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                                 </SfDropDownList>
                                 <label class="col-sm-2" for="DropProgram">Program:</label>
                                 <SfDropDownList ID="DropProgram" @ref="DropProgram" TItem="ProgramDto" CssClass="col-sm-10 pb-1"
-                                                TValue="int?" PopupHeight="230px" Placeholder="Bölüm"
+                                                TValue="int?" PopupHeight="230px" Placeholder="Program Seçiniz"
                                                 @bind-Value="@_OgrenciDto.ProgramId" DataSource="@programDtos">
                                     <DropDownListEvents TValue="int?" ValueChange="ProgramToMufredat"></DropDownListEvents>
                                     <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                                 </SfDropDownList>
                                 <label class="col-sm-2" for="DropMufredat">Mufredat:</label>
                                 <SfDropDownList ID="DropMufredat" @ref="DropMufredat" TItem="MufredatDto" CssClass="col-sm-10 pb-1"
-                                                TValue="int?" PopupHeight="230px" Placeholder="Bölüm"
+                                                TValue="int?" PopupHeight="230px" Placeholder="Müfredat Seçiniz"
                                                 @bind-Value="@_OgrenciDto.MufredatId" DataSource="@mufredatDtos">
                                     <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                                 </SfDropDownList>
                                 <label class="col-sm-2" for="DropSinif">Sınıf:</label>
                                 <SfDropDownList ID="DropSinif" @ref="DropSinif" TItem="SinifDto" CssClass="col-sm-10 pb-1"
-                                                TValue="int?" PopupHeight="230px" Placeholder="Bölüm"
+                                                TValue="int?" PopupHeight="230px" Placeholder="Sınıf Seçiniz"
                                                 @bind-Value="@_OgrenciDto.Sinif" DataSource="@sinifDtos">
                                     <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                                 </SfDropDownList>

@@ -115,7 +115,8 @@ namespace UniLife.Server.Controllers
                     new ApiResponse(Status400BadRequest, "DersAcilan Model is Invalid");
 
 
-        
+
+
 
     }
 }

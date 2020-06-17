@@ -603,6 +603,8 @@ namespace UniLife.Server
             builder.EntitySet<Ogrenci>("Ogrencis");
             builder.EntitySet<Bolum>("Bolums");
             builder.EntitySet<DersAcilan>("DersAcilans");
+            builder.EntitySet<Fakulte>("Fakultes");
+            builder.EntitySet<UniLife.Shared.DataModels.Program>("Programs");
             return builder.GetEdmModel();
         }
     }
