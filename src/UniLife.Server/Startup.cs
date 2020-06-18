@@ -420,6 +420,9 @@ namespace UniLife.Server
             services.AddTransient<IOgrenciManager, OgrenciManager>();
             services.AddTransient<IAkademisyenManager, AkademisyenManager>();
             services.AddTransient<IPersonelManager, PersonelManager>();
+            services.AddTransient<ISinavManager, SinavManager>();
+            services.AddTransient<ISinavTurManager, SinavTurManager>();
+            services.AddTransient<ISinavTipManager, SinavTipManager>();
             services.AddTransient<IUserProfileManager, UserProfileManager>();
 
 

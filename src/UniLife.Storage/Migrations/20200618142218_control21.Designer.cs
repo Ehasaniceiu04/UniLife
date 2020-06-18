@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using UniLife.Storage;
@@ -9,9 +10,10 @@ using UniLife.Storage;
 namespace UniLife.Storage.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200618142218_control21")]
+    partial class control21
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1570,9 +1572,6 @@ namespace UniLife.Storage.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<int>("DersAcilanId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("EtkiOran")
                         .HasColumnType("integer")
                         .HasMaxLength(100);
@@ -1610,8 +1609,6 @@ namespace UniLife.Storage.Migrations
                         .HasColumnType("boolean");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DersAcilanId");
 
                     b.HasIndex("SinavTipId");
 
@@ -2076,12 +2073,6 @@ namespace UniLife.Storage.Migrations
 
             modelBuilder.Entity("UniLife.Shared.DataModels.Sinav", b =>
                 {
-                    b.HasOne("UniLife.Shared.DataModels.DersAcilan", "DersAcilan")
-                        .WithMany("Sinavs")
-                        .HasForeignKey("DersAcilanId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("UniLife.Shared.DataModels.SinavTip", "SinavTip")
                         .WithMany()
                         .HasForeignKey("SinavTipId")

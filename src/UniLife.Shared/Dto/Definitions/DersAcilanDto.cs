@@ -56,5 +56,7 @@ namespace UniLife.Shared.Dto.Definitions
 
         public int? ODTekrar { get; set; }
         public int? ADKayit { get; set; }
+
+        public virtual ICollection<SinavDto> Sinavs { get; set; }
     }
 }

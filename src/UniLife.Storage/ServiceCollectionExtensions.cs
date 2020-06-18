@@ -40,6 +40,9 @@ namespace UniLife.Storage
             services.AddTransient<IOgrenciStore, OgrenciStore>();
             services.AddTransient<IAkademisyenStore, AkademisyenStore>();
             services.AddTransient<IPersonelStore, PersonelStore>();
+            services.AddTransient<ISinavStore, SinavStore>();
+            services.AddTransient<ISinavTipStore, SinavTipStore>();
+            services.AddTransient<ISinavTurStore, SinavTurStore>();
 
             //services.AddTransient<ITenantStore, TenantStore>();
             services.AddTransient<IApiLogStore, ApiLogStore>();

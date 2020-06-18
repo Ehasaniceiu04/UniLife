@@ -2,9 +2,10 @@
 
 @using UniLife.Shared.Dto.Definitions
 @using Syncfusion.Blazor.DropDowns
-@inject HttpClient Http;
-@inject IMatToaster matToaster
+@*@inject HttpClient Http;
+    @inject IMatToaster matToaster*@
 @using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Inputs
 
 <div class="row">
     <div class="col-sm-12 col-md-6">
@@ -19,39 +20,39 @@
                     <div class="form-row">
                         @*açılan ders filtre*@
                         <label class="col-sm-2" for="DropDonem">Dönem:</label>
-                        <SfDropDownList ID="DropDonem" @ref="DropDonem" TItem="DonemDto"  CssClass="col-sm-10 pb-1"
+                        <SfDropDownList ID="DropDonem" @ref="DropDonem" TItem="DonemDto" CssClass="col-sm-10 pb-1"
                                         TValue="int?" PopupHeight="230px" Placeholder="Dönem Seçiniz"
                                         @bind-Value="@_dersAcilanDto.DonemId" DataSource="@donemDtos">
                             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                         </SfDropDownList>
                         <label class="col-sm-2" for="DropFakulte">Fakülte:</label>
-                        <SfDropDownList ID="DropFakulte" @ref="DropFakulte" TItem="KeyValueDto"  CssClass="col-sm-10 pb-1"
+                        <SfDropDownList ID="DropFakulte" @ref="DropFakulte" TItem="KeyValueDto" CssClass="col-sm-10 pb-1"
                                         TValue="int?" PopupHeight="230px" Placeholder="Dönem Seçiniz"
                                         @bind-Value="@_dersAcilanDto.FakulteId" DataSource="@fakulteDtos">
                             <DropDownListEvents TValue="int?" ValueChange="FakulteToBolum"></DropDownListEvents>
                             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                         </SfDropDownList>
                         <label class="col-sm-2" for="DropBolum">Bolum:</label>
-                        <SfDropDownList ID="DropBolum" @ref="DropBolum" TItem="KeyValueDto"  CssClass="col-sm-10 pb-1"
+                        <SfDropDownList ID="DropBolum" @ref="DropBolum" TItem="KeyValueDto" CssClass="col-sm-10 pb-1"
                                         TValue="int?" PopupHeight="230px" Placeholder="Bölüm"
                                         @bind-Value="@_dersAcilanDto.BolumId" DataSource="@bolumDtos">
                             <DropDownListEvents TValue="int?" ValueChange="BolumToProgram"></DropDownListEvents>
                             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                         </SfDropDownList>
                         <label class="col-sm-2" for="DropProgram">Program:</label>
-                        <SfDropDownList ID="DropProgram" @ref="DropProgram" TItem="KeyValueDto"  CssClass="col-sm-10 pb-1"
+                        <SfDropDownList ID="DropProgram" @ref="DropProgram" TItem="KeyValueDto" CssClass="col-sm-10 pb-1"
                                         TValue="int?" PopupHeight="230px" Placeholder="Bölüm"
                                         @bind-Value="@_dersAcilanDto.ProgramId" DataSource="@programDtos">
                             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                         </SfDropDownList>
                         <label class="col-sm-2" for="DropSinif">Sınıf:</label>
-                        <SfDropDownList ID="DropSinif" @ref="DropSinif" TItem="SinifDto"  CssClass="col-sm-10 pb-1"
+                        <SfDropDownList ID="DropSinif" @ref="DropSinif" TItem="SinifDto" CssClass="col-sm-5 pb-1"
                                         TValue="int?" PopupHeight="230px" Placeholder="Sınıf Seçiniz"
                                         DataSource="@(sinifDtos)" Value="@(_dersAcilanDto.Sinif)">
                             <DropDownListEvents TValue="int?" ValueChange="SinifChange"></DropDownListEvents>
                             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                         </SfDropDownList>
-                        <SfButton OnClick="Refresh" CssClass="e-success col-sm-3">Yenile</SfButton>
+                        <SfButton OnClick="Refresh" CssClass="e-success col-sm-5">Yenile</SfButton>
                     </div>
                 </div>
             </div>
@@ -60,19 +61,25 @@
                 <div class="col-12">
                     <div class="form-row">
                         @*açılan ders grid*@
-                        <SfGrid ID="DersAcGrid" @ref="DersAcGrid" DataSource="@DersAcDtos" RowHeight="20" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
-                            @*<GridEvents OnActionComplete="ActionCompletedHandler" TValue="ProgramDto"></GridEvents>*@
-                            <GridSelectionSettings CheckboxOnly="true" PersistSelection="true"></GridSelectionSettings>
+                        <SfGrid ID="DersAcGrid" @ref="DersAcGrid" DataSource="@DersAcDtos"  RowHeight="20" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
+                            <GridEvents TValue="DersAcilanDto" CommandClicked="CommandClickHandler"></GridEvents>
+                            <GridSelectionSettings CheckboxMode="CheckboxSelectionType.ResetOnRowClick" Type="SelectionType.Multiple" PersistSelection="true"></GridSelectionSettings>
                             <GridColumns>
                                 <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
                                 <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
                                 <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kodu"></GridColumn>
                                 <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Adı"></GridColumn>
-                                <GridColumn Field=@nameof(DersAcilanDto.AkademisyenAd) HeaderText="Akademisyen Ad"></GridColumn>
-                                <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Zorunlu) HeaderText="Z"></GridColumn>
-                                <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kredi) HeaderText="Krd"></GridColumn>
-                                <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Akts) HeaderText="Akts"></GridColumn>
+                                <GridColumn Field="Akademisyen.Ad" HeaderText="Akademisyen Ad"></GridColumn>
                                 <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
+                                <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Zorunlu) DisplayAsCheckBox="true" HeaderText="Z"></GridColumn>
+                                @*<GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kredi) HeaderText="Krd"></GridColumn>
+                                <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Akts) HeaderText="Akts"></GridColumn>*@
+
+                                <GridColumn>
+                                    <GridCommandColumns>
+                                        <GridCommandColumn Type="CommandButtonType.None" Title="Tanımlı Sınavlar" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
+                                    </GridCommandColumns>
+                                </GridColumn>
                             </GridColumns>
                         </SfGrid>
                     </div>
@@ -88,9 +95,25 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-12 col-md-12">
+                <div class="col-12">
                     <div class="form-row">
-                        @*açılan ders filtre*@
+                        @*açılan ders grid*@
+                        <SfGrid ID="SinavGrid" @ref="SinavGrid" DataSource="@SinavDtos" Toolbar="@(new List<string>() { "Add", "Edit", "Delete","ColumnChooser" })" RowHeight="20" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
+                            <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
+                            <GridSelectionSettings CheckboxMode="CheckboxSelectionType.ResetOnRowClick"  CheckboxOnly="true" PersistSelection="true"></GridSelectionSettings>
+                            <GridColumns>
+                                <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
+                                <GridColumn Visible="false" Field=@nameof(SinavDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+                                <GridColumn AutoFit="true" Field=@nameof(SinavDto.Tarih) HeaderText="Tarih"></GridColumn>
+                                <GridColumn Field=@nameof(SinavDto.SinavTipId) HeaderText="Tipi" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@sinavTipDtos" Width="150"></GridColumn>
+                                <GridColumn Field=@nameof(SinavDto.SinavTurId) HeaderText="Türü" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@sinavTurDtos" Width="150"></GridColumn>
+                                <GridColumn AutoFit="true" Field=@nameof(SinavDto.KisaAd) HeaderText="Kısa Ad"></GridColumn>
+                                <GridColumn AutoFit="true" Field=@nameof(SinavDto.SablonAd) HeaderText="Ad Şablon"></GridColumn>
+                                <GridColumn AutoFit="true" Field=@nameof(SinavDto.EtkiOran) HeaderText="%"></GridColumn>
+                                <GridColumn AutoFit="true" Field=@nameof(SinavDto.OgrCount) HeaderText="Akts"></GridColumn>
+
+                            </GridColumns>
+                        </SfGrid>
                     </div>
                 </div>
             </div>
@@ -98,191 +121,10 @@
     </div>
 </div>
 
-@code{
-
-    public DersAcilanDto _dersAcilanDto { get; set; } = new DersAcilanDto();
-
-    List<DersAcilanDto> dersAcilanDtos = new List<DersAcilanDto>();
-
-
-    SfDropDownList<int?, DonemDto> DropDonem;
-    SfDropDownList<int?, KeyValueDto> DropFakulte;
-    SfDropDownList<int?, KeyValueDto> DropBolum;
-    SfDropDownList<int?, KeyValueDto> DropProgram;
-    SfDropDownList<int?, SinifDto> DropSinif;
 
 
 
-    List<DonemDto> donemDtos = new List<DonemDto>();
-    List<KeyValueDto> fakulteDtos = new List<KeyValueDto>();
-    List<KeyValueDto> bolumDtos = new List<KeyValueDto>();
-    List<KeyValueDto> programDtos = new List<KeyValueDto>();
-    List<SinifDto> sinifDtos = new List<SinifDto>
-{
-            new SinifDto() { Ad = "Tümü", Id = 0 },
-            new SinifDto() { Ad = "1", Id = 1 },
-            new SinifDto() { Ad = "2", Id = 2 },
-            new SinifDto() { Ad = "3", Id = 3 },
-            new SinifDto() { Ad = "4", Id = 4 },
-            new SinifDto() { Ad = "5", Id = 5 },
-            new SinifDto() { Ad = "6", Id = 6 },
-            new SinifDto() { Ad = "7", Id = 7 },
-            new SinifDto() { Ad = "8", Id = 8 },
-            new SinifDto() { Ad = "9", Id = 9 },
-};
-
-
-    SfGrid<DersAcilanDto> DersAcGrid;
-    public List<DersAcilanDto> DersAcDtos = new List<DersAcilanDto>();
-
-    //protected override void OnInitialized()
-    //{
-
-    //}
-
-    protected async override Task OnInitializedAsync()
-    {
-        await ReadFakultes();
-        await ReadDonems();
-    }
-
-    async Task ReadFakultes()
-    {
-        OData<KeyValueDto> apiResponse = await Http.GetFromJsonAsync<OData<KeyValueDto>>($"odata/fakultes?$select=Id,Ad");
-
-        if (apiResponse.Value.Count != 0)
-        {
-            fakulteDtos = apiResponse.Value;
-            StateHasChanged();
-        }
-        else
-        {
-            matToaster.Add("", MatToastType.Danger, "fakulte getirilirken hata oluştu!");
-        }
-    }
-
-    async Task ReadDonems()
-    {
-        ApiResponseDto<List<DonemDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<DonemDto>>>("api/donem/current");
-
-        if (apiResponse.StatusCode == Status200OK)
-        {
-            donemDtos = apiResponse.Result;
-        }
-        else
-        {
-            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Donem getirilirken hata oluştu!");
-        }
-    }
-
-
-
-    private void FakulteToBolum(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
-    {
-        bolumDtos = new List<KeyValueDto>();
-        programDtos = new List<KeyValueDto>();
-        _dersAcilanDto.BolumId = null;
-        _dersAcilanDto.ProgramId = null;
-        if (_dersAcilanDto.Id == 0)
-        {
-            ReadBolums(args.Value).ConfigureAwait(true);
-        }
-        else
-        {
-            ReadBolums(_dersAcilanDto.FakulteId).ConfigureAwait(true);
-        }
-        StateHasChanged();
-    }
-
-    private void BolumToProgram(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
-    {
-        programDtos = new List<KeyValueDto>();
-        _dersAcilanDto.ProgramId = null;
-        if (_dersAcilanDto.Id == 0)
-        {
-
-            ReadPrograms(args.Value).ConfigureAwait(true);
-        }
-        else
-        {
-            ReadPrograms(_dersAcilanDto.BolumId).ConfigureAwait(true);
-        }
-        //StateHasChanged();
-    }
-
-    async Task ReadBolums(int? fakulteId)
-    {
-        OData<KeyValueDto> apiResponse;
-        //apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<BolumDto>>>("api/bolum/GetBolumByFakulteIds/" + string.Join(',', fakulteId));
-        apiResponse = await Http.GetFromJsonAsync<OData<KeyValueDto>>($"odata/bolums?$filter=FakulteId eq {fakulteId}&select=Id,Ad");
-
-
-        if (apiResponse.Value.Count != 0)
-        {
-            bolumDtos = apiResponse.Value;
-            StateHasChanged();
-        }
-        else
-        {
-            matToaster.Add("", MatToastType.Danger, "Bölüm getirilirken hata oluştu!");
-        }
-    }
-
-    async Task ReadPrograms(int? bolumId)
-    {
-        OData<KeyValueDto> apiResponse;
-        //apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<BolumDto>>>("api/bolum/GetBolumByFakulteIds/" + string.Join(',', fakulteId));
-        apiResponse = await Http.GetFromJsonAsync<OData<KeyValueDto>>($"odata/programs?$filter=BolumId eq {bolumId}&select=Id,Ad");
-
-
-        if (apiResponse.Value != null)
-        {
-            programDtos = apiResponse.Value;
-            StateHasChanged();
-        }
-        else
-        {
-            matToaster.Add("", MatToastType.Danger, "Bölüm getirilirken hata oluştu!");
-        }
-    }
-    void SinifChange()
-    {
-        _dersAcilanDto.Sinif = DropSinif.Value;
-    }
-
-    async Task Refresh()
-    {
-
-        OData<DersAcilanDto> apiResponse;
-        //apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<BolumDto>>>("api/bolum/GetBolumByFakulteIds/" + string.Join(',', fakulteId));
-        if (_dersAcilanDto.Sinif == 0)
-        {
-            apiResponse = await Http.GetFromJsonAsync<OData<DersAcilanDto>>($"odata/dersacilans?$filter=DonemId eq {_dersAcilanDto.DonemId} and ProgramId eq {_dersAcilanDto.ProgramId} and ProgramId eq {_dersAcilanDto.ProgramId}");
-        }
-        else
-        {
-            apiResponse = await Http.GetFromJsonAsync<OData<DersAcilanDto>>($"odata/dersacilans?$filter=DonemId eq {_dersAcilanDto.DonemId} and ProgramId eq {_dersAcilanDto.ProgramId} and ProgramId eq {_dersAcilanDto.ProgramId} and Sinif eq {_dersAcilanDto.Sinif}");
-        }
-
-
-
-        if (apiResponse.Value != null)
-        {
-            dersAcilanDtos = apiResponse.Value;
-            StateHasChanged();
-        }
-        else
-        {
-            matToaster.Add("", MatToastType.Danger, "Bölüm getirilirken hata oluştu!");
-        }
-    }
-
-
-}
-
-
-
-<style>
+<style type="text/css" class="cssStyles">
     textarea.e-input,
     .e-float-input textarea,
     .e-float-input.e-control-wrapper textarea,
@@ -299,4 +141,17 @@
         border-radius: 10px;
         padding: 5px;
     }
+
+    .e-DoubleArrowRight:before {
+        content: '\e7bb';
+        color: #e83e8c;
+    }
+
+    /*.e-grid .e-headercelldiv {
+        font-size: 7px;
+    }
+
+    .e-grid .e-rowcell {
+        font-size: 7px;
+    } */
 </style>

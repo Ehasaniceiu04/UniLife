@@ -1,10 +1,9 @@
-﻿using UniLife.Server.Middleware.Wrappers;
+﻿using System;
+using System.Threading.Tasks;
+using UniLife.Server.Middleware.Wrappers;
 using UniLife.Shared.DataInterfaces;
 using UniLife.Shared.DataModels;
 using UniLife.Shared.Dto.Definitions;
-using System;
-using System.IO;
-using System.Threading.Tasks;
 using static Microsoft.AspNetCore.Http.StatusCodes;
 
 namespace UniLife.Server.Managers
@@ -16,7 +15,7 @@ namespace UniLife.Server.Managers
         public OgrenciManager(IOgrenciStore ogrenciStore) : base(ogrenciStore)
         {
             _ogrenciStore = ogrenciStore;
-            
+
         }
 
         public async Task<ApiResponse> GetOgrenciQuery(OgrenciDto ogrenci)
