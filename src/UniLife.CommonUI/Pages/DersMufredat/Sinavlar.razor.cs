@@ -63,12 +63,18 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         Syncfusion.Blazor.Grids.SfGrid<SinavDto> SinavGrid;
         public List<SinavDto> SinavDtos = new List<SinavDto>();
 
-        
+
         Syncfusion.Blazor.Grids.SfGrid<OgrenciDto> OgrenciGrid;
         public List<OgrenciDto> OgrenciDtos = new List<OgrenciDto>();
 
         public List<DersAcilanDto> SelectedDersAcilans { get; set; } = new List<DersAcilanDto>();
 
+        public int selectedSinavId { get; set; }
+
+
+        bool ogrenciSecDialogOpen;
+        //List<OgrenciDto> SecmeliOgrenciDtos = new List<OgrenciDto>();
+        Syncfusion.Blazor.Grids.SfGrid<OgrenciDto> SecmeliOgrenciGrid;
 
         //protected override void OnInitialized()
         //{
@@ -248,12 +254,29 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             clickedRowIndex = args.RowIndex;
         }
 
-        public void OnSinavRecordClickHandler(Syncfusion.Blazor.Grids.RecordClickEventArgs<SinavDto> args)
+        //public async Task OnSinavRecordClickHandler(Syncfusion.Blazor.Grids.RecordClickEventArgs<SinavDto> args)
+        //{
+        //    ApiResponseDto<List<OgrenciDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDto>>>($"api/Ogrenci/GetOgrenciListBySinavId/{args.RowData.Id}").Result;
+        //    if (apiResponse.Result.Count > 1)
+        //    {
+        //        OgrenciDtos = apiResponse.Result;
+        //    }
+        //    else
+        //    {
+        //        matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Sınava tabi öğrenicler getirilirken hata oluştu.");
+        //    }
+        //}
+
+        
+        public async Task RowSelectedHandlerSinav(Syncfusion.Blazor.Grids.RowSelectEventArgs<SinavDto> args)
         {
-            ApiResponseDto<List<OgrenciDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDto>>>($"api/Ogrenci/GetOgrenciListBySinavId/{args.RowData.Id}").Result;
-            if (apiResponse.Result.Count>1)
+            selectedSinavId = args.Data.Id;
+
+            ApiResponseDto<List<OgrenciDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDto>>>($"api/Ogrenci/GetOgrenciListBySinavId/{args.Data.Id}").Result;
+            if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
             {
                 OgrenciDtos = apiResponse.Result;
+                matToaster.Add(apiResponse.Message, MatToastType.Success, "Sınava tabi öğrenicler getirildi");
             }
             else
             {
@@ -271,6 +294,8 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         }
 
 
+
+
         public void CokDersSecili(List<DersAcilanDto> args)
         {
             SelectedDersAcilans = args;
@@ -278,25 +303,67 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         }
 
-        public void CommandClickHandler(Syncfusion.Blazor.Grids.CommandClickEventArgs<DersAcilanDto> args)
+        public async Task CommandClickHandler(Syncfusion.Blazor.Grids.CommandClickEventArgs<DersAcilanDto> args)
         {
             if (args.CommandColumn.Title == "Tanımlı Sınavlar")
             {
-                DersAcGrid.ClearSelection();
+                await DersAcGrid.ClearSelection();
                 DersAcGrid.SelectedRowIndex = clickedRowIndex;
 
-                ApiResponseDto<List<SinavDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<SinavDto>>>($"api/Sinav/GetSinavListByAcilanDersId/{args.RowData.Id}").Result;
+                GetSinavsByDersAcilanId(args.RowData);
+            }
+        }
+
+        public async Task CommandClickHandlerSecmeliOgr(Syncfusion.Blazor.Grids.CommandClickEventArgs<OgrenciDto> args)
+        {
+            if (args.CommandColumn.Title == "Ogrenciyi Ekle")
+            {
+                SinavKayitDto sinavKayitDto = new SinavKayitDto()
+                {
+                    OgrenciId = args.RowData.Id,
+                    SinavId = selectedSinavId
+                };
+                ApiResponseDto<SinavKayitDto> apiResponse = await Http.PostJsonAsync<ApiResponseDto<SinavKayitDto>>("api/SinavKayit", sinavKayitDto);
+                ogrenciSecDialogOpen = false;
+
                 if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
                 {
-                    SinavDtos = apiResponse.Result;
-                    SelectedDersAcilans = new List<DersAcilanDto> { args.RowData };
+                    args.RowData.SinavKayitId = apiResponse.Result.Id;
+                    OgrenciDtos.Add(args.RowData);
+                    OgrenciGrid.Refresh();
+                    matToaster.Add(args.RowData.Ad + " " + args.RowData.Soyad, MatToastType.Success, "Öğrenci Kaydı gerçekleşti");
                 }
                 else
                 {
-                    matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Sinav bilgisi getirilirken hata oluştu");
+                    matToaster.Add(args.RowData.Ad+" "+args.RowData.Soyad + " : " + apiResponse.StatusCode, MatToastType.Danger, "Öğrenci sinava kayıt edilemedi");
                 }
             }
         }
+
+        
+
+        private void GetSinavsByDersAcilanId(DersAcilanDto dersAcilanDto)
+        {
+            ApiResponseDto<List<SinavDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<SinavDto>>>($"api/Sinav/GetSinavListByAcilanDersId/{dersAcilanDto.Id}").Result;
+            if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
+            {
+                SinavDtos = apiResponse.Result;
+                SelectedDersAcilans = new List<DersAcilanDto> { dersAcilanDto };
+                SinavGrid.Refresh();
+                OgrenciGridTemizle();
+            }
+            else
+            {
+                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Sinav bilgisi getirilirken hata oluştu");
+            }
+        }
+
+        public void OgrenciGridTemizle()
+        {
+            OgrenciDtos = new List<OgrenciDto>();
+            OgrenciGrid.Refresh();
+        }
+
         public void ActionCompletedHandler(Syncfusion.Blazor.Grids.ActionEventArgs<SinavDto> args)
         {
             if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
@@ -321,29 +388,45 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             }
         }
 
+
+        public void OnActionBeginHandlerOgrenci(Syncfusion.Blazor.Grids.ActionEventArgs<OgrenciDto> args)
+        {
+            if (args.RequestType == Syncfusion.Blazor.Grids.Action.Add)
+            {
+                args.Cancel=true;
+                ogrenciSecDialogOpen = true;
+            }
+        }
+
         public void ActionCompletedHandlerOgrenci(Syncfusion.Blazor.Grids.ActionEventArgs<OgrenciDto> args)
         {
-            if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
-            {
-                if (args.Action == "add")
-                {
-                    CreateOgrenci(args.Data);
-                }
-
-            }
             if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
             {
-                DeleteOgrenci(args.Data);
+                DeleteSinavKayitByOgrenci(args.Data);
             }
         }
 
-        public void CreateOgrenci(OgrenciDto ogrenciDto)
+        public async Task DeleteSinavKayitByOgrenci(OgrenciDto ogrenciDto)
         {
-
-        }
-        public void DeleteOgrenci(OgrenciDto ogrenciDto)
-        {
-
+            try
+            {
+                var response = await Http.DeleteAsync("api/SinavKayit/" + ogrenciDto.SinavKayitId);
+                if (response.StatusCode == (System.Net.HttpStatusCode)Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
+                {
+                    matToaster.Add("Öğrencinin Sınav kayıdı silinmiştir", MatToastType.Success);
+                    OgrenciDtos.Remove(ogrenciDto);
+                    OgrenciGrid.Refresh();
+                }
+                else
+                {
+                    matToaster.Add("Öğrencinin sınav kaydı silinirken hata oluştu: " + response.StatusCode, MatToastType.Danger);
+                }
+                //deleteDialogOpen = false;
+            }
+            catch (Exception ex)
+            {
+                matToaster.Add(ex.Message, MatToastType.Danger, "Bölüm Save Failed");
+            }
         }
 
         public async Task Create(SinavDto sinavDto)
@@ -356,12 +439,13 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 try
                 {
                     sinavDto.DersAcilanId = SelectedDersAcilans.FirstOrDefault().Id;
-
+                    sinavDto.DersAcilanIds = SelectedDersAcilans.Select(x=>x.Id);
                     ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>
-                    ("api/sinav", sinavDto);
+                    ("api/sinav/PostBulkCreate", sinavDto);
                     if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
                     {
                         matToaster.Add(apiResponse.Message, MatToastType.Success);
+                        GetSinavsByDersAcilanId(DersAcDtos.FirstOrDefault(x => x.Id == sinavDto.DersAcilanId));
                     }
                     else
                     {
@@ -387,6 +471,8 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                     if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
                     {
                         matToaster.Add(apiResponse.Message, MatToastType.Success);
+                        SinavDtos.RemoveAll(x => x.Id == 0);
+                        SinavGrid.Refresh();
                     }
                     else
                     {

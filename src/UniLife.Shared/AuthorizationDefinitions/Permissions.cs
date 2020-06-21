@@ -12,7 +12,18 @@ namespace UniLife.Shared.AuthorizationDefinitions
 
     public static class Permissions
     {
-
+        
+            public static class SinavKayit
+        {
+            [Description("Create a new SinavKayit")]
+            public const string Create = nameof(SinavKayit) + "." + nameof(Actions.Create);
+            [Description("Read SinavKayits")]
+            public const string Read = nameof(SinavKayit) + "." + nameof(Actions.Read);
+            [Description("Edit existing SinavKayits")]
+            public const string Update = nameof(SinavKayit) + "." + nameof(Actions.Update);
+            [Description("Delete any SinavKayit")]
+            public const string Delete = nameof(SinavKayit) + "." + nameof(Actions.Delete);
+        }
         public static class Personel
         {
             [Description("Create a new Personel")]

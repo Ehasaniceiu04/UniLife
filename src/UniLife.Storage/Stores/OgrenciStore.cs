@@ -71,7 +71,13 @@ namespace UniLife.Storage.Stores
         {
             var ogrenciList = await (from o in _db.Ogrencis
                                      join sk in _db.SinavKayits.Where(x => x.SinavId == sinavId) on o.Id equals sk.OgrenciId
-                                     select o).ToListAsync();
+                                     select new OgrenciDto { 
+                                        Ad=o.Ad,
+                                        Soyad = o.Soyad,
+                                        OgrNo = o.OgrNo,
+                                        TCKN = o.TCKN,
+                                        SinavKayitId = sk.Id
+                                     }).ToListAsync();
 
 
             //var ogrenciDto = await _autoMapper.ProjectTo<OgrenciDto>(_db.Ogrencis).FirstOrDefaultAsync(x => x.Id == id); //_db.Ogrencis.SingleOrDefaultAsync(t => t.Id == id);

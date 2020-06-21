@@ -423,6 +423,7 @@ namespace UniLife.Server
             services.AddTransient<ISinavManager, SinavManager>();
             services.AddTransient<ISinavTurManager, SinavTurManager>();
             services.AddTransient<ISinavTipManager, SinavTipManager>();
+            services.AddTransient<ISinavKayitManager, SinavKayitManager>();
             services.AddTransient<IUserProfileManager, UserProfileManager>();
 
 

@@ -131,7 +131,7 @@
 </ControlSection>
 
 
-<MatDialog @bind-IsOpen="@secmeliDersDialogOpen">
+@*<MatDialog @bind-IsOpen="@secmeliDersDialogOpen">
     <MatDialogTitle>Seçmeli Dersler</MatDialogTitle>
     <MatDialogContent>
 
@@ -141,7 +141,7 @@
     <MatDialogActions>
         <MatButton OnClick="@(e => { secmeliDersDialogOpen = false; })">Cancel</MatButton>
     </MatDialogActions>
-</MatDialog>
+</MatDialog>*@
 
 <Dialog Baslik="Ders mevcut" @bind-isDialogOpen="@dialog">
     <p>@dialogText</p>

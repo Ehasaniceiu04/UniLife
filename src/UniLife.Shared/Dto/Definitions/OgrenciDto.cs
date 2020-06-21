@@ -77,7 +77,7 @@ namespace UniLife.Shared.Dto.Definitions
         public string MufredatAdi { get; set; }
         public string ProgramAdi { get; set; }
         public string BolumAdi { get; set; }
+        public long SinavKayitId { get; set; }
 
-        
     }
 }

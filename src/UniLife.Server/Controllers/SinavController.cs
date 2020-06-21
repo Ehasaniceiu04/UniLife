@@ -56,7 +56,7 @@ namespace UniLife.Server.Controllers
                 await _SinavManager.Create(SinavDto) :
                 new ApiResponse(Status400BadRequest, "Sinav Model is Invalid");
 
-        // POST: api/Sinav
+        // POST: api/Sinav/PostBulkCreate
         [HttpPost]
         [AllowAnonymous]
         [Route("PostBulkCreate")]
@@ -64,6 +64,17 @@ namespace UniLife.Server.Controllers
             => ModelState.IsValid ?
                 await _SinavManager.PostBulkCreate(SinavDto) :
                 new ApiResponse(Status400BadRequest, "Sinav Model is Invalid");
+
+        //// POST: api/Sinav/PostSingleCreate
+        //[HttpPost]
+        //[AllowAnonymous]
+        //[Route("PostSingleCreate")]
+        //public async Task<ApiResponse> PostSingleCreate([FromBody] SinavDto SinavDto)
+        //    => ModelState.IsValid ?
+        //        await _SinavManager.PostBulkCreate(SinavDto) :
+        //        new ApiResponse(Status400BadRequest, "Sinav Model is Invalid");
+        
+
 
         // Put: api/Sinav
         [HttpPut]

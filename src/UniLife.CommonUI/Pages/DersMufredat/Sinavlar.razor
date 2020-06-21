@@ -7,6 +7,8 @@
 @using Syncfusion.Blazor.Buttons
 @using Syncfusion.Blazor.Inputs
 @using Syncfusion.Blazor.Calendars
+@using Syncfusion.Blazor.Data
+@using UniLife.Shared.DataModels
 
 <div class="row">
     <div class="col-sm-12 col-md-6">
@@ -108,10 +110,9 @@
             <div class="row">
                 <div class="col-12">
                     <div class="form-row">
-                        @*açılan ders grid*@
+                        @*açılan ders grid OnRecordClick="OnSinavRecordClickHandler" *@
                         <SfGrid ID="SinavGrid" @ref="SinavGrid" DataSource="@SinavDtos" Toolbar="@(new List<string>() { "Add", "Edit", "Delete","ColumnChooser" })" RowHeight="20" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
-                            <GridEvents OnRecordClick="OnSinavRecordClickHandler" OnActionComplete="ActionCompletedHandler" TValue="SinavDto"></GridEvents>
-                            <GridSelectionSettings CellSelectionMode="CellSelectionMode.BoxWithBorder" CheckboxOnly="true" PersistSelection="true"></GridSelectionSettings>
+                            <GridEvents RowSelected="RowSelectedHandlerSinav" OnActionComplete="ActionCompletedHandler" TValue="SinavDto"></GridEvents>
                             <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
                                 <Template>
                                     @{
@@ -170,7 +171,6 @@
                             </GridEditSettings>
 
                             <GridColumns>
-                                <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
                                 <GridColumn Visible="false" Field=@nameof(SinavDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
                                 <GridColumn Field=@nameof(SinavDto.Tarih) HeaderText="Tarih"></GridColumn>
                                 <GridColumn Field=@nameof(SinavDto.SinavTipId) ValidationRules="@(new { required=true})" HeaderText="Tipi" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@sinavTipDtos"></GridColumn>
@@ -185,10 +185,17 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="server-action-menu">
             <div class="row">
-                <div class="form-row">
+                <div class="col-sm-12 text-center">
+                    <p>Öğrenciler</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
                     <SfGrid ID="OgrenciGrid" @ref="OgrenciGrid" DataSource="@OgrenciDtos" Toolbar="@(new List<string>() { "Add"})" RowHeight="15" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
-                        <GridEvents OnActionComplete="ActionCompletedHandlerOgrenci" TValue="OgrenciDto"></GridEvents>
+                        <GridEvents OnActionBegin="OnActionBeginHandlerOgrenci" OnActionComplete="ActionCompletedHandlerOgrenci" TValue="OgrenciDto"></GridEvents>
                         <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true"></GridEditSettings>
                         <GridColumns>
                             <GridColumn Visible="false" Field=@nameof(OgrenciDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
@@ -210,6 +217,27 @@
 </div>
 
 
+<Dialog Baslik="Öğrenci Listesi" @bind-isDialogOpen="@ogrenciSecDialogOpen">
+    <div class="row">
+        <SfGrid ID="SecmeliOgrenciGrid" @ref="SecmeliOgrenciGrid" TValue="OgrenciDto" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowFiltering="true">
+            <SfDataManager Url="http://localhost:53414/odata/ogrencis" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+            <GridEvents TValue="OgrenciDto" CommandClicked="CommandClickHandlerSecmeliOgr"></GridEvents>
+            <GridColumns>
+                <GridColumn Visible="false" Field=@nameof(OgrenciDto.Id) HeaderText="Ogrenci ID" IsPrimaryKey="true" TextAlign="TextAlign.Right" ></GridColumn>
+                <GridColumn Field=@nameof(OgrenciDto.Ad) HeaderText="Ad" ></GridColumn>
+                <GridColumn Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad" ></GridColumn>
+                <GridColumn Field=@nameof(OgrenciDto.TCKN) HeaderText="TCKN" ></GridColumn>
+                <GridColumn Field=@nameof(OgrenciDto.OgrNo) HeaderText="Öğrenci No"></GridColumn>
+                <GridColumn>
+                    <GridCommandColumns>
+                        <GridCommandColumn Type="CommandButtonType.None" Title="Ogrenciyi Ekle" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-add-new", CssClass="e-flat" })"></GridCommandColumn>
+                    </GridCommandColumns>
+                </GridColumn>
+            </GridColumns>
+        </SfGrid>
+    </div>
+
+</Dialog>
 
 
 <style type="text/css" class="cssStyles">
@@ -234,6 +262,10 @@
         content: '\e7bb';
         color: #e83e8c;
     }
+    .e-add-new:before {
+        content: '\e823';
+        color: #e83e8c;
+    }
 
     /*.e-grid .e-headercelldiv {
         font-size: 7px;
@@ -242,4 +274,13 @@
     .e-grid .e-rowcell {
         font-size: 7px;
     } */
+
+    .mdc-dialog .mdc-dialog__container {
+        width: 100%;
+    }
+
+    .mdc-dialog .mdc-dialog__surface {
+        max-width: none;
+        width: 70%;
+    }
 </style>

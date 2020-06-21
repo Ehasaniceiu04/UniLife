@@ -7,6 +7,6 @@ namespace UniLife.Shared.Dto.Definitions
     public class SinavKayitDto : EntityDto<long>
     {
         public int SinavId { get; set; }
-        public int OgrId { get; set; }
+        public int OgrenciId { get; set; }
     }
 }
