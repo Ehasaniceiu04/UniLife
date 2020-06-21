@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace UniLife.Shared.Dto.Definitions
@@ -17,14 +18,16 @@ namespace UniLife.Shared.Dto.Definitions
         public virtual SinavTurDto SinavTur { get; set; }
 
         public string SablonAd { get; set; }
-        [MaxLength(100)]
-        public int EtkiOran { get; set; }
+        //[Range(0, 100, ErrorMessage = "The field {0} must be greater than {1}.")]
+        public int? EtkiOran { get; set; } = 0;
 
         public bool IsKilit { get; set; }
-        public DateTime Tarih { get; set; }
+        public DateTime? Tarih { get; set; }
         public bool TarihIlan { get; set; }
         public string KisaAd { get; set; }
 
         public int OgrCount { get; set; }
+
+        public virtual IEnumerable<int> DersAcilanIds{ get; set; }
     }
 }

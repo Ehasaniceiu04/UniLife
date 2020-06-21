@@ -8,6 +8,10 @@ using UniLife.Shared.Dto;
 using UniLife.Shared.Dto.Definitions;
 using Syncfusion.Blazor.DropDowns;
 using System.ComponentModel;
+using UniLife.CommonUI.Extensions;
+using System;
+using System.Linq;
+using UniLife.Shared.DataModels;
 
 namespace UniLife.CommonUI.Pages.DersMufredat
 {
@@ -35,7 +39,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         List<KeyValueDto> bolumDtos = new List<KeyValueDto>();
         List<KeyValueDto> programDtos = new List<KeyValueDto>();
 
-        List<SinavTipDto> sinavTipDtos= new List<SinavTipDto>();
+        List<SinavTipDto> sinavTipDtos = new List<SinavTipDto>();
         List<SinavTurDto> sinavTurDtos = new List<SinavTurDto>();
 
         List<SinifDto> sinifDtos = new List<SinifDto>
@@ -58,6 +62,13 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         Syncfusion.Blazor.Grids.SfGrid<SinavDto> SinavGrid;
         public List<SinavDto> SinavDtos = new List<SinavDto>();
+
+        
+        Syncfusion.Blazor.Grids.SfGrid<OgrenciDto> OgrenciGrid;
+        public List<OgrenciDto> OgrenciDtos = new List<OgrenciDto>();
+
+        public List<DersAcilanDto> SelectedDersAcilans { get; set; } = new List<DersAcilanDto>();
+
 
         //protected override void OnInitialized()
         //{
@@ -209,7 +220,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
             OData<DersAcilanDto> apiResponse;
             //apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<BolumDto>>>("api/bolum/GetBolumByFakulteIds/" + string.Join(',', fakulteId));
-            if (_dersAcilanDto.Sinif == 0 || _dersAcilanDto.Sinif==null)
+            if (_dersAcilanDto.Sinif == 0 || _dersAcilanDto.Sinif == null)
             {
                 apiResponse = await Http.GetFromJsonAsync<OData<DersAcilanDto>>($"odata/dersacilans?$filter=DonemId eq {_dersAcilanDto.DonemId} and ProgramId eq {_dersAcilanDto.ProgramId} and ProgramId eq {_dersAcilanDto.ProgramId} &$expand=Akademisyen($select=Id,Ad)");
             }
@@ -223,7 +234,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
             if (apiResponse.Value != null)
             {
-                
+
             }
             else
             {
@@ -231,15 +242,217 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             }
         }
 
+        public double clickedRowIndex { get; set; }
+        public void OnRecordClickHandler(Syncfusion.Blazor.Grids.RecordClickEventArgs<DersAcilanDto> args)
+        {
+            clickedRowIndex = args.RowIndex;
+        }
+
+        public void OnSinavRecordClickHandler(Syncfusion.Blazor.Grids.RecordClickEventArgs<SinavDto> args)
+        {
+            ApiResponseDto<List<OgrenciDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDto>>>($"api/Ogrenci/GetOgrenciListBySinavId/{args.RowData.Id}").Result;
+            if (apiResponse.Result.Count>1)
+            {
+                OgrenciDtos = apiResponse.Result;
+            }
+            else
+            {
+                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Sınava tabi öğrenicler getirilirken hata oluştu.");
+            }
+        }
+
+        public async Task RowSelectedHandler(Syncfusion.Blazor.Grids.RowSelectEventArgs<DersAcilanDto> args)
+        {
+            List<DersAcilanDto> seciliDersler = await DersAcGrid.GetSelectedRecords();
+            if (seciliDersler.Count > 1)
+            {
+                CokDersSecili(seciliDersler);
+            }
+        }
+
+
+        public void CokDersSecili(List<DersAcilanDto> args)
+        {
+            SelectedDersAcilans = args;
+            SinavDtos = new List<SinavDto>();
+
+        }
+
         public void CommandClickHandler(Syncfusion.Blazor.Grids.CommandClickEventArgs<DersAcilanDto> args)
         {
             if (args.CommandColumn.Title == "Tanımlı Sınavlar")
             {
-                ApiResponseDto<List<SinavDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<SinavDto>>>($"api/Sinav/GetSinavListByAcilanDersId/{args.RowData.Id}").Result;
+                DersAcGrid.ClearSelection();
+                DersAcGrid.SelectedRowIndex = clickedRowIndex;
 
+                ApiResponseDto<List<SinavDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<SinavDto>>>($"api/Sinav/GetSinavListByAcilanDersId/{args.RowData.Id}").Result;
+                if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
+                {
+                    SinavDtos = apiResponse.Result;
+                    SelectedDersAcilans = new List<DersAcilanDto> { args.RowData };
+                }
+                else
+                {
+                    matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Sinav bilgisi getirilirken hata oluştu");
+                }
+            }
+        }
+        public void ActionCompletedHandler(Syncfusion.Blazor.Grids.ActionEventArgs<SinavDto> args)
+        {
+            if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
+            {
+
+            }
+            if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+            {
+                if (args.Action == "edit")
+                {
+                    Update(args.Data);
+                }
+                else if (args.Action == "add")
+                {
+                    Create(args.Data);
+                }
+
+            }
+            if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
+            {
+                Delete(args.Data);
             }
         }
 
+        public void ActionCompletedHandlerOgrenci(Syncfusion.Blazor.Grids.ActionEventArgs<OgrenciDto> args)
+        {
+            if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+            {
+                if (args.Action == "add")
+                {
+                    CreateOgrenci(args.Data);
+                }
+
+            }
+            if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
+            {
+                DeleteOgrenci(args.Data);
+            }
+        }
+
+        public void CreateOgrenci(OgrenciDto ogrenciDto)
+        {
+
+        }
+        public void DeleteOgrenci(OgrenciDto ogrenciDto)
+        {
+
+        }
+
+        public async Task Create(SinavDto sinavDto)
+        {
+
+            //sinavDto.DersAcilanId = (await DersAcGrid.GetSelectedRecords()).FirstOrDefault().Id;
+
+            if (SelectedDersAcilans.Count() == 1)
+            {
+                try
+                {
+                    sinavDto.DersAcilanId = SelectedDersAcilans.FirstOrDefault().Id;
+
+                    ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>
+                    ("api/sinav", sinavDto);
+                    if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
+                    {
+                        matToaster.Add(apiResponse.Message, MatToastType.Success);
+                    }
+                    else
+                    {
+                        SinavDtos.RemoveAll(x => x.Id == 0);
+                        SinavGrid.Refresh();
+
+                        matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Sinav Creation Failed");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    SinavDtos.RemoveAll(x => x.Id == 0);
+                    SinavGrid.Refresh();
+                    matToaster.Add(ex.Message, MatToastType.Danger, "Sinav Creation Failed");
+                }
+            }
+            else
+            {
+                try
+                {
+                    sinavDto.DersAcilanIds = SelectedDersAcilans.Select(x => x.Id);
+                    ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/sinav/PostBulkCreate", sinavDto);
+                    if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
+                    {
+                        matToaster.Add(apiResponse.Message, MatToastType.Success);
+                    }
+                    else
+                    {
+                        SinavDtos.RemoveAll(x => x.Id == 0);
+                        SinavGrid.Refresh();
+
+                        matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Sinav Creation Failed");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    SinavDtos.RemoveAll(x => x.Id == 0);
+                    SinavGrid.Refresh();
+                    matToaster.Add(ex.Message, MatToastType.Danger, "Sinav Creation Failed");
+                }
+            }
+
+
+
+        }
+
+        public async void Update(SinavDto sinavDto)
+        {
+            try
+            {
+                ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>
+                    ("api/sinav", sinavDto);
+
+                if (!apiResponse.IsError)
+                {
+                    matToaster.Add(apiResponse.Message, MatToastType.Success);
+                }
+                else
+                {
+                    matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Sinav Save Failed");
+                    //update failed gridi boz !
+                }
+            }
+            catch (Exception ex)
+            {
+                matToaster.Add(ex.Message, MatToastType.Danger, "Sinav Save Failed");
+                //update failed gridi boz !
+            }
+        }
+
+        public async Task Delete(SinavDto sinavDto)
+        {
+            try
+            {
+                var response = await Http.DeleteAsync("api/sinav/" + sinavDto.Id);
+                if (response.StatusCode == (System.Net.HttpStatusCode)Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
+                {
+                    matToaster.Add("Sinav Deleted", MatToastType.Success);
+                    SinavDtos.Remove(sinavDto);
+                }
+                else
+                {
+                    matToaster.Add("Sinav Delete Failed: " + response.StatusCode, MatToastType.Danger);
+                }
+                //deleteDialogOpen = false;
+            }
+            catch (Exception ex)
+            {
+                matToaster.Add(ex.Message, MatToastType.Danger, "Sinav Save Failed");
+            }
+        }
 
     }
 }

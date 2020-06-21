@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using static Microsoft.AspNetCore.Http.StatusCodes;
 using UniLife.Shared.Dto.Definitions;
 using System.Collections.Generic;
+using System.Linq;
+using System;
 
 namespace UniLife.Server.Controllers
 {
@@ -52,6 +54,15 @@ namespace UniLife.Server.Controllers
         public async Task<ApiResponse> Post([FromBody] SinavDto SinavDto)
             => ModelState.IsValid ?
                 await _SinavManager.Create(SinavDto) :
+                new ApiResponse(Status400BadRequest, "Sinav Model is Invalid");
+
+        // POST: api/Sinav
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("PostBulkCreate")]
+        public async Task<ApiResponse> PostBulkCreate([FromBody] SinavDto SinavDto)
+            => ModelState.IsValid ?
+                await _SinavManager.PostBulkCreate(SinavDto) :
                 new ApiResponse(Status400BadRequest, "Sinav Model is Invalid");
 
         // Put: api/Sinav

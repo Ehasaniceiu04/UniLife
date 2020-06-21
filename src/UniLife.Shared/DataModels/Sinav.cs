@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using UniLife.Shared.DataInterfaces;
 
@@ -22,8 +23,10 @@ namespace UniLife.Shared.DataModels
         public int EtkiOran { get; set; }
 
         public bool IsKilit{ get; set; }
-        public DateTime Tarih{ get; set; }
+        public DateTime? Tarih{ get; set; }
         public bool TarihIlan { get; set; }
         public string KisaAd { get; set; }
+
+        public virtual ICollection<SinavKayit> SinavKayits { get; set; }
     }
 }

@@ -9,5 +9,6 @@ namespace UniLife.Server.Managers
     {
         Task<ApiResponse> GetOgrenciWithRelations(int id);
         Task<ApiResponse> GetOgrenciQuery(OgrenciDto ogrenci);
+        Task<ApiResponse> GetOgrenciListBySinavId(int sinavId);
     }
 }

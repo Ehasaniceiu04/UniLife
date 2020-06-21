@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using UniLife.Storage;
@@ -9,9 +10,10 @@ using UniLife.Storage;
 namespace UniLife.Storage.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200620215628_control26")]
+    partial class control26
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1646,17 +1648,13 @@ namespace UniLife.Storage.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<int>("OgrenciId")
+                    b.Property<int>("OgrId")
                         .HasColumnType("integer");
 
                     b.Property<int>("SinavId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OgrenciId");
-
-                    b.HasIndex("SinavId");
 
                     b.ToTable("SinavKayits");
                 });
@@ -2132,21 +2130,6 @@ namespace UniLife.Storage.Migrations
                     b.HasOne("UniLife.Shared.DataModels.SinavTur", "SinavTur")
                         .WithMany()
                         .HasForeignKey("SinavTurId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("UniLife.Shared.DataModels.SinavKayit", b =>
-                {
-                    b.HasOne("UniLife.Shared.DataModels.Ogrenci", "Ogrenci")
-                        .WithMany("SinavKayits")
-                        .HasForeignKey("OgrenciId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("UniLife.Shared.DataModels.Sinav", "Sinav")
-                        .WithMany("SinavKayits")
-                        .HasForeignKey("SinavId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

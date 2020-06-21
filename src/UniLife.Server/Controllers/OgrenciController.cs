@@ -59,14 +59,17 @@ namespace UniLife.Server.Controllers
             return await _ogrenciManager.GetOgrenciQuery(Ogrenci);
         }
 
-        [Microsoft.AspNet.OData.EnableQuery()]
+
+        // GET: api/Ogrenci/GetOgrenciListBySinavId/5
         [HttpGet]
-        [Route("GetOgrenciOdata")]
+        [Route("GetOgrenciListBySinavId/{sinavId}")]
         [AllowAnonymous]
-        public ApiResponse GetOgrenciOdata()
-        {
-            return new ApiResponse(Status200OK, "Created Dto", _applicationDbContext.Ogrencis);
-        }
+        public async Task<ApiResponse> GetOgrenciListBySinavId(int sinavId)
+            => ModelState.IsValid ?
+                await _ogrenciManager.GetOgrenciListBySinavId(sinavId) :
+                new ApiResponse(Status400BadRequest, "Ogrenci Model is Invalid");
+
+
 
 
         // POST: api/Ogrenci

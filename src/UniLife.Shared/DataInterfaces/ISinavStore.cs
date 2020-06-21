@@ -8,5 +8,6 @@ namespace UniLife.Shared.DataInterfaces
     public interface ISinavStore : IBaseStore<Sinav, SinavDto>
     {
         Task<List<SinavDto>> GetSinavListByAcilanDersId(int dersId);
+        Task PostBulkCreate(SinavDto sinavDto);
     }
 }

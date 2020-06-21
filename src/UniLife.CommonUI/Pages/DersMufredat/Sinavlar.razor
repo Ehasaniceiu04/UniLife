@@ -6,6 +6,7 @@
     @inject IMatToaster matToaster*@
 @using Syncfusion.Blazor.Buttons
 @using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Calendars
 
 <div class="row">
     <div class="col-sm-12 col-md-6">
@@ -61,9 +62,10 @@
                 <div class="col-12">
                     <div class="form-row">
                         @*açılan ders grid*@
-                        <SfGrid ID="DersAcGrid" @ref="DersAcGrid" DataSource="@DersAcDtos"  RowHeight="20" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
-                            <GridEvents TValue="DersAcilanDto" CommandClicked="CommandClickHandler"></GridEvents>
-                            <GridSelectionSettings CheckboxMode="CheckboxSelectionType.ResetOnRowClick" Type="SelectionType.Multiple" PersistSelection="true"></GridSelectionSettings>
+                        <SfGrid ID="DersAcGrid" @ref="DersAcGrid" DataSource="@DersAcDtos" RowHeight="20" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
+                            @*OnRecordClick="OnRecordClickHandler" RowDeselected="RowDeselectedHandler" OnToolbarClick="ToolbarClickHandler"  *@
+                            <GridEvents OnRecordClick="OnRecordClickHandler" RowSelected="RowSelectedHandler" TValue="DersAcilanDto" CommandClicked="CommandClickHandler"></GridEvents>
+                            <GridSelectionSettings CellSelectionMode="CellSelectionMode.BoxWithBorder" CheckboxOnly="true" Type="SelectionType.Multiple" PersistSelection="true"></GridSelectionSettings>
                             <GridColumns>
                                 <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
                                 <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
@@ -72,9 +74,6 @@
                                 <GridColumn Field="Akademisyen.Ad" HeaderText="Akademisyen Ad"></GridColumn>
                                 <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
                                 <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Zorunlu) DisplayAsCheckBox="true" HeaderText="Z"></GridColumn>
-                                @*<GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kredi) HeaderText="Krd"></GridColumn>
-                                <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Akts) HeaderText="Akts"></GridColumn>*@
-
                                 <GridColumn>
                                     <GridCommandColumns>
                                         <GridCommandColumn Type="CommandButtonType.None" Title="Tanımlı Sınavlar" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
@@ -91,7 +90,19 @@
         <div class="server-action-menu">
             <div class="row">
                 <div class="col-sm-12 text-center">
-                    <p>Sınavlar</p>
+                    @if (SelectedDersAcilans.Count() == 1)
+                    {
+                        <p>@($"Kod:{SelectedDersAcilans.FirstOrDefault().Kod} Ad:{SelectedDersAcilans.FirstOrDefault().Ad}") Sınav Listesi</p>
+                    }
+                    else if (SelectedDersAcilans.Count() > 1)
+                    {
+                        <p>Seçilen dersler için sınav oluşturmak için aşağıdaki menüleri kullanabilirsiniz</p>
+                    }
+                    else
+                    {
+                        <p>Sınavlar</p>
+                    }
+
                 </div>
             </div>
             <div class="row">
@@ -99,22 +110,99 @@
                     <div class="form-row">
                         @*açılan ders grid*@
                         <SfGrid ID="SinavGrid" @ref="SinavGrid" DataSource="@SinavDtos" Toolbar="@(new List<string>() { "Add", "Edit", "Delete","ColumnChooser" })" RowHeight="20" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
-                            <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
-                            <GridSelectionSettings CheckboxMode="CheckboxSelectionType.ResetOnRowClick"  CheckboxOnly="true" PersistSelection="true"></GridSelectionSettings>
+                            <GridEvents OnRecordClick="OnSinavRecordClickHandler" OnActionComplete="ActionCompletedHandler" TValue="SinavDto"></GridEvents>
+                            <GridSelectionSettings CellSelectionMode="CellSelectionMode.BoxWithBorder" CheckboxOnly="true" PersistSelection="true"></GridSelectionSettings>
+                            <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
+                                <Template>
+                                    @{
+                                        SinavDto sinavInfo = (context as SinavDto);
+
+                                    }
+                                    <div class="col-md-10 offset-md-1">
+                                        <div class="form-row mt-4">
+                                            <div class="col-sm-6 pb-3">
+                                                <label for="SinavTipId">Sinav Tip</label>
+                                                <SfDropDownList ID="SinavTipId" CssClass="form-control" Value="@(sinavInfo.SinavTipId.ToString())" TValue="string" TItem="SinavTipDto" Index="0" DataSource="@sinavTipDtos">
+                                                    <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
+                                                </SfDropDownList>
+                                            </div>
+                                            <div class="col-sm-3 pb-3">
+                                                <label for="SablonAd">SablonAd</label>
+                                                <SfTextBox ID="SablonAd" Placeholder="SablonAd" CssClass="form-control" Value="@(sinavInfo.SablonAd)"></SfTextBox>
+                                            </div>
+                                            <div class="col-sm-6 pb-3">
+                                                <label for="SinavTurId">Sinav Tur</label>
+                                                <SfDropDownList ID="SinavTurId" CssClass="form-control" Value="@(sinavInfo.SinavTurId.ToString())" TValue="string" TItem="SinavTurDto" Index="0" DataSource="@sinavTurDtos">
+                                                    <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
+                                                </SfDropDownList>
+                                            </div>
+                                            <div class="col-sm-6 pb-3">
+                                                <label for="EtkiOran">EtkiOran (%)</label>
+                                                <SfNumericTextBox ID="EtkiOran" Min="0" Max="100" Value="@(sinavInfo.EtkiOran)" TValue="int?" Format=n0></SfNumericTextBox>
+                                            </div>
+                                            <div class="col-sm-6 pb-3">
+                                                <label for="IsKilit">Kilitli</label>
+                                                <SfCheckBox ID="IsKilit" Name="IsKilit" Checked="@(sinavInfo.IsKilit)"></SfCheckBox>
+                                            </div>
+                                            <div class="col-sm-6 pb-3">
+                                                <label for="Tarih">Zaman</label>
+                                                <SfDateTimePicker ID="Tarih" TValue="DateTime?" Value="@(sinavInfo.Tarih)" Placeholder="Lütfen bir tarih seçiniz."></SfDateTimePicker>
+                                            </div>
+                                            <div class="col-sm-6 pb-3">
+                                                <label for="TarihIlan">Tarih ilan edilsin</label>
+                                                <SfCheckBox ID="TarihIlan" Name="TarihIlan" Checked="@(sinavInfo.TarihIlan)"></SfCheckBox>
+                                            </div>
+                                            <div class="col-sm-3 pb-3">
+                                                <label for="Ad">Sinav Adı</label>
+                                                <SfTextBox ID="Ad" Placeholder="Sinav Adı giriniz" CssClass="form-control" Value="@(sinavInfo.Ad)"></SfTextBox>
+                                            </div>
+                                            <div class="col-sm-3 pb-3">
+                                                <label for="KisaAd">Kisa Ad</label>
+                                                <SfTextBox ID="KisaAd" Placeholder="Kisa Ad giriniz" CssClass="form-control" Value="@(sinavInfo.KisaAd)"></SfTextBox>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                </Template>
+                            </GridEditSettings>
+
                             <GridColumns>
                                 <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
                                 <GridColumn Visible="false" Field=@nameof(SinavDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
-                                <GridColumn AutoFit="true" Field=@nameof(SinavDto.Tarih) HeaderText="Tarih"></GridColumn>
-                                <GridColumn Field=@nameof(SinavDto.SinavTipId) HeaderText="Tipi" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@sinavTipDtos" Width="150"></GridColumn>
-                                <GridColumn Field=@nameof(SinavDto.SinavTurId) HeaderText="Türü" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@sinavTurDtos" Width="150"></GridColumn>
-                                <GridColumn AutoFit="true" Field=@nameof(SinavDto.KisaAd) HeaderText="Kısa Ad"></GridColumn>
-                                <GridColumn AutoFit="true" Field=@nameof(SinavDto.SablonAd) HeaderText="Ad Şablon"></GridColumn>
-                                <GridColumn AutoFit="true" Field=@nameof(SinavDto.EtkiOran) HeaderText="%"></GridColumn>
-                                <GridColumn AutoFit="true" Field=@nameof(SinavDto.OgrCount) HeaderText="Akts"></GridColumn>
+                                <GridColumn Field=@nameof(SinavDto.Tarih) HeaderText="Tarih"></GridColumn>
+                                <GridColumn Field=@nameof(SinavDto.SinavTipId) ValidationRules="@(new { required=true})" HeaderText="Tipi" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@sinavTipDtos"></GridColumn>
+                                <GridColumn Field=@nameof(SinavDto.SinavTurId) ValidationRules="@(new { required=true})" HeaderText="Türü" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@sinavTurDtos"></GridColumn>
+                                <GridColumn Field=@nameof(SinavDto.KisaAd) HeaderText="Kısa Ad"></GridColumn>
+                                <GridColumn Field=@nameof(SinavDto.SablonAd) HeaderText="Ad Şablon"></GridColumn>
+                                <GridColumn Field=@nameof(SinavDto.EtkiOran) HeaderText="%"></GridColumn>
+                                <GridColumn Field=@nameof(SinavDto.OgrCount) HeaderText="Ö.Sayı"></GridColumn>
 
                             </GridColumns>
                         </SfGrid>
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-row">
+                    <SfGrid ID="OgrenciGrid" @ref="OgrenciGrid" DataSource="@OgrenciDtos" Toolbar="@(new List<string>() { "Add"})" RowHeight="15" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
+                        <GridEvents OnActionComplete="ActionCompletedHandlerOgrenci" TValue="OgrenciDto"></GridEvents>
+                        <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true"></GridEditSettings>
+                        <GridColumns>
+                            <GridColumn Visible="false" Field=@nameof(OgrenciDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+                            <GridColumn Field=@nameof(OgrenciDto.Ad) HeaderText="Ad"></GridColumn>
+                            <GridColumn Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad"></GridColumn>
+                            <GridColumn Field=@nameof(OgrenciDto.OgrNo) HeaderText="Soyad"></GridColumn>
+                            <GridColumn Field=@nameof(OgrenciDto.TCKN) HeaderText="Soyad"></GridColumn>
+                            <GridColumn>
+                                <GridCommandColumns>
+                                    <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-delete", CssClass = "e-flat" })"></GridCommandColumn>
+                                </GridCommandColumns>
+                            </GridColumn>
+                        </GridColumns>
+                    </SfGrid>
                 </div>
             </div>
         </div>

@@ -1,4 +1,8 @@
-﻿Fakultede yaptıgım çalışmalar
+﻿*Griddeki dropdownun filtrelenemesi sorunu AcilanDersler.razor da çözdüm. FK ile (genellikle Isim) başka bir kolon aynı isimdeyse filtre olmuyor.
+*dropdownload flan odataba bağlayabiliriz aslında... çok iyi fikir.
+
+
+Fakultede yaptıgım çalışmalar
 -----0----
 @*<GridColumn Field=@nameof(FakulteDto.Universite.UniversiteAd) HeaderText="Universite" EditType="EditType.DropDownEdit" Width="150"></GridColumn>*@
                 @*<GridColumn Field=@nameof(FakulteDto.UniversiteId) HeaderText="Üniversite" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="universiteDtos">

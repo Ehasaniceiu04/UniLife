@@ -48,6 +48,7 @@ namespace UniLife.Storage
         public DbSet<Sinav> Sinavs{ get; set; }
         public DbSet<SinavTip> SinavTips { get; set; }
         public DbSet<SinavTur> SinavTurs{ get; set; }
+        public DbSet<SinavKayit> SinavKayits { get; set; }
 
         public DbSet<KayitNeden> KayitNedens { get; set; }
 

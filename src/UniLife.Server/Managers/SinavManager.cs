@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using UniLife.Server.Middleware.Wrappers;
 using UniLife.Shared.DataInterfaces;
@@ -16,6 +17,8 @@ namespace UniLife.Server.Managers
             _sinavStore = sinavStore;
         }
 
+        
+
         public async Task<ApiResponse> GetSinavListByAcilanDersId(int dersId)
         {
             try
@@ -27,5 +30,11 @@ namespace UniLife.Server.Managers
                 return new ApiResponse(Status400BadRequest, "Failed to Retrieve SinavDto");
             }
         }
+        public async Task<ApiResponse> PostBulkCreate(SinavDto sinavDto)
+        {
+            await _sinavStore.PostBulkCreate(sinavDto);
+            return new ApiResponse(Status200OK, "Created Sinavs", null);
+        }
+        
     }
 }

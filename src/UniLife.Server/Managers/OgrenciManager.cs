@@ -41,5 +41,19 @@ namespace UniLife.Server.Managers
                 return new ApiResponse(Status400BadRequest, "Failed to Retrieve OgrenciDto");
             }
         }
+
+        public async Task<ApiResponse> GetOgrenciListBySinavId(int sinavId)
+        {
+            try
+            {
+                return new ApiResponse(Status200OK, "Retrieved OgrenciDtos", await _ogrenciStore.GetOgrenciListBySinavId(sinavId));
+            }
+            catch (Exception e)
+            {
+                return new ApiResponse(Status400BadRequest, "Failed to Retrieve OgrenciDtos");
+            }
+        }
+
+        
     }
 }

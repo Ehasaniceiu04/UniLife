@@ -66,5 +66,22 @@ namespace UniLife.Storage.Stores
 
             return ogrenciDetail;
         }
+
+        public async Task<List<OgrenciDto>> GetOgrenciListBySinavId(int sinavId)
+        {
+            var ogrenciList = await (from o in _db.Ogrencis
+                                     join sk in _db.SinavKayits.Where(x => x.SinavId == sinavId) on o.Id equals sk.OgrenciId
+                                     select o).ToListAsync();
+
+
+            //var ogrenciDto = await _autoMapper.ProjectTo<OgrenciDto>(_db.Ogrencis).FirstOrDefaultAsync(x => x.Id == id); //_db.Ogrencis.SingleOrDefaultAsync(t => t.Id == id);
+
+            if (ogrenciList == null)
+                throw new InvalidDataException($"GetOgrenciListBySinavId.. Belirtilen sinav idsi ile ilgili kayıt bulunamadı sinavId: {sinavId}");
+
+            return _autoMapper.Map<List<OgrenciDto>>(ogrenciList);
+        }
+
+
     }
 }
