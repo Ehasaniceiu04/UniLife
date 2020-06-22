@@ -2,8 +2,6 @@
 
 @using UniLife.Shared.Dto.Definitions
 @using Syncfusion.Blazor.DropDowns
-@*@inject HttpClient Http;
-    @inject IMatToaster matToaster*@
 @using Syncfusion.Blazor.Buttons
 @using Syncfusion.Blazor.Inputs
 @using Syncfusion.Blazor.Calendars
@@ -18,7 +16,7 @@
                     <p>Açılan Dersler</p>
                 </div>
             </div>
-            <div class="row">
+            <div class="row pb-2">
                 <div class="col-sm-12 col-md-12">
                     <div class="form-row">
                         @*açılan ders filtre*@
@@ -30,32 +28,35 @@
                         </SfDropDownList>
                         <label class="col-sm-2" for="DropFakulte">Fakülte:</label>
                         <SfDropDownList ID="DropFakulte" @ref="DropFakulte" TItem="KeyValueDto" CssClass="col-sm-10 pb-1"
-                                        TValue="int?" PopupHeight="230px" Placeholder="Dönem Seçiniz"
+                                        TValue="int?" PopupHeight="230px" Placeholder="Fakülte Seçiniz"
                                         @bind-Value="@_dersAcilanDto.FakulteId" DataSource="@fakulteDtos">
                             <DropDownListEvents TValue="int?" ValueChange="FakulteToBolum"></DropDownListEvents>
                             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                         </SfDropDownList>
                         <label class="col-sm-2" for="DropBolum">Bolum:</label>
                         <SfDropDownList ID="DropBolum" @ref="DropBolum" TItem="KeyValueDto" CssClass="col-sm-10 pb-1"
-                                        TValue="int?" PopupHeight="230px" Placeholder="Bölüm"
+                                        TValue="int?" PopupHeight="230px" Placeholder="Bölüm Seçiniz"
                                         @bind-Value="@_dersAcilanDto.BolumId" DataSource="@bolumDtos">
                             <DropDownListEvents TValue="int?" ValueChange="BolumToProgram"></DropDownListEvents>
                             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                         </SfDropDownList>
                         <label class="col-sm-2" for="DropProgram">Program:</label>
                         <SfDropDownList ID="DropProgram" @ref="DropProgram" TItem="KeyValueDto" CssClass="col-sm-10 pb-1"
-                                        TValue="int?" PopupHeight="230px" Placeholder="Bölüm"
+                                        TValue="int?" PopupHeight="230px" Placeholder="Program Seçiniz"
                                         @bind-Value="@_dersAcilanDto.ProgramId" DataSource="@programDtos">
                             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                         </SfDropDownList>
                         <label class="col-sm-2" for="DropSinif">Sınıf:</label>
-                        <SfDropDownList ID="DropSinif" @ref="DropSinif" TItem="SinifDto" CssClass="col-sm-5 pb-1"
-                                        TValue="int?" PopupHeight="230px" Placeholder="Sınıf Seçiniz"
+                        <SfDropDownList ID="DropSinif" @ref="DropSinif" TItem="SinifDto" CssClass="col-sm-2 pb-1"
+                                        TValue="int?" Placeholder="Sınıf Seçiniz"
                                         DataSource="@(sinifDtos)" Value="@(_dersAcilanDto.Sinif)">
                             <DropDownListEvents TValue="int?" ValueChange="SinifChange"></DropDownListEvents>
                             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                         </SfDropDownList>
-                        <SfButton OnClick="Refresh" CssClass="e-success col-sm-5">Yenile</SfButton>
+                        <label class="col-sm-2" for="Kod">Ders Kod:</label>
+                        <SfTextBox ID="Kod" CssClass="form-control col-sm-3 pb-1" @bind-Value="@(_dersAcilanDto.Kod)"></SfTextBox>
+
+                        <SfButton OnClick="Refresh" CssClass="e-success col-sm-3">Yenile</SfButton>
                     </div>
                 </div>
             </div>
@@ -76,6 +77,7 @@
                                 <GridColumn Field="Akademisyen.Ad" HeaderText="Akademisyen Ad"></GridColumn>
                                 <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
                                 <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Zorunlu) DisplayAsCheckBox="true" HeaderText="Z"></GridColumn>
+                                <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.OgrCount) HeaderText="Ö.Sayı"></GridColumn>
                                 <GridColumn>
                                     <GridCommandColumns>
                                         <GridCommandColumn Type="CommandButtonType.None" Title="Tanımlı Sınavlar" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
@@ -230,13 +232,12 @@
                 <GridColumn Field=@nameof(OgrenciDto.OgrNo) HeaderText="Öğrenci No"></GridColumn>
                 <GridColumn>
                     <GridCommandColumns>
-                        <GridCommandColumn Type="CommandButtonType.None" Title="Ogrenciyi Ekle" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-add-new", CssClass="e-flat" })"></GridCommandColumn>
+                        <GridCommandColumn Type="CommandButtonType.None" Title="Ogrenciyi Ekle" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-Circle_Add", CssClass="e-flat" })"></GridCommandColumn>
                     </GridCommandColumns>
                 </GridColumn>
             </GridColumns>
         </SfGrid>
     </div>
-
 </Dialog>
 
 
@@ -262,9 +263,9 @@
         content: '\e7bb';
         color: #e83e8c;
     }
-    .e-add-new:before {
-        content: '\e823';
-        color: #e83e8c;
+    .e-Circle_Add:before {
+        content: '\e755';
+        color: #31ba13;
     }
 
     /*.e-grid .e-headercelldiv {

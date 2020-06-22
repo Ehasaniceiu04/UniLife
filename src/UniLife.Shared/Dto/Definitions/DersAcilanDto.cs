@@ -29,6 +29,8 @@ namespace UniLife.Shared.Dto.Definitions
         public int? FakulteId { get; set; }
         public int? BolumId { get; set; }
 
+        public int OgrCount { get; set; }
+
         //External
 
         public int? AkademisyenId { get; set; }

@@ -224,28 +224,66 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         async Task Refresh()
         {
 
-            OData<DersAcilanDto> apiResponse;
-            //apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<BolumDto>>>("api/bolum/GetBolumByFakulteIds/" + string.Join(',', fakulteId));
-            if (_dersAcilanDto.Sinif == 0 || _dersAcilanDto.Sinif == null)
+            //OData<DersAcilanDto> apiResponse;
+            //if (_dersAcilanDto.Sinif == 0 || _dersAcilanDto.Sinif == null)
+            //{
+            //    apiResponse = await Http.GetFromJsonAsync<OData<DersAcilanDto>>($"odata/dersacilans?$filter=DonemId eq {_dersAcilanDto.DonemId} and ProgramId eq {_dersAcilanDto.ProgramId} and ProgramId eq {_dersAcilanDto.ProgramId} &$expand=Akademisyen($select=Id,Ad)");
+            //}
+            //else
+            //{
+            //    apiResponse = await Http.GetFromJsonAsync<OData<DersAcilanDto>>($"odata/dersacilans?$filter=DonemId eq {_dersAcilanDto.DonemId} and ProgramId eq {_dersAcilanDto.ProgramId} and ProgramId eq {_dersAcilanDto.ProgramId} and Sinif eq {_dersAcilanDto.Sinif} &$expand=Akademisyen($select=Id,Ad)");
+            //}
+
+            //DersAcDtos = apiResponse.Value;
+            //StateHasChanged();
+
+            
+
+            //if (apiResponse.Value != null)
+            //{
+
+            //}
+            //else
+            //{
+            //    matToaster.Add("", MatToastType.Danger, "Bölüm getirilirken hata oluştu!");
+            //}
+
+            await GetDersAcilansByFilters();
+        }
+
+
+        private async Task GetDersAcilansByFilters()
+        {
+            SinavDersAcDto sinavDersAcDto = new SinavDersAcDto
             {
-                apiResponse = await Http.GetFromJsonAsync<OData<DersAcilanDto>>($"odata/dersacilans?$filter=DonemId eq {_dersAcilanDto.DonemId} and ProgramId eq {_dersAcilanDto.ProgramId} and ProgramId eq {_dersAcilanDto.ProgramId} &$expand=Akademisyen($select=Id,Ad)");
+                donemId= _dersAcilanDto.DonemId,
+                programId = _dersAcilanDto.ProgramId,
+                sinif = _dersAcilanDto.Sinif,
+                dersKodu = _dersAcilanDto.Kod
+            };
+
+            //var reqURL = $"api/DersAcilan/GetDersAcilansByFilters/{_dersAcilanDto.DonemId ?? 0}/{_dersAcilanDto.ProgramId ?? 0}/{_dersAcilanDto.Sinif ?? 0}/{_dersAcilanDto.Kod ?? ""}";
+            
+
+
+            ApiResponseDto<List<DersAcilanDto>> apiResponse = await Http.PostJsonAsync<ApiResponseDto<List<DersAcilanDto>>>("api/DersAcilan/PostDersAcilansByFilters", sinavDersAcDto);
+            if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
+            {
+                DersAcDtos = apiResponse.Result;
+                DersAcGrid.Refresh();
             }
             else
             {
-                apiResponse = await Http.GetFromJsonAsync<OData<DersAcilanDto>>($"odata/dersacilans?$filter=DonemId eq {_dersAcilanDto.DonemId} and ProgramId eq {_dersAcilanDto.ProgramId} and ProgramId eq {_dersAcilanDto.ProgramId} and Sinif eq {_dersAcilanDto.Sinif} &$expand=Akademisyen($select=Id,Ad)");
+                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Açılan Derslerin bilgisi getirilirken hata oluştu");
             }
 
-            DersAcDtos = apiResponse.Value;
-            StateHasChanged();
+            await SinavGridTemizle();
+        }
 
-            if (apiResponse.Value != null)
-            {
-
-            }
-            else
-            {
-                matToaster.Add("", MatToastType.Danger, "Bölüm getirilirken hata oluştu!");
-            }
+        async Task SinavGridTemizle()
+        {
+            SinavDtos = new List<SinavDto>();
+            SinavGrid.Refresh();
         }
 
         public double clickedRowIndex { get; set; }

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Security.Cryptography.X509Certificates;
 
 namespace UniLife.Storage.Stores
 {
@@ -31,8 +32,8 @@ namespace UniLife.Storage.Stores
                                   Id = da.Id,
                                   Kod = da.Kod,
                                   Ad = da.Ad,
-                                  ProgramAd=p.Ad,
-                                  FakulteAd=f.Ad,
+                                  ProgramAd = p.Ad,
+                                  FakulteAd = f.Ad,
                                   Zorunlu = da.Zorunlu,
                                   SecmeliKodu = da.SecmeliKodu,
                                   Kredi = da.Kredi,
@@ -55,145 +56,145 @@ namespace UniLife.Storage.Stores
             {
                 //try
                 //{
-                    IQueryable<DersAcilan> acilacakDersler;
+                IQueryable<DersAcilan> acilacakDersler;
 
-                    if (dersAcDto.RefProgramSecilen == 55555 && dersAcDto.AcProgramSecilen != 55555)
-                    {
-                        acilacakDersler = from d in _db.Derss.Where(x => dersAcDto.DersAcIds.Contains(x.Id) && dersAcDto.AcSinifSecilenler.Contains(x.Sinif))
-                                          join m in _db.Mufredats on d.MufredatId equals m.Id
-                                          join p in _db.Programs.Where(y => dersAcDto.AcProgramSecilen == y.Id) on m.ProgramId equals p.Id
-                                          select new DersAcilan
-                                          {
-                                              Ad = d.Ad,
-                                              AdEn = d.AdEn,
-                                              Akts = d.Akts,
-                                              DersId = d.Id,
-                                              DonemId = dersAcDto.AcDonemSecilen, // TODO : eğer farklı döneme atması mümkün değilse d.DonemId olsun
-                                              Durum = d.Durum,
-                                              GecmeNotu = d.GecmeNotu,
-                                              KisaAd = d.KisaAd,
-                                              Kod = d.Kod,
-                                              Kredi = d.Kredi,
-                                              LabSaat = d.LabSaat,
-                                              OptikKod = d.OptikKod,
-                                              ProgramId = p.Id,
-                                              MufredatId = d.MufredatId,
-                                              Sinif = d.Sinif,
-                                              TeoSaat = d.TeoSaat,
-                                              UygSaat = d.UygSaat,
-                                              Zorunlu = d.Zorunlu,
-                                              SecmeliKodu =d.SecmeliKodu
-                                          };
-                    }
-                    else if (dersAcDto.RefProgramSecilen != 55555 && dersAcDto.AcProgramSecilen == 55555)
-                    {
-                        acilacakDersler = from d in _db.Derss.Where(x => dersAcDto.DersAcIds.Contains(x.Id) && dersAcDto.AcSinifSecilenler.Contains(x.Sinif))
-                                          join m in _db.Mufredats on d.MufredatId equals m.Id
-                                          join p in _db.Programs.Where(y => dersAcDto.RefProgramSecilen == y.Id) on m.ProgramId equals p.Id
-                                          select new DersAcilan
-                                          {
-                                              Ad = d.Ad,
-                                              AdEn = d.AdEn,
-                                              Akts = d.Akts,
-                                              DersId = d.Id,
-                                              DonemId = dersAcDto.AcDonemSecilen, // TODO : eğer farklı döneme atması mümkün değilse d.DonemId olsun
-                                              Durum = d.Durum,
-                                              GecmeNotu = d.GecmeNotu,
-                                              KisaAd = d.KisaAd,
-                                              Kod = d.Kod,
-                                              Kredi = d.Kredi,
-                                              LabSaat = d.LabSaat,
-                                              OptikKod = d.OptikKod,
-                                              ProgramId = p.Id,
-                                              MufredatId = d.MufredatId,
-                                              Sinif = d.Sinif,
-                                              TeoSaat = d.TeoSaat,
-                                              UygSaat = d.UygSaat,
-                                              Zorunlu = d.Zorunlu,
-                                              SecmeliKodu = d.SecmeliKodu
-                                          };
-                    }
-                    else if (dersAcDto.RefProgramSecilen == 55555 && dersAcDto.AcProgramSecilen == 55555)
-                    {
-                        acilacakDersler = from d in _db.Derss.Where(x => dersAcDto.DersAcIds.Contains(x.Id) && dersAcDto.AcSinifSecilenler.Contains(x.Sinif))
-                                          join m in _db.Mufredats on d.MufredatId equals m.Id
-                                          join p in _db.Programs.Where(y => dersAcDto.AcProgramSecenektekiler.Contains(y.Id)) on m.ProgramId equals p.Id
-                                          select new DersAcilan
-                                          {
-                                              Ad = d.Ad,
-                                              AdEn = d.AdEn,
-                                              Akts = d.Akts,
-                                              DersId = d.Id,
-                                              DonemId = dersAcDto.AcDonemSecilen, // TODO : eğer farklı döneme atması mümkün değilse d.DonemId olsun
-                                              Durum = d.Durum,
-                                              GecmeNotu = d.GecmeNotu,
-                                              KisaAd = d.KisaAd,
-                                              Kod = d.Kod,
-                                              Kredi = d.Kredi,
-                                              LabSaat = d.LabSaat,
-                                              OptikKod = d.OptikKod,
-                                              ProgramId = p.Id,
-                                              MufredatId = d.MufredatId,
-                                              Sinif = d.Sinif,
-                                              TeoSaat = d.TeoSaat,
-                                              UygSaat = d.UygSaat,
-                                              Zorunlu = d.Zorunlu,
-                                              SecmeliKodu = d.SecmeliKodu
-                                          };
-                    }
-                    else if (dersAcDto.RefProgramSecilen != 55555 && dersAcDto.AcProgramSecilen != 55555)
-                    {
-                        acilacakDersler = from d in _db.Derss.Where(x => dersAcDto.DersAcIds.Contains(x.Id) && dersAcDto.AcSinifSecilenler.Contains(x.Sinif))
-                                          select new DersAcilan
-                                          {
-                                              Ad = d.Ad,
-                                              AdEn = d.AdEn,
-                                              Akts = d.Akts,
-                                              DersId = d.Id,
-                                              DonemId = dersAcDto.AcDonemSecilen, // TODO : eğer farklı döneme atması mümkün değilse d.DonemId olsun
-                                              Durum = d.Durum,
-                                              GecmeNotu = d.GecmeNotu,
-                                              KisaAd = d.KisaAd,
-                                              Kod = d.Kod,
-                                              Kredi = d.Kredi,
-                                              LabSaat = d.LabSaat,
-                                              OptikKod = d.OptikKod,
-                                              ProgramId = dersAcDto.AcProgramSecilen,
-                                              MufredatId = d.MufredatId,
-                                              Sinif = d.Sinif,
-                                              TeoSaat = d.TeoSaat,
-                                              UygSaat = d.UygSaat,
-                                              Zorunlu = d.Zorunlu,
-                                              SecmeliKodu = d.SecmeliKodu
-                                          };
+                if (dersAcDto.RefProgramSecilen == 55555 && dersAcDto.AcProgramSecilen != 55555)
+                {
+                    acilacakDersler = from d in _db.Derss.Where(x => dersAcDto.DersAcIds.Contains(x.Id) && dersAcDto.AcSinifSecilenler.Contains(x.Sinif))
+                                      join m in _db.Mufredats on d.MufredatId equals m.Id
+                                      join p in _db.Programs.Where(y => dersAcDto.AcProgramSecilen == y.Id) on m.ProgramId equals p.Id
+                                      select new DersAcilan
+                                      {
+                                          Ad = d.Ad,
+                                          AdEn = d.AdEn,
+                                          Akts = d.Akts,
+                                          DersId = d.Id,
+                                          DonemId = dersAcDto.AcDonemSecilen, // TODO : eğer farklı döneme atması mümkün değilse d.DonemId olsun
+                                          Durum = d.Durum,
+                                          GecmeNotu = d.GecmeNotu,
+                                          KisaAd = d.KisaAd,
+                                          Kod = d.Kod,
+                                          Kredi = d.Kredi,
+                                          LabSaat = d.LabSaat,
+                                          OptikKod = d.OptikKod,
+                                          ProgramId = p.Id,
+                                          MufredatId = d.MufredatId,
+                                          Sinif = d.Sinif,
+                                          TeoSaat = d.TeoSaat,
+                                          UygSaat = d.UygSaat,
+                                          Zorunlu = d.Zorunlu,
+                                          SecmeliKodu = d.SecmeliKodu
+                                      };
+                }
+                else if (dersAcDto.RefProgramSecilen != 55555 && dersAcDto.AcProgramSecilen == 55555)
+                {
+                    acilacakDersler = from d in _db.Derss.Where(x => dersAcDto.DersAcIds.Contains(x.Id) && dersAcDto.AcSinifSecilenler.Contains(x.Sinif))
+                                      join m in _db.Mufredats on d.MufredatId equals m.Id
+                                      join p in _db.Programs.Where(y => dersAcDto.RefProgramSecilen == y.Id) on m.ProgramId equals p.Id
+                                      select new DersAcilan
+                                      {
+                                          Ad = d.Ad,
+                                          AdEn = d.AdEn,
+                                          Akts = d.Akts,
+                                          DersId = d.Id,
+                                          DonemId = dersAcDto.AcDonemSecilen, // TODO : eğer farklı döneme atması mümkün değilse d.DonemId olsun
+                                          Durum = d.Durum,
+                                          GecmeNotu = d.GecmeNotu,
+                                          KisaAd = d.KisaAd,
+                                          Kod = d.Kod,
+                                          Kredi = d.Kredi,
+                                          LabSaat = d.LabSaat,
+                                          OptikKod = d.OptikKod,
+                                          ProgramId = p.Id,
+                                          MufredatId = d.MufredatId,
+                                          Sinif = d.Sinif,
+                                          TeoSaat = d.TeoSaat,
+                                          UygSaat = d.UygSaat,
+                                          Zorunlu = d.Zorunlu,
+                                          SecmeliKodu = d.SecmeliKodu
+                                      };
+                }
+                else if (dersAcDto.RefProgramSecilen == 55555 && dersAcDto.AcProgramSecilen == 55555)
+                {
+                    acilacakDersler = from d in _db.Derss.Where(x => dersAcDto.DersAcIds.Contains(x.Id) && dersAcDto.AcSinifSecilenler.Contains(x.Sinif))
+                                      join m in _db.Mufredats on d.MufredatId equals m.Id
+                                      join p in _db.Programs.Where(y => dersAcDto.AcProgramSecenektekiler.Contains(y.Id)) on m.ProgramId equals p.Id
+                                      select new DersAcilan
+                                      {
+                                          Ad = d.Ad,
+                                          AdEn = d.AdEn,
+                                          Akts = d.Akts,
+                                          DersId = d.Id,
+                                          DonemId = dersAcDto.AcDonemSecilen, // TODO : eğer farklı döneme atması mümkün değilse d.DonemId olsun
+                                          Durum = d.Durum,
+                                          GecmeNotu = d.GecmeNotu,
+                                          KisaAd = d.KisaAd,
+                                          Kod = d.Kod,
+                                          Kredi = d.Kredi,
+                                          LabSaat = d.LabSaat,
+                                          OptikKod = d.OptikKod,
+                                          ProgramId = p.Id,
+                                          MufredatId = d.MufredatId,
+                                          Sinif = d.Sinif,
+                                          TeoSaat = d.TeoSaat,
+                                          UygSaat = d.UygSaat,
+                                          Zorunlu = d.Zorunlu,
+                                          SecmeliKodu = d.SecmeliKodu
+                                      };
+                }
+                else if (dersAcDto.RefProgramSecilen != 55555 && dersAcDto.AcProgramSecilen != 55555)
+                {
+                    acilacakDersler = from d in _db.Derss.Where(x => dersAcDto.DersAcIds.Contains(x.Id) && dersAcDto.AcSinifSecilenler.Contains(x.Sinif))
+                                      select new DersAcilan
+                                      {
+                                          Ad = d.Ad,
+                                          AdEn = d.AdEn,
+                                          Akts = d.Akts,
+                                          DersId = d.Id,
+                                          DonemId = dersAcDto.AcDonemSecilen, // TODO : eğer farklı döneme atması mümkün değilse d.DonemId olsun
+                                          Durum = d.Durum,
+                                          GecmeNotu = d.GecmeNotu,
+                                          KisaAd = d.KisaAd,
+                                          Kod = d.Kod,
+                                          Kredi = d.Kredi,
+                                          LabSaat = d.LabSaat,
+                                          OptikKod = d.OptikKod,
+                                          ProgramId = dersAcDto.AcProgramSecilen,
+                                          MufredatId = d.MufredatId,
+                                          Sinif = d.Sinif,
+                                          TeoSaat = d.TeoSaat,
+                                          UygSaat = d.UygSaat,
+                                          Zorunlu = d.Zorunlu,
+                                          SecmeliKodu = d.SecmeliKodu
+                                      };
 
-                    }
-                    else
-                    {
-                        throw new System.Exception("Açılacak dersler atama hatası");
-                    }
+                }
+                else
+                {
+                    throw new System.Exception("Açılacak dersler atama hatası");
+                }
 
-                    IEnumerable<DersAcilan> sonuc = await acilacakDersler.ToListAsync();
+                IEnumerable<DersAcilan> sonuc = await acilacakDersler.ToListAsync();
 
-                    var sonucProgramIds = sonuc.DistinctBy(d => d.ProgramId).Select(x => x.ProgramId);
+                var sonucProgramIds = sonuc.DistinctBy(d => d.ProgramId).Select(x => x.ProgramId);
 
-                    var sonucSinifIds = sonuc.DistinctBy(d => d.Sinif).Select(x => x.Sinif);
+                var sonucSinifIds = sonuc.DistinctBy(d => d.Sinif).Select(x => x.Sinif);
 
-                    var silinecek = _db.DersAcilans.Where(y => sonucProgramIds.Contains(y.ProgramId) && sonucSinifIds.Contains(y.Sinif));
+                var silinecek = _db.DersAcilans.Where(y => sonucProgramIds.Contains(y.ProgramId) && sonucSinifIds.Contains(y.Sinif));
 
-                    _db.DersAcilans.RemoveRange(silinecek);
+                _db.DersAcilans.RemoveRange(silinecek);
 
-                    await _db.SaveChangesAsync(CancellationToken.None);
-
-
-                    _db.DersAcilans.AddRange(sonuc);
-                    await _db.SaveChangesAsync(CancellationToken.None);
+                await _db.SaveChangesAsync(CancellationToken.None);
 
 
+                _db.DersAcilans.AddRange(sonuc);
+                await _db.SaveChangesAsync(CancellationToken.None);
 
-                    context.Commit();
 
-                    return true;
+
+                context.Commit();
+
+                return true;
                 //}
                 //catch (System.Exception ex)
                 //{
@@ -217,10 +218,33 @@ namespace UniLife.Storage.Stores
             return _autoMapper.Map<List<DersAcilanDto>>(await dersAcilans.ToListAsync());
         }
 
-        public async Task<List<DersAcilanDto>> GetAcilanDersByMufredatId(int mufredatId,int sinif,int donemId)
+        public async Task<List<DersAcilanDto>> GetAcilanDersByMufredatId(int mufredatId, int sinif, int donemId)
         {
-            var dersAcilans = from d in _db.DersAcilans.Where(x => x.MufredatId == mufredatId && x.Sinif==sinif && x.DonemId== donemId)
+            var dersAcilans = from d in _db.DersAcilans.Where(x => x.MufredatId == mufredatId && x.Sinif == sinif && x.DonemId == donemId)
                               select d;
+
+            return _autoMapper.Map<List<DersAcilanDto>>(await dersAcilans.ToListAsync());
+        }
+
+        public async Task<List<DersAcilanDto>> PostDersAcilansByFilters(SinavDersAcDto sinavDersAcDto)
+        {
+            var dersAcilans = from d in _db.DersAcilans.WhereIf(sinavDersAcDto.donemId != null, x => x.DonemId == sinavDersAcDto.donemId)
+                                                       .WhereIf(sinavDersAcDto.programId != null, x => x.ProgramId == sinavDersAcDto.programId)
+                                                       .WhereIf((sinavDersAcDto.sinif != null && sinavDersAcDto.sinif != 0), x => x.Sinif == sinavDersAcDto.sinif)
+                                                       .WhereIf(!string.IsNullOrEmpty(sinavDersAcDto.dersKodu), x => x.Kod == sinavDersAcDto.dersKodu)
+                                                       .Include(x=>x.Akademisyen)
+                    
+                              let cCount = d.DersKayits.Count()
+                              select new DersAcilanDto
+                              {
+                                  Id=d.Id,
+                                  Kod = d.Kod,
+                                  Ad = d.Ad,
+                                  Akademisyen = new AkademisyenDto { Ad = d.Akademisyen.Ad},
+                                  Sinif = d.Sinif,
+                                  Zorunlu = d.Zorunlu,
+                                  OgrCount = cCount
+                              };
 
             return _autoMapper.Map<List<DersAcilanDto>>(await dersAcilans.ToListAsync());
         }
@@ -229,23 +253,24 @@ namespace UniLife.Storage.Stores
         {
             var dersAcilans = from a in _db.DersAcilans.Where(x => x.Sinif == sinif && x.DonemId == donemId)
                               join k in _db.DersKayits.Where(x => x.OgrenciId == ogrenciId) on a.Id equals k.DersAcilanId
-                              select new DersAcilanDto { 
-                                Id=a.Id,
-                                Kod=a.Kod,
-                                Ad=a.Ad,
-                                YerineSecilenId=k.DersYerineSecilenId,
-                                YerineSecilenAd=k.DersYerineSecilenAd,
-                                Zorunlu=a.Zorunlu,
-                                SecmeliKodu = a.SecmeliKodu,
-                                Kredi =a.Kredi,
-                                Akts=a.Akts,
-                                DersId=a.DersId,
-                                ProgramId=a.ProgramId,
-                                DonemId=a.DonemId,
-                                KisaAd=a.KisaAd,
-                                GecmeNotu = a.GecmeNotu,
-                                Durum=a.Durum,
-                                Sinif=a.Sinif
+                              select new DersAcilanDto
+                              {
+                                  Id = a.Id,
+                                  Kod = a.Kod,
+                                  Ad = a.Ad,
+                                  YerineSecilenId = k.DersYerineSecilenId,
+                                  YerineSecilenAd = k.DersYerineSecilenAd,
+                                  Zorunlu = a.Zorunlu,
+                                  SecmeliKodu = a.SecmeliKodu,
+                                  Kredi = a.Kredi,
+                                  Akts = a.Akts,
+                                  DersId = a.DersId,
+                                  ProgramId = a.ProgramId,
+                                  DonemId = a.DonemId,
+                                  KisaAd = a.KisaAd,
+                                  GecmeNotu = a.GecmeNotu,
+                                  Durum = a.Durum,
+                                  Sinif = a.Sinif
                               };
 
             return _autoMapper.Map<List<DersAcilanDto>>(await dersAcilans.ToListAsync());

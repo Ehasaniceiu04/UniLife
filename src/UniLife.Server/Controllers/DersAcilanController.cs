@@ -62,8 +62,14 @@ namespace UniLife.Server.Controllers
                 await _dersAcilanManager.ByZorunlu(isZorunlu) :
                 new ApiResponse(Status400BadRequest, "DersAcilan Model is Invalid");
 
-
         
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("PostDersAcilansByFilters")]
+        public async Task<ApiResponse> PostDersAcilansByFilters([FromBody] SinavDersAcDto sinavDersAcDto)
+            => ModelState.IsValid ?
+                await _dersAcilanManager.PostDersAcilansByFilters(sinavDersAcDto) :
+                new ApiResponse(Status400BadRequest, "DersAcilan Model is Invalid");
 
 
         // POST: api/DersAcilan
