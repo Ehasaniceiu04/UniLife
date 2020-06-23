@@ -51,6 +51,7 @@ namespace UniLife.Shared.DataModels
         public decimal GerekenTopUcret { get; set; }
         public decimal OdenenTopUcret { get; set; }
         public decimal GenelBakiye { get; set; }
+        public bool IsMale { get; set; }
 
         public virtual ICollection<DersKayit> DersKayits{ get; set; }
 

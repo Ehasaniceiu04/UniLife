@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using UniLife.Shared.DataInterfaces;
 using UniLife.Shared.DataModels;
 using UniLife.Shared.Dto.Definitions;
-using UniLife.Storage.Extensions;
+using UniLife.Shared.Extensions;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -87,6 +87,31 @@ namespace UniLife.Storage.Stores
 
             return _autoMapper.Map<List<OgrenciDto>>(ogrenciList);
         }
+
+
+        public async Task<List<OgrenciDto>> GetOgrenciListByDersAcId(int dersAcId)
+        {
+            var ogrenciList = await (from o in _db.Ogrencis
+                                     join dk in _db.DersKayits.Where(x => x.DersAcilanId == dersAcId) on o.Id equals dk.OgrenciId
+                                     select new OgrenciDto
+                                     {
+                                         Ad = o.Ad,
+                                         Soyad = o.Soyad,
+                                         OgrNo = o.OgrNo,
+                                         TCKN = o.TCKN,
+                                         //SinavKayitId = sk.Id
+                                     }).ToListAsync();
+
+
+            //var ogrenciDto = await _autoMapper.ProjectTo<OgrenciDto>(_db.Ogrencis).FirstOrDefaultAsync(x => x.Id == id); //_db.Ogrencis.SingleOrDefaultAsync(t => t.Id == id);
+
+            if (ogrenciList == null)
+                throw new InvalidDataException($"GetOgrenciListByDersAcId.. Belirtilen dersAc idsi ile ilgili kayıt bulunamadı dersAcId: {dersAcId}");
+
+            return _autoMapper.Map<List<OgrenciDto>>(ogrenciList);
+        }
+
+        
 
 
     }

@@ -25,6 +25,8 @@ namespace UniLife.Shared.DataModels
         public virtual Mufredat Mufredat{ get; set; }
         //External
 
+        public int Sube { get; set; } = 1;
+
         public int? AkademisyenId { get; set; }
         public Akademisyen Akademisyen { get; set; }
         public int DonemId { get; set; }

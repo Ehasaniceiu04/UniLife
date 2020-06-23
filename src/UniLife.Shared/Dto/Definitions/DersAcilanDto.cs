@@ -23,6 +23,8 @@ namespace UniLife.Shared.Dto.Definitions
         public virtual string ProgramAd { get; set; }
         public int MufredatId { get; set; }
         public virtual MufredatDto Mufredat { get; set; }
+        
+        public int Sube { get; set; } = 1;
 
         public string FakulteAd { get; set; }
 

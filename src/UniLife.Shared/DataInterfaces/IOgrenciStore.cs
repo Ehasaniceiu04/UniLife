@@ -10,5 +10,6 @@ namespace UniLife.Shared.DataInterfaces
         Task<OgrenciDto> GetOgrenciWithRelations(int id);
         Task<List<OgrenciDto>> GetOgrenciQuery(OgrenciDto ogrenci);
         Task<List<OgrenciDto>> GetOgrenciListBySinavId(int sinavId);
+        Task<List<OgrenciDto>> GetOgrenciListByDersAcId(int dersAcId);
     }
 }

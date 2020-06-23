@@ -1,17 +1,14 @@
 ﻿using MatBlazor;
 using Microsoft.AspNetCore.Components;
-
+using Syncfusion.Blazor.DropDowns;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using UniLife.CommonUI.Extensions;
 using UniLife.Shared.Dto;
 using UniLife.Shared.Dto.Definitions;
-using Syncfusion.Blazor.DropDowns;
-using System.ComponentModel;
-using UniLife.CommonUI.Extensions;
-using System;
-using System.Linq;
-using UniLife.Shared.DataModels;
 
 namespace UniLife.CommonUI.Pages.DersMufredat
 {
@@ -237,7 +234,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             //DersAcDtos = apiResponse.Value;
             //StateHasChanged();
 
-            
+
 
             //if (apiResponse.Value != null)
             //{
@@ -256,14 +253,14 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         {
             SinavDersAcDto sinavDersAcDto = new SinavDersAcDto
             {
-                donemId= _dersAcilanDto.DonemId,
+                donemId = _dersAcilanDto.DonemId,
                 programId = _dersAcilanDto.ProgramId,
                 sinif = _dersAcilanDto.Sinif,
                 dersKodu = _dersAcilanDto.Kod
             };
 
             //var reqURL = $"api/DersAcilan/GetDersAcilansByFilters/{_dersAcilanDto.DonemId ?? 0}/{_dersAcilanDto.ProgramId ?? 0}/{_dersAcilanDto.Sinif ?? 0}/{_dersAcilanDto.Kod ?? ""}";
-            
+
 
 
             ApiResponseDto<List<DersAcilanDto>> apiResponse = await Http.PostJsonAsync<ApiResponseDto<List<DersAcilanDto>>>("api/DersAcilan/PostDersAcilansByFilters", sinavDersAcDto);
@@ -305,7 +302,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         //    }
         //}
 
-        
+
         public async Task RowSelectedHandlerSinav(Syncfusion.Blazor.Grids.RowSelectEventArgs<SinavDto> args)
         {
             selectedSinavId = args.Data.Id;
@@ -373,12 +370,12 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 }
                 else
                 {
-                    matToaster.Add(args.RowData.Ad+" "+args.RowData.Soyad + " : " + apiResponse.StatusCode, MatToastType.Danger, "Öğrenci sinava kayıt edilemedi");
+                    matToaster.Add(args.RowData.Ad + " " + args.RowData.Soyad + " : " + apiResponse.StatusCode, MatToastType.Danger, "Öğrenci sinava kayıt edilemedi");
                 }
             }
         }
 
-        
+
 
         private void GetSinavsByDersAcilanId(DersAcilanDto dersAcilanDto)
         {
@@ -431,7 +428,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         {
             if (args.RequestType == Syncfusion.Blazor.Grids.Action.Add)
             {
-                args.Cancel=true;
+                args.Cancel = true;
                 ogrenciSecDialogOpen = true;
             }
         }
@@ -477,7 +474,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 try
                 {
                     sinavDto.DersAcilanId = SelectedDersAcilans.FirstOrDefault().Id;
-                    sinavDto.DersAcilanIds = SelectedDersAcilans.Select(x=>x.Id);
+                    sinavDto.DersAcilanIds = SelectedDersAcilans.Select(x => x.Id);
                     ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>
                     ("api/sinav/PostBulkCreate", sinavDto);
                     if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)

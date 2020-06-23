@@ -54,6 +54,20 @@ namespace UniLife.Server.Managers
             }
         }
 
+        public async Task<ApiResponse> GetOgrenciListByDersAcId(int dersAcId)
+        {
+            try
+            {
+                return new ApiResponse(Status200OK, "Retrieved OgrenciDtos", await _ogrenciStore.GetOgrenciListByDersAcId(dersAcId));
+            }
+            catch (Exception e)
+            {
+                return new ApiResponse(Status400BadRequest, "Failed to Retrieve OgrenciDtos");
+            }
+        }
+
         
+
+
     }
 }

@@ -1,1 +1,227 @@
-﻿
+﻿@page "/sube"
+
+@using UniLife.Shared.Dto.Definitions
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Calendars
+@using Syncfusion.Blazor.Data
+@using UniLife.Shared.DataModels
+
+<div class="row">
+    <div class="col-sm-12 col-md-6">
+        <div class="server-action-menu">
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <p>Açılan Dersler</p>
+                </div>
+            </div>
+            <div class="row pb-2">
+                <div class="col-sm-12 col-md-12">
+                    <div class="form-row">
+                        @*açılan ders filtre*@
+                        <label class="col-sm-2" for="DropDonem">Dönem:</label>
+                        <SfDropDownList ID="DropDonem" @ref="DropDonem" TItem="DonemDto" CssClass="col-sm-10 pb-1"
+                                        TValue="int?" PopupHeight="230px" Placeholder="Dönem Seçiniz"
+                                        @bind-Value="@_dersAcilanDto.DonemId" DataSource="@donemDtos">
+                            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                        </SfDropDownList>
+                        <label class="col-sm-2" for="DropFakulte">Fakülte:</label>
+                        <SfDropDownList ID="DropFakulte" @ref="DropFakulte" TItem="KeyValueDto" CssClass="col-sm-10 pb-1"
+                                        TValue="int?" PopupHeight="230px" Placeholder="Fakülte Seçiniz"
+                                        @bind-Value="@_dersAcilanDto.FakulteId" DataSource="@fakulteDtos">
+                            <DropDownListEvents TValue="int?" ValueChange="FakulteToBolum"></DropDownListEvents>
+                            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                        </SfDropDownList>
+                        <label class="col-sm-2" for="DropBolum">Bolum:</label>
+                        <SfDropDownList ID="DropBolum" @ref="DropBolum" TItem="KeyValueDto" CssClass="col-sm-10 pb-1"
+                                        TValue="int?" PopupHeight="230px" Placeholder="Bölüm Seçiniz"
+                                        @bind-Value="@_dersAcilanDto.BolumId" DataSource="@bolumDtos">
+                            <DropDownListEvents TValue="int?" ValueChange="BolumToProgram"></DropDownListEvents>
+                            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                        </SfDropDownList>
+                        <label class="col-sm-2" for="DropProgram">Program:</label>
+                        <SfDropDownList ID="DropProgram" @ref="DropProgram" TItem="KeyValueDto" CssClass="col-sm-10 pb-1"
+                                        TValue="int?" PopupHeight="230px" Placeholder="Program Seçiniz"
+                                        @bind-Value="@_dersAcilanDto.ProgramId" DataSource="@programDtos">
+                            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                        </SfDropDownList>
+                        <label class="col-sm-2" for="Kod">Ders Kod:</label>
+                        <SfTextBox ID="Kod" CssClass="form-control col-sm-3 pb-1" @bind-Value="@(_dersAcilanDto.Kod)"></SfTextBox>
+
+                        <SfButton OnClick="Refresh" CssClass="e-success col-sm-3">Yenile</SfButton>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-row">
+                        @*açılan ders grid*@
+                        <SfGrid ID="DersAcGrid" @ref="DersAcGrid" DataSource="@DersAcDtos" RowHeight="20" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
+                            @*OnRecordClick="OnRecordClickHandler" RowDeselected="RowDeselectedHandler" OnToolbarClick="ToolbarClickHandler"  *@
+                            <GridEvents OnRecordClick="OnRecordClickHandler" RowSelected="RowSelectedHandler" TValue="DersAcilanDto" CommandClicked="CommandClickHandler"></GridEvents>
+                            <GridSelectionSettings CellSelectionMode="CellSelectionMode.BoxWithBorder" CheckboxOnly="true" Type="SelectionType.Multiple" PersistSelection="true"></GridSelectionSettings>
+                            <GridColumns>
+                                <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
+                                <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+                                <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kodu"></GridColumn>
+                                <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Adı"></GridColumn>
+                                <GridColumn Field="Akademisyen.Ad" HeaderText="Akademisyen Ad"></GridColumn>
+                                <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Zorunlu) DisplayAsCheckBox="true" HeaderText="Z"></GridColumn>
+                                <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.OgrCount) HeaderText="Ö.Sayı"></GridColumn>
+                                <GridColumn>
+                                    <GridCommandColumns>
+                                        <GridCommandColumn Type="CommandButtonType.None" Title="Şubelendir" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
+                                    </GridCommandColumns>
+                                </GridColumn>
+                            </GridColumns>
+                        </SfGrid>
+                    </div>
+                </div>
+            </div>
+            <div class="row pb-2">
+                <div class="col-sm-12 col-md-12">
+                    <div class="form-row">
+                        @*Şubelendirme seçenekleri*@
+                        <label class="col-sm-2" for="SSayi">Şube Sayısı:</label>
+                        <SfNumericTextBox ID="SubeSayi" Min="1" Max="20" CssClass="form-control col-sm-2" Value=@(subeSayisi)></SfNumericTextBox>
+                        <SfDropDownList ID="SubeType" @ref="SubeType" TItem="KeyValueDto" Index="0" CssClass="col-sm-5 pb-1"
+                                        TValue="int" PopupHeight="230px"
+                                        @bind-Value="@subelendirmeTipi" DataSource="@subeTypeDtos">
+                            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                        </SfDropDownList>
+                        <SfButton OnClick="DersiSubelendir" CssClass="form-control col-sm-1">Şubelendir</SfButton>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-6">
+        <div class="server-action-menu">
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                        <p>Şubeler</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-row">
+                        @*Seçilen dersin muhtemel şubeleri grid *@
+                        <SfGrid ID="SubeGrid" @ref="DersSubeGrid" DataSource="@DersSubeDtos" RowHeight="20" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
+                            @*OnRecordClick="OnRecordClickHandler" RowDeselected="RowDeselectedHandler" OnToolbarClick="ToolbarClickHandler"  *@
+                            <GridEvents RowSelected="RowSelectedHandlerDersSube" TValue="DersAcilanDto"></GridEvents>
+                            <GridSelectionSettings CellSelectionMode="CellSelectionMode.BoxWithBorder" CheckboxOnly="true" Type="SelectionType.Multiple" PersistSelection="true"></GridSelectionSettings>
+                            <GridColumns>
+                                <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+                                <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Sube) HeaderText="Şube"></GridColumn>
+                                <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kodu"></GridColumn>
+                                <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Adı"></GridColumn>
+                                <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kredi) DisplayAsCheckBox="true" HeaderText="Z"></GridColumn>
+                                <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.OgrCount) HeaderText="Ö.Sayı"></GridColumn>
+                                <GridColumn Field="Akademisyen.Ad" HeaderText="Akademisyen Ad"></GridColumn>
+                            </GridColumns>
+                        </SfGrid>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="server-action-menu">
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <p>Şube öğrencileri</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    @*OnActionBegin="OnActionBeginHandlerOgrenci"*@
+                    <SfGrid ID="OgrenciGrid" @ref="OgrenciGrid" DataSource="@OgrenciDtos" Toolbar="@(new List<string>() { "Add"})" RowHeight="15" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
+                        <GridEvents OnActionComplete="ActionCompletedHandlerOgrenci" TValue="OgrenciDto"></GridEvents>
+                        <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true"></GridEditSettings>
+                        <GridColumns>
+                            <GridColumn Visible="false" Field=@nameof(OgrenciDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+                            <GridColumn Field=@nameof(OgrenciDto.Ad) HeaderText="Ad"></GridColumn>
+                            <GridColumn Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad"></GridColumn>
+                            <GridColumn Field=@nameof(OgrenciDto.OgrNo) HeaderText="Soyad"></GridColumn>
+                            <GridColumn Field=@nameof(OgrenciDto.TCKN) HeaderText="Soyad"></GridColumn>
+                            <GridColumn>
+                                <GridCommandColumns>
+                                    <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-delete", CssClass = "e-flat" })"></GridCommandColumn>
+                                </GridCommandColumns>
+                            </GridColumn>
+                        </GridColumns>
+                    </SfGrid>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<Dialog Baslik="Hesaplanan Şubelendirme" @bind-isDialogOpen="@subeDialogOpen">
+    <div class="row">
+        <SfGrid ID="SecmeliOgrenciGrid" @ref="SecmeliOgrenciGrid" TValue="OgrenciDto" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowFiltering="true">
+            <SfDataManager Url="http://localhost:53414/odata/ogrencis" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+            <GridEvents TValue="OgrenciDto" CommandClicked="CommandClickHandlerSecmeliOgr"></GridEvents>
+            <GridColumns>
+                <GridColumn Visible="false" Field=@nameof(OgrenciDto.Id) HeaderText="Ogrenci ID" IsPrimaryKey="true" TextAlign="TextAlign.Right"></GridColumn>
+                <GridColumn Field=@nameof(OgrenciDto.Ad) HeaderText="Ad"></GridColumn>
+                <GridColumn Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad"></GridColumn>
+                <GridColumn Field=@nameof(OgrenciDto.TCKN) HeaderText="TCKN"></GridColumn>
+                <GridColumn Field=@nameof(OgrenciDto.OgrNo) HeaderText="Öğrenci No"></GridColumn>
+                <GridColumn>
+                    <GridCommandColumns>
+                        <GridCommandColumn Type="CommandButtonType.None" Title="Ogrenciyi Ekle" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-Circle_Add", CssClass="e-flat" })"></GridCommandColumn>
+                    </GridCommandColumns>
+                </GridColumn>
+            </GridColumns>
+        </SfGrid>
+    </div>
+</Dialog>
+
+
+<style type="text/css" class="cssStyles">
+    textarea.e-input,
+    .e-float-input textarea,
+    .e-float-input.e-control-wrapper textarea,
+    .e-input-group textarea,
+    .e-input-group.e-control-wrapper textarea {
+        resize: none;
+    }
+
+
+    .server-action-menu {
+        background-color: transparent;
+        background-image: linear-gradient(to bottom, rgba(30, 87, 153, 0.2) 0%, rgba(125, 185, 232, 0) 100%);
+        background-repeat: repeat;
+        border-radius: 10px;
+        padding: 5px;
+    }
+
+    .e-DoubleArrowRight:before {
+        content: '\e7bb';
+        color: #e83e8c;
+    }
+
+    .e-Circle_Add:before {
+        content: '\e755';
+        color: #31ba13;
+    }
+
+    /*.e-grid .e-headercelldiv {
+        font-size: 7px;
+    }
+
+    .e-grid .e-rowcell {
+        font-size: 7px;
+    } */
+
+    .mdc-dialog .mdc-dialog__container {
+        width: 100%;
+    }
+
+    .mdc-dialog .mdc-dialog__surface {
+        max-width: none;
+        width: 70%;
+    }
+</style>

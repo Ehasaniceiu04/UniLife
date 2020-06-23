@@ -70,6 +70,15 @@ namespace UniLife.Server.Controllers
                 new ApiResponse(Status400BadRequest, "Ogrenci Model is Invalid");
 
 
+        [HttpGet]
+        [Route("GetOgrenciListByDersAcId/{dersAcId}")]
+        [AllowAnonymous]
+        public async Task<ApiResponse> GetOgrenciListByDersAcId(int dersAcId)
+            => ModelState.IsValid ?
+                await _ogrenciManager.GetOgrenciListByDersAcId(dersAcId) :
+                new ApiResponse(Status400BadRequest, "Ogrenci Model is Invalid");
+
+        
 
 
         // POST: api/Ogrenci
