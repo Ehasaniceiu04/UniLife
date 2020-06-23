@@ -48,6 +48,12 @@ namespace UniLife.Server.Managers
             var dersAcilans = await _dersAcilanStore.PostDersAcilansByFilters(sinavDersAcDto);
             return new ApiResponse(Status200OK, "Selected DersAcilanDto", dersAcilans);
         }
+        public async Task<ApiResponse> PostCreateNewSubesAndUpdateOgrenciSubes(SubeDersAcilanOgrenciCreateDto subeDersAcilanOgrenciCreateDto)
+        {
+            await _dersAcilanStore.PostCreateNewSubesAndUpdateOgrenciSubes(subeDersAcilanOgrenciCreateDto);
+            return new ApiResponse(Status200OK, "Selected DersAcilanDto");
+        }
+        
 
         public async Task<ApiResponse> GetKayitliDerssByOgrenciId(int ogrenciId, int sinif,int donemId)
         {

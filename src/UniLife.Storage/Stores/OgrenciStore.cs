@@ -95,10 +95,11 @@ namespace UniLife.Storage.Stores
                                      join dk in _db.DersKayits.Where(x => x.DersAcilanId == dersAcId) on o.Id equals dk.OgrenciId
                                      select new OgrenciDto
                                      {
+                                         Id= o .Id,
                                          Ad = o.Ad,
                                          Soyad = o.Soyad,
                                          OgrNo = o.OgrNo,
-                                         TCKN = o.TCKN,
+                                         TCKN = o.TCKN
                                          //SinavKayitId = sk.Id
                                      }).ToListAsync();
 

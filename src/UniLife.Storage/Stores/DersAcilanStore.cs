@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Security.Cryptography.X509Certificates;
+using UniLife.Shared.Dto;
 
 namespace UniLife.Storage.Stores
 {
@@ -233,22 +234,24 @@ namespace UniLife.Storage.Stores
                                                        .WhereIf(sinavDersAcDto.programId != null, x => x.ProgramId == sinavDersAcDto.programId)
                                                        .WhereIf((sinavDersAcDto.sinif != null && sinavDersAcDto.sinif != 0), x => x.Sinif == sinavDersAcDto.sinif)
                                                        .WhereIf(!string.IsNullOrEmpty(sinavDersAcDto.dersKodu), x => x.Kod == sinavDersAcDto.dersKodu)
-                                                       .Include(x=>x.Akademisyen)
-                    
+                                                       .Include(x => x.Akademisyen)
+
                               let cCount = d.DersKayits.Count()
                               select new DersAcilanDto
                               {
-                                  Id=d.Id,
+                                  Id = d.Id,
                                   Kod = d.Kod,
                                   Ad = d.Ad,
-                                  Akademisyen = new AkademisyenDto { Ad = d.Akademisyen.Ad},
+                                  Akademisyen = new AkademisyenDto { Ad = d.Akademisyen.Ad },
                                   Sinif = d.Sinif,
                                   Zorunlu = d.Zorunlu,
+                                  Sube=d.Sube,
                                   OgrCount = cCount
                               };
 
             return _autoMapper.Map<List<DersAcilanDto>>(await dersAcilans.ToListAsync());
         }
+
 
         public async Task<List<DersAcilanDto>> GetKayitliDerssByOgrenciId(int ogrenciId, int sinif, int donemId)
         {
@@ -284,6 +287,61 @@ namespace UniLife.Storage.Stores
                               select a;
 
             return _autoMapper.Map<List<DersAcilanDto>>(await dersAcilans.ToListAsync());
+        }
+
+
+
+
+
+
+        public async Task PostCreateNewSubesAndUpdateOgrenciSubes(SubeDersAcilanOgrenciCreateDto subeDersAcilanOgrenciCreateDto)
+        {
+            var acilacakDersler = _db.DersAcilans.Where(x => x.Id == subeDersAcilanOgrenciCreateDto.DersAcilanId).FirstOrDefault();
+
+            List<DersAcilan> acılacakSubeliDersler = new List<DersAcilan>();
+
+            foreach (var item in subeDersAcilanOgrenciCreateDto.Subes.Where(x=>x!=1)) //Sube Idsi 1 olanzaten default.ONU ALMA!
+            {
+                DersAcilan subeliDersAcilan = new DersAcilan();
+                subeliDersAcilan = acilacakDersler.DeepClone();
+                subeliDersAcilan.Sube = item;
+                subeliDersAcilan.Id = 0;
+                acılacakSubeliDersler.Add(subeliDersAcilan);
+            }
+
+            using (var context = _db.Context.Database.BeginTransaction())
+            {
+
+
+                _db.DersAcilans.AddRange(acılacakSubeliDersler);
+
+                await _db.SaveChangesAsync(CancellationToken.None);
+
+                foreach (var item in acılacakSubeliDersler)
+                {
+
+                    var groupedOgrIds = subeDersAcilanOgrenciCreateDto.OgrenciIdsWithSubes.Where(x => x.Sube == item.Sube).Select(x => x.OgrId).ToList();
+                    var kayits = _db.DersKayits.Where(x => x.DersAcilanId == subeDersAcilanOgrenciCreateDto.DersAcilanId && groupedOgrIds.Contains(x.OgrenciId)).ToList();
+
+                    //var kayits = await from dk in _db.DersKayits.Where(x => x.DersAcilanId == subeDersAcilanOgrenciCreateDto.DersAcilanId)
+                    //                   join l in subeDersAcilanOgrenciCreateDto.OgrenciIdsWithSubes on dk.OgrenciId equals l.OgrId
+                    //                   where searchIds.Contains(l.Id)
+                    //                   select p).Distinct().ToList();
+
+                    //var kayits = await _db.DersKayits.Where(x => x.DersAcilanId == subeDersAcilanOgrenciCreateDto.DersAcilanId && (subeDersAcilanOgrenciCreateDto.OgrenciIdsWithSubes
+                    //                                                                    .Where(x => x.Sube == item.Sube).Any(y=>y.OgrId == x.OgrenciId))).ToListAsync();
+
+                    kayits.ForEach(x => x.DersAcilanId = item.Id);
+
+                    _db.DersKayits.UpdateRange(kayits);
+                }
+                
+                await _db.SaveChangesAsync(CancellationToken.None);
+
+
+
+                context.Commit();
+            }
         }
     }
 }

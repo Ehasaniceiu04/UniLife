@@ -72,6 +72,18 @@ namespace UniLife.Server.Controllers
                 new ApiResponse(Status400BadRequest, "DersAcilan Model is Invalid");
 
 
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("PostCreateNewSubesAndUpdateOgrenciSubes")]
+        public async Task<ApiResponse> PostCreateNewSubesAndUpdateOgrenciSubes([FromBody] SubeDersAcilanOgrenciCreateDto subeDersAcilanOgrenciCreateDto)
+            => ModelState.IsValid ?
+                await _dersAcilanManager.PostCreateNewSubesAndUpdateOgrenciSubes(subeDersAcilanOgrenciCreateDto) :
+                new ApiResponse(Status400BadRequest, "DersAcilan Model is Invalid");
+
+        
+
+
+
         // POST: api/DersAcilan
         [HttpPost]
         [AllowAnonymous]

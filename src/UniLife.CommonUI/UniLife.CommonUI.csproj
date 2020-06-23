@@ -38,14 +38,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Components\Grid\DataGrid\textEditOrnek.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Components\Grid\DataGrid\textEditOrnek.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="MatBlazor" Version="2.6.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.4" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="3.1.4" />

@@ -57,24 +57,20 @@
             <div class="row">
                 <div class="col-12">
                     <div class="form-row">
+                        
                         @*açılan ders grid*@
-                        <SfGrid ID="DersAcGrid" @ref="DersAcGrid" DataSource="@DersAcDtos" RowHeight="20" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
-                            @*OnRecordClick="OnRecordClickHandler" RowDeselected="RowDeselectedHandler" OnToolbarClick="ToolbarClickHandler"  *@
-                            <GridEvents OnRecordClick="OnRecordClickHandler" RowSelected="RowSelectedHandler" TValue="DersAcilanDto" CommandClicked="CommandClickHandler"></GridEvents>
-                            <GridSelectionSettings CellSelectionMode="CellSelectionMode.BoxWithBorder" CheckboxOnly="true" Type="SelectionType.Multiple" PersistSelection="true"></GridSelectionSettings>
+                        <SfGrid ID="DersAcGrid" @ref="DersAcGrid" DataSource="@DersAcDtos" RowHeight="20" AllowSorting="true" AllowSelection="true" AllowFiltering="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
+                            @*OnRecordClick="OnRecordClickHandler" RowDeselected="RowDeselectedHandler" OnToolbarClick="ToolbarClickHandler" CommandClicked="CommandClickHandler" *@
+                            <GridEvents RowSelected="RowSelectedHandler" TValue="DersAcilanDto"></GridEvents>
+                            <GridSelectionSettings EnableToggle="false" Type="SelectionType.Single"></GridSelectionSettings>
                             <GridColumns>
-                                <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
                                 <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+                                <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Sube) HeaderText="Şb"></GridColumn>
                                 <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kodu"></GridColumn>
                                 <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Adı"></GridColumn>
                                 <GridColumn Field="Akademisyen.Ad" HeaderText="Akademisyen Ad"></GridColumn>
                                 <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Zorunlu) DisplayAsCheckBox="true" HeaderText="Z"></GridColumn>
                                 <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.OgrCount) HeaderText="Ö.Sayı"></GridColumn>
-                                <GridColumn>
-                                    <GridCommandColumns>
-                                        <GridCommandColumn Type="CommandButtonType.None" Title="Şubelendir" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
-                                    </GridCommandColumns>
-                                </GridColumn>
                             </GridColumns>
                         </SfGrid>
                     </div>
@@ -85,13 +81,13 @@
                     <div class="form-row">
                         @*Şubelendirme seçenekleri*@
                         <label class="col-sm-2" for="SSayi">Şube Sayısı:</label>
-                        <SfNumericTextBox ID="SubeSayi" Min="1" Max="20" CssClass="form-control col-sm-2" Value=@(subeSayisi)></SfNumericTextBox>
+                        <SfNumericTextBox ID="SubeSayi" Min="1" Max="20" Format=n0 CssClass="form-control col-sm-2" @bind-Value=@(subeSayisi)></SfNumericTextBox>
                         <SfDropDownList ID="SubeType" @ref="SubeType" TItem="KeyValueDto" Index="0" CssClass="col-sm-5 pb-1"
                                         TValue="int" PopupHeight="230px"
                                         @bind-Value="@subelendirmeTipi" DataSource="@subeTypeDtos">
                             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                         </SfDropDownList>
-                        <SfButton OnClick="DersiSubelendir" CssClass="form-control col-sm-1">Şubelendir</SfButton>
+                        <SfButton OnClick="DersiSubelendir" CssClass="form-control e-warning col-sm-3">Şubelendir -></SfButton>
                     </div>
                 </div>
             </div>
@@ -111,13 +107,12 @@
                         <SfGrid ID="SubeGrid" @ref="DersSubeGrid" DataSource="@DersSubeDtos" RowHeight="20" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
                             @*OnRecordClick="OnRecordClickHandler" RowDeselected="RowDeselectedHandler" OnToolbarClick="ToolbarClickHandler"  *@
                             <GridEvents RowSelected="RowSelectedHandlerDersSube" TValue="DersAcilanDto"></GridEvents>
-                            <GridSelectionSettings CellSelectionMode="CellSelectionMode.BoxWithBorder" CheckboxOnly="true" Type="SelectionType.Multiple" PersistSelection="true"></GridSelectionSettings>
                             <GridColumns>
                                 <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
-                                <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Sube) HeaderText="Şube"></GridColumn>
+                                <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Sube) HeaderText="Şb"></GridColumn>
                                 <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kodu"></GridColumn>
                                 <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Adı"></GridColumn>
-                                <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kredi) DisplayAsCheckBox="true" HeaderText="Z"></GridColumn>
+                                <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kredi) HeaderText="Krd"></GridColumn>
                                 <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.OgrCount) HeaderText="Ö.Sayı"></GridColumn>
                                 <GridColumn Field="Akademisyen.Ad" HeaderText="Akademisyen Ad"></GridColumn>
                             </GridColumns>
@@ -142,8 +137,8 @@
                             <GridColumn Visible="false" Field=@nameof(OgrenciDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
                             <GridColumn Field=@nameof(OgrenciDto.Ad) HeaderText="Ad"></GridColumn>
                             <GridColumn Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad"></GridColumn>
-                            <GridColumn Field=@nameof(OgrenciDto.OgrNo) HeaderText="Soyad"></GridColumn>
-                            <GridColumn Field=@nameof(OgrenciDto.TCKN) HeaderText="Soyad"></GridColumn>
+                            <GridColumn Field=@nameof(OgrenciDto.OgrNo) HeaderText="OgrNo"></GridColumn>
+                            <GridColumn Field=@nameof(OgrenciDto.TCKN) HeaderText="TCKN"></GridColumn>
                             <GridColumn>
                                 <GridCommandColumns>
                                     <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-delete", CssClass = "e-flat" })"></GridCommandColumn>
@@ -151,6 +146,11 @@
                             </GridColumn>
                         </GridColumns>
                     </SfGrid>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 text-right">
+                    <SfButton OnClick="Onayla" CssClass="e-success col-sm-4">Şubelendirmeyi Onayla &#10004;</SfButton>
                 </div>
             </div>
         </div>
@@ -179,6 +179,10 @@
     </div>
 </Dialog>
 
+
+<Dialog Baslik="Uyarı!" @bind-isDialogOpen="@isUyariOpen">
+    <p>@dialogUyariText</p>
+</Dialog>
 
 <style type="text/css" class="cssStyles">
     textarea.e-input,
