@@ -92,14 +92,17 @@ namespace UniLife.Storage.Stores
         public async Task<List<OgrenciDto>> GetOgrenciListByDersAcId(int dersAcId)
         {
             var ogrenciList = await (from o in _db.Ogrencis
+                                     join p in _db.Programs on o.ProgramId equals p.Id
                                      join dk in _db.DersKayits.Where(x => x.DersAcilanId == dersAcId) on o.Id equals dk.OgrenciId
                                      select new OgrenciDto
                                      {
                                          Id= o .Id,
+                                         OgrNo = o.OgrNo,
                                          Ad = o.Ad,
                                          Soyad = o.Soyad,
-                                         OgrNo = o.OgrNo,
-                                         TCKN = o.TCKN
+                                         Sinif = o.Sinif,
+                                         ProgramAdi=p.Ad,
+                                         TCKN = o.TCKN,
                                          //SinavKayitId = sk.Id
                                      }).ToListAsync();
 

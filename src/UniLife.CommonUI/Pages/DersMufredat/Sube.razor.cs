@@ -33,6 +33,8 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
 
         SfDropDownList<int, KeyValueDto> SubeType;
+        SfDropDownList<string, KeyValueStringDto> ogrSubeler;
+
 
 
         List<DonemDto> donemDtos = new List<DonemDto>();
@@ -43,8 +45,8 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
 
 
-        Syncfusion.Blazor.Grids.SfGrid<DersAcilanDto> DersAcGrid;
-        public List<DersAcilanDto> DersAcDtos = new List<DersAcilanDto>();
+        Syncfusion.Blazor.Grids.SfGrid<SubeDersAcilanDto> DersAcGrid;
+        public List<SubeDersAcilanDto> DersAcDtos = new List<SubeDersAcilanDto>();
 
 
         Syncfusion.Blazor.Grids.SfGrid<DersAcilanDto> DersSubeGrid;
@@ -61,7 +63,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         bool subeDialogOpen;
         //List<OgrenciDto> SecmeliOgrenciDtos = new List<OgrenciDto>();
-        Syncfusion.Blazor.Grids.SfGrid<OgrenciDto> SecmeliOgrenciGrid;
+        Syncfusion.Blazor.Grids.SfGrid<AkademisyenDto> AkademisyenGrid;
 
         public int subeSayisi { get; set; } = 1;
         public int subelendirmeTipi { get; set; } = 1;
@@ -72,8 +74,28 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             new KeyValueDto() { Ad = "Cinsiyet", Id = 3 }
         };
 
+        List<KeyValueStringDto> OgrSubelerDto = new List<KeyValueStringDto> { new KeyValueStringDto() { Ad = "1", Id = "1" } };
+
+        //{
+        //    new KeyValueDto() { Ad = "Eşit Parçala", Id = 1 },
+        //    new KeyValueDto() { Ad = "Tek Çift", Id = 2 },
+        //    new KeyValueDto() { Ad = "Cinsiyet", Id = 3 }
+        //};
+
         bool isUyariOpen;
         string dialogUyariText = "";
+
+        int selectedDersAcilanId;
+        DersAcilanDto selectedDersAcilanSube;
+
+        bool SubelendirAllow = false;
+        //Şubelendir buttonuna basınca sağdaki gridler varklı davranmalı.
+        //eğer sadece satır seçildiyse Grid normal şubeleri getirmeli.
+        bool IsStateSubelendir;
+
+        string subeChangeNumber;
+
+        bool akademisyenDialogOpen;
 
         //protected override void OnInitialized()
         //{
@@ -212,6 +234,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             //    matToaster.Add("", MatToastType.Danger, "Bölüm getirilirken hata oluştu!");
             //}
 
+            SubelendirAllow = false;
             await GetDersAcilansByFilters();
         }
 
@@ -229,7 +252,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
 
 
-            ApiResponseDto<List<DersAcilanDto>> apiResponse = await Http.PostJsonAsync<ApiResponseDto<List<DersAcilanDto>>>("api/DersAcilan/PostDersAcilansByFilters", sinavDersAcDto);
+            ApiResponseDto<List<SubeDersAcilanDto>> apiResponse = await Http.PostJsonAsync<ApiResponseDto<List<SubeDersAcilanDto>>>("api/DersAcilan/PostDersAcilansByFilters", sinavDersAcDto);
             if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
             {
                 DersAcDtos = apiResponse.Result;
@@ -248,26 +271,58 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         //    clickedRowIndex = args.RowIndex;
         //}
 
-        public async Task RowSelectedHandler(Syncfusion.Blazor.Grids.RowSelectEventArgs<DersAcilanDto> args)
+        public async Task RowSelectedHandler(Syncfusion.Blazor.Grids.RowSelectEventArgs<SubeDersAcilanDto> args)
         {
+            IsStateSubelendir = false;
+            DersSubeDtos = new List<DersAcilanDto>();
+            OgrenciDtos = new List<OgrenciDto>();
+            SubeliDersAcilan = new List<DersAcilanDto>();
+            SubeliOgrenci = new List<OgrenciDto>();
+            //Şubelendirmeye bir kere izin veriyoruz.
+            //OgrSubelerDto = new List<KeyValueDto> { new KeyValueDto() { IntValue = 1, Id = 1 } };
+
+            if (args.Data.SubeCount == 1)
+            {
+                SubelendirAllow = true;
+            }
+            else
+            {
+                SubelendirAllow = false;
+            }
+
+            DersSubeDtos = await GetDersAcilanSubelerByDersKod(args.Data.Kod);
+            DersSubeGrid.Refresh();
+            selectedDersAcilanId = DersSubeDtos.FirstOrDefault().Id;
+
+
+
             //await DersAcGrid.ClearSelection();
             //DersAcGrid.SelectedRowIndex = args.RowIndex;
-
+            OgrSubelerDto = new List<KeyValueStringDto>();
+            for (int i = 1; i < DersSubeDtos.Count + 1; i++)
+            {
+                OgrSubelerDto.Add(new KeyValueStringDto() { Ad = i.ToString(), Id = i.ToString() });
+            }
+            StateHasChanged();
         }
 
 
-        private void GetSinavsByDersAcilanId(DersAcilanDto dersAcilanDto)
+        private async Task<List<DersAcilanDto>> GetDersAcilanSubelerByDersKod(string dersKod)
         {
-            ApiResponseDto<List<SinavDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<SinavDto>>>($"api/Sinav/GetSinavListByAcilanDersId/{dersAcilanDto.Id}").Result;
+            ApiResponseDto<List<DersAcilanDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<DersAcilanDto>>>($"api/dersacilan/GetDersAcilanSubelerByDersKod/{dersKod}");
             if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
             {
-
+                return apiResponse.Result;
             }
             else
             {
                 matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Sinav bilgisi getirilirken hata oluştu");
+                return null;
             }
         }
+
+
+
 
 
         //public void OnActionBeginHandlerOgrenci(Syncfusion.Blazor.Grids.ActionEventArgs<OgrenciDto> args)
@@ -339,6 +394,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         async Task DersiSubelendir()
         {
+            IsStateSubelendir = true;
             OgrenciDtos = new List<OgrenciDto>();
             DersSubeDtos = new List<DersAcilanDto>();
             SubeliDersAcilan = new List<DersAcilanDto>();
@@ -375,20 +431,26 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         List<DersAcilanDto> SubeliDersAcilan = new List<DersAcilanDto>();
         List<OgrenciDto> SubeliOgrenci = new List<OgrenciDto>();
 
-        private async Task EsitBol(DersAcilanDto dersAcilanDto)
+        private async Task EsitBol(SubeDersAcilanDto subeDersAcilanDto)
         {
-            ApiResponseDto<List<OgrenciDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDto>>>($"api/Ogrenci/GetOgrenciListByDersAcId/{dersAcilanDto.Id}");
-            if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
+            ApiResponseDto<DersAcilanDto> apiResponseDers = await Http.GetFromJsonAsync<ApiResponseDto<DersAcilanDto>>($"api/dersAcilan/GetDersAcilanSpecByDersAcId/{selectedDersAcilanId}");
+
+
+
+            ApiResponseDto<List<OgrenciDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDto>>>($"api/Ogrenci/GetOgrenciListByDersAcId/{selectedDersAcilanId}");
+            if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK
+                && apiResponseDers.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
             {
 
                 IEnumerable<IEnumerable<OgrenciDto>> devidedOgrencis = apiResponse.Result.Split<OgrenciDto>(subeSayisi);
 
-
+                var dersAcilan = apiResponseDers.Result;
                 int sube = 1;
                 foreach (var ogrItem in devidedOgrencis)
                 {
-                    dersAcilanDto.Sube = sube;
-                    SubeliDersAcilan.Add(dersAcilanDto.DeepClone());
+                    dersAcilan.Sube = sube;
+                    dersAcilan.OgrCount = ogrItem.Count();
+                    SubeliDersAcilan.Add(dersAcilan.DeepClone());
                     foreach (var ogrenci in ogrItem)
                     {
                         ogrenci.Sube = sube;
@@ -407,11 +469,40 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         public async Task RowSelectedHandlerDersSube(Syncfusion.Blazor.Grids.RowSelectEventArgs<DersAcilanDto> args)
         {
-            OgrenciDtos = SubeliOgrenci.Where(x => x.Sube == args.Data.Sube).ToList();
+            selectedDersAcilanSube = args.Data;
+            if (IsStateSubelendir)
+            {
+                OgrenciDtos = SubeliOgrenci.Where(x => x.Sube == args.Data.Sube).ToList();
+                OgrenciGrid.Refresh();
+
+            }
+            else
+            {
+                OgrenciDtos = await GetOgrencisByDersAcilanId(args.Data);
+                OgrenciGrid.Refresh();
+            }
+
+        }
+
+
+        private async Task<List<OgrenciDto>> GetOgrencisByDersAcilanId(DersAcilanDto dersAcilanDto)
+        {
+            ApiResponseDto<List<OgrenciDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDto>>>($"api/Ogrenci/GetOgrenciListByDersAcId/{dersAcilanDto.Id}");
+            if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
+            {
+                return apiResponse.Result;
+
+            }
+            else
+            {
+                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Sinav bilgisi getirilirken hata oluştu");
+                return null;
+            }
         }
 
         async Task Onayla()
         {
+            IsStateSubelendir = false;
             await CreateNewSubesAndUpdateOgrenciSubes();
 
 
@@ -454,6 +545,40 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Açılan Derslerin bilgisi getirilirken hata oluştu");
             }
         }
+
+
+        public async Task CommandClickHandlerAkademisyen(Syncfusion.Blazor.Grids.CommandClickEventArgs<AkademisyenDto> args)
+        {
+            if (args.CommandColumn.Title == "Akademisyen Ekle")
+            {
+                ApiResponseDto<SinavKayitDto> apiResponse = await Http.PutJsonAsync<ApiResponseDto<SinavKayitDto>>("api/derskayit", selectedDersAcilanSube);
+                akademisyenDialogOpen = false;
+
+                if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
+                {
+                    DersSubeDtos = await GetDersAcilanSubelerByDersKod(selectedDersAcilanSube.Kod);
+                    DersSubeGrid.Refresh();
+                    matToaster.Add(args.RowData.Ad + " " + args.RowData.Soyad, MatToastType.Success, "Akademisyen kaydı güncellendi");
+                }
+                else
+                {
+                    matToaster.Add(args.RowData.Ad + " " + args.RowData.Soyad + " : " + apiResponse.StatusCode, MatToastType.Danger, "Akademisyen kayıt edilemedi");
+                }
+            }
+        }
+
+        public void ActionCompletedHandlerSube(Syncfusion.Blazor.Grids.ActionEventArgs<DersAcilanDto> args)
+        {
+            if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+            {
+                if (args.Action == "edit")
+                {
+                    akademisyenDialogOpen = true;
+                }
+
+            }
+        }
+
 
     }
 }

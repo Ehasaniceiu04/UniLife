@@ -11,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Security.Cryptography.X509Certificates;
 using UniLife.Shared.Dto;
+using UniLife.Storage.Migrations;
 
 namespace UniLife.Storage.Stores
 {
@@ -228,9 +229,44 @@ namespace UniLife.Storage.Stores
             return _autoMapper.Map<List<DersAcilanDto>>(await dersAcilans.ToListAsync());
         }
 
-        public async Task<List<DersAcilanDto>> PostDersAcilansByFilters(SinavDersAcDto sinavDersAcDto)
+        public async Task<List<SubeDersAcilanDto>> PostDersAcilansByFilters(SinavDersAcDto sinavDersAcDto)
         {
-            var dersAcilans = from d in _db.DersAcilans.WhereIf(sinavDersAcDto.donemId != null, x => x.DonemId == sinavDersAcDto.donemId)
+            //var dersAcilans = from d in _db.DersAcilans.WhereIf(sinavDersAcDto.donemId != null, x => x.DonemId == sinavDersAcDto.donemId)
+            //                                           .WhereIf(sinavDersAcDto.programId != null, x => x.ProgramId == sinavDersAcDto.programId)
+            //                                           .WhereIf((sinavDersAcDto.sinif != null && sinavDersAcDto.sinif != 0), x => x.Sinif == sinavDersAcDto.sinif)
+            //                                           .WhereIf(!string.IsNullOrEmpty(sinavDersAcDto.dersKodu), x => x.Kod == sinavDersAcDto.dersKodu)
+            //                                           .Include(x => x.Akademisyen)
+
+            //                  let cCount = d.DersKayits.Count()
+            //                  select new DersAcilanDto
+            //                  {
+            //                      Id = d.Id,
+            //                      Kod = d.Kod,
+            //                      Ad = d.Ad,
+            //                      Akademisyen = new AkademisyenDto { Ad = d.Akademisyen.Ad },
+            //                      Sinif = d.Sinif,
+            //                      Zorunlu = d.Zorunlu,
+            //                      Sube=d.Sube,
+            //                      OgrCount = cCount
+            //                  };
+
+            //var dersAcilans = from d in _db.DersAcilans.WhereIf(sinavDersAcDto.donemId != null, x => x.DonemId == sinavDersAcDto.donemId)
+            //                                          .WhereIf(sinavDersAcDto.programId != null, x => x.ProgramId == sinavDersAcDto.programId)
+            //                                          .WhereIf((sinavDersAcDto.sinif != null && sinavDersAcDto.sinif != 0), x => x.Sinif == sinavDersAcDto.sinif)
+            //                                          .WhereIf(!string.IsNullOrEmpty(sinavDersAcDto.dersKodu), x => x.Kod == sinavDersAcDto.dersKodu)
+            //                                          .Include(x => x.DersKayits)
+            //                  group d by new { d.Kod, d.Ad }
+            //                  into grp
+            //                  select new SubeDersAcilanDto
+            //                  {
+            //                      //Id = grp.Key.Ad,
+            //                      Kod = grp.Key.Kod,
+            //                      Ad = grp.Key.Ad,
+            //                      OgrCount = grp.Sum(t => t.DersKayits.Count()),
+            //                      SubeCount = grp.Count()
+            //                  };
+
+            var dersAcilans = (from d in _db.DersAcilans.WhereIf(sinavDersAcDto.donemId != null, x => x.DonemId == sinavDersAcDto.donemId)
                                                        .WhereIf(sinavDersAcDto.programId != null, x => x.ProgramId == sinavDersAcDto.programId)
                                                        .WhereIf((sinavDersAcDto.sinif != null && sinavDersAcDto.sinif != 0), x => x.Sinif == sinavDersAcDto.sinif)
                                                        .WhereIf(!string.IsNullOrEmpty(sinavDersAcDto.dersKodu), x => x.Kod == sinavDersAcDto.dersKodu)
@@ -239,17 +275,22 @@ namespace UniLife.Storage.Stores
                               let cCount = d.DersKayits.Count()
                               select new DersAcilanDto
                               {
-                                  Id = d.Id,
                                   Kod = d.Kod,
                                   Ad = d.Ad,
-                                  Akademisyen = new AkademisyenDto { Ad = d.Akademisyen.Ad },
-                                  Sinif = d.Sinif,
-                                  Zorunlu = d.Zorunlu,
-                                  Sube=d.Sube,
                                   OgrCount = cCount
-                              };
+                              }).GroupBy(g => new
+                              {
+                                  g.Kod,
+                                  g.Ad
+                              }).Select(gcs => new SubeDersAcilanDto()
+                              {
+                                  Ad = gcs.Key.Ad,
+                                  Kod = gcs.Key.Kod,
+                                  SubeCount = gcs.Count(),
+                                  OgrCount = gcs.Sum(x=>x.OgrCount)
+                              });
 
-            return _autoMapper.Map<List<DersAcilanDto>>(await dersAcilans.ToListAsync());
+            return await dersAcilans.ToListAsync();
         }
 
 
@@ -342,6 +383,45 @@ namespace UniLife.Storage.Stores
 
                 context.Commit();
             }
+        }
+
+        public async Task<List<DersAcilanDto>> GetKayitliDerssByOgrenciIdDonemId(string dersKod)
+        {
+            var dersAcilans = from d in _db.DersAcilans.Where(x => x.Kod == dersKod).Include(x => x.Akademisyen)
+                              let cCount = d.DersKayits.Count()
+                              select new DersAcilanDto
+                              {
+                                  Id = d.Id,
+                                  Kod = d.Kod,
+                                  Ad = d.Ad,
+                                  Akademisyen = new AkademisyenDto { Ad = d.Akademisyen.Ad },
+                                  Sinif = d.Sinif,
+                                  Zorunlu = d.Zorunlu,
+                                  Sube = d.Sube,
+                                  OgrCount = cCount
+                              };
+
+            return _autoMapper.Map<List<DersAcilanDto>>(await dersAcilans.ToListAsync());
+        }
+
+        public async Task<DersAcilanDto> GetDersAcilanSpecByDersAcId(int dersAcilanId)
+        {
+            var dersAcilan =from d in _db.DersAcilans.Where(x=>x.Id== dersAcilanId)
+                                                       .Include(x => x.Akademisyen)
+
+                              let cCount = d.DersKayits.Count()
+                              select new DersAcilanDto
+                              {
+                                  Id = d.Id,
+                                  Kod = d.Kod,
+                                  Ad = d.Ad,
+                                  Akademisyen = new AkademisyenDto { Ad = d.Akademisyen.Ad },
+                                  Kredi = d.Kredi,
+                                  Sube = d.Sube,
+                                  OgrCount = cCount
+                              };
+
+            return _autoMapper.Map<DersAcilanDto>(await dersAcilan.FirstOrDefaultAsync());
         }
     }
 }

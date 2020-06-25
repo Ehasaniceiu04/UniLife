@@ -66,5 +66,19 @@ namespace UniLife.Server.Managers
             var dersAcilans = await _dersAcilanStore.GetKayitliDerssByOgrenciIdDonemId(ogrenciId, donemId);
             return new ApiResponse(Status200OK, "Selected DersAcilanDto", dersAcilans);
         }
+
+        public async Task<ApiResponse> GetKayitliDerssByOgrenciIdDonemId(string dersKod)
+        {
+            var dersAcilans = await _dersAcilanStore.GetKayitliDerssByOgrenciIdDonemId(dersKod);
+            return new ApiResponse(Status200OK, "Selected DersAcilanDto", dersAcilans);
+        }
+
+        public async Task<ApiResponse> GetDersAcilanSpecByDersAcId(int dersAcilanId)
+        {
+            var dersAcilan = await _dersAcilanStore.GetDersAcilanSpecByDersAcId(dersAcilanId);
+            return new ApiResponse(Status200OK, "Selected DersAcilanDto", dersAcilan);
+        }
+
+        
     }
 }

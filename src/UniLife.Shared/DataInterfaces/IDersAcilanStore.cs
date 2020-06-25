@@ -14,7 +14,9 @@ namespace UniLife.Shared.DataInterfaces
         Task<List<DersAcilanDto>> GetKayitliDerssByOgrenciId(int ogrenciId, int sinif,int donemId);
         Task<List<DersAcilanDto>> GetKayitliDerssByOgrenciIdDonemId(int ogrenciId, int donemId);
         Task<List<DersAcilanDto>> ByZorunlu(bool isZorunlu);
-        Task<List<DersAcilanDto>> PostDersAcilansByFilters(SinavDersAcDto sinavDersAcDto);
+        Task<List<SubeDersAcilanDto>> PostDersAcilansByFilters(SinavDersAcDto sinavDersAcDto);
         Task PostCreateNewSubesAndUpdateOgrenciSubes(SubeDersAcilanOgrenciCreateDto subeDersAcilanOgrenciCreateDto);
+        Task<List<DersAcilanDto>> GetKayitliDerssByOgrenciIdDonemId(string dersKod);
+        Task<DersAcilanDto> GetDersAcilanSpecByDersAcId(int dersAcilanId);
     }
 }

@@ -608,6 +608,7 @@ namespace UniLife.Server
             builder.EntitySet<Bolum>("Bolums");
             builder.EntitySet<DersAcilan>("DersAcilans");
             builder.EntitySet<Fakulte>("Fakultes");
+            builder.EntitySet<Fakulte>("Akademisyens");
             builder.EntitySet<UniLife.Shared.DataModels.Program>("Programs");
             return builder.GetEdmModel();
         }

@@ -15,5 +15,7 @@ namespace UniLife.Server.Managers
         Task<ApiResponse> ByZorunlu(bool isZorunlu);
         Task<ApiResponse> PostDersAcilansByFilters(SinavDersAcDto sinavDersAcDto);
         Task<ApiResponse> PostCreateNewSubesAndUpdateOgrenciSubes(SubeDersAcilanOgrenciCreateDto subeDersAcilanOgrenciCreateDto);
+        Task<ApiResponse> GetKayitliDerssByOgrenciIdDonemId(string dersKod);
+        Task<ApiResponse> GetDersAcilanSpecByDersAcId(int dersAcilanId);
     }
 }
