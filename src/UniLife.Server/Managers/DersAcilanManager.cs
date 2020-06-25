@@ -79,6 +79,10 @@ namespace UniLife.Server.Managers
             return new ApiResponse(Status200OK, "Selected DersAcilanDto", dersAcilan);
         }
 
-        
+        public async Task<ApiResponse> UpdateDersAcilanAkademsiyen(int dersAcilanId, int akademisyenId)
+        {
+            await _dersAcilanStore.UpdateDersAcilanAkademsiyen(dersAcilanId, akademisyenId);
+            return new ApiResponse(Status200OK, "Selected DersAcilanDto", null);
+        }
     }
 }

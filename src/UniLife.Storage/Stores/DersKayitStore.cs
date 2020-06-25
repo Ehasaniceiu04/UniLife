@@ -47,5 +47,16 @@ namespace UniLife.Storage.Stores
             _db.DersKayits.AddRange(dersKayits);
             await _db.SaveChangesAsync(CancellationToken.None);
         }
+
+        public async Task<int> PutUpdateOgrencisDersKayits(PutUpdateOgrencisDersKayitsDto putUpdateOgrencisDersKayitsDto)
+        {
+
+            var dersKayits = _db.DersKayits.Where(x => x.DersAcilanId == putUpdateOgrencisDersKayitsDto.SelectedDersAcilanId
+                                                    && putUpdateOgrencisDersKayitsDto.OgrenciIds.Contains(x.OgrenciId));
+
+            await dersKayits.ForEachAsync(x => x.DersAcilanId = putUpdateOgrencisDersKayitsDto.PointedDersAcilanId);
+
+            return await _db.SaveChangesAsync(CancellationToken.None);
+        }
     }
 }

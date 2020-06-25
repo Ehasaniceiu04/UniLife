@@ -423,5 +423,12 @@ namespace UniLife.Storage.Stores
 
             return _autoMapper.Map<DersAcilanDto>(await dersAcilan.FirstOrDefaultAsync());
         }
+
+        public async Task UpdateDersAcilanAkademsiyen(int dersAcilanId, int akademisyenId)
+        {
+            var dersAcilan = await _db.DersAcilans.FirstOrDefaultAsync(x => x.Id == dersAcilanId);
+            dersAcilan.AkademisyenId = akademisyenId;
+            await _db.SaveChangesAsync(CancellationToken.None);
+        }
     }
 }

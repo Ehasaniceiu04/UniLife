@@ -35,8 +35,28 @@ namespace UniLife.Server.Managers
 
         public async Task<ApiResponse> OgrenciKayitToDerss(IEnumerable<DersKayitDto> dersKayitDtos)
         {
-            await _dersKayitStore.OgrenciKayitToDerss(dersKayitDtos);
-            return new ApiResponse(Status200OK, "Bulk create result");
+            try
+            {
+                await _dersKayitStore.OgrenciKayitToDerss(dersKayitDtos);
+                return new ApiResponse(Status200OK, "Bulk create result");
+            }
+            catch (InvalidDataException dataException)
+            {
+                throw;
+            }
+            
+        }
+
+        public async Task<ApiResponse> PutUpdateOgrencisDersKayits(PutUpdateOgrencisDersKayitsDto putUpdateOgrencisDersKayitsDto)
+        {
+            try
+            {
+                return new ApiResponse(Status200OK, "Updated Todo", await _dersKayitStore.PutUpdateOgrencisDersKayits(putUpdateOgrencisDersKayitsDto));
+            }
+            catch (InvalidDataException dataException)
+            {
+                return new ApiResponse(Status400BadRequest, "Failed to update DersKayit");
+            }
         }
     }
 }

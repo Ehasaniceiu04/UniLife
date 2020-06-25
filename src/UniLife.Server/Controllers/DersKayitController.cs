@@ -88,21 +88,13 @@ namespace UniLife.Server.Controllers
             => await _dersKayitManager.DeleteByOgrId_DersId(ogrenciId, dersId);
 
 
-        //[HttpPost]
-        //[AllowAnonymous]
-        //[Route("GetAcilanDersByFilterDto")]
-        //public async Task<ApiResponse> GetAcilanDersByFilterDto([FromBody] DersKayitFilterDto dersKayitFilterDto)
-        //    => ModelState.IsValid ?
-        //            await _dersKayitManager.GetAcilanDersByFilterDto(dersKayitFilterDto) :
-        //            new ApiResponse(Status400BadRequest, "DersKayitFilterDto Model is Invalid");
-
-        //[HttpGet]
-        //[AllowAnonymous]
-        //[Route("GetAcilanDersByMufredatId/{mufredatId}")]
-        //public async Task<ApiResponse> GetAcilanDersByMufredatId(int mufredatId)
-        //    => ModelState.IsValid ?
-        //            await _dersKayitManager.GetAcilanDersByMufredatId(mufredatId) :
-        //            new ApiResponse(Status400BadRequest, "DersKayit Model is Invalid");
+        [HttpPut]
+        [AllowAnonymous]
+        [Route("PutUpdateOgrencisDersKayits")]
+        public async Task<ApiResponse> PutUpdateOgrencisDersKayits(PutUpdateOgrencisDersKayitsDto putUpdateOgrencisDersKayitsDto)
+           => ModelState.IsValid ?
+               await _dersKayitManager.PutUpdateOgrencisDersKayits(putUpdateOgrencisDersKayitsDto) :
+               new ApiResponse(Status400BadRequest, "PutUpdateOgrencisDersKayitsDto Model is Invalid");
 
 
     }

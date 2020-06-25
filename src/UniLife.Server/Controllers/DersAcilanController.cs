@@ -118,6 +118,14 @@ namespace UniLife.Server.Controllers
                 await _dersAcilanManager.Update(dersAcilanDto) :
                 new ApiResponse(Status400BadRequest, "DersAcilan Model is Invalid");
 
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("UpdateDersAcilanAkademsiyen/{dersAcilanId}/{akademisyenId}")]
+        public async Task<ApiResponse> UpdateDersAcilanAkademsiyen(int dersAcilanId, int akademisyenId)
+           => ModelState.IsValid ?
+               await _dersAcilanManager.UpdateDersAcilanAkademsiyen(dersAcilanId, akademisyenId) :
+               new ApiResponse(Status400BadRequest, "DersAcilan Model is Invalid");
+
         // DELETE: api/DersAcilan/5
         [HttpDelete("{id}")]
         [Authorize(Permissions.DersAcilan.Delete)]

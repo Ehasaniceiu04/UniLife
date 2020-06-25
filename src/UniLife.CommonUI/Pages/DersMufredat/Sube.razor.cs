@@ -97,6 +97,8 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         bool akademisyenDialogOpen;
 
+        bool SubeTasi;
+
         //protected override void OnInitialized()
         //{
 
@@ -366,30 +368,12 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         }
 
 
-        public async Task CommandClickHandlerSecmeliOgr(Syncfusion.Blazor.Grids.CommandClickEventArgs<OgrenciDto> args)
+        public async Task CommandClickHandlerSube(Syncfusion.Blazor.Grids.CommandClickEventArgs<DersAcilanDto> args)
         {
-            //if (args.CommandColumn.Title == "Ogrenciyi Ekle")
-            //{
-            //    SubeKayitDto sinavKayitDto = new SinavKayitDto()
-            //    {
-            //        OgrenciId = args.RowData.Id,
-            //        SinavId = selectedSube
-            //    };
-            //    ApiResponseDto<SinavKayitDto> apiResponse = await Http.PostJsonAsync<ApiResponseDto<SinavKayitDto>>("api/SinavKayit", sinavKayitDto);
-            //    ogrenciSecDialogOpen = false;
-
-            //    if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
-            //    {
-            //        args.RowData.SinavKayitId = apiResponse.Result.Id;
-            //        OgrenciDtos.Add(args.RowData);
-            //        OgrenciGrid.Refresh();
-            //        matToaster.Add(args.RowData.Ad + " " + args.RowData.Soyad, MatToastType.Success, "Öğrenci Kaydı gerçekleşti");
-            //    }
-            //    else
-            //    {
-            //        matToaster.Add(args.RowData.Ad + " " + args.RowData.Soyad + " : " + apiResponse.StatusCode, MatToastType.Danger, "Öğrenci sinava kayıt edilemedi");
-            //    }
-            //}
+            if (args.CommandColumn.Title == "Öğretmen Ata")
+            {
+                akademisyenDialogOpen = true;
+            }
         }
 
         async Task DersiSubelendir()
@@ -551,7 +535,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         {
             if (args.CommandColumn.Title == "Akademisyen Ekle")
             {
-                ApiResponseDto<SinavKayitDto> apiResponse = await Http.PutJsonAsync<ApiResponseDto<SinavKayitDto>>("api/derskayit", selectedDersAcilanSube);
+                ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>($"api/dersacilan/UpdateDersAcilanAkademsiyen/{selectedDersAcilanSube.Id}/{args.RowData.Id}" );
                 akademisyenDialogOpen = false;
 
                 if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
@@ -567,7 +551,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             }
         }
 
-        public void ActionCompletedHandlerSube(Syncfusion.Blazor.Grids.ActionEventArgs<DersAcilanDto> args)
+        public async Task OnActionBeginHandlerSube(Syncfusion.Blazor.Grids.ActionEventArgs<DersAcilanDto> args)
         {
             if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
             {
@@ -576,6 +560,54 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                     akademisyenDialogOpen = true;
                 }
 
+            }
+        }
+
+        async Task SeciliOgrTasi()
+        { 
+            var selectedOrg = (await OgrenciGrid.GetSelectedRecords()).FirstOrDefault();
+            if (selectedOrg == null)
+            {
+                isUyariOpen = true;
+                dialogUyariText = "Lütfen bir öğrenci seçimi yapınız";
+            }
+            else
+            {
+                int selectedSube = Convert.ToInt32(ogrSubeler.Value);
+                if (selectedSube == selectedDersAcilanSube.Sube)
+                {
+                    dialogUyariText = $"Seçilen öğrencinin şube numarası zaten {selectedSube}";
+                    isUyariOpen = true;
+                }
+                else
+                {
+                    PutUpdateOgrencisDersKayitsDto putUpdateOgrencisDersKayitsDto = new PutUpdateOgrencisDersKayitsDto();
+                    putUpdateOgrencisDersKayitsDto.SelectedDersAcilanId = selectedDersAcilanSube.Id;
+                    putUpdateOgrencisDersKayitsDto.PointedDersAcilanId = DersSubeDtos.Where(x => x.Sube == selectedSube).FirstOrDefault().Id;
+                    putUpdateOgrencisDersKayitsDto.OgrenciIds =(await OgrenciGrid.GetSelectedRecords()).Select(x=>x.Id);
+
+
+                    ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>("api/derskayit/PutUpdateOgrencisDersKayits", putUpdateOgrencisDersKayitsDto);
+                    akademisyenDialogOpen = false;
+
+                    if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
+                    {
+                        //OgrenciDtos = await GetOgrencisByDersAcilanId(selectedDersAcilanSube);
+                        //OgrenciGrid.Refresh();
+                        OgrenciDtos = new List<OgrenciDto>();
+
+                        DersSubeDtos = await GetDersAcilanSubelerByDersKod(selectedDersAcilanSube.Kod);
+                        DersSubeGrid.Refresh();
+
+                        matToaster.Add($"Seçilen öğrencilerin şubeleri {selectedSube} olarak değiştirilmiştir.", MatToastType.Success, "Şube değişikliği başarılı");
+                    }
+                    else
+                    {
+                        matToaster.Add("Seçilen öğrencilerin şubeleri değiştirilemedi " + apiResponse.StatusCode, MatToastType.Danger, "Şube değişikliği başarısız oldu!");
+                    }
+                }
+
+                
             }
         }
 
