@@ -49,6 +49,12 @@ namespace UniLife.Shared.DataModels
         public int? ODTekrar { get; set; }
         public int? ADKayit { get; set; }
 
+        public int TopKont { get; set; } = 990;
+        public int BolDisKont { get; set; }
+        public int AltKont { get; set; }
+        public int BolDisKota { get; set; } // Enum kurallar
+        public int AltKota { get; set; } // Enum kurallar
+
         public virtual ICollection<DersKayit> DersKayits { get; set; }
         public virtual ICollection<Sinav> Sinavs { get; set; }
     }

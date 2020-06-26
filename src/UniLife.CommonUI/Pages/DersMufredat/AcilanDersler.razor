@@ -5,202 +5,73 @@
 @using Syncfusion.Blazor.DropDowns
 @using System.Net
 @using Newtonsoft.Json
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Buttons
 
 <ControlSection>
     <SfGrid @ref="DersAcilanGrid" DataSource="@dersAcilanDtos" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
         <GridEvents OnActionComplete="ActionCompletedHandler" TValue="DersAcilanDto"></GridEvents>
-        <GridEditSettings ShowDeleteConfirmDialog="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
+        <GridEditSettings ShowDeleteConfirmDialog="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
+            <Template>
+                @{
+                    DersAcilanDto dAcilanContext = (context as DersAcilanDto);
+                }
+
+                <div class="row mt-1">
+                    <div class="col-sm-12 col-md-6 pb-2">
+                        <div class="form-row">
+                            <label class="col-md col-form-label" for="Kod">Kod</label>
+                            <SfTextBox ID="Kod" CssClass="form-control col-sm-3" Value="@(dAcilanContext.Kod)" Enabled="@false"></SfTextBox>
+                            <label class="col-md col-form-label" for="Sube">Sube No</label>
+                            <SfTextBox ID="Sube" CssClass="form-control col-sm-3" Value="@(dAcilanContext.Sube.ToString())" Enabled="@false"></SfTextBox>
+                            <SfCheckBox Label="Aktif" CssClass="col-sm-3" @bind-Checked="@dAcilanContext.Durum"></SfCheckBox>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 pb-2">
+                        <div class="form-row">
+                            <label class="col-md col-form-label" for="Tel">Tel</label>
+                            <SfTextBox ID="Tel" CssClass="form-control col-sm-2" Value="@(dAcilanContext.Kod)" Enabled="@true"></SfTextBox>
+                            <label class="col-md col-form-label" for="Adres">Adres</label>
+                            <SfTextBox ID="Adres" CssClass="form-control col-sm-2" Value="@(dAcilanContext.Kod)" Enabled="@true"></SfTextBox>
+                            <label class="col-md col-form-label" for="Faks">Faks</label>
+                            <SfTextBox ID="Faks" CssClass="form-control col-sm-2" Value="@(dAcilanContext.Kod)" Enabled="@true"></SfTextBox>
+                            <label class="col-md col-form-label" for="Web">Web</label>
+                            <SfTextBox ID="Web" CssClass="form-control col-sm-2" Value="@(dAcilanContext.Kod)" Enabled="@true"></SfTextBox>
+                        </div>
+                    </div>
+                </div>
+
+            </Template>
+        </GridEditSettings>
         <GridColumns>
             <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Açılan Ders ID" Edit="false" AllowEditing="false" TextAlign="TextAlign.Left" Width="140"></GridColumn>
             <GridColumn Field=@nameof(DersAcilanDto.Kod) HeaderText="Kod"></GridColumn>
-            <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Açılan Ders İsim" ValidationRules="@(new { required=true})"></GridColumn>
+            <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Ad" ValidationRules="@(new { required=true})"></GridColumn>
             @*<GridColumn Field=@nameof(DersAcilanDto.Kredi) HeaderText="T+U TODO"></GridColumn>*@
             <GridColumn Field=@nameof(DersAcilanDto.Kredi) HeaderText="Kr"></GridColumn>
             <GridColumn Field=@nameof(DersAcilanDto.Akts) HeaderText="Akts"></GridColumn>
             <GridColumn Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
+            <GridColumn Field=@nameof(DersAcilanDto.AltKota) HeaderText="Alt-Bol-Top">
+                <Template>
+                    @{
+                        var dersAcilanContext = (context as DersAcilanDto);
+                    }
+                    <p>@(dersAcilanContext.AltKont + "-"+dersAcilanContext.BolDisKont+"-"+ dersAcilanContext.TopKont)</p>
+                </Template>
+            </GridColumn>
             <GridColumn Field=@nameof(DersAcilanDto.Zorunlu) HeaderText="Z" EditType="EditType.BooleanEdit" DisplayAsCheckBox="true"></GridColumn>
             <GridColumn Field=@nameof(DersAcilanDto.ProgramId) EditType="EditType.DropDownEdit" HeaderText="Program" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@programDtos" Width="150"></GridColumn>
-                @*<GridColumn Field=@nameof(DersAcilanDto.ProgramAd) HeaderText="Program"></GridColumn>*@
-                @*<GridColumn Field=@nameof(DersAcilanDto.ProgramId) HeaderText="Program" ForeignKeyValue="Ad" DataSource="@programDtos" Width="150"></GridColumn>*@
-                @*<GridColumn Field=@nameof(DersAcilanDto.ProgramId) Format="N" EditType="EditType.DropDownEdit" HeaderText="Program" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@programDtos" Width="150">
-                <FilterTemplate>
-                    <SfDropDownList PlaceHolder="Program Adı" ID="ProgramId" Value="@((int?)(context as PredicateModel).Value)" DataSource="@programDtos" TValue="int?" TItem="ProgramDto">
-                        <DropDownListEvents ValueChange="@Change" TValue="int?"></DropDownListEvents>
-                        <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
-                    </SfDropDownList>
-                </FilterTemplate>
-            </GridColumn>*@
-                <GridColumn Field=@nameof(DersAcilanDto.AkademisyenId) HeaderText="Öğrt Görev" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@akademisyenDtos" Width="150"></GridColumn>
-                <GridColumn>
-                    <GridCommandColumns>
-                        <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-edit", CssClass = "e-flat" })"></GridCommandColumn>
-                        <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-delete", CssClass = "e-flat" })"></GridCommandColumn>
-                        <GridCommandColumn Type="CommandButtonType.Save" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-update", CssClass = "e-flat" })"></GridCommandColumn>
-                        <GridCommandColumn Type="CommandButtonType.Cancel" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-cancel-icon", CssClass = "e-flat" })"></GridCommandColumn>
-                    </GridCommandColumns>
-                </GridColumn>
+            <GridColumn Field=@nameof(DersAcilanDto.AkademisyenId) HeaderText="Öğrt Görev" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@akademisyenDtos" Width="150"></GridColumn>
+            <GridColumn>
+                <GridCommandColumns>
+                    <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-edit", CssClass = "e-flat" })"></GridCommandColumn>
+                    <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-delete", CssClass = "e-flat" })"></GridCommandColumn>
+                    <GridCommandColumn Type="CommandButtonType.Save" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-update", CssClass = "e-flat" })"></GridCommandColumn>
+                    <GridCommandColumn Type="CommandButtonType.Cancel" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-cancel-icon", CssClass = "e-flat" })"></GridCommandColumn>
+                </GridCommandColumns>
+            </GridColumn>
 
         </GridColumns>
     </SfGrid>
 </ControlSection>
 
-@code{
-
-    SfGrid<DersAcilanDto> DersAcilanGrid;
-
-    List<DersAcilanDto> dersAcilanDtos { get; set; }
-
-    List<ProgramDto> programDtos { get; set; }
-    List<AkademisyenDto> akademisyenDtos { get; set; }
-
-
-    public void Change(@Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
-    {
-        if (args.Value == null)
-        {
-            DersAcilanGrid.ClearFiltering();
-        }
-        else
-        {
-            //startswith
-            DersAcilanGrid.FilterByColumn("ProgramId", "equal", 1);
-        }
-    }
-
-
-    protected override void OnInitialized()
-    {
-        ReadDersAcilans();
-
-        ReadPrograms();
-        ReadAkademisyens();
-    }
-
-    void ReadDersAcilans()
-    {
-
-        ApiResponseDto apiResponse = Http.GetFromJsonAsync<ApiResponseDto>("api/dersAcilan").Result;
-
-        if (apiResponse.StatusCode == Status200OK)
-        {
-            matToaster.Add(apiResponse.Message, MatToastType.Success, "Açılan Dersler getirildi");
-            dersAcilanDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<DersAcilanDto[]>(apiResponse.Result.ToString()).ToList<DersAcilanDto>();
-        }
-        else
-        {
-            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Açılan Ders bilgisi getirilirken hata oluştu!");
-        }
-    }
-
-    void ReadPrograms()
-    {
-        ApiResponseDto<List<ProgramDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<ProgramDto>>>("api/program").Result;
-        programDtos = apiResponse.Result;
-    }
-    void ReadAkademisyens()
-    {
-        ApiResponseDto<List<AkademisyenDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<AkademisyenDto>>>("api/akademisyen").Result;
-        akademisyenDtos = apiResponse.Result;
-    }
-
-
-
-    public void ActionCompletedHandler(ActionEventArgs<DersAcilanDto> args)
-    {
-        if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
-        {
-
-        }
-        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
-        {
-            if (args.Action == "edit")
-            {
-                Update(args.Data);
-            }
-            else if (args.Action == "add")
-            {
-                Create(args.Data);
-            }
-
-        }
-        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
-        {
-            Delete(args.Data);
-        }
-    }
-
-    public async Task Create(DersAcilanDto dersAcilanDto)
-    {
-        try
-        {
-            ApiResponseDto<DersAcilanDto> apiResponse = await Http.PostJsonAsync<ApiResponseDto<DersAcilanDto>>
-                ("api/dersAcilan", dersAcilanDto);
-            if (apiResponse.StatusCode == Status200OK)
-            {
-                matToaster.Add(apiResponse.Message, MatToastType.Success);
-                dersAcilanDtos.FirstOrDefault(x => x.Id == 0).Id = apiResponse.Result.Id;
-                DersAcilanGrid.Refresh();
-            }
-            else
-            {
-                dersAcilanDtos.Remove(dersAcilanDto);
-                DersAcilanGrid.Refresh();
-                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Açılan Ders Creation Failed");
-            }
-        }
-        catch (Exception ex)
-        {
-            dersAcilanDtos.Remove(dersAcilanDto);
-            DersAcilanGrid.Refresh();
-            matToaster.Add(ex.Message, MatToastType.Danger, "Açılan Ders Creation Failed");
-        }
-    }
-
-    public async void Update(DersAcilanDto dersAcilanDto)
-    {
-        //this updates the IsCompleted flag only
-        try
-        {
-            ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>
-                ("api/dersAcilan", dersAcilanDto);
-
-            if (!apiResponse.IsError)
-            {
-                matToaster.Add(apiResponse.Message, MatToastType.Success);
-            }
-            else
-            {
-                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Açılan Ders Save Failed");
-                //update failed gridi boz !
-            }
-        }
-        catch (Exception ex)
-        {
-            matToaster.Add(ex.Message, MatToastType.Danger, "Açılan Ders Save Failed");
-            //update failed gridi boz !
-        }
-    }
-
-    public async Task Delete(DersAcilanDto dersAcilanDto)
-    {
-        try
-        {
-            var response = await Http.DeleteAsync("api/dersAcilan/" + dersAcilanDto.Id);
-            if (response.StatusCode == (HttpStatusCode)Status200OK)
-            {
-                matToaster.Add("Açılan Ders Deleted", MatToastType.Success);
-                dersAcilanDtos.Remove(dersAcilanDto);
-            }
-            else
-            {
-                matToaster.Add("Açılan Ders Delete Failed: " + response.StatusCode, MatToastType.Danger);
-            }
-            //deleteDialogOpen = false;
-        }
-        catch (Exception ex)
-        {
-            matToaster.Add(ex.Message, MatToastType.Danger, "Açılan Ders Save Failed");
-        }
-    }
-
-}
