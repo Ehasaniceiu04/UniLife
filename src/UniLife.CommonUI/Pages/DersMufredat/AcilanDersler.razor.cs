@@ -12,11 +12,17 @@ using MatBlazor;
 using Syncfusion.Blazor.Grids;
 using UniLife.CommonUI.Extensions;
 using Syncfusion.Blazor.Data;
+using Syncfusion.Blazor.DropDowns;
 
 namespace UniLife.CommonUI.Pages.DersMufredat
 {
     public partial class AcilanDersler : ComponentBase
     {
+        //[Inject]
+        //public System.Net.Http.HttpClient Http { get; set; }
+        //[Inject]
+        //public MatBlazor.IMatToaster matToaster { get; set; }
+
         Syncfusion.Blazor.Grids.SfGrid<DersAcilanDto> DersAcilanGrid;
 
         List<DersAcilanDto> dersAcilanDtos { get; set; }
@@ -24,7 +30,18 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         List<ProgramDto> programDtos { get; set; }
         List<AkademisyenDto> akademisyenDtos { get; set; }
 
-        public Query Query = new Query().Select(new List<string> { "Id","Ad" }).Take(6).RequiresCount();
+        public Query Query = new Query().Select(new List<string> { "Ad","Id" }).Take(6).RequiresCount();
+
+        SfDropDownList<int, KeyValueDto> DropAltKotaUyg;
+        SfDropDownList<int, KeyValueDto> DropBolDisKotaUyg;
+        List<KeyValueDto> DropKotaUygDtos = new List<KeyValueDto>
+        {
+            new KeyValueDto() { Ad = "Hayır", Id = 0 },
+            new KeyValueDto() { Ad = "Evet", Id = 1 },
+            new KeyValueDto() { Ad = "Evet(Referans dersleri bolum içi değerlendir)", Id = 2 },
+            new KeyValueDto() { Ad = "Evet(Genel Kontenjandan Al-Bloke Koy)", Id = 3 },
+            new KeyValueDto() { Ad = "Evet(Referans dersleri bolum içi değerlendir)(Genel Kontenjandan Al-Bloke Koy)", Id = 4 }
+        };
 
 
         public void Change(@Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
