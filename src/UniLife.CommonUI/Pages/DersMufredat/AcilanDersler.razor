@@ -7,7 +7,8 @@
 @using Newtonsoft.Json
 @using Syncfusion.Blazor.Inputs
 @using Syncfusion.Blazor.Buttons
-
+@using UniLife.Shared.DataModels
+@using Syncfusion.Blazor.Data
 <ControlSection>
     <SfGrid @ref="DersAcilanGrid" DataSource="@dersAcilanDtos" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
         <GridEvents OnActionComplete="ActionCompletedHandler" TValue="DersAcilanDto"></GridEvents>
@@ -20,11 +21,18 @@
                 <div class="row mt-1">
                     <div class="col-sm-12 col-md-6 pb-2">
                         <div class="form-row">
-                            <label class="col-md col-form-label" for="Kod">Kod</label>
+                            <label class="col-md-2 col-form-label" for="Kod">Kod</label>
                             <SfTextBox ID="Kod" CssClass="form-control col-sm-3" Value="@(dAcilanContext.Kod)" Enabled="@false"></SfTextBox>
-                            <label class="col-md col-form-label" for="Sube">Sube No</label>
+                            <label class="col-md-2 col-form-label" for="Sube">Sube No</label>
                             <SfTextBox ID="Sube" CssClass="form-control col-sm-3" Value="@(dAcilanContext.Sube.ToString())" Enabled="@false"></SfTextBox>
-                            <SfCheckBox Label="Aktif" CssClass="col-sm-3" @bind-Checked="@dAcilanContext.Durum"></SfCheckBox>
+                            <SfCheckBox Label="Aktif" CssClass="col-sm-2" @bind-Checked="@dAcilanContext.Durum"></SfCheckBox>
+                            <label class="col-md-2 col-form-label" for="Ad">Ad</label>
+                            <SfTextBox ID="Ad" CssClass="form-control col-sm-10" Value="@(dAcilanContext.Ad)" Enabled="@false"></SfTextBox>
+                            <label class="col-md-2 col-form-label" for="Akademisyen">Akademisyen</label>
+                            <SfAutoComplete ID="Akademisyen" CssClass="form-control col-sm-10" Value="@(dAcilanContext.AkademisyenId)"  TValue="int?" TItem="Akademisyen" Query="@Query">
+                                <SfDataManager Url="http://localhost:53414/odata/Akademisyens" Adaptor="Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
+                                <AutoCompleteFieldSettings Value="Id" Text="Ad"></AutoCompleteFieldSettings>
+                            </SfAutoComplete>
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-6 pb-2">

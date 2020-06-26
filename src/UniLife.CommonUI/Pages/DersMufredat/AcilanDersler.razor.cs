@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using MatBlazor;
 using Syncfusion.Blazor.Grids;
 using UniLife.CommonUI.Extensions;
+using Syncfusion.Blazor.Data;
 
 namespace UniLife.CommonUI.Pages.DersMufredat
 {
@@ -22,6 +23,8 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         List<ProgramDto> programDtos { get; set; }
         List<AkademisyenDto> akademisyenDtos { get; set; }
+
+        public Query Query = new Query().Select(new List<string> { "Id","Ad" }).Take(6).RequiresCount();
 
 
         public void Change(@Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
