@@ -1,0 +1,15 @@
+﻿@page "/lokasyon_tanimlar"
+@inject HttpClient Http;
+@using UniLife.CommonUI.Pages.Definitions.LokasyonTabs 
+@inject IMatToaster matToaster
+
+<MatTabGroup>
+
+    <MatTab Label="Bina">
+        <Bina></Bina>
+    </MatTab>
+    <MatTab Label="Derslik">
+        <Derslik></Derslik>
+    </MatTab>
+
+</MatTabGroup>

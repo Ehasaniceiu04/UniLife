@@ -38,6 +38,9 @@ namespace UniLife.Storage
         public DbSet<SinavTip> SinavTips { get; set; }
         public DbSet<SinavTur> SinavTurs { get; set; }
         public DbSet<SinavKayit> SinavKayits { get; set; }
+        public DbSet<Bina> Binas { get; set; }
+        public DbSet<Derslik> Dersliks { get; set; }
+        public DbSet<DerslikRezerv> DerslikRezervs { get; set; }
 
         //TODO Bunu böyle bırakacakmıyız.
         public Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade Database { get; set; }

@@ -424,6 +424,9 @@ namespace UniLife.Server
             services.AddTransient<ISinavTurManager, SinavTurManager>();
             services.AddTransient<ISinavTipManager, SinavTipManager>();
             services.AddTransient<ISinavKayitManager, SinavKayitManager>();
+            services.AddTransient<IBinaManager, BinaManager>();
+            services.AddTransient<IDerslikManager, DerslikManager>();
+            services.AddTransient<IDerslikRezervManager, DerslikRezervManager>();
             services.AddTransient<IUserProfileManager, UserProfileManager>();
 
 

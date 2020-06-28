@@ -18,13 +18,15 @@ namespace UniLife.Server.Controllers
         private readonly IKayitNedenManager _kayitNedenManager;
         private readonly ISinavTurManager _sinavTurManager;
         private readonly ISinavTipManager _sinavTipManager;
+        private readonly IBinaManager _binaManager;
         //private readonly ISinifManager _sinifManager;
 
-        public KeyValuesController(IKayitNedenManager kayitNedenManager, ISinavTurManager sinavTurManager, ISinavTipManager sinavTipManager)
+        public KeyValuesController(IKayitNedenManager kayitNedenManager, ISinavTurManager sinavTurManager, ISinavTipManager sinavTipManager, IBinaManager binaManager)
         {
             _kayitNedenManager = kayitNedenManager;
             _sinavTurManager = sinavTurManager;
             _sinavTipManager = sinavTipManager;
+            _binaManager = binaManager;
         }
 
         // GET: api/OgrenimTur
@@ -156,6 +158,49 @@ namespace UniLife.Server.Controllers
         public async Task<ApiResponse> DeleteSinavTip(int id)
             => await _sinavTipManager.Delete(id);
 
+
+
+        //Bina
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("GetBina")]
+        public async Task<ApiResponse> GetBina()
+            => await _binaManager.Get();
+
+        // GET: api/OgrenimTur/5
+        [HttpGet("{id}")]
+        [AllowAnonymous]
+        [Route("GetBina")]
+        public async Task<ApiResponse> GetBina(int id)
+            => ModelState.IsValid ?
+                await _binaManager.Get(id) :
+                new ApiResponse(Status400BadRequest, "OgrenimTur Model is Invalid");
+
+        // POST: api/OgrenimTur
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("PostBina")]
+        public async Task<ApiResponse> PostBina([FromBody] BinaDto binaDto)
+            => ModelState.IsValid ?
+                await _binaManager.Create(binaDto) :
+                new ApiResponse(Status400BadRequest, "Bina Model is Invalid");
+
+        // Put: api/OgrenimTur
+        [HttpPut]
+        [AllowAnonymous]
+        [Route("PutBina")]
+        public async Task<ApiResponse> PutBina([FromBody] BinaDto binaDto)
+            => ModelState.IsValid ?
+                await _binaManager.Update(binaDto) :
+                new ApiResponse(Status400BadRequest, "Bina Model is Invalid");
+
+        // DELETE: api/OgrenimTur/5
+        [HttpDelete]
+        [Authorize(Permissions.Universite.Delete)]
+        [Route("DeleteBina/{id}")]
+        public async Task<ApiResponse> DeleteBina(int id)
+            => await _binaManager.Delete(id);
 
     }
 }

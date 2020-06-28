@@ -50,6 +50,10 @@ namespace UniLife.Storage
         public DbSet<SinavTur> SinavTurs{ get; set; }
         public DbSet<SinavKayit> SinavKayits { get; set; }
 
+        public DbSet<Bina> Binas{ get; set; }
+        public DbSet<Derslik> Dersliks{ get; set; }
+        public DbSet<DerslikRezerv> DerslikRezervs{ get; set; }
+
         public DbSet<KayitNeden> KayitNedens { get; set; }
 
 

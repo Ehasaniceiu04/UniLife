@@ -48,6 +48,9 @@ namespace UniLife.Storage.Mapping
             CreateMap<SinavTip, SinavTipDto>().ReverseMap();
             CreateMap<SinavTur, SinavTurDto>().ReverseMap();
             CreateMap<SinavKayit, SinavKayitDto>().ReverseMap();
+            CreateMap<Bina, BinaDto>().ReverseMap();
+            CreateMap<Derslik, DerslikDto>().ReverseMap();
+            CreateMap<DerslikRezerv, DerslikRezervDto>().ReverseMap();
         }
     }
 }
