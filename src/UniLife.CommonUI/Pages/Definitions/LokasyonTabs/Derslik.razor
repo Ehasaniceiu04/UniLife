@@ -1,1 +1,162 @@
-﻿
+﻿@inject HttpClient Http;
+@using UniLife.Shared.Dto.Definitions
+@inject IMatToaster matToaster
+@using Syncfusion.Blazor.DropDowns
+@using System.Net
+@using Newtonsoft.Json
+
+<ControlSection>
+    <SfGrid @ref="DonemGrid" DataSource="@derslikDtos" Toolbar="@(new List<string>() { "Add"})" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
+        <GridEvents OnActionComplete="ActionCompletedHandler" TValue="DerslikDto"></GridEvents>
+        <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
+        <GridColumns>
+            <GridColumn Visible="false" Field=@nameof(DerslikDto.Id) AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+            <GridColumn Field=@nameof(DerslikDto.Ad) HeaderText="Derslik Adı" ValidationRules="@(new { required=true})" Width="170"></GridColumn>
+            <GridColumn Field=@nameof(DerslikDto.Capacity) HeaderText="Kapasite" Format="n0" Width="170"></GridColumn>
+            <GridColumn Field=@nameof(DerslikDto.Type) HeaderText="Tipi(Amfi..)" Format="n0" Width="170"></GridColumn>
+            <GridColumn Field=@nameof(DerslikDto.BinaId) HeaderText="Bina" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@binaDtos" Width="150"></GridColumn>
+            <GridColumn HeaderText="Manage Records" Width="150">
+                <GridCommandColumns>
+                    <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-edit", CssClass = "e-flat" })"></GridCommandColumn>
+                    <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-delete", CssClass = "e-flat" })"></GridCommandColumn>
+                    <GridCommandColumn Type="CommandButtonType.Save" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-update", CssClass = "e-flat" })"></GridCommandColumn>
+                    <GridCommandColumn Type="CommandButtonType.Cancel" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-cancel-icon", CssClass = "e-flat" })"></GridCommandColumn>
+                </GridCommandColumns>
+            </GridColumn>
+        </GridColumns>
+    </SfGrid>
+</ControlSection>
+
+@code{
+
+    SfGrid<DerslikDto> DonemGrid;
+
+    List<DerslikDto> derslikDtos = new List<DerslikDto>();
+
+    List<BinaDto> binaDtos= new List<BinaDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ReadDonems();
+
+        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/keyvalues/Getbina");
+        binaDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<BinaDto[]>(apiResponse.Result.ToString()).ToList<BinaDto>();
+
+    }
+
+    async Task ReadDonems()
+    {
+
+        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/derslik");
+
+        if (apiResponse.StatusCode == Status200OK)
+        {
+            matToaster.Add(apiResponse.Message, MatToastType.Success, "Derslikler getirildi");
+            derslikDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<DerslikDto[]>(apiResponse.Result.ToString()).ToList<DerslikDto>();
+        }
+        else
+        {
+            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Derslikler bilgisi getirilirken hata oluştu!");
+        }
+    }
+
+    public void ActionCompletedHandler(ActionEventArgs<DerslikDto>
+        args)
+    {
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
+        {
+
+        }
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+        {
+            if (args.Action == "edit")
+            {
+                Update(args.Data);
+            }
+            else if (args.Action == "add")
+            {
+                Create(args.Data);
+            }
+
+        }
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
+        {
+            Delete(args.Data);
+        }
+    }
+
+    public async Task Create(DerslikDto derslikDto)
+    {
+        try
+        {
+            ApiResponseDto<DerslikDto> apiResponse = await Http.PostJsonAsync<ApiResponseDto<DerslikDto>>
+                ("api/derslik", derslikDto);
+            if (apiResponse.StatusCode == Status200OK)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success);
+                derslikDtos.FirstOrDefault(x => x.Id == 0).Id = apiResponse.Result.Id;
+                DonemGrid.Refresh();
+            }
+            else
+            {
+                derslikDtos.Remove(derslikDto);
+                DonemGrid.Refresh();
+                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Derslikler Creation Failed");
+            }
+        }
+        catch (Exception ex)
+        {
+            derslikDtos.Remove(derslikDto);
+            DonemGrid.Refresh();
+            matToaster.Add(ex.Message, MatToastType.Danger, "Derslikler Creation Failed");
+        }
+    }
+
+    public async void Update(DerslikDto derslikDto)
+    {
+        //this updates the IsCompleted flag only
+        try
+        {
+            ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>
+                ("api/derslik", derslikDto);
+
+            if (!apiResponse.IsError)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success);
+            }
+            else
+            {
+                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Derslikler Save Failed");
+                //update failed gridi boz !
+            }
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.Message, MatToastType.Danger, "Derslikler Save Failed");
+            //update failed gridi boz !
+        }
+    }
+
+    public async Task Delete(DerslikDto derslikDto)
+    {
+        try
+        {
+            var response = await Http.DeleteAsync("api/derslik/" + derslikDto.Id);
+            if (response.StatusCode == (HttpStatusCode)Status200OK)
+            {
+                matToaster.Add("Derslikler Deleted", MatToastType.Success);
+                derslikDtos.Remove(derslikDto);
+            }
+            else
+            {
+                matToaster.Add("Derslikler Delete Failed: " + response.StatusCode, MatToastType.Danger);
+            }
+            //deleteDialogOpen = false;
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.Message, MatToastType.Danger, "Derslikler Save Failed");
+        }
+    }
+
+}

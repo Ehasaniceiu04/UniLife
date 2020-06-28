@@ -43,7 +43,7 @@
 
     async Task ReadBinas()
     {
-        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/KeyValue/GetBina");
+        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/KeyValues/GetBina");
 
         if (apiResponse.StatusCode == Status200OK)
         {
@@ -84,7 +84,7 @@
     {
         try
         {
-            ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/keyvalue/PostBina", binaDto);
+            ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/keyvalues/PostBina", binaDto);
             if (apiResponse.StatusCode == Status200OK)
             {
                 matToaster.Add(apiResponse.Message, MatToastType.Success);
@@ -118,7 +118,7 @@
         //this updates the IsCompleted flag only
         try
         {
-            ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>("api/keyvalue/PutBina", binaDto);
+            ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>("api/keyvalues/PutBina", binaDto);
 
             if (!apiResponse.IsError)
             {
@@ -141,7 +141,7 @@
     {
         try
         {
-            var response = await Http.DeleteAsync("api/keyvalue/DeleteBina/" + binaDto.Id);
+            var response = await Http.DeleteAsync("api/keyvalues/DeleteBina/" + binaDto.Id);
             if (response.StatusCode == (HttpStatusCode)Status200OK)
             {
                 matToaster.Add("Bina Deleted", MatToastType.Success);
