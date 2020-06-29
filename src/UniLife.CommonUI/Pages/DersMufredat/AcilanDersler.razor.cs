@@ -18,10 +18,10 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 {
     public partial class AcilanDersler : ComponentBase
     {
-        //[Inject]
-        //public System.Net.Http.HttpClient Http { get; set; }
-        //[Inject]
-        //public MatBlazor.IMatToaster matToaster { get; set; }
+        [Inject]
+        public System.Net.Http.HttpClient Http { get; set; }
+        [Inject]
+        public MatBlazor.IMatToaster matToaster { get; set; }
 
         Syncfusion.Blazor.Grids.SfGrid<DersAcilanDto> DersAcilanGrid;
 
