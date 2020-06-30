@@ -57,5 +57,6 @@ namespace UniLife.Shared.DataModels
 
         public virtual ICollection<DersKayit> DersKayits { get; set; }
         public virtual ICollection<Sinav> Sinavs { get; set; }
+        public virtual ICollection<DerslikRezerv> DerslikRezervs { get; set; }
     }
 }

@@ -22,8 +22,11 @@ namespace UniLife.Shared.DataModels
         public string StartTimezone { get; set; }
         public string EndTimezone { get; set; }
 
+        public int DersAcilanId { get; set; }
+        public virtual DersAcilan DersAcilan { get; set; }
+
         public int DerslikId { get; set; }
-        public Derslik Derslik { get; set; }
+        public virtual Derslik Derslik { get; set; }
 
         public bool IsBlock { get; set; }
         public virtual string ElementType { get; set; }

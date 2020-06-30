@@ -1,17 +1,26 @@
 ﻿@page "/scheduler"
 @using Syncfusion.Blazor.Schedule
 @using UniLife.Shared.Dto.Definitions
+
+
+@using Syncfusion.Blazor.Data
+@using UniLife.Shared.DataModels
+
 <div class="control-section">
     <div class="content-wrapper">
-        <SfSchedule TValue="DerslikRezervDto" Width="100%" Height="650px" SelectedDate="@(new DateTime(2020, 1, 1))" CurrentView="View.TimelineWeek">
+
+
+
+        <SfSchedule TValue="DerslikRezervDto" Width="100%" Height="650px" SelectedDate="@(new DateTime(DateTime.Now.Year,DateTime.Now.Month, DateTime.Now.Day))" CurrentView="View.TimelineDay">
             <ScheduleWorkHours Start="08:00" End="18:00"></ScheduleWorkHours>
+            <ScheduleTimeScale></ScheduleTimeScale>
             <ScheduleViews>
-                <ScheduleView Option="View.TimelineDay">
+                <ScheduleView StartHour="06:00" EndHour="23:00" Option="View.TimelineDay">
                     <ScheduleViewTimeScale SlotCount="1" Interval="60"></ScheduleViewTimeScale>
                 </ScheduleView>
                 @*<ScheduleView Option="View.TimelineWeek">
-                    <ScheduleViewTimeScale SlotCount="1" Interval="60"></ScheduleViewTimeScale>
-                </ScheduleView>*@
+                        <ScheduleViewTimeScale SlotCount="1" Interval="60"></ScheduleViewTimeScale>
+                    </ScheduleView>*@
             </ScheduleViews>
             <ScheduleGroup EnableCompactView="false" Resources="@GroupData"></ScheduleGroup>
             <ScheduleResources>
@@ -29,7 +38,7 @@
                     </div>
                 </ResourceHeaderTemplate>
             </ScheduleTemplates>
-            @*<ScheduleEvents TValue="DerslikRezervDto" ActionCompleted="OnActionCompleted"></ScheduleEvents>*@
+            <ScheduleEvents TValue="DerslikRezervDto" ActionCompleted="OnActionCompleted"></ScheduleEvents>
             <ScheduleEventSettings DataSource="@derslikRezervDtos">
                 <ScheduleField>
                     <FieldSubject Title="Travel Summary" Name="Subject"></FieldSubject>
@@ -43,20 +52,7 @@
     </div>
 </div>
 @code{
-    //public List<DerslikRezervDto> derslikRezervDtos = new List<DerslikRezervDto>();//new ScheduleData().GetRoomData();
     public string[] GroupData = new string[] { "MeetingRoomzx" };
-    //private List<DerslikDto> derslikDtos { get; set; } = new List<DerslikDto> {
-    //    new DerslikDto { Ad = "Jammy", Id = 1, Color = "#ea7a57", Capacity = 20, Type = "Conference" },
-    //    new DerslikDto { Ad = "Tweety", Id = 2, Color = "#7fa900", Capacity = 7, Type = "Cabin" },
-    //    new DerslikDto { Ad = "Nestle", Id = 3, Color = "#5978ee", Capacity = 5, Type = "Cabin" },
-    //    new DerslikDto { Ad = "Phoenix", Id = 4, Color = "#fec200", Capacity = 15, Type = "Conference" },
-    //    new DerslikDto { Ad = "Mission", Id = 5, Color = "#df5286", Capacity = 25, Type = "Conference" },
-    //    new DerslikDto { Ad = "Hangout", Id = 6, Color = "#00bdae", Capacity = 10, Type = "Cabin" },
-    //    new DerslikDto { Ad = "Rick Roll", Id = 7, Color = "#865fcf", Capacity = 20, Type = "Conference" },
-    //    new DerslikDto { Ad = "Rainbow", Id = 8, Color = "#1aaa55", Capacity = 8, Type = "Cabin" },
-    //    new DerslikDto { Ad = "Swarm", Id = 9, Color = "#df5286", Capacity = 30, Type = "Conference" },
-    //    new DerslikDto { Ad = "Photogenic", Id = 10, Color = "#710193", Capacity = 25, Type = "Conference" }
-    //};
 }
 <style>
     .e-schedule .e-timeline-view .e-resource-left-td {

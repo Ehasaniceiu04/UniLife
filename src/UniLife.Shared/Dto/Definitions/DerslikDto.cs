@@ -11,7 +11,7 @@ namespace UniLife.Shared.Dto.Definitions
         public override int Id { get => base.Id; set => base.Id = value; }
         public string Ad { get; set; }
         public int Capacity { get; set; }
-        public string Color { get; set; }
+        public string Color { get; set; } = String.Format("#{0:X6}", new Random().Next(0x1000000));
         public string Type { get; set; }
 
         public int BinaId { get; set; }

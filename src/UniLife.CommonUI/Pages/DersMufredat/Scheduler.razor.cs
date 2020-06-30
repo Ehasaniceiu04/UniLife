@@ -1,16 +1,14 @@
-﻿using System;
+﻿using MatBlazor;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Http;
+using Syncfusion.Blazor.Schedule;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
-using Syncfusion.Blazor.Schedule;
+using UniLife.CommonUI.Extensions;
 using UniLife.Shared.Dto;
 using UniLife.Shared.Dto.Definitions;
-using Microsoft.AspNetCore.Http;
-using MatBlazor;
-using System.Net.Http.Json;
-using Syncfusion.Blazor.Gantt;
 
 namespace UniLife.CommonUI.Pages.DersMufredat
 {
@@ -18,43 +16,92 @@ namespace UniLife.CommonUI.Pages.DersMufredat
     {
         [Inject]
         public System.Net.Http.HttpClient Http { get; set; }
+        [Inject]
+        public MatBlazor.IMatToaster matToaster { get; set; }
 
         List<DerslikDto> derslikDtos { get; set; } = new List<DerslikDto>();
         List<DerslikRezervDto> derslikRezervDtos { get; set; } = new List<DerslikRezervDto>();
 
-        //protected override void OnInitialized()
-        //{
-        //    //ReadDersliks();
-        //}
-
-        protected async override Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
-            await ReadDersliks();
-            //await ReadDerlikRezervs();
+            ReadDersliks();
+            ReadDerlikRezervs();
         }
 
-        async Task ReadDersliks()
+        //protected async override Task OnInitializedAsync()
+        //{
+        //    await ReadDersliks();
+        //    //await ReadDerlikRezervs();
+        //}
+
+        void ReadDersliks()
         {
-            ApiResponseDto<List<DerslikDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<DerslikDto>>>("api/derslik");
+            ApiResponseDto<List<DerslikDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<DerslikDto>>>("api/derslik").Result;
             derslikDtos = apiResponse.Result;
         }
 
-        //async Task ReadDerlikRezervs()
-        //{
-        //    ApiResponseDto<List<DerslikRezervDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<DerslikRezervDto>>>("api/derslikrezerv");
-        //    if (apiResponse)
-        //    {
+        void ReadDerlikRezervs()
+        {
+            ApiResponseDto<List<DerslikRezervDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<DerslikRezervDto>>>("api/derslikrezerv").Result;
+            if (apiResponse.StatusCode == StatusCodes.Status200OK)
+            {
+                derslikRezervDtos = apiResponse.Result;
+            }
+            else
+            {
+                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Rezervayson bilgileri getirilirken hata oluştu!");
+            }
 
-        //    }
-        //    derslikRezervDtos = apiResponse.Result;
-        //}
+        }
 
-        //public void OnActionCompleted(ActionEventArgs<DerslikRezervDto> args)
-        //{
-        //    if (args.RequestType == "eventCreated" || args.RequestType == "eventChanged")   //To check for request type is add event or edit event
-        //    {
+        public async Task OnActionCompleted(Syncfusion.Blazor.Schedule.ActionEventArgs<DerslikRezervDto> args)
+        {
+            if (args.RequestType == "eventCreated" ) 
+            {
+                ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/derslikrezerv", args.AddedRecords.FirstOrDefault());
+                if (apiResponse.StatusCode == StatusCodes.Status200OK)
+                {
+                    matToaster.Add(apiResponse.Message, MatToastType.Success);
+                    //dersAcilanDtos.FirstOrDefault(x => x.Id == 0).Id = apiResponse.Result.Id;
+                    //DersAcilanGrid.Refresh();
+                }
+                else
+                {
+                    //dersAcilanDtos.Remove(dersAcilanDto);
+                    //DersAcilanGrid.Refresh();
+                    matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Rezervasyon oluşturma hatası!");
+                }
+            }
+            else if(args.RequestType == "eventChanged")
+            {
+                ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>("api/derslikrezerv", args.ChangedRecords.FirstOrDefault());
+                if (apiResponse.StatusCode == StatusCodes.Status200OK)
+                {
+                    matToaster.Add(apiResponse.Message, MatToastType.Success);
+                    //dersAcilanDtos.FirstOrDefault(x => x.Id == 0).Id = apiResponse.Result.Id;
+                    //DersAcilanGrid.Refresh();
+                }
+                else
+                {
+                    //dersAcilanDtos.Remove(dersAcilanDto);
+                    //DersAcilanGrid.Refresh();
+                    matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Rezervasyon düzenleme hatası!");
+                }
+            }
+            else if(args.RequestType == "eventRemoved")
+            {
+                var response = await Http.DeleteAsync("api/derslikrezerv/" + args.DeletedRecords.FirstOrDefault().Id);
+                if (response.StatusCode == (System.Net.HttpStatusCode)Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
+                {
+                    matToaster.Add("Rezervasyon Silindi", MatToastType.Success);
+                }
+                else
+                {
+                    matToaster.Add("Rezervasyon oluşturulamadı!: " + response.StatusCode, MatToastType.Danger);
+                }
+            }
+        }
 
-        //    }
-        //}
+
     }
 }

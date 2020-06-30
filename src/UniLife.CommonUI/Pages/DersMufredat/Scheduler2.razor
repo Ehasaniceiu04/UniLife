@@ -1,8 +1,10 @@
 ﻿@page "/scheduler2"
 @using Syncfusion.Blazor.Schedule
+@using UniLife.Shared.Dto.Definitions
+
 <div class="control-section">
     <div class="content-wrapper">
-        <SfSchedule TValue="ScheduleData.RoomData" Width="100%" Height="650px" SelectedDate="@(new DateTime(2020, 1, 1))" CurrentView="View.TimelineWeek">
+        <SfSchedule TValue="DerslikRezervDto" Width="100%" Height="650px" SelectedDate="@(new DateTime(2020, 1, 1))" CurrentView="View.TimelineWeek">
             <ScheduleWorkHours Start="08:00" End="18:00"></ScheduleWorkHours>
             <ScheduleViews>
                 <ScheduleView Option="View.TimelineDay">
@@ -14,18 +16,19 @@
             </ScheduleViews>
             <ScheduleGroup EnableCompactView="false" Resources="@GroupData"></ScheduleGroup>
             <ScheduleResources>
-                <ScheduleResource TValue="ScheduleData.RoomsData" DataSource="@ResourceData" Field="RoomId" Title="Room Type" Name="MeetingRoom" TextField="Name" IdField="Id" ColorField="Color" AllowMultiple="true"></ScheduleResource>
+                <ScheduleResource TValue="DerslikDto" DataSource="@derslikDtos" Field="DerslikId" Title="Room Type" Name="MeetingRoom" TextField="Ad" IdField="Id" ColorField="Color" AllowMultiple="true"></ScheduleResource>
             </ScheduleResources>
             <ScheduleTemplates>
                 <ResourceHeaderTemplate>
                     <div class='template-wrap'>
-                        <div class="room-name">@(((context as ScheduleData.RoomData).ResourceData as ScheduleData.RoomsData).Name)</div>
-                        <div class="room-type">@(((context as ScheduleData.RoomData).ResourceData as ScheduleData.RoomsData).Capacity)</div>
-                        <div class="room-capacity">@(((context as ScheduleData.RoomData).ResourceData as ScheduleData.RoomsData).Type)</div>
+                        <div class="room-name">@(((context as DerslikRezervDto).ResourceData as DerslikDto).Ad)</div>
+                        <div class="room-type">@(((context as DerslikRezervDto).ResourceData as DerslikDto).Capacity)</div>
+                        <div class="room-capacity">@(((context as DerslikRezervDto).ResourceData as DerslikDto).Type)</div>
                     </div>
                 </ResourceHeaderTemplate>
             </ScheduleTemplates>
-            <ScheduleEventSettings DataSource="@DataSource">
+            @*<ScheduleEvents TValue="DerslikRezervDto" ActionCompleted="OnActionCompleted"></ScheduleEvents>*@
+            <ScheduleEventSettings DataSource="@derslikRezervDtos">
                 <ScheduleField>
                     <FieldSubject Title="Travel Summary" Name="Subject"></FieldSubject>
                     <FieldLocation Title="Source" Name="Location"></FieldLocation>
@@ -38,20 +41,28 @@
     </div>
 </div>
 @code{
-    public List<ScheduleData.RoomData> DataSource = new ScheduleData().GetRoomData();
+    public List<DerslikRezervDto> derslikRezervDtos = new List<DerslikRezervDto>();
     public string[] GroupData = new string[] { "MeetingRoom" };
-    private List<ScheduleData.RoomsData> ResourceData { get; set; } = new List<ScheduleData.RoomsData> {
-        new ScheduleData.RoomsData { Name = "Jammy", Id = 1, Color = "#ea7a57", Capacity = 20, Type = "Conference" },
-        new ScheduleData.RoomsData { Name = "Tweety", Id = 2, Color = "#7fa900", Capacity = 7, Type = "Cabin" },
-        new ScheduleData.RoomsData { Name = "Nestle", Id = 3, Color = "#5978ee", Capacity = 5, Type = "Cabin" },
-        new ScheduleData.RoomsData { Name = "Phoenix", Id = 4, Color = "#fec200", Capacity = 15, Type = "Conference" },
-        new ScheduleData.RoomsData { Name = "Mission", Id = 5, Color = "#df5286", Capacity = 25, Type = "Conference" },
-        new ScheduleData.RoomsData { Name = "Hangout", Id = 6, Color = "#00bdae", Capacity = 10, Type = "Cabin" },
-        new ScheduleData.RoomsData { Name = "Rick Roll", Id = 7, Color = "#865fcf", Capacity = 20, Type = "Conference" },
-        new ScheduleData.RoomsData { Name = "Rainbow", Id = 8, Color = "#1aaa55", Capacity = 8, Type = "Cabin" },
-        new ScheduleData.RoomsData { Name = "Swarm", Id = 9, Color = "#df5286", Capacity = 30, Type = "Conference" },
-        new ScheduleData.RoomsData { Name = "Photogenic", Id = 10, Color = "#710193", Capacity = 25, Type = "Conference" }
+    private List<DerslikDto> derslikDtos { get; set; } = new List<DerslikDto> {
+        new DerslikDto { Ad = "Jammy", Id = 1, Color = "#ea7a57", Capacity = 20, Type = "Conference" },
+        new DerslikDto { Ad = "Tweety", Id = 2, Color = "#7fa900", Capacity = 7, Type = "Cabin" },
+        new DerslikDto { Ad = "Nestle", Id = 3, Color = "#5978ee", Capacity = 5, Type = "Cabin" },
+        new DerslikDto { Ad = "Phoenix", Id = 4, Color = "#fec200", Capacity = 15, Type = "Conference" },
+        new DerslikDto { Ad = "Mission", Id = 5, Color = "#df5286", Capacity = 25, Type = "Conference" },
+        new DerslikDto { Ad = "Hangout", Id = 6, Color = "#00bdae", Capacity = 10, Type = "Cabin" },
+        new DerslikDto { Ad = "Rick Roll", Id = 7, Color = "#865fcf", Capacity = 20, Type = "Conference" },
+        new DerslikDto { Ad = "Rainbow", Id = 8, Color = "#1aaa55", Capacity = 8, Type = "Cabin" },
+        new DerslikDto { Ad = "Swarm", Id = 9, Color = "#df5286", Capacity = 30, Type = "Conference" },
+        new DerslikDto { Ad = "Photogenic", Id = 10, Color = "#710193", Capacity = 25, Type = "Conference" }
     };
+
+    //public void OnActionCompleted(Syncfusion.Blazor.Schedule.ActionEventArgs<DerslikRezervDto> args)
+    //{
+    //    if (args.RequestType == "eventCreated" || args.RequestType == "eventChanged")
+    //    {
+
+    //    }
+    //}
 }
 <style>
     .e-schedule .e-timeline-view .e-resource-left-td {
