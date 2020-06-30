@@ -20,7 +20,7 @@
             <ScheduleTemplates>
                 <ResourceHeaderTemplate>
                     @{
-                        DerslikDto contextDerslik = ((context as DerslikRezervDto).Derslik as DerslikDto);
+                        DerslikDto contextDerslik = ((context as DerslikRezervDto).ResourceData as DerslikDto);
                     }
                     <div class='template-wrap'>
                         <div class="room-name">@(contextDerslik.Ad)</div>
@@ -45,18 +45,18 @@
 @code{
     //public List<DerslikRezervDto> derslikRezervDtos = new List<DerslikRezervDto>();//new ScheduleData().GetRoomData();
     public string[] GroupData = new string[] { "MeetingRoomzx" };
-    private List<DerslikDto> derslikDtos { get; set; } = new List<DerslikDto> {
-        new DerslikDto { Ad = "Jammy", Id = 1, Color = "#ea7a57", Capacity = 20, Type = "Conference" },
-        new DerslikDto { Ad = "Tweety", Id = 2, Color = "#7fa900", Capacity = 7, Type = "Cabin" },
-        new DerslikDto { Ad = "Nestle", Id = 3, Color = "#5978ee", Capacity = 5, Type = "Cabin" },
-        new DerslikDto { Ad = "Phoenix", Id = 4, Color = "#fec200", Capacity = 15, Type = "Conference" },
-        new DerslikDto { Ad = "Mission", Id = 5, Color = "#df5286", Capacity = 25, Type = "Conference" },
-        new DerslikDto { Ad = "Hangout", Id = 6, Color = "#00bdae", Capacity = 10, Type = "Cabin" },
-        new DerslikDto { Ad = "Rick Roll", Id = 7, Color = "#865fcf", Capacity = 20, Type = "Conference" },
-        new DerslikDto { Ad = "Rainbow", Id = 8, Color = "#1aaa55", Capacity = 8, Type = "Cabin" },
-        new DerslikDto { Ad = "Swarm", Id = 9, Color = "#df5286", Capacity = 30, Type = "Conference" },
-        new DerslikDto { Ad = "Photogenic", Id = 10, Color = "#710193", Capacity = 25, Type = "Conference" }
-    };
+    //private List<DerslikDto> derslikDtos { get; set; } = new List<DerslikDto> {
+    //    new DerslikDto { Ad = "Jammy", Id = 1, Color = "#ea7a57", Capacity = 20, Type = "Conference" },
+    //    new DerslikDto { Ad = "Tweety", Id = 2, Color = "#7fa900", Capacity = 7, Type = "Cabin" },
+    //    new DerslikDto { Ad = "Nestle", Id = 3, Color = "#5978ee", Capacity = 5, Type = "Cabin" },
+    //    new DerslikDto { Ad = "Phoenix", Id = 4, Color = "#fec200", Capacity = 15, Type = "Conference" },
+    //    new DerslikDto { Ad = "Mission", Id = 5, Color = "#df5286", Capacity = 25, Type = "Conference" },
+    //    new DerslikDto { Ad = "Hangout", Id = 6, Color = "#00bdae", Capacity = 10, Type = "Cabin" },
+    //    new DerslikDto { Ad = "Rick Roll", Id = 7, Color = "#865fcf", Capacity = 20, Type = "Conference" },
+    //    new DerslikDto { Ad = "Rainbow", Id = 8, Color = "#1aaa55", Capacity = 8, Type = "Cabin" },
+    //    new DerslikDto { Ad = "Swarm", Id = 9, Color = "#df5286", Capacity = 30, Type = "Conference" },
+    //    new DerslikDto { Ad = "Photogenic", Id = 10, Color = "#710193", Capacity = 25, Type = "Conference" }
+    //};
 }
 <style>
     .e-schedule .e-timeline-view .e-resource-left-td {

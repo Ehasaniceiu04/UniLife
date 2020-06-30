@@ -19,7 +19,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         [Inject]
         public System.Net.Http.HttpClient Http { get; set; }
 
-        //List<DerslikDto> derslikDtos { get; set; } = new List<DerslikDto>();
+        List<DerslikDto> derslikDtos { get; set; } = new List<DerslikDto>();
         List<DerslikRezervDto> derslikRezervDtos { get; set; } = new List<DerslikRezervDto>();
 
         //protected override void OnInitialized()
@@ -27,15 +27,15 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         //    //ReadDersliks();
         //}
 
-        ////protected async override Task OnInitializedAsync()
-        ////{
-        ////    await ReadDersliks();
-        ////    //await ReadDerlikRezervs();
-        ////}
-
-        void ReadDersliks()
+        protected async override Task OnInitializedAsync()
         {
-            ApiResponseDto<List<DerslikDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<DerslikDto>>>("api/derslik").Result;
+            await ReadDersliks();
+            //await ReadDerlikRezervs();
+        }
+
+        async Task ReadDersliks()
+        {
+            ApiResponseDto<List<DerslikDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<DerslikDto>>>("api/derslik");
             derslikDtos = apiResponse.Result;
         }
 

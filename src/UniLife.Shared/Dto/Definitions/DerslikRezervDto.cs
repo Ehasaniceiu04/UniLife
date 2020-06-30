@@ -8,6 +8,7 @@ namespace UniLife.Shared.Dto.Definitions
 {
     public class DerslikRezervDto : EntityDto<int>
     {
+        public override int Id { get => base.Id; set => base.Id = value; }
         public string Subject { get; set; }
         public string Location { get; set; }
         public string Description { get; set; }
@@ -22,7 +23,7 @@ namespace UniLife.Shared.Dto.Definitions
         public string EndTimezone { get; set; }
 
         public int DerslikId { get; set; }
-        public virtual DerslikDto Derslik{ get; set; }
+        public DerslikDto ResourceData { get; set; } // foreign key olarka aslı modelde farklı.
 
         public bool IsBlock { get; set; }
         public virtual string ElementType { get; set; }

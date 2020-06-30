@@ -8,6 +8,7 @@ namespace UniLife.Shared.Dto.Definitions
 {
     public class DerslikDto : EntityDto<int>
     {
+        public override int Id { get => base.Id; set => base.Id = value; }
         public string Ad { get; set; }
         public int Capacity { get; set; }
         public string Color { get; set; }

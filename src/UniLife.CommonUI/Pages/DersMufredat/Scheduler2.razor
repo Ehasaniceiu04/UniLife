@@ -8,23 +8,20 @@
                 <ScheduleView Option="View.TimelineDay">
                     <ScheduleViewTimeScale SlotCount="1" Interval="60"></ScheduleViewTimeScale>
                 </ScheduleView>
-                @*<ScheduleView Option="View.TimelineWeek">
+                <ScheduleView Option="View.TimelineWeek">
                     <ScheduleViewTimeScale SlotCount="1" Interval="60"></ScheduleViewTimeScale>
-                </ScheduleView>*@
+                </ScheduleView>
             </ScheduleViews>
             <ScheduleGroup EnableCompactView="false" Resources="@GroupData"></ScheduleGroup>
             <ScheduleResources>
-                <ScheduleResource TValue="ScheduleData.RoomsData" DataSource="@ResourceData" Field="RoomId" Title="Room Type" Name="MeetingRoomas" TextField="Name" IdField="Id" ColorField="Color" AllowMultiple="true"></ScheduleResource>
+                <ScheduleResource TValue="ScheduleData.RoomsData" DataSource="@ResourceData" Field="RoomId" Title="Room Type" Name="MeetingRoom" TextField="Name" IdField="Id" ColorField="Color" AllowMultiple="true"></ScheduleResource>
             </ScheduleResources>
             <ScheduleTemplates>
                 <ResourceHeaderTemplate>
-                    @{
-                        ScheduleData.RoomsData contextDerslik = ((context as ScheduleData.RoomData).ResourceData as ScheduleData.RoomsData);
-                    }
                     <div class='template-wrap'>
-                        <div class="room-name">@(contextDerslik.Name)</div>
-                        <div class="room-type">@(contextDerslik.Capacity)</div>
-                        <div class="room-capacity">@(contextDerslik.Type)</div>
+                        <div class="room-name">@(((context as ScheduleData.RoomData).ResourceData as ScheduleData.RoomsData).Name)</div>
+                        <div class="room-type">@(((context as ScheduleData.RoomData).ResourceData as ScheduleData.RoomsData).Capacity)</div>
+                        <div class="room-capacity">@(((context as ScheduleData.RoomData).ResourceData as ScheduleData.RoomsData).Type)</div>
                     </div>
                 </ResourceHeaderTemplate>
             </ScheduleTemplates>
@@ -41,10 +38,9 @@
     </div>
 </div>
 @code{
-    public List<ScheduleData.RoomData> DataSource = new List<ScheduleData.RoomData>(); //new ScheduleData().GetRoomData();
-    public string[] GroupData = new string[] { "MeetingRoomas" };
-    private List<ScheduleData.RoomsData> ResourceData { get; set; } = new List<ScheduleData.RoomsData>
-    {
+    public List<ScheduleData.RoomData> DataSource = new ScheduleData().GetRoomData();
+    public string[] GroupData = new string[] { "MeetingRoom" };
+    private List<ScheduleData.RoomsData> ResourceData { get; set; } = new List<ScheduleData.RoomsData> {
         new ScheduleData.RoomsData { Name = "Jammy", Id = 1, Color = "#ea7a57", Capacity = 20, Type = "Conference" },
         new ScheduleData.RoomsData { Name = "Tweety", Id = 2, Color = "#7fa900", Capacity = 7, Type = "Cabin" },
         new ScheduleData.RoomsData { Name = "Nestle", Id = 3, Color = "#5978ee", Capacity = 5, Type = "Cabin" },
