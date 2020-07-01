@@ -221,30 +221,6 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         async Task Refresh()
         {
 
-            //OData<DersAcilanDto> apiResponse;
-            //if (_dersAcilanDto.Sinif == 0 || _dersAcilanDto.Sinif == null)
-            //{
-            //    apiResponse = await Http.GetFromJsonAsync<OData<DersAcilanDto>>($"odata/dersacilans?$filter=DonemId eq {_dersAcilanDto.DonemId} and ProgramId eq {_dersAcilanDto.ProgramId} and ProgramId eq {_dersAcilanDto.ProgramId} &$expand=Akademisyen($select=Id,Ad)");
-            //}
-            //else
-            //{
-            //    apiResponse = await Http.GetFromJsonAsync<OData<DersAcilanDto>>($"odata/dersacilans?$filter=DonemId eq {_dersAcilanDto.DonemId} and ProgramId eq {_dersAcilanDto.ProgramId} and ProgramId eq {_dersAcilanDto.ProgramId} and Sinif eq {_dersAcilanDto.Sinif} &$expand=Akademisyen($select=Id,Ad)");
-            //}
-
-            //DersAcDtos = apiResponse.Value;
-            //StateHasChanged();
-
-
-
-            //if (apiResponse.Value != null)
-            //{
-
-            //}
-            //else
-            //{
-            //    matToaster.Add("", MatToastType.Danger, "Bölüm getirilirken hata oluştu!");
-            //}
-
             await GetDersAcilansByFilters();
         }
 
