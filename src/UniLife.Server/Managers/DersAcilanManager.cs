@@ -48,6 +48,12 @@ namespace UniLife.Server.Managers
             var dersAcilans = await _dersAcilanStore.PostDersAcilansByFilters(sinavDersAcDto);
             return new ApiResponse(Status200OK, "Selected DersAcilanDto", dersAcilans);
         }
+        public async Task<ApiResponse> DersAcilansByLongFilters(ReqDersAcilansByLongFilters reqDersAcilansByLongFilters)
+        {
+            var dersAcilans = await _dersAcilanStore.DersAcilansByLongFilters(reqDersAcilansByLongFilters);
+            return new ApiResponse(Status200OK, "Selected DersAcilanDto", dersAcilans);
+        }
+
         public async Task<ApiResponse> PostCreateNewSubesAndUpdateOgrenciSubes(SubeDersAcilanOgrenciCreateDto subeDersAcilanOgrenciCreateDto)
         {
             await _dersAcilanStore.PostCreateNewSubesAndUpdateOgrenciSubes(subeDersAcilanOgrenciCreateDto);
@@ -84,5 +90,7 @@ namespace UniLife.Server.Managers
             await _dersAcilanStore.UpdateDersAcilanAkademsiyen(dersAcilanId, akademisyenId);
             return new ApiResponse(Status200OK, "Selected DersAcilanDto", null);
         }
+
+        
     }
 }

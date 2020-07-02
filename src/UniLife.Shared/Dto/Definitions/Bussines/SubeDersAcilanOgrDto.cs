@@ -9,7 +9,7 @@ namespace UniLife.Shared.Dto.Definitions
 
     public class SubeDersAcilanOgrenciCreateDto
     {
-        public List<int> Subes { get; set; }
+        public List<int?> Subes { get; set; }
         public int DersAcilanId { get; set; }
         public List<OgrenciSubeDto> OgrenciIdsWithSubes { get; set; }
     }

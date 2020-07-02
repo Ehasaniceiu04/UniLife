@@ -270,7 +270,7 @@ namespace UniLife.Storage.Stores
                                                        .WhereIf(sinavDersAcDto.programId != null, x => x.ProgramId == sinavDersAcDto.programId)
                                                        .WhereIf((sinavDersAcDto.sinif != null && sinavDersAcDto.sinif != 0), x => x.Sinif == sinavDersAcDto.sinif)
                                                        .WhereIf(!string.IsNullOrEmpty(sinavDersAcDto.dersKodu), x => x.Kod == sinavDersAcDto.dersKodu)
-                                                       .Include(x => x.Akademisyen)
+                                                       //.Include(x => x.Akademisyen)
 
                               let cCount = d.DersKayits.Count()
                               select new DersAcilanDto
@@ -289,6 +289,41 @@ namespace UniLife.Storage.Stores
                                   SubeCount = gcs.Count(),
                                   OgrCount = gcs.Sum(x=>x.OgrCount)
                               });
+
+            return await dersAcilans.ToListAsync();
+        }
+
+        public async Task<List<ResDersAcilansByLongFilters>> DersAcilansByLongFilters(ReqDersAcilansByLongFilters reqDersAcilansByLongFilters)
+        {
+            var dersAcilans = from d in _db.DersAcilans.WhereIf(reqDersAcilansByLongFilters.DonemId != null, x => x.DonemId == reqDersAcilansByLongFilters.DonemId)
+                                                       .WhereIf(reqDersAcilansByLongFilters.ProgramId != null, x => x.ProgramId == reqDersAcilansByLongFilters.ProgramId)
+                                                       .WhereIf(reqDersAcilansByLongFilters.Sube != null, x => x.Sube == reqDersAcilansByLongFilters.Sube)
+                                                       .WhereIf((reqDersAcilansByLongFilters.Sinif != null && reqDersAcilansByLongFilters.Sinif != 0), x => x.Sinif == reqDersAcilansByLongFilters.Sinif)
+                                                       .WhereIf(!string.IsNullOrEmpty(reqDersAcilansByLongFilters.Kod), x => x.Kod == reqDersAcilansByLongFilters.Kod)
+                                                       .WhereIf(!string.IsNullOrEmpty(reqDersAcilansByLongFilters.Ad), x => x.Ad == reqDersAcilansByLongFilters.Ad)
+                              join p in _db.Programs on d.ProgramId equals p.Id
+                              join a in _db.Akademisyens.WhereIf(!string.IsNullOrEmpty(reqDersAcilansByLongFilters.AkademisyenAd), x => x.Ad == reqDersAcilansByLongFilters.AkademisyenAd)
+                              on d.AkademisyenId equals a.Id into AkademisyensLeft
+                              from akaLeft in AkademisyensLeft.DefaultIfEmpty()
+                              let cCount = d.DersKayits.Count()
+                              select new ResDersAcilansByLongFilters
+                              {
+                                  DersAcilanId = d.Id,
+                                  Sube = d.Sube,
+                                  DersKod = d.Kod,
+                                  DersAd = d.Ad,
+                                  Teo = d.TeoSaat,
+                                  Uyg = d.UygSaat,
+                                  Kredi = d.Kredi,
+                                  Akts = d.Akts,
+                                  Sinif = d.Sinif,
+                                  Kont = d.TopKont,
+                                  Kayit = cCount,
+                                  Zorunlu = d.Zorunlu,
+                                  ProgramAd = p.Ad,
+                                  AkademisyenAd = akaLeft.Ad
+                                  
+                              };
 
             return await dersAcilans.ToListAsync();
         }
@@ -345,7 +380,7 @@ namespace UniLife.Storage.Stores
             {
                 DersAcilan subeliDersAcilan = new DersAcilan();
                 subeliDersAcilan = acilacakDersler.DeepClone();
-                subeliDersAcilan.Sube = item;
+                subeliDersAcilan.Sube = (int)item;
                 subeliDersAcilan.Id = 0;
                 acılacakSubeliDersler.Add(subeliDersAcilan);
             }
@@ -430,5 +465,7 @@ namespace UniLife.Storage.Stores
             dersAcilan.AkademisyenId = akademisyenId;
             await _db.SaveChangesAsync(CancellationToken.None);
         }
+
+        
     }
 }

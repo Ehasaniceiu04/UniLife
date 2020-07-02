@@ -1,7 +1,9 @@
 ﻿using MatBlazor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
+
 using Syncfusion.Blazor.DropDowns;
+using Syncfusion.Blazor.Schedule;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Json;
@@ -9,6 +11,7 @@ using System.Threading.Tasks;
 using UniLife.CommonUI.Extensions;
 using UniLife.Shared.Dto;
 using UniLife.Shared.Dto.Definitions;
+
 
 namespace UniLife.CommonUI.Pages.DersMufredat
 {
@@ -18,6 +21,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         public System.Net.Http.HttpClient Http { get; set; }
         [Inject]
         public MatBlazor.IMatToaster matToaster { get; set; }
+
 
         List<DerslikDto> derslikDtos { get; set; } = new List<DerslikDto>();
         List<DerslikRezervDto> derslikRezervDtos { get; set; } = new List<DerslikRezervDto>();
@@ -50,11 +54,21 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         public DersAcilanDto _dersAcilanDto { get; set; } = new DersAcilanDto(); //For to keep filter parameters.
 
+        Syncfusion.Blazor.Grids.SfGrid<ResDersAcilansByLongFilters> DersAcGrid;
+        public List<ResDersAcilansByLongFilters> DersAcDtos = new List<ResDersAcilansByLongFilters>();
+
+        public ResDersAcilansByLongFilters SelectedDersAcilanGridRow { get; set; }
+
+
+        Syncfusion.Blazor.Schedule.SfSchedule<DerslikRezervDto> DersProgramSche;
         //protected override void OnInitialized()
         //{
         //    ReadDersliks();
         //    ReadDerlikRezervs();
         //}
+
+
+
 
         protected async override Task OnInitializedAsync()
         {
@@ -191,8 +205,46 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         {
 
             //await GetDersAcilansByFilters();
+
+            ApiResponseDto<List<ResDersAcilansByLongFilters>> apiResponse = await Http.PostJsonAsync<ApiResponseDto<List<ResDersAcilansByLongFilters>>>("api/DersAcilan/DersAcilansByLongFilters", _dersAcilanDto);
+            if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
+            {
+                DersAcDtos = apiResponse.Result;
+                DersAcGrid.Refresh();
+            }
+            else
+            {
+                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Açılan Derslerin bilgisi getirilirken hata oluştu");
+            }
         }
 
+
+        public void OnPopupOpen(Syncfusion.Blazor.Schedule.PopupOpenEventArgs<DerslikRezervDto> args)
+        {
+            if (args.Type == PopupType.QuickInfo)
+            {
+                args.Cancel = true;
+            }
+            else if (args.Type == PopupType.Editor)
+            {
+                args.Data.Subject = SelectedDersAcilanGridRow.DersAd;
+                //DersProgramSche.Refresh();
+                args.Cancel = false;
+            }
+        }
+
+        public void OnActionBegin(Syncfusion.Blazor.Schedule.ActionEventArgs<DerslikRezervDto> args)
+        {
+            if (args.RequestType == "eventRemove")   //To check for request type is event delete
+            {
+                args.Cancel = true;   //To prevent the appointment deletion
+            }
+        }
+
+        public async Task RowSelectedHandler(Syncfusion.Blazor.Grids.RowSelectEventArgs<ResDersAcilansByLongFilters> args)
+        {
+            SelectedDersAcilanGridRow = args.Data;
+        }
         public async Task OnActionCompleted(Syncfusion.Blazor.Schedule.ActionEventArgs<DerslikRezervDto> args)
         {
             if (args.RequestType == "eventCreated")

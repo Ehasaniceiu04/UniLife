@@ -89,6 +89,14 @@ namespace UniLife.Server.Controllers
                 await _dersAcilanManager.PostDersAcilansByFilters(sinavDersAcDto) :
                 new ApiResponse(Status400BadRequest, "DersAcilan Model is Invalid");
 
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("DersAcilansByLongFilters")]
+        public async Task<ApiResponse> DersAcilansByLongFilters([FromBody] ReqDersAcilansByLongFilters reqDersAcilansByLongFilters)
+            => ModelState.IsValid ?
+                await _dersAcilanManager.DersAcilansByLongFilters(reqDersAcilansByLongFilters) :
+                new ApiResponse(Status400BadRequest, "DersAcilan Model is Invalid");
+
 
         [HttpPost]
         [AllowAnonymous]
