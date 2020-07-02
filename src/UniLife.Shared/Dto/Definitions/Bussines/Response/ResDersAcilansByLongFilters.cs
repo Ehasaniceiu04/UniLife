@@ -25,7 +25,7 @@ namespace UniLife.Shared.Dto.Definitions
         public int Kayit { get; set; }
         public string Kon
         {
-            get { return Kont.ToString() + "+" + Kayit.ToString(); }
+            get { return Kayit.ToString() + "/" + Kont.ToString(); }
         }
         public bool Zorunlu { get; set; }
         public string ProgramAd { get; set; }

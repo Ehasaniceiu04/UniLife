@@ -30,8 +30,8 @@ namespace UniLife.Shared.Dto.Definitions
 
         public bool IsBlock { get; set; }
         public virtual string ElementType { get; set; }
-        public virtual DateTime StartTimeValue { get; set; }
-        public virtual DateTime EndTimeValue { get; set; }
+        //public virtual DateTime StartTimeValue { get; set; } //GMC +3 bilgisi almadık patlatıyordu.
+        //public virtual DateTime EndTimeValue { get; set; }
 
     }
 }

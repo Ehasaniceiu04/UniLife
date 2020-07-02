@@ -219,21 +219,20 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         }
 
 
-        public void OnPopupOpen(Syncfusion.Blazor.Schedule.PopupOpenEventArgs<DerslikRezervDto> args)
+        public async Task OnPopupOpen(PopupOpenEventArgs<DerslikRezervDto> args)
         {
-
-
-            
             if (args.Type == PopupType.QuickInfo)
             {
-                args.Cancel = true;
+                //args.Cancel = true;
             }
             else if (args.Type == PopupType.Editor)
             {
-                //args.Data.Subject = SelectedDersAcilanGridRow.DersAd;
-                //DersProgramSche.Refresh();
+                //args.Data.DersAcilanId = SelectedDersAcilanGridRow.DersAcilanId;
             }
         }
+
+
+
         //public void OnCellDoubleClick(CellClickEventArgs args)
         //{
         //    //args.Cancel = true;   //To prevent the opening of editor window
@@ -244,22 +243,30 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             SelectedDersAcilanGridRow = args.Data;
         }
 
-        //public async Task OnActionBegin(ActionEventArgs<DerslikRezervDto> args)
-        //{
-        //    if (args.RequestType == "eventRemove")   //To check for request type is event delete
-        //    {
-        //        args.Cancel = true;   //To prevent the appointment deletion
-        //    }
-        //}
+        public void OnActionBegin(Syncfusion.Blazor.Schedule.ActionEventArgs<DerslikRezervDto> args)
+        {
+            if (args.RequestType == "eventCreate")   //To check for request type is event delete
+            {
+                //var eklenen = args.AddedRecords.FirstOrDefault();
+                //eklenen.Subject = SelectedDersAcilanGridRow.DersAd + "-" + eklenen.Subject;
+                args.AddedRecords[0].Subject = SelectedDersAcilanGridRow.DersAd + "-" + args.AddedRecords[0].Subject;
+                args.AddedRecords[0].DersAcilanId = SelectedDersAcilanGridRow.DersAcilanId;
+            }
+        }
+
         public async Task OnActionCompleted(Syncfusion.Blazor.Schedule.ActionEventArgs<DerslikRezervDto> args)
         {
             if (args.RequestType == "eventCreated")
             {
-                args.AddedRecords[0].DersAcilanId = 2;
-                ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/derslikrezerv", args.AddedRecords.FirstOrDefault());
+                args.AddedRecords[0].DersAcilanId = SelectedDersAcilanGridRow.DersAcilanId;
+                //args.AddedRecords[0].Subject = SelectedDersAcilanGridRow.DersAd + "-" + args.AddedRecords[0].Subject;
+                ApiResponseDto<DerslikRezervDto> apiResponse =await Http.PostJsonAsync<ApiResponseDto<DerslikRezervDto>>("api/derslikrezerv", args.AddedRecords.FirstOrDefault());
                 if (apiResponse.StatusCode == StatusCodes.Status200OK)
                 {
                     matToaster.Add(apiResponse.Message, MatToastType.Success);
+                    DersProgramSche.Refresh();
+                    //derslikRezervDtos.FirstOrDefault(x => x.Id == 0).Id = apiResponse.Result.Id;
+                    //DersProgramSche.Refresh();
                     //dersAcilanDtos.FirstOrDefault(x => x.Id == 0).Id = apiResponse.Result.Id;
                     //DersAcilanGrid.Refresh();
                 }
@@ -272,13 +279,12 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             }
             else if (args.RequestType == "eventChanged")
             {
-                args.ChangedRecords[0].DersAcilanId = 2;
-                ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>("api/derslikrezerv", args.ChangedRecords.FirstOrDefault());
+                //args.ChangedRecords[0].DersAcilanId = 2;
+                ApiResponseDto apiResponse =await Http.PutJsonAsync<ApiResponseDto>("api/derslikrezerv", args.ChangedRecords.FirstOrDefault());
                 if (apiResponse.StatusCode == StatusCodes.Status200OK)
                 {
                     matToaster.Add(apiResponse.Message, MatToastType.Success);
-                    //dersAcilanDtos.FirstOrDefault(x => x.Id == 0).Id = apiResponse.Result.Id;
-                    //DersAcilanGrid.Refresh();
+                    
                 }
                 else
                 {
@@ -289,14 +295,14 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             }
             else if (args.RequestType == "eventRemoved")
             {
-                var response = await Http.DeleteAsync("api/derslikrezerv/" + args.DeletedRecords.FirstOrDefault().Id);
+                var response =await Http.DeleteAsync("api/derslikrezerv/" + args.DeletedRecords.FirstOrDefault().Id);
                 if (response.StatusCode == (System.Net.HttpStatusCode)Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
                 {
                     matToaster.Add("Rezervasyon Silindi", MatToastType.Success);
                 }
                 else
                 {
-                    matToaster.Add("Rezervasyon oluşturulamadı!: " + response.StatusCode, MatToastType.Danger);
+                    matToaster.Add("Rezervasyon silinemedi!: " + response.StatusCode, MatToastType.Danger);
                 }
             }
         }

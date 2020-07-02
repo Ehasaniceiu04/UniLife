@@ -10,13 +10,15 @@
         margin-bottom: 0.2rem;
     }
 
-    .e-input-group .e-input-group-icon, .e-input-group.e-control-wrapper .e-input-group-icon {
-         min-height: 0px; 
-         min-width: 0px; 
-    }
+    /*.e-input-group .e-input-group-icon, .e-input-group.e-control-wrapper .e-input-group-icon {
+        min-height: 0px;
+        min-width: 0px;
+    }*/
+
     input.e-input, .e-input-group input, .e-input-group.e-control-wrapper input, .e-input-group input.e-input, .e-input-group.e-control-wrapper input.e-input {
         height: auto;
     }
+
     .col-form-label-sm {
         padding-top: unset;
         padding-bottom: unset;
@@ -27,110 +29,110 @@
     <div class="content-wrapper">
 
         @*<form>*@
-            <div class="row pb-2 bg-light text-dark">
-                <div class="col-sm-12 col-md-6">
-                    <div class="form-group row">
-                        <label for="DropDonem" class="col-sm-2 col-form-label-sm">Dönem</label>
-                        <div class="col-sm-5">
-                            <SfDropDownList ID="DropDonem" @ref="DropDonem" TItem="DonemDto" Index="0" CssClass="form-control-sm"
-                                            TValue="int?" PopupHeight="230px"
-                                            @bind-Value="@_dersAcilanDto.DonemId" DataSource="@donemDtos">
-                                <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                            </SfDropDownList>
-                        </div>
-                        <label for="DropSinif" class="col-sm-2 col-form-label-sm">Sınıf</label>
-                        <div class="col-sm-3">
-                            <SfDropDownList ID="DropSinif" @ref="DropSinif" ShowClearButton="true" TItem="SinifDto" CssClass="form-control-sm"
-                                            TValue="int?"
-                                            DataSource="@(sinifDtos)" Value="@(_dersAcilanDto.Sinif)">
-                                <DropDownListEvents TValue="int?" ValueChange="SinifChange"></DropDownListEvents>
-                                <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                            </SfDropDownList>
-                        </div>
+        <div class="row pb-2 bg-light text-dark">
+            <div class="col-sm-12 col-md-6">
+                <div class="form-group row">
+                    <label for="DropDonem" class="col-sm-2 col-form-label-sm">Dönem</label>
+                    <div class="col-sm-5">
+                        <SfDropDownList ID="DropDonem" @ref="DropDonem" TItem="DonemDto" Index="0" CssClass="form-control-sm"
+                                        TValue="int?" PopupHeight="230px"
+                                        @bind-Value="@_dersAcilanDto.DonemId" DataSource="@donemDtos">
+                            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                        </SfDropDownList>
                     </div>
-                    <div class="form-group row">
-                        <label for="DropFakulte" class="col-sm-2 col-form-label-sm">Fakülte</label>
-                        <div class="col-sm-10">
-                            <SfDropDownList ID="DropFakulte" @ref="DropFakulte" ShowClearButton="true" TItem="KeyValueDto" CssClass="form-control-sm"
-                                            TValue="int?" PopupHeight="230px"
-                                            @bind-Value="@_dersAcilanDto.FakulteId" DataSource="@fakulteDtos">
-                                <DropDownListEvents TValue="int?" ValueChange="FakulteToBolum"></DropDownListEvents>
-                                <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                            </SfDropDownList>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="DropBolum" class="col-sm-2 col-form-label-sm">Bölüm</label>
-                        <div class="col-sm-10">
-                            <SfDropDownList ID="DropBolum" @ref="DropBolum" ShowClearButton="true" TItem="KeyValueDto" CssClass="form-control-sm"
-                                            TValue="int?" PopupHeight="230px"
-                                            @bind-Value="@_dersAcilanDto.BolumId" DataSource="@bolumDtos">
-                                <DropDownListEvents TValue="int?" ValueChange="BolumToProgram"></DropDownListEvents>
-                                <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                            </SfDropDownList>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="DropProgram" class="col-sm-2 col-form-label-sm">Program</label>
-                        <div class="col-sm-10">
-                            <SfDropDownList ID="DropProgram" @ref="DropProgram" ShowClearButton="true" TItem="KeyValueDto" CssClass="form-control-sm"
-                                            TValue="int?" PopupHeight="230px"
-                                            @bind-Value="@_dersAcilanDto.ProgramId" DataSource="@programDtos">
-                                <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                            </SfDropDownList>
-                        </div>
+                    <label for="DropSinif" class="col-sm-2 col-form-label-sm">Sınıf</label>
+                    <div class="col-sm-3">
+                        <SfDropDownList ID="DropSinif" @ref="DropSinif" ShowClearButton="true" TItem="SinifDto" CssClass="form-control-sm"
+                                        TValue="int?"
+                                        DataSource="@(sinifDtos)" Value="@(_dersAcilanDto.Sinif)">
+                            <DropDownListEvents TValue="int?" ValueChange="SinifChange"></DropDownListEvents>
+                            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                        </SfDropDownList>
                     </div>
                 </div>
-
-                <div class="col-sm-12 col-md-6">
-                    <div class="form-group row">
-                        <label for="DropProgram" class="col-sm-2 col-form-label-sm">Ders Kodu</label>
-                        <div class="col-sm-4">
-                            <SfTextBox ID="Kod" CssClass="form-control-sm" @bind-Value="_dersAcilanDto.Kod"></SfTextBox>
-                        </div>
-                        <label for="Ad" class="col-sm-2 col-form-label-sm">Ders Adı</label>
-                        <div class="col-sm-4">
-                            <SfTextBox ID="Ad" CssClass="form-control-sm" @bind-Value="_dersAcilanDto.Ad"></SfTextBox>
-                        </div>
+                <div class="form-group row">
+                    <label for="DropFakulte" class="col-sm-2 col-form-label-sm">Fakülte</label>
+                    <div class="col-sm-10">
+                        <SfDropDownList ID="DropFakulte" @ref="DropFakulte" ShowClearButton="true" TItem="KeyValueDto" CssClass="form-control-sm"
+                                        TValue="int?" PopupHeight="230px"
+                                        @bind-Value="@_dersAcilanDto.FakulteId" DataSource="@fakulteDtos">
+                            <DropDownListEvents TValue="int?" ValueChange="FakulteToBolum"></DropDownListEvents>
+                            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                        </SfDropDownList>
                     </div>
-                    <div class="form-group row">
-                        <label for="Akademisyen" class="col-sm-2 col-form-label-sm">Akademisyen</label>
-                        <div class="col-sm-4">
-                            <SfTextBox ID="Akademisyen" CssClass="form-control-sm" @bind-Value="_dersAcilanDto.AkademisyenAd"></SfTextBox>
-                        </div>
-                        <label for="Sube" class="col-sm-2 col-form-label-sm">Sube</label>
-                        <div class="col-sm-4">
-                            <SfNumericTextBox ID="Sube" CssClass="form-control-sm" Format="n0" @bind-Value="_dersAcilanDto.Sube" ShowSpinButton="false" TValue="int?" Min=1></SfNumericTextBox>
-                        </div>
+                </div>
+                <div class="form-group row">
+                    <label for="DropBolum" class="col-sm-2 col-form-label-sm">Bölüm</label>
+                    <div class="col-sm-10">
+                        <SfDropDownList ID="DropBolum" @ref="DropBolum" ShowClearButton="true" TItem="KeyValueDto" CssClass="form-control-sm"
+                                        TValue="int?" PopupHeight="230px"
+                                        @bind-Value="@_dersAcilanDto.BolumId" DataSource="@bolumDtos">
+                            <DropDownListEvents TValue="int?" ValueChange="BolumToProgram"></DropDownListEvents>
+                            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                        </SfDropDownList>
                     </div>
-                    <div class="form-group row">
-                        <SfButton OnClick="Refresh" CssClass="e-success col-sm-6 .offset-sm-3">Bul / Yenile</SfButton>
+                </div>
+                <div class="form-group row">
+                    <label for="DropProgram" class="col-sm-2 col-form-label-sm">Program</label>
+                    <div class="col-sm-10">
+                        <SfDropDownList ID="DropProgram" @ref="DropProgram" ShowClearButton="true" TItem="KeyValueDto" CssClass="form-control-sm"
+                                        TValue="int?" PopupHeight="230px"
+                                        @bind-Value="@_dersAcilanDto.ProgramId" DataSource="@programDtos">
+                            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                        </SfDropDownList>
                     </div>
-
                 </div>
             </div>
 
-            <div class="row pb-2 bg-light text-dark">
-                <SfGrid ID="DersAcGrid" @ref="DersAcGrid" DataSource="@DersAcDtos" RowHeight="20" AllowSorting="true" AllowSelection="true" AllowFiltering="true" AllowPaging="true">
-                    @* OnRecordClick="OnRecordClickHandler" RowDeselected="RowDeselectedHandler" OnToolbarClick="ToolbarClickHandler" CommandClicked="CommandClickHandler" *@
-                    <GridEvents RowSelected="RowSelectedHandler" TValue="ResDersAcilansByLongFilters"></GridEvents>
-                    <GridSelectionSettings EnableToggle="false" Type="SelectionType.Single"></GridSelectionSettings>
-                    <GridColumns>
-                        <GridColumn Visible="false" Field=@nameof(ResDersAcilansByLongFilters.DersAcilanId) IsIdentity="true" IsPrimaryKey="true"></GridColumn>
-                        <GridColumn AutoFit="true" Field=@nameof(ResDersAcilansByLongFilters.Sube) HeaderText="Şb."></GridColumn>
-                        <GridColumn Field=@nameof(ResDersAcilansByLongFilters.DersKod) HeaderText="Ders Kod"></GridColumn>
-                        <GridColumn Field=@nameof(ResDersAcilansByLongFilters.DersAd) HeaderText="Ders Ad"></GridColumn>
-                        <GridColumn AutoFit="true" Field=@nameof(ResDersAcilansByLongFilters.TU) HeaderText="T+U"></GridColumn>
-                        <GridColumn AutoFit="true" Field=@nameof(ResDersAcilansByLongFilters.Kredi) HeaderText="kre"></GridColumn>
-                        <GridColumn AutoFit="true" Field=@nameof(ResDersAcilansByLongFilters.Akts) HeaderText="AKTS"></GridColumn>
-                        <GridColumn AutoFit="true" Field=@nameof(ResDersAcilansByLongFilters.Sinif) HeaderText="Snf"></GridColumn>
-                        <GridColumn AutoFit="true" Field=@nameof(ResDersAcilansByLongFilters.Kon) HeaderText="Kon"></GridColumn>
-                        <GridColumn AutoFit="true" Field=@nameof(ResDersAcilansByLongFilters.Zorunlu) HeaderText="Zor" DisplayAsCheckBox="true"></GridColumn>
-                        <GridColumn AutoFit="true" Field=@nameof(ResDersAcilansByLongFilters.ProgramAd) HeaderText="Program"></GridColumn>
-                        <GridColumn AutoFit="true" Field=@nameof(ResDersAcilansByLongFilters.AkademisyenAd) HeaderText="Akademisyen"></GridColumn>
-                    </GridColumns>
-                </SfGrid>
+            <div class="col-sm-12 col-md-6">
+                <div class="form-group row">
+                    <label for="DropProgram" class="col-sm-2 col-form-label-sm">Ders Kodu</label>
+                    <div class="col-sm-4">
+                        <SfTextBox ID="Kod" CssClass="form-control-sm" @bind-Value="_dersAcilanDto.Kod"></SfTextBox>
+                    </div>
+                    <label for="Ad" class="col-sm-2 col-form-label-sm">Ders Adı</label>
+                    <div class="col-sm-4">
+                        <SfTextBox ID="Ad" CssClass="form-control-sm" @bind-Value="_dersAcilanDto.Ad"></SfTextBox>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="Akademisyen" class="col-sm-2 col-form-label-sm">Akademisyen</label>
+                    <div class="col-sm-4">
+                        <SfTextBox ID="Akademisyen" CssClass="form-control-sm" @bind-Value="_dersAcilanDto.AkademisyenAd"></SfTextBox>
+                    </div>
+                    <label for="Sube" class="col-sm-2 col-form-label-sm">Sube</label>
+                    <div class="col-sm-4">
+                        <SfNumericTextBox ID="Sube" CssClass="form-control-sm" Format="n0" @bind-Value="_dersAcilanDto.Sube" ShowSpinButton="false" TValue="int?" Min=1></SfNumericTextBox>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <SfButton OnClick="Refresh" CssClass="e-success col-sm-6 .offset-sm-3">Bul / Yenile</SfButton>
+                </div>
+
             </div>
+        </div>
+
+        <div class="row pb-2 bg-light text-dark">
+            <SfGrid ID="DersAcGrid" @ref="DersAcGrid" DataSource="@DersAcDtos" RowHeight="20" AllowSorting="true" AllowSelection="true" AllowFiltering="true" AllowPaging="true">
+                @* OnRecordClick="OnRecordClickHandler" RowDeselected="RowDeselectedHandler" OnToolbarClick="ToolbarClickHandler" CommandClicked="CommandClickHandler" *@
+                <GridEvents RowSelected="RowSelectedHandler" TValue="ResDersAcilansByLongFilters"></GridEvents>
+                <GridSelectionSettings EnableToggle="false" Type="SelectionType.Single"></GridSelectionSettings>
+                <GridColumns>
+                    <GridColumn Visible="false" Field=@nameof(ResDersAcilansByLongFilters.DersAcilanId) IsIdentity="true" IsPrimaryKey="true"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(ResDersAcilansByLongFilters.Sube) HeaderText="Şb."></GridColumn>
+                    <GridColumn Field=@nameof(ResDersAcilansByLongFilters.DersKod) HeaderText="Ders Kod"></GridColumn>
+                    <GridColumn Field=@nameof(ResDersAcilansByLongFilters.DersAd) HeaderText="Ders Ad"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(ResDersAcilansByLongFilters.TU) HeaderText="T+U"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(ResDersAcilansByLongFilters.Kredi) HeaderText="kre"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(ResDersAcilansByLongFilters.Akts) HeaderText="AKTS"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(ResDersAcilansByLongFilters.Sinif) HeaderText="Snf"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(ResDersAcilansByLongFilters.Kon) HeaderText="Kon"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(ResDersAcilansByLongFilters.Zorunlu) HeaderText="Zor" DisplayAsCheckBox="true"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(ResDersAcilansByLongFilters.ProgramAd) HeaderText="Program"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(ResDersAcilansByLongFilters.AkademisyenAd) HeaderText="Akademisyen"></GridColumn>
+                </GridColumns>
+            </SfGrid>
+        </div>
 
         @*</form>*@
 
@@ -162,9 +164,9 @@
                         </div>
                     </ResourceHeaderTemplate>
                 </ScheduleTemplates>
-                @*OnPopupOpen="@OnPopupOpen" OnCellDoubleClick="OnCellDoubleClick"*@
-                <ScheduleEvents TValue="DerslikRezervDto" ActionCompleted="OnActionCompleted" 
-                                OnPopupOpen="@OnPopupOpen"></ScheduleEvents>
+                @*OnPopupOpen="@OnPopupOpen" OnCellDoubleClick="OnCellDoubleClick" OnActionBegin="OnActionBegin"*@
+                <ScheduleEvents TValue="DerslikRezervDto" ActionCompleted="@OnActionCompleted"
+                                OnPopupOpen="@OnPopupOpen" OnActionBegin="@OnActionBegin"></ScheduleEvents>
                 <ScheduleEventSettings DataSource="@derslikRezervDtos">
                     <ScheduleField>
                         <FieldSubject Title="Yerleştirilen Ders" Name="Subject"></FieldSubject>
