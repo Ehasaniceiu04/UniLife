@@ -221,30 +221,36 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         public void OnPopupOpen(Syncfusion.Blazor.Schedule.PopupOpenEventArgs<DerslikRezervDto> args)
         {
+
+
+            
             if (args.Type == PopupType.QuickInfo)
             {
                 args.Cancel = true;
             }
             else if (args.Type == PopupType.Editor)
             {
-                args.Data.Subject = SelectedDersAcilanGridRow.DersAd;
+                //args.Data.Subject = SelectedDersAcilanGridRow.DersAd;
                 //DersProgramSche.Refresh();
-                args.Cancel = false;
             }
         }
-
-        public void OnActionBegin(Syncfusion.Blazor.Schedule.ActionEventArgs<DerslikRezervDto> args)
-        {
-            if (args.RequestType == "eventRemove")   //To check for request type is event delete
-            {
-                args.Cancel = true;   //To prevent the appointment deletion
-            }
-        }
+        //public void OnCellDoubleClick(CellClickEventArgs args)
+        //{
+        //    //args.Cancel = true;   //To prevent the opening of editor window
+        //}
 
         public async Task RowSelectedHandler(Syncfusion.Blazor.Grids.RowSelectEventArgs<ResDersAcilansByLongFilters> args)
         {
             SelectedDersAcilanGridRow = args.Data;
         }
+
+        //public async Task OnActionBegin(ActionEventArgs<DerslikRezervDto> args)
+        //{
+        //    if (args.RequestType == "eventRemove")   //To check for request type is event delete
+        //    {
+        //        args.Cancel = true;   //To prevent the appointment deletion
+        //    }
+        //}
         public async Task OnActionCompleted(Syncfusion.Blazor.Schedule.ActionEventArgs<DerslikRezervDto> args)
         {
             if (args.RequestType == "eventCreated")

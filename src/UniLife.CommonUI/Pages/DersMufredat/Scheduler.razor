@@ -143,8 +143,8 @@
                         <ScheduleViewTimeScale SlotCount="1" Interval="60"></ScheduleViewTimeScale>
                     </ScheduleView>
                     @*<ScheduleView Option="View.TimelineWeek">
-                        <ScheduleViewTimeScale SlotCount="1" Interval="60"></ScheduleViewTimeScale>
-                    </ScheduleView>*@
+                <ScheduleViewTimeScale SlotCount="1" Interval="60"></ScheduleViewTimeScale>
+            </ScheduleView>*@
                 </ScheduleViews>
                 <ScheduleGroup EnableCompactView="false" Resources="@GroupData"></ScheduleGroup>
                 <ScheduleResources>
@@ -162,10 +162,12 @@
                         </div>
                     </ResourceHeaderTemplate>
                 </ScheduleTemplates>
-                <ScheduleEvents TValue="DerslikRezervDto" ActionCompleted="OnActionCompleted" OnActionBegin="OnActionBegin" OnPopupOpen="@OnPopupOpen"></ScheduleEvents>
+                @*OnPopupOpen="@OnPopupOpen" OnCellDoubleClick="OnCellDoubleClick"*@
+                <ScheduleEvents TValue="DerslikRezervDto" ActionCompleted="OnActionCompleted" 
+                                OnPopupOpen="@OnPopupOpen"></ScheduleEvents>
                 <ScheduleEventSettings DataSource="@derslikRezervDtos">
                     <ScheduleField>
-                        <FieldSubject Title="Yerleştirilen Ders" Name="Subject" Default="Ahmet"></FieldSubject>
+                        <FieldSubject Title="Yerleştirilen Ders" Name="Subject"></FieldSubject>
                         <FieldLocation Title="Source" Name="Location"></FieldLocation>
                         <FieldDescription Title="Comments" Name="Description"></FieldDescription>
                         <FieldStartTime Title="Departure Time" Name="StartTime"></FieldStartTime>
