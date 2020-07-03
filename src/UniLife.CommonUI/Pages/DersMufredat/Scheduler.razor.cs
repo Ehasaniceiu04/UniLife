@@ -17,6 +17,13 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 {
     public partial class Scheduler : ComponentBase
     {
+        public Microsoft.Extensions.Configuration.IConfiguration Configuration { get; }
+
+        public Scheduler(Microsoft.Extensions.Configuration.IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
         [Inject]
         public System.Net.Http.HttpClient Http { get; set; }
         [Inject]
@@ -70,6 +77,9 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         Syncfusion.Blazor.Grids.SfGrid<DerslikRezervDto> SecDrsProgramGrid;
 
         List<DerslikRezervDto> SecDrsPrgDtos = new List<DerslikRezervDto>();
+
+        bool isUyariOpen;
+        string dialogUyariText = "";
         //protected override void OnInitialized()
         //{
         //    ReadDersliks();
@@ -212,7 +222,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         async Task Refresh()
         {
-
+            var authAuthority = Configuration["UniLife:IS4ApplicationUrl"].TrimEnd('/');
             //await GetDersAcilansByFilters();
 
             ApiResponseDto<List<ResDersAcilansByLongFilters>> apiResponse = await Http.PostJsonAsync<ApiResponseDto<List<ResDersAcilansByLongFilters>>>("api/DersAcilan/DersAcilansByLongFilters", _dersAcilanDto);
@@ -230,6 +240,12 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         public async Task OnPopupOpen(PopupOpenEventArgs<DerslikRezervDto> args)
         {
+            if (SelectedDersAcilanGridRow == null)
+            {
+                args.Cancel = true;
+                dialogUyariText = "Ders programı oluşturmadan önce yukarıdan bir ders seçmelisiniz";
+                isUyariOpen = true;
+            }
             if (args.Type == PopupType.QuickInfo)
             {
                 //args.Cancel = true;

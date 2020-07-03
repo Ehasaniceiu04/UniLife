@@ -45,7 +45,7 @@
                                     <label class="col-md-2 col-form-label" for="Akademisyen">Akademisyen</label>
                                     <SfAutoComplete ID="Akademisyen" CssClass="form-control col-sm-10 pb-1" @bind-Value="@(dAcilanContext.AkademisyenId)" TValue="int?" TItem="Akademisyen" Query="@Query">
                                         <SfDataManager Url="http://localhost:53414/odata/Akademisyens" Adaptor="Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
-                                        <AutoCompleteFieldSettings Value="Id" Text="Ad"></AutoCompleteFieldSettings>
+                                        <AutoCompleteFieldSettings Value="Ad" Text="Ad"></AutoCompleteFieldSettings>
                                     </SfAutoComplete>
                                 </div>
                             </div>
