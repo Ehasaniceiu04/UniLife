@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using UniLife.CommonUI.Extensions;
 using UniLife.Shared.Dto;
 using UniLife.Shared.Dto.Definitions;
-
+//using UniLife.Shared.DataModels;
 
 namespace UniLife.CommonUI.Pages.DersMufredat
 {
@@ -22,6 +22,8 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         [Inject]
         public MatBlazor.IMatToaster matToaster { get; set; }
 
+
+        public string[] GroupData = new string[] { "MeetingRoomzx" };
 
         List<DerslikDto> derslikDtos { get; set; } = new List<DerslikDto>();
         List<DerslikRezervDto> derslikRezervDtos { get; set; } = new List<DerslikRezervDto>();
@@ -61,6 +63,13 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
 
         Syncfusion.Blazor.Schedule.SfSchedule<DerslikRezervDto> DersProgramSche;
+
+        bool isDersPrgDialogOpen;
+
+        
+        Syncfusion.Blazor.Grids.SfGrid<DerslikRezervDto> SecDrsProgramGrid;
+
+        List<DerslikRezervDto> SecDrsPrgDtos = new List<DerslikRezervDto>();
         //protected override void OnInitialized()
         //{
         //    ReadDersliks();
@@ -304,6 +313,23 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 {
                     matToaster.Add("Rezervasyon silinemedi!: " + response.StatusCode, MatToastType.Danger);
                 }
+            }
+        }
+
+
+        public async Task CommandClickHandler(Syncfusion.Blazor.Grids.CommandClickEventArgs<ResDersAcilansByLongFilters> args)
+        {
+            if (args.CommandColumn.Title == "Tanımlı Ders Programları")
+            {
+                string oDataQuery = $"odata/DerslikRezervs?$expand=ResourceData($select=Id,Ad)&$filter=DersAcilanId eq {args.RowData.DersAcilanId}";
+                OData<DerslikRezervDto> apiResponse = await Http.GetFromJsonAsync<OData<DerslikRezervDto>>(oDataQuery);
+                SecDrsPrgDtos = apiResponse.Value;
+                
+                isDersPrgDialogOpen = true;
+                //await DersAcGrid.ClearSelection();
+                //DersAcGrid.SelectedRowIndex = clickedRowIndex;
+
+                //GetSinavsByDersAcilanId(args.RowData);
             }
         }
 

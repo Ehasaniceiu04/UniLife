@@ -613,6 +613,7 @@ namespace UniLife.Server
             builder.EntitySet<Fakulte>("Fakultes");
             builder.EntitySet<Fakulte>("Akademisyens");
             builder.EntitySet<UniLife.Shared.DataModels.Program>("Programs");
+            builder.EntitySet<DerslikRezerv>("DerslikRezervs");
             return builder.GetEdmModel();
         }
     }

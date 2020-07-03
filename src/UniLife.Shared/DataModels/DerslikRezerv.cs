@@ -25,8 +25,9 @@ namespace UniLife.Shared.DataModels
         public int DersAcilanId { get; set; }
         public virtual DersAcilan DersAcilan { get; set; }
 
+        [System.ComponentModel.DataAnnotations.Schema.ForeignKey("ResourceData")]
         public int DerslikId { get; set; }
-        public virtual Derslik Derslik { get; set; }
+        public virtual Derslik ResourceData { get; set; }
 
         public bool IsBlock { get; set; }
         public virtual string ElementType { get; set; }

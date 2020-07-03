@@ -4,26 +4,8 @@
 @using Syncfusion.Blazor.DropDowns
 @using Syncfusion.Blazor.Buttons
 @using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Data
 
-<style>
-    .form-group {
-        margin-bottom: 0.2rem;
-    }
-
-    /*.e-input-group .e-input-group-icon, .e-input-group.e-control-wrapper .e-input-group-icon {
-        min-height: 0px;
-        min-width: 0px;
-    }*/
-
-    input.e-input, .e-input-group input, .e-input-group.e-control-wrapper input, .e-input-group input.e-input, .e-input-group.e-control-wrapper input.e-input {
-        height: auto;
-    }
-
-    .col-form-label-sm {
-        padding-top: unset;
-        padding-bottom: unset;
-    }
-</style>
 
 <div class="control-section">
     <div class="content-wrapper">
@@ -115,7 +97,7 @@
         <div class="row pb-2 bg-light text-dark">
             <SfGrid ID="DersAcGrid" @ref="DersAcGrid" DataSource="@DersAcDtos" RowHeight="20" AllowSorting="true" AllowSelection="true" AllowFiltering="true" AllowPaging="true">
                 @* OnRecordClick="OnRecordClickHandler" RowDeselected="RowDeselectedHandler" OnToolbarClick="ToolbarClickHandler" CommandClicked="CommandClickHandler" *@
-                <GridEvents RowSelected="RowSelectedHandler" TValue="ResDersAcilansByLongFilters"></GridEvents>
+                <GridEvents RowSelected="RowSelectedHandler" TValue="ResDersAcilansByLongFilters" CommandClicked="CommandClickHandler"></GridEvents>
                 <GridSelectionSettings EnableToggle="false" Type="SelectionType.Single"></GridSelectionSettings>
                 <GridColumns>
                     <GridColumn Visible="false" Field=@nameof(ResDersAcilansByLongFilters.DersAcilanId) IsIdentity="true" IsPrimaryKey="true"></GridColumn>
@@ -130,6 +112,11 @@
                     <GridColumn AutoFit="true" Field=@nameof(ResDersAcilansByLongFilters.Zorunlu) HeaderText="Zor" DisplayAsCheckBox="true"></GridColumn>
                     <GridColumn AutoFit="true" Field=@nameof(ResDersAcilansByLongFilters.ProgramAd) HeaderText="Program"></GridColumn>
                     <GridColumn AutoFit="true" Field=@nameof(ResDersAcilansByLongFilters.AkademisyenAd) HeaderText="Akademisyen"></GridColumn>
+                    <GridColumn>
+                        <GridCommandColumns>
+                            <GridCommandColumn Type="CommandButtonType.None" Title="Tanımlı Ders Programları" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
+                        </GridCommandColumns>
+                    </GridColumn>
                 </GridColumns>
             </SfGrid>
         </div>
@@ -145,8 +132,8 @@
                         <ScheduleViewTimeScale SlotCount="1" Interval="60"></ScheduleViewTimeScale>
                     </ScheduleView>
                     @*<ScheduleView Option="View.TimelineWeek">
-                <ScheduleViewTimeScale SlotCount="1" Interval="60"></ScheduleViewTimeScale>
-            </ScheduleView>*@
+                            <ScheduleViewTimeScale SlotCount="1" Interval="60"></ScheduleViewTimeScale>
+                        </ScheduleView>*@
                 </ScheduleViews>
                 <ScheduleGroup EnableCompactView="false" Resources="@GroupData"></ScheduleGroup>
                 <ScheduleResources>
@@ -183,10 +170,52 @@
 
     </div>
 </div>
-@code{
-    public string[] GroupData = new string[] { "MeetingRoomzx" };
-}
+
+
+<Dialog Baslik="Seçilen Dersin Programı" @bind-isDialogOpen="@isDersPrgDialogOpen">
+    <div class="row">
+        <SfGrid ID="SecDrsProgramGrid" @ref="SecDrsProgramGrid" TValue="DerslikRezervDto" DataSource="@SecDrsPrgDtos" RowHeight="20">
+            @*<SfDataManager Url="http://localhost:53414/odata/DerslikRezervs?$expand=Derslik($select=Id,Ad)" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>*@
+            <GridColumns>
+                <GridColumn Visible="false" Field=@nameof(DerslikRezervDto.Id) HeaderText="Ogrenci ID" IsPrimaryKey="true"></GridColumn>
+                <GridColumn Field=@nameof(DerslikRezervDto.StartTimeDay) HeaderText="Gün"></GridColumn>
+                <GridColumn Field=@nameof(DerslikRezervDto.StartTimeTime) HeaderText="Başlangıç Saati"></GridColumn>
+                <GridColumn Field=@nameof(DerslikRezervDto.EndTimeTime) HeaderText="Bitiş Saati"></GridColumn>
+                <GridColumn Field="ResourceData.Ad" HeaderText="Derslik Adı"></GridColumn>
+            </GridColumns>
+        </SfGrid>
+    </div>
+</Dialog>
+
+
 <style>
+
+    .e-DoubleArrowRight:before {
+        content: '\e7bb';
+        color: #e83e8c;
+    }
+
+
+    .form-group {
+        margin-bottom: 0.2rem;
+    }
+
+    /*.e-input-group .e-input-group-icon, .e-input-group.e-control-wrapper .e-input-group-icon {
+        min-height: 0px;
+        min-width: 0px;
+    }*/
+
+    input.e-input, .e-input-group input, .e-input-group.e-control-wrapper input, .e-input-group input.e-input, .e-input-group.e-control-wrapper input.e-input {
+        height: auto;
+    }
+
+    .col-form-label-sm {
+        padding-top: unset;
+        padding-bottom: unset;
+    }
+
+
+
     .e-schedule .e-timeline-view .e-resource-left-td {
         vertical-align: bottom;
     }
