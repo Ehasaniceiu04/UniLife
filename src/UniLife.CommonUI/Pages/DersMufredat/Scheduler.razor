@@ -120,51 +120,74 @@
                 </GridColumns>
             </SfGrid>
         </div>
+        <div class="row pb-2 bg-light text-dark">
+            <div class="col-sm-12 col-md-12">
+                <div class="form-group row">
+                    <label for="DropBina" class="col-sm-1 col-form-label-sm">Bina Seçimi</label>
+                    <div class="col-sm-5">
+                        <SfDropDownList ID="DropBina" @ref="DropBina" TItem="BinaDto" CssClass="form-control-sm"
+                                        TValue="int?" PopupHeight="430px" DataSource="@binaDtos" Placeholder="Ders programını görüntülemek/düzenlemek için bina seçiniz">
+                            <DropDownListEvents TValue="int?" ValueChange="BinaOnChange"> </DropDownListEvents>
+                            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                        </SfDropDownList>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         @*</form>*@
-
-        <div class="row">
-            <SfSchedule ID="DersProgramSche" @ref="DersProgramSche" RowAutoHeight="true" TValue="DerslikRezervDto" Width="100%" Height="100%" SelectedDate="@(new DateTime(DateTime.Now.Year,DateTime.Now.Month, DateTime.Now.Day))" CurrentView="View.TimelineDay">
-                <ScheduleWorkHours Start="08:00" End="18:00"></ScheduleWorkHours>
-                <ScheduleTimeScale></ScheduleTimeScale>
-                <ScheduleViews>
-                    <ScheduleView StartHour="06:00" EndHour="23:00" Option="View.TimelineDay">
-                        <ScheduleViewTimeScale SlotCount="1" Interval="60"></ScheduleViewTimeScale>
-                    </ScheduleView>
-                    @*<ScheduleView Option="View.TimelineWeek">
+        @if (isBinaSelected)
+        {
+            <div class="row">
+                <SfSchedule ID="DersProgramSche" @ref="DersProgramSche" RowAutoHeight="true" TValue="DerslikRezervDto" Width="100%" Height="100%" SelectedDate="@(new DateTime(DateTime.Now.Year,DateTime.Now.Month, DateTime.Now.Day))" CurrentView="View.TimelineDay">
+                    <ScheduleWorkHours Start="08:00" End="18:00"></ScheduleWorkHours>
+                    <ScheduleTimeScale></ScheduleTimeScale>
+                    <ScheduleViews>
+                        <ScheduleView StartHour="06:00" EndHour="23:00" Option="View.TimelineDay">
                             <ScheduleViewTimeScale SlotCount="1" Interval="60"></ScheduleViewTimeScale>
-                        </ScheduleView>*@
-                </ScheduleViews>
-                <ScheduleGroup EnableCompactView="false" Resources="@GroupData"></ScheduleGroup>
-                <ScheduleResources>
-                    <ScheduleResource TValue="DerslikDto" DataSource="@derslikDtos" Field="DerslikId" Title="Derslik" Name="MeetingRoomzx" TextField="Ad" IdField="Id" ColorField="Color" AllowMultiple="true"></ScheduleResource>
-                </ScheduleResources>
-                <ScheduleTemplates>
-                    <ResourceHeaderTemplate>
-                        @{
-                            DerslikDto contextDerslik = ((context as DerslikRezervDto).ResourceData as DerslikDto);
-                        }
-                        <div class='template-wrap'>
-                            <div class="room-name">@(contextDerslik.Ad)</div>
-                            <div class="room-capacity">@(contextDerslik.Capacity)</div>
-                            <div class="room-type">@(contextDerslik.Type)</div>
-                        </div>
-                    </ResourceHeaderTemplate>
-                </ScheduleTemplates>
-                @*OnPopupOpen="@OnPopupOpen" OnCellDoubleClick="OnCellDoubleClick" OnActionBegin="OnActionBegin"*@
-                <ScheduleEvents TValue="DerslikRezervDto" ActionCompleted="@OnActionCompleted"
-                                OnPopupOpen="@OnPopupOpen" OnActionBegin="@OnActionBegin"></ScheduleEvents>
-                <ScheduleEventSettings DataSource="@derslikRezervDtos">
-                    <ScheduleField>
-                        <FieldSubject Title="Yerleştirilen Ders" Name="Subject"></FieldSubject>
-                        <FieldLocation Title="Source" Name="Location"></FieldLocation>
-                        <FieldDescription Title="Comments" Name="Description"></FieldDescription>
-                        <FieldStartTime Title="Departure Time" Name="StartTime"></FieldStartTime>
-                        <FieldEndTime Title="Arrival Time" Name="EndTime"></FieldEndTime>
-                    </ScheduleField>
-                </ScheduleEventSettings>
-            </SfSchedule>
-        </div>
+                        </ScheduleView>
+                        @*<ScheduleView Option="View.TimelineWeek">
+                                <ScheduleViewTimeScale SlotCount="1" Interval="60"></ScheduleViewTimeScale>
+                            </ScheduleView>*@
+                    </ScheduleViews>
+                    <ScheduleGroup EnableCompactView="false" Resources="@GroupData"></ScheduleGroup>
+                    <ScheduleResources>
+                        <ScheduleResource TValue="DerslikDto" DataSource="@derslikDtos" Field="DerslikId" Title="Derslik" Name="MeetingRoomzx" TextField="Ad" IdField="Id" ColorField="Color" AllowMultiple="true"></ScheduleResource>
+                    </ScheduleResources>
+                    <ScheduleTemplates>
+                        <ResourceHeaderTemplate>
+                            @{
+                                DerslikDto contextDerslik = ((context as DerslikRezervDto).ResourceData as DerslikDto);
+                            }
+                            <div class='template-wrap'>
+                                <div class="room-name">@(contextDerslik.Ad)</div>
+                                <div class="room-capacity">@(contextDerslik.Capacity)</div>
+                                <div class="room-type">@(contextDerslik.Type)</div>
+                            </div>
+                        </ResourceHeaderTemplate>
+                    </ScheduleTemplates>
+                    @*OnPopupOpen="@OnPopupOpen" OnCellDoubleClick="OnCellDoubleClick" OnActionBegin="OnActionBegin"*@
+                    <ScheduleEvents TValue="DerslikRezervDto" ActionCompleted="@OnActionCompleted"
+                                    OnPopupOpen="@OnPopupOpen" OnActionBegin="@OnActionBegin" OnResizeStart="OnAppointmentResize"></ScheduleEvents>
+                    <ScheduleEventSettings DataSource="@derslikRezervDtos">
+                        <ScheduleField>
+                            <FieldSubject Title="Yerleştirilen Ders" Name="Subject"></FieldSubject>
+                            <FieldLocation Title="Source" Name="Location"></FieldLocation>
+                            <FieldDescription Title="Comments" Name="Description"></FieldDescription>
+                            <FieldStartTime Title="Departure Time" Name="StartTime"></FieldStartTime>
+                            <FieldEndTime Title="Arrival Time" Name="EndTime"></FieldEndTime>
+                        </ScheduleField>
+                    </ScheduleEventSettings>
+                </SfSchedule>
+            </div>
+        }
+        else
+        {
+            <div class="row">
+                <p>@bosBinaText</p>
+            </div>
+        }
+
 
 
 
@@ -214,7 +237,6 @@
     }
 
     .col-form-label-sm {
-        padding-top: unset;
         padding-bottom: unset;
     }
 

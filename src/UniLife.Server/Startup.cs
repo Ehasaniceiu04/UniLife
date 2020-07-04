@@ -614,6 +614,7 @@ namespace UniLife.Server
             builder.EntitySet<Fakulte>("Akademisyens");
             builder.EntitySet<UniLife.Shared.DataModels.Program>("Programs");
             builder.EntitySet<DerslikRezerv>("DerslikRezervs");
+            builder.EntitySet<Derslik>("Dersliks");
             return builder.GetEdmModel();
         }
     }

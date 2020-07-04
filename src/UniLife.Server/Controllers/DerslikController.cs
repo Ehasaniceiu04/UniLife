@@ -27,6 +27,12 @@ namespace UniLife.Server.Controllers
         public async Task<ApiResponse> Get()
             => await _derslikManager.Get();
 
+        //[HttpGet]
+        //[AllowAnonymous]
+        //[Route("GetDerslikByBinaId/{binaId}")]
+        //public async Task<ApiResponse> GetDerslikByBinaId(int binaId)
+        //    => await _derslikManager.GetDerslikByBinaId();
+
         // GET: api/Derslik/5
         [HttpGet("{id}")]
         [AllowAnonymous]
