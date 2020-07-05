@@ -5,8 +5,10 @@
 @using Syncfusion.Blazor
 
 @using UniLife.CommonUI.Components.Grid.DataGrid
+@*@inject Task<Settings> _getSettings*@
 
 @inject HttpClient Http;
+
 
 <h1>Örnek Gridimiz - CRUD</h1>
 <p>
@@ -24,22 +26,11 @@
 
 
 
-    public class Emp
-    {
-        public int EmpId { get; set; }
-        public string Name { get; set; }
-    }
-
-    public List<Emp> EmpList { get; set; }
-
-    protected override void OnInitialized()
-    {
-        EmpList = Enumerable.Range(1, 75).Select(x => new Emp()
-        {
-            EmpId = 100 + x,
-            Name = "ahmet"
-        }).ToList();
-    }
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    var settings = await _getSettings;
+    //    asd = settings?.AllowMultiOneDerslikMultiReserv;
+    //}
 
 
 
@@ -65,16 +56,18 @@
     //    }
     //}
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            var Locale = await Http.GetJsonAsyncExtension<object>("tr.json");
-            this.JsRuntime.Sf().LoadLocaleData(Locale).SetCulture("tr");
+    //protected override async Task OnAfterRenderAsync(bool firstRender)
+    //{
+    //    if (firstRender)
+    //    {
+    //        var Locale = await Http.GetJsonAsyncExtension<object>("tr.json");
+    //        this.JsRuntime.Sf().LoadLocaleData(Locale).SetCulture("tr");
 
-            //this.JsRuntime.Sf().LoadLocaleData("tr.json").SetCulture("tr");
-        }
-    }
+    //        //this.JsRuntime.Sf().LoadLocaleData("tr.json").SetCulture("tr");
+    //        Settings settings = await Http.GetJsonAsyncExtension<Settings>("settings.json");
+    //        asd = settings.AllowMultiOneDerslikMultiReserv;
+    //    }
+    //}
 
 
     bool lazySnackbarIsOpen = false;

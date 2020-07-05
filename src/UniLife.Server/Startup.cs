@@ -394,6 +394,7 @@ namespace UniLife.Server
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IEmailConfiguration>(Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>());
 
+
             services.AddTransient<IAccountManager, AccountManager>();
             services.AddTransient<IAdminManager, AdminManager>();
             services.AddTransient<IApiLogManager, ApiLogManager>();
@@ -607,7 +608,15 @@ namespace UniLife.Server
         private Microsoft.OData.Edm.IEdmModel GetEdmModel()
         {
             var builder = new ODataConventionModelBuilder();
-            builder.EntitySet<Ogrenci>("Ogrencis");
+            var objOgrenci= builder.EntitySet<Ogrenci>("Ogrencis");
+            FunctionConfiguration getOgrOptional = objOgrenci.EntityType.Collection.Function("GetTopAta"); //http://localhost:53414/odata/ogrencis/GetOgr(ahmet='12',....)
+            getOgrOptional.Parameter<int>("ProgramId").Optional();
+            getOgrOptional.Parameter<int>("KayitNedenId").Optional();
+            getOgrOptional.Parameter<int>("OgrenimDurumId").Optional();
+            getOgrOptional.Parameter<int>("Sinif").Optional();
+            getOgrOptional.Parameter<int>("Sube").Optional();
+            getOgrOptional.Parameter<int>("Cinsiyet").Optional();
+            getOgrOptional.ReturnsCollectionFromEntitySet<Ogrenci>("Ogrencis");
             builder.EntitySet<Bolum>("Bolums");
             builder.EntitySet<DersAcilan>("DersAcilans");
             builder.EntitySet<Fakulte>("Fakultes");

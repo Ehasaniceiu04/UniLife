@@ -67,7 +67,7 @@ namespace UniLife.Shared.Dto.Definitions
         public string DerslikAd { get; set; }   
         public int DerslikId { get; set; }
         public DerslikDto ResourceData { get; set; } // foreign key olarka aslı modelde farklı.
-        public bool IsBlock { get; set; }
+        public bool IsBlock { get; set; } 
         public virtual string ElementType { get; set; }
         //public virtual DateTime StartTimeValue { get; set; } //GMC +3 bilgisi almadık patlatıyordu.
         //public virtual DateTime EndTimeValue { get; set; }

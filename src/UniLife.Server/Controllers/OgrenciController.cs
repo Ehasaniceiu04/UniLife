@@ -19,12 +19,12 @@ namespace UniLife.Server.Controllers
     public class OgrenciController : ControllerBase
     {
         private readonly IOgrenciManager _ogrenciManager;
-        private readonly IApplicationDbContext _applicationDbContext;
+        //private readonly IApplicationDbContext _applicationDbContext;
 
         public OgrenciController(IOgrenciManager ogrenciManager, IApplicationDbContext applicationDbContext)
         {
             _ogrenciManager = ogrenciManager;
-            _applicationDbContext = applicationDbContext;
+            //_applicationDbContext = applicationDbContext;
         }
 
         // GET: api/Ogrenci

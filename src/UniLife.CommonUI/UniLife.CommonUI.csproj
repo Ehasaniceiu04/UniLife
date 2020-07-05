@@ -60,4 +60,8 @@
     <ProjectReference Include="..\UniLife.Shared\UniLife.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\Admin\OgrenciIslem\OgrenciTopluAtamaTabs\" />
+  </ItemGroup>
+
 </Project>

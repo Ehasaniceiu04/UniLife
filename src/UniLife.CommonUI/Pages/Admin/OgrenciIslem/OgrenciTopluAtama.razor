@@ -1,0 +1,168 @@
+﻿@page "/ogrenci/ogrenci_toplu_atama"
+
+@using Syncfusion.Blazor.DropDowns
+@using UniLife.Shared.Dto.Definitions
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Data
+
+<div class="control-section">
+    <div class="content-wrapper">
+
+        <div class="row pb-2 bg-light text-dark">
+            <div class="col-sm-12 col-md-6">
+                <div class="form-group row">
+                    <label for="DropFakulte" class="col-sm-2 col-form-label-sm">Fakülte</label>
+                    <div class="col-sm-10">
+                        <SfDropDownList ID="DropFakulte" @ref="DropFakulte" ShowClearButton="true" TItem="KeyValueDto" CssClass="form-control-sm"
+                                        TValue="int?" PopupHeight="230px"
+                                        @bind-Value="@reqOgrTopAtaDto.FakulteId" DataSource="@fakulteDtos">
+                            <DropDownListEvents TValue="int?" ValueChange="FakulteToBolum"></DropDownListEvents>
+                            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                        </SfDropDownList>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="DropBolum" class="col-sm-2 col-form-label-sm">Bölüm</label>
+                    <div class="col-sm-10">
+                        <SfDropDownList ID="DropBolum" @ref="DropBolum" ShowClearButton="true" TItem="KeyValueDto" CssClass="form-control-sm"
+                                        TValue="int?" PopupHeight="230px"
+                                        @bind-Value="@reqOgrTopAtaDto.BolumId" DataSource="@bolumDtos">
+                            <DropDownListEvents TValue="int?" ValueChange="BolumToProgram"></DropDownListEvents>
+                            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                        </SfDropDownList>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="DropProgram" class="col-sm-2 col-form-label-sm">Program</label>
+                    <div class="col-sm-10">
+                        <SfDropDownList ID="DropProgram" @ref="DropProgram" ShowClearButton="true" TItem="KeyValueDto" CssClass="form-control-sm"
+                                        TValue="int?" PopupHeight="230px"
+                                        @bind-Value="@reqOgrTopAtaDto.ProgramId" DataSource="@programDtos">
+                            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                        </SfDropDownList>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="DropKayitNeden" class="col-sm-2 col-form-label-sm">Kayit Nedeni</label>
+                    <div class="col-sm-5">
+                        <SfDropDownList ID="DropKayitNeden" @ref="DropKayitNeden" ShowClearButton="true" TItem="KeyValueDto" CssClass="form-control-sm"
+                                        TValue="int?" PopupHeight="230px"
+                                        @bind-Value="@reqOgrTopAtaDto.KayitNedenId" DataSource="@kayitNedenDtos">
+                            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                        </SfDropDownList>
+                    </div>
+                    <label for="DropOgrDurum" class="col-sm-1 col-form-label-sm">Durum</label>
+                    <div class="col-sm-4">
+                        <SfDropDownList ID="DropOgrDurum" @ref="DropOgrDurum" ShowClearButton="true" TItem="KeyValueDto" CssClass="form-control-sm"
+                                        TValue="int?" PopupHeight="230px"
+                                        @bind-Value="@reqOgrTopAtaDto.OgrenimDurumId" DataSource="@ogrenimDurumDtos">
+                            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                        </SfDropDownList>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="DropSinif" class="col-sm-2 col-form-label-sm">Sınıf/Şube</label>
+                    <div class="col-sm-3">
+                        <SfDropDownList ID="DropSinif" @ref="DropSinif" ShowClearButton="true" TItem="SinifDto" CssClass="form-control-sm"
+                                        TValue="int?"
+                                        @bind-Value="@reqOgrTopAtaDto.Sinif" DataSource="@sinifDtos">
+                            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                        </SfDropDownList>
+                    </div>
+                    <div class="col-sm-2">
+                        <SfNumericTextBox ID="Sube" CssClass="form-control-sm" Format="n0" @bind-Value="@reqOgrTopAtaDto.Sube" ShowSpinButton="false" TValue="int?" Min=1></SfNumericTextBox>
+                    </div>
+                    <label for="DropCinsiyet" class="col-sm-1 col-form-label-sm">Cinsiyet</label>
+                    <div class="col-sm-4">
+                        <SfDropDownList ID="DropCinsiyet" @ref="DropCinsiyet" ShowClearButton="true" TItem="KeyValueDto" CssClass="form-control-sm"
+                                        TValue="int?" PopupHeight="230px"
+                                        @bind-Value="@reqOgrTopAtaDto.Cinsiyet" DataSource="@cinsiyetDtos">
+                            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                        </SfDropDownList>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12 col-md-6">
+                <div class="control-section e-tab-section">
+                    <SfTab @ref="Tab" CssClass="BlazorTab" LoadOn="ContentLoad.Dynamic">
+                        <TabEvents Created="TabCreate" Selecting="OnTabSelecting"></TabEvents>
+                        <TabItems>
+                            <TabItem>
+                                <ChildContent>
+                                    <TabHeader Text="Danışman Atama"></TabHeader>
+                                </ChildContent>
+                                <ContentTemplate>
+
+                                </ContentTemplate>
+                            </TabItem>
+                            <TabItem>
+                                <ChildContent>
+                                    <TabHeader Text="Müfredat Atama"></TabHeader>
+                                </ChildContent>
+                                <ContentTemplate>
+
+                                </ContentTemplate>
+                            </TabItem>
+                            <TabItem>
+                                <ChildContent>
+                                    <TabHeader Text="Öğrenim Durumu Atama"></TabHeader>
+                                </ChildContent>
+                                <ContentTemplate>
+
+                                </ContentTemplate>
+                            </TabItem>
+                        </TabItems>
+                    </SfTab>
+                </div>
+            </div>
+        </div>
+
+
+
+        @if (true)
+	    {
+        <div class="row pb-2 bg-light text-dark">
+            <SfGrid TValue="ResOgrTopAtaFilters" ID="OgrencilerGrid" @ref="OgrencilerGrid" RowHeight="20" AllowPaging="true">
+                <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.WebApiAdaptor"></SfDataManager>
+                <GridColumns>
+                    <GridColumn Visible="false" Field=@nameof(ResOgrTopAtaFilters.OgrenciId) IsIdentity="true" IsPrimaryKey="true"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(ResOgrTopAtaFilters.OgrenciNo) HeaderText="OgrenciNo"></GridColumn>
+                    <GridColumn Field=@nameof(ResOgrTopAtaFilters.AdSoyad) HeaderText="AdSoyad"></GridColumn>
+                    <GridColumn Field=@nameof(ResOgrTopAtaFilters.Sinif) HeaderText="Sinif"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(ResOgrTopAtaFilters.KayitTarih) Format="d" HeaderText="T+U"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(ResOgrTopAtaFilters.Danisman) HeaderText="Danışman"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(ResOgrTopAtaFilters.DanismanIki) HeaderText="2.Danışman"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(ResOgrTopAtaFilters.Program) HeaderText="Snf"></GridColumn>
+                </GridColumns>
+            </SfGrid>
+
+        </div>
+	    }
+        
+
+
+    </div>
+</div>
+
+<style>
+    .form-group {
+        margin-bottom: 0.2rem;
+    }
+
+    /*.e-input-group .e-input-group-icon, .e-input-group.e-control-wrapper .e-input-group-icon {
+        min-height: 0px;
+        min-width: 0px;
+    }*/
+
+    input.e-input, .e-input-group input, .e-input-group.e-control-wrapper input, .e-input-group input.e-input, .e-input-group.e-control-wrapper input.e-input {
+        height: auto;
+    }
+
+    .col-form-label-sm {
+        padding-bottom: unset;
+        /*font-size: 0.65rem;*/
+    }
+</style>

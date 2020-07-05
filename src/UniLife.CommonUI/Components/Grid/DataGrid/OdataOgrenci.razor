@@ -4,8 +4,7 @@
 @using Syncfusion.Blazor.Grids
 @using UniLife.Shared.DataModels 
     <SfGrid TValue="Ogrenci" AllowPaging="true" AllowFiltering="true" ShowColumnMenu="true">
-        <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.CheckBox"></GridFilterSettings>
-        <SfDataManager Url="http://localhost:53414/odata/ogrencis" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+        <SfDataManager Url="odata/ogrencis?ahmet=12" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
         <GridColumns>
             <GridColumn Field=@nameof(Ogrenci.Id) HeaderText="Ogrenci ID" IsPrimaryKey="true" TextAlign="TextAlign.Right" Width="120"></GridColumn>
             <GridColumn Field=@nameof(Ogrenci.Ad) HeaderText="Ad" Width="150"></GridColumn>

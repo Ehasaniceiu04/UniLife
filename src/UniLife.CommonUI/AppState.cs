@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using UniLife.Shared.Dto.Definitions;
 using System.Collections.Generic;
 using Syncfusion.Blazor.CircularGauge;
+using UniLife.Shared;
 
 namespace UniLife.CommonUI
 {
@@ -25,8 +26,8 @@ namespace UniLife.CommonUI
         public OgrenciDto OgrenciState { get; set; }
         public AkademisyenDto AkademisyenState { get; set; }
         public PersonelDto PersonelState { get; set; }
-        
 
+        public Settings AppSettings { get; set; }
 
         public DonemDto DonemState { get; set; }
 

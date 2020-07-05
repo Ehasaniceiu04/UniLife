@@ -1166,7 +1166,7 @@
             "EmptyDataSourceError": "Sütunları Otomatik Oluşturma Sütun Izgarası'nda dataSource'tan oluşturulduğu için DataSource ilk yüklemede boş olmamalıdır",
             "Add": "Ekle",
             "Edit": "Düzenle",
-            "Cancel": "İptal etmek",
+            "Cancel": "İptal Et",
             "Update": "Güncelleme",
             "Delete": "Sil",
             "Print": "Yazdır",

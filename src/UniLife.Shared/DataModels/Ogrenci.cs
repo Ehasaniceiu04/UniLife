@@ -43,6 +43,14 @@ namespace UniLife.Shared.DataModels
         public virtual OgrenimDurum OgrenimDurum{ get; set; }
         public bool Durum { get; set; }
 
+        [System.ComponentModel.DataAnnotations.Schema.ForeignKey("Danisman")]
+        public int? DanismanId { get; set; }
+        public Akademisyen Danisman { get; set; }
+
+        [System.ComponentModel.DataAnnotations.Schema.ForeignKey("DanismanIki")]
+        public int? DanismanIkiId { get; set; }
+        public Akademisyen DanismanIki { get; set; }
+
         public string AskerDurum { get; set; }
         public DateTime? KayitTarih { get; set; }
         public DateTime? AyrilTarih { get; set; }

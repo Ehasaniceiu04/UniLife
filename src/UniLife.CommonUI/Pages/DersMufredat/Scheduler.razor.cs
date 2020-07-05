@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using UniLife.CommonUI.Extensions;
 using UniLife.Shared.Dto;
 using UniLife.Shared.Dto.Definitions;
-//using UniLife.Shared.DataModels;
 
 namespace UniLife.CommonUI.Pages.DersMufredat
 {
@@ -22,6 +21,8 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         public System.Net.Http.HttpClient Http { get; set; }
         [Inject]
         public MatBlazor.IMatToaster matToaster { get; set; }
+        [Inject]
+        public AppState appState { get; set; }
 
 
         public string[] GroupData = new string[] { "MeetingRoomzx" };
@@ -304,10 +305,9 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         {
             if (args.RequestType == "eventCreate")   //To check for request type is event delete
             {
-                //var eklenen = args.AddedRecords.FirstOrDefault();
-                //eklenen.Subject = SelectedDersAcilanGridRow.DersAd + "-" + eklenen.Subject;
                 args.AddedRecords[0].Subject = SelectedDersAcilanGridRow.DersAd + "-" + args.AddedRecords[0].Subject;
                 args.AddedRecords[0].DersAcilanId = SelectedDersAcilanGridRow.DersAcilanId;
+                //args.AddedRecords[0].IsBlock = appState.AppSettings.NotAllowOneDerslikMultiReserv;
             }
         }
 
@@ -321,6 +321,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             if (args.RequestType == "eventCreated")
             {
                 args.AddedRecords[0].DersAcilanId = SelectedDersAcilanGridRow.DersAcilanId;
+                //args.AddedRecords[0].IsBlock = appState.AppSettings.NotAllowOneDerslikMultiReserv;
                 //args.AddedRecords[0].Subject = SelectedDersAcilanGridRow.DersAd + "-" + args.AddedRecords[0].Subject;
                 ApiResponseDto<DerslikRezervDto> apiResponse =await Http.PostJsonAsync<ApiResponseDto<DerslikRezervDto>>("api/derslikrezerv", args.AddedRecords.FirstOrDefault());
                 if (apiResponse.StatusCode == StatusCodes.Status200OK)

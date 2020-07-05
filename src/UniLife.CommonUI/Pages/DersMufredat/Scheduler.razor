@@ -96,7 +96,6 @@
 
         <div class="row pb-2 bg-light text-dark">
             <SfGrid ID="DersAcGrid" @ref="DersAcGrid" DataSource="@DersAcDtos" RowHeight="20" AllowSorting="true" AllowSelection="true" AllowFiltering="true" AllowPaging="true">
-                @* OnRecordClick="OnRecordClickHandler" RowDeselected="RowDeselectedHandler" OnToolbarClick="ToolbarClickHandler" CommandClicked="CommandClickHandler" *@
                 <GridEvents RowSelected="RowSelectedHandler" TValue="ResDersAcilansByLongFilters" CommandClicked="CommandClickHandler"></GridEvents>
                 <GridSelectionSettings EnableToggle="false" Type="SelectionType.Single"></GridSelectionSettings>
                 <GridColumns>
