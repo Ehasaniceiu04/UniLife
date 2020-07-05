@@ -65,9 +65,11 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem
 
         public ReqOgrTopAtaDto reqOgrTopAtaDto { get; set; } = new ReqOgrTopAtaDto();
 
-        Syncfusion.Blazor.Grids.SfGrid<ResOgrTopAtaFilters> OgrencilerGrid;
+        Syncfusion.Blazor.Grids.SfGrid<OgrenciDto> OgrencilerGrid;
 
-        string OdataQuery = "odata/Ogrencis/GetTopAta()";
+        
+        string OdataQuery = "";
+        bool isTopGridVisible;
 
 
 
@@ -208,6 +210,45 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem
             {
                 matToaster.Add("", MatToastType.Danger, "Program getirilirken hata oluştu!");
             }
+        }
+
+        async Task Refresh()
+        {
+            string OdataQueryParameters="";
+            
+            if (reqOgrTopAtaDto.FakulteId.HasValue)
+            {
+                OdataQueryParameters = $"FakulteId={reqOgrTopAtaDto.FakulteId},";
+            }
+            if (reqOgrTopAtaDto.BolumId.HasValue)
+            {
+                OdataQueryParameters = $"BolumId={reqOgrTopAtaDto.BolumId},";
+            }
+            if (reqOgrTopAtaDto.ProgramId.HasValue)
+            {
+                OdataQueryParameters = $"ProgramId={reqOgrTopAtaDto.ProgramId},";
+            }
+            if (reqOgrTopAtaDto.KayitNedenId.HasValue)
+            {
+                OdataQueryParameters = $"KayitNedenId={reqOgrTopAtaDto.KayitNedenId},";
+            }
+            if (reqOgrTopAtaDto.OgrenimDurumId.HasValue)
+            {
+                OdataQueryParameters = $"OgrenimDurumId={reqOgrTopAtaDto.OgrenimDurumId},";
+            }
+            if (reqOgrTopAtaDto.Sinif.HasValue)
+            {
+                OdataQueryParameters = $"Sinif={reqOgrTopAtaDto.Sinif},";
+            }
+            if (reqOgrTopAtaDto.Cinsiyet.HasValue)
+            {
+                OdataQueryParameters = $"Cinsiyet={reqOgrTopAtaDto.Cinsiyet},";
+            }
+
+
+            OdataQueryParameters =OdataQueryParameters.TrimEnd(',');
+            OdataQuery = $"odata/Ogrencis/GetTopAta({OdataQueryParameters})";
+            isTopGridVisible = true;
         }
 
     }

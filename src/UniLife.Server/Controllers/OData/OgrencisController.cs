@@ -6,6 +6,7 @@ using System.Linq;
 using UniLife.Shared.DataModels;
 using UniLife.Storage;
 using UniLife.Shared.Extensions;
+using Microsoft.EntityFrameworkCore;
 
 namespace UniLife.Server.Controllers
 {
@@ -21,25 +22,34 @@ namespace UniLife.Server.Controllers
         [EnableQuery()]
         [HttpGet]
         //[Authorize(Permissions.Ogrenci.Create)]
-        [ODataRoute("GetTopAta(ProgramId={ProgramId},KayitNedenId={KayitNedenId},OgrenimDurumId={OgrenimDurumId},Sinif={Sinif},Sube={Sube},Cinsiyet={Cinsiyet})")]
+        [ODataRoute("GetTopAta(ProgramId={ProgramId},KayitNedenId={KayitNedenId},OgrenimDurumId={OgrenimDurumId},Sinif={Sinif},Cinsiyet={Cinsiyet})")]
         public IEnumerable<Ogrenci> GetTopAta([FromODataUri] int ProgramId
                                             , [FromODataUri] int KayitNedenId
                                             , [FromODataUri] int OgrenimDurumId
                                             , [FromODataUri] int Sinif
-                                            //, [FromODataUri] int Sube
                                             , [FromODataUri] int Cinsiyet
                                              )
         {
 
-            var filteredQuery = from o in _applicationDbContext.Ogrencis.WhereIf(ProgramId != 0, x => x.ProgramId == ProgramId)
-                                                                        .WhereIf(KayitNedenId != 0, x => x.KayitNedenId == KayitNedenId)
-                                                                        .WhereIf(OgrenimDurumId != 0, x => x.OgrenimDurumId == OgrenimDurumId)
-                                                                        .WhereIf(Sinif != 0, x => x.Sinif == Sinif)
-                                                                        //.WhereIf(Sube != 0, x => x.Sube == Sube)
-                                                                        .WhereIf(Cinsiyet != 0, x => x.IsMale == (Cinsiyet == 2))
-                                join a in _applicationDbContext.Akademisyens on o.DanismanId equals a.Id into akaLeft
-                                from m in akaLeft.DefaultIfEmpty()
-                                join p in _applicationDbContext.Programs on o.ProgramId equals p.Id
+            //var filteredQuery = from o in _applicationDbContext.Ogrencis.WhereIf(ProgramId != 0, x => x.ProgramId == ProgramId)
+            //                                                            .WhereIf(KayitNedenId != 0, x => x.KayitNedenId == KayitNedenId)
+            //                                                            .WhereIf(OgrenimDurumId != 0, x => x.OgrenimDurumId == OgrenimDurumId)
+            //                                                            .WhereIf(Sinif != 0, x => x.Sinif == Sinif)
+            //                                                            .WhereIf(Cinsiyet != 0, x => x.IsMale == (Cinsiyet == 2))
+            //                    join a in _applicationDbContext.Akademisyens on o.DanismanId equals a.Id into akaLeft
+            //                    from m in akaLeft.DefaultIfEmpty()
+            //                    join p in _applicationDbContext.Programs on o.ProgramId equals p.Id
+            //                    select o;
+
+            var filteredQuery = from o in _applicationDbContext.Ogrencis.Where(x => ProgramId == 0 ? true : x.ProgramId == ProgramId)
+                                                                        .Where(x => KayitNedenId == 0 ? true : x.KayitNedenId == KayitNedenId)
+                                                                        .Where(x => OgrenimDurumId == 0 ? true : x.OgrenimDurumId == OgrenimDurumId)
+                                                                        .Where(x => Sinif == 0 ? true : x.Sinif == Sinif)
+                                                                        .Where(x => Cinsiyet == 0? true : x.IsMale == (Cinsiyet == 2))
+                                //join p in _applicationDbContext.Programs on o.ProgramId equals p.Id
+                                //join a in _applicationDbContext.Akademisyens on o.DanismanId equals a.Id into akaLeft
+                                //from m in akaLeft.DefaultIfEmpty()
+                                
                                 select o;
 
 
@@ -52,6 +62,24 @@ namespace UniLife.Server.Controllers
         {
             return _applicationDbContext.Ogrencis;
         }
+
+        //[Microsoft.AspNet.OData.EnableQuery()]
+        //[HttpGet]
+        //public IEnumerable<Shared.Dto.Definitions.ResOgrTopAtaFilters> Get()
+        //{
+        //    var filteredQuery = from o in _applicationDbContext.Ogrencis
+        //                        join a in _applicationDbContext.Akademisyens on o.DanismanId equals a.Id into akaLeft
+        //                        from m in akaLeft.DefaultIfEmpty()
+        //                        join p in _applicationDbContext.Programs on o.ProgramId equals p.Id
+        //                        select new Shared.Dto.Definitions.ResOgrTopAtaFilters
+        //                        {
+        //                            OgrenciId = o.Id,
+        //                            Ad =o.Ad,
+        //                            Soyad = o.Soyad,
+        //                            OgrenciNo = o.OgrNo
+        //                        };
+        //    return filteredQuery;
+        //}
 
     }
 }

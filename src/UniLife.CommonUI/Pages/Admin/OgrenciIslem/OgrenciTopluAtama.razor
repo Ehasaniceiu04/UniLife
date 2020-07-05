@@ -5,6 +5,7 @@
 @using Syncfusion.Blazor.Inputs
 @using Syncfusion.Blazor.Navigations
 @using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.Buttons
 
 <div class="control-section">
     <div class="content-wrapper">
@@ -63,16 +64,13 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="DropSinif" class="col-sm-2 col-form-label-sm">Sınıf/Şube</label>
+                    <label for="DropSinif" class="col-sm-2 col-form-label-sm">Sınıf</label>
                     <div class="col-sm-3">
                         <SfDropDownList ID="DropSinif" @ref="DropSinif" ShowClearButton="true" TItem="SinifDto" CssClass="form-control-sm"
                                         TValue="int?"
                                         @bind-Value="@reqOgrTopAtaDto.Sinif" DataSource="@sinifDtos">
                             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                         </SfDropDownList>
-                    </div>
-                    <div class="col-sm-2">
-                        <SfNumericTextBox ID="Sube" CssClass="form-control-sm" Format="n0" @bind-Value="@reqOgrTopAtaDto.Sube" ShowSpinButton="false" TValue="int?" Min=1></SfNumericTextBox>
                     </div>
                     <label for="DropCinsiyet" class="col-sm-1 col-form-label-sm">Cinsiyet</label>
                     <div class="col-sm-4">
@@ -84,6 +82,8 @@
                     </div>
                 </div>
             </div>
+
+            <SfButton OnClick="Refresh" CssClass="e-success col-sm-6 .offset-sm-3">Bul / Yenile</SfButton>
 
             <div class="col-sm-12 col-md-6">
                 <div class="control-section e-tab-section">
@@ -122,26 +122,46 @@
 
 
 
-        @if (true)
-	    {
-        <div class="row pb-2 bg-light text-dark">
-            <SfGrid TValue="ResOgrTopAtaFilters" ID="OgrencilerGrid" @ref="OgrencilerGrid" RowHeight="20" AllowPaging="true">
-                <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.WebApiAdaptor"></SfDataManager>
-                <GridColumns>
-                    <GridColumn Visible="false" Field=@nameof(ResOgrTopAtaFilters.OgrenciId) IsIdentity="true" IsPrimaryKey="true"></GridColumn>
-                    <GridColumn AutoFit="true" Field=@nameof(ResOgrTopAtaFilters.OgrenciNo) HeaderText="OgrenciNo"></GridColumn>
-                    <GridColumn Field=@nameof(ResOgrTopAtaFilters.AdSoyad) HeaderText="AdSoyad"></GridColumn>
-                    <GridColumn Field=@nameof(ResOgrTopAtaFilters.Sinif) HeaderText="Sinif"></GridColumn>
-                    <GridColumn AutoFit="true" Field=@nameof(ResOgrTopAtaFilters.KayitTarih) Format="d" HeaderText="T+U"></GridColumn>
-                    <GridColumn AutoFit="true" Field=@nameof(ResOgrTopAtaFilters.Danisman) HeaderText="Danışman"></GridColumn>
-                    <GridColumn AutoFit="true" Field=@nameof(ResOgrTopAtaFilters.DanismanIki) HeaderText="2.Danışman"></GridColumn>
-                    <GridColumn AutoFit="true" Field=@nameof(ResOgrTopAtaFilters.Program) HeaderText="Snf"></GridColumn>
-                </GridColumns>
-            </SfGrid>
+        @if (isTopGridVisible)
+        {
+    <div class="row pb-2 bg-light text-dark">
+        @*<SfGrid TValue="ResOgrTopAtaFilters" ID="OgrencilerGrid" @ref="OgrencilerGrid" RowHeight="20" AllowPaging="true" AllowFiltering="true">
+            <SfDataManager Url="odata/ogrencis" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+            <GridColumns>
+                <GridColumn Visible="false" Field=@nameof(ResOgrTopAtaFilters.OgrenciId) IsIdentity="true" IsPrimaryKey="true"></GridColumn>
+                <GridColumn AutoFit="true" Field=@nameof(ResOgrTopAtaFilters.OgrenciNo) HeaderText="OgrenciNo"></GridColumn>
+                <GridColumn Field=@nameof(ResOgrTopAtaFilters.AdSoyad) HeaderText="AdSoyad"></GridColumn>
+                <GridColumn Field=@nameof(ResOgrTopAtaFilters.Sinif) HeaderText="Sinif"></GridColumn>
+                <GridColumn AutoFit="true" Field=@nameof(ResOgrTopAtaFilters.KayitTarih) Format="d" HeaderText="T+U"></GridColumn>
+                <GridColumn AutoFit="true" Field=@nameof(ResOgrTopAtaFilters.Danisman) HeaderText="Danışman"></GridColumn>
+                <GridColumn AutoFit="true" Field=@nameof(ResOgrTopAtaFilters.DanismanIki) HeaderText="2.Danışman"></GridColumn>
+                <GridColumn AutoFit="true" Field=@nameof(ResOgrTopAtaFilters.Program) HeaderText="Snf"></GridColumn>
+            </GridColumns>
+        </SfGrid>*@
 
-        </div>
-	    }
-        
+        <SfGrid TValue="OgrenciDto" ID="OgrencilerGrid" @ref="OgrencilerGrid" RowHeight="20" AllowPaging="true" AllowFiltering="true">
+            <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+            <GridColumns>
+                <GridColumn Visible="false" Field=@nameof(OgrenciDto.Id) IsIdentity="true" IsPrimaryKey="true"></GridColumn>
+                <GridColumn AutoFit="true" Field=@nameof(OgrenciDto.OgrNo) HeaderText="OgrenciNo"></GridColumn>
+                <GridColumn Field=@nameof(ResOgrTopAtaFilters.Ad) HeaderText="Ad"></GridColumn>
+                <GridColumn Field=@nameof(ResOgrTopAtaFilters.Soyad) HeaderText="Soyad"></GridColumn>
+
+            </GridColumns>
+        </SfGrid>
+
+        @*<SfGrid TValue="OgrenciDto" ID="OgrencilerGrid" @ref="OgrencilerGrid" RowHeight="20"  AllowPaging="true" AllowFiltering="true" ShowColumnMenu="true">
+            <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+            <GridColumns>
+                <GridColumn Visible="false" Field=@nameof(OgrenciDto.Id) IsIdentity="true" IsPrimaryKey="true"></GridColumn>
+                <GridColumn Field=@nameof(OgrenciDto.Ad) HeaderText="Ad"></GridColumn>
+                <GridColumn Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad"></GridColumn>
+            </GridColumns>
+        </SfGrid>*@
+
+    </div>
+        }
+
 
 
     </div>

@@ -614,7 +614,6 @@ namespace UniLife.Server
             getOgrOptional.Parameter<int>("KayitNedenId").Optional();
             getOgrOptional.Parameter<int>("OgrenimDurumId").Optional();
             getOgrOptional.Parameter<int>("Sinif").Optional();
-            getOgrOptional.Parameter<int>("Sube").Optional();
             getOgrOptional.Parameter<int>("Cinsiyet").Optional();
             getOgrOptional.ReturnsCollectionFromEntitySet<Ogrenci>("Ogrencis");
             builder.EntitySet<Bolum>("Bolums");

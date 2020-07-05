@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ namespace UniLife.Shared.Dto.Definitions
 {
     public class ResOgrTopAtaFilters
     {
+        [Key]
         public int OgrenciId { get; set; }
         public string OgrenciNo { get; set; }
         public string Ad { get; set; }
