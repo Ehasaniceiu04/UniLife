@@ -22,6 +22,9 @@ namespace UniLife.Server.Controllers
         [HttpGet]
         public object Get()
         {
+
+            //Burada Web apiye syncfusion grid abilitileri kazandırabilirz.
+
             //var topluOgrenci = from o in _applicationDbContext.Ogrencis
             //                   join a in _applicationDbContext.Akademisyens on o.DanismanId equals a.Id into akaLeft
             //                   from m in akaLeft.DefaultIfEmpty()

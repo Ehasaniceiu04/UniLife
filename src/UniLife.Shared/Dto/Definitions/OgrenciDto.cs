@@ -44,6 +44,14 @@ namespace UniLife.Shared.Dto.Definitions
         public int? OgrenimDurumId { get; set; }
         public virtual OgrenimDurumDto OgrenimDurum { get; set; }
         public bool Durum { get; set; }
+        
+
+        public int? DanismanId { get; set; }
+        public virtual AkademisyenDto Danisman { get; set; }
+
+        
+        public int? DanismanIkiId { get; set; }
+        public virtual AkademisyenDto DanismanIki { get; set; }
 
         public string AskerDurum { get; set; }
         public DateTime? KayitTarih { get; set; }

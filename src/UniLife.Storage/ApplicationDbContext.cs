@@ -72,6 +72,12 @@ namespace UniLife.Storage
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            ////Cascading delete engelliyor
+            //foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            //{
+            //    relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            //}
+
             //Fluent API Does not follow foreign key naming convention
             modelBuilder.Entity<ApplicationUser>()
                 .HasOne(a => a.Profile)

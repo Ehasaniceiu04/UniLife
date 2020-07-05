@@ -11,6 +11,7 @@ using MatBlazor;
 using System.Net.Http.Json;
 using Syncfusion.Blazor.Navigations;
 
+
 namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem
 {
     public partial class OgrenciTopluAtama : ComponentBase
@@ -37,7 +38,7 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem
         List<KeyValueDto> programDtos = new List<KeyValueDto>();
         List<KeyValueDto> kayitNedenDtos = new List<KeyValueDto>();
         List<KeyValueDto> ogrenimDurumDtos = new List<KeyValueDto>();
-        List<SinifDto> sinifDtos = new List<SinifDto>
+        List<SinifDto> sinifDtos = new List<SinifDto>()
         {
             new SinifDto() { Ad = "Tümü", Id = 0 },
             new SinifDto() { Ad = "1", Id = 1 },
@@ -50,11 +51,11 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem
             new SinifDto() { Ad = "8", Id = 8 },
             new SinifDto() { Ad = "9", Id = 9 },
         };
-        List<KeyValueDto> cinsiyetDtos = new List<KeyValueDto>
-        {
-            new KeyValueDto() { Ad = "Kadın", Id = 0 },
-            new KeyValueDto() { Ad = "Erkek", Id = 1 }
-        };
+        List<KeyValueDto> cinsiyetDtos = new List<KeyValueDto>();
+        //{
+        //    new KeyValueDto() { Ad = "Kadın", Id = 0 },
+        //    new KeyValueDto() { Ad = "Erkek", Id = 1 }
+        //};
 
         public int DanismanTip { get; set; }
         List<KeyValueDto> danismanDtos = new List<KeyValueDto>
@@ -65,7 +66,7 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem
 
         public ReqOgrTopAtaDto reqOgrTopAtaDto { get; set; } = new ReqOgrTopAtaDto();
 
-        Syncfusion.Blazor.Grids.SfGrid<OgrenciDto> OgrencilerGrid;
+        Syncfusion.Blazor.Grids.SfGrid<OgrenciDto> OgrencilerGrid; //= new Syncfusion.Blazor.Grids.SfGrid<OgrenciDto>();
 
         
         string OdataQuery = "";
@@ -77,8 +78,8 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem
         public void TabCreate()
         {
             Tab.EnableTab(0, true);
-            Tab.EnableTab(1, false);
-            Tab.EnableTab(2, false);
+            Tab.EnableTab(1, true);
+            Tab.EnableTab(2, true);
         }
 
         public void OnTabSelecting(SelectingEventArgs args)
@@ -93,11 +94,17 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem
         protected async override Task OnInitializedAsync()
         {
             //ReadDersliks();
-            //ReadDerlikRezervs();
+            ReadCinsiyets();
 
             await ReadFakultes();
             await ReadKayitNedens();
             await ReadOgrenimDurums();
+        }
+
+        async Task ReadCinsiyets()
+        {
+            cinsiyetDtos.Add(new KeyValueDto() { Ad = "Kadın", Id = 1 });
+            cinsiyetDtos.Add(new KeyValueDto() { Ad = "Erkek", Id = 2 });
         }
 
         async Task ReadFakultes()
@@ -212,6 +219,17 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem
             }
         }
 
+        private void onSinifChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
+        {
+            reqOgrTopAtaDto.Sinif = args.Value;
+        }
+        private void onCinsChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
+        {
+            reqOgrTopAtaDto.Cinsiyet = args.Value;
+        }
+        
+
+        public Syncfusion.Blazor.Data.Query topAtaQuery = new Syncfusion.Blazor.Data.Query().AddParams("$expand", "program($select=Id,Ad),Danisman($select=Id,Ad)");
         async Task Refresh()
         {
             string OdataQueryParameters="";
@@ -247,9 +265,16 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem
 
 
             OdataQueryParameters =OdataQueryParameters.TrimEnd(',');
-            OdataQuery = $"odata/Ogrencis/GetTopAta({OdataQueryParameters})";
+            OdataQuery = $"odata/Ogrencis/GetTopAta({OdataQueryParameters})"; //?$expand=program($select=Id,Ad),Danisman($select=Id,Ad)
             isTopGridVisible = true;
+            if (OgrencilerGrid !=null)
+            {
+                OgrencilerGrid.Refresh();
+            }
+            
         }
+
+        
 
     }
 }

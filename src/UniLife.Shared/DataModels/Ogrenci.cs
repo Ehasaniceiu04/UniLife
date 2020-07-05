@@ -45,11 +45,11 @@ namespace UniLife.Shared.DataModels
 
         [System.ComponentModel.DataAnnotations.Schema.ForeignKey("Danisman")]
         public int? DanismanId { get; set; }
-        public Akademisyen Danisman { get; set; }
+        public virtual Akademisyen Danisman { get; set; }
 
         [System.ComponentModel.DataAnnotations.Schema.ForeignKey("DanismanIki")]
         public int? DanismanIkiId { get; set; }
-        public Akademisyen DanismanIki { get; set; }
+        public virtual Akademisyen DanismanIki { get; set; }
 
         public string AskerDurum { get; set; }
         public DateTime? KayitTarih { get; set; }
