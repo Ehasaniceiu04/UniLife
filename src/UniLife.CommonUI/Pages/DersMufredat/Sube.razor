@@ -198,7 +198,7 @@
 <Dialog Baslik="Akademisyenler" @bind-isDialogOpen="@akademisyenDialogOpen">
     <div class="row">
         <SfGrid ID="AkademisyenGrid" @ref="AkademisyenGrid" TValue="AkademisyenDto" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowFiltering="true">
-            <SfDataManager Url="http://localhost:53414/odata/akademisyens" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+            <SfDataManager Url="odata/akademisyens" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
             <GridEvents TValue="AkademisyenDto" CommandClicked="CommandClickHandlerAkademisyen"></GridEvents>
             <GridColumns>
                 <GridColumn Visible="false" Field=@nameof(AkademisyenDto.Id) IsPrimaryKey="true" TextAlign="TextAlign.Right"></GridColumn>

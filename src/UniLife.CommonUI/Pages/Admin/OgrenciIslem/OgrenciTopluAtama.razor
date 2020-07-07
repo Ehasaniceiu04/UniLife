@@ -6,12 +6,12 @@
 @using Syncfusion.Blazor.Navigations
 @using Syncfusion.Blazor.Data
 @using Syncfusion.Blazor.Buttons
-
+@using UniLife.CommonUI.Pages.Admin.OgrenciIslem.OgrenciTopluAtamaTabs
 <div class="control-section">
     <div class="content-wrapper">
 
         <div class="row pb-2 bg-light text-dark">
-            <div class="col-sm-12 col-md-6">
+            <div class="col-sm-12 col-md-7">
                 <div class="form-group row">
                     <label for="DropFakulte" class="col-sm-2 col-form-label-sm">Fakülte</label>
                     <div class="col-sm-10">
@@ -88,9 +88,9 @@
                 </div>
             </div>
 
-            
 
-            <div class="col-sm-12 col-md-6">
+
+            <div class="col-sm-12 col-md-5 border-left">
                 <div class="control-section e-tab-section">
                     <SfTab @ref="Tab" CssClass="BlazorTab" LoadOn="ContentLoad.Dynamic">
                         <TabEvents Created="TabCreate" Selecting="OnTabSelecting"></TabEvents>
@@ -100,7 +100,22 @@
                                     <TabHeader Text="Danışman Atama"></TabHeader>
                                 </ChildContent>
                                 <ContentTemplate>
+                                    <div class="col-sm-12 col-md-12">
 
+                                        <div class="form-group row">
+                                            <label class="col-sm-12 col-form-label-sm" style="color:red">Toplu danışman atama işlemi gerçekleştiriyorsunuz!</label>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            
+                                            <div class="col-sm-10">
+                                                <SfTextBox @bind-Value="@selectedAka" CssClass="form-control-sm" Placeholder="Seçtiğiniz danışmanın adı.."></SfTextBox>
+                                            </div>
+                                            <div class="col-sm-1">
+                                                <SfButton OnClick="DanismanEkle" IconCss="e-btn-sb-icons e-icons e-Circle_Add e-round" IconPosition="IconPosition.Right" IsPrimary="true" CssClass="form-control-sm"></SfButton>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </ContentTemplate>
                             </TabItem>
                             <TabItem>
@@ -129,51 +144,81 @@
 
         @if (isTopGridVisible)
         {
-    <div class="row pb-2 bg-light text-dark">
-        @*<SfGrid TValue="ResOgrTopAtaFilters" ID="OgrencilerGrid" @ref="OgrencilerGrid" RowHeight="20" AllowPaging="true" AllowFiltering="true">
-            <SfDataManager Url="odata/ogrencis" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
-            <GridColumns>
-                <GridColumn Visible="false" Field=@nameof(ResOgrTopAtaFilters.OgrenciId) IsIdentity="true" IsPrimaryKey="true"></GridColumn>
-                <GridColumn AutoFit="true" Field=@nameof(ResOgrTopAtaFilters.OgrenciNo) HeaderText="OgrenciNo"></GridColumn>
-                <GridColumn Field=@nameof(ResOgrTopAtaFilters.AdSoyad) HeaderText="AdSoyad"></GridColumn>
-                <GridColumn Field=@nameof(ResOgrTopAtaFilters.Sinif) HeaderText="Sinif"></GridColumn>
-                <GridColumn AutoFit="true" Field=@nameof(ResOgrTopAtaFilters.KayitTarih) Format="d" HeaderText="T+U"></GridColumn>
-                <GridColumn AutoFit="true" Field=@nameof(ResOgrTopAtaFilters.Danisman) HeaderText="Danışman"></GridColumn>
-                <GridColumn AutoFit="true" Field=@nameof(ResOgrTopAtaFilters.DanismanIki) HeaderText="2.Danışman"></GridColumn>
-                <GridColumn AutoFit="true" Field=@nameof(ResOgrTopAtaFilters.Program) HeaderText="Snf"></GridColumn>
-            </GridColumns>
-        </SfGrid>*@
+            <div class="row pb-2 bg-light text-dark">
+                @*<SfGrid TValue="ResOgrTopAtaFilters" ID="OgrencilerGrid" @ref="OgrencilerGrid" RowHeight="20" AllowPaging="true" AllowFiltering="true">
+                        <SfDataManager Url="odata/ogrencis" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+                        <GridColumns>
+                            <GridColumn Visible="false" Field=@nameof(ResOgrTopAtaFilters.OgrenciId) IsIdentity="true" IsPrimaryKey="true"></GridColumn>
+                            <GridColumn AutoFit="true" Field=@nameof(ResOgrTopAtaFilters.OgrenciNo) HeaderText="OgrenciNo"></GridColumn>
+                            <GridColumn Field=@nameof(ResOgrTopAtaFilters.AdSoyad) HeaderText="AdSoyad"></GridColumn>
+                            <GridColumn Field=@nameof(ResOgrTopAtaFilters.Sinif) HeaderText="Sinif"></GridColumn>
+                            <GridColumn AutoFit="true" Field=@nameof(ResOgrTopAtaFilters.KayitTarih) Format="d" HeaderText="T+U"></GridColumn>
+                            <GridColumn AutoFit="true" Field=@nameof(ResOgrTopAtaFilters.Danisman) HeaderText="Danışman"></GridColumn>
+                            <GridColumn AutoFit="true" Field=@nameof(ResOgrTopAtaFilters.DanismanIki) HeaderText="2.Danışman"></GridColumn>
+                            <GridColumn AutoFit="true" Field=@nameof(ResOgrTopAtaFilters.Program) HeaderText="Snf"></GridColumn>
+                        </GridColumns>
+                    </SfGrid>*@
 
-        <SfGrid Query="topAtaQuery" TValue="OgrenciDto" ID="OgrencilerGrid" @ref="OgrencilerGrid" RowHeight="20" AllowPaging="true" AllowFiltering="true">
-            <SfDataManager Url="@(OdataQuery)" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
-            <GridColumns>
-                <GridColumn Visible="false" Field=@nameof(OgrenciDto.Id) IsIdentity="true" IsPrimaryKey="true"></GridColumn>
-                <GridColumn AutoFit="true" Field=@nameof(OgrenciDto.OgrNo) HeaderText="OgrenciNo"></GridColumn>
-                <GridColumn Field=@nameof(OgrenciDto.Ad) HeaderText="Ad"></GridColumn>
-                <GridColumn Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad"></GridColumn>
-                <GridColumn Field=@nameof(OgrenciDto.Sinif) HeaderText="Sinif"></GridColumn>
-                <GridColumn AutoFit="true" Field=@nameof(OgrenciDto.KayitTarih) Format="d" HeaderText="KayitTarih"></GridColumn>
-                <GridColumn AutoFit="true" Field="Danisman.Ad" Format="d" HeaderText="Danışman"></GridColumn>
-                <GridColumn AutoFit="true" Field="Program.Ad" Format="d" HeaderText="Program"></GridColumn>
-            </GridColumns>
-        </SfGrid>
+                <SfGrid Query="topAtaQuery" TValue="OgrenciDto" ID="OgrencilerGrid" @ref="OgrencilerGrid" RowHeight="20" AllowPaging="true" AllowFiltering="true">
+                    <SfDataManager Url="@(OdataQuery)" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+                    <GridSelectionSettings CheckboxOnly="true" PersistSelection="true"></GridSelectionSettings>
+                    @*<GridPageSettings PageSize="1" ></GridPageSettings>*@
+                    <GridColumns>
+                        <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
+                        <GridColumn Visible="false" Field=@nameof(OgrenciDto.Id) IsPrimaryKey="true"></GridColumn>
+                        <GridColumn AutoFit="true" Field=@nameof(OgrenciDto.OgrNo) HeaderText="OgrenciNo"></GridColumn>
+                        <GridColumn Field=@nameof(OgrenciDto.Ad) HeaderText="Ad"></GridColumn>
+                        <GridColumn Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad"></GridColumn>
+                        <GridColumn Field=@nameof(OgrenciDto.Sinif) HeaderText="Sinif"></GridColumn>
+                        <GridColumn AutoFit="true" Field=@nameof(OgrenciDto.KayitTarih) Format="d" HeaderText="KayitTarih"></GridColumn>
+                        <GridColumn AutoFit="true" Field="Danisman.Ad" Format="d" HeaderText="Danışman"></GridColumn>
+                        <GridColumn AutoFit="true" Field="Program.Ad" Format="d" HeaderText="Program"></GridColumn>
+                    </GridColumns>
+                </SfGrid>
 
-        @*<SfGrid TValue="OgrenciDto" ID="OgrencilerGrid" @ref="OgrencilerGrid" RowHeight="20"  AllowPaging="true" AllowFiltering="true" ShowColumnMenu="true">
-            <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
-            <GridColumns>
-                <GridColumn Visible="false" Field=@nameof(OgrenciDto.Id) IsIdentity="true" IsPrimaryKey="true"></GridColumn>
-                <GridColumn Field=@nameof(OgrenciDto.Ad) HeaderText="Ad"></GridColumn>
-                <GridColumn Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad"></GridColumn>
-            </GridColumns>
-        </SfGrid>*@
+                @*<SfGrid TValue="OgrenciDto" ID="OgrencilerGrid" @ref="OgrencilerGrid" RowHeight="20"  AllowPaging="true" AllowFiltering="true" ShowColumnMenu="true">
+                        <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+                        <GridColumns>
+                            <GridColumn Visible="false" Field=@nameof(OgrenciDto.Id) IsIdentity="true" IsPrimaryKey="true"></GridColumn>
+                            <GridColumn Field=@nameof(OgrenciDto.Ad) HeaderText="Ad"></GridColumn>
+                            <GridColumn Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad"></GridColumn>
+                        </GridColumns>
+                    </SfGrid>*@
 
-    </div>
+            </div>
         }
 
 
 
     </div>
 </div>
+
+
+@if (akademisyenDialogOpen)
+{
+    <Dialog Baslik="Akademisyenler" @bind-isDialogOpen="@akademisyenDialogOpen">
+        <div class="row">
+            <SfGrid ID="AkademisyenGrid" @ref="AkademisyenGrid" TValue="AkademisyenDto" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowFiltering="true">
+                <SfDataManager Url="odata/akademisyens" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+                <GridEvents TValue="AkademisyenDto" CommandClicked="CommandClickHandlerAkademisyen"></GridEvents>
+                <GridColumns>
+                    <GridColumn Visible="false" Field=@nameof(AkademisyenDto.Id) IsPrimaryKey="true" TextAlign="TextAlign.Right"></GridColumn>
+                    <GridColumn Field=@nameof(AkademisyenDto.Ad) HeaderText="Ad"></GridColumn>
+                    <GridColumn Field=@nameof(AkademisyenDto.Soyad) HeaderText="Soyad"></GridColumn>
+                    <GridColumn Field=@nameof(AkademisyenDto.TCKN) HeaderText="TCKN"></GridColumn>
+                    <GridColumn Field=@nameof(AkademisyenDto.OgrtNo) HeaderText="Akademisyen No"></GridColumn>
+                    <GridColumn>
+                        <GridCommandColumns>
+                            <GridCommandColumn Type="CommandButtonType.None" Title="Akademisyen Ekle" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-Circle_Add", CssClass="e-flat" })"></GridCommandColumn>
+                        </GridCommandColumns>
+                    </GridColumn>
+                </GridColumns>
+            </SfGrid>
+        </div>
+    </Dialog>
+}
+
+
 
 <style>
     .form-group {
@@ -192,6 +237,7 @@
     .col-form-label-sm {
         padding-bottom: unset;
         /*font-size: 0.65rem;*/
+        font-size: .775rem;
     }
 
     .e-tab .e-tab-header::before {
@@ -206,5 +252,15 @@
 
     .e-tab .e-tab-header:not(.e-vertical) .e-toolbar-item.e-active {
         border-bottom: 1px solid #69e0f0;
+    }
+
+    .e-Circle_Add::before {
+        content: '\e755';
+        /*            color: #e83e8c;*/
+    }
+
+    .e-Circle_Remove::before {
+        content: '\e742';
+        color: #e83e8c;
     }
 </style>

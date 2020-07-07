@@ -89,6 +89,16 @@ namespace UniLife.Server.Controllers
                 await _ogrenciManager.Create(ogrenciDto) :
                 new ApiResponse(Status400BadRequest, "Ogrenci Model is Invalid");
 
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("SetDanismanToOgrencis")]
+        public async Task<ApiResponse> SetDanismanToOgrencis([FromBody] ReqSetEntityIdToOtherEntities reqSetEntityIdToOtherEntities)
+            => ModelState.IsValid ?
+                await _ogrenciManager.SetDanismanToOgrencis(reqSetEntityIdToOtherEntities) :
+                new ApiResponse(Status400BadRequest, "SetDanismanToOgrencis is Invalid");
+
+        
+
         // Put: api/Ogrenci
         [HttpPut]
         [AllowAnonymous]

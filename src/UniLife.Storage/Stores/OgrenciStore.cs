@@ -115,8 +115,19 @@ namespace UniLife.Storage.Stores
             return _autoMapper.Map<List<OgrenciDto>>(ogrenciList);
         }
 
-        
+        public async Task SetDanismanToOgrencis(ReqSetEntityIdToOtherEntities reqSetEntityIdToOtherEntities)
+        {
+            string queryIncludeIds="";
+            foreach (var item in reqSetEntityIdToOtherEntities.OtherEntityIds)
+            {
+                queryIncludeIds = queryIncludeIds + item.ToString() + ",";
+            }
+            queryIncludeIds = queryIncludeIds.TrimEnd(',');
 
 
+            var rawBulkUpdateQuery = $"update public.'Ogrencis' set 'DanismanId' = {reqSetEntityIdToOtherEntities.EntityId} where 'Id' in ({queryIncludeIds})";
+
+            int numberOfRowAffected =  await _db.Database.ExecuteSqlCommandAsync(rawBulkUpdateQuery.Replace('\'','"'));
+        }
     }
 }

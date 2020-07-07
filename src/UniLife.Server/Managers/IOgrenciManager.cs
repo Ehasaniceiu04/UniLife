@@ -11,5 +11,6 @@ namespace UniLife.Server.Managers
         Task<ApiResponse> GetOgrenciQuery(OgrenciDto ogrenci);
         Task<ApiResponse> GetOgrenciListBySinavId(int sinavId);
         Task<ApiResponse> GetOgrenciListByDersAcId(int dersAcId);
+        Task<ApiResponse> SetDanismanToOgrencis(ReqSetEntityIdToOtherEntities reqSetEntityIdToOtherEntities);
     }
 }

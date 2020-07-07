@@ -10,7 +10,7 @@ using UniLife.Shared.Dto;
 using MatBlazor;
 using System.Net.Http.Json;
 using Syncfusion.Blazor.Navigations;
-
+using UniLife.CommonUI.Extensions;
 
 namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem
 {
@@ -89,6 +89,14 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem
                 args.Cancel = true;
             }
         }
+
+        bool akademisyenDialogOpen;
+        Syncfusion.Blazor.Grids.SfGrid<AkademisyenDto> AkademisyenGrid;
+        async Task DanismanEkle()
+        {
+            akademisyenDialogOpen = true;
+        }
+        string selectedAka = "";
 
 
         protected async override Task OnInitializedAsync()
@@ -219,6 +227,30 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem
             }
         }
 
+        public async Task CommandClickHandlerAkademisyen(Syncfusion.Blazor.Grids.CommandClickEventArgs<AkademisyenDto> args)
+        {
+            akademisyenDialogOpen = false;
+            if (args.CommandColumn.Title == "Akademisyen Ekle")
+            {
+                ReqSetEntityIdToOtherEntities reqSetEntityIdToOtherEntities = new ReqSetEntityIdToOtherEntities();
+                reqSetEntityIdToOtherEntities.EntityId = args.RowData.Id;
+                reqSetEntityIdToOtherEntities.OtherEntityIds = (await OgrencilerGrid.GetSelectedRecords()).Select(x => x.Id).ToList();
+
+                ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/ogrenci/SetDanismanToOgrencis", reqSetEntityIdToOtherEntities);
+                if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
+                {
+                    OgrencilerGrid.Refresh();
+                    matToaster.Add(args.RowData.Ad + " " + args.RowData.Soyad, MatToastType.Success, "Danışman seçilen öğrencilere atandı");
+                    selectedAka = args.RowData.Ad + " " + args.RowData.Soyad;
+                }
+                else
+                {
+                    matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Danışman ataması başarısız oldu!");
+                }
+            }
+        }
+
+
         private void onSinifChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
         {
             reqOgrTopAtaDto.Sinif = args.Value;
@@ -232,40 +264,88 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem
         public Syncfusion.Blazor.Data.Query topAtaQuery = new Syncfusion.Blazor.Data.Query().AddParams("$expand", "program($select=Id,Ad),Danisman($select=Id,Ad)");
         async Task Refresh()
         {
-            string OdataQueryParameters="";
-            
+
+            ////////////////////////////////////////// ODATAYA PARAMETRE GÖNDERME ///////////////////////////////////
+            ///
+            /// Odata da eğer bütün filtreler entity üzerindeyse buna gerek yok. Ama Değilse, mesela fakulteID ogrenci üzernde olmasaydı
+            /// FakulteId bağlantısını backendde kendimiz yazıp sonra odataya filtrelettirebilirdik. (odata Paramterelerine ekleyerek fakulte ekli değil !!)
+            /// 
+            ////string OdataQueryParameters="";
+
+            ////if (reqOgrTopAtaDto.FakulteId.HasValue)
+            ////{
+            ////    OdataQueryParameters = $"FakulteId={reqOgrTopAtaDto.FakulteId},";
+            ////}
+            ////if (reqOgrTopAtaDto.BolumId.HasValue)
+            ////{
+            ////    OdataQueryParameters += $"BolumId={reqOgrTopAtaDto.BolumId},";
+            ////}
+            ////if (reqOgrTopAtaDto.ProgramId.HasValue)
+            ////{
+            ////    OdataQueryParameters += $"ProgramId={reqOgrTopAtaDto.ProgramId},";
+            ////}
+            ////if (reqOgrTopAtaDto.KayitNedenId.HasValue)
+            ////{
+            ////    OdataQueryParameters += $"KayitNedenId={reqOgrTopAtaDto.KayitNedenId},";
+            ////}
+            ////if (reqOgrTopAtaDto.OgrenimDurumId.HasValue)
+            ////{
+            ////    OdataQueryParameters += $"OgrenimDurumId={reqOgrTopAtaDto.OgrenimDurumId},";
+            ////}
+            ////if (reqOgrTopAtaDto.Sinif.HasValue)
+            ////{
+            ////    OdataQueryParameters += $"Sinif={reqOgrTopAtaDto.Sinif},";
+            ////}
+            ////if (reqOgrTopAtaDto.Cinsiyet.HasValue)
+            ////{
+            ////    OdataQueryParameters += $"Cinsiyet={reqOgrTopAtaDto.Cinsiyet},";
+            ////}
+
+
+            ////OdataQueryParameters =OdataQueryParameters.TrimEnd(','); 
+            ////OdataQuery = $"odata/Ogrencis/GetTopAta({OdataQueryParameters})";
+            ///////////////////////////////////////////// ODATAYA PARAMETRE GÖNDERME END ///////////////////////////////////
+
+            string OdataQueryParameters = "";
+
             if (reqOgrTopAtaDto.FakulteId.HasValue)
             {
-                OdataQueryParameters = $"FakulteId={reqOgrTopAtaDto.FakulteId},";
+                OdataQueryParameters = $"fakulteId eq {reqOgrTopAtaDto.FakulteId} and ";
             }
             if (reqOgrTopAtaDto.BolumId.HasValue)
             {
-                OdataQueryParameters = $"BolumId={reqOgrTopAtaDto.BolumId},";
+                OdataQueryParameters += $"bolumId eq {reqOgrTopAtaDto.BolumId} and ";
             }
             if (reqOgrTopAtaDto.ProgramId.HasValue)
             {
-                OdataQueryParameters = $"ProgramId={reqOgrTopAtaDto.ProgramId},";
+                OdataQueryParameters += $"programId eq {reqOgrTopAtaDto.ProgramId} and ";
             }
             if (reqOgrTopAtaDto.KayitNedenId.HasValue)
             {
-                OdataQueryParameters = $"KayitNedenId={reqOgrTopAtaDto.KayitNedenId},";
+                OdataQueryParameters += $"KayitNedenId eq {reqOgrTopAtaDto.KayitNedenId} and ";
             }
             if (reqOgrTopAtaDto.OgrenimDurumId.HasValue)
             {
-                OdataQueryParameters = $"OgrenimDurumId={reqOgrTopAtaDto.OgrenimDurumId},";
+                OdataQueryParameters += $"OgrenimDurumId eq {reqOgrTopAtaDto.OgrenimDurumId} and ";
             }
             if (reqOgrTopAtaDto.Sinif.HasValue)
             {
-                OdataQueryParameters = $"Sinif={reqOgrTopAtaDto.Sinif},";
+                OdataQueryParameters += $"Sinif eq {reqOgrTopAtaDto.Sinif} and ";
             }
             if (reqOgrTopAtaDto.Cinsiyet.HasValue)
             {
-                OdataQueryParameters = $"Cinsiyet={reqOgrTopAtaDto.Cinsiyet},";
+                OdataQueryParameters += $"IsMale eq {(reqOgrTopAtaDto.Cinsiyet == 2).ToString().ToLower()}";
             }
 
+            OdataQueryParameters = OdataQueryParameters.TrimEnd('a', 'n', 'd', ' ');
+            OdataQuery = $"odata/Ogrencis";
 
-            OdataQueryParameters =OdataQueryParameters.TrimEnd(',');
-            OdataQuery = $"odata/Ogrencis/GetTopAta({OdataQueryParameters})"; //?$expand=program($select=Id,Ad),Danisman($select=Id,Ad)
+            if (!string.IsNullOrWhiteSpace(OdataQueryParameters))
+            {
+                topAtaQuery.AddParams("$filter", OdataQueryParameters);
+            }
+            
+
             isTopGridVisible = true;
             if (OgrencilerGrid !=null)
             {

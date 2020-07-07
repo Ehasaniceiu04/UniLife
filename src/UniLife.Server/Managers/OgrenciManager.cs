@@ -66,8 +66,10 @@ namespace UniLife.Server.Managers
             }
         }
 
-        
-
-
+        public async Task<ApiResponse> SetDanismanToOgrencis(ReqSetEntityIdToOtherEntities reqSetEntityIdToOtherEntities)
+        {
+            await _ogrenciStore.SetDanismanToOgrencis(reqSetEntityIdToOtherEntities);
+            return new ApiResponse(Status200OK, "Created SetDanismanToOgrencis", null);
+        }
     }
 }
