@@ -50,9 +50,8 @@
 
         ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/donem");
 
-        if (apiResponse.StatusCode == Status200OK)
+        if (apiResponse.StatusCode == StatusCodes.Status200OK)
         {
-            matToaster.Add(apiResponse.Message, MatToastType.Success, "Bölümler getirildi");
             donemDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<DonemDto[]>(apiResponse.Result.ToString()).ToList<DonemDto>();
         }
         else

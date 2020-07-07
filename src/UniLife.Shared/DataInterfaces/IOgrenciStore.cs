@@ -11,6 +11,8 @@ namespace UniLife.Shared.DataInterfaces
         Task<List<OgrenciDto>> GetOgrenciQuery(OgrenciDto ogrenci);
         Task<List<OgrenciDto>> GetOgrenciListBySinavId(int sinavId);
         Task<List<OgrenciDto>> GetOgrenciListByDersAcId(int dersAcId);
-        Task SetDanismanToOgrencis(ReqSetEntityIdToOtherEntities reqSetEntityIdToOtherEntities);
+        Task SetDanismanToOgrencis(ReqEntityIdWithOtherEntitiesIds ReqEntityIdWithOtherEntitiesIds);
+        Task SetMufredatToOgrencis(ReqEntityIdWithOtherEntitiesIds ReqEntityIdWithOtherEntitiesIds);
+        Task OgrencisSinifAtlat(ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds);
     }
 }

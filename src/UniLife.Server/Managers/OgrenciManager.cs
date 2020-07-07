@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using UniLife.Server.Middleware.Wrappers;
 using UniLife.Shared.DataInterfaces;
@@ -66,10 +67,22 @@ namespace UniLife.Server.Managers
             }
         }
 
-        public async Task<ApiResponse> SetDanismanToOgrencis(ReqSetEntityIdToOtherEntities reqSetEntityIdToOtherEntities)
+        public async Task<ApiResponse> SetDanismanToOgrencis(ReqEntityIdWithOtherEntitiesIds ReqEntityIdWithOtherEntitiesIds)
         {
-            await _ogrenciStore.SetDanismanToOgrencis(reqSetEntityIdToOtherEntities);
-            return new ApiResponse(Status200OK, "Created SetDanismanToOgrencis", null);
+            await _ogrenciStore.SetDanismanToOgrencis(ReqEntityIdWithOtherEntitiesIds);
+            return new ApiResponse(Status200OK, "SetDanismanToOgrencis done!", null);
+        }
+
+        public async Task<ApiResponse> SetMufredatToOgrencis(ReqEntityIdWithOtherEntitiesIds ReqEntityIdWithOtherEntitiesIds)
+        {
+            await _ogrenciStore.SetMufredatToOgrencis(ReqEntityIdWithOtherEntitiesIds);
+            return new ApiResponse(Status200OK, "SetMufredatToOgrencis done!", null);
+        }
+
+        public async Task<ApiResponse> OgrencisSinifAtlat(ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds)
+        {
+            await _ogrenciStore.OgrencisSinifAtlat(reqEntityIdWithOtherEntitiesIds);
+            return new ApiResponse(Status200OK, "OgrencisSinifAtlat done!", null);
         }
     }
 }

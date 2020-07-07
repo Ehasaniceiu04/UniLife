@@ -92,12 +92,30 @@ namespace UniLife.Server.Controllers
         [HttpPost]
         [AllowAnonymous]
         [Route("SetDanismanToOgrencis")]
-        public async Task<ApiResponse> SetDanismanToOgrencis([FromBody] ReqSetEntityIdToOtherEntities reqSetEntityIdToOtherEntities)
+        public async Task<ApiResponse> SetDanismanToOgrencis([FromBody] ReqEntityIdWithOtherEntitiesIds ReqEntityIdWithOtherEntitiesIds)
             => ModelState.IsValid ?
-                await _ogrenciManager.SetDanismanToOgrencis(reqSetEntityIdToOtherEntities) :
+                await _ogrenciManager.SetDanismanToOgrencis(ReqEntityIdWithOtherEntitiesIds) :
                 new ApiResponse(Status400BadRequest, "SetDanismanToOgrencis is Invalid");
 
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("SetMufredatToOgrencis")]
+        public async Task<ApiResponse> SetMufredatToOgrencis([FromBody] ReqEntityIdWithOtherEntitiesIds ReqEntityIdWithOtherEntitiesIds)
+            => ModelState.IsValid ?
+                await _ogrenciManager.SetMufredatToOgrencis(ReqEntityIdWithOtherEntitiesIds) :
+                new ApiResponse(Status400BadRequest, "SetMufredatToOgrencis is Invalid");
+
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("OgrencisSinifAtlat")]
+        public async Task<ApiResponse> OgrencisSinifAtlat([FromBody] ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds)
+            => ModelState.IsValid ?
+                await _ogrenciManager.OgrencisSinifAtlat(reqEntityIdWithOtherEntitiesIds) :
+                new ApiResponse(Status400BadRequest, "OgrencisSinifAtlat is Invalid");
+
+
         
+
 
         // Put: api/Ogrenci
         [HttpPut]

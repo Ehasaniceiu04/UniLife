@@ -49,7 +49,8 @@ namespace UniLife.Shared.Dto.Definitions
         public int? DanismanId { get; set; }
         public virtual AkademisyenDto Danisman { get; set; }
 
-        
+        public string DnmSnfGecBilgi { get; set; }
+
         public int? DanismanIkiId { get; set; }
         public virtual AkademisyenDto DanismanIki { get; set; }
 

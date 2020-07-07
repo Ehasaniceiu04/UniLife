@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace UniLife.Storage.Stores
 {
@@ -115,19 +116,69 @@ namespace UniLife.Storage.Stores
             return _autoMapper.Map<List<OgrenciDto>>(ogrenciList);
         }
 
-        public async Task SetDanismanToOgrencis(ReqSetEntityIdToOtherEntities reqSetEntityIdToOtherEntities)
+        public async Task SetDanismanToOgrencis(ReqEntityIdWithOtherEntitiesIds ReqEntityIdWithOtherEntitiesIds)
         {
             string queryIncludeIds="";
-            foreach (var item in reqSetEntityIdToOtherEntities.OtherEntityIds)
+            foreach (var item in ReqEntityIdWithOtherEntitiesIds.OtherEntityIds)
             {
                 queryIncludeIds = queryIncludeIds + item.ToString() + ",";
             }
             queryIncludeIds = queryIncludeIds.TrimEnd(',');
 
 
-            var rawBulkUpdateQuery = $"update public.'Ogrencis' set 'DanismanId' = {reqSetEntityIdToOtherEntities.EntityId} where 'Id' in ({queryIncludeIds})";
+            var rawBulkUpdateQuery = $"update public.'Ogrencis' set 'DanismanId' = {ReqEntityIdWithOtherEntitiesIds.EntityId} where 'Id' in ({queryIncludeIds})";
 
             int numberOfRowAffected =  await _db.Database.ExecuteSqlCommandAsync(rawBulkUpdateQuery.Replace('\'','"'));
+        }
+
+        public async Task SetMufredatToOgrencis(ReqEntityIdWithOtherEntitiesIds ReqEntityIdWithOtherEntitiesIds)
+        {
+            string queryIncludeIds = "";
+            foreach (var item in ReqEntityIdWithOtherEntitiesIds.OtherEntityIds)
+            {
+                queryIncludeIds = queryIncludeIds + item.ToString() + ",";
+            }
+            queryIncludeIds = queryIncludeIds.TrimEnd(',');
+
+
+            var rawBulkUpdateQuery = $"update public.'Ogrencis' set 'MufredatId' = {ReqEntityIdWithOtherEntitiesIds.EntityId} where 'Id' in ({queryIncludeIds})";
+
+            int numberOfRowAffected = await _db.Database.ExecuteSqlCommandAsync(rawBulkUpdateQuery.Replace('\'', '"'));
+        }
+
+        public async Task OgrencisSinifAtlat(ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds)
+        {
+            var ogrencis = await (from o in _db.Ogrencis.Where(x => reqEntityIdWithOtherEntitiesIds.OtherEntityIds.Contains(x.Id))
+                                 select o).ToListAsync();
+
+            var ogrPrograms = await (from o in _db.Ogrencis.Where(x => reqEntityIdWithOtherEntitiesIds.OtherEntityIds.Contains(x.Id))
+                                     join p in _db.Programs on o.ProgramId equals p.Id
+                                     select new KeyValueDto { 
+                                         Id= o.Id,
+                                         IntValue = p.NormalSure
+                                     }).ToListAsync();
+
+            //Burada dönemler kontrol edilecek. 
+            //Sonra şuna göre reqEntityIdWithOtherEntitiesIds.EntityId
+            //swich case 
+            // liste geçti geçmedi olarka 2 parçaya ayrılacak.
+            // geçenlerin sınıf bir arttırlacak.(program süerni sonrdaysa aynı kacalk.) kalanların aynı.
+            //geçenlerin DnmSnfGecBilgi = Sınıf Atlatıldı.
+            //aklanların  DnmSnfGecBilgi = Genel not ortalaması düşük.
+
+            foreach (var item in ogrencis)
+            {
+                int ogrPrgSure = ogrPrograms.FirstOrDefault(x=>x.Id == item.Id).IntValue;
+                if (ogrPrgSure> item.Sinif)
+                {
+                    item.Sinif++;
+                    item.DnmSnfGecBilgi = "Sınıf Atlatıldı";
+                }
+            }
+
+            _db.Ogrencis.UpdateRange(ogrencis);
+            await _db.SaveChangesAsync(CancellationToken.None);
+
         }
     }
 }

@@ -623,6 +623,7 @@ namespace UniLife.Server
             builder.EntitySet<UniLife.Shared.DataModels.Program>("Programs");
             builder.EntitySet<DerslikRezerv>("DerslikRezervs");
             builder.EntitySet<Derslik>("Dersliks");
+            builder.EntitySet<Mufredat>("Mufredats");
             return builder.GetEdmModel();
         }
     }

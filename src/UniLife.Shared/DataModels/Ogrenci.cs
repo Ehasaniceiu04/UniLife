@@ -51,6 +51,8 @@ namespace UniLife.Shared.DataModels
         public int? DanismanIkiId { get; set; }
         public virtual Akademisyen DanismanIki { get; set; }
 
+        public string DnmSnfGecBilgi { get; set; }
+
         public string AskerDurum { get; set; }
         public DateTime? KayitTarih { get; set; }
         public DateTime? AyrilTarih { get; set; }

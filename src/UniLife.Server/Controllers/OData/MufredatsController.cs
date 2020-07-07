@@ -5,11 +5,11 @@ using UniLife.Storage;
 
 namespace UniLife.Server.Controllers
 {
-    public class BolumsController : ControllerBase
+    public class MufredatsController : ControllerBase
     {
         private readonly IApplicationDbContext _applicationDbContext;
 
-        public BolumsController(IApplicationDbContext applicationDbContext)
+        public MufredatsController(IApplicationDbContext applicationDbContext)
         {
             _applicationDbContext = applicationDbContext;
         }
@@ -17,9 +17,9 @@ namespace UniLife.Server.Controllers
         [Microsoft.AspNet.OData.EnableQuery()]
         [HttpGet]
         //[Authorize(Permissions.Ogrenci.Create)]
-        public IEnumerable<Bolum> Get()
+        public IEnumerable<Mufredat> Get()
         {
-            return _applicationDbContext.Bolums;
+            return _applicationDbContext.Mufredats;
         }
 
     }

@@ -2,6 +2,7 @@
 using UniLife.Shared.DataModels;
 using UniLife.Shared.Dto.Definitions;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace UniLife.Server.Managers
 {
@@ -11,6 +12,8 @@ namespace UniLife.Server.Managers
         Task<ApiResponse> GetOgrenciQuery(OgrenciDto ogrenci);
         Task<ApiResponse> GetOgrenciListBySinavId(int sinavId);
         Task<ApiResponse> GetOgrenciListByDersAcId(int dersAcId);
-        Task<ApiResponse> SetDanismanToOgrencis(ReqSetEntityIdToOtherEntities reqSetEntityIdToOtherEntities);
+        Task<ApiResponse> SetDanismanToOgrencis(ReqEntityIdWithOtherEntitiesIds ReqEntityIdWithOtherEntitiesIds);
+        Task<ApiResponse> SetMufredatToOgrencis(ReqEntityIdWithOtherEntitiesIds ReqEntityIdWithOtherEntitiesIds);
+        Task<ApiResponse> OgrencisSinifAtlat(ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds);
     }
 }

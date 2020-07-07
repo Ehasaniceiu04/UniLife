@@ -92,11 +92,21 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem
 
         bool akademisyenDialogOpen;
         Syncfusion.Blazor.Grids.SfGrid<AkademisyenDto> AkademisyenGrid;
+
+        bool mufredatDialogOpen;
+        Syncfusion.Blazor.Grids.SfGrid<MufredatDto> MufreadatGrid;
         async Task DanismanEkle()
         {
             akademisyenDialogOpen = true;
         }
         string selectedAka = "";
+
+        async Task MufredatEkle()
+        {
+            mufredatDialogOpen = true;
+        }
+        string selectedMuf = "";
+        
 
 
         protected async override Task OnInitializedAsync()
@@ -232,15 +242,15 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem
             akademisyenDialogOpen = false;
             if (args.CommandColumn.Title == "Akademisyen Ekle")
             {
-                ReqSetEntityIdToOtherEntities reqSetEntityIdToOtherEntities = new ReqSetEntityIdToOtherEntities();
-                reqSetEntityIdToOtherEntities.EntityId = args.RowData.Id;
-                reqSetEntityIdToOtherEntities.OtherEntityIds = (await OgrencilerGrid.GetSelectedRecords()).Select(x => x.Id).ToList();
+                ReqEntityIdWithOtherEntitiesIds ReqEntityIdWithOtherEntitiesIds = new ReqEntityIdWithOtherEntitiesIds();
+                ReqEntityIdWithOtherEntitiesIds.EntityId = args.RowData.Id;
+                ReqEntityIdWithOtherEntitiesIds.OtherEntityIds = (await OgrencilerGrid.GetSelectedRecords()).Select(x => x.Id).ToList();
 
-                ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/ogrenci/SetDanismanToOgrencis", reqSetEntityIdToOtherEntities);
+                ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/ogrenci/SetDanismanToOgrencis", ReqEntityIdWithOtherEntitiesIds);
                 if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
                 {
                     OgrencilerGrid.Refresh();
-                    matToaster.Add(args.RowData.Ad + " " + args.RowData.Soyad, MatToastType.Success, "Danışman seçilen öğrencilere atandı");
+                    matToaster.Add(args.RowData.Ad + " " + args.RowData.Soyad, MatToastType.Success, "Seçilen danışman öğrencilere atandı.");
                     selectedAka = args.RowData.Ad + " " + args.RowData.Soyad;
                 }
                 else
@@ -249,6 +259,30 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem
                 }
             }
         }
+        public async Task CommandClickHandlerMufreadat(Syncfusion.Blazor.Grids.CommandClickEventArgs<MufredatDto> args)
+        {
+            mufredatDialogOpen = false;
+            if (args.CommandColumn.Title == "Mufredat Ekle")
+            {
+                ReqEntityIdWithOtherEntitiesIds ReqEntityIdWithOtherEntitiesIds = new ReqEntityIdWithOtherEntitiesIds();
+                ReqEntityIdWithOtherEntitiesIds.EntityId = args.RowData.Id;
+                ReqEntityIdWithOtherEntitiesIds.OtherEntityIds = (await OgrencilerGrid.GetSelectedRecords()).Select(x => x.Id).ToList();
+
+                ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/ogrenci/SetMufredatToOgrencis", ReqEntityIdWithOtherEntitiesIds);
+                if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
+                {
+                    OgrencilerGrid.Refresh();
+                    matToaster.Add(args.RowData.Ad , MatToastType.Success, "Seçilen müfredat öğrencilere atandı.");
+                    selectedMuf = args.RowData.Ad;
+                }
+                else
+                {
+                    matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Müfredat ataması başarısız oldu!");
+                }
+            }
+        }
+
+
 
 
         private void onSinifChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)

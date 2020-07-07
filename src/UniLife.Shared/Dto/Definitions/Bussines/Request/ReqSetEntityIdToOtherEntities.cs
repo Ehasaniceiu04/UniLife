@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace UniLife.Shared.Dto.Definitions
 {
-    public class ReqSetEntityIdToOtherEntities
+    public class ReqEntityIdWithOtherEntitiesIds
     {
         public int EntityId { get; set; }
         public List<int> OtherEntityIds { get; set; }

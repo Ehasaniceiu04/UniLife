@@ -6,7 +6,7 @@
 @using Syncfusion.Blazor.Navigations
 @using Syncfusion.Blazor.Data
 @using Syncfusion.Blazor.Buttons
-@using UniLife.CommonUI.Pages.Admin.OgrenciIslem.OgrenciTopluAtamaTabs
+
 <div class="control-section">
     <div class="content-wrapper">
 
@@ -107,7 +107,7 @@
                                         </div>
 
                                         <div class="form-group row">
-                                            
+
                                             <div class="col-sm-10">
                                                 <SfTextBox @bind-Value="@selectedAka" CssClass="form-control-sm" Placeholder="Seçtiğiniz danışmanın adı.."></SfTextBox>
                                             </div>
@@ -123,7 +123,22 @@
                                     <TabHeader Text="Müfredat Atama"></TabHeader>
                                 </ChildContent>
                                 <ContentTemplate>
+                                    <div class="col-sm-12 col-md-12">
 
+                                        <div class="form-group row">
+                                            <label class="col-sm-12 col-form-label-sm" style="color:red">Toplu müfreadat atama işlemi gerçekleştiriyorsunuz!</label>
+                                        </div>
+
+                                        <div class="form-group row">
+
+                                            <div class="col-sm-10">
+                                                <SfTextBox @bind-Value="@selectedMuf" CssClass="form-control-sm" Placeholder="Seçtiğiniz müfredat adı.."></SfTextBox>
+                                            </div>
+                                            <div class="col-sm-1">
+                                                <SfButton OnClick="MufredatEkle" IconCss="e-btn-sb-icons e-icons e-Circle_Add e-round" IconPosition="IconPosition.Right" IsPrimary="true" CssClass="form-control-sm"></SfButton>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </ContentTemplate>
                             </TabItem>
                             <TabItem>
@@ -210,6 +225,29 @@
                     <GridColumn>
                         <GridCommandColumns>
                             <GridCommandColumn Type="CommandButtonType.None" Title="Akademisyen Ekle" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-Circle_Add", CssClass="e-flat" })"></GridCommandColumn>
+                        </GridCommandColumns>
+                    </GridColumn>
+                </GridColumns>
+            </SfGrid>
+        </div>
+    </Dialog>
+}
+
+@if (mufredatDialogOpen)
+{
+    <Dialog Baslik="Müfredatlar" @bind-isDialogOpen="@mufredatDialogOpen">
+        <div class="row">
+            <SfGrid ID="MufreadatGrid" @ref="MufreadatGrid" TValue="MufredatDto" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowFiltering="true">
+                <SfDataManager Url="odata/mufredats" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+                <GridEvents TValue="MufredatDto" CommandClicked="CommandClickHandlerMufreadat"></GridEvents>
+                <GridColumns>
+                    <GridColumn Visible="false" Field=@nameof(MufredatDto.Id) IsPrimaryKey="true" TextAlign="TextAlign.Right"></GridColumn>
+                    <GridColumn Field=@nameof(MufredatDto.Ad) HeaderText="Ad"></GridColumn>
+                    <GridColumn Field=@nameof(MufredatDto.Yil) HeaderText="Yil"></GridColumn>
+                    <GridColumn Field=@nameof(MufredatDto.BasTarih) Format="d" HeaderText="Baslangıç Tarih"></GridColumn>
+                    <GridColumn>
+                        <GridCommandColumns>
+                            <GridCommandColumn Type="CommandButtonType.None" Title="Mufredat Ekle" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-Circle_Add", CssClass="e-flat" })"></GridCommandColumn>
                         </GridCommandColumns>
                     </GridColumn>
                 </GridColumns>

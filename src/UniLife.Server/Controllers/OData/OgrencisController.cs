@@ -5,8 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UniLife.Shared.DataModels;
 using UniLife.Storage;
-using UniLife.Shared.Extensions;
-using Microsoft.EntityFrameworkCore;
 
 namespace UniLife.Server.Controllers
 {
@@ -45,11 +43,11 @@ namespace UniLife.Server.Controllers
                                                                         .Where(x => KayitNedenId == 0 ? true : x.KayitNedenId == KayitNedenId)
                                                                         .Where(x => OgrenimDurumId == 0 ? true : x.OgrenimDurumId == OgrenimDurumId)
                                                                         .Where(x => Sinif == 0 ? true : x.Sinif == Sinif)
-                                                                        .Where(x => Cinsiyet == 0? true : x.IsMale == (Cinsiyet == 2))
-                                //join p in _applicationDbContext.Programs on o.ProgramId equals p.Id
-                                //join a in _applicationDbContext.Akademisyens on o.DanismanId equals a.Id into akaLeft
-                                //from m in akaLeft.DefaultIfEmpty()
-                                
+                                                                        .Where(x => Cinsiyet == 0 ? true : x.IsMale == (Cinsiyet == 2))
+                                    //join p in _applicationDbContext.Programs on o.ProgramId equals p.Id
+                                    //join a in _applicationDbContext.Akademisyens on o.DanismanId equals a.Id into akaLeft
+                                    //from m in akaLeft.DefaultIfEmpty()
+
                                 select o;
 
 
