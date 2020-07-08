@@ -1,0 +1,18 @@
+﻿@page "/quebu" 
+
+@using Syncfusion.Blazor.QueryBuilder
+@using Syncfusion.Blazor.Data
+
+<SfQueryBuilder>
+    <QueryBuilderColumns>
+        <QueryBuilderColumn Field="EmployeeID" Label="Employee ID" Type="number">
+        </QueryBuilderColumn>
+        <QueryBuilderColumn Field="FirstName" Label="First Name" Type="string"></QueryBuilderColumn>
+        <QueryBuilderColumn Field="TitleOfCourtesy" Label="Title Of Courtesy" Type="boolean">
+        </QueryBuilderColumn>
+        <QueryBuilderColumn Field="HireDate" Label="Hire Date" Type="date" Format="MM/dd/yyyy">
+        </QueryBuilderColumn>
+        <QueryBuilderColumn Field="Country" Label="Country" Type="string"></QueryBuilderColumn>
+    </QueryBuilderColumns>
+    <SfDataManager Url="https://js.syncfusion.com/demos/ejServices/Wcf/Northwind.svc/Employees" Adaptor="Syncfusion.Blazor.Adaptors.ODataAdaptor" CrossDomain="true"></SfDataManager>
+</SfQueryBuilder>

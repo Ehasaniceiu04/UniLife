@@ -3,12 +3,15 @@
 @using Syncfusion.Blazor.Data
 @using Syncfusion.Blazor.Grids
 @using UniLife.Shared.DataModels 
-    <SfGrid TValue="Ogrenci" AllowPaging="true" AllowFiltering="true" ShowColumnMenu="true">
-        <SfDataManager Url="odata/ogrencis?ahmet=12" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+    <SfGrid TValue="Ogrenci" Toolbar="@(new List<string>() { "ColumnChooser" })" ShowColumnChooser="true" AllowPaging="true" AllowFiltering="true">
+        <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
+        <SfDataManager Url="odata/ogrencis" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
         <GridColumns>
             <GridColumn Field=@nameof(Ogrenci.Id) HeaderText="Ogrenci ID" IsPrimaryKey="true" TextAlign="TextAlign.Right" Width="120"></GridColumn>
             <GridColumn Field=@nameof(Ogrenci.Ad) HeaderText="Ad" Width="150"></GridColumn>
-            <GridColumn Field=@nameof(Ogrenci.Soyad) HeaderText="Soyad" Width="150"></GridColumn>
+            <GridColumn Field=@nameof(Ogrenci.Soyad) HeaderText="Soyad"></GridColumn>
+            <GridColumn Field=@nameof(Ogrenci.AnaOgrNo) HeaderText="AnaOgrNo"></GridColumn>
+            <GridColumn Field=@nameof(Ogrenci.AyrilTarih) HeaderText="AyrilTarih"></GridColumn>
             <GridColumn Field=@nameof(Ogrenci.TCKN) HeaderText="TCKN" Format="C2" Width="150"></GridColumn>
         </GridColumns>
     </SfGrid>
