@@ -11,7 +11,7 @@
         <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
         <GridColumns>
             <GridColumn Visible="false" Field=@nameof(DerslikDto.Id) AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
-            <GridColumn Field=@nameof(DerslikDto.Ad) HeaderText="Derslik Adı" ValidationRules="@(new { required=true})" Width="170"></GridColumn>
+            <GridColumn Field=@nameof(DerslikDto.Ad) HeaderText="Derslik Adı" ValidationRules="@(new ValidationRules{ Required=true})" Width="170"></GridColumn>
             <GridColumn Field=@nameof(DerslikDto.Capacity) HeaderText="Kapasite" Format="n0" Width="170"></GridColumn>
             <GridColumn Field=@nameof(DerslikDto.Type) HeaderText="Tipi(Amfi..)" Format="n0" Width="170"></GridColumn>
             <GridColumn Field=@nameof(DerslikDto.BinaId) HeaderText="Bina" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@binaDtos" Width="150"></GridColumn>

@@ -11,8 +11,8 @@
             <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
             <GridColumns>
                 <GridColumn Visible="false" Field=@nameof(DonemDto.Id) HeaderText="Bölüm ID" AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
-                <GridColumn Field=@nameof(DonemDto.Ad) HeaderText="Donem" ValidationRules="@(new { required=true})" Width="170"></GridColumn>
-                <GridColumn Field=@nameof(DonemDto.Yil) HeaderText="Yil" ValidationRules="@(new { required=true})"></GridColumn>
+                <GridColumn Field=@nameof(DonemDto.Ad) HeaderText="Donem" ValidationRules="@(new ValidationRules{ Required=true})" Width="170"></GridColumn>
+                <GridColumn Field=@nameof(DonemDto.Yil) HeaderText="Yil" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
                 <GridColumn Field=@nameof(DonemDto.Durum) HeaderText="Durum" DisplayAsCheckBox="true" EditType="EditType.BooleanEdit"></GridColumn>
                 @*<GridColumn Field=@nameof(DonemDto.DonemTip.UniversiteId) HeaderText="Üniversite" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@universiteDtos" Width="150"></GridColumn>*@
                 <GridColumn Field=@nameof(DonemDto.DonemTipId) HeaderText="Donem Tipi" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@donemTipDtos" Width="150"></GridColumn>

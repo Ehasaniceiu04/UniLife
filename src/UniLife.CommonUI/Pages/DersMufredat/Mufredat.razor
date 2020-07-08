@@ -23,9 +23,9 @@
         <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
         <GridColumns>
             <GridColumn AutoFit="true" Visible="false" Field=@nameof(MufredatDto.Id) HeaderText="Müfredat ID" AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
-            <GridColumn AutoFit="true" Field=@nameof(MufredatDto.Ad) AllowEditing="true" HeaderText="Müfredat İsim" ValidationRules="@(new { required=true})"></GridColumn>
-            <GridColumn AutoFit="true" Field=@nameof(MufredatDto.Yil) HeaderText="Müfredat Yıl" ValidationRules="@(new { required=true})"></GridColumn>
-            <GridColumn AutoFit="true" Field=@nameof(MufredatDto.BasTarih) HeaderText="BasTarih" EditType="EditType.DatePickerEdit" ValidationRules="@(new { required=true})"></GridColumn>
+            <GridColumn AutoFit="true" Field=@nameof(MufredatDto.Ad) AllowEditing="true" HeaderText="Müfredat İsim" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
+            <GridColumn AutoFit="true" Field=@nameof(MufredatDto.Yil) HeaderText="Müfredat Yıl" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
+            <GridColumn AutoFit="true" Field=@nameof(MufredatDto.BasTarih) HeaderText="BasTarih" EditType="EditType.DatePickerEdit" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
             <GridColumn AutoFit="true" Field=@nameof(MufredatDto.BitTarih) HeaderText="Bit Tarih" EditType="EditType.DatePickerEdit"></GridColumn>
             <GridColumn Field=@nameof(MufredatDto.KararTarih) HeaderText="KararTarih" EditType="EditType.DatePickerEdit"></GridColumn>
             <GridColumn Field=@nameof(HarcDto.ProgramId) HeaderText="Program" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@programDtos"></GridColumn>
@@ -129,7 +129,7 @@
         }
 
         //Sağ Click için
-        public void OnContextMenuClick(ContextMenuClickEventArgs args)
+        public void OnContextMenuClick(ContextMenuClickEventArgs<MufredatDto> args)
         {
             if (args.Item.Id == "copywithheader")
             {

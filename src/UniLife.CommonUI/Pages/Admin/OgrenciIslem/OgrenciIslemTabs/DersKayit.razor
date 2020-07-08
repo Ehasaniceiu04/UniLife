@@ -261,7 +261,7 @@
     public bool IsChecked { get; set; } = true;
 
     List<DonemDto> donemDtos = new List<DonemDto>();
-    SfRadioButton donemRadio = new SfRadioButton();
+    SfRadioButton<bool> donemRadio = new SfRadioButton<bool>();
     int selectedDonem;
 
 
@@ -303,7 +303,7 @@
     }
 
 
-    double selectedItem;
+    int selectedItem;
     public async void onDonemChange()
     {
         IsChecked = !IsChecked;

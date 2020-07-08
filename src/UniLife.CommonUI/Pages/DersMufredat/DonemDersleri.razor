@@ -69,8 +69,8 @@
                             <SfMultiSelect @ref="CokluSinif" TValue="int[]" CssClass="e-small col-sm-12" Placeholder="Sınıfları Seçiniz" Mode="@VisualMode.CheckBox" DataSource="@sinifDtos" ShowSelectAll="true" EnableSelectionOrder="@EnableSelectionOrders" ShowDropDownIcon="@EnableDropDownIcon" FilterBarPlaceholder="Sınıfları Seçiniz" PopupHeight="350px">
                                 <MultiSelectFieldSettings Text="Ad" Value="Id"></MultiSelectFieldSettings>
                             </SfMultiSelect>
-                            <SfCheckBox @ref="isIntibak" Label="İntibakı Yapılmayanlar" CssClass="e-small col-sm-6" Value="true"></SfCheckBox>
-                            <SfCheckBox @ref="isActive" Label="Sadece Aktifler" CssClass="e-small col-sm-6" Value="true"></SfCheckBox>
+                            <SfCheckBox Label="İntibakı Yapılmayanlar" CssClass="e-small col-sm-6" @bind-Checked="@isIntibak"></SfCheckBox>
+                            <SfCheckBox Label="Sadece Aktifler" CssClass="e-small col-sm-6" @bind-Checked="@isActive"></SfCheckBox>
                         </div>
                     </div>
                     <div class="col-12 pb-1">
@@ -250,8 +250,10 @@
 
 
 
-        SfCheckBox isIntibak;
-        SfCheckBox isActive;
+        //SfCheckBox isIntibak;
+        private bool isIntibak = true;
+        private bool isActive = true;
+        //SfCheckBox isActive;
 
         SfTextBox DersAd;
         SfTextBox DersKod;
@@ -652,8 +654,8 @@
                 dersFilterDto.MufredatSecenektekiler = mufredatDtos.Select(x => x.Id);
                 dersFilterDto.DonemSecilen = Convert.ToInt32(CokluDonem.Value.First());
                 dersFilterDto.SinifSecilen = CokluSinif.Value;//Array.ConvertAll(CokluSinif.Value, int.Parse);
-                dersFilterDto.IsIntibak = isIntibak.Checked;
-                dersFilterDto.IsActive = isActive.Checked;
+                dersFilterDto.IsIntibak = isIntibak;
+                dersFilterDto.IsActive = isActive;
                 dersFilterDto.DersAd = DersAd.Value;
                 dersFilterDto.DersKod = DersKod.Value;
 

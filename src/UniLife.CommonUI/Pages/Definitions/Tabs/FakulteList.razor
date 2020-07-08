@@ -108,10 +108,10 @@
         </GridEditSettings>
         <GridColumns>
             <GridColumn Visible="false" Field=@nameof(FakulteDto.Id) HeaderText="Fakülte ID" AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
-            <GridColumn Field=@nameof(FakulteDto.Ad) HeaderText="Fakülte İsim" ValidationRules="@(new { required=true})" Width="170"></GridColumn>
-            <GridColumn Field=@nameof(FakulteDto.Kod) HeaderText="Fakülte Kod" ValidationRules="@(new { required=true,number= true,maxLength=5})" Width="170"></GridColumn>
+            <GridColumn Field=@nameof(FakulteDto.Ad) HeaderText="Fakülte İsim" ValidationRules="@(new ValidationRules{ Required=true})" Width="170"></GridColumn>
+            <GridColumn Field=@nameof(FakulteDto.Kod) HeaderText="Fakülte Kod" ValidationRules="@(new ValidationRules{ Required=true,Number=true,MaxLength=5})" Width="170"></GridColumn>
             <GridColumn Field=@nameof(FakulteDto.UniversiteId) HeaderText="Üniversite" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@universiteDtos" Width="150"></GridColumn>
-            <GridColumn Field=@nameof(FakulteDto.KisaAd) HeaderText="KisaAd" ValidationRules="@(new { required=true})" Width="170"></GridColumn>
+            <GridColumn Field=@nameof(FakulteDto.KisaAd) HeaderText="KisaAd" ValidationRules="@(new ValidationRules{ Required=true})" Width="170"></GridColumn>
             <GridColumn Field=@nameof(FakulteDto.AdEn) HeaderText="AdEn" Width="170"></GridColumn>
             <GridColumn Field=@nameof(FakulteDto.EPosta) HeaderText="EPosta" Width="170"></GridColumn>
             <GridColumn Field=@nameof(FakulteDto.Tel) HeaderText="Tel" Width="170"></GridColumn>

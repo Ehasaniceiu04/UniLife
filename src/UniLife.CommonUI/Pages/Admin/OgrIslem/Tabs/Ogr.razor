@@ -87,8 +87,8 @@ else
             <GridColumns>
                 <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
                 <GridColumn Visible="false" Field=@nameof(UserInfoDto.UserId) HeaderText="Öğrenci ID" AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
-                <GridColumn Field=@nameof(UserInfoDto.FirstName) HeaderText="Öğrenci İsim" ValidationRules="@(new { required = true })"></GridColumn>
-                <GridColumn Field=@nameof(UserInfoDto.Email) HeaderText="Email" ValidationRules="@(new { required = true })"></GridColumn>
+                <GridColumn Field=@nameof(UserInfoDto.FirstName) HeaderText="Öğrenci İsim" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
+                <GridColumn Field=@nameof(UserInfoDto.Email) HeaderText="Email" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
                 <GridColumn Field=@nameof(UserInfoDto.Roles) HeaderText="Roles">
                     <Template>
                         @{

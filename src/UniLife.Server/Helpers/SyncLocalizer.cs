@@ -1,4 +1,5 @@
 ﻿using Syncfusion.Blazor;
+using System.Resources;
 
 namespace UniLife.Server.Helpers
 {
@@ -7,12 +8,17 @@ namespace UniLife.Server.Helpers
         // To get the locale key from mapped resources file
         public string Get(string key)
         {
-            return this.Manager.GetString(key);
+            return this.ResourceManager.GetString(key);
+        }
+
+        public string GetText(string key)
+        {
+            throw new System.NotImplementedException();
         }
 
         // To access the resource file and get the exact value for locale key
 
-        public System.Resources.ResourceManager Manager
+        public ResourceManager ResourceManager
         {
             get
             {

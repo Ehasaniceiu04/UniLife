@@ -118,10 +118,10 @@
             </GridEditSettings>
             <GridColumns>
                 <GridColumn Visible="false" Field=@nameof(DersDto.Id) HeaderText="Fakülte ID" AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
-                <GridColumn Field=@nameof(DersDto.Ad) HeaderText="Fakülte İsim" ValidationRules="@(new { required=true})" Width="170"></GridColumn>
-                <GridColumn Field=@nameof(DersDto.Kod) HeaderText="Fakülte Kod" ValidationRules="@(new { required=true})" Width="170"></GridColumn>
+                <GridColumn Field=@nameof(DersDto.Ad) HeaderText="Fakülte İsim" ValidationRules="@(new ValidationRules{ Required=true})" Width="170"></GridColumn>
+                <GridColumn Field=@nameof(DersDto.Kod) HeaderText="Fakülte Kod" ValidationRules="@(new ValidationRules{ Required=true})" Width="170"></GridColumn>
 
-                <GridColumn Field=@nameof(DersDto.KisaAd) HeaderText="KisaAd" ValidationRules="@(new { required=true})" Width="170"></GridColumn>
+                <GridColumn Field=@nameof(DersDto.KisaAd) HeaderText="KisaAd" ValidationRules="@(new ValidationRules{ Required=true})" Width="170"></GridColumn>
 
                 <GridColumn Field=@nameof(DersDto.MufredatId) HeaderText="Müfredat" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="mufredatDtos" Width="150"></GridColumn>
                 <GridColumn Field=@nameof(DersDto.DonemId) HeaderText="Dönem" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@donemDtos" Width="150"></GridColumn>

@@ -124,7 +124,7 @@
         <GridColumns>
             <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Açılan Ders ID" Edit="false" AllowEditing="false" TextAlign="TextAlign.Left" Width="140"></GridColumn>
             <GridColumn Field=@nameof(DersAcilanDto.Kod) HeaderText="Kod"></GridColumn>
-            <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Ad" ValidationRules="@(new { required=true})"></GridColumn>
+            <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Ad" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
             @*<GridColumn Field=@nameof(DersAcilanDto.Kredi) HeaderText="T+U TODO"></GridColumn>*@
             <GridColumn Field=@nameof(DersAcilanDto.Kredi) HeaderText="Kr"></GridColumn>
             <GridColumn Field=@nameof(DersAcilanDto.Akts) HeaderText="Akts"></GridColumn>
