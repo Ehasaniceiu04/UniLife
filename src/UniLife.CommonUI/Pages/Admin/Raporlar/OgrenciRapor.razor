@@ -1,0 +1,52 @@
+﻿@page "/ogrenci_rapor"
+@using UniLife.Shared.Dto.Definitions
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.Buttons
+
+
+    <ControlSection>
+        <FakBolPrg @bind-ProgramId="programId"
+                   @bind-BolumId="bolumId"
+                   @bind-FakulteId="fakulteId"></FakBolPrg>
+
+        <SfButton OnClick="Refresh" CssClass="e-success form-control-sm">Bul / Yenile</SfButton>
+        <SfCheckBox @bind-Checked="@okKayitNeden" TChecked="bool"></SfCheckBox>
+        @*<SfGrid Query="topAtaQuery" TValue="OgrenciDto" ID="OgrencilerGrid" @ref="OgrencilerGrid" AllowPaging="true" AllowFiltering="true">
+        <SfDataManager Url="@(OdataQuery)" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>*@
+        <SfGrid TValue="OgrenciDto" ID="OgrencilerGrid" @ref="OgrencilerGrid" AllowPaging="true" AllowFiltering="true" Toolbar="@(new List<string>() { "ColumnChooser" })" ShowColumnChooser="true">
+            <SfDataManager Url="odata/ogrencis" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+            <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
+            <GridColumns>
+                <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
+                <GridColumn Visible="false" Field=@nameof(OgrenciDto.Id) IsPrimaryKey="true"></GridColumn>
+                <GridColumn AutoFit="true" Field=@nameof(OgrenciDto.OgrNo) HeaderText="OgrenciNo"></GridColumn>
+                <GridColumn Field=@nameof(OgrenciDto.Ad) HeaderText="Ad"></GridColumn>
+                <GridColumn Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad"></GridColumn>
+                <GridColumn Field=@nameof(OgrenciDto.Sinif) HeaderText="Sinif"></GridColumn>
+                <GridColumn AutoFit="true" Field=@nameof(OgrenciDto.KayitTarih) Format="d" Type="ColumnType.Date" HeaderText="KayitTarih"></GridColumn>
+                <GridColumn AutoFit="true" Field="Program.Ad" HeaderText="Program"></GridColumn>
+                <GridColumn Visible="@okKayitNeden" AutoFit="true" Field=KayitNeden.Ad HeaderText="KayitNeden"></GridColumn>
+            </GridColumns>
+        </SfGrid>
+    </ControlSection>
+
+<style>
+    .form-group {
+        margin-bottom: 0.2rem;
+    }
+
+    /*.e-input-group .e-input-group-icon, .e-input-group.e-control-wrapper .e-input-group-icon {
+        min-height: 0px;
+        min-width: 0px;
+    }*/
+
+    input.e-input, .e-input-group input, .e-input-group.e-control-wrapper input, .e-input-group input.e-input, .e-input-group.e-control-wrapper input.e-input {
+        height: auto;
+    }
+
+    .col-form-label-sm {
+        padding-bottom: unset;
+        /*font-size: 0.65rem;*/
+        font-size: .775rem;
+    }
+</style>

@@ -6,14 +6,14 @@ namespace UniLife.Server.Helpers
     public class SyncLocalizer : ISyncfusionStringLocalizer
     {
         // To get the locale key from mapped resources file
-        public string Get(string key)
-        {
-            return this.ResourceManager.GetString(key);
-        }
+        //public string Get(string key)
+        //{
+        //    return this.ResourceManager.GetString(key);
+        //}
 
         public string GetText(string key)
         {
-            throw new System.NotImplementedException();
+            return this.ResourceManager.GetString(key);
         }
 
         // To access the resource file and get the exact value for locale key

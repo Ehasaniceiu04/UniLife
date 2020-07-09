@@ -293,12 +293,12 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem
         {
             reqOgrTopAtaDto.Cinsiyet = args.Value;
         }
-        
 
-        public Syncfusion.Blazor.Data.Query topAtaQuery = new Syncfusion.Blazor.Data.Query().AddParams("$expand", "program($select=Id,Ad),Danisman($select=Id,Ad)");
+
+        public Syncfusion.Blazor.Data.Query topAtaQuery = new Syncfusion.Blazor.Data.Query();
         async Task Refresh()
         {
-
+            topAtaQuery = new Syncfusion.Blazor.Data.Query();
             ////////////////////////////////////////// ODATAYA PARAMETRE GÖNDERME ///////////////////////////////////
             ///
             /// Odata da eğer bütün filtreler entity üzerindeyse buna gerek yok. Ama Değilse, mesela fakulteID ogrenci üzernde olmasaydı
@@ -344,41 +344,53 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem
 
             if (reqOgrTopAtaDto.FakulteId.HasValue)
             {
-                OdataQueryParameters = $"fakulteId eq {reqOgrTopAtaDto.FakulteId} and ";
+                //OdataQueryParameters = $"fakulteId eq {reqOgrTopAtaDto.FakulteId} and ";
+                topAtaQuery.Where("fakulteId", "equal", reqOgrTopAtaDto.FakulteId);
             }
             if (reqOgrTopAtaDto.BolumId.HasValue)
             {
-                OdataQueryParameters += $"bolumId eq {reqOgrTopAtaDto.BolumId} and ";
+                //OdataQueryParameters += $"bolumId eq {reqOgrTopAtaDto.BolumId} and ";
+                topAtaQuery.Where("bolumId", "equal", reqOgrTopAtaDto.BolumId);
             }
             if (reqOgrTopAtaDto.ProgramId.HasValue)
             {
-                OdataQueryParameters += $"programId eq {reqOgrTopAtaDto.ProgramId} and ";
+                //OdataQueryParameters += $"programId eq {reqOgrTopAtaDto.ProgramId} and ";
+                topAtaQuery.Where("programId", "equal", reqOgrTopAtaDto.ProgramId);
             }
             if (reqOgrTopAtaDto.KayitNedenId.HasValue)
             {
-                OdataQueryParameters += $"KayitNedenId eq {reqOgrTopAtaDto.KayitNedenId} and ";
+                //OdataQueryParameters += $"KayitNedenId eq {reqOgrTopAtaDto.KayitNedenId} and ";
+                topAtaQuery.Where("KayitNedenId", "equal", reqOgrTopAtaDto.KayitNedenId);
             }
             if (reqOgrTopAtaDto.OgrenimDurumId.HasValue)
             {
-                OdataQueryParameters += $"OgrenimDurumId eq {reqOgrTopAtaDto.OgrenimDurumId} and ";
+                //OdataQueryParameters += $"OgrenimDurumId eq {reqOgrTopAtaDto.OgrenimDurumId} and ";
+                topAtaQuery.Where("OgrenimDurumId", "equal", reqOgrTopAtaDto.OgrenimDurumId);
+
             }
             if (reqOgrTopAtaDto.Sinif.HasValue)
             {
-                OdataQueryParameters += $"Sinif eq {reqOgrTopAtaDto.Sinif} and ";
+                //OdataQueryParameters += $"Sinif eq {reqOgrTopAtaDto.Sinif} and ";
+                topAtaQuery.Where("Sinif", "equal", reqOgrTopAtaDto.Sinif);
+
             }
             if (reqOgrTopAtaDto.Cinsiyet.HasValue)
             {
-                OdataQueryParameters += $"IsMale eq {(reqOgrTopAtaDto.Cinsiyet == 2).ToString().ToLower()}";
+                //OdataQueryParameters += $"IsMale eq {(reqOgrTopAtaDto.Cinsiyet == 2).ToString().ToLower()}";
+                topAtaQuery.Where("IsMale", "equal", (reqOgrTopAtaDto.Cinsiyet == 2).ToString().ToLower());
+
             }
 
             OdataQueryParameters = OdataQueryParameters.TrimEnd('a', 'n', 'd', ' ');
             OdataQuery = $"odata/Ogrencis";
 
-            if (!string.IsNullOrWhiteSpace(OdataQueryParameters))
-            {
-                topAtaQuery.AddParams("$filter", OdataQueryParameters);
-            }
-            
+            //if (!string.IsNullOrWhiteSpace(OdataQueryParameters))
+            //{
+            //    //topAtaQuery.Where("fakulteId", "equal", 1);
+
+            //    //topAtaQuery.AddParams("$filter", OdataQueryParameters);
+            //}
+            topAtaQuery.AddParams("$expand", "program($select=Id,Ad),Danisman($select=Id,Ad)");
 
             isTopGridVisible = true;
             if (OgrencilerGrid !=null)

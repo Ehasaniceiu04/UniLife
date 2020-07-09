@@ -65,7 +65,6 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem
 
             if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
             {
-                matToaster.Add(apiResponse.Message, MatToastType.Success, "Bölümler getirildi");
                 donemDtos = apiResponse.Result;
             }
             else

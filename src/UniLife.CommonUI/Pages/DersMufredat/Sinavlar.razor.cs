@@ -260,7 +260,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         }
 
         public double clickedRowIndex { get; set; }
-        public void OnRecordClickHandler(Syncfusion.Blazor.Grids.RecordClickEventArgs<DersAcilanDto> args)
+        public async Task OnRecordClickHandler(Syncfusion.Blazor.Grids.RecordClickEventArgs<DersAcilanDto> args)
         {
             clickedRowIndex = args.RowIndex;
         }
@@ -314,16 +314,19 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         }
 
+
         public async Task CommandClickHandler(Syncfusion.Blazor.Grids.CommandClickEventArgs<DersAcilanDto> args)
         {
             if (args.CommandColumn.Title == "Tanımlı Sınavlar")
             {
-                await DersAcGrid.ClearSelection();
-                DersAcGrid.SelectedRowIndex = clickedRowIndex;
+                var commandRowIndex = await DersAcGrid.GetRowIndexByPrimaryKey(args.RowData.Id);
+                await DersAcGrid.SelectRow(commandRowIndex);
 
                 GetSinavsByDersAcilanId(args.RowData);
             }
+            
         }
+
 
         public async Task CommandClickHandlerSecmeliOgr(Syncfusion.Blazor.Grids.CommandClickEventArgs<OgrenciDto> args)
         {
@@ -387,7 +390,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 {
                     Update(args.Data);
                 }
-                else if (args.Action == "add")
+                else if (args.Action == "Add")
                 {
                     Create(args.Data);
                 }

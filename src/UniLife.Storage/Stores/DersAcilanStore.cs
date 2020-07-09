@@ -275,15 +275,18 @@ namespace UniLife.Storage.Stores
                               let cCount = d.DersKayits.Count()
                               select new DersAcilanDto
                               {
+                                  Id =d.Id,
                                   Kod = d.Kod,
                                   Ad = d.Ad,
                                   OgrCount = cCount
                               }).GroupBy(g => new
                               {
                                   g.Kod,
-                                  g.Ad
+                                  g.Ad,
+                                  g.Id,
                               }).Select(gcs => new SubeDersAcilanDto()
                               {
+                                  Id = gcs.Key.Id,
                                   Ad = gcs.Key.Ad,
                                   Kod = gcs.Key.Kod,
                                   SubeCount = gcs.Count(),

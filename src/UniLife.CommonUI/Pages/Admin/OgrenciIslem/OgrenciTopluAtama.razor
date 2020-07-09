@@ -174,10 +174,10 @@
                         </GridColumns>
                     </SfGrid>*@
 
-                <SfGrid Query="topAtaQuery" TValue="OgrenciDto" ID="OgrencilerGrid" @ref="OgrencilerGrid" RowHeight="20" AllowPaging="true" AllowFiltering="true">
+                <SfGrid Query="topAtaQuery" TValue="OgrenciDto" ID="OgrencilerGrid" @ref="OgrencilerGrid" AllowPaging="true" AllowFiltering="true">
                     <SfDataManager Url="@(OdataQuery)" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
                     <GridSelectionSettings CheckboxOnly="true" PersistSelection="true"></GridSelectionSettings>
-                    @*<GridPageSettings PageSize="1" ></GridPageSettings>*@
+                    <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.FilterBar"></GridFilterSettings>
                     <GridColumns>
                         <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
                         <GridColumn Visible="false" Field=@nameof(OgrenciDto.Id) IsPrimaryKey="true"></GridColumn>
@@ -185,9 +185,9 @@
                         <GridColumn Field=@nameof(OgrenciDto.Ad) HeaderText="Ad"></GridColumn>
                         <GridColumn Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad"></GridColumn>
                         <GridColumn Field=@nameof(OgrenciDto.Sinif) HeaderText="Sinif"></GridColumn>
-                        <GridColumn AutoFit="true" Field=@nameof(OgrenciDto.KayitTarih) Format="d" HeaderText="KayitTarih"></GridColumn>
-                        <GridColumn AutoFit="true" Field="Danisman.Ad" Format="d" HeaderText="Danışman"></GridColumn>
-                        <GridColumn AutoFit="true" Field="Program.Ad" Format="d" HeaderText="Program"></GridColumn>
+                        <GridColumn AutoFit="true" Field=@nameof(OgrenciDto.KayitTarih)  Format="d" Type="ColumnType.Date" HeaderText="KayitTarih"></GridColumn>
+                        <GridColumn AutoFit="true" Field="Danisman.Ad" HeaderText="Danışman"></GridColumn>
+                        <GridColumn AutoFit="true" Field="Program.Ad" HeaderText="Program"></GridColumn>
                     </GridColumns>
                 </SfGrid>
 
@@ -263,10 +263,6 @@
         margin-bottom: 0.2rem;
     }
 
-    /*.e-input-group .e-input-group-icon, .e-input-group.e-control-wrapper .e-input-group-icon {
-        min-height: 0px;
-        min-width: 0px;
-    }*/
 
     input.e-input, .e-input-group input, .e-input-group.e-control-wrapper input, .e-input-group input.e-input, .e-input-group.e-control-wrapper input.e-input {
         height: auto;
@@ -274,7 +270,6 @@
 
     .col-form-label-sm {
         padding-bottom: unset;
-        /*font-size: 0.65rem;*/
         font-size: .775rem;
     }
 
@@ -294,7 +289,6 @@
 
     .e-Circle_Add::before {
         content: '\e755';
-        /*            color: #e83e8c;*/
     }
 
     .e-Circle_Remove::before {

@@ -111,14 +111,19 @@
     }
 
 
+    //[Inject]
+    //protected IJSRuntime JsRuntime { get; set; }
+
     [Inject]
-    protected IJSRuntime JsRuntime { get; set; }
+    SyncfusionBlazorService SyncfusionService { get; set; }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
             var Locale = await Http.GetJsonAsyncExtension<object>("tr.json");
-            this.JsRuntime.Sf().LoadLocaleData(Locale).SetCulture("tr");
+            //this.JsRuntime.Sf().LoadLocaleData(Locale).SetCulture("tr");
+            //this.SyncfusionService.LoadLocaleData
+
 
             //this.JsRuntime.Sf().LoadLocaleData("tr.json").SetCulture("tr");
             Settings settings = await Http.GetJsonAsyncExtension<Settings>("settings.json");

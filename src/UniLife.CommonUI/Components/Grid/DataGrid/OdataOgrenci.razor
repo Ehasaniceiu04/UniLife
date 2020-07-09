@@ -11,7 +11,7 @@
             <GridColumn Field=@nameof(Ogrenci.Ad) HeaderText="Ad" Width="150"></GridColumn>
             <GridColumn Field=@nameof(Ogrenci.Soyad) HeaderText="Soyad"></GridColumn>
             <GridColumn Field=@nameof(Ogrenci.AnaOgrNo) HeaderText="AnaOgrNo"></GridColumn>
-            <GridColumn Field=@nameof(Ogrenci.AyrilTarih) HeaderText="AyrilTarih"></GridColumn>
+            <GridColumn Field=@nameof(Ogrenci.AyrilTarih) HeaderText="AyrilTarih" Format="d" Type="ColumnType.Date"></GridColumn>
             <GridColumn Field=@nameof(Ogrenci.TCKN) HeaderText="TCKN" Format="C2" Width="150"></GridColumn>
         </GridColumns>
     </SfGrid>

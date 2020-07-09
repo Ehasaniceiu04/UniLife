@@ -51,6 +51,7 @@ using System.Reflection;
 using Syncfusion.Blazor;
 using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNet.OData.Builder;
+using Microsoft.AspNetCore.Localization;
 //using System.Globalization;
 //using System.Collections.Generic;
 //using Microsoft.AspNetCore.Localization;
@@ -355,14 +356,14 @@ namespace UniLife.Server
             //services.Configure<RequestLocalizationOptions>(options =>
             //{
             //    // Define the list of cultures your app will support
-            //    var supportedCultures = new List<CultureInfo>()
+            //    var supportedCultures = new System.Collections.Generic.List<System.Globalization.CultureInfo>()
             //{
-            //    new CultureInfo("en-US"),
-            //    new CultureInfo("de")
+            //    //new System.Globalization.CultureInfo("en-US"),
+            //    new System.Globalization.CultureInfo("tr")
             //};
 
             //    // Set the default culture
-            //    options.DefaultRequestCulture = new RequestCulture("en-US");
+            //    options.DefaultRequestCulture = new RequestCulture("tr");
 
             //    options.SupportedCultures = supportedCultures;
             //    options.SupportedUICultures = supportedCultures;
@@ -464,24 +465,28 @@ namespace UniLife.Server
             //#region Localization
             //// Set the Resx file folder path to access
             //services.AddLocalization(options => options.ResourcesPath = "Resources");
-            //services.AddSyncfusionBlazor();
+            ////services.AddSyncfusionBlazor();
             //// register a Syncfusion locale service to customize the Syncfusion Blazor component locale culture
             //services.AddSingleton(typeof(ISyncfusionStringLocalizer), typeof(SyncLocalizer));
             //services.Configure<RequestLocalizationOptions>(options =>
             //{
             //    // Define the list of cultures your app will support
-            //    var supportedCultures = new List<CultureInfo>()
-            //{
-            //    new CultureInfo("en-US"),
-            //    new CultureInfo("tr")
-            //};
+            //    var supportedCultures = new System.Collections.Generic.List<System.Globalization.CultureInfo>()
+            //    {
+            //        new System.Globalization.CultureInfo("en-US"),
+            //        new System.Globalization.CultureInfo("tr")
+            //    };
 
             //    // Set the default culture
             //    options.DefaultRequestCulture = new RequestCulture("tr");
 
             //    options.SupportedCultures = supportedCultures;
             //    options.SupportedUICultures = supportedCultures;
+            //    //options.RequestCultureProviders = new System.Collections.Generic.List<IRequestCultureProvider>() {
+            //    //    new QueryStringRequestCultureProvider() // Here, You can also use other localization provider
+            //    //};
             //});
+            
             //#endregion
 
 
@@ -547,12 +552,13 @@ namespace UniLife.Server
             // Configure API Loggin in appsettings.json - Logs most API calls. Great for debugging and user activity audits
             //app.UseMiddleware<APIResponseRequestLoggingMiddleware>(Convert.ToBoolean(Configuration["UniLife:EnableAPILogging:Enabled"] ?? "true"));
 
+#if ServerSideBlazor
+            #region Localization
 
-            //#region Localization
+            app.UseRequestLocalization(app.ApplicationServices.GetService<Microsoft.Extensions.Options.IOptions<RequestLocalizationOptions>>().Value);
 
-            //app.UseRequestLocalization(app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>().Value);
-
-            //#endregion
+            #endregion
+#endif
 
             if (env.IsDevelopment())
             {
@@ -608,7 +614,7 @@ namespace UniLife.Server
         private Microsoft.OData.Edm.IEdmModel GetEdmModel()
         {
             var builder = new ODataConventionModelBuilder();
-            var objOgrenci= builder.EntitySet<Ogrenci>("Ogrencis");
+            var objOgrenci = builder.EntitySet<Ogrenci>("Ogrencis");
             FunctionConfiguration getOgrOptional = objOgrenci.EntityType.Collection.Function("GetTopAta"); //http://localhost:53414/odata/ogrencis/GetOgr(ahmet='12',....)
             getOgrOptional.Parameter<int>("ProgramId").Optional();
             getOgrOptional.Parameter<int>("KayitNedenId").Optional();

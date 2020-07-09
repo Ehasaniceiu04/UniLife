@@ -74,8 +74,8 @@
                 <GridColumn Field=@nameof(OgrenciDto.Ad) HeaderText="Ad"></GridColumn>
                 <GridColumn Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad"></GridColumn>
                 <GridColumn AutoFit="true" Field="Program.Ad" Format="d" HeaderText="Program"></GridColumn>
-                <GridColumn Field=@nameof(OgrenciDto.Sinif) HeaderText="Sinif"></GridColumn>
-                <GridColumn AutoFit="true" Field=@nameof(OgrenciDto.KayitTarih) Format="d" HeaderText="KayitTarih"></GridColumn>
+                <GridColumn Field=@nameof(OgrenciDto.Sinif) Type="ColumnType.Number" HeaderText="Sinif"></GridColumn>
+                <GridColumn AutoFit="true" Field=@nameof(OgrenciDto.KayitTarih) Format="d" Type=ColumnType.Date HeaderText="KayitTarih"></GridColumn>
                 <GridColumn AutoFit="true" Field=KayitNeden.Ad HeaderText="KayitNeden"></GridColumn>
                 <GridColumn AutoFit="true" Field=OgrenimDurum.Ad HeaderText="Ogrenim Durum"></GridColumn>
                 <GridColumn AutoFit="true" Field=@nameof(OgrenciDto.DnmSnfGecBilgi) HeaderText="Atlama Durum"></GridColumn>
