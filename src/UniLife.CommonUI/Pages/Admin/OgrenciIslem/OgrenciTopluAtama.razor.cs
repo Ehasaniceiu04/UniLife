@@ -202,6 +202,7 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem
             //    ReadBolums(reqOgrTopAtaDto.FakulteId).ConfigureAwait(true);
             //}
             StateHasChanged();
+            isTopGridVisible = false;
         }
         private void BolumToProgram(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
         {
@@ -217,7 +218,15 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem
             //    ReadPrograms(_dersAcilanDto.BolumId).ConfigureAwait(true);
             //}
             //StateHasChanged();
+            isTopGridVisible = false;
         }
+        private void ValChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
+        {
+            isTopGridVisible = false;
+        }
+        
+
+
 
         async Task ReadPrograms(int? bolumId)
         {
@@ -288,10 +297,12 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem
         private void onSinifChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
         {
             reqOgrTopAtaDto.Sinif = args.Value;
+            isTopGridVisible = false;
         }
         private void onCinsChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
         {
             reqOgrTopAtaDto.Cinsiyet = args.Value;
+            isTopGridVisible = false;
         }
 
 
@@ -346,6 +357,7 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem
             {
                 //OdataQueryParameters = $"fakulteId eq {reqOgrTopAtaDto.FakulteId} and ";
                 topAtaQuery.Where("fakulteId", "equal", reqOgrTopAtaDto.FakulteId);
+                
             }
             if (reqOgrTopAtaDto.BolumId.HasValue)
             {
@@ -377,7 +389,7 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem
             if (reqOgrTopAtaDto.Cinsiyet.HasValue)
             {
                 //OdataQueryParameters += $"IsMale eq {(reqOgrTopAtaDto.Cinsiyet == 2).ToString().ToLower()}";
-                topAtaQuery.Where("IsMale", "equal", (reqOgrTopAtaDto.Cinsiyet == 2).ToString().ToLower());
+                topAtaQuery.Where("IsMale", "equal", (reqOgrTopAtaDto.Cinsiyet == 2));
 
             }
 

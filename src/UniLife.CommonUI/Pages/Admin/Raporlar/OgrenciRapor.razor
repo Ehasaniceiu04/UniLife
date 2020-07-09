@@ -4,31 +4,52 @@
 @using Syncfusion.Blazor.Buttons
 
 
-    <ControlSection>
-        <FakBolPrg @bind-ProgramId="programId"
-                   @bind-BolumId="bolumId"
-                   @bind-FakulteId="fakulteId"></FakBolPrg>
+<ControlSection>
+    <div class="row pb-2 bg-light text-dark">
+        <div class="col-sm-12 col-md-7">
+            <FakBolPrg @bind-ProgramId="programId"
+                       @bind-BolumId="bolumId"
+                       @bind-FakulteId="fakulteId"></FakBolPrg>
+        </div>
+        <div class="col-sm-12 col-md-5">
+            <div class="form-group row">
+                <div class="col-sm-3">
+                    <SfCheckBox @bind-Checked="@okKayitNeden" TChecked="bool" EnableRtl="true" Label="Kayıt Neden" ValueChange="@OnChange"></SfCheckBox>
+                </div>
+                <div class="col-sm-4">
+                    <SfCheckBox @bind-Checked="@okOgrDurum" TChecked="bool" EnableRtl="true" Label="Ogrenci Durum" ValueChange="@OnChange"></SfCheckBox>
+                </div>
+            </div>
+            <div class="form-group row">
+                <SfButton OnClick="Refresh" CssClass="e-success col-sm-12 form-control-sm">Bul / Yenile</SfButton>
+            </div>
 
-        <SfButton OnClick="Refresh" CssClass="e-success form-control-sm">Bul / Yenile</SfButton>
-        <SfCheckBox @bind-Checked="@okKayitNeden" TChecked="bool"></SfCheckBox>
-        @*<SfGrid Query="topAtaQuery" TValue="OgrenciDto" ID="OgrencilerGrid" @ref="OgrencilerGrid" AllowPaging="true" AllowFiltering="true">
-        <SfDataManager Url="@(OdataQuery)" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>*@
-        <SfGrid TValue="OgrenciDto" ID="OgrencilerGrid" @ref="OgrencilerGrid" AllowPaging="true" AllowFiltering="true" Toolbar="@(new List<string>() { "ColumnChooser" })" ShowColumnChooser="true">
-            <SfDataManager Url="odata/ogrencis" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
-            <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
-            <GridColumns>
-                <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
-                <GridColumn Visible="false" Field=@nameof(OgrenciDto.Id) IsPrimaryKey="true"></GridColumn>
-                <GridColumn AutoFit="true" Field=@nameof(OgrenciDto.OgrNo) HeaderText="OgrenciNo"></GridColumn>
-                <GridColumn Field=@nameof(OgrenciDto.Ad) HeaderText="Ad"></GridColumn>
-                <GridColumn Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad"></GridColumn>
-                <GridColumn Field=@nameof(OgrenciDto.Sinif) HeaderText="Sinif"></GridColumn>
-                <GridColumn AutoFit="true" Field=@nameof(OgrenciDto.KayitTarih) Format="d" Type="ColumnType.Date" HeaderText="KayitTarih"></GridColumn>
-                <GridColumn AutoFit="true" Field="Program.Ad" HeaderText="Program"></GridColumn>
-                <GridColumn Visible="@okKayitNeden" AutoFit="true" Field=KayitNeden.Ad HeaderText="KayitNeden"></GridColumn>
-            </GridColumns>
-        </SfGrid>
-    </ControlSection>
+
+        </div>
+    </div>
+
+
+    @if (isGridVisible)
+    {
+            <SfGrid Width="100%" Height="400px" Query="@totalQuery" TValue="OgrenciDto" ID="OgrencilerGrid" @ref="OgrencilerGrid" AllowPaging="true" AllowFiltering="true" Toolbar="@(new List<string>() { "ColumnChooser" })" ShowColumnChooser="true">
+                <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+                <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
+                <GridColumns>
+                    <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
+                    <GridColumn Visible="false" Field=@nameof(OgrenciDto.Id) IsPrimaryKey="true"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(OgrenciDto.OgrNo) HeaderText="OgrenciNo"></GridColumn>
+                    <GridColumn Field=@nameof(OgrenciDto.Ad) HeaderText="Ad"></GridColumn>
+                    <GridColumn Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad"></GridColumn>
+                    <GridColumn Field=@nameof(OgrenciDto.Sinif) HeaderText="Sinif"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(OgrenciDto.KayitTarih) Format="d" Type="ColumnType.Date" HeaderText="KayitTarih"></GridColumn>
+                    <GridColumn AutoFit="true" Field="Program.Ad" HeaderText="Program"></GridColumn>
+                    <GridColumn Visible="@okKayitNeden" AutoFit="true" Field=KayitNeden.Ad HeaderText="Kayit Neden"></GridColumn>
+                    <GridColumn Visible="@okOgrDurum" AutoFit="true" Field=OgrenimDurum.Ad HeaderText="Ogrenim Durum"></GridColumn>
+                </GridColumns>
+            </SfGrid>
+    }
+
+</ControlSection>
 
 <style>
     .form-group {

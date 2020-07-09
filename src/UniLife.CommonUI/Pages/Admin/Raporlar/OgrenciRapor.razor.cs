@@ -18,6 +18,10 @@ namespace UniLife.CommonUI.Pages.Admin.Raporlar
         int? fakulteId;
 
         private bool okKayitNeden = false;
+        private bool okOgrDurum = false;
+
+        private bool isGridVisible = false; 
+
 
         SfGrid<OgrenciDto> OgrencilerGrid;
 
@@ -25,41 +29,50 @@ namespace UniLife.CommonUI.Pages.Admin.Raporlar
 
         public Query totalQuery = new Query();//.AddParams("$expand", "program($select=Id,Ad),KayitNeden($select=Id,Ad),OgrenimDurum($select=Id,Ad)");
 
-        
+        private void OnChange(Syncfusion.Blazor.Buttons.ChangeEventArgs<bool> args)
+        {
+            isGridVisible = false;
+        }
+
 
         async Task Refresh()
         {
-            string filterQueryString = "";
-            string expandQueryString = "program($select=Id,Ad),";
+            totalQuery = new Query();
+            totalQuery.Expand(new List<string> { "Program($select=Id,Ad)" });
 
             if (programId.HasValue)
             {
-                filterQueryString += $"programId eq {programId} and ";
+                totalQuery.Where("programId", "equal", programId);
             }
             else if (bolumId.HasValue)
             {
-                filterQueryString += $"bolumId eq {bolumId} and ";
+                totalQuery.Where("bolumId", "equal", bolumId);
             }
             else if (fakulteId.HasValue)
             {
-                filterQueryString = $"fakulteId eq {fakulteId} and ";
+                totalQuery.Where("fakulteId", "equal", fakulteId);
+
             }
             if (okKayitNeden)
             {
-                expandQueryString += "KayitNeden($select=Id,Ad),";
+                //expandQueryString += "KayitNeden($select=Id,Ad),";
+                totalQuery.Expand(new List<string> { "KayitNeden($select=Id,Ad)" });
+                okKayitNeden = true;
+            }
+            if (okOgrDurum)
+            {
+                //expandQueryString += "KayitNeden($select=Id,Ad),";
+                totalQuery.Expand(new List<string> { "OgrenimDurum($select=Id,Ad)" });
+                okOgrDurum = true;
             }
 
-            expandQueryString = expandQueryString.TrimEnd(',');
-            filterQueryString = filterQueryString.TrimEnd('a', 'n', 'd', ' ');
+            isGridVisible = true;
+            //expandQueryString = expandQueryString.TrimEnd(',');
 
-            if (!string.IsNullOrWhiteSpace(filterQueryString))
-            {
-                totalQuery.AddParams("$filter", filterQueryString);
-            }
-            if (!string.IsNullOrWhiteSpace(expandQueryString))
-            {
-                totalQuery.AddParams("$expand", expandQueryString);
-            }
+            //if (!string.IsNullOrWhiteSpace(expandQueryString))
+            //{
+            //    totalQuery.AddParams("$expand", expandQueryString);
+            //}
 
 
         }

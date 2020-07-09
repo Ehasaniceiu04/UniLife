@@ -40,6 +40,7 @@
                         <SfDropDownList ID="DropProgram" @ref="DropProgram" ShowClearButton="true" TItem="KeyValueDto" CssClass="form-control-sm"
                                         TValue="int?" PopupHeight="230px"
                                         @bind-Value="@reqOgrTopAtaDto.ProgramId" DataSource="@programDtos">
+                            <DropDownListEvents TValue="int?" ValueChange="ValChange"></DropDownListEvents>
                             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                         </SfDropDownList>
                     </div>
@@ -50,6 +51,7 @@
                         <SfDropDownList ID="DropKayitNeden" @ref="DropKayitNeden" ShowClearButton="true" TItem="KeyValueDto" CssClass="form-control-sm"
                                         TValue="int?" PopupHeight="230px"
                                         @bind-Value="@reqOgrTopAtaDto.KayitNedenId" DataSource="@kayitNedenDtos">
+                            <DropDownListEvents TValue="int?" ValueChange="ValChange"></DropDownListEvents>
                             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                         </SfDropDownList>
                     </div>
@@ -58,6 +60,7 @@
                         <SfDropDownList ID="DropOgrDurum" @ref="DropOgrDurum" ShowClearButton="true" TItem="KeyValueDto" CssClass="form-control-sm"
                                         TValue="int?" PopupHeight="230px" Placeholder="Durum"
                                         @bind-Value="@reqOgrTopAtaDto.OgrenimDurumId" DataSource="@ogrenimDurumDtos">
+                            <DropDownListEvents TValue="int?" ValueChange="ValChange"></DropDownListEvents>
                             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                         </SfDropDownList>
                     </div>
@@ -83,7 +86,7 @@
                         </SfDropDownList>
                     </div>
                     <div class="col-sm-4">
-                        <SfButton OnClick="Refresh" CssClass="e-success form-control-sm">Bul / Yenile</SfButton>
+                        <SfButton OnClick="Refresh" CssClass="e-success col-sm-12 form-control-sm">Bul / Yenile</SfButton>
                     </div>
                 </div>
             </div>
@@ -174,7 +177,7 @@
                         </GridColumns>
                     </SfGrid>*@
 
-                <SfGrid Query="topAtaQuery" TValue="OgrenciDto" ID="OgrencilerGrid" @ref="OgrencilerGrid" AllowPaging="true" AllowFiltering="true">
+                <SfGrid Query="@topAtaQuery" TValue="OgrenciDto" ID="OgrencilerGrid" @ref="OgrencilerGrid" AllowPaging="true" AllowFiltering="true">
                     <SfDataManager Url="@(OdataQuery)" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
                     <GridSelectionSettings CheckboxOnly="true" PersistSelection="true"></GridSelectionSettings>
                     <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.FilterBar"></GridFilterSettings>
