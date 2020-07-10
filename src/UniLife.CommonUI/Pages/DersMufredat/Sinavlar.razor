@@ -124,43 +124,43 @@
                                         <div class="form-row mt-4">
                                             <div class="col-sm-6 pb-3">
                                                 <label for="SinavTipId">Sinav Tip</label>
-                                                <SfDropDownList ID="SinavTipId" CssClass="form-control" Value="@(sinavInfo.SinavTipId.ToString())" TValue="string" TItem="SinavTipDto" Index="0" DataSource="@sinavTipDtos">
+                                                <SfDropDownList ID="SinavTipId" CssClass="form-control" @bind-Value="@(sinavInfo.SinavTipId)" TValue="int" TItem="SinavTipDto" Index="0" DataSource="@sinavTipDtos">
                                                     <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
                                                 </SfDropDownList>
                                             </div>
                                             <div class="col-sm-3 pb-3">
                                                 <label for="SablonAd">SablonAd</label>
-                                                <SfTextBox ID="SablonAd" Placeholder="SablonAd" CssClass="form-control" Value="@(sinavInfo.SablonAd)"></SfTextBox>
+                                                <SfTextBox ID="SablonAd" Placeholder="SablonAd" CssClass="form-control" @bind-Value="@(sinavInfo.SablonAd)"></SfTextBox>
                                             </div>
                                             <div class="col-sm-6 pb-3">
                                                 <label for="SinavTurId">Sinav Tur</label>
-                                                <SfDropDownList ID="SinavTurId" CssClass="form-control" Value="@(sinavInfo.SinavTurId.ToString())" TValue="string" TItem="SinavTurDto" Index="0" DataSource="@sinavTurDtos">
+                                                <SfDropDownList ID="SinavTurId" CssClass="form-control" @bind-Value="@(sinavInfo.SinavTurId)" TValue="int" TItem="SinavTurDto" Index="0" DataSource="@sinavTurDtos">
                                                     <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
                                                 </SfDropDownList>
                                             </div>
                                             <div class="col-sm-6 pb-3">
                                                 <label for="EtkiOran">EtkiOran (%)</label>
-                                                <SfNumericTextBox ID="EtkiOran" Min="0" Max="100" Value="@(sinavInfo.EtkiOran)" TValue="int?" Format=n0></SfNumericTextBox>
+                                                <SfNumericTextBox ID="EtkiOran" Min="0" Max="100" @bind-Value="@(sinavInfo.EtkiOran)" TValue="int?" Format=n0></SfNumericTextBox>
                                             </div>
                                             <div class="col-sm-6 pb-3">
                                                 <label for="IsKilit">Kilitli</label>
-                                                <SfCheckBox ID="IsKilit" Name="IsKilit" Checked="@(sinavInfo.IsKilit)"></SfCheckBox>
+                                                <SfCheckBox ID="IsKilit" Name="IsKilit" @bind-Checked="@(sinavInfo.IsKilit)"></SfCheckBox>
                                             </div>
                                             <div class="col-sm-6 pb-3">
                                                 <label for="Tarih">Zaman</label>
-                                                <SfDateTimePicker ID="Tarih" TValue="DateTime?" Value="@(sinavInfo.Tarih)" Placeholder="Lütfen bir tarih seçiniz."></SfDateTimePicker>
+                                                <SfDateTimePicker ID="Tarih" TValue="DateTime?" @bind-Value="@(sinavInfo.Tarih)" Placeholder="Lütfen bir tarih seçiniz."></SfDateTimePicker>
                                             </div>
                                             <div class="col-sm-6 pb-3">
                                                 <label for="TarihIlan">Tarih ilan edilsin</label>
-                                                <SfCheckBox ID="TarihIlan" Name="TarihIlan" Checked="@(sinavInfo.TarihIlan)"></SfCheckBox>
+                                                <SfCheckBox ID="TarihIlan" Name="TarihIlan" @bind-Checked="@(sinavInfo.TarihIlan)"></SfCheckBox>
                                             </div>
                                             <div class="col-sm-3 pb-3">
                                                 <label for="Ad">Sinav Adı</label>
-                                                <SfTextBox ID="Ad" Placeholder="Sinav Adı giriniz" CssClass="form-control" Value="@(sinavInfo.Ad)"></SfTextBox>
+                                                <SfTextBox ID="Ad" Placeholder="Sinav Adı giriniz" CssClass="form-control" @bind-Value="@(sinavInfo.Ad)"></SfTextBox>
                                             </div>
                                             <div class="col-sm-3 pb-3">
                                                 <label for="KisaAd">Kisa Ad</label>
-                                                <SfTextBox ID="KisaAd" Placeholder="Kisa Ad giriniz" CssClass="form-control" Value="@(sinavInfo.KisaAd)"></SfTextBox>
+                                                <SfTextBox ID="KisaAd" Placeholder="Kisa Ad giriniz" CssClass="form-control" @bind-Value="@(sinavInfo.KisaAd)"></SfTextBox>
                                             </div>
 
                                         </div>
