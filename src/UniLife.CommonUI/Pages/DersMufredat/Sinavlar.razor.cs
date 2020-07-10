@@ -282,17 +282,20 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         public async Task RowSelectedHandlerSinav(Syncfusion.Blazor.Grids.RowSelectEventArgs<SinavDto> args)
         {
             selectedSinavId = args.Data.Id;
-
-            ApiResponseDto<List<OgrenciDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDto>>>($"api/Ogrenci/GetOgrenciListBySinavId/{args.Data.Id}").Result;
-            if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
+            if (selectedSinavId !=0)
             {
-                OgrenciDtos = apiResponse.Result;
-                matToaster.Add(apiResponse.Message, MatToastType.Success, "Sınava tabi öğrenicler getirildi");
+                ApiResponseDto<List<OgrenciDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDto>>>($"api/Ogrenci/GetOgrenciListBySinavId/{args.Data.Id}").Result;
+                if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
+                {
+                    OgrenciDtos = apiResponse.Result;
+                    matToaster.Add(apiResponse.Message, MatToastType.Success, "Sınava tabi öğrenicler getirildi");
+                }
+                else
+                {
+                    matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Sınava tabi öğrenicler getirilirken hata oluştu.");
+                }
             }
-            else
-            {
-                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Sınava tabi öğrenicler getirilirken hata oluştu.");
-            }
+            
         }
 
         public async Task RowSelectedHandler(Syncfusion.Blazor.Grids.RowSelectEventArgs<DersAcilanDto> args)
@@ -319,7 +322,8 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         {
             if (args.CommandColumn.Title == "Tanımlı Sınavlar")
             {
-                var commandRowIndex = await DersAcGrid.GetRowIndexByPrimaryKey(args.RowData.Id);
+                //var commandRowIndex = await DersAcGrid.GetRowIndexByPrimaryKey(args.RowData.Id);
+                var commandRowIndex = DersAcGrid.CurrentViewData.ToList().IndexOf(args.RowData);
                 await DersAcGrid.SelectRow(commandRowIndex);
 
                 GetSinavsByDersAcilanId(args.RowData);
