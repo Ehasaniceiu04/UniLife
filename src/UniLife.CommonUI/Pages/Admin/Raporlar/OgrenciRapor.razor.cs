@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using UniLife.Shared.Dto.Definitions;
+using UniLife.Shared.DataModels;
 using Syncfusion.Blazor.Data;
 using Syncfusion.Blazor.Grids;
 
@@ -23,7 +24,7 @@ namespace UniLife.CommonUI.Pages.Admin.Raporlar
         private bool isGridVisible = false; 
 
 
-        SfGrid<OgrenciDto> OgrencilerGrid;
+        SfGrid<Ogrenci> OgrencilerGrid;
 
         string OdataQuery = "odata/Ogrencis";
 
@@ -34,6 +35,22 @@ namespace UniLife.CommonUI.Pages.Admin.Raporlar
             isGridVisible = false;
         }
 
+        public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+        {
+            if (args.Item.Text == "Excel Export")
+            {
+                await this.OgrencilerGrid.ExcelExport();
+
+                ////Export current page
+                //ExcelExportProperties ExportProperties = new ExcelExportProperties();
+                //ExportProperties.ExportType = ExportType.CurrentPage;
+                //await this.OgrencilerGrid.ExcelExport(ExportProperties);
+            }
+            if (args.Item.Id == "OgrencilerGrid_pdfexport")
+            {
+                await this.OgrencilerGrid.PdfExport();
+            }
+        }
 
         async Task Refresh()
         {
@@ -55,24 +72,16 @@ namespace UniLife.CommonUI.Pages.Admin.Raporlar
             }
             if (okKayitNeden)
             {
-                //expandQueryString += "KayitNeden($select=Id,Ad),";
                 totalQuery.Expand(new List<string> { "KayitNeden($select=Id,Ad)" });
                 okKayitNeden = true;
             }
             if (okOgrDurum)
             {
-                //expandQueryString += "KayitNeden($select=Id,Ad),";
                 totalQuery.Expand(new List<string> { "OgrenimDurum($select=Id,Ad)" });
                 okOgrDurum = true;
             }
 
             isGridVisible = true;
-            //expandQueryString = expandQueryString.TrimEnd(',');
-
-            //if (!string.IsNullOrWhiteSpace(expandQueryString))
-            //{
-            //    totalQuery.AddParams("$expand", expandQueryString);
-            //}
 
 
         }

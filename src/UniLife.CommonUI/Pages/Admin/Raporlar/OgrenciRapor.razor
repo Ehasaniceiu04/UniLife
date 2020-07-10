@@ -1,55 +1,60 @@
 ﻿@page "/ogrenci_rapor"
 @using UniLife.Shared.Dto.Definitions
+@using UniLife.Shared.DataModels
 @using Syncfusion.Blazor.Data
 @using Syncfusion.Blazor.Buttons
 
 
-<ControlSection>
-    <div class="row pb-2 bg-light text-dark">
-        <div class="col-sm-12 col-md-7">
-            <FakBolPrg @bind-ProgramId="programId"
-                       @bind-BolumId="bolumId"
-                       @bind-FakulteId="fakulteId"></FakBolPrg>
-        </div>
-        <div class="col-sm-12 col-md-5">
-            <div class="form-group row">
-                <div class="col-sm-3">
-                    <SfCheckBox @bind-Checked="@okKayitNeden" TChecked="bool" EnableRtl="true" Label="Kayıt Neden" ValueChange="@OnChange"></SfCheckBox>
-                </div>
-                <div class="col-sm-4">
-                    <SfCheckBox @bind-Checked="@okOgrDurum" TChecked="bool" EnableRtl="true" Label="Ogrenci Durum" ValueChange="@OnChange"></SfCheckBox>
-                </div>
+    <ControlSection>
+        <div class="row pb-2 bg-light text-dark">
+            <div class="col-sm-12 col-md-7">
+                <FakBolPrg @bind-ProgramId="programId"
+                           @bind-BolumId="bolumId"
+                           @bind-FakulteId="fakulteId"></FakBolPrg>
             </div>
-            <div class="form-group row">
-                <SfButton OnClick="Refresh" CssClass="e-success col-sm-12 form-control-sm">Bul / Yenile</SfButton>
+            <div class="col-sm-12 col-md-5">
+                <div class="form-group row">
+                    <div class="col-sm-3">
+                        <SfCheckBox @bind-Checked="@okKayitNeden" TChecked="bool" EnableRtl="true" Label="Kayıt Neden" ValueChange="@OnChange"></SfCheckBox>
+                    </div>
+                    <div class="col-sm-4">
+                        <SfCheckBox @bind-Checked="@okOgrDurum" TChecked="bool" EnableRtl="true" Label="Ogrenci Durum" ValueChange="@OnChange"></SfCheckBox>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <SfButton OnClick="Refresh" CssClass="e-success col-sm-12 form-control-sm">Bul / Yenile</SfButton>
+                </div>
+
+
             </div>
-
-
         </div>
-    </div>
 
 
-    @if (isGridVisible)
-    {
-            <SfGrid Width="100%" Height="400px" Query="@totalQuery" TValue="OgrenciDto" ID="OgrencilerGrid" @ref="OgrencilerGrid" AllowPaging="true" AllowFiltering="true" Toolbar="@(new List<string>() { "ColumnChooser" })" ShowColumnChooser="true">
+        @if (isGridVisible)
+        {
+            <SfGrid Width="100%" Height="400px" Query="@totalQuery" TValue="Ogrenci" ID="OgrencilerGrid" @ref="OgrencilerGrid" AllowExcelExport="true" AllowPdfExport="true" AllowPaging="true" AllowFiltering="true" Toolbar="@(new List<string>() {  "PdfExport","ExcelExport","ColumnChooser" })" ShowColumnChooser="true">
                 <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
                 <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
+                <GridEvents OnToolbarClick="ToolbarClickHandler" TValue="Ogrenci"></GridEvents>
                 <GridColumns>
                     <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
-                    <GridColumn Visible="false" Field=@nameof(OgrenciDto.Id) IsPrimaryKey="true"></GridColumn>
-                    <GridColumn AutoFit="true" Field=@nameof(OgrenciDto.OgrNo) HeaderText="OgrenciNo"></GridColumn>
-                    <GridColumn Field=@nameof(OgrenciDto.Ad) HeaderText="Ad"></GridColumn>
-                    <GridColumn Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad"></GridColumn>
-                    <GridColumn Field=@nameof(OgrenciDto.Sinif) HeaderText="Sinif"></GridColumn>
-                    <GridColumn AutoFit="true" Field=@nameof(OgrenciDto.KayitTarih) Format="d" Type="ColumnType.Date" HeaderText="KayitTarih"></GridColumn>
-                    <GridColumn AutoFit="true" Field="Program.Ad" HeaderText="Program"></GridColumn>
-                    <GridColumn Visible="@okKayitNeden" AutoFit="true" Field=KayitNeden.Ad HeaderText="Kayit Neden"></GridColumn>
-                    <GridColumn Visible="@okOgrDurum" AutoFit="true" Field=OgrenimDurum.Ad HeaderText="Ogrenim Durum"></GridColumn>
+                    <GridColumn AutoFit="true" Visible="false" Field=@nameof(OgrenciDto.Id) Type="ColumnType.Number" IsPrimaryKey="true" Width="50"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(OgrenciDto.OgrNo) Type="ColumnType.String" HeaderText="OgrenciNo" Width="50"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(OgrenciDto.Ad) HeaderText="Ad" Type="ColumnType.String" Width="50"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad" Type="ColumnType.String" Width="50"></GridColumn>
+                    <GridColumn AutoFit="true" Visible="false" Field=@nameof(OgrenciDto.TCKN) HeaderText="TCKN" Width="50"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(Ogrenci.Sinif) HeaderText="Sinif" Width="50"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(OgrenciDto.KayitTarih) Format="d" Type="ColumnType.Date" HeaderText="KayitTarih" Width="70"></GridColumn>
+                    <GridColumn Visible="false" AutoFit="true" Field=@nameof(OgrenciDto.AyrilTarih) Format="d" Type="ColumnType.Date" HeaderText="AyrilTarih"Width="70"></GridColumn>
+                    <GridColumn AutoFit="true" Field="Program.Ad" HeaderText="Program" Type="ColumnType.String" Width="70"></GridColumn>
+                    <GridColumn Visible="@okKayitNeden" AutoFit="true" Field=KayitNeden.Ad HeaderText="Kayit Neden" Type="ColumnType.String" Width="70"></GridColumn>
+                    <GridColumn Visible="@okOgrDurum" AutoFit="true" Field=OgrenimDurum.Ad HeaderText="Ogrenim Durum" Type="ColumnType.String" Width="70"></GridColumn>
+                    <GridColumn Visible="false" AutoFit="true" Field=@nameof(OgrenciDto.Email) HeaderText="Email"></GridColumn>
                 </GridColumns>
             </SfGrid>
-    }
+        }
 
-</ControlSection>
+    </ControlSection>
 
 <style>
     .form-group {

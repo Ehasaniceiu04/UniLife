@@ -1,18 +1,50 @@
-﻿@page "/quebu" 
-
-@using Syncfusion.Blazor.QueryBuilder
+﻿@page "/exporting"
+@using Syncfusion.Blazor
 @using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.Grids
+@using UniLife.Shared.DataModels
 
-<SfQueryBuilder>
-    <QueryBuilderColumns>
-        <QueryBuilderColumn Field="EmployeeID" Label="Employee ID" Type="number">
-        </QueryBuilderColumn>
-        <QueryBuilderColumn Field="FirstName" Label="First Name" Type="string"></QueryBuilderColumn>
-        <QueryBuilderColumn Field="TitleOfCourtesy" Label="Title Of Courtesy" Type="boolean">
-        </QueryBuilderColumn>
-        <QueryBuilderColumn Field="HireDate" Label="Hire Date" Type="date" Format="MM/dd/yyyy">
-        </QueryBuilderColumn>
-        <QueryBuilderColumn Field="Country" Label="Country" Type="string"></QueryBuilderColumn>
-    </QueryBuilderColumns>
-    <SfDataManager Url="https://js.syncfusion.com/demos/ejServices/Wcf/Northwind.svc/Employees" Adaptor="Syncfusion.Blazor.Adaptors.ODataAdaptor" CrossDomain="true"></SfDataManager>
-</SfQueryBuilder>
+    @*<SfGrid @ref="Grid" ID="Grid" TValue="Ogrenci" AllowPaging="true" AllowFiltering="true" Toolbar="@(new List<string>() { "ExcelExport", "CsvExport", "PdfExport" })" AllowExcelExport="true" AllowPdfExport="true">*@
+        <SfGrid Width="100%" Height="400px" Query="@totalQuery" TValue="Ogrenci" ID="OgrencilerGrid" @ref="OgrencilerGrid" AllowExcelExport="true" AllowPdfExport="true" AllowPaging="true" AllowFiltering="true" Toolbar="@(new List<string>() {  "PdfExport","ExcelExport","ColumnChooser" })" ShowColumnChooser="true">
+            @*<SfDataManager Url="https://services.odata.org/V4/Northwind/Northwind.svc/Orders/" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>*@
+            <SfDataManager Url="odata/ogrencis" CrossDomain="true" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+            <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
+            <GridEvents OnToolbarClick="ToolbarClick" TValue="Ogrenci"></GridEvents>
+            <GridColumns>
+                <GridColumn Field=@nameof(Ogrenci.Ad) HeaderText="Ad" Width="150"></GridColumn>
+            </GridColumns>
+        </SfGrid>
+
+        @code{
+            public class Order
+            {
+                public int? OrderID { get; set; }
+                public string CustomerID { get; set; }
+                public DateTime? OrderDate { get; set; }
+                public double? Freight { get; set; }
+            }
+        }
+
+
+        @code{
+            public Query totalQuery = new Query();
+            SfGrid<Ogrenci> OgrencilerGrid;
+            public void ToolbarClick(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+            {
+                if (args.Item.Id == "OgrencilerGrid_pdfexport")
+                {
+                    this.OgrencilerGrid.PdfExport();
+                }
+                if (args.Item.Id == "OgrencilerGrid_excelexport")
+                {
+                    this.OgrencilerGrid.ExcelExport();
+                }
+                if (args.Item.Id == "OgrencilerGrid_csvexport")
+                {
+                    this.OgrencilerGrid.CsvExport();
+                }
+            }
+        }
+
+
+
