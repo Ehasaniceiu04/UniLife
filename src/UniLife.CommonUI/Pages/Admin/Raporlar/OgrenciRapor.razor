@@ -32,10 +32,10 @@
 
         @if (isGridVisible)
         {
-            <SfGrid Width="100%" Height="400px" Query="@totalQuery" TValue="Ogrenci" ID="OgrencilerGrid" @ref="OgrencilerGrid" AllowExcelExport="true" AllowPdfExport="true" AllowPaging="true" AllowFiltering="true" Toolbar="@(new List<string>() {  "PdfExport","ExcelExport","ColumnChooser" })" ShowColumnChooser="true">
+            <SfGrid Width="100%" Height="400px" Query="@totalQuery" TValue="OgrenciDto" ID="OgrencilerGrid" @ref="OgrencilerGrid" AllowExcelExport="true" AllowPdfExport="true" AllowPaging="true" AllowFiltering="true" Toolbar="@(new List<string>() {  "PdfExport","ExcelExport","ColumnChooser" })" ShowColumnChooser="true">
                 <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
                 <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
-                <GridEvents OnToolbarClick="ToolbarClickHandler" TValue="Ogrenci"></GridEvents>
+                <GridEvents OnToolbarClick="ToolbarClickHandler" TValue="OgrenciDto"></GridEvents>
                 <GridColumns>
                     <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
                     <GridColumn AutoFit="true" Visible="false" Field=@nameof(OgrenciDto.Id) Type="ColumnType.Number" IsPrimaryKey="true" Width="50"></GridColumn>

@@ -622,6 +622,10 @@ namespace UniLife.Server
             getOgrOptional.Parameter<int>("Sinif").Optional();
             getOgrOptional.Parameter<int>("Cinsiyet").Optional();
             getOgrOptional.ReturnsCollectionFromEntitySet<Ogrenci>("Ogrencis");
+            //FunctionConfiguration getOgrdersOptional = objOgrenci.EntityType.Collection.Function("GetOgrenciDers");
+            //getOgrdersOptional.Parameter<bool>("TopKredi").Optional();
+            //getOgrdersOptional.ReturnsCollectionFromEntitySet<UniLife.Shared.Dto.Definitions.OgrenciDersRaporDto>("Ogrencis");
+            builder.EntitySet<UniLife.Shared.Dto.Definitions.OgrenciDersRaporDto>("OgrenciDersRapors");
             builder.EntitySet<Bolum>("Bolums");
             builder.EntitySet<DersAcilan>("DersAcilans");
             builder.EntitySet<Fakulte>("Fakultes");

@@ -1,0 +1,79 @@
+﻿@page "/ogrenci_ders_rapor"
+@using UniLife.Shared.Dto.Definitions
+@using UniLife.Shared.DataModels
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.Buttons
+
+
+    <ControlSection>
+        <div class="row pb-2 bg-light text-dark">
+            <div class="col-sm-12 col-md-7">
+                <FakBolPrg @bind-ProgramId="programId"
+                           @bind-BolumId="bolumId"
+                           @bind-FakulteId="fakulteId"></FakBolPrg>
+            </div>
+            <div class="col-sm-12 col-md-5">
+                <div class="form-group row">
+                    <div class="col-sm-3">
+                        @*<SfCheckBox @bind-Checked="@okTopKredi" Name="ahmet" TChecked="bool" EnableRtl="true" Label="Toplam Kredi" ValueChange="@OnChange"></SfCheckBox>*@
+                        <SfRadioButton Label="Toplam Kredi" Name="hangi" Value="TopKredi" @bind-Checked="@stringChecked" TChecked="string" ValueChange="@OnChangeRadio"></SfRadioButton>
+                        <SfRadioButton Label="Başka bişe" Name="hangi" Value="Baska" @bind-Checked="@stringChecked" TChecked="string" ValueChange="@OnChangeRadio"></SfRadioButton>
+                        @*<SfRadioButton @bind-Checked="stringChecked" Name="payment" Value="card" ValueChange="@OnChangeRadio" TChecked="string"></SfRadioButton>*@
+                    </div>
+                    <div class="col-sm-4">
+                        @*<SfCheckBox @bind-Checked="@okBaska" Name="ahmet" TChecked="bool" EnableRtl="true" Label="Başka bişe" ValueChange="@OnChange"></SfCheckBox>*@
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <SfButton OnClick="Refresh" CssClass="e-success col-sm-12 form-control-sm">Bul / Yenile</SfButton>
+                </div>
+
+                
+            </div>
+        </div>
+
+
+        @if (isGridVisible && stringChecked== "TopKredi")
+        {
+            <SfGrid Width="100%" Height="400px" Query="@totalQuery" TValue="OgrenciDersRaporDto" ID="OgrencilerGrid" @ref="OgrencilerGrid" AllowExcelExport="true" AllowPdfExport="true" AllowPaging="true" AllowFiltering="true" Toolbar="@(new List<string>() {  "PdfExport","ExcelExport","ColumnChooser" })" ShowColumnChooser="true">
+                <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+                <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
+                <GridEvents OnToolbarClick="ToolbarClickHandler" TValue="OgrenciDersRaporDto"></GridEvents>
+                <GridColumns>
+                    <GridColumn Visible="false" Field=@nameof(OgrenciDersRaporDto.Id) Type="ColumnType.Number" IsPrimaryKey="true" Width="50"></GridColumn>
+                    <GridColumn Field=@nameof(OgrenciDersRaporDto.OgrNo) Type="ColumnType.String" HeaderText="OgrenciNo" Width="50"></GridColumn>
+                    <GridColumn Field=@nameof(OgrenciDersRaporDto.Ad) HeaderText="Ad" Type="ColumnType.String" Width="50"></GridColumn>
+                    <GridColumn Field=@nameof(OgrenciDersRaporDto.Soyad) HeaderText="Soyad" Type="ColumnType.String" Width="50"></GridColumn>
+                    <GridColumn Field=@nameof(OgrenciDersRaporDto.Sinif) HeaderText="Sınıf" Type="ColumnType.Number" Width="50"></GridColumn>
+                    <GridColumn Field=@nameof(OgrenciDersRaporDto.TopKredi) HeaderText="TopKredi" Type="ColumnType.Number" Width="50"></GridColumn>
+
+                </GridColumns>
+            </SfGrid>
+        }
+        @if (isGridVisible && okBaska)
+        {
+
+        }
+
+    </ControlSection>
+
+<style>
+    .form-group {
+        margin-bottom: 0.2rem;
+    }
+
+    /*.e-input-group .e-input-group-icon, .e-input-group.e-control-wrapper .e-input-group-icon {
+        min-height: 0px;
+        min-width: 0px;
+    }*/
+
+    input.e-input, .e-input-group input, .e-input-group.e-control-wrapper input, .e-input-group input.e-input, .e-input-group.e-control-wrapper input.e-input {
+        height: auto;
+    }
+
+    .col-form-label-sm {
+        padding-bottom: unset;
+        /*font-size: 0.65rem;*/
+        font-size: .775rem;
+    }
+</style>

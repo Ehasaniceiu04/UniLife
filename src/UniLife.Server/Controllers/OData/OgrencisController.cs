@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using UniLife.Shared.DataModels;
+using UniLife.Shared.Dto.Definitions;
 using UniLife.Storage;
 
 namespace UniLife.Server.Controllers
@@ -16,6 +17,33 @@ namespace UniLife.Server.Controllers
         {
             _applicationDbContext = applicationDbContext;
         }
+
+
+        [EnableQuery()]
+        [HttpGet]
+        //[Authorize(Permissions.Ogrenci.Create)]
+        [ODataRoute("GetOgrenciDers(TopKredi={TopKredi})")]
+        public IEnumerable<OgrenciDersRaporDto> GetOgrenciDers([FromODataUri] bool TopKredi)
+        {
+
+            var filteredQuery = from o in _applicationDbContext.Ogrencis
+                                join dk in _applicationDbContext.DersKayits on o.Id equals dk.OgrenciId
+                                join da in _applicationDbContext.DersAcilans on dk.DersAcilanId equals da.Id
+                                group da by new { o.Id, o.OgrNo, o.Ad, o.Soyad }
+                                into grp
+                                select new OgrenciDersRaporDto
+                                {
+                                    Id = grp.Key.Id,
+                                    OgrNo = grp.Key.OgrNo,
+                                    Ad = grp.Key.Ad,
+                                    Soyad = grp.Key.Soyad,
+                                    TopKredi = grp.Sum(t => t.Kredi)
+                                };
+
+            return filteredQuery;
+        }
+
+
 
         [EnableQuery()]
         [HttpGet]

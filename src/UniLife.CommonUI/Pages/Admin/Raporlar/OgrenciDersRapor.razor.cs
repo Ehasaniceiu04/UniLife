@@ -11,28 +11,38 @@ using Syncfusion.Blazor.Grids;
 
 namespace UniLife.CommonUI.Pages.Admin.Raporlar
 {
-    public partial class OgrenciRapor : ComponentBase
+    public partial class OgrenciDersRapor : ComponentBase
     {
 
         int? programId;
         int? bolumId;
         int? fakulteId;
 
-        private bool okKayitNeden = false;
-        private bool okOgrDurum = false;
+        private bool okTopKredi = false;
+        private bool okBaska = false;
+        private string stringChecked = "TopKredi";
 
-        private bool isGridVisible = false; 
+
+        private bool isGridVisible = false;
 
 
-        SfGrid<OgrenciDto> OgrencilerGrid;
+        SfGrid<OgrenciDersRaporDto> OgrencilerGrid;
 
-        string OdataQuery = "odata/Ogrencis";
+        string OdataQuery = "";
 
         public Query totalQuery = new Query();//.AddParams("$expand", "program($select=Id,Ad),KayitNeden($select=Id,Ad),OgrenimDurum($select=Id,Ad)");
 
         private void OnChange(Syncfusion.Blazor.Buttons.ChangeEventArgs<bool> args)
         {
             isGridVisible = false;
+        }
+
+
+
+        private void OnChangeRadio(Syncfusion.Blazor.Buttons.ChangeArgs<string> args)
+        {
+            isGridVisible = false;
+            stringChecked = args.Value;
         }
 
         public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
@@ -54,8 +64,8 @@ namespace UniLife.CommonUI.Pages.Admin.Raporlar
 
         async Task Refresh()
         {
+            string OdataQueryParameters = "";
             totalQuery = new Query();
-            totalQuery.Expand(new List<string> { "Program($select=Id,Ad)" });
 
             if (programId.HasValue)
             {
@@ -70,16 +80,17 @@ namespace UniLife.CommonUI.Pages.Admin.Raporlar
                 totalQuery.Where("fakulteId", "equal", fakulteId);
 
             }
-            if (okKayitNeden)
+            if (stringChecked == "TopKredi")
             {
-                totalQuery.Expand(new List<string> { "KayitNeden($select=Id,Ad)" });
-                okKayitNeden = true;
+                okTopKredi = true;
+                OdataQueryParameters += $"TopKredi=true,";
             }
-            if (okOgrDurum)
-            {
-                totalQuery.Expand(new List<string> { "OgrenimDurum($select=Id,Ad)" });
-                okOgrDurum = true;
-            }
+
+            OdataQueryParameters = OdataQueryParameters.TrimEnd(',');
+            //OdataQuery = $"odata/Ogrencis/GetOgrenciDers({OdataQueryParameters})";
+            OdataQuery = $"odata/OgrenciDersRapors";
+
+
 
             isGridVisible = true;
 
