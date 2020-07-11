@@ -82,8 +82,14 @@ namespace UniLife.CommonUI.Pages.Admin.Raporlar
             }
             if (stringChecked == "TopKredi")
             {
-                okTopKredi = true;
-                OdataQueryParameters += $"TopKredi=true,";
+                //OdataQueryParameters += $"TopKredi=true,";
+                totalQuery.AddParams("TopKredi", true);
+            }
+            else if(stringChecked == "TopAkts")
+            {
+                //OdataQueryParameters += $"TopAkts=true,";
+                totalQuery.AddParams("TopAkts", true);
+
             }
 
             OdataQueryParameters = OdataQueryParameters.TrimEnd(',');

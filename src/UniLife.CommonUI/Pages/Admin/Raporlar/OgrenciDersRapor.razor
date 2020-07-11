@@ -17,11 +17,10 @@
                     <div class="col-sm-3">
                         @*<SfCheckBox @bind-Checked="@okTopKredi" Name="ahmet" TChecked="bool" EnableRtl="true" Label="Toplam Kredi" ValueChange="@OnChange"></SfCheckBox>*@
                         <SfRadioButton Label="Toplam Kredi" Name="hangi" Value="TopKredi" @bind-Checked="@stringChecked" TChecked="string" ValueChange="@OnChangeRadio"></SfRadioButton>
-                        <SfRadioButton Label="Başka bişe" Name="hangi" Value="Baska" @bind-Checked="@stringChecked" TChecked="string" ValueChange="@OnChangeRadio"></SfRadioButton>
-                        @*<SfRadioButton @bind-Checked="stringChecked" Name="payment" Value="card" ValueChange="@OnChangeRadio" TChecked="string"></SfRadioButton>*@
                     </div>
                     <div class="col-sm-4">
                         @*<SfCheckBox @bind-Checked="@okBaska" Name="ahmet" TChecked="bool" EnableRtl="true" Label="Başka bişe" ValueChange="@OnChange"></SfCheckBox>*@
+                        <SfRadioButton Label="Toplam Akts" Name="hangi" Value="TopAkts" @bind-Checked="@stringChecked" TChecked="string" ValueChange="@OnChangeRadio"></SfRadioButton>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -32,8 +31,7 @@
             </div>
         </div>
 
-
-        @if (isGridVisible && stringChecked== "TopKredi")
+        @if (isGridVisible )
         {
             <SfGrid Width="100%" Height="400px" Query="@totalQuery" TValue="OgrenciDersRaporDto" ID="OgrencilerGrid" @ref="OgrencilerGrid" AllowExcelExport="true" AllowPdfExport="true" AllowPaging="true" AllowFiltering="true" Toolbar="@(new List<string>() {  "PdfExport","ExcelExport","ColumnChooser" })" ShowColumnChooser="true">
                 <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
@@ -45,15 +43,15 @@
                     <GridColumn Field=@nameof(OgrenciDersRaporDto.Ad) HeaderText="Ad" Type="ColumnType.String" Width="50"></GridColumn>
                     <GridColumn Field=@nameof(OgrenciDersRaporDto.Soyad) HeaderText="Soyad" Type="ColumnType.String" Width="50"></GridColumn>
                     <GridColumn Field=@nameof(OgrenciDersRaporDto.Sinif) HeaderText="Sınıf" Type="ColumnType.Number" Width="50"></GridColumn>
-                    <GridColumn Field=@nameof(OgrenciDersRaporDto.TopKredi) HeaderText="TopKredi" Type="ColumnType.Number" Width="50"></GridColumn>
-
+                    <GridColumn Visible="@(stringChecked == "TopKredi")" Field=@nameof(OgrenciDersRaporDto.TopKredi) HeaderText="TopKredi" Type="ColumnType.Number" Width="50"></GridColumn>
+                    <GridColumn Visible="@(stringChecked == "TopAkts")"Field=@nameof(OgrenciDersRaporDto.TopAkts) HeaderText="TopAkts" Type="ColumnType.Number" Width="50"></GridColumn>
                 </GridColumns>
             </SfGrid>
         }
-        @if (isGridVisible && okBaska)
+        @*@if (isGridVisible && okBaska)
         {
 
-        }
+        }*@
 
     </ControlSection>
 

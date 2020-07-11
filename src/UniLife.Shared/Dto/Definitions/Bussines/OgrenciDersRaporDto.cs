@@ -15,6 +15,7 @@ namespace UniLife.Shared.Dto.Definitions
         public string Ad { get; set; }
         public string Soyad { get; set; }
         public double TopKredi { get; set; }
+        public double TopAkts { get; set; }
         public int ProgramId { get; set; }
         public int BolumId { get; set; }
         public int FakulteId { get; set; }

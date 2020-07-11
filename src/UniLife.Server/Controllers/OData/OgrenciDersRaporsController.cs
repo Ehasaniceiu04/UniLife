@@ -47,11 +47,17 @@ namespace UniLife.Server.Controllers
 
         [Microsoft.AspNet.OData.EnableQuery()]
         [HttpGet]
-        public IEnumerable<OgrenciDersRaporDto> Get() 
+        public IEnumerable<OgrenciDersRaporDto> Get(bool TopKredi,bool TopAkts) 
         {
             //Get(int programId,int bolumId,int fakulteId) yapılırsa  http://localhost:53414/odata/OgrenciDersRapors?programId=1 şeklinde de querye giydirilebilir.
 
-            var filteredQuery = from o in _applicationDbContext.Ogrencis
+            IQueryable<OgrenciDersRaporDto> filteredQuery;
+
+
+            //Burada aslında akts ile Kredi aynı tabloda oldugundan beraber guruplanabilirler . ama başka tablelardan gruplama gerekirse tek tek yapmak zorundayız.
+            if (TopKredi)
+            {
+                filteredQuery = from o in _applicationDbContext.Ogrencis
                                 join dk in _applicationDbContext.DersKayits on o.Id equals dk.OgrenciId
                                 join da in _applicationDbContext.DersAcilans on dk.DersAcilanId equals da.Id
                                 group da by new { o.Id, o.OgrNo, o.Ad, o.Soyad, o.ProgramId, o.BolumId, o.Sinif, o.FakulteId }
@@ -67,7 +73,35 @@ namespace UniLife.Server.Controllers
                                     FakulteId = grp.Key.FakulteId,
                                     Sinif = grp.Key.Sinif,
                                     TopKredi = grp.Sum(t => t.Kredi)
+                                    //TopAkts = grp.Sum(t => t.Akts),
                                 };
+            }
+            else if (TopAkts)
+            {
+                filteredQuery = from o in _applicationDbContext.Ogrencis
+                                join dk in _applicationDbContext.DersKayits on o.Id equals dk.OgrenciId
+                                join da in _applicationDbContext.DersAcilans on dk.DersAcilanId equals da.Id
+                                group da by new { o.Id, o.OgrNo, o.Ad, o.Soyad, o.ProgramId, o.BolumId, o.Sinif, o.FakulteId }
+                                into grp
+                                select new OgrenciDersRaporDto
+                                {
+                                    Id = grp.Key.Id,
+                                    OgrNo = grp.Key.OgrNo,
+                                    Ad = grp.Key.Ad,
+                                    Soyad = grp.Key.Soyad,
+                                    ProgramId = grp.Key.ProgramId,
+                                    BolumId = grp.Key.BolumId,
+                                    FakulteId = grp.Key.FakulteId,
+                                    Sinif = grp.Key.Sinif,
+                                    //TopKredi = grp.Sum(t => t.Kredi)
+                                    TopAkts = grp.Sum(t => t.Akts)
+                                };
+            }
+            else
+            {
+                filteredQuery = null;
+            }
+            
 
             return filteredQuery;
         }
