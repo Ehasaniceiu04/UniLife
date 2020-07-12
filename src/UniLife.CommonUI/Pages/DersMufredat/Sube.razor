@@ -149,7 +149,7 @@
             <div class="row pb-2">
                 <div class="col-12">
                     @*OnActionBegin="OnActionBeginHandlerOgrenci"*@
-                    <SfGrid ID="OgrenciGrid" @ref="OgrenciGrid" DataSource="@OgrenciDtos" Toolbar="@(new List<string>() { "Add"})" RowHeight="15" AllowSorting="true" AllowFiltering="true">
+                    <SfGrid ID="OgrenciGrid" @ref="OgrenciGrid" DataSource="@OgrenciDtos" Toolbar="@(new List<string>() { "Add"})" RowHeight="20" AllowSorting="true" AllowFiltering="true">
                         <GridEvents OnActionComplete="ActionCompletedHandlerOgrenci" TValue="OgrenciDto"></GridEvents>
                         <GridSelectionSettings CellSelectionMode="CellSelectionMode.BoxWithBorder" CheckboxOnly="true" Type="SelectionType.Multiple" PersistSelection="true"></GridSelectionSettings>
                         <GridColumns>
