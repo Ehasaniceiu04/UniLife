@@ -97,5 +97,15 @@ namespace UniLife.Server.Controllers
                new ApiResponse(Status400BadRequest, "PutUpdateOgrencisDersKayitsDto Model is Invalid");
 
 
+        [HttpPut]
+        [AllowAnonymous]
+        [Route("PutUpdateOgrencisDersKayitsDeleteExSubes")]
+        public async Task<ApiResponse> PutUpdateOgrencisDersKayitsDeleteExSubes(ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds)
+           => ModelState.IsValid ?
+               await _dersKayitManager.PutUpdateOgrencisDersKayitsDeleteExSubes(reqEntityIdWithOtherEntitiesIds) :
+               new ApiResponse(Status400BadRequest, "PutUpdateOgrencisDersKayitsDeleteExSubes Model is Invalid");
+
+
+        
     }
 }

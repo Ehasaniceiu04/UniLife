@@ -51,7 +51,19 @@ namespace UniLife.Server.Managers
         {
             try
             {
-                return new ApiResponse(Status200OK, "Updated Todo", await _dersKayitStore.PutUpdateOgrencisDersKayits(putUpdateOgrencisDersKayitsDto));
+                return new ApiResponse(Status200OK, "Updated PutUpdateOgrencisDersKayits", await _dersKayitStore.PutUpdateOgrencisDersKayits(putUpdateOgrencisDersKayitsDto));
+            }
+            catch (InvalidDataException dataException)
+            {
+                return new ApiResponse(Status400BadRequest, "Failed to update DersKayit");
+            }
+        }
+
+        public async Task<ApiResponse> PutUpdateOgrencisDersKayitsDeleteExSubes(ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds)
+        {
+            try
+            {
+                return new ApiResponse(Status200OK, "Updated PutUpdateOgrencisDersKayitsDeleteExSubes", await _dersKayitStore.PutUpdateOgrencisDersKayitsDeleteExSubes(reqEntityIdWithOtherEntitiesIds));
             }
             catch (InvalidDataException dataException)
             {

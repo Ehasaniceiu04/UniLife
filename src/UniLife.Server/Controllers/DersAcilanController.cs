@@ -57,9 +57,9 @@ namespace UniLife.Server.Controllers
         [HttpGet]
         [AllowAnonymous]
         [Route("GetDersAcilanSubelerByDersKod/{dersKod}")]
-        public async Task<ApiResponse> GetKayitliDerssByOgrenciIdDonemId(string dersKod)
+        public async Task<ApiResponse> GetDersAcilanSubelerByDersKod(string dersKod)
             => ModelState.IsValid ?
-                await _dersAcilanManager.GetKayitliDerssByOgrenciIdDonemId(dersKod) :
+                await _dersAcilanManager.GetDersAcilanSubelerByDersKod(dersKod) :
                 new ApiResponse(Status400BadRequest, "DersAcilan Model is Invalid");
 
 

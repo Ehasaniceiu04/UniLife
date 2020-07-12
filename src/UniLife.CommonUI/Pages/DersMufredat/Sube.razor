@@ -117,9 +117,9 @@
                             }
                             else
                             {*@
-                        <SfGrid ID="DersSubeGrid" @ref="DersSubeGrid" DataSource="@DersSubeDtos" RowHeight="20" AllowSorting="true">
+                        <SfGrid ID="DersSubeGrid" @ref="DersSubeGrid" DataSource="@DersSubeDtos" RowHeight="20" AllowSorting="true" Toolbar="Toolbaritems">
                             @* OnRecordClick="OnRecordClickHandler" RowDeselected="RowDeselectedHandler" OnToolbarClick="ToolbarClickHandler"  *@
-                            <GridEvents RowSelected="RowSelectedHandlerDersSube" TValue="DersAcilanDto" CommandClicked="CommandClickHandlerSube"></GridEvents>
+                            <GridEvents RowSelected="RowSelectedHandlerDersSube" OnToolbarClick="ToolbarClickHandler" TValue="DersAcilanDto" CommandClicked="CommandClickHandlerSube"></GridEvents>
                             <GridColumns>
                                 <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
                                 <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Sube) HeaderText="Şb"></GridColumn>

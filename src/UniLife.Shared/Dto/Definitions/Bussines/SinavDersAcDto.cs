@@ -12,5 +12,6 @@ namespace UniLife.Shared.Dto.Definitions
         public int? programId { get; set; }
         public int? sinif { get; set; }
         public string dersKodu { get; set; }
+        public bool SubeGroup { get; set; }
     }
 }

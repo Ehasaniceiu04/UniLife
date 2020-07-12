@@ -58,5 +58,24 @@ namespace UniLife.Storage.Stores
 
             return await _db.SaveChangesAsync(CancellationToken.None);
         }
+
+        public async Task<int> PutUpdateOgrencisDersKayitsDeleteExSubes(ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds)
+        {
+            using (var context = _db.Context.Database.BeginTransaction())
+            {
+                var dersKayits = _db.DersKayits.Where(x => reqEntityIdWithOtherEntitiesIds.OtherEntityIds.Contains(x.DersAcilanId));
+                await dersKayits.ForEachAsync(x => x.DersAcilanId = reqEntityIdWithOtherEntitiesIds.EntityId);
+
+                var updateOgr = await _db.SaveChangesAsync(CancellationToken.None);
+
+                var fazlalikSubes = _db.DersAcilans.Where(x => reqEntityIdWithOtherEntitiesIds.OtherEntityIds.Contains(x.Id)).ToArray();
+                _db.DersAcilans.RemoveRange(fazlalikSubes);
+
+                await _db.SaveChangesAsync(CancellationToken.None);
+
+                context.Commit();
+                return updateOgr;
+            }
+        }
     }
 }

@@ -10,5 +10,6 @@ namespace UniLife.Shared.DataInterfaces
         Task OgrenciKayitToDerss(IEnumerable<DersKayitDto> dersKayitDtos);
         Task DeleteByOgrId_DersId(int ogrenciId, int dersId);
         Task<int> PutUpdateOgrencisDersKayits(PutUpdateOgrencisDersKayitsDto putUpdateOgrencisDersKayitsDto);
+        Task<int> PutUpdateOgrencisDersKayitsDeleteExSubes(ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds);
     }
 }

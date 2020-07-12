@@ -12,6 +12,7 @@ using UniLife.Shared;
 using UniLife.Shared.DataModels;
 using UniLife.Shared.Dto;
 using UniLife.Shared.Dto.Definitions;
+using Syncfusion.Blazor.Navigations;
 
 namespace UniLife.CommonUI.Pages.DersMufredat
 {
@@ -86,6 +87,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         string dialogUyariText = "";
 
         int selectedDersAcilanId;
+        double selectedDersAcilanRowIndex;
         DersAcilanDto selectedDersAcilanSube;
 
         bool SubelendirAllow = false;
@@ -98,6 +100,9 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         bool akademisyenDialogOpen;
 
         bool SubeTasi;
+
+
+        private List<Object> Toolbaritems = new List<Object>() { new ItemModel() { Text = "Şubeleri Temizle", TooltipText = "Click", Id = "SubeTemizle" } };
 
         //protected override void OnInitialized()
         //{
@@ -247,7 +252,8 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             {
                 donemId = _dersAcilanDto.DonemId,
                 programId = _dersAcilanDto.ProgramId,
-                dersKodu = _dersAcilanDto.Kod
+                dersKodu = _dersAcilanDto.Kod,
+                SubeGroup = true
             };
 
             //var reqURL = $"api/DersAcilan/GetDersAcilansByFilters/{_dersAcilanDto.DonemId ?? 0}/{_dersAcilanDto.ProgramId ?? 0}/{_dersAcilanDto.Sinif ?? 0}/{_dersAcilanDto.Kod ?? ""}";
@@ -286,16 +292,21 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             if (args.Data.SubeCount == 1)
             {
                 SubelendirAllow = true;
+                await DersSubeGrid.EnableToolbarItems(new List<string>() { "SubeTemizle" }, false);
             }
             else
             {
                 SubelendirAllow = false;
+                //Toolbaritems = new List<Object>() { new ItemModel() { Text = "Şubeleri Temizle", TooltipText = "Click", Id = "SubeTemizle" } };
+
+                await DersSubeGrid.EnableToolbarItems(new List<string>() { "SubeTemizle" },true);
             }
+            StateHasChanged();
 
             DersSubeDtos = await GetDersAcilanSubelerByDersKod(args.Data.Kod);
             DersSubeGrid.Refresh();
             selectedDersAcilanId = DersSubeDtos.FirstOrDefault().Id;
-
+            selectedDersAcilanRowIndex = args.RowIndex;
 
 
             //await DersAcGrid.ClearSelection();
@@ -379,12 +390,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         async Task DersiSubelendir()
         {
             IsStateSubelendir = true;
-            OgrenciDtos = new List<OgrenciDto>();
-            DersSubeDtos = new List<DersAcilanDto>();
-            SubeliDersAcilan = new List<DersAcilanDto>();
-            SubeliOgrenci = new List<OgrenciDto>();
-            OgrenciGrid.Refresh();
-            DersSubeGrid.Refresh();
+            
 
             var selectedDersAcilan = (await DersAcGrid.GetSelectedRecords()).FirstOrDefault();
 
@@ -397,6 +403,13 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             }
             else
             {
+                OgrenciDtos = new List<OgrenciDto>();
+                DersSubeDtos = new List<DersAcilanDto>();
+                SubeliDersAcilan = new List<DersAcilanDto>();
+                SubeliOgrenci = new List<OgrenciDto>();
+                OgrenciGrid.Refresh();
+                DersSubeGrid.Refresh();
+
                 switch (subelendirmeTipi)
                 {
                     case 1:
@@ -408,6 +421,8 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                     default:
                         break;
                 }
+
+                //await Onayla();
             }
 
         }
@@ -497,6 +512,9 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             GetDersAcilansByFilters();
 
             //Diğer iki gridi de temizlemek lazım.
+            DersAcGrid.SelectRow(selectedDersAcilanRowIndex);
+
+            Toolbaritems = new List<Object>() { new ItemModel() { Text = "Şubeleri Temizle", TooltipText = "Click", Id = "SubeTemizle" } };
         }
 
         //Yeni şube yeni ders açılan demek oluyor. 1 . şube hariç diğer şubeleri ders kayıdı olarak şubeNO larla birlikte açacağız.
@@ -608,6 +626,42 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 }
 
                 
+            }
+        }
+
+        public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+        {
+            if (args.Item.Id == "SubeTemizle")
+            {
+                List<int> silinecekDersAcilanIds = DersSubeDtos.Where(x=>x.Sube!=1).Select(x => x.Id).ToList();
+                if (silinecekDersAcilanIds.Count()<1)
+                {
+                    dialogUyariText = "Birden fazla şube mevcut değil.";
+                    isUyariOpen = true;
+                    return;
+                }
+
+                int baseDersAcilanId = DersSubeDtos.FirstOrDefault(x => x.Sube == 1).Id;
+
+                ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds = new ReqEntityIdWithOtherEntitiesIds();
+                reqEntityIdWithOtherEntitiesIds.EntityId = baseDersAcilanId;
+                reqEntityIdWithOtherEntitiesIds.OtherEntityIds = silinecekDersAcilanIds;
+
+                ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>("api/derskayit/PutUpdateOgrencisDersKayitsDeleteExSubes", reqEntityIdWithOtherEntitiesIds);
+                if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
+                {
+                    DersAcGrid.SelectRow(selectedDersAcilanRowIndex);
+                    DersSubeGrid.Refresh();
+                    OgrenciGrid.Refresh();
+                    matToaster.Add($"Dersin tüm öğrencileri 1. şubeye aktarılmıştır.", MatToastType.Success, "Şube değişikliği başarılı");
+                    await Refresh();
+                    StateHasChanged();
+                }
+                else
+                {
+                    matToaster.Add("Sube silem işleminde hata oluştu." + apiResponse.StatusCode, MatToastType.Danger, "Hata!");
+                }
+
             }
         }
 

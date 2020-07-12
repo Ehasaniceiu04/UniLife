@@ -266,32 +266,65 @@ namespace UniLife.Storage.Stores
             //                      SubeCount = grp.Count()
             //                  };
 
-            var dersAcilans = (from d in _db.DersAcilans.WhereIf(sinavDersAcDto.donemId != null, x => x.DonemId == sinavDersAcDto.donemId)
+            IQueryable<SubeDersAcilanDto> dersAcilans;
+
+            if (sinavDersAcDto.SubeGroup)
+            {
+                dersAcilans = (from d in _db.DersAcilans.WhereIf(sinavDersAcDto.donemId != null, x => x.DonemId == sinavDersAcDto.donemId)
                                                        .WhereIf(sinavDersAcDto.programId != null, x => x.ProgramId == sinavDersAcDto.programId)
                                                        .WhereIf((sinavDersAcDto.sinif != null && sinavDersAcDto.sinif != 0), x => x.Sinif == sinavDersAcDto.sinif)
                                                        .WhereIf(!string.IsNullOrEmpty(sinavDersAcDto.dersKodu), x => x.Kod == sinavDersAcDto.dersKodu)
-                                                       //.Include(x => x.Akademisyen)
+                                   //.Include(x => x.Akademisyen)
 
-                              let cCount = d.DersKayits.Count()
-                              select new DersAcilanDto
-                              {
-                                  Id =d.Id,
-                                  Kod = d.Kod,
-                                  Ad = d.Ad,
-                                  OgrCount = cCount
-                              }).GroupBy(g => new
-                              {
-                                  g.Kod,
-                                  g.Ad,
-                                  g.Id,
-                              }).Select(gcs => new SubeDersAcilanDto()
-                              {
-                                  Id = gcs.Key.Id,
-                                  Ad = gcs.Key.Ad,
-                                  Kod = gcs.Key.Kod,
-                                  SubeCount = gcs.Count(),
-                                  OgrCount = gcs.Sum(x=>x.OgrCount)
-                              });
+                               let cCount = d.DersKayits.Count()
+                               select new DersAcilanDto
+                               {
+                                   Kod = d.Kod,
+                                   Ad = d.Ad,
+                                   OgrCount = cCount
+                               }).GroupBy(g => new
+                               {
+                                   g.Kod,
+                                   g.Ad,
+                               }).Select(gcs => new SubeDersAcilanDto()
+                               {
+                                   Ad = gcs.Key.Ad,
+                                   Kod = gcs.Key.Kod,
+                                   SubeCount = gcs.Count(),
+                                   OgrCount = gcs.Sum(x => x.OgrCount)
+                               });
+            }
+            else
+            {
+                dersAcilans = (from d in _db.DersAcilans.WhereIf(sinavDersAcDto.donemId != null, x => x.DonemId == sinavDersAcDto.donemId)
+                                                       .WhereIf(sinavDersAcDto.programId != null, x => x.ProgramId == sinavDersAcDto.programId)
+                                                       .WhereIf((sinavDersAcDto.sinif != null && sinavDersAcDto.sinif != 0), x => x.Sinif == sinavDersAcDto.sinif)
+                                                       .WhereIf(!string.IsNullOrEmpty(sinavDersAcDto.dersKodu), x => x.Kod == sinavDersAcDto.dersKodu)
+                                   //.Include(x => x.Akademisyen)
+
+                               let cCount = d.DersKayits.Count()
+                               select new DersAcilanDto
+                               {
+                                   Id = d.Id,
+                                   Kod = d.Kod,
+                                   Ad = d.Ad,
+                                   OgrCount = cCount
+                               }).GroupBy(g => new
+                               {
+                                   g.Kod,
+                                   g.Ad,
+                                   g.Id,
+                               }).Select(gcs => new SubeDersAcilanDto()
+                               {
+                                   Id = gcs.Key.Id,
+                                   Ad = gcs.Key.Ad,
+                                   Kod = gcs.Key.Kod,
+                                   SubeCount = gcs.Count(),
+                                   OgrCount = gcs.Sum(x => x.OgrCount)
+                               });
+            }
+
+            
 
             return await dersAcilans.ToListAsync();
         }
@@ -423,7 +456,7 @@ namespace UniLife.Storage.Stores
             }
         }
 
-        public async Task<List<DersAcilanDto>> GetKayitliDerssByOgrenciIdDonemId(string dersKod)
+        public async Task<List<DersAcilanDto>> GetDersAcilanSubelerByDersKod(string dersKod)
         {
             var dersAcilans = from d in _db.DersAcilans.Where(x => x.Kod == dersKod).Include(x => x.Akademisyen)
                               let cCount = d.DersKayits.Count()
@@ -435,6 +468,7 @@ namespace UniLife.Storage.Stores
                                   Akademisyen = new AkademisyenDto { Ad = d.Akademisyen.Ad },
                                   Sinif = d.Sinif,
                                   Zorunlu = d.Zorunlu,
+                                  Kredi=d.Kredi,
                                   Sube = d.Sube,
                                   OgrCount = cCount
                               };
