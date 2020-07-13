@@ -22,14 +22,14 @@
         <GridEvents ContextMenuItemClicked="OnContextMenuClick" CommandClicked="CommandClickHandler" OnToolbarClick="ToolbarClickHandler" OnActionComplete="ActionCompletedHandler" TValue="MufredatDto"></GridEvents>
         <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
         <GridColumns>
-            <GridColumn AutoFit="true" Visible="false" Field=@nameof(MufredatDto.Id) HeaderText="Müfredat ID" AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
-            <GridColumn AutoFit="true" Field=@nameof(MufredatDto.Ad) AllowEditing="true" HeaderText="Müfredat İsim" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
-            <GridColumn AutoFit="true" Field=@nameof(MufredatDto.Yil) HeaderText="Müfredat Yıl" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
-            <GridColumn AutoFit="true" Field=@nameof(MufredatDto.BasTarih) HeaderText="BasTarih" EditType="EditType.DatePickerEdit" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
-            <GridColumn AutoFit="true" Field=@nameof(MufredatDto.BitTarih) HeaderText="Bit Tarih" EditType="EditType.DatePickerEdit"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(MufredatDto.Id) HeaderText="Müfredat ID" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+            <GridColumn Field=@nameof(MufredatDto.Ad) AllowEditing="true" HeaderText="Müfredat İsim" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
+            <GridColumn Field=@nameof(MufredatDto.Yil) HeaderText="Müfredat Yıl" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
+            <GridColumn Field=@nameof(MufredatDto.BasTarih) HeaderText="BasTarih" EditType="EditType.DatePickerEdit" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
+            <GridColumn Field=@nameof(MufredatDto.BitTarih) HeaderText="Bit Tarih" EditType="EditType.DatePickerEdit"></GridColumn>
             <GridColumn Field=@nameof(MufredatDto.KararTarih) HeaderText="KararTarih" EditType="EditType.DatePickerEdit"></GridColumn>
             <GridColumn Field=@nameof(HarcDto.ProgramId) HeaderText="Program" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@programDtos"></GridColumn>
-            <GridColumn HeaderText="Manage Records">
+            <GridColumn>
                 <GridCommandColumns>
                     <GridCommandColumn Type="CommandButtonType.None" Title="DersOlus" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
                     <GridCommandColumn Type="CommandButtonType.None" Title="Clone" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-copy", CssClass="e-flat" })"></GridCommandColumn>

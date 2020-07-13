@@ -36,19 +36,19 @@
 
     List<UniversiteDto> universiteDtos = new List<UniversiteDto>();
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        await ReadUniversites();
+        ReadUniversites();
     }
 
-    async Task ReadUniversites()
+    void ReadUniversites()
     {
-        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/universite");
+        ApiResponseDto<List<UniversiteDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<UniversiteDto>>>("api/universite").Result;
 
         if (apiResponse.StatusCode == Status200OK)
         {
             matToaster.Add(apiResponse.Message, MatToastType.Success, "Üniversiteler getirildi");
-            universiteDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<UniversiteDto[]>(apiResponse.Result.ToString()).ToList<UniversiteDto>();
+            universiteDtos = apiResponse.Result;
         }
         else
         {

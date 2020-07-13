@@ -1,25 +1,61 @@
-﻿@page "/Odata"
-@using Syncfusion.Blazor
-@using Syncfusion.Blazor.Data
+﻿@page "/aggr"
 @using Syncfusion.Blazor.Grids
-
-    <SfGrid TValue="Order" AllowPaging="true" AllowFiltering="true">
-        <SfDataManager Url="https://services.odata.org/V4/Northwind/Northwind.svc/Orders/" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
-        <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
-        <GridColumns>
-            <GridColumn Field=@nameof(Order.OrderID) HeaderText="Order ID" IsPrimaryKey="true" TextAlign="TextAlign.Right" Width="120"></GridColumn>
-            <GridColumn Field=@nameof(Order.CustomerID) HeaderText="Customer Name" Width="150"></GridColumn>
-            <GridColumn Field=@nameof(Order.OrderDate) HeaderText=" Order Date" Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Right" Width="130"></GridColumn>
-            <GridColumn Field=@nameof(Order.Freight) HeaderText="Freight" Format="C2" TextAlign="TextAlign.Right" Width="120"></GridColumn>
-        </GridColumns>
-    </SfGrid>
-
+@using GridData
+@inherits SampleBaseComponent;
+<div class="col-lg-12 control-section">
+    <div class="content-wrapper">
+        <div class="row">
+            <SfGrid DataSource="@GridData">
+                <GridAggregates>
+                    <GridAggregate>
+                        <GridAggregateColumns>
+                            <GridAggregateColumn Field=@nameof(OrdersDetails.Freight) Type="AggregateType.Sum" Format="C2">
+                                <FooterTemplate>
+                                    @{
+                                        var Sumvalue = (context as AggregateTemplateContext);
+                                        <div>
+                                            Sum: @Sumvalue.Sum
+                                        </div>
+                                    }
+                                </FooterTemplate>
+                            </GridAggregateColumn>
+                        </GridAggregateColumns>
+                    </GridAggregate>
+                    <GridAggregate>
+                        <GridAggregateColumns>
+                            <GridAggregateColumn Field=@nameof(OrdersDetails.Freight) Type="AggregateType.Average" Format="C2">
+                                <FooterTemplate>
+                                    @{
+                                        var Avgvalue = (context as AggregateTemplateContext);
+                                        <div>
+                                            Average: @Avgvalue.Average
+                                        </div>
+                                    }
+                                </FooterTemplate>
+                            </GridAggregateColumn>
+                        </GridAggregateColumns>
+                    </GridAggregate>
+                </GridAggregates>
+                <GridColumns>
+                    <GridColumn Field=@nameof(OrdersDetails.CustomerID) HeaderText="Customer Name" Width="150"></GridColumn>
+                    <GridColumn Field=@nameof(OrdersDetails.Freight) HeaderText="Freight" Format="C2" TextAlign="TextAlign.Right" Width="160"></GridColumn>
+                    <GridColumn Field=@nameof(OrdersDetails.OrderDate) HeaderText="Order Date" Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Right" Width="130"></GridColumn>
+                    <GridColumn Field=@nameof(OrdersDetails.ShipCountry) HeaderText="Ship Country" Width="140"></GridColumn>
+                </GridColumns>
+            </SfGrid>
+        </div>
+    </div>
+</div>
+<input type="button" value="click here" @onclick="Clicked"/>
 @code{
-    public class Order
+    public List<OrdersDetails> GridData { get; set; }
+    protected override void OnInitialized()
     {
-        public int? OrderID { get; set; }
-        public string CustomerID { get; set; }
-        public DateTime? OrderDate { get; set; }
-        public double? Freight { get; set; }
+        //GridData = OrdersDetails.GetAllRecords().Take(12).ToList();
+    }
+
+    void Clicked()
+    {
+        GridData = OrdersDetails.GetAllRecords().Take(12).ToList();
     }
 }

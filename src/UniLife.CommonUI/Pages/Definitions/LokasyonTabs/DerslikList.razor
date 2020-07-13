@@ -35,24 +35,24 @@
 
     List<BinaDto> binaDtos= new List<BinaDto>();
 
-    protected override async Task OnInitializedAsync()
+
+    protected override void OnInitialized()
     {
-        await ReadDonems();
+        ReadDonems();
 
-        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/keyvalues/Getbina");
+        ApiResponseDto apiResponse = Http.GetFromJsonAsync<ApiResponseDto>("api/keyvalues/Getbina").Result;
         binaDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<BinaDto[]>(apiResponse.Result.ToString()).ToList<BinaDto>();
-
     }
 
-    async Task ReadDonems()
+    void ReadDonems()
     {
 
-        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/derslik");
+        ApiResponseDto<List<DerslikDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<DerslikDto>>>("api/derslik").Result;
 
         if (apiResponse.StatusCode == Status200OK)
         {
             matToaster.Add(apiResponse.Message, MatToastType.Success, "Derslikler getirildi");
-            derslikDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<DerslikDto[]>(apiResponse.Result.ToString()).ToList<DerslikDto>();
+            derslikDtos = apiResponse.Result;
         }
         else
         {

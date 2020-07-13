@@ -65,18 +65,13 @@
     <div class="col-sm-12 text-center">
         @foreach (var item in donemDtos)
         {
-            <SfRadioButton Label="@item.Ad" @ref="donemRadio" Name="donemRadio" Value="@item.Id.ToString()" @onclick="onClick" Checked="@item.Durum"></SfRadioButton>
+            <SfRadioButton Label="@item.Ad" Name="donemRadio" Value="@item.Id.ToString()" @onclick="onClick" @bind-Checked="@(seciliDonemId)"></SfRadioButton>
         }
     </div>
 </div>
-
 <br />
 
 <SfTab @ref="Tab" HeaderPlacement="HeaderPosition.Left" SelectedItem="@selectedItem" LoadOn="ContentLoad.Dynamic">
-    @*<TabAnimationSettings>
-            <TabAnimationPrevious Effect="@PreviousEffect"></TabAnimationPrevious>
-            <TabAnimationNext Effect="@NextEffect"></TabAnimationNext>
-        </TabAnimationSettings>*@
     <TabEvents Selecting="OnTabSelecting"></TabEvents>
     <TabItems>
         @if (ogrenciProgramSure >= 1)
@@ -258,11 +253,12 @@
 
 
 @code{
+    string seciliDonemId="";
+
     public bool IsChecked { get; set; } = true;
 
     List<DonemDto> donemDtos = new List<DonemDto>();
-    SfRadioButton<bool> donemRadio = new SfRadioButton<bool>();
-    int selectedDonem;
+    //SfRadioButton<string> donemRadio = new SfRadioButton<string>();
 
 
     [Parameter]
@@ -288,6 +284,7 @@
     {
         _OgrenciDto = appState.OgrenciState;
         GetDonems();
+        seciliDonemId = donemDtos.FirstOrDefault(x => x.Durum = true).Id.ToString();
         //GetAcilanDerssByMufredat();
         SetOgrenciProgramSure();
         SetMufredatAd();
@@ -307,7 +304,7 @@
     public async void onDonemChange()
     {
         IsChecked = !IsChecked;
-        appState.DersKayitDonemIdState = Convert.ToInt32(await donemRadio.GetSelectedValue());
+        appState.DersKayitDonemIdState = Convert.ToInt32(seciliDonemId);//await donemRadio.GetSelectedValue());
         //this.NextEffect = "FadeZoomIn";
         //Tab.Refresh();
         //if (Tab.SelectedItem == 0)
@@ -328,7 +325,7 @@
     private async Task onClick(Microsoft.AspNetCore.Components.Web.MouseEventArgs args)
     {
 
-        appState.DersKayitDonemIdState = Convert.ToInt32(await donemRadio.GetSelectedValue());
+        appState.DersKayitDonemIdState = Convert.ToInt32(seciliDonemId); //await donemRadio.GetSelectedValue());
         IsChecked = !IsChecked;
     }
 

@@ -36,19 +36,20 @@
 
     List<BinaDto> binaDtos = new List<BinaDto>();
 
-    protected override async Task OnInitializedAsync()
+
+    protected override void OnInitialized()
     {
-        await ReadBinas();
+        ReadBinas();
     }
 
-    async Task ReadBinas()
+    void ReadBinas()
     {
-        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/KeyValues/GetBina");
+        ApiResponseDto<List<BinaDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<BinaDto>>>("api/KeyValues/GetBina").Result;
 
         if (apiResponse.StatusCode == Status200OK)
         {
             matToaster.Add(apiResponse.Message, MatToastType.Success, "Binaler getirildi");
-            binaDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<BinaDto[]>(apiResponse.Result.ToString()).ToList<BinaDto>();
+            binaDtos = apiResponse.Result;
         }
         else
         {

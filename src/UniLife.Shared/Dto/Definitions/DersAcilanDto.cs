@@ -43,14 +43,14 @@ namespace UniLife.Shared.Dto.Definitions
         public virtual DonemDto Donem { get; set; }
 
         public string KisaAd { get; set; }
-        public int Akts { get; set; }
+        public int? Akts { get; set; }
         public int GecmeNotu { get; set; }
         public string OptikKod { get; set; }
         public string AdEn { get; set; }
         public int UygSaat { get; set; }
         public int LabSaat { get; set; }
         public int TeoSaat { get; set; }
-        public double Kredi { get; set; }
+        public double? Kredi { get; set; }
         public bool Durum { get; set; } = true;
         public bool Zorunlu { get; set; }
         public string SecmeliKodu { get; set; }

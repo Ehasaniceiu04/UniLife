@@ -145,21 +145,21 @@
 
     public string[] MenuItems = new string[] { "Group", "Ungroup", "ColumnChooser", "Filter" };
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        await ReadUniversites();
+        ReadUniversites();
 
-        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/universite");
+        ApiResponseDto apiResponse = Http.GetFromJsonAsync<ApiResponseDto>("api/universite").Result;
         universiteDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<UniversiteDto[]>(apiResponse.Result.ToString()).ToList<UniversiteDto>();
-        ApiResponseDto apiResponseFakulteTur = await Http.GetFromJsonAsync<ApiResponseDto>("api/fakulteTur");
+        ApiResponseDto apiResponseFakulteTur = Http.GetFromJsonAsync<ApiResponseDto>("api/fakulteTur").Result;
         fakulteTurDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<FakulteTurDto[]>(apiResponseFakulteTur.Result.ToString()).ToList<FakulteTurDto>();
-        ApiResponseDto apiResponseOgrenimTur = await Http.GetFromJsonAsync<ApiResponseDto>("api/ogrenimtur");
+        ApiResponseDto apiResponseOgrenimTur = Http.GetFromJsonAsync<ApiResponseDto>("api/ogrenimtur").Result;
         ogrenimTurDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<OgrenimTurDto[]>(apiResponseOgrenimTur.Result.ToString()).ToList<OgrenimTurDto>();
     }
 
     async Task ReadUniversites()
     {
-        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/fakulte");
+        ApiResponseDto apiResponse = Http.GetFromJsonAsync<ApiResponseDto>("api/fakulte").Result;
 
         if (apiResponse.StatusCode == Status200OK)
         {

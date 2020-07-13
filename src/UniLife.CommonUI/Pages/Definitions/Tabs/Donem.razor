@@ -36,19 +36,19 @@
 
     List<DonemTipDto> donemTipDtos = new List<DonemTipDto>();
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        await ReadDonems();
+        ReadDonems();
 
-        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/donemtip");
+        ApiResponseDto apiResponse = Http.GetFromJsonAsync<ApiResponseDto>("api/donemtip").Result;
         donemTipDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<DonemTipDto[]>(apiResponse.Result.ToString()).ToList<DonemTipDto>();
 
     }
 
-    async Task ReadDonems()
+    void ReadDonems()
     {
 
-        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/donem");
+        ApiResponseDto apiResponse = Http.GetFromJsonAsync<ApiResponseDto>("api/donem").Result;
 
         if (apiResponse.StatusCode == StatusCodes.Status200OK)
         {

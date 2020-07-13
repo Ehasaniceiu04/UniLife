@@ -89,15 +89,15 @@
 
     public AkademisyenDto _AkademisyenDto { get; set; } = new AkademisyenDto();
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        await ReadAkademisyens();
+        ReadAkademisyens();
     }
 
-    async Task ReadAkademisyens()
+    void ReadAkademisyens()
     {
         //ApiResponseDto<List<AkademisyenDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<AkademisyenDto>>>($"api/Admin/GetAkademisyenUsers?pageSize={10}&pageNumber={0}");
-        ApiResponseDto<List<AkademisyenDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<AkademisyenDto>>>("api/akademisyen");
+        ApiResponseDto<List<AkademisyenDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<AkademisyenDto>>>("api/akademisyen").Result;
 
 
         if (apiResponse.StatusCode == Status200OK)

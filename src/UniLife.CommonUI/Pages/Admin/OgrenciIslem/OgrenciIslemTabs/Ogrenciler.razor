@@ -93,15 +93,15 @@
 
     public OgrenciDto _OgrenciDto { get; set; } = new OgrenciDto();
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        await ReadOgrencis();
+        ReadOgrencis();
     }
 
-    async Task ReadOgrencis()
+    void ReadOgrencis()
     {
         //ApiResponseDto<List<OgrenciDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDto>>>($"api/Admin/GetOgrenciUsers?pageSize={10}&pageNumber={0}");
-        ApiResponseDto<List<OgrenciDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDto>>>("api/ogrenci");
+        ApiResponseDto<List<OgrenciDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDto>>>("api/ogrenci").Result;
 
 
         if (apiResponse.StatusCode == Status200OK)
