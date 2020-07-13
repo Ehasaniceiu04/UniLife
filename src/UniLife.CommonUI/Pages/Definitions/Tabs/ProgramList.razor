@@ -45,22 +45,22 @@
     List<BolumDto> bolumDtos = new List<BolumDto>();
     List<FakulteDto> fakulteDtos = new List<FakulteDto>();
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        await ReadPrograms();
+        ReadPrograms();
 
         //ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/bolum");
         //bolumDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<BolumDto[]>(apiResponse.Result.ToString()).ToList<BolumDto>();
 
-        ApiResponseDto<List<FakulteDto>> apiResponseFakulte = await Http.GetFromJsonAsync<ApiResponseDto<List<FakulteDto>>>("api/fakulte");
+        ApiResponseDto<List<FakulteDto>> apiResponseFakulte = Http.GetFromJsonAsync<ApiResponseDto<List<FakulteDto>>>("api/fakulte").Result;
         fakulteDtos = apiResponseFakulte.Result;
 
     }
 
-    async Task ReadPrograms()
+    void ReadPrograms()
     {
 
-        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/program");
+        ApiResponseDto apiResponse = Http.GetFromJsonAsync<ApiResponseDto>("api/program").Result;
 
         if (apiResponse.StatusCode == Status200OK)
         {

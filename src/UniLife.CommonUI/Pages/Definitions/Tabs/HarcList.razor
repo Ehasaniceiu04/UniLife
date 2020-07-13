@@ -29,21 +29,21 @@
     List<ProgramDto> programDtos = new List<ProgramDto>();
     List<DonemDto> donemDtos = new List<DonemDto>();
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        await ReadHarcs();
+        ReadHarcs();
 
-        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/program");
+        ApiResponseDto apiResponse = Http.GetFromJsonAsync<ApiResponseDto>("api/program").Result;
         programDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<ProgramDto[]>(apiResponse.Result.ToString()).ToList<ProgramDto>();
-        ApiResponseDto apiResponseDonem = await Http.GetFromJsonAsync<ApiResponseDto>("api/Donem");
+        ApiResponseDto apiResponseDonem = Http.GetFromJsonAsync<ApiResponseDto>("api/Donem").Result;
         donemDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<DonemDto[]>(apiResponseDonem.Result.ToString()).ToList<DonemDto>();
 
     }
 
-    async Task ReadHarcs()
+    void ReadHarcs()
     {
 
-        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/harc");
+        ApiResponseDto apiResponse = Http.GetFromJsonAsync<ApiResponseDto>("api/harc").Result;
 
         if (apiResponse.StatusCode == Status200OK)
         {

@@ -71,22 +71,22 @@
 
         bool multiDialogOpen = false;
 
-        protected override async Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
-            await ReadFakultes();
-            ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/program");
-            programDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<ProgramDto[]>(apiResponse.Result.ToString()).ToList<ProgramDto>();
+            ReadFakultes();
+            ApiResponseDto<List<ProgramDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<ProgramDto>>>("api/program").Result;
+            programDtos = apiResponse.Result;
         }
 
-        async Task ReadFakultes()
+        void ReadFakultes()
         {
 
-            ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/mufredat");
+            ApiResponseDto<List<MufredatDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<MufredatDto>>>("api/mufredat").Result;
 
             if (apiResponse.StatusCode == Status200OK)
             {
-                matToaster.Add(apiResponse.Message, MatToastType.Success, "Müfredatler getirildi");
-                mufredatDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<MufredatDto[]>(apiResponse.Result.ToString()).ToList<MufredatDto>();
+                matToaster.Add(apiResponse.Message, MatToastType.Success, "Müfredatlar getirildi");
+                mufredatDtos = apiResponse.Result;
             }
             else
             {
@@ -102,7 +102,7 @@
                 if (apiResponse.StatusCode == Status200OK)
                 {
                     matToaster.Add(apiResponse.Message, MatToastType.Success);
-                    await ReadFakultes();
+                    ReadFakultes();
                 }
                 else
                 {

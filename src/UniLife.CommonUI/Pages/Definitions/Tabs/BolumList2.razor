@@ -35,12 +35,12 @@
     List<FakulteDto> fakulteDtos = new List<FakulteDto>();
     List<OgrenimTurDto> ogrenimTurDtos = new List<OgrenimTurDto>();
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
 
-        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/fakulte");
+        ApiResponseDto apiResponse = Http.GetFromJsonAsync<ApiResponseDto>("api/fakulte").Result;
         fakulteDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<FakulteDto[]>(apiResponse.Result.ToString()).ToList<FakulteDto>();
-        ApiResponseDto apiResponseOgrTur = await Http.GetFromJsonAsync<ApiResponseDto>("api/ogrenimtur");
+        ApiResponseDto apiResponseOgrTur = Http.GetFromJsonAsync<ApiResponseDto>("api/ogrenimtur").Result;
         ogrenimTurDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<OgrenimTurDto[]>(apiResponseOgrTur.Result.ToString()).ToList<OgrenimTurDto>();
 
     }

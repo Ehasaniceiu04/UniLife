@@ -36,19 +36,19 @@
 
     List<DonemTipDto> donemTipDtos = new List<DonemTipDto>();
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        await ReadDonemTips();
+        ReadDonemTips();
     }
 
-    async Task ReadDonemTips()
+    void ReadDonemTips()
     {
-        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/donemTip");
+        ApiResponseDto<List<DonemTipDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<DonemTipDto>>>("api/donemTip").Result;
 
         if (apiResponse.StatusCode == Status200OK)
         {
             matToaster.Add(apiResponse.Message, MatToastType.Success, "Dönem Tip getirildi");
-            donemTipDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<DonemTipDto[]>(apiResponse.Result.ToString()).ToList<DonemTipDto>();
+            donemTipDtos = apiResponse.Result;
         }
         else
         {

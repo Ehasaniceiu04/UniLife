@@ -36,19 +36,18 @@
 
     List<SinavTurDto> sinavTurDtos = new List<SinavTurDto>();
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        await ReadSinavTurs();
+        ReadSinavTurs();
     }
 
-    async Task ReadSinavTurs()
+    void ReadSinavTurs()
     {
-        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/keyvalues/getsinavTur");
-
+        ApiResponseDto<List<SinavTurDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<SinavTurDto>>>("api/keyvalues/getsinavTur").Result;
         if (apiResponse.StatusCode == Status200OK)
         {
             matToaster.Add(apiResponse.Message, MatToastType.Success, "Sinav Tur getirildi");
-            sinavTurDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<SinavTurDto[]>(apiResponse.Result.ToString()).ToList<SinavTurDto>();
+            sinavTurDtos = apiResponse.Result;
         }
         else
         {

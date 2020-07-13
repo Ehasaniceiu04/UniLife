@@ -36,19 +36,19 @@
 
     List<KayitNedenDto> kayitNedenDtos = new List<KayitNedenDto>();
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        await ReadKayitNedens();
+        ReadKayitNedens();
     }
 
-    async Task ReadKayitNedens()
+    void ReadKayitNedens()
     {
-        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/KeyValues/GetKayitNeden");
+        ApiResponseDto<List<KayitNedenDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<KayitNedenDto>>>("api/KeyValues/GetKayitNeden").Result;
 
         if (apiResponse.StatusCode == Status200OK)
         {
             matToaster.Add(apiResponse.Message, MatToastType.Success, "Kayit Neden getirildi");
-            kayitNedenDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<KayitNedenDto[]>(apiResponse.Result.ToString()).ToList<KayitNedenDto>();
+            kayitNedenDtos = apiResponse.Result;
         }
         else
         {

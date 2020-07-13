@@ -36,19 +36,19 @@
 
     List<OgrenimDurumDto> ogrenimDurumDtos = new List<OgrenimDurumDto>();
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        await ReadOgrenimDurums();
+        ReadOgrenimDurums();
     }
 
-    async Task ReadOgrenimDurums()
+    void ReadOgrenimDurums()
     {
-        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/ogrenimDurum");
+        ApiResponseDto<List<OgrenimDurumDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<OgrenimDurumDto>>>("api/ogrenimDurum").Result;
 
         if (apiResponse.StatusCode == Status200OK)
         {
             matToaster.Add(apiResponse.Message, MatToastType.Success, "Öğrenim Durum getirildi");
-            ogrenimDurumDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<OgrenimDurumDto[]>(apiResponse.Result.ToString()).ToList<OgrenimDurumDto>();
+            ogrenimDurumDtos = apiResponse.Result;
         }
         else
         {

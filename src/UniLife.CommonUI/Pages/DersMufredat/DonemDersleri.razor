@@ -308,23 +308,23 @@
         string uyariText = "";
 
 
-        protected override async Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
-            await ReadFakultes();
-            await ReadDonems();
+            ReadFakultes();
+            ReadDonems();
 
 
 
         }
 
 
-        async Task ReadFakultes()
+        void ReadFakultes()
         {
-            ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/fakulte");
+            ApiResponseDto<List<FakulteDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<FakulteDto>>>("api/fakulte").Result;
 
             if (apiResponse.StatusCode == Status200OK)
             {
-                fakulteDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<FakulteDto[]>(apiResponse.Result.ToString()).ToList<FakulteDto>();
+                fakulteDtos = apiResponse.Result;
                 fakulteDtos2 = fakulteDtos.DeepClone();
                 if (fakulteDtos.Count > 1)
                 {
@@ -533,9 +533,9 @@
         }
 
 
-        async Task ReadDonems()
+        void ReadDonems()
         {
-            ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/donem");
+            ApiResponseDto apiResponse = Http.GetFromJsonAsync<ApiResponseDto>("api/donem").Result;
 
             if (apiResponse.StatusCode == Status200OK)
             {

@@ -36,19 +36,19 @@
 
     List<FakulteTurDto> fakulteTurDtos = new List<FakulteTurDto>();
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        await ReadFakulteTurs();
+        ReadFakulteTurs();
     }
 
-    async Task ReadFakulteTurs()
+    void ReadFakulteTurs()
     {
-        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/fakulteTur");
+        ApiResponseDto<List<FakulteTurDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<FakulteTurDto>>>("api/fakulteTur").Result;
 
         if (apiResponse.StatusCode == Status200OK)
         {
             matToaster.Add(apiResponse.Message, MatToastType.Success, "Fakülte Tür getirildi");
-            fakulteTurDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<FakulteTurDto[]>(apiResponse.Result.ToString()).ToList<FakulteTurDto>();
+            fakulteTurDtos = apiResponse.Result;
         }
         else
         {

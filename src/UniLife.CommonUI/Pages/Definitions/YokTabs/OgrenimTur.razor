@@ -36,19 +36,19 @@
 
     List<OgrenimTurDto> ogrenimTurDtos = new List<OgrenimTurDto>();
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        await ReadOgrenimTurs();
+        ReadOgrenimTurs();
     }
 
-    async Task ReadOgrenimTurs()
+    void ReadOgrenimTurs()
     {
-        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/ogrenimTur");
+        ApiResponseDto<List<OgrenimTurDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<OgrenimTurDto>>>("api/ogrenimTur").Result;
 
         if (apiResponse.StatusCode == Status200OK)
         {
             matToaster.Add(apiResponse.Message, MatToastType.Success, "Öğrenim Tür getirildi");
-            ogrenimTurDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<OgrenimTurDto[]>(apiResponse.Result.ToString()).ToList<OgrenimTurDto>();
+            ogrenimTurDtos = apiResponse.Result;
         }
         else
         {
