@@ -13,7 +13,6 @@
 
 
 <ControlSection>
-    <div class="row">
         <SfGrid ID="OgrGrid" @ref="OgrGrid" AllowSorting="true" AllowFiltering="true" AllowPaging="true" DataSource="@AkaGridDtos">
             @*OnActionFailure="ActionFailureHandler"  OnActionBegin="ActionBeginHandler" DetailDataBound="DetailDataBound" RowDataBound="RowBound"*@
             <GridEvents TValue="PersonelDto" CommandClicked="CommandClickHandler" OnActionBegin="ActionBeginHandler" OnActionComplete="ActionCompletedHandler"></GridEvents>
@@ -67,14 +66,11 @@
                 </GridColumn>
             </GridColumns>
         </SfGrid>
-    </div>
-    <div class="row">
         <div class="col-12 text-right">
             <SfProgressButton OnClick="AddNew" Content="Yeni Personel Kaydı >" CssClass="center-block e-primary">
                 <ProgressButtonSpinSettings Position="SpinPosition.Right"></ProgressButtonSpinSettings>
             </SfProgressButton>
         </div>
-    </div>
 
 
 </ControlSection>

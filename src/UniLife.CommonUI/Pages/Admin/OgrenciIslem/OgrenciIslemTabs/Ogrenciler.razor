@@ -11,73 +11,65 @@
 @inject AppState appState
 
 
-
 <ControlSection>
-    <div class="row">
-        <SfGrid ID="OgrGrid" @ref="OgrGrid" AllowSorting="true" AllowFiltering="true" AllowPaging="true" DataSource="@OgrGridDtos">
-            @*OnActionFailure="ActionFailureHandler"  OnActionBegin="ActionBeginHandler" DetailDataBound="DetailDataBound" RowDataBound="RowBound"*@
-            <GridEvents TValue="OgrenciDto" CommandClicked="CommandClickHandler" OnActionBegin="ActionBeginHandler" OnActionComplete="ActionCompletedHandler"></GridEvents>
-            <GridTemplates>
-                <DetailTemplate>
-                    @{
-                        var ogrenciDto = (context as UniLife.Shared.Dto.Definitions.OgrenciDto);
+    <SfGrid ID="OgrGrid" @ref="OgrGrid" AllowSorting="true" AllowFiltering="true" AllowPaging="true" DataSource="@OgrGridDtos">
+        @*OnActionFailure="ActionFailureHandler"  OnActionBegin="ActionBeginHandler" DetailDataBound="DetailDataBound" RowDataBound="RowBound"*@
+        <GridEvents TValue="OgrenciDto" CommandClicked="CommandClickHandler" OnActionBegin="ActionBeginHandler" OnActionComplete="ActionCompletedHandler"></GridEvents>
+        <GridTemplates>
+            <DetailTemplate>
+                @{
+                    var ogrenciDto = (context as UniLife.Shared.Dto.Definitions.OgrenciDto);
 
-                        //SampleChart için
-                        var chartQuery = $"new sf.data.Query().where('EmployeeID', 'equal', {ogrenciDto.Id}, false)";
-
-                    }
-                    <div style="padding:20px">
-                        <SfTab LoadOn="ContentLoad.Dynamic">
-                            <TabEvents Selecting="OnTabSelecting"></TabEvents>
-                            <TabItems>
-                                <TabItem>
-                                    <ChildContent>
-                                        <TabHeader Text="Details"></TabHeader>
-                                    </ChildContent>
-                                    <ContentTemplate>
-                                        <OgrenciBilgi _OgrenciDto="ogrenciDto"></OgrenciBilgi>
-                                    </ContentTemplate>
-                                </TabItem>
-                                <TabItem>
-                                    <ChildContent>
-                                        <TabHeader Text="Roles"></TabHeader>
-                                    </ChildContent>
-                                    <ContentTemplate>
-                                        <OgrenciRoles _OgrenciDto="ogrenciDto"></OgrenciRoles>
-                                    </ContentTemplate>
-                                </TabItem>
-                                <TabItem>
-                                    <ChildContent>
-                                        <TabHeader Text="Report"></TabHeader>
-                                    </ChildContent>
-                                    <ContentTemplate>
-                                    </ContentTemplate>
-                                </TabItem>
-                            </TabItems>
-                        </SfTab>
-                    </div>
-                </DetailTemplate>
-            </GridTemplates>
-            <GridColumns>
-                <GridColumn Visible="false" Field=@nameof(OgrenciDto.ApplicationUserId) HeaderText="AppUserId" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
-                <GridColumn Field=@nameof(OgrenciDto.Ad) HeaderText="Ad"> </GridColumn>
-                <GridColumn Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad"></GridColumn>
-                <GridColumn Field=@nameof(OgrenciDto.TCKN) HeaderText="TCKN"></GridColumn>
-                <GridColumn Field=@nameof(OgrenciDto.OgrNo) HeaderText="Öğrenci No"></GridColumn>
-                <GridColumn>
-                    <GridCommandColumns>
-                        <GridCommandColumn Type="CommandButtonType.None" Title="Akademik Bilgiler" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
-                    </GridCommandColumns>
-                </GridColumn>
-            </GridColumns>
-        </SfGrid>
-    </div>
-    <div class="row">
-        <div class="col-12 text-right">
-            <SfProgressButton OnClick="AddNew" Content="Yeni Öğrenci Kaydı >" CssClass="center-block e-primary">
-                <ProgressButtonSpinSettings Position="SpinPosition.Right"></ProgressButtonSpinSettings>
-            </SfProgressButton>
-        </div>
+                }
+                <div style="padding:20px">
+                    <SfTab LoadOn="ContentLoad.Dynamic">
+                        <TabEvents Selecting="OnTabSelecting"></TabEvents>
+                        <TabItems>
+                            <TabItem>
+                                <ChildContent>
+                                    <TabHeader Text="Details"></TabHeader>
+                                </ChildContent>
+                                <ContentTemplate>
+                                    <OgrenciBilgi _OgrenciDto="ogrenciDto"></OgrenciBilgi>
+                                </ContentTemplate>
+                            </TabItem>
+                            <TabItem>
+                                <ChildContent>
+                                    <TabHeader Text="Roles"></TabHeader>
+                                </ChildContent>
+                                <ContentTemplate>
+                                    <OgrenciRoles _OgrenciDto="ogrenciDto"></OgrenciRoles>
+                                </ContentTemplate>
+                            </TabItem>
+                            <TabItem>
+                                <ChildContent>
+                                    <TabHeader Text="Report"></TabHeader>
+                                </ChildContent>
+                                <ContentTemplate>
+                                </ContentTemplate>
+                            </TabItem>
+                        </TabItems>
+                    </SfTab>
+                </div>
+            </DetailTemplate>
+        </GridTemplates>
+        <GridColumns>
+            <GridColumn Visible="false" Field=@nameof(OgrenciDto.ApplicationUserId) HeaderText="AppUserId" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciDto.Ad) HeaderText="Ad"> </GridColumn>
+            <GridColumn Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciDto.TCKN) HeaderText="TCKN"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciDto.OgrNo) HeaderText="Öğrenci No"></GridColumn>
+            <GridColumn>
+                <GridCommandColumns>
+                    <GridCommandColumn Type="CommandButtonType.None" Title="Akademik Bilgiler" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
+                </GridCommandColumns>
+            </GridColumn>
+        </GridColumns>
+    </SfGrid>
+    <div class="col-12 text-right">
+        <SfProgressButton OnClick="AddNew" Content="Yeni Öğrenci Kaydı >" CssClass="center-block e-primary">
+            <ProgressButtonSpinSettings Position="SpinPosition.Right"></ProgressButtonSpinSettings>
+        </SfProgressButton>
     </div>
 
 
