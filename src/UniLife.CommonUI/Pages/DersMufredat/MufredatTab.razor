@@ -3,8 +3,8 @@
 @using UniLife.Shared.Dto.Definitions
 @inject AppState appState
 
-@*<CascadingValue Value="SelectedMufredat">*@
-    <div class="control-section e-tab-section">
+
+    <div class="control-section e-tab-section card">
         <SfTab @ref="Tab" CssClass="BlazorTab" LoadOn="ContentLoad.Dynamic">
             @*Selected="OnTabSelected" Selecting="OnTabSelecting"*@
             <TabEvents Created="TabCreate" Selecting="OnTabSelecting"></TabEvents>
@@ -36,7 +36,7 @@
             </TabItems>
         </SfTab>
     </div>
-@*</CascadingValue>*@
+
 
 
 <style>

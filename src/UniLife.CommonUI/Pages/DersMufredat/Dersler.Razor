@@ -8,14 +8,12 @@
 @inject AppState appState
 
 @using Newtonsoft.Json
+<div class="form-row">
 
-<ControlSection>
-
-    <div class="form-row">
         <MatBlazor.MatHeadline5 class="col-md-4 offset-md-1 col-sm-12">Program : @(appState.MufredatState==null?"Müfredat seçmelisiniz.": appState.MufredatState.Program.Ad)</MatBlazor.MatHeadline5>
         <MatBlazor.MatHeadline5 class="col-md-4 offset-md-1 col-sm-12">Müfredat : @(appState.MufredatState == null ? "Müfredat seçmelisiniz." : appState.MufredatState?.Ad)</MatBlazor.MatHeadline5>
-    </div>
-    <div class="row">
+    
+</div>
         <SfGrid Height="500px" ShowColumnChooser="true" @ref="DersGrid" DataSource="@dersDtos" Toolbar="@(new List<string>() { "Add","ColumnChooser" })" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowGrouping="true" ColumnMenuItems=@MenuItems ShowColumnMenu="true" Width="100%">
             @*<SfDataManager AdaptorInstance="@typeof(CustomAdaptor)" Adaptor="Adaptors.CustomAdaptor"></SfDataManager>*@
             <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.CheckBox"></GridFilterSettings>
@@ -147,9 +145,6 @@
                 </GridColumn>
             </GridColumns>
         </SfGrid>
-    </div>
-    
-</ControlSection>
 
 
 

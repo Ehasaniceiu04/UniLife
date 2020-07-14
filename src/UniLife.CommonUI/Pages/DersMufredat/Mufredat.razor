@@ -14,7 +14,6 @@
     }
 </style>
 
-<ControlSection>
 
     <SfGrid Width="100%" @ref="MufredatGrid" ID="MufredatGrid" ShowColumnChooser="true" DataSource="@mufredatDtos" AllowSorting="true" AllowFiltering="true" AllowPaging="true" Toolbar="Toolbaritems"
             ContextMenuItems="@(new List<ContextMenuItemModel>() { new ContextMenuItemModel { Text = "Ders Tanımla", Target = ".e-content", Id = "copywithheader" } })">
@@ -23,8 +22,8 @@
         <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
         <GridColumns>
             <GridColumn Visible="false" Field=@nameof(MufredatDto.Id) HeaderText="Müfredat ID" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
-            <GridColumn Field=@nameof(MufredatDto.Ad) AllowEditing="true" HeaderText="Müfredat İsim" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
-            <GridColumn Field=@nameof(MufredatDto.Yil) HeaderText="Müfredat Yıl" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
+            <GridColumn Field=@nameof(MufredatDto.Ad) AllowEditing="true"  HeaderText="Müfredat İsim" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
+            <GridColumn Field=@nameof(MufredatDto.Yil) HeaderText="Müfredat Yıl" Format="####" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
             <GridColumn Field=@nameof(MufredatDto.BasTarih) HeaderText="BasTarih" Format="d" EditType="EditType.DatePickerEdit" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
             <GridColumn Field=@nameof(MufredatDto.BitTarih) HeaderText="Bit Tarih" Format="d" EditType="EditType.DatePickerEdit"></GridColumn>
             <GridColumn Field=@nameof(MufredatDto.KararTarih) HeaderText="KararTarih" Format="d" EditType="EditType.DatePickerEdit"></GridColumn>
@@ -43,7 +42,6 @@
     </SfGrid>
 
     @*<input type="text" @bind-value="appState.MufredatState.Ad" />*@
-</ControlSection>
 
     <MatDialog @bind-IsOpen="@multiDialogOpen" Style="z-index:100">
         <MatDialogTitle><MatIcon Icon="warning"></MatIcon> Confirm Delete</MatDialogTitle>
