@@ -15,7 +15,7 @@
 <ControlSection>
         <SfGrid ID="OgrGrid" @ref="OgrGrid" AllowSorting="true" AllowFiltering="true" AllowPaging="true" DataSource="@AkaGridDtos">
             @*OnActionFailure="ActionFailureHandler"  OnActionBegin="ActionBeginHandler" DetailDataBound="DetailDataBound" RowDataBound="RowBound"*@
-            <GridEvents TValue="AkademisyenDto" CommandClicked="CommandClickHandler" OnActionBegin="ActionBeginHandler" OnActionComplete="ActionCompletedHandler"></GridEvents>
+            <GridEvents TValue="AkademisyenDto" DetailDataBound="DetailDataBound" CommandClicked="CommandClickHandler" OnActionBegin="ActionBeginHandler" OnActionComplete="ActionCompletedHandler"></GridEvents>
             <GridTemplates>
                 <DetailTemplate>
                     @{
@@ -79,7 +79,7 @@
 
 
     public SfGrid<AkademisyenDto> OgrGrid;
-
+    AkademisyenDto target;
 
     List<AkademisyenDto> AkaGridDtos = new List<AkademisyenDto>();
 
@@ -152,6 +152,13 @@
         {
             args.Cancel = true;
         }
+    }
+
+    public async Task DetailDataBound(DetailDataBoundEventArgs<AkademisyenDto> args)
+    {
+        if (target != null)
+            await OgrGrid.DetailExpandCollapseRow(target);
+        target = args.Data;
     }
 }
 

@@ -11,11 +11,11 @@
 
 <ControlSection>
 
-    <div class="col-xs-12 col-sm-12 col-lg-12 col-md-12">
-        <MatBlazor.MatHeadline5>Program : @(appState.MufredatState==null?"Müfredat seçmelisiniz.": appState.MufredatState.Program.Ad)</MatBlazor.MatHeadline5>
-        <MatBlazor.MatHeadline5>Müfredat : @(appState.MufredatState == null ? "Müfredat seçmelisiniz." : appState.MufredatState?.Ad)</MatBlazor.MatHeadline5>
+    <div class="form-row">
+        <MatBlazor.MatHeadline5 class="col-md-4 offset-md-1 col-sm-12">Program : @(appState.MufredatState==null?"Müfredat seçmelisiniz.": appState.MufredatState.Program.Ad)</MatBlazor.MatHeadline5>
+        <MatBlazor.MatHeadline5 class="col-md-4 offset-md-1 col-sm-12">Müfredat : @(appState.MufredatState == null ? "Müfredat seçmelisiniz." : appState.MufredatState?.Ad)</MatBlazor.MatHeadline5>
     </div>
-    <div class="col-xs-12 col-sm-12 col-lg-12 col-md-12">
+    <div class="row">
         <SfGrid Height="500px" ShowColumnChooser="true" @ref="DersGrid" DataSource="@dersDtos" Toolbar="@(new List<string>() { "Add","ColumnChooser" })" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowGrouping="true" ColumnMenuItems=@MenuItems ShowColumnMenu="true" Width="100%">
             @*<SfDataManager AdaptorInstance="@typeof(CustomAdaptor)" Adaptor="Adaptors.CustomAdaptor"></SfDataManager>*@
             <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.CheckBox"></GridFilterSettings>
@@ -118,8 +118,8 @@
             </GridEditSettings>
             <GridColumns>
                 <GridColumn Visible="false" Field=@nameof(DersDto.Id) HeaderText="Fakülte ID" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
-                <GridColumn Field=@nameof(DersDto.Ad) HeaderText="Fakülte İsim" ValidationRules="@(new ValidationRules{ Required=true})" Width="170"></GridColumn>
-                <GridColumn Field=@nameof(DersDto.Kod) HeaderText="Fakülte Kod" ValidationRules="@(new ValidationRules{ Required=true})" Width="170"></GridColumn>
+                <GridColumn Field=@nameof(DersDto.Ad) HeaderText="Ders Ad" ValidationRules="@(new ValidationRules{ Required=true})" Width="170"></GridColumn>
+                <GridColumn Field=@nameof(DersDto.Kod) HeaderText="Ders Kod" ValidationRules="@(new ValidationRules{ Required=true})" Width="170"></GridColumn>
 
                 <GridColumn Field=@nameof(DersDto.KisaAd) HeaderText="KisaAd" ValidationRules="@(new ValidationRules{ Required=true})" Width="170"></GridColumn>
 

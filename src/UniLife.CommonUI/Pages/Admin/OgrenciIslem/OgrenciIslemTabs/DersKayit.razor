@@ -9,53 +9,57 @@
 
 <Divider />
 
-<div class="table-responsive">
-    <table class="table">
-        <colgroup>
-            <col width="25%">
-            <col width="45%">
-            <col width="30%">
-        </colgroup>
-        <tbody>
-            <tr>
-                <td rowspan="4" style="text-align: center;">
-                    <img class="photo" src="@UriHelper.ToAbsoluteUri($"https://blazor.syncfusion.com/demos/images/Grid/1.png")" alt="@_OgrenciDto.Id" />
-                </td>
-                <td>
-                    <span style="font-weight: 500;">Ad Soyad: </span> @_OgrenciDto.Ad @_OgrenciDto.Soyad
-                </td>
-                <td>
-                    <span style="font-weight: 500;">Gereken Toplam Ücret: </span> @_OgrenciDto.GerekenTopUcret
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span style="font-weight: 500;">Kayıt Tarih: </span> @(_OgrenciDto.KayitTarih==null?"":_OgrenciDto.KayitTarih.Value.ToShortDateString())
-                </td>
-                <td>
-                    <span style="font-weight: 500;">Ödenen Toplam Ücret: </span> @_OgrenciDto.OdenenTopUcret
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span style="font-weight: 500;">Bağlı Müfredat: </span> @_OgrenciDto.MufredatAdi
-                </td>
-                <td>
-                    <span style="font-weight: 500;">Genel Bakiye: </span> @_OgrenciDto.GenelBakiye
-                </td>
-                @*<td rowspan="4">
-                        <SfDropDownList ID="DropDonemTip" @ref="DropDonemTip" TItem="DonemTipDto" CssClass="col-sm-10 pb-1"
-                                        TValue="int?" PopupHeight="230px" @bind-Value="aktifdonemTipId"
-                                        DataSource="@donemTipDtos">
-                            <DropDownListEvents TValue="int?" ValueChange="AcilanDersleriYenile"></DropDownListEvents>
-                            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                        </SfDropDownList>
-                    </td>*@
-            </tr>
+<div class="card">
+    <div class="table-responsive">
+        <table class="table">
+            <colgroup>
+                <col width="25%">
+                <col width="45%">
+                <col width="30%">
+            </colgroup>
+            <tbody>
+                <tr>
+                    <td rowspan="4" style="text-align: center;">
+                        <img class="photo" src="@UriHelper.ToAbsoluteUri($"https://blazor.syncfusion.com/demos/images/Grid/1.png")" alt="@_OgrenciDto.Id" />
+                    </td>
+                    <td>
+                        <span style="font-weight: 500;">Ad Soyad: </span> @_OgrenciDto.Ad @_OgrenciDto.Soyad
+                    </td>
+                    <td>
+                        <span style="font-weight: 500;">Gereken Toplam Ücret: </span> @_OgrenciDto.GerekenTopUcret
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span style="font-weight: 500;">Kayıt Tarih: </span> @(_OgrenciDto.KayitTarih==null?"":_OgrenciDto.KayitTarih.Value.ToShortDateString())
+                    </td>
+                    <td>
+                        <span style="font-weight: 500;">Ödenen Toplam Ücret: </span> @_OgrenciDto.OdenenTopUcret
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span style="font-weight: 500;">Bağlı Müfredat: </span> @_OgrenciDto.MufredatAdi
+                    </td>
+                    <td>
+                        <span style="font-weight: 500;">Genel Bakiye: </span> @_OgrenciDto.GenelBakiye
+                    </td>
+                    @*<td rowspan="4">
+                            <SfDropDownList ID="DropDonemTip" @ref="DropDonemTip" TItem="DonemTipDto" CssClass="col-sm-10 pb-1"
+                                            TValue="int?" PopupHeight="230px" @bind-Value="aktifdonemTipId"
+                                            DataSource="@donemTipDtos">
+                                <DropDownListEvents TValue="int?" ValueChange="AcilanDersleriYenile"></DropDownListEvents>
+                                <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                            </SfDropDownList>
+                        </td>*@
+                </tr>
 
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
 </div>
+
+
 
 
 
@@ -65,195 +69,197 @@
     <div class="col-sm-12 text-center">
         @foreach (var item in donemDtos)
         {
-            <SfRadioButton Label="@item.Ad" Name="donemRadio" Value="@item.Id.ToString()" ValueChange="@OnDonemChange" TChecked="string"  @bind-Checked="@(seciliDonemId)"></SfRadioButton>
+            <SfRadioButton Label="@item.Ad" Name="donemRadio" Value="@item.Id.ToString()" ValueChange="@OnDonemChange" TChecked="string" @bind-Checked="@(seciliDonemId)"></SfRadioButton>
         }
     </div>
 </div>
 <br />
+<div class="card">
 
-<SfTab @ref="Tab" HeaderPlacement="HeaderPosition.Left" SelectedItem="@selectedItem" LoadOn="ContentLoad.Dynamic">
-    <TabEvents Selecting="OnTabSelecting"></TabEvents>
-    <TabItems>
-        @if (ogrenciProgramSure >= 1)
-        {
-            <TabItem>
-                <ChildContent>
-                    <TabHeader Text="1. Sınıf"></TabHeader>
-                </ChildContent>
-                <ContentTemplate>
-                    @if (IsChecked)
-                    {
-                        <SinifGrid Sinif="1"></SinifGrid>
-                    }
-                    else
-                    {
-                        <SinifGrid Sinif="1"></SinifGrid>
-                    }
-                </ContentTemplate>
-            </TabItem>
-        }
-        @if (ogrenciProgramSure >= 2)
-        {
-            <TabItem>
-                <ChildContent>
-                    <TabHeader Text="2. Sınıf"></TabHeader>
-                </ChildContent>
-                <ContentTemplate>
-                    @if (IsChecked)
-                    {
-                        <SinifGrid Sinif="2"></SinifGrid>
-                    }
-                    else
-                    {
-                        <SinifGrid Sinif="2"></SinifGrid>
-                    }
+    <SfTab @ref="Tab" HeaderPlacement="HeaderPosition.Left" SelectedItem="@selectedItem" LoadOn="ContentLoad.Dynamic">
+        <TabEvents Selecting="OnTabSelecting"></TabEvents>
+        <TabItems>
+            @if (ogrenciProgramSure >= 1)
+            {
+                <TabItem>
+                    <ChildContent>
+                        <TabHeader Text="1. Sınıf"></TabHeader>
+                    </ChildContent>
+                    <ContentTemplate>
+                        @if (IsChecked)
+                        {
+                            <SinifGrid Sinif="1"></SinifGrid>
+                        }
+                        else
+                        {
+                            <SinifGrid Sinif="1"></SinifGrid>
+                        }
+                    </ContentTemplate>
+                </TabItem>
+            }
+            @if (ogrenciProgramSure >= 2)
+            {
+                <TabItem>
+                    <ChildContent>
+                        <TabHeader Text="2. Sınıf"></TabHeader>
+                    </ChildContent>
+                    <ContentTemplate>
+                        @if (IsChecked)
+                        {
+                            <SinifGrid Sinif="2"></SinifGrid>
+                        }
+                        else
+                        {
+                            <SinifGrid Sinif="2"></SinifGrid>
+                        }
 
-                </ContentTemplate>
-            </TabItem>
-        }
-        @if (ogrenciProgramSure >= 3)
-        {
-            <TabItem>
-                <ChildContent>
-                    <TabHeader Text="3. Sınıf"></TabHeader>
-                </ChildContent>
-                <ContentTemplate>
-                    
-                    @if (IsChecked)
-                    {
-                        <SinifGrid Sinif="3"></SinifGrid>
-                    }
-                    else
-                    {
-                <SinifGrid Sinif="3"></SinifGrid>
-                    }
-                </ContentTemplate>
-            </TabItem>
-        }
-        @if (ogrenciProgramSure >= 4)
-        {
-            <TabItem>
-                <ChildContent>
-                    <TabHeader Text="4. Sınıf"></TabHeader>
-                </ChildContent>
-                <ContentTemplate>
-                    
-                     @if (IsChecked)
-                    {
-                        <SinifGrid Sinif="4"></SinifGrid>
-                    }
-                    else
-                    {
-                <SinifGrid Sinif="4"></SinifGrid>
-                    }
-                </ContentTemplate>
-            </TabItem>
-        }
-        @if (ogrenciProgramSure >= 5)
-        {
-            <TabItem>
-                <ChildContent>
-                    <TabHeader Text="5. Sınıf"></TabHeader>
-                </ChildContent>
-                <ContentTemplate>
-                    
-                    @if (IsChecked)
-                    {
-                        <SinifGrid Sinif="5"></SinifGrid>
-                    }
-                    else
-                    {
-                <SinifGrid Sinif="5"></SinifGrid>
-                    }
-                </ContentTemplate>
-            </TabItem>
-        }
-        @if (ogrenciProgramSure >= 6)
-        {
-            <TabItem>
-                <ChildContent>
-                    <TabHeader Text="6. Sınıf"></TabHeader>
-                </ChildContent>
-                <ContentTemplate>
-                    
-                    @if (IsChecked)
-                    {
-                    <SinifGrid Sinif="6"></SinifGrid>
-                    }
-                    else
-                    {
-                <SinifGrid Sinif="6"></SinifGrid>
-                    }
-                </ContentTemplate>
-            </TabItem>
-        }
-        @if (ogrenciProgramSure >= 7)
-        {
-            <TabItem>
-                <ChildContent>
-                    <TabHeader Text="7. Sınıf"></TabHeader>
-                </ChildContent>
-                <ContentTemplate>
-                    
-                    @if (IsChecked)
-                    {
-                    <SinifGrid Sinif="7"></SinifGrid>
-                    }
-                    else
-                    {
-                <SinifGrid Sinif="7"></SinifGrid>
-                    }
-                </ContentTemplate>
-            </TabItem>
-        }
-        @if (ogrenciProgramSure >= 8)
-        {
-            <TabItem>
-                <ChildContent>
-                    <TabHeader Text="8. Sınıf"></TabHeader>
-                </ChildContent>
-                <ContentTemplate>
-                    
-                    @if (IsChecked)
-                    {
-                    <SinifGrid Sinif="8"></SinifGrid>
-                    }
-                    else
-                    {
-                <SinifGrid Sinif="8"></SinifGrid>
-                    }
-                </ContentTemplate>
-            </TabItem>
-        }
-        @if (ogrenciProgramSure >= 9)
-        {
-            <TabItem>
-                <ChildContent>
-                    <TabHeader Text="9. Sınıf"></TabHeader>
-                </ChildContent>
-                <ContentTemplate>
-                    
-                    @if (IsChecked)
-                    {
-                        <SinifGrid Sinif="9"></SinifGrid>
-                    }
-                    else
-                    {
-                <SinifGrid Sinif="9"></SinifGrid>
-                    }
-                </ContentTemplate>
-            </TabItem>
-        }
+                    </ContentTemplate>
+                </TabItem>
+            }
+            @if (ogrenciProgramSure >= 3)
+            {
+                <TabItem>
+                    <ChildContent>
+                        <TabHeader Text="3. Sınıf"></TabHeader>
+                    </ChildContent>
+                    <ContentTemplate>
+
+                        @if (IsChecked)
+                        {
+                            <SinifGrid Sinif="3"></SinifGrid>
+                        }
+                        else
+                        {
+                            <SinifGrid Sinif="3"></SinifGrid>
+                        }
+                    </ContentTemplate>
+                </TabItem>
+            }
+            @if (ogrenciProgramSure >= 4)
+            {
+                <TabItem>
+                    <ChildContent>
+                        <TabHeader Text="4. Sınıf"></TabHeader>
+                    </ChildContent>
+                    <ContentTemplate>
+
+                        @if (IsChecked)
+                        {
+                            <SinifGrid Sinif="4"></SinifGrid>
+                        }
+                        else
+                        {
+                            <SinifGrid Sinif="4"></SinifGrid>
+                        }
+                    </ContentTemplate>
+                </TabItem>
+            }
+            @if (ogrenciProgramSure >= 5)
+            {
+                <TabItem>
+                    <ChildContent>
+                        <TabHeader Text="5. Sınıf"></TabHeader>
+                    </ChildContent>
+                    <ContentTemplate>
+
+                        @if (IsChecked)
+                        {
+                            <SinifGrid Sinif="5"></SinifGrid>
+                        }
+                        else
+                        {
+                            <SinifGrid Sinif="5"></SinifGrid>
+                        }
+                    </ContentTemplate>
+                </TabItem>
+            }
+            @if (ogrenciProgramSure >= 6)
+            {
+                <TabItem>
+                    <ChildContent>
+                        <TabHeader Text="6. Sınıf"></TabHeader>
+                    </ChildContent>
+                    <ContentTemplate>
+
+                        @if (IsChecked)
+                        {
+                            <SinifGrid Sinif="6"></SinifGrid>
+                        }
+                        else
+                        {
+                            <SinifGrid Sinif="6"></SinifGrid>
+                        }
+                    </ContentTemplate>
+                </TabItem>
+            }
+            @if (ogrenciProgramSure >= 7)
+            {
+                <TabItem>
+                    <ChildContent>
+                        <TabHeader Text="7. Sınıf"></TabHeader>
+                    </ChildContent>
+                    <ContentTemplate>
+
+                        @if (IsChecked)
+                        {
+                            <SinifGrid Sinif="7"></SinifGrid>
+                        }
+                        else
+                        {
+                            <SinifGrid Sinif="7"></SinifGrid>
+                        }
+                    </ContentTemplate>
+                </TabItem>
+            }
+            @if (ogrenciProgramSure >= 8)
+            {
+                <TabItem>
+                    <ChildContent>
+                        <TabHeader Text="8. Sınıf"></TabHeader>
+                    </ChildContent>
+                    <ContentTemplate>
+
+                        @if (IsChecked)
+                        {
+                            <SinifGrid Sinif="8"></SinifGrid>
+                        }
+                        else
+                        {
+                            <SinifGrid Sinif="8"></SinifGrid>
+                        }
+                    </ContentTemplate>
+                </TabItem>
+            }
+            @if (ogrenciProgramSure >= 9)
+            {
+                <TabItem>
+                    <ChildContent>
+                        <TabHeader Text="9. Sınıf"></TabHeader>
+                    </ChildContent>
+                    <ContentTemplate>
+
+                        @if (IsChecked)
+                        {
+                            <SinifGrid Sinif="9"></SinifGrid>
+                        }
+                        else
+                        {
+                            <SinifGrid Sinif="9"></SinifGrid>
+                        }
+                    </ContentTemplate>
+                </TabItem>
+            }
 
 
-    </TabItems>
-</SfTab>
+        </TabItems>
+    </SfTab>
+</div>
 
 
 
 
 @code{
-    string seciliDonemId="";
+    string seciliDonemId = "";
 
     public bool IsChecked { get; set; } = true;
 
