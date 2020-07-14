@@ -1,61 +1,89 @@
-﻿@page "/aggr"
-@using Syncfusion.Blazor.Grids
+﻿@page "/valid"
 @using GridData
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Calendars
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Popups
 @inherits SampleBaseComponent;
 <div class="col-lg-12 control-section">
     <div class="content-wrapper">
         <div class="row">
-            <SfGrid DataSource="@GridData">
-                <GridAggregates>
-                    <GridAggregate>
-                        <GridAggregateColumns>
-                            <GridAggregateColumn Field=@nameof(OrdersDetails.Freight) Type="AggregateType.Sum" Format="C2">
-                                <FooterTemplate>
-                                    @{
-                                        var Sumvalue = (context as AggregateTemplateContext);
-                                        <div>
-                                            Sum: @Sumvalue.Sum
-                                        </div>
-                                    }
-                                </FooterTemplate>
-                            </GridAggregateColumn>
-                        </GridAggregateColumns>
-                    </GridAggregate>
-                    <GridAggregate>
-                        <GridAggregateColumns>
-                            <GridAggregateColumn Field=@nameof(OrdersDetails.Freight) Type="AggregateType.Average" Format="C2">
-                                <FooterTemplate>
-                                    @{
-                                        var Avgvalue = (context as AggregateTemplateContext);
-                                        <div>
-                                            Average: @Avgvalue.Average
-                                        </div>
-                                    }
-                                </FooterTemplate>
-                            </GridAggregateColumn>
-                        </GridAggregateColumns>
-                    </GridAggregate>
-                </GridAggregates>
+            <SfGrid DataSource="@GridData" AllowPaging="true" Toolbar="@(new string[] {"Add", "Edit" ,"Delete","Update","Cancel" })">
+                <GridEvents OnActionComplete="ActionCompleteHandler" TValue="OrdersDetails"></GridEvents>
+                <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="@EditMode.Dialog" Dialog="DialogParams">
+                    <Template>
+                        @{
+                            var Order = (context as OrdersDetails);
+                        }
+                        <div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <SfNumericTextBox ID="OrderID" @bind-Value="@(Order.OrderID)" Enabled="@Check" FloatLabelType="FloatLabelType.Always" Placeholder="Order ID"></SfNumericTextBox>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <SfAutoComplete TItem="OrdersDetails" ID="CustomerID" @bind-Value="@(Order.CustomerID)" TValue="string" DataSource="@GridData" FloatLabelType="FloatLabelType.Always" Placeholder="Customer Name">
+                                        <AutoCompleteFieldSettings Value="CustomerID"></AutoCompleteFieldSettings>
+                                    </SfAutoComplete>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <SfNumericTextBox ID="Freight" @bind-Value="@(Order.Freight)" TValue="double?" FloatLabelType="FloatLabelType.Always" Placeholder="Freight"></SfNumericTextBox>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <SfDatePicker ID="OrderDate" @bind-Value="@(Order.OrderDate)" FloatLabelType="FloatLabelType.Always" Placeholder="Order Date">
+                                    </SfDatePicker>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <SfDropDownList ID="ShipCountry" TItem="OrdersDetails" @bind-Value="@(Order.ShipCountry)" TValue="string" DataSource="@GridData" FloatLabelType="FloatLabelType.Always" Placeholder="Ship Country">
+                                        <DropDownListFieldSettings Value="ShipCountry" Text="ShipCountry"></DropDownListFieldSettings>
+                                    </SfDropDownList>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <SfDropDownList ID="ShipCity" TItem="OrdersDetails" @bind-Value="@(Order.ShipCity)" TValue="string" DataSource="@GridData" FloatLabelType="FloatLabelType.Always" Placeholder="Ship City">
+                                        <DropDownListFieldSettings Value="ShipCity" Text="ShipCity"></DropDownListFieldSettings>
+                                    </SfDropDownList>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <SfTextBox ID="ShipAddress" @bind-Value="@(Order.ShipAddress)" FloatLabelType="FloatLabelType.Always" Placeholder="Ship Address"></SfTextBox>
+                                </div>
+                            </div>
+                        </div>
+                    </Template>
+                </GridEditSettings>
                 <GridColumns>
-                    <GridColumn Field=@nameof(OrdersDetails.CustomerID) HeaderText="Customer Name" Width="150"></GridColumn>
-                    <GridColumn Field=@nameof(OrdersDetails.Freight) HeaderText="Freight" Format="C2" TextAlign="TextAlign.Right" Width="160"></GridColumn>
-                    <GridColumn Field=@nameof(OrdersDetails.OrderDate) HeaderText="Order Date" Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Right" Width="130"></GridColumn>
-                    <GridColumn Field=@nameof(OrdersDetails.ShipCountry) HeaderText="Ship Country" Width="140"></GridColumn>
+                    <GridColumn Field=@nameof(OrdersDetails.OrderID) HeaderText="Order ID" IsPrimaryKey="true" ValidationRules="@(new ValidationRules{ Required=true, Number=true})" TextAlign="@TextAlign.Center" HeaderTextAlign="@TextAlign.Center" Width="140"></GridColumn>
+                    <GridColumn Field=@nameof(OrdersDetails.CustomerID) HeaderText="Customer Name" ValidationRules="@(new ValidationRules{ Required=true})" Width="150"></GridColumn>
+                    <GridColumn Field=@nameof(OrdersDetails.Freight) HeaderText="Freight" Format="C2" Width="140" TextAlign="@TextAlign.Right" ValidationRules="@(new ValidationRules{ Required=true, Range = new double[]{1, 1000}})" HeaderTextAlign="@TextAlign.Right"></GridColumn>
+                    <GridColumn Field=@nameof(OrdersDetails.OrderDate) HeaderText="Order Date" Format="d" TextAlign="TextAlign.Right" Type="ColumnType.Date" Width="160"></GridColumn>
+                    <GridColumn Field=@nameof(OrdersDetails.ShipCountry) HeaderText="Ship Country" Width="150"></GridColumn>
                 </GridColumns>
             </SfGrid>
         </div>
     </div>
 </div>
-<input type="button" value="click here" @onclick="Clicked"/>
 @code{
     public List<OrdersDetails> GridData { get; set; }
+    private Boolean Check = false;
+    private DialogSettings DialogParams = new DialogSettings { MinHeight = "400px", Width = "450px" };
     protected override void OnInitialized()
     {
-        //GridData = OrdersDetails.GetAllRecords().Take(12).ToList();
+        GridData = OrdersDetails.GetAllRecords();
     }
-
-    void Clicked()
+    public void ActionCompleteHandler(ActionEventArgs<OrdersDetails> args)
     {
-        GridData = OrdersDetails.GetAllRecords().Take(12).ToList();
+        if (args.RequestType.ToString() == "Add")
+        {
+            Check = true;
+        }
+        else
+        {
+            Check = false;
+        }
     }
 }

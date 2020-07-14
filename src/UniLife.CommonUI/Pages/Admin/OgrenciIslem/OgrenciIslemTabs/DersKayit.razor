@@ -65,7 +65,7 @@
     <div class="col-sm-12 text-center">
         @foreach (var item in donemDtos)
         {
-            <SfRadioButton Label="@item.Ad" Name="donemRadio" Value="@item.Id.ToString()" @onclick="onClick" @bind-Checked="@(seciliDonemId)"></SfRadioButton>
+            <SfRadioButton Label="@item.Ad" Name="donemRadio" Value="@item.Id.ToString()" ValueChange="@OnDonemChange" TChecked="string"  @bind-Checked="@(seciliDonemId)"></SfRadioButton>
         }
     </div>
 </div>
@@ -301,33 +301,34 @@
 
 
     int selectedItem;
-    public async void onDonemChange()
+
+    private void OnDonemChange(Syncfusion.Blazor.Buttons.ChangeArgs<string> args)
     {
         IsChecked = !IsChecked;
         appState.DersKayitDonemIdState = Convert.ToInt32(seciliDonemId);//await donemRadio.GetSelectedValue());
-        //this.NextEffect = "FadeZoomIn";
-        //Tab.Refresh();
-        //if (Tab.SelectedItem == 0)
-        //{
-        //    await Tab.Select(Tab.SelectedItem + 1);
-        //    await Tab.Select(Tab.SelectedItem - 1);
-        //}
-        //else
-        //{
-        //    await Tab.Select(Tab.SelectedItem - 1);
-        //    await Tab.Select(Tab.SelectedItem + 1);
-        //}
-
-        //this.NextEffect = "SlideRightIn";
     }
 
+    //public async void onDonemChange()
+    //{
+    //    IsChecked = !IsChecked;
+    //    appState.DersKayitDonemIdState = Convert.ToInt32(seciliDonemId);//await donemRadio.GetSelectedValue());
+    //    //this.NextEffect = "FadeZoomIn";
+    //    //Tab.Refresh();
+    //    //if (Tab.SelectedItem == 0)
+    //    //{
+    //    //    await Tab.Select(Tab.SelectedItem + 1);
+    //    //    await Tab.Select(Tab.SelectedItem - 1);
+    //    //}
+    //    //else
+    //    //{
+    //    //    await Tab.Select(Tab.SelectedItem - 1);
+    //    //    await Tab.Select(Tab.SelectedItem + 1);
+    //    //}
 
-    private async Task onClick(Microsoft.AspNetCore.Components.Web.MouseEventArgs args)
-    {
+    //    //this.NextEffect = "SlideRightIn";
+    //}
 
-        appState.DersKayitDonemIdState = Convert.ToInt32(seciliDonemId); //await donemRadio.GetSelectedValue());
-        IsChecked = !IsChecked;
-    }
+
 
     void AcilanDersleriYenile()
     {
