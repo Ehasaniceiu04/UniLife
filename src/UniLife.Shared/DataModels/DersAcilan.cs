@@ -15,15 +15,16 @@ namespace UniLife.Shared.DataModels
         public string Ad { get; set; }
         public string Kod { get; set; }
 
-        //External
         public int DersId { get; set; }
         public virtual Ders Ders { get; set; }
-
+        public int FakulteId { get; set; }
+        public virtual Fakulte Fakulte { get; set; }
+        public int BolumId { get; set; }
+        public virtual Bolum Bolum { get; set; }
         public int ProgramId { get; set; }
         public virtual Program Program { get; set; }
         public int MufredatId { get; set; }
         public virtual Mufredat Mufredat{ get; set; }
-        //External
 
         public int Sube { get; set; } = 1;
 

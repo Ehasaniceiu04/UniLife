@@ -48,5 +48,6 @@ namespace UniLife.Shared.DataModels
         public virtual ICollection<Harc> Harcs { get; set; }
 
         public virtual ICollection<DersAcilan> DersAcilans{ get; set; }
+        public virtual ICollection<Ders> Derss { get; set; }
     }
 }

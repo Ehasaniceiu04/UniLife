@@ -1,17 +1,16 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using UniLife.Shared.DataInterfaces;
-using UniLife.Shared.DataModels;
-using UniLife.Shared.Dto.Definitions;
-using UniLife.Shared.Extensions;
+using System;
 //using UniLife.Storage.Extensions;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Security.Cryptography.X509Certificates;
+using UniLife.Shared.DataInterfaces;
+using UniLife.Shared.DataModels;
 using UniLife.Shared.Dto;
-using UniLife.Storage.Migrations;
+using UniLife.Shared.Dto.Definitions;
+using UniLife.Shared.Extensions;
 
 namespace UniLife.Storage.Stores
 {
@@ -53,6 +52,7 @@ namespace UniLife.Storage.Stores
             return _autoMapper.Map<List<DersAcilanDto>>(await dersAcilans.ToListAsync());
         }
 
+        [Obsolete("Ders Aç içine fakulteID ve BOlumId eklendi. hata verir!")]
         public async Task<bool> CreateDersAcilanByDers(DersAcDto dersAcDto)
         {
             using (var context = _db.Context.Database.BeginTransaction())
@@ -324,7 +324,7 @@ namespace UniLife.Storage.Stores
                                });
             }
 
-            
+
 
             return await dersAcilans.ToListAsync();
         }
@@ -358,7 +358,7 @@ namespace UniLife.Storage.Stores
                                   Zorunlu = d.Zorunlu,
                                   ProgramAd = p.Ad,
                                   AkademisyenAd = akaLeft.Ad
-                                  
+
                               };
 
             return await dersAcilans.ToListAsync();
@@ -412,7 +412,7 @@ namespace UniLife.Storage.Stores
 
             List<DersAcilan> acılacakSubeliDersler = new List<DersAcilan>();
 
-            foreach (var item in subeDersAcilanOgrenciCreateDto.Subes.Where(x=>x!=1)) //Sube Idsi 1 olanzaten default.ONU ALMA!
+            foreach (var item in subeDersAcilanOgrenciCreateDto.Subes.Where(x => x != 1)) //Sube Idsi 1 olanzaten default.ONU ALMA!
             {
                 DersAcilan subeliDersAcilan = new DersAcilan();
                 subeliDersAcilan = acilacakDersler.DeepClone();
@@ -447,7 +447,7 @@ namespace UniLife.Storage.Stores
 
                     _db.DersKayits.UpdateRange(kayits);
                 }
-                
+
                 await _db.SaveChangesAsync(CancellationToken.None);
 
 
@@ -468,7 +468,7 @@ namespace UniLife.Storage.Stores
                                   Akademisyen = new AkademisyenDto { Ad = d.Akademisyen.Ad },
                                   Sinif = d.Sinif,
                                   Zorunlu = d.Zorunlu,
-                                  Kredi=d.Kredi,
+                                  Kredi = d.Kredi,
                                   Sube = d.Sube,
                                   OgrCount = cCount
                               };
@@ -478,20 +478,20 @@ namespace UniLife.Storage.Stores
 
         public async Task<DersAcilanDto> GetDersAcilanSpecByDersAcId(int dersAcilanId)
         {
-            var dersAcilan =from d in _db.DersAcilans.Where(x=>x.Id== dersAcilanId)
-                                                       .Include(x => x.Akademisyen)
+            var dersAcilan = from d in _db.DersAcilans.Where(x => x.Id == dersAcilanId)
+                                                        .Include(x => x.Akademisyen)
 
-                              let cCount = d.DersKayits.Count()
-                              select new DersAcilanDto
-                              {
-                                  Id = d.Id,
-                                  Kod = d.Kod,
-                                  Ad = d.Ad,
-                                  Akademisyen = new AkademisyenDto { Ad = d.Akademisyen.Ad },
-                                  Kredi = d.Kredi,
-                                  Sube = d.Sube,
-                                  OgrCount = cCount
-                              };
+                             let cCount = d.DersKayits.Count()
+                             select new DersAcilanDto
+                             {
+                                 Id = d.Id,
+                                 Kod = d.Kod,
+                                 Ad = d.Ad,
+                                 Akademisyen = new AkademisyenDto { Ad = d.Akademisyen.Ad },
+                                 Kredi = d.Kredi,
+                                 Sube = d.Sube,
+                                 OgrCount = cCount
+                             };
 
             return _autoMapper.Map<DersAcilanDto>(await dersAcilan.FirstOrDefaultAsync());
         }
@@ -503,6 +503,6 @@ namespace UniLife.Storage.Stores
             await _db.SaveChangesAsync(CancellationToken.None);
         }
 
-        
+
     }
 }

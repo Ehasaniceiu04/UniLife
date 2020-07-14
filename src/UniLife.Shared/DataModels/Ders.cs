@@ -16,6 +16,12 @@ namespace UniLife.Shared.DataModels
 
         public int MufredatId { get; set; }
         public virtual Mufredat Mufredat { get; set; }
+        public int FakulteId { get; set; }
+        public virtual Fakulte Fakulte { get; set; }
+        public int BolumId { get; set; }
+        public virtual Bolum Bolum { get; set; }
+        public int ProgramId { get; set; }
+        public virtual Program Program { get; set; }
         public string KisaAd { get; set; }
         public int Akts { get; set; }
         public int GecmeNotu { get; set; }
