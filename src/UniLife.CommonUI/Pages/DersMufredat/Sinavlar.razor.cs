@@ -390,7 +390,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             }
             if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
             {
-                if (args.Action == "edit")
+                if (args.Action == "Edit")
                 {
                     Update(args.Data);
                 }

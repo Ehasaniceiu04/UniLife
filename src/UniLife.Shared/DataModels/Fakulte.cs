@@ -9,7 +9,7 @@ namespace UniLife.Shared.DataModels
         [Required]
         [MaxLength(300)]
         public string Ad { get; set; }
-        public int Kod { get; set; }
+        public string Kod { get; set; }
         public int UniversiteId { get; set; }
         public virtual Universite Universite { get; set; }
 
@@ -39,6 +39,7 @@ namespace UniLife.Shared.DataModels
 
 
         public virtual ICollection<Bolum> Bolums { get; set; }
+        //public virtual ICollection<Program> Programs{ get; set; }
 
         public virtual ICollection<Ogrenci> Ogrencis{ get; set; }
         public virtual ICollection<Ders> Derss{ get; set; }

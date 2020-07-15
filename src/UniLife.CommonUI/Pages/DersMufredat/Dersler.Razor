@@ -171,6 +171,7 @@
     {
         await ReadDerss();
 
+
         ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/mufredat");
         mufredatDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<MufredatDto[]>(apiResponse.Result.ToString()).ToList<MufredatDto>();
         ApiResponseDto apiResponseDersTur = await Http.GetFromJsonAsync<ApiResponseDto>("api/donem");
@@ -224,11 +225,11 @@
     {
         try
         {
-            //dersDto.MufredatId = appState.MufredatState.Id;
-            //dersDto.pr
+            dersDto.MufredatId = appState.MufredatState.Id;
+            dersDto.ProgramId = appState.MufredatState.ProgramId;
 
-            ApiResponseDto<DersDto> apiResponse = await Http.PostJsonAsync<ApiResponseDto<DersDto>>
-                ("api/ders", dersDto);
+            ApiResponseDto<DersDto> apiResponse = await Http.PostJsonAsync<ApiResponseDto<DersDto>>("api/ders", dersDto);
+
             if (apiResponse.StatusCode == Status200OK)
             {
                 matToaster.Add(apiResponse.Message, MatToastType.Success);

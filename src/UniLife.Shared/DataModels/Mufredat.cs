@@ -18,6 +18,7 @@ namespace UniLife.Shared.DataModels
         public int Durum { get; set; }
         public bool Aktif { get; set; }
 
+
         public int ProgramId { get; set; }
         public virtual Program Program { get; set; }
         public DateTime KararTarih { get; set; }

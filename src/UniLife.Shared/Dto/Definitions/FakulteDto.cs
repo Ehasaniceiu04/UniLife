@@ -6,16 +6,14 @@ namespace UniLife.Shared.Dto.Definitions
 {
     public class FakulteDto : EntityDto<int>
     {
-        [Required]
-        [MaxLength(300)]
         public string Ad { get; set; }
-        public int Kod { get; set; }
-        public int UniversiteId { get; set; }
+        public string Kod { get; set; }
+        public int? UniversiteId { get; set; }
         public virtual Universite Universite { get; set; }
 
-        public int FakulteTurId { get; set; }
+        public int? FakulteTurId { get; set; }
         public virtual FakulteTur FakulteTur { get; set; }
-
+        [Required]
         public string KisaAd { get; set; }
 
         public string AdEn { get; set; }
@@ -26,7 +24,7 @@ namespace UniLife.Shared.Dto.Definitions
         public string Faks { get; set; }
         public string Web { get; set; }
         public int IlceId { get; set; }
-        public int OgrenimTurId { get; set; }
+        public int? OgrenimTurId { get; set; }
         public virtual OgrenimTur OgrenimTur { get; set; }
         public int OgrenimSure { get; set; }
         public int IlKod { get; set; }

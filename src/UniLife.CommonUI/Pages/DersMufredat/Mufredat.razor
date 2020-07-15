@@ -14,7 +14,6 @@
     }
 </style>
 
-
     <SfGrid Width="100%" @ref="MufredatGrid" ID="MufredatGrid" ShowColumnChooser="true" DataSource="@mufredatDtos" AllowSorting="true" AllowFiltering="true" AllowPaging="true" Toolbar="Toolbaritems"
             ContextMenuItems="@(new List<ContextMenuItemModel>() { new ContextMenuItemModel { Text = "Ders Tanımla", Target = ".e-content", Id = "copywithheader" } })">
 
@@ -27,7 +26,7 @@
             <GridColumn Field=@nameof(MufredatDto.BasTarih) HeaderText="BasTarih" Format="d" EditType="EditType.DatePickerEdit" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
             <GridColumn Field=@nameof(MufredatDto.BitTarih) HeaderText="Bit Tarih" Format="d" EditType="EditType.DatePickerEdit"></GridColumn>
             <GridColumn Field=@nameof(MufredatDto.KararTarih) HeaderText="KararTarih" Format="d" EditType="EditType.DatePickerEdit"></GridColumn>
-            <GridColumn Field=@nameof(HarcDto.ProgramId) HeaderText="Program" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@programDtos"></GridColumn>
+            <GridColumn Field=@nameof(MufredatDto.ProgramId) HeaderText="Program" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@programDtos"></GridColumn>
             <GridColumn>
                 <GridCommandColumns>
                     <GridCommandColumn Type="CommandButtonType.None" Title="DersOlus" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
@@ -183,11 +182,11 @@
             }
             if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
             {
-                if (args.Action == "edit")
+                if (args.Action == "Edit")
                 {
                     Update(args.Data);
                 }
-                else if (args.Action == "add")
+                else if (args.Action == "Add")
                 {
                     Create(args.Data);
                 }

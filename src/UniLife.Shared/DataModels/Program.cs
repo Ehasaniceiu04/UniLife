@@ -13,6 +13,8 @@ namespace UniLife.Shared.DataModels
 
         public int BolumId { get; set; }
         public virtual Bolum Bolum { get; set; }
+        public int FakulteId { get; set; }
+        //public virtual Fakulte Fakulte{ get; set; }
         public int Kod { get; set; }
         public string AdEn { get; set; }
         public string KisaAd { get; set; }
@@ -22,7 +24,7 @@ namespace UniLife.Shared.DataModels
         public int ProgramTurId { get; set; }
         public string Adres { get; set; }
         public string Iletisim { get; set; }
-        public int FakulteId { get; set; }
+        
         public bool IsHazırlık { get; set; }
         public int AzamiSure { get; set; }
         public int NormalSure { get; set; }

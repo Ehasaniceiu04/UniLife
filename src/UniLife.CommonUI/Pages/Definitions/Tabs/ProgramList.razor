@@ -7,27 +7,13 @@
 
     <ControlSection>
         <SfGrid @ref="ProgramGrid" DataSource="@programDtos" Toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Update", "Cancel" })" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
-            <GridEvents OnActionBegin="OnActionBegin" OnActionComplete="ActionCompletedHandler" TValue="ProgramDto"></GridEvents>
+            <GridEvents OnActionComplete="ActionCompletedHandler" TValue="ProgramDto"></GridEvents>
             <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
             <GridColumns>
-                <GridColumn Visible="false" Field=@nameof(ProgramDto.Id) HeaderText="Program ID" AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+                <GridColumn Visible="false" Field=@nameof(ProgramDto.Id) HeaderText="Program ID" AllowAdding="false" AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
                 <GridColumn Field=@nameof(ProgramDto.Ad) HeaderText="Program İsim" ValidationRules="@(new ValidationRules{ Required=true})" Width="170"></GridColumn>
-                <GridColumn Field=@nameof(ProgramDto.FakulteId) HeaderText="Fakülte" EditType="EditType.DropDownEdit" ForeignKeyValue="Ad" ForeignKeyField="Id" Width="150" DataSource="@fakulteDtos">
-                    <EditTemplate>
-                        <SfDropDownList ID="FakulteId" Placeholder="Fakülte Seçiniz" TItem="FakulteDto" TValue="int?" DataSource="@fakulteDtos">
-                            <DropDownListEvents TValue="int?" ValueChange="ValueChange"></DropDownListEvents>
-                            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                        </SfDropDownList>
-                    </EditTemplate>
-                </GridColumn>
-                @*<GridColumn Field=@nameof(ProgramDto.BolumId) HeaderText="Bölüm" ForeignKeyValue="Ad" ForeignKeyField="Id" Enabled="@Enabled" DataSource="@bolumDtos" Width="150"></GridColumn>*@
-                <GridColumn Field=@nameof(ProgramDto.BolumId) HeaderText=" Bölüm" EditType="EditType.DropDownEdit"  Width="150">
-                    <EditTemplate>
-                        <SfDropDownList ID="BolumId" Placeholder="Bölüm Seçiniz" TItem="BolumDto" Enabled="@Enabled" TValue="int?" DataSource="@bolumDtos">
-                            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                        </SfDropDownList>
-                    </EditTemplate>
-                </GridColumn>
+                <GridColumn Field=@nameof(ProgramDto.FakulteId) HeaderText="Fakülte" EditType="EditType.DropDownEdit" ForeignKeyValue="Ad" ForeignKeyField="Id" Width="150" DataSource="@fakulteDtos"></GridColumn>
+                <GridColumn Field=@nameof(ProgramDto.BolumId) HeaderText="Bölüm" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@bolumDtos" Width="150"></GridColumn>
                 <GridColumn Field=@nameof(ProgramDto.NormalSure) HeaderText="Normal Süre" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
 
             </GridColumns>
@@ -49,8 +35,8 @@
     {
         ReadPrograms();
 
-        //ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/bolum");
-        //bolumDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<BolumDto[]>(apiResponse.Result.ToString()).ToList<BolumDto>();
+        ApiResponseDto apiResponse = Http.GetFromJsonAsync<ApiResponseDto>("api/bolum").Result;
+        bolumDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<BolumDto[]>(apiResponse.Result.ToString()).ToList<BolumDto>();
 
         ApiResponseDto<List<FakulteDto>> apiResponseFakulte = Http.GetFromJsonAsync<ApiResponseDto<List<FakulteDto>>>("api/fakulte").Result;
         fakulteDtos = apiResponseFakulte.Result;
@@ -73,21 +59,8 @@
         }
     }
 
-    public void ValueChange(@Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
-    {
-        OData<BolumDto> apiResponse = Http.GetFromJsonAsync<OData<BolumDto>>($"odata/bolums?$select=Ad,Id&$filter=FakulteId eq {args.Value}").Result;
-        bolumDtos = apiResponse.Value;
-        Enabled = true;
-    }
 
-    public bool Enabled = false;
-    public void OnActionBegin(ActionEventArgs<ProgramDto> args)
-    {
-        Enabled = false;
-    }
-
-    public void ActionCompletedHandler(ActionEventArgs<ProgramDto>
-args)
+    public void ActionCompletedHandler(ActionEventArgs<ProgramDto> args)
     {
         if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
         {
@@ -95,11 +68,11 @@ args)
         }
         if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
         {
-            if (args.Action == "edit")
+            if (args.Action == "Edit")
             {
                 Update(args.Data);
             }
-            else if (args.Action == "add")
+            else if (args.Action == "Add")
             {
                 Create(args.Data);
             }

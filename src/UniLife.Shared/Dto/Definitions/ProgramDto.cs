@@ -9,7 +9,7 @@ namespace UniLife.Shared.Dto.Definitions
         [MaxLength(300)]
         public string Ad { get; set; }
 
-        public int BolumId { get; set; }
+        public int? BolumId { get; set; }
         public BolumDto Bolum { get; set; }
 
         public int Kod { get; set; }
