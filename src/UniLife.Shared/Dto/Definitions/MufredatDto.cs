@@ -16,7 +16,7 @@ namespace UniLife.Shared.Dto.Definitions
         public DateTime? BitTarih { get; set; }
         public int Durum { get; set; }
         public bool Aktif { get; set; }
-        public int ProgramId { get; set; }
+        public int? ProgramId { get; set; }
         public virtual ProgramDto Program { get; set; }
         public DateTime? KararTarih { get; set; }
         public string KararAcik { get; set; }

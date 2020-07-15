@@ -4,276 +4,369 @@
 @inject IMatToaster matToaster
 @using Syncfusion.Blazor.DropDowns
 @using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Calendars
 @using System.Net
 @using Newtonsoft.Json
+@using Syncfusion.Blazor.Inputs
 @inject AppState appState
 <style>
-    .e-DoubleArrowRight:before {
-        content: '\e7bb';
-        color: #e83e8c;
-    }
+        .e-DoubleArrowRight:before {
+            content: '\e7bb';
+            color: #e83e8c;
+        }
+        /*
+        .form-group {
+            margin-bottom: 0.2rem;
+        }*/
+
+        /*.e-input-group .e-input-group-icon, .e-input-group.e-control-wrapper .e-input-group-icon {
+            min-height: 0px;
+            min-width: 0px;
+        }*/
+
+        /* input.e-input, .e-input-group input, .e-input-group.e-control-wrapper input, .e-input-group input.e-input, .e-input-group.e-control-wrapper input.e-input {
+            height: auto;
+        }
+    */
+        .col-form-label-sm {
+            /*padding-bottom: unset;*/
+            /*font-size: 0.65rem;*/
+            font-size: .775rem;
+        }
 </style>
 
-    <SfGrid Width="100%" @ref="MufredatGrid" ID="MufredatGrid" ShowColumnChooser="true" DataSource="@mufredatDtos" AllowSorting="true" AllowFiltering="true" AllowPaging="true" Toolbar="Toolbaritems"
-            ContextMenuItems="@(new List<ContextMenuItemModel>() { new ContextMenuItemModel { Text = "Ders Tanımla", Target = ".e-content", Id = "copywithheader" } })">
+@*Dialog="DialogParams"*@
 
-        <GridEvents ContextMenuItemClicked="OnContextMenuClick" CommandClicked="CommandClickHandler" OnToolbarClick="ToolbarClickHandler" OnActionComplete="ActionCompletedHandler" TValue="MufredatDto"></GridEvents>
-        <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
-        <GridColumns>
-            <GridColumn Visible="false" Field=@nameof(MufredatDto.Id) HeaderText="Müfredat ID" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
-            <GridColumn Field=@nameof(MufredatDto.Ad) AllowEditing="true"  HeaderText="Müfredat İsim" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
-            <GridColumn Field=@nameof(MufredatDto.Yil) HeaderText="Müfredat Yıl" Format="####" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
-            <GridColumn Field=@nameof(MufredatDto.BasTarih) HeaderText="BasTarih" Format="d" EditType="EditType.DatePickerEdit" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
-            <GridColumn Field=@nameof(MufredatDto.BitTarih) HeaderText="Bit Tarih" Format="d" EditType="EditType.DatePickerEdit"></GridColumn>
-            <GridColumn Field=@nameof(MufredatDto.KararTarih) HeaderText="KararTarih" Format="d" EditType="EditType.DatePickerEdit"></GridColumn>
-            <GridColumn Field=@nameof(MufredatDto.ProgramId) HeaderText="Program" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@programDtos"></GridColumn>
-            <GridColumn>
-                <GridCommandColumns>
-                    <GridCommandColumn Type="CommandButtonType.None" Title="DersOlus" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
-                    <GridCommandColumn Type="CommandButtonType.None" Title="Clone" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-copy", CssClass="e-flat" })"></GridCommandColumn>
-                    <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-edit", CssClass="e-flat" })"></GridCommandColumn>
-                    <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-delete", CssClass="e-flat" })"></GridCommandColumn>
-                    <GridCommandColumn Type="CommandButtonType.Save" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-update", CssClass="e-flat" })"></GridCommandColumn>
-                    <GridCommandColumn Type="CommandButtonType.Cancel" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-cancel-icon", CssClass="e-flat" })"></GridCommandColumn>
-                </GridCommandColumns>
-            </GridColumn>
-        </GridColumns>
-    </SfGrid>
+<SfGrid Width="100%" @ref="MufredatGrid" ID="MufredatGrid" ShowColumnChooser="true" DataSource="@mufredatDtos" Dialog="DialogParams" AllowSorting="true" AllowFiltering="true" AllowPaging="true" Toolbar="Toolbaritems"
+        ContextMenuItems="@(new List<ContextMenuItemModel>() { new ContextMenuItemModel { Text = "Ders Tanımla", Target = ".e-content", Id = "copywithheader" } })">
 
-    @*<input type="text" @bind-value="appState.MufredatState.Ad" />*@
-
-    <MatDialog @bind-IsOpen="@multiDialogOpen" Style="z-index:100">
-        <MatDialogTitle><MatIcon Icon="warning"></MatIcon> Confirm Delete</MatDialogTitle>
-        <MatDialogContent>
-            "@mufredatDto.Ad" isimli müfredatı çoklamak istediğinize emin misiniz?
-        </MatDialogContent>
-        <MatDialogActions>
-            <MatButton OnClick="@(e => { multiDialogOpen = false; })">Kapat</MatButton>
-            <MatButton OnClick="@MultiplyRecord">Çokla</MatButton>
-        </MatDialogActions>
-    </MatDialog>
-
-    @code{
-        SfGrid<MufredatDto> MufredatGrid;
-
-        public MufredatDto mufredatDto { get; set; } = new MufredatDto(); // Holds Mufredat being actively modified or created
-                                                                          //[CascadingParameter]
-                                                                          //public MufredatDto SelectedMufredat { get; set; }
+    <GridEvents ContextMenuItemClicked="OnContextMenuClick" CommandClicked="CommandClickHandler" OnToolbarClick="ToolbarClickHandler" OnActionComplete="ActionCompletedHandler" TValue="MufredatDto"></GridEvents>
+    <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
+        <Template>
+            @{
+                MufredatDto mufredatInfo = (context as MufredatDto);
+                <div class="row pb-2 bg-light text-dark">
+                    <div class="col-sm-12 col-md-4">
+                        <FakBolPrg @bind-ProgramId="programId"
+                                   @bind-BolumId="bolumId"
+                                   @bind-FakulteId="fakulteId"></FakBolPrg>
+                    </div>
+                    <div class="col-sm-12 col-md-8">
+                        <div class="form-group row">
+                            <label for="Ad" class="col-sm-2 col-form-label-sm">Müfredat Ad</label>
+                            <div class="col-sm-4">
+                                <SfTextBox ID="Ad" Placeholder="Müfredat Ad" CssClass="form-control-sm" @bind-Value="@(mufredatInfo.Ad)"></SfTextBox>
+                            </div>
+                            <label for="Yil" class="col-sm-2 col-form-label-sm">Yil</label>
+                            <div class="col-sm-4">
+                                <SfNumericTextBox ID="Yil" Placeholder="Müfredat Ad" CssClass="form-control-sm" @bind-Value="@(mufredatInfo.Yil)"></SfNumericTextBox>
+                            </div>
+                        </div>
+                        <div class="form-group  row">
+                            <label for="BasTarih" class="col-sm-2 col-form-label-sm">BasTarih</label>
+                            <div class="col-sm-4">
+                                <SfDatePicker ID="BasTarih" @bind-Value="@mufredatInfo.BasTarih" Placeholder="Kayıt Tarihi"></SfDatePicker>
+                            </div>
+                            <label for="BitTarih" class="col-sm-2 col-form-label-sm">BitTarih</label>
+                            <div class="col-sm-4">
+                                <SfDatePicker ID="BitTarih" @bind-Value="@mufredatInfo.BitTarih"  Placeholder="Bitiş Tarihi"></SfDatePicker>
+                            </div>
+                        </div>
+                        <div class="form-group  row">
+                            <label for="KararTarih" class="col-sm-2 col-form-label-sm">Karar Tarih</label>
+                            <div class="col-sm-4">
+                                <SfDatePicker ID="KararTarih" @bind-Value="@mufredatInfo.KararTarih" Placeholder="Karar Tarihi"></SfDatePicker>
+                            </div>
+                        </div>
 
 
-        List<MufredatDto> mufredatDtos = new List<MufredatDto>();
-        List<ProgramDto> programDtos = new List<ProgramDto>();
+                    </div>
+                </div>
 
-        private List<Object> Toolbaritems = new List<Object>() { "Add", "Search", "Paste", "Copy", "ColumnChooser", new ItemModel() { Text = "Ders Oluştur", TooltipText = "Click", PrefixIcon = "e-icons e-DoubleArrowRight", Id = "DersOlustur" } };
+                @*<div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label>Ad</label>
+                                <SfTextBox ID="Ad" Value="@(mufredatInfo.Ad)"></SfTextBox>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>BasTarih</label>
+                                <SfDatePicker ID="BasTarih" Value="@(mufredatInfo.BasTarih)"></SfDatePicker>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>BitTarih</label>
+                                <SfDatePicker ID="BitTarih" Value="@(mufredatInfo.BitTarih)"></SfDatePicker>
+                            </div>
+                        </div>
+                    </div>*@
 
-        bool multiDialogOpen = false;
 
-        protected override void OnInitialized()
+            }
+        </Template>
+    </GridEditSettings>
+    <GridColumns>
+        <GridColumn Visible="false" Field=@nameof(MufredatDto.Id) HeaderText="Müfredat ID" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+        <GridColumn Field=@nameof(MufredatDto.Ad) AllowEditing="true" HeaderText="Müfredat İsim" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
+        <GridColumn Field=@nameof(MufredatDto.Yil) HeaderText="Müfredat Yıl" Format="####" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
+        <GridColumn Field=@nameof(MufredatDto.BasTarih) HeaderText="BasTarih" Format="d" EditType="EditType.DatePickerEdit" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
+        <GridColumn Field=@nameof(MufredatDto.BitTarih) HeaderText="Bit Tarih" Format="d" EditType="EditType.DatePickerEdit"></GridColumn>
+        <GridColumn Field=@nameof(MufredatDto.KararTarih) HeaderText="KararTarih" Format="d" EditType="EditType.DatePickerEdit"></GridColumn>
+        <GridColumn Field=@nameof(MufredatDto.ProgramId) HeaderText="Program" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@programDtos">
+        </GridColumn>
+        <GridColumn>
+            <GridCommandColumns>
+                <GridCommandColumn Type="CommandButtonType.None" Title="DersOlus" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
+                <GridCommandColumn Type="CommandButtonType.None" Title="Clone" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-copy", CssClass="e-flat" })"></GridCommandColumn>
+                <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-edit", CssClass="e-flat" })"></GridCommandColumn>
+                <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-delete", CssClass="e-flat" })"></GridCommandColumn>
+                <GridCommandColumn Type="CommandButtonType.Save" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-update", CssClass="e-flat" })"></GridCommandColumn>
+                <GridCommandColumn Type="CommandButtonType.Cancel" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-cancel-icon", CssClass="e-flat" })"></GridCommandColumn>
+            </GridCommandColumns>
+        </GridColumn>
+    </GridColumns>
+</SfGrid>
+
+@*<input type="text" @bind-value="appState.MufredatState.Ad" />*@
+
+<MatDialog @bind-IsOpen="@multiDialogOpen" Style="z-index:100">
+    <MatDialogTitle><MatIcon Icon="warning"></MatIcon> Confirm Delete</MatDialogTitle>
+    <MatDialogContent>
+        "@mufredatDto.Ad" isimli müfredatı çoklamak istediğinize emin misiniz?
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="@(e => { multiDialogOpen = false; })">Kapat</MatButton>
+        <MatButton OnClick="@MultiplyRecord">Çokla</MatButton>
+    </MatDialogActions>
+</MatDialog>
+
+@code{
+    int? fakulteId;
+    int? bolumId;
+    int? programId;
+    private DialogSettings DialogParams = new DialogSettings { MinHeight = "400px", Width = "850px" };
+
+    SfGrid<MufredatDto> MufredatGrid;
+
+    public MufredatDto mufredatDto { get; set; } = new MufredatDto(); // Holds Mufredat being actively modified or created
+                                                                      //[CascadingParameter]
+                                                                      //public MufredatDto SelectedMufredat { get; set; }
+
+
+    List<MufredatDto> mufredatDtos = new List<MufredatDto>();
+    List<ProgramDto> programDtos = new List<ProgramDto>();
+
+    private List<Object> Toolbaritems = new List<Object>() { "Add", "Search", "Paste", "Copy", "ColumnChooser", new ItemModel() { Text = "Ders Oluştur", TooltipText = "Click", PrefixIcon = "e-icons e-DoubleArrowRight", Id = "DersOlustur" } };
+
+    bool multiDialogOpen = false;
+
+    protected override void OnInitialized()
+    {
+        ReadFakultes();
+        ApiResponseDto<List<ProgramDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<ProgramDto>>>("api/program").Result;
+        programDtos = apiResponse.Result;
+    }
+
+    void ReadFakultes()
+    {
+
+        ApiResponseDto<List<MufredatDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<MufredatDto>>>("api/mufredat").Result;
+
+        if (apiResponse.StatusCode == Status200OK)
         {
-            ReadFakultes();
-            ApiResponseDto<List<ProgramDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<ProgramDto>>>("api/program").Result;
-            programDtos = apiResponse.Result;
+            matToaster.Add(apiResponse.Message, MatToastType.Success, "Müfredatlar getirildi");
+            mufredatDtos = apiResponse.Result;
         }
-
-        void ReadFakultes()
+        else
         {
+            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Müfredat bilgisi getirilirken hata oluştu!");
+        }
+    }
 
-            ApiResponseDto<List<MufredatDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<MufredatDto>>>("api/mufredat").Result;
-
+    public async Task MultiplyRecord()
+    {
+        try
+        {
+            ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/mufredat/Cokla/" + mufredatDto.Id);
             if (apiResponse.StatusCode == Status200OK)
             {
-                matToaster.Add(apiResponse.Message, MatToastType.Success, "Müfredatlar getirildi");
-                mufredatDtos = apiResponse.Result;
+                matToaster.Add(apiResponse.Message, MatToastType.Success);
+                ReadFakultes();
             }
             else
             {
-                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Müfredat bilgisi getirilirken hata oluştu!");
-            }
-        }
-
-        public async Task MultiplyRecord()
-        {
-            try
-            {
-                ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/mufredat/Cokla/" + mufredatDto.Id);
-                if (apiResponse.StatusCode == Status200OK)
-                {
-                    matToaster.Add(apiResponse.Message, MatToastType.Success);
-                    ReadFakultes();
-                }
-                else
-                {
-                    //TODO Ahmet 1**
-                    //TODO Ahmet 2**
-                    mufredatDtos.Remove(mufredatDto);
-                    MufredatGrid.Refresh();
-                    matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Müfredat Creation Failed");
-                }
-            }
-            catch (Exception ex)
-            {
-                //TODO Ahmet 1**: liste içinden değinde gride eklediğini sil demeli !!
-                //TODO Ahmet 2**: Dbden hata geldiği zaman Bu hata sebebini mantıklı şekilde buraya vermemiz gerekiyor. Aynı Idli kayıt gönder patlatıyon.
-
+                //TODO Ahmet 1**
+                //TODO Ahmet 2**
                 mufredatDtos.Remove(mufredatDto);
                 MufredatGrid.Refresh();
-                matToaster.Add(ex.Message, MatToastType.Danger, "Müfredat Creation Failed");
+                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Müfredat Creation Failed");
             }
-            finally
+        }
+        catch (Exception ex)
+        {
+            //TODO Ahmet 1**: liste içinden değinde gride eklediğini sil demeli !!
+            //TODO Ahmet 2**: Dbden hata geldiği zaman Bu hata sebebini mantıklı şekilde buraya vermemiz gerekiyor. Aynı Idli kayıt gönder patlatıyon.
+
+            mufredatDtos.Remove(mufredatDto);
+            MufredatGrid.Refresh();
+            matToaster.Add(ex.Message, MatToastType.Danger, "Müfredat Creation Failed");
+        }
+        finally
+        {
+            MufredatGrid.Refresh();
+        }
+    }
+
+    //Sağ Click için
+    public void OnContextMenuClick(ContextMenuClickEventArgs<MufredatDto> args)
+    {
+        if (args.Item.Id == "copywithheader")
+        {
+            //this.DefaultGrid.Copy(true);
+        }
+    }
+
+
+    public void ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+    {
+        if (args.Item.Id == "DersOlustur")
+        {
+            //You can customized your code here....
+        }
+    }
+
+    public void CommandClickHandler(CommandClickEventArgs<MufredatDto> args)
+    {
+        //Perform your custom command button click operation here. And also with the value in “args” you can differentiate the buttons, if having multiple custom command buttons.
+
+        if (args.CommandColumn.Title == "Clone")
+        {
+            mufredatDto = args.RowData;
+            multiDialogOpen = true;
+        }
+        if (args.CommandColumn.Title == "DersOlus")
+        {
+            mufredatDto = args.RowData;
+            //appState.MufredatState = mufredatDto.DeepClone();
+            mufredatDto.Program = programDtos.FirstOrDefault(x => x.Id == mufredatDto.ProgramId);
+            if (mufredatDto.Program == null)
             {
+                matToaster.Add("Program Bulunamadı", MatToastType.Danger, "Müfredat ders ekleme hatası");
+                return;
+            }
+            appState.MufredatState = mufredatDto;
+            //base.InvokeAsync(StateHasChanged);
+            TabDegis.InvokeAsync(1);
+
+        }
+    }
+
+    [Parameter]
+    public EventCallback<int> TabDegis { get; set; }
+
+
+
+    public void ActionCompletedHandler(ActionEventArgs<MufredatDto> args)
+    {
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
+        {
+
+        }
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+        {
+            if (args.Action == "Edit")
+            {
+                Update(args.Data);
+            }
+            else if (args.Action == "Add")
+            {
+                args.Data.ProgramId = programId;
+                Create(args.Data);
+
+            }
+
+        }
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
+        {
+            Delete(args.Data);
+        }
+    }
+
+    public async Task Create(MufredatDto mufredatDto)
+    {
+        try
+        {
+            ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>
+                ("api/mufredat", mufredatDto);
+            if (apiResponse.StatusCode == Status200OK)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success);
+                var recordedDto = Newtonsoft.Json.JsonConvert.DeserializeObject<MufredatDto>(apiResponse.Result.ToString());
+
+                mufredatDtos.FirstOrDefault(x => x.Id == 0).Id = recordedDto.Id;
                 MufredatGrid.Refresh();
-            }
-        }
-
-        //Sağ Click için
-        public void OnContextMenuClick(ContextMenuClickEventArgs<MufredatDto> args)
-        {
-            if (args.Item.Id == "copywithheader")
-            {
-                //this.DefaultGrid.Copy(true);
-            }
-        }
-
-
-        public void ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
-        {
-            if (args.Item.Id == "DersOlustur")
-            {
-                //You can customized your code here....
-            }
-        }
-
-        public void CommandClickHandler(CommandClickEventArgs<MufredatDto> args)
-        {
-            //Perform your custom command button click operation here. And also with the value in “args” you can differentiate the buttons, if having multiple custom command buttons.
-
-            if (args.CommandColumn.Title == "Clone")
-            {
-                mufredatDto = args.RowData;
-                multiDialogOpen = true;
-            }
-            if (args.CommandColumn.Title == "DersOlus")
-            {
-                mufredatDto = args.RowData;
-                //appState.MufredatState = mufredatDto.DeepClone();
-                mufredatDto.Program = programDtos.FirstOrDefault(x => x.Id == mufredatDto.ProgramId);
-                if (mufredatDto.Program == null)
-                {
-                    matToaster.Add("Program Bulunamadı", MatToastType.Danger, "Müfredat ders ekleme hatası");
-                    return;
-                }
-                appState.MufredatState = mufredatDto;
                 //base.InvokeAsync(StateHasChanged);
-                TabDegis.InvokeAsync(1);
-
             }
-        }
-
-        [Parameter]
-        public EventCallback<int> TabDegis { get; set; }
-
-
-
-        public void ActionCompletedHandler(ActionEventArgs<MufredatDto> args)
-        {
-            if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
-            {
-
-            }
-            if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
-            {
-                if (args.Action == "Edit")
-                {
-                    Update(args.Data);
-                }
-                else if (args.Action == "Add")
-                {
-                    Create(args.Data);
-                }
-
-            }
-            if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
-            {
-                Delete(args.Data);
-            }
-        }
-
-        public async Task Create(MufredatDto mufredatDto)
-        {
-            try
-            {
-                ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>
-                    ("api/mufredat", mufredatDto);
-                if (apiResponse.StatusCode == Status200OK)
-                {
-                    matToaster.Add(apiResponse.Message, MatToastType.Success);
-                    var recordedDto = Newtonsoft.Json.JsonConvert.DeserializeObject<MufredatDto>(apiResponse.Result.ToString());
-
-                    mufredatDtos.FirstOrDefault(x => x.Id == 0).Id = recordedDto.Id;
-                    MufredatGrid.Refresh();
-                    //base.InvokeAsync(StateHasChanged);
-                }
-                else
-                {
-                    mufredatDtos.Remove(mufredatDto);
-                    MufredatGrid.Refresh();
-                    matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Müfredat Creation Failed");
-                }
-            }
-            catch (Exception ex)
+            else
             {
                 mufredatDtos.Remove(mufredatDto);
                 MufredatGrid.Refresh();
-                matToaster.Add(ex.Message, MatToastType.Danger, "Müfredat Creation Failed");
+                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Müfredat Creation Failed");
             }
         }
-
-
-        public async void Update(MufredatDto mufredatDto)
+        catch (Exception ex)
         {
-            //this updates the IsCompleted flag only
-            try
-            {
-                ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>
-                    ("api/mufredat", mufredatDto);
+            mufredatDtos.Remove(mufredatDto);
+            MufredatGrid.Refresh();
+            matToaster.Add(ex.Message, MatToastType.Danger, "Müfredat Creation Failed");
+        }
+    }
 
-                if (!apiResponse.IsError)
-                {
-                    matToaster.Add(apiResponse.Message, MatToastType.Success);
-                }
-                else
-                {
-                    matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Müfredat Save Failed");
-                    //update failed gridi boz !
-                }
-            }
-            catch (Exception ex)
+
+    public async void Update(MufredatDto mufredatDto)
+    {
+        //this updates the IsCompleted flag only
+        try
+        {
+            ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>
+                ("api/mufredat", mufredatDto);
+
+            if (!apiResponse.IsError)
             {
-                matToaster.Add(ex.Message, MatToastType.Danger, "Müfredat Save Failed");
+                matToaster.Add(apiResponse.Message, MatToastType.Success);
+            }
+            else
+            {
+                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Müfredat Save Failed");
                 //update failed gridi boz !
             }
         }
-
-        public async Task Delete(MufredatDto mufredatDto)
+        catch (Exception ex)
         {
-            try
-            {
-                var response = await Http.DeleteAsync("api/mufredat/" + mufredatDto.Id);
-                if (response.StatusCode == (HttpStatusCode)Status200OK)
-                {
-                    matToaster.Add("Müfredat Deleted", MatToastType.Success);
-                    mufredatDtos.Remove(mufredatDto);
-                }
-                else
-                {
-                    matToaster.Add("Müfredat Delete Failed: " + response.StatusCode, MatToastType.Danger);
-                }
-                //deleteDialogOpen = false;
-            }
-            catch (Exception ex)
-            {
-                matToaster.Add(ex.Message, MatToastType.Danger, "Universite Save Failed");
-            }
+            matToaster.Add(ex.Message, MatToastType.Danger, "Müfredat Save Failed");
+            //update failed gridi boz !
         }
-
     }
+
+    public async Task Delete(MufredatDto mufredatDto)
+    {
+        try
+        {
+            var response = await Http.DeleteAsync("api/mufredat/" + mufredatDto.Id);
+            if (response.StatusCode == (HttpStatusCode)Status200OK)
+            {
+                matToaster.Add("Müfredat Deleted", MatToastType.Success);
+                mufredatDtos.Remove(mufredatDto);
+            }
+            else
+            {
+                matToaster.Add("Müfredat Delete Failed: " + response.StatusCode, MatToastType.Danger);
+            }
+            //deleteDialogOpen = false;
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.Message, MatToastType.Danger, "Universite Save Failed");
+        }
+    }
+
+}

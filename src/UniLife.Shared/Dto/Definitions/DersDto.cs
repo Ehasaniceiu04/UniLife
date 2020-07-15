@@ -16,7 +16,7 @@ namespace UniLife.Shared.Dto.Definitions
         public virtual FakulteDto Fakulte { get; set; }
         public int BolumId { get; set; }
         public virtual BolumDto Bolum { get; set; }
-        public int ProgramId { get; set; }
+        public int? ProgramId { get; set; }
         public virtual ProgramDto Program { get; set; }
         public string KisaAd { get; set; }
         public int Akts { get; set; }
