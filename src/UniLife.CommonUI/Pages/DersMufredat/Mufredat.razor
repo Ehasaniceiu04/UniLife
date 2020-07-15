@@ -14,43 +14,29 @@
             content: '\e7bb';
             color: #e83e8c;
         }
-        /*
-        .form-group {
-            margin-bottom: 0.2rem;
-        }*/
-
-        /*.e-input-group .e-input-group-icon, .e-input-group.e-control-wrapper .e-input-group-icon {
-            min-height: 0px;
-            min-width: 0px;
-        }*/
-
-        /* input.e-input, .e-input-group input, .e-input-group.e-control-wrapper input, .e-input-group input.e-input, .e-input-group.e-control-wrapper input.e-input {
-            height: auto;
-        }
-    */
         .col-form-label-sm {
-            /*padding-bottom: unset;*/
-            /*font-size: 0.65rem;*/
             font-size: .775rem;
         }
 </style>
 
-@*Dialog="DialogParams"*@
 
 <SfGrid Width="100%" @ref="MufredatGrid" ID="MufredatGrid" ShowColumnChooser="true" DataSource="@mufredatDtos" Dialog="DialogParams" AllowSorting="true" AllowFiltering="true" AllowPaging="true" Toolbar="Toolbaritems"
         ContextMenuItems="@(new List<ContextMenuItemModel>() { new ContextMenuItemModel { Text = "Ders Tanımla", Target = ".e-content", Id = "copywithheader" } })">
 
-    <GridEvents ContextMenuItemClicked="OnContextMenuClick" CommandClicked="CommandClickHandler" OnToolbarClick="ToolbarClickHandler" OnActionComplete="ActionCompletedHandler" TValue="MufredatDto"></GridEvents>
+    <GridEvents ContextMenuItemClicked="OnContextMenuClick" CommandClicked="CommandClickHandler" OnActionBegin="OnActionBeginHandler" OnToolbarClick="ToolbarClickHandler" OnActionComplete="ActionCompletedHandler" TValue="MufredatDto"></GridEvents>
     <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
         <Template>
             @{
                 MufredatDto mufredatInfo = (context as MufredatDto);
                 <div class="row pb-2 bg-light text-dark">
-                    <div class="col-sm-12 col-md-4">
-                        <FakBolPrg @bind-ProgramId="programId"
-                                   @bind-BolumId="bolumId"
-                                   @bind-FakulteId="fakulteId"></FakBolPrg>
-                    </div>
+                                <div class="col-sm-12 col-md-4">
+                                    @*<FakBolPrg @bind-ProgramId="programId"*@
+                                    
+                                    <FakBolPrg @bind-ProgramId="@(mufredatInfo.ProgramId)"
+                                               @bind-BolumId="bolumId"
+                                               @bind-FakulteId="fakulteId"
+                                               ProgramPlaceHolder="@(plazceHolderProgramAd)"></FakBolPrg>
+                                </div>
                     <div class="col-sm-12 col-md-8">
                         <div class="form-group row">
                             <label for="Ad" class="col-sm-2 col-form-label-sm">Müfredat Ad</label>
@@ -78,29 +64,8 @@
                                 <SfDatePicker ID="KararTarih" @bind-Value="@mufredatInfo.KararTarih" Placeholder="Karar Tarihi"></SfDatePicker>
                             </div>
                         </div>
-
-
                     </div>
                 </div>
-
-                @*<div>
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label>Ad</label>
-                                <SfTextBox ID="Ad" Value="@(mufredatInfo.Ad)"></SfTextBox>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label>BasTarih</label>
-                                <SfDatePicker ID="BasTarih" Value="@(mufredatInfo.BasTarih)"></SfDatePicker>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label>BitTarih</label>
-                                <SfDatePicker ID="BitTarih" Value="@(mufredatInfo.BitTarih)"></SfDatePicker>
-                            </div>
-                        </div>
-                    </div>*@
-
-
             }
         </Template>
     </GridEditSettings>
@@ -126,8 +91,6 @@
     </GridColumns>
 </SfGrid>
 
-@*<input type="text" @bind-value="appState.MufredatState.Ad" />*@
-
 <MatDialog @bind-IsOpen="@multiDialogOpen" Style="z-index:100">
     <MatDialogTitle><MatIcon Icon="warning"></MatIcon> Confirm Delete</MatDialogTitle>
     <MatDialogContent>
@@ -142,7 +105,11 @@
 @code{
     int? fakulteId;
     int? bolumId;
-    int? programId;
+    //int? programId;
+    int? ProgramValueHolder;
+
+    string plazceHolderProgramAd = "asd";
+
     private DialogSettings DialogParams = new DialogSettings { MinHeight = "400px", Width = "850px" };
 
     SfGrid<MufredatDto> MufredatGrid;
@@ -161,12 +128,12 @@
 
     protected override void OnInitialized()
     {
-        ReadFakultes();
+        ReadMufredats();
         ApiResponseDto<List<ProgramDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<ProgramDto>>>("api/program").Result;
         programDtos = apiResponse.Result;
     }
 
-    void ReadFakultes()
+    void ReadMufredats()
     {
 
         ApiResponseDto<List<MufredatDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<MufredatDto>>>("api/mufredat").Result;
@@ -190,12 +157,10 @@
             if (apiResponse.StatusCode == Status200OK)
             {
                 matToaster.Add(apiResponse.Message, MatToastType.Success);
-                ReadFakultes();
+                ReadMufredats();
             }
             else
             {
-                //TODO Ahmet 1**
-                //TODO Ahmet 2**
                 mufredatDtos.Remove(mufredatDto);
                 MufredatGrid.Refresh();
                 matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Müfredat Creation Failed");
@@ -203,9 +168,6 @@
         }
         catch (Exception ex)
         {
-            //TODO Ahmet 1**: liste içinden değinde gride eklediğini sil demeli !!
-            //TODO Ahmet 2**: Dbden hata geldiği zaman Bu hata sebebini mantıklı şekilde buraya vermemiz gerekiyor. Aynı Idli kayıt gönder patlatıyon.
-
             mufredatDtos.Remove(mufredatDto);
             MufredatGrid.Refresh();
             matToaster.Add(ex.Message, MatToastType.Danger, "Müfredat Creation Failed");
@@ -264,22 +226,52 @@
     public EventCallback<int> TabDegis { get; set; }
 
 
+    public void OnActionBeginHandler(Syncfusion.Blazor.Grids.ActionEventArgs<MufredatDto> args)
+    {
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Add)
+        {
+            plazceHolderProgramAd = "";
+            ProgramValueHolder = null;
+            fakulteId = null;
+            bolumId = null;
+        }
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
+        {
+            fakulteId = null;
+            bolumId = null;
+            plazceHolderProgramAd = ((UniLife.Shared.Dto.Definitions.ProgramDto)args.ForeignKeyData.Values.FirstOrDefault().FirstOrDefault()).Ad;
+
+        }
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+        {
+            if (!args.Data.ProgramId.HasValue)
+            {
+                args.Data.ProgramId = ProgramValueHolder;
+            }
+
+
+        }
+    }
 
     public void ActionCompletedHandler(ActionEventArgs<MufredatDto> args)
     {
         if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
         {
-
+            ProgramValueHolder = args.Data.ProgramId;
         }
         if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
         {
             if (args.Action == "Edit")
             {
+                if (!args.Data.ProgramId.HasValue)
+                {
+                    args.Data.ProgramId = ProgramValueHolder;
+                }
                 Update(args.Data);
             }
             else if (args.Action == "Add")
             {
-                args.Data.ProgramId = programId;
+                //args.Data.ProgramId = programId;
                 Create(args.Data);
 
             }

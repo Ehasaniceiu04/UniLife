@@ -55,6 +55,8 @@ namespace UniLife.CommonUI.Shared
         }
         [Parameter]
         public EventCallback<int?> ProgramIdChanged { get; set; }
+        [Parameter]
+        public string ProgramPlaceHolder { get; set; }
 
 
         private int? _bolValue;
