@@ -10,7 +10,7 @@
             <GridEvents OnActionComplete="ActionCompletedHandler" TValue="HarcDto"></GridEvents>
             <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
             <GridColumns>
-                <GridColumn Visible="false" Field=@nameof(HarcDto.Id) HeaderText="Harc ID" AllowEditing="false" AllowAdding="false" AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+                <GridColumn Visible="false" Field=@nameof(HarcDto.Id) HeaderText="Harc ID" AllowAdding="false" AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
                 <GridColumn Field=@nameof(HarcDto.Ad) HeaderText="Harc İsim" ValidationRules="@(new ValidationRules{ Required=true})" Width="170"></GridColumn>
                 @*<GridColumn Field=@nameof(HarcDto.Fakulte.UniversiteId) HeaderText="Üniversite" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@universiteDtos" Width="150"></GridColumn>*@
                 <GridColumn Field=@nameof(HarcDto.ProgramId) HeaderText="Program" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@programDtos" Width="150"></GridColumn>

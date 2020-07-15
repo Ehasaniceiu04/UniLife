@@ -322,8 +322,8 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         {
             if (args.CommandColumn.Title == "Tanımlı Sınavlar")
             {
-                //var commandRowIndex = await DersAcGrid.GetRowIndexByPrimaryKey(args.RowData.Id);
-                var commandRowIndex = DersAcGrid.CurrentViewData.ToList().IndexOf(args.RowData);
+                var commandRowIndex = await DersAcGrid.GetRowIndexByPrimaryKey(args.RowData.Id); // alttaki doğru çalışıyopr bu olursa bunu yapt test edicen.
+                //var commandRowIndex = DersAcGrid.CurrentViewData.ToList().IndexOf(args.RowData);
                 await DersAcGrid.SelectRow(commandRowIndex);
 
                 GetSinavsByDersAcilanId(args.RowData);
