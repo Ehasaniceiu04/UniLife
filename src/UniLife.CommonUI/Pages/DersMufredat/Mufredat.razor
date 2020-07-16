@@ -8,35 +8,37 @@
 @using System.Net
 @using Newtonsoft.Json
 @using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Data
 @inject AppState appState
 <style>
-        .e-DoubleArrowRight:before {
-            content: '\e7bb';
-            color: #e83e8c;
-        }
-        .col-form-label-sm {
-            font-size: .775rem;
-        }
+    .e-DoubleArrowRight:before {
+        content: '\e7bb';
+        color: #e83e8c;
+    }
+
+    .col-form-label-sm {
+        font-size: .775rem;
+    }
 </style>
 
-
-<SfGrid Width="100%" @ref="MufredatGrid" ID="MufredatGrid" ShowColumnChooser="true" DataSource="@mufredatDtos" Dialog="DialogParams" AllowSorting="true" AllowFiltering="true" AllowPaging="true" Toolbar="Toolbaritems"
+@*DataSource="@mufredatDtos"*@
+<SfGrid Width="100%" @ref="MufredatGrid" ID="MufredatGrid" TValue="MufredatDto" Query="@totalQuery" ShowColumnChooser="true" Dialog="DialogParams" AllowSorting="true" AllowFiltering="true" AllowPaging="true" Toolbar="Toolbaritems"
         ContextMenuItems="@(new List<ContextMenuItemModel>() { new ContextMenuItemModel { Text = "Ders Tanımla", Target = ".e-content", Id = "copywithheader" } })">
-
+    <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
     <GridEvents ContextMenuItemClicked="OnContextMenuClick" CommandClicked="CommandClickHandler" OnActionBegin="OnActionBeginHandler" OnToolbarClick="ToolbarClickHandler" OnActionComplete="ActionCompletedHandler" TValue="MufredatDto"></GridEvents>
     <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
         <Template>
             @{
                 MufredatDto mufredatInfo = (context as MufredatDto);
                 <div class="row pb-2 bg-light text-dark">
-                                <div class="col-sm-12 col-md-4">
-                                    @*<FakBolPrg @bind-ProgramId="programId"*@
-                                    
-                                    <FakBolPrg @bind-ProgramId="@(mufredatInfo.ProgramId)"
-                                               @bind-BolumId="bolumId"
-                                               @bind-FakulteId="fakulteId"
-                                               ProgramPlaceHolder="@(plazceHolderProgramAd)"></FakBolPrg>
-                                </div>
+                    <div class="col-sm-12 col-md-4">
+                        @*<FakBolPrg @bind-ProgramId="programId"*@
+
+                        <FakBolPrg @bind-ProgramId="@(mufredatInfo.ProgramId)"
+                                   @bind-BolumId="bolumId"
+                                   @bind-FakulteId="fakulteId"
+                                   ProgramPlaceHolder="@(plazceHolderProgramAd)"></FakBolPrg>
+                    </div>
                     <div class="col-sm-12 col-md-8">
                         <div class="form-group row">
                             <label for="Ad" class="col-sm-2 col-form-label-sm">Müfredat Ad</label>
@@ -55,7 +57,7 @@
                             </div>
                             <label for="BitTarih" class="col-sm-2 col-form-label-sm">BitTarih</label>
                             <div class="col-sm-4">
-                                <SfDatePicker ID="BitTarih" @bind-Value="@mufredatInfo.BitTarih"  Placeholder="Bitiş Tarihi"></SfDatePicker>
+                                <SfDatePicker ID="BitTarih" @bind-Value="@mufredatInfo.BitTarih" Placeholder="Bitiş Tarihi"></SfDatePicker>
                             </div>
                         </div>
                         <div class="form-group  row">
@@ -73,11 +75,11 @@
         <GridColumn Visible="false" Field=@nameof(MufredatDto.Id) HeaderText="Müfredat ID" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
         <GridColumn Field=@nameof(MufredatDto.Ad) AllowEditing="true" HeaderText="Müfredat İsim" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
         <GridColumn Field=@nameof(MufredatDto.Yil) HeaderText="Müfredat Yıl" Format="####" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
-        <GridColumn Field=@nameof(MufredatDto.BasTarih) HeaderText="BasTarih" Format="d" EditType="EditType.DatePickerEdit" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
-        <GridColumn Field=@nameof(MufredatDto.BitTarih) HeaderText="Bit Tarih" Format="d" EditType="EditType.DatePickerEdit"></GridColumn>
-        <GridColumn Field=@nameof(MufredatDto.KararTarih) HeaderText="KararTarih" Format="d" EditType="EditType.DatePickerEdit"></GridColumn>
-        <GridColumn Field=@nameof(MufredatDto.ProgramId) HeaderText="Program" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@programDtos">
-        </GridColumn>
+        <GridColumn AutoFit="true"Field=@nameof(MufredatDto.BasTarih) HeaderText="BasTarih" Format="d" EditType="EditType.DatePickerEdit" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
+        <GridColumn AutoFit="true"Field=@nameof(MufredatDto.BitTarih) HeaderText="Bit Tarih" Format="d" EditType="EditType.DatePickerEdit"></GridColumn>
+        <GridColumn AutoFit="true" Field=@nameof(MufredatDto.KararTarih) HeaderText="KararTarih" Format="d" EditType="EditType.DatePickerEdit"></GridColumn>
+        @*<GridColumn Field=@nameof(MufredatDto.ProgramId) HeaderText="Program" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@programDtos"></GridColumn>*@
+        <GridColumn Field="Program.Ad" HeaderText="Program" Type="ColumnType.String"></GridColumn>
         <GridColumn>
             <GridCommandColumns>
                 <GridCommandColumn Type="CommandButtonType.None" Title="DersOlus" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
@@ -103,12 +105,16 @@
 </MatDialog>
 
 @code{
+
     int? fakulteId;
     int? bolumId;
     //int? programId;
     int? ProgramValueHolder;
 
-    string plazceHolderProgramAd = "asd";
+    string plazceHolderProgramAd = "";
+
+    string OdataQuery = "odata/Mufredats";
+    public Query totalQuery = new Query().AddParams("$expand", "program($select=Id,Ad)");
 
     private DialogSettings DialogParams = new DialogSettings { MinHeight = "400px", Width = "850px" };
 
@@ -226,7 +232,7 @@
     public EventCallback<int> TabDegis { get; set; }
 
 
-    public void OnActionBeginHandler(Syncfusion.Blazor.Grids.ActionEventArgs<MufredatDto> args)
+    public async Task OnActionBeginHandler(Syncfusion.Blazor.Grids.ActionEventArgs<MufredatDto> args)
     {
         if (args.RequestType == Syncfusion.Blazor.Grids.Action.Add)
         {
@@ -234,16 +240,20 @@
             ProgramValueHolder = null;
             fakulteId = null;
             bolumId = null;
+
+            //await ActionCompletedHandler(args);
         }
-        if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
+        else if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
         {
             fakulteId = null;
             bolumId = null;
-            plazceHolderProgramAd = ((UniLife.Shared.Dto.Definitions.ProgramDto)args.ForeignKeyData.Values.FirstOrDefault().FirstOrDefault()).Ad;
+            plazceHolderProgramAd = args.Data.Program.Ad; // ((UniLife.Shared.Dto.Definitions.ProgramDto)args.ForeignKeyData.Values.FirstOrDefault().FirstOrDefault()).Ad;
 
+            //await ActionCompletedHandler(args);
         }
-        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+        else if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
         {
+
             if (!args.Data.ProgramId.HasValue)
             {
                 args.Data.ProgramId = ProgramValueHolder;
@@ -251,15 +261,18 @@
 
 
         }
+
+        await ActionCompletedHandler(args);
+
     }
 
-    public void ActionCompletedHandler(ActionEventArgs<MufredatDto> args)
+    public async Task ActionCompletedHandler(ActionEventArgs<MufredatDto> args)
     {
         if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
         {
             ProgramValueHolder = args.Data.ProgramId;
         }
-        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+        else if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
         {
             if (args.Action == "Edit")
             {
@@ -267,19 +280,27 @@
                 {
                     args.Data.ProgramId = ProgramValueHolder;
                 }
-                Update(args.Data);
+                await Update(args.Data);
+                MufredatGrid.Refresh();
+                args.Cancel = true;
+                await MufredatGrid.CloseEdit();
             }
             else if (args.Action == "Add")
             {
                 //args.Data.ProgramId = programId;
-                Create(args.Data);
-
+                await Create(args.Data);
+                MufredatGrid.Refresh();
+                args.Cancel = true;
+                await MufredatGrid.CloseEdit();
             }
 
         }
-        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
+        else if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
         {
-            Delete(args.Data);
+            await Delete(args.Data);
+            MufredatGrid.Refresh();
+            args.Cancel = true;
+            await MufredatGrid.CloseEdit();
         }
     }
 
@@ -287,6 +308,7 @@
     {
         try
         {
+            mufredatDto.Program = null;
             ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>
                 ("api/mufredat", mufredatDto);
             if (apiResponse.StatusCode == Status200OK)
@@ -294,14 +316,13 @@
                 matToaster.Add(apiResponse.Message, MatToastType.Success);
                 var recordedDto = Newtonsoft.Json.JsonConvert.DeserializeObject<MufredatDto>(apiResponse.Result.ToString());
 
-                mufredatDtos.FirstOrDefault(x => x.Id == 0).Id = recordedDto.Id;
-                MufredatGrid.Refresh();
-                //base.InvokeAsync(StateHasChanged);
+                //mufredatDtos.FirstOrDefault(x => x.Id == 0).Id = recordedDto.Id;
+                //MufredatGrid.Refresh();
             }
             else
             {
-                mufredatDtos.Remove(mufredatDto);
-                MufredatGrid.Refresh();
+                //mufredatDtos.Remove(mufredatDto);
+                //MufredatGrid.Refresh();
                 matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Müfredat Creation Failed");
             }
         }
@@ -314,7 +335,7 @@
     }
 
 
-    public async void Update(MufredatDto mufredatDto)
+    public async Task Update(MufredatDto mufredatDto)
     {
         //this updates the IsCompleted flag only
         try
@@ -347,7 +368,7 @@
             if (response.StatusCode == (HttpStatusCode)Status200OK)
             {
                 matToaster.Add("Müfredat Deleted", MatToastType.Success);
-                mufredatDtos.Remove(mufredatDto);
+                //mufredatDtos.Remove(mufredatDto);
             }
             else
             {
