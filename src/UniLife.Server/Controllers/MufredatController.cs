@@ -78,5 +78,22 @@ namespace UniLife.Server.Controllers
         => ModelState.IsValid ?
                 await _mufredatManager.GetMufredatByProgramIds(programIds.Replace(" ", "").Split(',')) :
                 new ApiResponse(Status400BadRequest, "Mufredat Model is Invalid");
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("GetMufredatState/{mufredatId}")]
+        public async Task<ApiResponse> GetMufredatState(int mufredatId)
+        => ModelState.IsValid ?
+                await _mufredatManager.GetMufredatState(mufredatId) :
+                new ApiResponse(Status400BadRequest, "Mufredat Model is Invalid");
+
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("CreateDersAcilansByMufredatIds")]
+        public async Task<ApiResponse> CreateDersAcilansByMufredatIds([FromBody] IntEnumarableDto intEnumarableDto)
+            => ModelState.IsValid ?
+                await _mufredatManager.CreateDersAcilansByMufredatIds(intEnumarableDto) :
+                new ApiResponse(Status400BadRequest, "Mufredat Model is Invalid");
+        
     }
 }

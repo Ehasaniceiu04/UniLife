@@ -1,114 +1,126 @@
-﻿@inject HttpClient Http;
+﻿
 @using UniLife.Shared.Dto.Definitions
-@inject IMatToaster matToaster
 @using Syncfusion.Blazor.DropDowns
 @using Syncfusion.Blazor.Inputs
 @using Syncfusion.Blazor.Buttons
-@using System.Net
 @inject AppState appState
 
-@using Newtonsoft.Json
 <div class="form-row">
 
-    <MatBlazor.MatHeadline5 class="col-md-4 offset-md-1 col-sm-12">Program : @(appState.MufredatState==null?"Müfredat seçmelisiniz.": appState.MufredatState.Program.Ad)</MatBlazor.MatHeadline5>
-    <MatBlazor.MatHeadline5 class="col-md-4 offset-md-1 col-sm-12">Müfredat : @(appState.MufredatState == null ? "Müfredat seçmelisiniz." : appState.MufredatState?.Ad)</MatBlazor.MatHeadline5>
+    <MatBlazor.MatHeadline6 class="col-md-3 col-sm-12">Fakülte : @(appState.MufredatState == null?"Bağlı fakülte yok.": appState.MufredatState.FakulteAd)</MatBlazor.MatHeadline6>
+    <MatBlazor.MatHeadline6 class="col-md-3 col-sm-12">Bölüm : @(appState.MufredatState == null ? "Bağlı bölüm yok" : appState.MufredatState?.BolumAd)</MatBlazor.MatHeadline6>
+    <MatBlazor.MatHeadline6 class="col-md-3 col-sm-12">Program : @(appState.MufredatState == null ? "Bağlı program yok" : appState.MufredatState?.ProgramAd)</MatBlazor.MatHeadline6>
+    <MatBlazor.MatHeadline6 class="col-md-3 col-sm-12">Müfredat : @(appState.MufredatState == null ? "Müfredat seçmelisiniz." : appState.MufredatState?.MufredatAd)</MatBlazor.MatHeadline6>
 
 </div>
-<SfGrid Height="500px" ShowColumnChooser="true" @ref="DersGrid" DataSource="@dersDtos" Toolbar="@(new List<string>() { "Add","ColumnChooser" })" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowGrouping="true" ColumnMenuItems=@MenuItems ShowColumnMenu="true" Width="100%">
+<SfGrid Height="500px" ShowColumnChooser="true" @ref="DersGrid" DataSource="@dersDtos" Dialog="DialogParams" Toolbar="@(new List<string>() { "Add","ColumnChooser" })" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowGrouping="true" ColumnMenuItems=@MenuItems ShowColumnMenu="true" Width="100%">
     @*<SfDataManager AdaptorInstance="@typeof(CustomAdaptor)" Adaptor="Adaptors.CustomAdaptor"></SfDataManager>*@
     <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.CheckBox"></GridFilterSettings>
     <GridGroupSettings ShowGroupedColumn="true"></GridGroupSettings>
     <GridEvents OnActionComplete="ActionCompletedHandler" TValue="DersDto"></GridEvents>
-    <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
+    <GridEditSettings Dialog="DialogParams" ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
         <Template>
             @{
                 DersDto dersDto = (context as DersDto);
 
 
-                <div class="col-md-10 offset-md-1">
-                    <div class="form-row mt-4">
-                        <div class="col-sm-5 pb-3">
-                            <label for="Id">Id</label>
-                            <SfNumericTextBox ID="Id" CssClass="form-control" @bind-Value="@(dersDto.Id)" Enabled="@false"></SfNumericTextBox>
-                        </div>
-                        <div class="col-sm-3 pb-3">
-                            <label for="Ad">Ad</label>
-                            <SfTextBox ID="Ad" Placeholder="Ad" CssClass="form-control" @bind-Value="@(dersDto.Ad)"></SfTextBox>
-                        </div>
-                        <div class="col-sm-4 pb-3">
-                            <label for="Kod">Kod</label>
-                            <SfTextBox ID="Kod" CssClass="@($"form-control {CssClass}")" @bind-Value="@(dersDto.Kod)" Input="OnInput" Enabled="@true"></SfTextBox>
-                        </div>
-
-                        <div class="col-sm-2 pb-2">
-                            <label for="KisaAd">Kısa Ad</label>
-                            <SfTextBox ID="KisaAd" CssClass="form-control" @bind-Value="@(dersDto.KisaAd)" Enabled="@true"></SfTextBox>
-                        </div>
-                        @*<div class="col-sm-2 pb-2">
-                            <label for="MufredatId">MufredatId</label>
-                            <SfDropDownList ID="MufredatId" CssClass="form-control" @bind-Value="@(appState.MufredatState.Id)" TValue="int" TItem="MufredatDto" Index="0" DataSource="@(mufredatDtos.Where(x=>x.Id==appState.MufredatState.Id))">
-                                <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
-                            </SfDropDownList>
-                        </div>*@
-                        <div class="col-sm-2 pb-2">
-                            <label for="DonemId">DonemId</label>
-                            <SfDropDownList ID="DonemId" CssClass="form-control" @bind-Value="@(dersDto.DonemId)" TValue="int" TItem="DonemDto" Index="0" DataSource="donemDtos">
-                                <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
-                            </SfDropDownList>
-                        </div>
-                        <div class="col-sm-2 pb-2">
-                            <label for="Akts">Akts</label>
-                            <SfNumericTextBox ID="Akts" CssClass="form-control" @bind-Value="@(dersDto.Akts)" Enabled="@true"></SfNumericTextBox>
-                        </div>
-                        <div class="col-sm-2 pb-2">
-                            <label for="GecmeNotu">GecmeNotu</label>
-                            <SfNumericTextBox ID="GecmeNotu" CssClass="form-control" @bind-Value="@(dersDto.GecmeNotu)" Enabled="@true"></SfNumericTextBox>
-                        </div>
-                        <div class="col-sm-2 pb-2">
-                            <label for="OptikKod">OptikKod</label>
-                            <SfTextBox ID="OptikKod" CssClass="form-control" @bind-Value="@(dersDto.OptikKod)" Enabled="@true"></SfTextBox>
-                        </div>
-                        <div class="col-sm-2 pb-2">
-                            <label for="AdEn">AdEn</label>
-                            <SfTextBox ID="AdEn" CssClass="form-control" @bind-Value="@(dersDto.AdEn)" Enabled="@true"></SfTextBox>
-                        </div>
-                        <div class="col-sm-2 pb-2">
-                            <label for="UygSaat">UygSaat</label>
-                            <SfNumericTextBox ID="UygSaat" CssClass="form-control" @bind-Value="@(dersDto.UygSaat)" Enabled="@true"></SfNumericTextBox>
-                        </div>
-                        <div class="col-sm-2 pb-2">
-                            <label for="LabSaat">LabSaat</label>
-                            <SfNumericTextBox ID="LabSaat" CssClass="form-control" @bind-Value="@(dersDto.LabSaat)" Enabled="@true"></SfNumericTextBox>
-                        </div>
-                        <div class="col-sm-2 pb-2">
-                            <label for="TeoSaat">TeoSaat</label>
-                            <SfNumericTextBox ID="TeoSaat" CssClass="form-control" @bind-Value="@(dersDto.TeoSaat)" Enabled="@true"></SfNumericTextBox>
-                        </div>
-                        <div class="col-sm-2 pb-2">
-                            <label for="Kredi">Kredi</label>
-                            <SfNumericTextBox ID="Kredi" CssClass="form-control" @bind-Value="@(dersDto.Kredi)" Enabled="@true"></SfNumericTextBox>
-                        </div>
-                        <div class="col-sm-2 pb-2">
-
-                            <SfCheckBox ID="Durum" Name="Durum" Label="Durum" CssClass="form-control" @bind-Checked="@(dersDto.Durum)"></SfCheckBox>
-                        </div>
-                        <div class="col-sm-2 pb-2">
-                            <label for="Zorunlu">Zorunlu</label>
-                            <SfCheckBox ID="Zorunlu" Name="Zorunlu" CssClass="form-control" @bind-Checked="@(dersDto.Zorunlu)"></SfCheckBox>
-                        </div>
-                        <div class="col-sm-2 pb-2">
-                            <label for="SecmeliKodu">SecmeliKodu</label>
-                            <SfTextBox ID="SecmeliKodu" CssClass="form-control" @bind-Value="@(dersDto.SecmeliKodu)" Enabled="@true"></SfTextBox>
-                        </div>
-                        <div class="col-sm-2 pb-2">
-                            <label for="Sinif">Sinif</label>
-                            <SfNumericTextBox ID="Sinif" CssClass="form-control" @bind-Value="@(dersDto.Sinif)" Enabled="@true"></SfNumericTextBox>
-                        </div>
-
-
-                    </div>
-
+                <div class="row">
+                                <div class="col-sm-12 col-md-5">
+                                    <div class="form-group row">
+                                        <label for="Ad" class="col-sm-2 col-form-label">Ders Ad</label>
+                                        <div class="col-sm-10">
+                                            <SfTextBox ID="Ad" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.Ad)"></SfTextBox>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="Kod" class="col-sm-2 col-form-label">Kod</label>
+                                        <div class="col-sm-10">
+                                            <SfTextBox ID="Kod" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.Kod)"></SfTextBox>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="KisaAd" class="col-sm-2 col-form-label">Kisa Ad</label>
+                                        <div class="col-sm-10">
+                                            <SfTextBox ID="KisaAd" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.KisaAd)"></SfTextBox>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="AdEn" class="col-sm-2 col-form-label">İng. Ad</label>
+                                        <div class="col-sm-10">
+                                            <SfTextBox ID="AdEn" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.AdEn)"></SfTextBox>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="DonemId" class="col-sm-2 col-form-label">Dönem</label>
+                                        <div class="col-sm-10">
+                                            <SfDropDownList ID="DonemId" CssClass="form-control-sm" @bind-Value="@(dersDto.DonemId)" TValue="int?" TItem="DonemDto" Index="0" DataSource="donemDtos">
+                                                <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
+                                            </SfDropDownList>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="Durum" class="col-sm-2 col-form-label">Durum</label>
+                                        <div class="col-sm-4">
+                                            <SfCheckBox ID="Durum" CssClass="form-control-sm" @bind-Checked="@(dersDto.Durum)"></SfCheckBox>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-7">
+                                    <div class="form-group row">
+                                        <label for="Akts" class="col-sm-2 col-form-label">Akts</label>
+                                        <div class="col-sm-4">
+                                            <SfNumericTextBox ID="Akts" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.Akts)"></SfNumericTextBox>
+                                        </div>
+                                        <label for="GecmeNotu" class="col-sm-2 col-form-label">Geçme Notu</label>
+                                        <div class="col-sm-4">
+                                            <SfNumericTextBox ID="GecmeNotu" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.GecmeNotu)"></SfNumericTextBox>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="OptikKod" class="col-sm-2 col-form-label">OptikKod</label>
+                                        <div class="col-sm-4">
+                                            <SfTextBox ID="OptikKod" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.OptikKod)"></SfTextBox>
+                                        </div>
+                                        <label for="UygSaat" class="col-sm-2 col-form-label">Uyg.Saat</label>
+                                        <div class="col-sm-4">
+                                            <SfNumericTextBox ID="UygSaat" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.UygSaat)"></SfNumericTextBox>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="LabSaat" class="col-sm-2 col-form-label">Lab.Saat</label>
+                                        <div class="col-sm-4">
+                                            <SfNumericTextBox ID="LabSaat" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.LabSaat)"></SfNumericTextBox>
+                                        </div>
+                                        <label for="Sinif" class="col-sm-2 col-form-label">Sinif</label>
+                                        <div class="col-sm-4">
+                                            <SfNumericTextBox ID="Sinif" CssClass="form-control-sm" @bind-Value="@(dersDto.Sinif)"></SfNumericTextBox>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="TeoSaat" class="col-sm-2 col-form-label">Teo.Saat</label>
+                                        <div class="col-sm-4">
+                                            <SfNumericTextBox ID="TeoSaat" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.TeoSaat)"></SfNumericTextBox>
+                                        </div>
+                                        <label for="Kredi" class="col-sm-2 col-form-label">Kredi</label>
+                                        <div class="col-sm-4">
+                                            <SfNumericTextBox ID="Kredi" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.Kredi)"></SfNumericTextBox>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group row">
+                                        <label for="Zorunlu" class="col-sm-2 col-form-label">Zorunlu</label>
+                                        <div class="col-sm-4">
+                                            <SfCheckBox ID="Zorunlu" CssClass="form-control-sm" @bind-Checked="@(dersDto.Zorunlu)"></SfCheckBox>
+                                        </div>
+                                        <label for="SecmeliKodu" class="col-sm-2 col-form-label">Seç. Kod</label>
+                                        <div class="col-sm-4">
+                                            <SfTextBox ID="SecmeliKodu" CssClass="form-control-sm" @bind-Value="@(dersDto.SecmeliKodu)" Enabled="@true"></SfTextBox>
+                                        </div>
+                                    </div>
+                                </div>
                 </div>
+
+
 
             }
         </Template>
@@ -146,179 +158,22 @@
     </GridColumns>
 </SfGrid>
 
+<style>
+    /*.form-group {
+        margin-bottom: 0.2rem;
+    }
+    input.e-input, .e-input-group input, .e-input-group.e-control-wrapper input, .e-input-group input.e-input, .e-input-group.e-control-wrapper input.e-input {
+        height: auto;
+    }*/
 
-
-
-@code{
-
-
-    [Parameter]
-    public EventCallback<int> TabDegis { get; set; }
-
-    SfGrid<DersDto> DersGrid;
-
-    List<DersDto> dersDtos = new List<DersDto>();
-
-    List<MufredatDto> mufredatDtos = new List<MufredatDto>();
-
-    List<DonemDto> donemDtos = new List<DonemDto>();
-
-    public string[] MenuItems = new string[] { "Group", "Ungroup", "ColumnChooser", "Filter" };
-
-
-
-    protected override async Task OnInitializedAsync()
-    {
-        await ReadDerss();
-
-
-        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/mufredat");
-        mufredatDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<MufredatDto[]>(apiResponse.Result.ToString()).ToList<MufredatDto>();
-        ApiResponseDto apiResponseDersTur = await Http.GetFromJsonAsync<ApiResponseDto>("api/donem");
-        donemDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<DonemDto[]>(apiResponseDersTur.Result.ToString()).ToList<DonemDto>();
-
+    .col-form-label {
+        /*padding-bottom: unset;*/
+        padding-right: unset;
+        font-size: .775rem;
     }
 
-    async Task ReadDerss()
-    {
-        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/ders/GetDersByMufredatId/" + appState.MufredatState.Id);
-
-        if (apiResponse.StatusCode == Status200OK)
-        {
-            matToaster.Add(apiResponse.Message, MatToastType.Success, "ders getirildi");
-            dersDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<DersDto[]>(apiResponse.Result.ToString()).ToList<DersDto>();
-            DersGrid.Refresh();
-        }
-        else
-        {
-            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "ders bilgisi getirilirken hata oluştu!");
-        }
+    .e-input-group .e-input-group-icon, .e-input-group.e-control-wrapper .e-input-group-icon {
+         min-height: unset; 
     }
 
-
-
-    public async void ActionCompletedHandler(ActionEventArgs<DersDto> args)
-    {
-        if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
-        {
-
-        }
-        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
-        {
-            if (args.Action == "Edit")
-            {
-                Update(args.Data);
-            }
-            else if (args.Action == "Add")
-            {
-                await Create(args.Data);
-            }
-
-        }
-        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
-        {
-            await Delete(args.Data);
-        }
-    }
-
-    public async Task Create(DersDto dersDto)
-    {
-        try
-        {
-            dersDto.MufredatId = appState.MufredatState.Id;
-            dersDto.ProgramId = appState.MufredatState.ProgramId;
-
-            ApiResponseDto<DersDto> apiResponse = await Http.PostJsonAsync<ApiResponseDto<DersDto>>("api/ders", dersDto);
-
-            if (apiResponse.StatusCode == Status200OK)
-            {
-                matToaster.Add(apiResponse.Message, MatToastType.Success);
-                dersDtos.FirstOrDefault(x => x.Id == 0).Id = apiResponse.Result.Id;
-                //DersGrid.Refresh();
-            }
-            else
-            {
-                //TODO Ahmet 1**
-                //TODO Ahmet 2**
-                dersDtos.Remove(dersDto);
-                //DersGrid.Refresh();
-                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "ders Creation Failed");
-            }
-        }
-        catch (Exception ex)
-        {
-            //TODO Ahmet 1**: liste içinden değinde gride eklediğini sil demeli !!
-            //TODO Ahmet 2**: Dbden hata geldiği zaman Bu hata sebebini mantıklı şekilde buraya vermemiz gerekiyor. Aynı Idli kayıt gönder patlatıyon.
-
-            dersDtos.Remove(dersDto);
-            DersGrid.Refresh();
-            matToaster.Add(ex.Message, MatToastType.Danger, "Universite Creation Failed");
-        }
-    }
-
-
-    public async void Update(DersDto dersDto)
-    {
-        //this updates the IsCompleted flag only
-        try
-        {
-            ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>
-                ("api/ders", dersDto);
-
-            if (!apiResponse.IsError)
-            {
-                matToaster.Add(apiResponse.Message, MatToastType.Success);
-            }
-            else
-            {
-                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Universite Save Failed");
-                //update failed gridi boz !
-            }
-        }
-        catch (Exception ex)
-        {
-            matToaster.Add(ex.Message, MatToastType.Danger, "Universite Save Failed");
-            //update failed gridi boz !
-        }
-    }
-
-    public async Task Delete(DersDto dersDto)
-    {
-        try
-        {
-            var response = await Http.DeleteAsync("api/ders/" + dersDto.Id);
-            if (response.StatusCode == (HttpStatusCode)Status200OK)
-            {
-                matToaster.Add("Universite Deleted", MatToastType.Success);
-                dersDtos.Remove(dersDto);
-            }
-            else
-            {
-                matToaster.Add("Universite Delete Failed: " + response.StatusCode, MatToastType.Danger);
-            }
-            //deleteDialogOpen = false;
-        }
-        catch (Exception ex)
-        {
-            matToaster.Add(ex.Message, MatToastType.Danger, "Universite Save Failed");
-        }
-    }
-
-    public string CssClass { get; set; }
-    public void OnInput(InputEventArgs args)
-    {
-        //if (!System.Text.RegularExpressions.Regex.IsMatch(args.Value, "^[0-9]*$"))
-        if (!System.Text.RegularExpressions.Regex.IsMatch(args.Value, "^[a-zA-Z0-9_.-]*$"))
-        {
-            CssClass = "e-error";
-        }
-        else
-        {
-            CssClass = "e-success";
-        }
-        this.StateHasChanged();
-    }
-
-
-
-}
+</style>

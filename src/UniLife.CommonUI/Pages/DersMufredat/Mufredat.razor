@@ -22,7 +22,7 @@
 </style>
 
 @*DataSource="@mufredatDtos"*@
-<SfGrid Width="100%" @ref="MufredatGrid" ID="MufredatGrid" TValue="MufredatDto" Query="@totalQuery" ShowColumnChooser="true" Dialog="DialogParams" AllowSorting="true" AllowFiltering="true" AllowPaging="true" Toolbar="Toolbaritems"
+<SfGrid Width="100%" @ref="MufredatGrid" ID="MufredatGrid" TValue="MufredatDto" Query="@totalQuery" ShowColumnChooser="true" AllowSorting="true" AllowFiltering="true" AllowPaging="true" Toolbar="Toolbaritems"
         ContextMenuItems="@(new List<ContextMenuItemModel>() { new ContextMenuItemModel { Text = "Ders Tanımla", Target = ".e-content", Id = "copywithheader" } })">
     <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
     <GridEvents ContextMenuItemClicked="OnContextMenuClick" CommandClicked="CommandClickHandler" OnActionBegin="OnActionBeginHandler" OnToolbarClick="ToolbarClickHandler" OnActionComplete="ActionCompletedHandler" TValue="MufredatDto"></GridEvents>
@@ -47,7 +47,7 @@
                             </div>
                             <label for="Yil" class="col-sm-2 col-form-label-sm">Yil</label>
                             <div class="col-sm-4">
-                                <SfNumericTextBox ID="Yil" Placeholder="Müfredat Ad" CssClass="form-control-sm" @bind-Value="@(mufredatInfo.Yil)"></SfNumericTextBox>
+                                <SfNumericTextBox ID="Yil" Placeholder="Yil" CssClass="form-control-sm" @bind-Value="@(mufredatInfo.Yil)"></SfNumericTextBox>
                             </div>
                         </div>
                         <div class="form-group  row">
@@ -72,11 +72,12 @@
         </Template>
     </GridEditSettings>
     <GridColumns>
+        <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
         <GridColumn Visible="false" Field=@nameof(MufredatDto.Id) HeaderText="Müfredat ID" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
         <GridColumn Field=@nameof(MufredatDto.Ad) AllowEditing="true" HeaderText="Müfredat İsim" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
         <GridColumn Field=@nameof(MufredatDto.Yil) HeaderText="Müfredat Yıl" Format="####" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
-        <GridColumn AutoFit="true"Field=@nameof(MufredatDto.BasTarih) HeaderText="BasTarih" Format="d" EditType="EditType.DatePickerEdit" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
-        <GridColumn AutoFit="true"Field=@nameof(MufredatDto.BitTarih) HeaderText="Bit Tarih" Format="d" EditType="EditType.DatePickerEdit"></GridColumn>
+        <GridColumn AutoFit="true" Field=@nameof(MufredatDto.BasTarih) HeaderText="BasTarih" Format="d" EditType="EditType.DatePickerEdit" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
+        <GridColumn AutoFit="true" Field=@nameof(MufredatDto.BitTarih) HeaderText="Bit Tarih" Format="d" EditType="EditType.DatePickerEdit"></GridColumn>
         <GridColumn AutoFit="true" Field=@nameof(MufredatDto.KararTarih) HeaderText="KararTarih" Format="d" EditType="EditType.DatePickerEdit"></GridColumn>
         @*<GridColumn Field=@nameof(MufredatDto.ProgramId) HeaderText="Program" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@programDtos"></GridColumn>*@
         <GridColumn Field="Program.Ad" HeaderText="Program" Type="ColumnType.String"></GridColumn>
@@ -116,7 +117,7 @@
     string OdataQuery = "odata/Mufredats";
     public Query totalQuery = new Query().AddParams("$expand", "program($select=Id,Ad)");
 
-    private DialogSettings DialogParams = new DialogSettings { MinHeight = "400px", Width = "850px" };
+
 
     SfGrid<MufredatDto> MufredatGrid;
 
@@ -125,63 +126,68 @@
                                                                       //public MufredatDto SelectedMufredat { get; set; }
 
 
-    List<MufredatDto> mufredatDtos = new List<MufredatDto>();
-    List<ProgramDto> programDtos = new List<ProgramDto>();
+    //List<MufredatDto> mufredatDtos = new List<MufredatDto>();
+    //List<ProgramDto> programDtos = new List<ProgramDto>();
 
-    private List<Object> Toolbaritems = new List<Object>() { "Add", "Search", "Paste", "Copy", "ColumnChooser", new ItemModel() { Text = "Ders Oluştur", TooltipText = "Click", PrefixIcon = "e-icons e-DoubleArrowRight", Id = "DersOlustur" } };
+    private List<Object> Toolbaritems = new List<Object>() { "Add", "Search", "Paste", "Copy", "ColumnChooser", new ItemModel() { Text = "Dersleri Aç", TooltipText = "Click", PrefixIcon = "e-icons e-DoubleArrowRight", Id = "DersleriAc" } };
 
     bool multiDialogOpen = false;
 
+
+
     protected override void OnInitialized()
     {
-        ReadMufredats();
-        ApiResponseDto<List<ProgramDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<ProgramDto>>>("api/program").Result;
-        programDtos = apiResponse.Result;
+        //ReadMufredats();
+        //ApiResponseDto<List<ProgramDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<ProgramDto>>>("api/program").Result;
+        //programDtos = apiResponse.Result;
     }
 
-    void ReadMufredats()
-    {
+    //void ReadMufredats()
+    //{
 
-        ApiResponseDto<List<MufredatDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<MufredatDto>>>("api/mufredat").Result;
+    //    ApiResponseDto<List<MufredatDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<MufredatDto>>>("api/mufredat").Result;
 
-        if (apiResponse.StatusCode == Status200OK)
-        {
-            matToaster.Add(apiResponse.Message, MatToastType.Success, "Müfredatlar getirildi");
-            mufredatDtos = apiResponse.Result;
-        }
-        else
-        {
-            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Müfredat bilgisi getirilirken hata oluştu!");
-        }
-    }
+    //    if (apiResponse.StatusCode == Status200OK)
+    //    {
+    //        matToaster.Add(apiResponse.Message, MatToastType.Success, "Müfredatlar getirildi");
+    //        mufredatDtos = apiResponse.Result;
+    //    }
+    //    else
+    //    {
+    //        matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Müfredat bilgisi getirilirken hata oluştu!");
+    //    }
+    //}
 
     public async Task MultiplyRecord()
     {
-        try
-        {
-            ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/mufredat/Cokla/" + mufredatDto.Id);
-            if (apiResponse.StatusCode == Status200OK)
-            {
-                matToaster.Add(apiResponse.Message, MatToastType.Success);
-                ReadMufredats();
-            }
-            else
-            {
-                mufredatDtos.Remove(mufredatDto);
-                MufredatGrid.Refresh();
-                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Müfredat Creation Failed");
-            }
-        }
-        catch (Exception ex)
-        {
-            mufredatDtos.Remove(mufredatDto);
-            MufredatGrid.Refresh();
-            matToaster.Add(ex.Message, MatToastType.Danger, "Müfredat Creation Failed");
-        }
-        finally
-        {
-            MufredatGrid.Refresh();
-        }
+        //Todo: Burayı odatalı girde göre yeniden yazcaz<
+
+        //try
+        //{
+
+        //    ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/mufredat/Cokla/" + mufredatDto.Id);
+        //    if (apiResponse.StatusCode == Status200OK)
+        //    {
+        //        matToaster.Add(apiResponse.Message, MatToastType.Success);
+        //        ReadMufredats();
+        //    }
+        //    else
+        //    {
+        //        mufredatDtos.Remove(mufredatDto);
+        //        MufredatGrid.Refresh();
+        //        matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Müfredat Creation Failed");
+        //    }
+        //}
+        //catch (Exception ex)
+        //{
+        //    mufredatDtos.Remove(mufredatDto);
+        //    MufredatGrid.Refresh();
+        //    matToaster.Add(ex.Message, MatToastType.Danger, "Müfredat Creation Failed");
+        //}
+        //finally
+        //{
+        //    MufredatGrid.Refresh();
+        //}
     }
 
     //Sağ Click için
@@ -194,11 +200,23 @@
     }
 
 
-    public void ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+    public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
     {
-        if (args.Item.Id == "DersOlustur")
+        if (args.Item.Id == "DersleriAc")
         {
-            //You can customized your code here....
+            IntEnumarableDto intEnumarableDto = new IntEnumarableDto();
+            intEnumarableDto.EnumerableList = (await MufredatGrid.GetSelectedRecords()).Select(x => x.Id);
+
+            ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/mufredat/CreateDersAcilansByMufredatIds", intEnumarableDto);
+
+            if (apiResponse.StatusCode == Status200OK)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success, "Başarılı");
+            }
+            else
+            {
+                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Ders açma işlemi başarısız oldu.");
+            }
         }
     }
 
@@ -213,16 +231,22 @@
         }
         if (args.CommandColumn.Title == "DersOlus")
         {
-            mufredatDto = args.RowData;
-            //appState.MufredatState = mufredatDto.DeepClone();
-            mufredatDto.Program = programDtos.FirstOrDefault(x => x.Id == mufredatDto.ProgramId);
-            if (mufredatDto.Program == null)
-            {
-                matToaster.Add("Program Bulunamadı", MatToastType.Danger, "Müfredat ders ekleme hatası");
-                return;
-            }
-            appState.MufredatState = mufredatDto;
-            //base.InvokeAsync(StateHasChanged);
+
+            ApiResponseDto<MufredatStateDto> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<MufredatStateDto>>($"api/mufredat/GetMufredatState/{args.RowData.Id}").Result;
+            appState.MufredatState = apiResponse.Result;
+
+
+            //mufredatDto = args.RowData;
+            ////appState.MufredatState = mufredatDto.DeepClone();
+            //mufredatDto.Program = programDtos.FirstOrDefault(x => x.Id == mufredatDto.ProgramId);
+            //if (mufredatDto.Program == null)
+            //{
+            //    matToaster.Add("Program Bulunamadı", MatToastType.Danger, "Müfredat ders ekleme hatası");
+            //    return;
+            //}
+            //appState.MufredatState = mufredatDto;
+            ////base.InvokeAsync(StateHasChanged);
+
             TabDegis.InvokeAsync(1);
 
         }
@@ -328,7 +352,7 @@
         }
         catch (Exception ex)
         {
-            mufredatDtos.Remove(mufredatDto);
+            //mufredatDtos.Remove(mufredatDto);
             MufredatGrid.Refresh();
             matToaster.Add(ex.Message, MatToastType.Danger, "Müfredat Creation Failed");
         }

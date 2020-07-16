@@ -96,5 +96,23 @@ namespace UniLife.Server.Managers
                 return new ApiResponse(Status400BadRequest, "Failed to Retrieve MufredatDtos");
             }
         }
+
+        public async Task<ApiResponse> GetMufredatState(int mufredatId)
+        {
+            try
+            {
+                return new ApiResponse(Status200OK, "Retrieved MufredatDtos", await _mufredatStore.GetMufredatState(mufredatId));
+            }
+            catch (Exception e)
+            {
+                return new ApiResponse(Status400BadRequest, "Failed to Retrieve MufredatDtos");
+            }
+        }
+
+        public async Task<ApiResponse> CreateDersAcilansByMufredatIds(IntEnumarableDto intEnumarableDto)
+        {
+            await _mufredatStore.CreateDersAcilansByMufredatIds(intEnumarableDto);
+            return new ApiResponse(Status200OK, "Created MufredatDto");
+        }
     }
 }

@@ -21,7 +21,7 @@ namespace UniLife.CommonUI
 
         public UserProfileDto UserProfile { get; set; }
         //public OgrenciDto OgrenciUserProfile { get; set; }
-        public MufredatDto MufredatState { get; set; }
+        public MufredatStateDto MufredatState { get; set; }
 
         public OgrenciDto OgrenciState { get; set; }
         public AkademisyenDto AkademisyenState { get; set; }

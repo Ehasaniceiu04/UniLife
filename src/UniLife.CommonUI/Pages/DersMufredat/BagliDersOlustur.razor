@@ -14,8 +14,8 @@
     <div class="content-wrapper">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-lg-12 col-md-12">
-                <MatBlazor.MatHeadline5>Program : @(appState.MufredatState==null?"Müfredat seçmelisiniz.": appState.MufredatState.Program.Ad)</MatBlazor.MatHeadline5>
-                <MatBlazor.MatHeadline5>Müfredat : @(appState.MufredatState == null ? "Müfredat seçmelisiniz." : appState.MufredatState?.Ad)</MatBlazor.MatHeadline5>
+                <MatBlazor.MatHeadline5>Program : @(appState.MufredatState==null?"Müfredat seçmelisiniz.": appState.MufredatState.ProgramAd)</MatBlazor.MatHeadline5>
+                <MatBlazor.MatHeadline5>Müfredat : @(appState.MufredatState == null ? "Müfredat seçmelisiniz." : appState.MufredatState?.MufredatAd)</MatBlazor.MatHeadline5>
             </div>
         </div>
         <div class="row">
@@ -118,7 +118,7 @@
     protected async Task KaydetDersler()
     {
         //kaydet
-        dersDto.MufredatId = appState.MufredatState.Id;
+        dersDto.MufredatId = appState.MufredatState.MufredatId;
         var createResult = await Create(dersDto);
         if (createResult)
         {
@@ -131,7 +131,7 @@
     protected async Task KaydetYeni()
     {
         //Kaydet
-        dersDto.MufredatId = appState.MufredatState.Id;
+        dersDto.MufredatId = appState.MufredatState.MufredatId;
         await Create(dersDto);
         //base.InvokeAsync(StateHasChanged);
         //sayfada kal

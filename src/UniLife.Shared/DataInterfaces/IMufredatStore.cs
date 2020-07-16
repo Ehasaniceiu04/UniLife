@@ -21,5 +21,7 @@ namespace UniLife.Shared.DataInterfaces
         Task DeleteById(int id);
         Task Cokla(int id);
         Task<List<Mufredat>> GetMufredatByProgramIds(string[] programIds);
+        Task<MufredatStateDto> GetMufredatState(int mufredatId);
+        Task CreateDersAcilansByMufredatIds(IntEnumarableDto intEnumarableDto);
     }
 }

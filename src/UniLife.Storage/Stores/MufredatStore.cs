@@ -122,11 +122,70 @@ namespace UniLife.Storage.Stores
                 mufredats = await _db.Mufredats.Where(t => myInts.Contains(t.ProgramId)).ToListAsync();
             }
             
-
             if (mufredats == null)
                 throw new InvalidDataException($"Unable to find Mufredats with IDs:...");
 
             return _autoMapper.Map<List<Mufredat>>(mufredats);
+        }
+
+        public async Task<MufredatStateDto> GetMufredatState(int mufredatId)
+        {
+            var mufredatState = from m in _db.Mufredats.Where(x => x.Id == mufredatId)
+                                join p in _db.Programs on m.ProgramId equals p.Id
+                                join b in _db.Bolums on p.BolumId equals b.Id
+                                join f in _db.Fakultes on b.FakulteId equals f.Id
+                                select new MufredatStateDto
+                                {
+                                    MufredatId = m.Id,
+                                    MufredatAd = m.Ad,
+                                    ProgramId =p.Id,
+                                    ProgramAd =p.Ad,
+                                    BolumId =b.Id,
+                                    BolumAd =b.Ad,
+                                    FakulteId=f.Id,
+                                    FakulteAd =f.Ad
+                                };
+            return await mufredatState.FirstOrDefaultAsync();
+        }
+
+        public async Task CreateDersAcilansByMufredatIds(IntEnumarableDto intEnumarableDto)
+        {
+            var mufredatDerss = await _db.Derss.Where(x => intEnumarableDto.EnumerableList.Contains(x.MufredatId)).ToListAsync();
+
+            List<DersAcilan> dersAcilans = new List<DersAcilan>();
+            foreach (var i in mufredatDerss)
+            {
+                DersAcilan dersAcilan = new DersAcilan
+                {
+                    Ad = i.Ad,
+                    AdEn=i.AdEn,
+                    Akts = i.Akts,
+                    BolumId = i.BolumId,
+                    DersId = i.Id,
+                    KisaAd = i.KisaAd,
+                    Kod = i.Kod+"-"+i.Id,
+                    Kredi = i.Kredi,
+                    LabSaat = i.LabSaat,
+                    MufredatId=i.MufredatId,
+                    OptikKod = i.OptikKod,
+                    ProgramId = i.ProgramId,
+                    SecmeliKodu = i.SecmeliKodu,
+                    Sinif = i.Sinif,
+                    DonemId = i.DonemId,
+                    Durum = i.Durum,
+                    FakulteId = i.FakulteId,
+                    TeoSaat =i.TeoSaat,
+                    UygSaat = i.UygSaat,
+                    Zorunlu = i.Zorunlu
+                };
+                dersAcilans.Add(dersAcilan);
+            }
+
+
+            //dersAcilans = _autoMapper.Map<List<DersAcilan>>(await mufredatDerss.ToListAsync());
+
+            await _db.DersAcilans.AddRangeAsync(dersAcilans);
+            await _db.SaveChangesAsync(CancellationToken.None);
         }
     }
 }
