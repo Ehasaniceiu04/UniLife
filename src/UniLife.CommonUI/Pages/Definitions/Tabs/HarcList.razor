@@ -87,7 +87,7 @@
         {
             ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>
                 ("api/harc", harcDto);
-            if (apiResponse.StatusCode == Status200OK)
+            if (apiResponse.IsSuccessStatusCode)
             {
                 matToaster.Add(apiResponse.Message, MatToastType.Success);
                 //todo = Newtonsoft.Json.JsonConvert.DeserializeObject<HarcDto>
