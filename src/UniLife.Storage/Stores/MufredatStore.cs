@@ -158,15 +158,15 @@ namespace UniLife.Storage.Stores
                 DersAcilan dersAcilan = new DersAcilan
                 {
                     Ad = i.Ad,
-                    AdEn=i.AdEn,
+                    AdEn = i.AdEn,
                     Akts = i.Akts,
                     BolumId = i.BolumId,
                     DersId = i.Id,
                     KisaAd = i.KisaAd,
-                    Kod = i.Kod+"-"+i.Id,
+                    Kod = i.Kod + "-" + i.Id,
                     Kredi = i.Kredi,
                     LabSaat = i.LabSaat,
-                    MufredatId=i.MufredatId,
+                    MufredatId = i.MufredatId,
                     OptikKod = i.OptikKod,
                     ProgramId = i.ProgramId,
                     SecmeliKodu = i.SecmeliKodu,
@@ -174,7 +174,7 @@ namespace UniLife.Storage.Stores
                     DonemId = i.DonemId,
                     Durum = i.Durum,
                     FakulteId = i.FakulteId,
-                    TeoSaat =i.TeoSaat,
+                    TeoSaat = i.TeoSaat,
                     UygSaat = i.UygSaat,
                     Zorunlu = i.Zorunlu
                 };
@@ -182,7 +182,7 @@ namespace UniLife.Storage.Stores
             }
 
 
-            //dersAcilans = _autoMapper.Map<List<DersAcilan>>(await mufredatDerss.ToListAsync());
+            //dersAcilans = _autoMapper.Map<List<DersAcilan>>(mufredatDerss);
 
             await _db.DersAcilans.AddRangeAsync(dersAcilans);
             await _db.SaveChangesAsync(CancellationToken.None);

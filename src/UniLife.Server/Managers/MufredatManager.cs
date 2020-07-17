@@ -5,16 +5,19 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using static Microsoft.AspNetCore.Http.StatusCodes;
+using Microsoft.Extensions.Logging;
 
 namespace UniLife.Server.Managers
 {
     public class MufredatManager : IMufredatManager
     {
         private readonly IMufredatStore _mufredatStore;
+        private readonly ILogger<MufredatManager> _logger;
 
-        public MufredatManager(IMufredatStore mufredatStore)
+        public MufredatManager(IMufredatStore mufredatStore, ILogger<MufredatManager> logger)
         {
             _mufredatStore = mufredatStore;
+            _logger = logger;
         }
 
         public async Task<ApiResponse> Get()
@@ -105,14 +108,15 @@ namespace UniLife.Server.Managers
             }
             catch (Exception e)
             {
-                return new ApiResponse(Status400BadRequest, "Failed to Retrieve MufredatDtos");
+                return new ApiResponse(Status400BadRequest, "Failed to GetMufredatState");
             }
         }
 
         public async Task<ApiResponse> CreateDersAcilansByMufredatIds(IntEnumarableDto intEnumarableDto)
         {
-            await _mufredatStore.CreateDersAcilansByMufredatIds(intEnumarableDto);
-            return new ApiResponse(Status200OK, "Created MufredatDto");
+                await _mufredatStore.CreateDersAcilansByMufredatIds(intEnumarableDto);
+                return new ApiResponse(Status200OK, "Seçili müfredatların dersleri açıldı.");
+
         }
     }
 }
