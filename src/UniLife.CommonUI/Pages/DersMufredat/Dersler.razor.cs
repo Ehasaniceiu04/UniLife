@@ -36,32 +36,50 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         private DialogSettings DialogParams = new DialogSettings { MinHeight = "400px", Width = "900px" };
 
-        protected override async Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
-            await ReadDerss();
+            ReadDerss();
 
 
-            ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/mufredat");
+            ApiResponseDto apiResponse = Http.GetFromJsonAsync<ApiResponseDto>("api/mufredat").Result;
             mufredatDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<MufredatDto[]>(apiResponse.Result.ToString()).ToList<MufredatDto>();
-            ApiResponseDto apiResponseDersTur = await Http.GetFromJsonAsync<ApiResponseDto>("api/donem");
+            ApiResponseDto apiResponseDersTur = Http.GetFromJsonAsync<ApiResponseDto>("api/donem").Result;
             donemDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<DonemDto[]>(apiResponseDersTur.Result.ToString()).ToList<DonemDto>();
 
         }
 
-        async Task ReadDerss()
+        void ReadDerss()
         {
-            ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/ders/GetDersByMufredatId/" + appState.MufredatState.MufredatId);
+            try
+            {
+                ApiResponseDto<List<DersDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<DersDto>>>("api/ders/GetDersByMufredatId/" + appState.MufredatState.MufredatId).Result;
 
-            if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
-            {
-                matToaster.Add(apiResponse.Message, MatToastType.Success, "ders getirildi");
-                dersDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<DersDto[]>(apiResponse.Result.ToString()).ToList<DersDto>();
-                DersGrid.Refresh();
+                if (apiResponse.IsSuccessStatusCode)
+                {
+                    matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+                    dersDtos = apiResponse.Result;
+                }
+                else
+                    matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
             }
-            else
+            catch (Exception ex)
             {
-                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "ders bilgisi getirilirken hata oluştu!");
+                matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
             }
+
+
+            
+
+            //if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
+            //{
+            //    matToaster.Add(apiResponse.Message, MatToastType.Success, "ders getirildi");
+            //    dersDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<DersDto[]>(apiResponse.Result.ToString()).ToList<DersDto>();
+            //    DersGrid.Refresh();
+            //}
+            //else
+            //{
+            //    matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "ders bilgisi getirilirken hata oluştu!");
+            //}
         }
 
 
@@ -101,11 +119,13 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
                 ApiResponseDto<DersDto> apiResponse = await Http.PostJsonAsync<ApiResponseDto<DersDto>>("api/ders", dersDto);
 
-                if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
+                if (apiResponse.IsSuccessStatusCode)
                 {
                     matToaster.Add(apiResponse.Message, MatToastType.Success);
                     dersDtos.FirstOrDefault(x => x.Id == 0).Id = apiResponse.Result.Id;
                     //DersGrid.Refresh();
+                    matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+
                 }
                 else
                 {
@@ -113,7 +133,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                     //TODO Ahmet 2**
                     dersDtos.Remove(dersDto);
                     //DersGrid.Refresh();
-                    matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "ders Creation Failed");
+                    matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
                 }
             }
             catch (Exception ex)
@@ -123,7 +143,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
                 dersDtos.Remove(dersDto);
                 DersGrid.Refresh();
-                matToaster.Add(ex.Message, MatToastType.Danger, "Universite Creation Failed");
+                matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
             }
         }
 
@@ -138,18 +158,16 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
                 if (!apiResponse.IsError)
                 {
-                    matToaster.Add(apiResponse.Message, MatToastType.Success);
+                    matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
                 }
                 else
                 {
-                    matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Universite Save Failed");
-                    //update failed gridi boz !
+                    matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
                 }
             }
             catch (Exception ex)
             {
-                matToaster.Add(ex.Message, MatToastType.Danger, "Universite Save Failed");
-                //update failed gridi boz !
+                matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
             }
         }
 
@@ -160,18 +178,17 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 var response = await Http.DeleteAsync("api/ders/" + dersDto.Id);
                 if (response.StatusCode == (System.Net.HttpStatusCode)Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
                 {
-                    matToaster.Add("Universite Deleted", MatToastType.Success);
+                    matToaster.Add("", MatToastType.Success, "İşlem başarılı.");
                     dersDtos.Remove(dersDto);
                 }
                 else
                 {
-                    matToaster.Add("Universite Delete Failed: " + response.StatusCode, MatToastType.Danger);
+                    matToaster.Add("", MatToastType.Danger, "İşlem başarısız!");
                 }
-                //deleteDialogOpen = false;
             }
             catch (Exception ex)
             {
-                matToaster.Add(ex.Message, MatToastType.Danger, "Universite Save Failed");
+                matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
             }
         }
 

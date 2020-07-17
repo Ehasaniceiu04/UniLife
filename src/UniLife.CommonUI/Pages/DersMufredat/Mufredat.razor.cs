@@ -51,6 +51,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         bool multiDialogOpen = false;
 
+        private DialogSettings DialogParams = new DialogSettings { MinHeight = "400px", Width = "900px" };
 
 
         protected override void OnInitialized()
