@@ -10,147 +10,238 @@
 @using UniLife.Shared.DataModels
 @using Syncfusion.Blazor.Data
 <ControlSection>
-    <SfGrid @ref="DersAcilanGrid" DataSource="@dersAcilanDtos" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
-        <GridEvents OnActionComplete="ActionCompletedHandler" TValue="DersAcilanDto"></GridEvents>
-        <GridEditSettings ShowDeleteConfirmDialog="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
-            <Template>
-                @{
-                    DersAcilanDto dAcilanContext = (context as DersAcilanDto);
+    <div class="row pb-2 card">
+        <div class="col-sm-12 col-md-7">
+            <FakBolPrg @bind-ProgramId="programId"
+                       @bind-BolumId="bolumId"
+                       @bind-FakulteId="fakulteId"></FakBolPrg>
+        </div>
+        <div class="col-sm-12 col-md-5">
+            <div class="form-group row">
+                <SfButton OnClick="Refresh" CssClass="e-success col-sm-12 form-control-sm">Bul / Yenile</SfButton>
+            </div>
+        </div>
+    </div>
+
+    @if (isGridVisible)
+    {
+        <SfGrid @ref="DersAcilanGrid" Query="@totalQuery" TValue="DersAcilanDto" AllowSorting="true" AllowExcelExport="true" AllowPdfExport="true" AllowPaging="true" AllowFiltering="true" Toolbar="@(new List<string>() {  "PdfExport","ExcelExport","ColumnChooser" })" ShowColumnChooser="true">
+            <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+            <GridEvents OnActionComplete="ActionCompletedHandler" TValue="DersAcilanDto"></GridEvents>
+            <GridEditSettings ShowDeleteConfirmDialog="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
+                <Template>
+                    @{
+                        DersAcilanDto dAcilanContext = (context as DersAcilanDto);
 
 
-                    <div class="col-md-6">
-                        <div class="form-row mt-2">
-                            <div class="col-12 pb-2">
-                                <div class="form-row">
-                                    <label class="col-md-2 col-form-label" for="Kod">Kod</label>
-                                    <SfTextBox ID="Kod" CssClass="form-control col-sm-3" Value="@(dAcilanContext.Kod)" Enabled="@false"></SfTextBox>
-                                    <label class="col-md-2 col-form-label" for="Sube">Sube No</label>
-                                    <SfTextBox ID="Sube" CssClass="form-control col-sm-3" Value="@(dAcilanContext.Sube.ToString())" Enabled="@false"></SfTextBox>
-                                    <SfCheckBox Label="Aktif" CssClass="col-sm-2" @bind-Checked="@dAcilanContext.Durum"></SfCheckBox>
+                        <div class="col-md-6">
+                            <div class="form-row mt-2">
+                                <div class="col-12 pb-2">
+                                    <div class="form-row">
+                                        <label class="col-md-2 col-form-label" for="Kod">Kod</label>
+                                        <SfTextBox ID="Kod" CssClass="form-control col-sm-3" Value="@(dAcilanContext.Kod)" Enabled="@false"></SfTextBox>
+                                        <label class="col-md-2 col-form-label" for="Sube">Sube No</label>
+                                        <SfTextBox ID="Sube" CssClass="form-control col-sm-3" Value="@(dAcilanContext.Sube.ToString())" Enabled="@false"></SfTextBox>
+                                        <SfCheckBox Label="Aktif" CssClass="col-sm-2" @bind-Checked="@dAcilanContext.Durum"></SfCheckBox>
+                                    </div>
                                 </div>
-                            </div>
 
 
 
-                            <div class="col-12 pb-2">
-                                <div class="form-row">
-                                    <label class="col-md-2 col-form-label" for="Ad">Ad</label>
-                                    <SfTextBox ID="Ad" CssClass="form-control col-sm-8 pb-1" Value="@(dAcilanContext.Ad)" Enabled="@false"></SfTextBox>
-                                    <SfCheckBox Label="Zorunlu" CssClass="col-sm-2" @bind-Checked="@dAcilanContext.Zorunlu"></SfCheckBox>
+                                <div class="col-12 pb-2">
+                                    <div class="form-row">
+                                        <label class="col-md-2 col-form-label" for="Ad">Ad</label>
+                                        <SfTextBox ID="Ad" CssClass="form-control col-sm-8 pb-1" Value="@(dAcilanContext.Ad)" Enabled="@false"></SfTextBox>
+                                        <SfCheckBox Label="Zorunlu" CssClass="col-sm-2" @bind-Checked="@dAcilanContext.Zorunlu"></SfCheckBox>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="col-12 pb-2">
-                                <div class="form-row">
-                                    <label class="col-md-2 col-form-label" for="Akademisyen">Akademisyen</label>
-                                    <SfAutoComplete ID="Akademisyen" CssClass="form-control col-sm-10 pb-1" @bind-Value="@(dAcilanContext.AkademisyenAd)" TValue="string" TItem="Akademisyen" Query="@Query">
-                                        <SfDataManager Url="odata/Akademisyens" Adaptor="Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
-                                        <AutoCompleteFieldSettings Value="Ad" Text="Ad"></AutoCompleteFieldSettings>
-                                    </SfAutoComplete>
+                                <div class="col-12 pb-2">
+                                    <div class="form-row">
+                                        <label class="col-md-2 col-form-label" for="Akademisyen">Akademisyen</label>
+                                        <SfAutoComplete ID="Akademisyen" CssClass="form-control col-sm-10 pb-1" @bind-Value="@(dAcilanContext.AkademisyenAd)" TValue="string" TItem="Akademisyen" Query="@Query">
+                                            <SfDataManager Url="odata/Akademisyens" Adaptor="Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
+                                            <AutoCompleteFieldSettings Value="Ad" Text="Ad"></AutoCompleteFieldSettings>
+                                        </SfAutoComplete>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="col-12 pb-2">
-                                <div class="form-row">
-                                    <label class="col-md-2 col-form-label" for="Sinif">Sınıf</label>
-                                    <SfNumericTextBox ID="Sinif" CssClass="form-control col-sm-2 pb-1" Value="@(dAcilanContext.Sinif)" ></SfNumericTextBox>
-                                    <label class="col-md-2 col-form-label" for="Kredi">Kredi</label>
-                                    <SfNumericTextBox ID="Kredi" CssClass="form-control col-sm-2" Value="@(dAcilanContext.Kredi)" ></SfNumericTextBox>
-                                    <label class="col-md-2 col-form-label" for="Akts">Akts</label>
-                                    <SfNumericTextBox ID="Akts" CssClass="form-control col-sm-2" Value="@(dAcilanContext.Akts)" ></SfNumericTextBox>
+                                <div class="col-12 pb-2">
+                                    <div class="form-row">
+                                        <label class="col-md-2 col-form-label" for="Sinif">Sınıf</label>
+                                        <SfNumericTextBox ID="Sinif" CssClass="form-control col-sm-2 pb-1" Value="@(dAcilanContext.Sinif)"></SfNumericTextBox>
+                                        <label class="col-md-2 col-form-label" for="Kredi">Kredi</label>
+                                        <SfNumericTextBox ID="Kredi" CssClass="form-control col-sm-2" Value="@(dAcilanContext.Kredi)"></SfNumericTextBox>
+                                        <label class="col-md-2 col-form-label" for="Akts">Akts</label>
+                                        <SfNumericTextBox ID="Akts" CssClass="form-control col-sm-2" Value="@(dAcilanContext.Akts)"></SfNumericTextBox>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="col-12 pb-2">
-                                <div class="form-row">
-                                    <label class="col-md-2 col-form-label" for="TeoSaat">Teo. Saat</label>
-                                    <SfNumericTextBox ID="TeoSaat" CssClass="form-control col-sm-2" Value="@(dAcilanContext.TeoSaat)" ></SfNumericTextBox>
-                                    <label class="col-md-2 col-form-label" for="UygSaat">Uyg. Saat</label>
-                                    <SfNumericTextBox ID="UygSaat" CssClass="form-control col-sm-2" Value="@(dAcilanContext.UygSaat)" ></SfNumericTextBox>
-                                    <label class="col-md-2 col-form-label" for="LabSaat">Lab. Saat</label>
-                                    <SfNumericTextBox ID="LabSaat" CssClass="form-control col-sm-2" Value="@(dAcilanContext.LabSaat)" ></SfNumericTextBox>
+                                <div class="col-12 pb-2">
+                                    <div class="form-row">
+                                        <label class="col-md-2 col-form-label" for="TeoSaat">Teo. Saat</label>
+                                        <SfNumericTextBox ID="TeoSaat" CssClass="form-control col-sm-2" Value="@(dAcilanContext.TeoSaat)"></SfNumericTextBox>
+                                        <label class="col-md-2 col-form-label" for="UygSaat">Uyg. Saat</label>
+                                        <SfNumericTextBox ID="UygSaat" CssClass="form-control col-sm-2" Value="@(dAcilanContext.UygSaat)"></SfNumericTextBox>
+                                        <label class="col-md-2 col-form-label" for="LabSaat">Lab. Saat</label>
+                                        <SfNumericTextBox ID="LabSaat" CssClass="form-control col-sm-2" Value="@(dAcilanContext.LabSaat)"></SfNumericTextBox>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="col-12 pb-2">
-                                <div class="form-row">
-                                    <label class="col-md-2 col-form-label" for="TopKont">Toplan Kontenjan</label>
-                                    <SfNumericTextBox ID="TopKont" CssClass="form-control col-sm-2" Value="@(dAcilanContext.TopKont)" ></SfNumericTextBox>
-                                    <label class="col-md-2 col-form-label" for="BolDisKont">Bölümü Dışı Kontenjan</label>
-                                    <SfNumericTextBox ID="BolDisKont" CssClass="form-control col-sm-2" Value="@(dAcilanContext.BolDisKont)" ></SfNumericTextBox>
-                                    <label class="col-md-2 col-form-label" for="AltKont">Alttan Kontenjan</label>
-                                    <SfNumericTextBox ID="AltKont" CssClass="form-control col-sm-2" Value="@(dAcilanContext.AltKont)" ></SfNumericTextBox>
+                                <div class="col-12 pb-2">
+                                    <div class="form-row">
+                                        <label class="col-md-2 col-form-label" for="TopKont">Toplan Kontenjan</label>
+                                        <SfNumericTextBox ID="TopKont" CssClass="form-control col-sm-2" Value="@(dAcilanContext.TopKont)"></SfNumericTextBox>
+                                        <label class="col-md-2 col-form-label" for="BolDisKont">Bölümü Dışı Kontenjan</label>
+                                        <SfNumericTextBox ID="BolDisKont" CssClass="form-control col-sm-2" Value="@(dAcilanContext.BolDisKont)"></SfNumericTextBox>
+                                        <label class="col-md-2 col-form-label" for="AltKont">Alttan Kontenjan</label>
+                                        <SfNumericTextBox ID="AltKont" CssClass="form-control col-sm-2" Value="@(dAcilanContext.AltKont)"></SfNumericTextBox>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="col-12 pb-2">
-                                <div class="form-row">
-                                    <label class="col-md-2 col-form-label" for="DropBolDisKotaUyg">Bölüm Dışı Kota Uyg</label>
-                                    <SfDropDownList ID="DropBolDisKotaUyg" @ref="DropBolDisKotaUyg" Index="0" TItem="KeyValueDto" CssClass="col-sm-10 pb-1"
-                                                    TValue="int" PopupHeight="230px" Placeholder="Sınıf Seçiniz"
-                                                    @bind-Value="@dAcilanContext.BolDisKota" DataSource="@DropKotaUygDtos">
-                                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                                    </SfDropDownList>
+                                <div class="col-12 pb-2">
+                                    <div class="form-row">
+                                        <label class="col-md-2 col-form-label" for="DropBolDisKotaUyg">Bölüm Dışı Kota Uyg</label>
+                                        <SfDropDownList ID="DropBolDisKotaUyg" @ref="DropBolDisKotaUyg" Index="0" TItem="KeyValueDto" CssClass="col-sm-10 pb-1"
+                                                        TValue="int" PopupHeight="230px" Placeholder="Sınıf Seçiniz"
+                                                        @bind-Value="@dAcilanContext.BolDisKota" DataSource="@DropKotaUygDtos">
+                                            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                                        </SfDropDownList>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="col-12 pb-2">
-                                <div class="form-row">
-                                    <label class="col-md-2 col-form-label" for="DropAltKotaUyg">Alttan Kota Uyg</label>
-                                    <SfDropDownList ID="DropAltKotaUyg" @ref="DropAltKotaUyg" Index="0" TItem="KeyValueDto" CssClass="col-sm-10 pb-1"
-                                                    TValue="int" PopupHeight="230px" Placeholder="Sınıf Seçiniz"
-                                                    @bind-Value="@dAcilanContext.AltKota" DataSource="@DropKotaUygDtos">
-                                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                                    </SfDropDownList>
+                                <div class="col-12 pb-2">
+                                    <div class="form-row">
+                                        <label class="col-md-2 col-form-label" for="DropAltKotaUyg">Alttan Kota Uyg</label>
+                                        <SfDropDownList ID="DropAltKotaUyg" @ref="DropAltKotaUyg" Index="0" TItem="KeyValueDto" CssClass="col-sm-10 pb-1"
+                                                        TValue="int" PopupHeight="230px" Placeholder="Sınıf Seçiniz"
+                                                        @bind-Value="@dAcilanContext.AltKota" DataSource="@DropKotaUygDtos">
+                                            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                                        </SfDropDownList>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                    </div>
-                    @*<div class="col-sm-12 col-md-6 pb-2">
-                            <div class="form-row">
-                                <label class="col-md col-form-label" for="Tel">Açılacak Dönemi</label>
-                                    <SfDropDownList ID="donem" @ref="DropAltKotaUyg" TItem="KeyValueDto" CssClass="col-sm-10 pb-1"
-                                                    TValue="int?" PopupHeight="230px" Placeholder="Sınıf Seçiniz"
-                                                    @bind-Value="@dAcilanContext.DonemId" DataSource="@DonemDtos">
-                                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                                    </SfDropDownList>
-                            </div>
-                        </div>*@
-                }
-            </Template>
-        </GridEditSettings>
-        <GridColumns>
-            <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Açılan Ders ID" Edit="false" AllowEditing="false" TextAlign="TextAlign.Left" Width="140"></GridColumn>
-            <GridColumn Field=@nameof(DersAcilanDto.Kod) HeaderText="Kod"></GridColumn>
-            <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Ad" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
-            @*<GridColumn Field=@nameof(DersAcilanDto.Kredi) HeaderText="T+U TODO"></GridColumn>*@
-            <GridColumn Field=@nameof(DersAcilanDto.Kredi) HeaderText="Kr"></GridColumn>
-            <GridColumn Field=@nameof(DersAcilanDto.Akts) HeaderText="Akts"></GridColumn>
-            <GridColumn Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
-            <GridColumn Field=@nameof(DersAcilanDto.AltKota) HeaderText="Alt-Bol-Top">
-                <Template>
-                    @{
-                        var dersAcilanContext = (context as DersAcilanDto);
-
-                        <p>@(dersAcilanContext.AltKont + "-"+dersAcilanContext.BolDisKont+"-"+ dersAcilanContext.TopKont)</p>
+                        <div class="col-md-6">
+                        </div>
+                        @*<div class="col-sm-12 col-md-6 pb-2">
+                                <div class="form-row">
+                                    <label class="col-md col-form-label" for="Tel">Açılacak Dönemi</label>
+                                        <SfDropDownList ID="donem" @ref="DropAltKotaUyg" TItem="KeyValueDto" CssClass="col-sm-10 pb-1"
+                                                        TValue="int?" PopupHeight="230px" Placeholder="Sınıf Seçiniz"
+                                                        @bind-Value="@dAcilanContext.DonemId" DataSource="@DonemDtos">
+                                            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                                        </SfDropDownList>
+                                </div>
+                            </div>*@
                     }
                 </Template>
-            </GridColumn>
-            <GridColumn Field=@nameof(DersAcilanDto.Zorunlu) HeaderText="Z" EditType="EditType.BooleanEdit" DisplayAsCheckBox="true"></GridColumn>
-            <GridColumn Field=@nameof(DersAcilanDto.ProgramId) EditType="EditType.DropDownEdit" HeaderText="Program" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@programDtos" Width="150"></GridColumn>
-            <GridColumn Field=@nameof(DersAcilanDto.AkademisyenId) HeaderText="Öğrt Görev" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@akademisyenDtos" Width="150"></GridColumn>
-            <GridColumn>
-                <GridCommandColumns>
-                    <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-edit", CssClass = "e-flat" })"></GridCommandColumn>
-                    <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-delete", CssClass = "e-flat" })"></GridCommandColumn>
-                    <GridCommandColumn Type="CommandButtonType.Save" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-update", CssClass = "e-flat" })"></GridCommandColumn>
-                    <GridCommandColumn Type="CommandButtonType.Cancel" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-cancel-icon", CssClass = "e-flat" })"></GridCommandColumn>
-                </GridCommandColumns>
-            </GridColumn>
+            </GridEditSettings>
+            <GridColumns>
+                <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Açılan Ders ID" Edit="false" AllowEditing="false" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+                <GridColumn Field=@nameof(DersAcilanDto.Kod) HeaderText="Kod"></GridColumn>
+                <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Ad" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
+                @*<GridColumn Field=@nameof(DersAcilanDto.Kredi) HeaderText="T+U TODO"></GridColumn>*@
+                <GridColumn Field=@nameof(DersAcilanDto.Kredi) HeaderText="Kr"></GridColumn>
+                <GridColumn Field=@nameof(DersAcilanDto.Akts) HeaderText="Akts"></GridColumn>
+                <GridColumn Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
+                <GridColumn Field=@nameof(DersAcilanDto.AltKota) HeaderText="Alt-Bol-Top">
+                    <Template>
+                        @{
+                            var dersAcilanContext = (context as DersAcilanDto);
 
-        </GridColumns>
-    </SfGrid>
+                            <p>@(dersAcilanContext.AltKont + "-"+dersAcilanContext.BolDisKont+"-"+ dersAcilanContext.TopKont)</p>
+                        }
+                    </Template>
+                </GridColumn>
+                <GridColumn Field=@nameof(DersAcilanDto.Zorunlu) HeaderText="Z" EditType="EditType.BooleanEdit" DisplayAsCheckBox="true"></GridColumn>
+                @*<GridColumn Field=@nameof(DersAcilanDto.ProgramId) EditType="EditType.DropDownEdit" HeaderText="Program" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@programDtos" Width="150"></GridColumn>
+                    <GridColumn Field=@nameof(DersAcilanDto.AkademisyenId) HeaderText="Öğrt Görev" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@akademisyenDtos" Width="150"></GridColumn>*@
+                <GridColumn Field="Program.Ad" HeaderText="Program"></GridColumn>
+                <GridColumn Field="Akademisyen.Ad" HeaderText="Akademisyen">
+                    <Template>
+                        @{
+                            DersAcilanDto dersAcInfo = (context as DersAcilanDto);
+                            if (dersAcInfo.Akademisyen != null)
+                            {
+                                <p>@(dersAcInfo.Akademisyen.Ad)</p>
+                            }
+                            else
+                            {
+                                <SfButton IconCss="e-icons e-Resource" EnableRtl="true" OnClick="@(() =>AkademisyenAta(dersAcInfo.Id))" CssClass="e-flat" Content="Ekle" IsPrimary="true"></SfButton>
+                            }
+                        }
+                    </Template>
+                </GridColumn>
+                <GridColumn>
+                    <GridCommandColumns>
+                        <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-edit", CssClass = "e-flat" })"></GridCommandColumn>
+                        <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-delete", CssClass = "e-flat" })"></GridCommandColumn>
+                        <GridCommandColumn Type="CommandButtonType.Save" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-update", CssClass = "e-flat" })"></GridCommandColumn>
+                        <GridCommandColumn Type="CommandButtonType.Cancel" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-cancel-icon", CssClass = "e-flat" })"></GridCommandColumn>
+                    </GridCommandColumns>
+                </GridColumn>
+
+            </GridColumns>
+        </SfGrid>
+    }
 </ControlSection>
 
+@if (akademisyenDialogOpen)
+{
+    <Dialog Baslik="Akademisyenler" @bind-isDialogOpen="@akademisyenDialogOpen">
+        <div class="row">
+            <SfGrid ID="AkademisyenGrid" @ref="AkademisyenGrid" TValue="AkademisyenDto" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowFiltering="true">
+                <SfDataManager Url="odata/akademisyens" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+                <GridEvents TValue="AkademisyenDto" CommandClicked="CommandClickHandlerAkademisyen"></GridEvents>
+                <GridColumns>
+                    <GridColumn Visible="false" Field=@nameof(AkademisyenDto.Id) IsPrimaryKey="true" TextAlign="TextAlign.Right"></GridColumn>
+                    <GridColumn Field=@nameof(AkademisyenDto.Ad) HeaderText="Ad"></GridColumn>
+                    <GridColumn Field=@nameof(AkademisyenDto.Soyad) HeaderText="Soyad"></GridColumn>
+                    <GridColumn Field=@nameof(AkademisyenDto.TCKN) HeaderText="TCKN"></GridColumn>
+                    <GridColumn Field=@nameof(AkademisyenDto.OgrtNo) HeaderText="Akademisyen No"></GridColumn>
+                    <GridColumn>
+                        <GridCommandColumns>
+                            <GridCommandColumn Type="CommandButtonType.None" Title="Akademisyen Ekle" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-Circle_Add", CssClass="e-flat" })"></GridCommandColumn>
+                        </GridCommandColumns>
+                    </GridColumn>
+                </GridColumns>
+            </SfGrid>
+        </div>
+    </Dialog>
+}
+
+
+
+<style>
+    .form-group {
+        margin-bottom: 0.2rem;
+    }
+
+    input.e-input, .e-input-group input, .e-input-group.e-control-wrapper input, .e-input-group input.e-input, .e-input-group.e-control-wrapper input.e-input {
+        height: auto;
+    }
+
+    .col-form-label-sm {
+        padding-bottom: unset;
+        /*font-size: 0.65rem;*/
+        font-size: .775rem;
+    }
+    .e-Resource:before {
+        content: '\e7d3';
+        color: #31ba13;
+    }
+    .e-Circle_Add:before {
+        content: '\e755';
+        color: #31ba13;
+    }
+
+    .mdc-dialog .mdc-dialog__container {
+        width: 100%;
+    }
+
+    .mdc-dialog .mdc-dialog__surface {
+        max-width: none;
+        width: 70%;
+    }
+</style>

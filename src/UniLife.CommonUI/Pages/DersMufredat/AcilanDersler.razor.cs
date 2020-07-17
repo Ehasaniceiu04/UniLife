@@ -23,6 +23,17 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         [Inject]
         public MatBlazor.IMatToaster matToaster { get; set; }
 
+        int? programId;
+        int? bolumId;
+        int? fakulteId;
+        string OdataQuery = "odata/dersacilans";
+        public Query totalQuery = new Query().Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)" });
+        bool isGridVisible = true;
+
+        bool akademisyenDialogOpen;
+        SfGrid<AkademisyenDto> AkademisyenGrid;
+
+
         Syncfusion.Blazor.Grids.SfGrid<DersAcilanDto> DersAcilanGrid;
 
         List<DersAcilanDto> dersAcilanDtos { get; set; }
@@ -30,7 +41,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         List<ProgramDto> programDtos { get; set; }
         List<AkademisyenDto> akademisyenDtos { get; set; }
 
-        public Query Query = new Query().Select(new List<string> { "Ad","Id" }).Take(6).RequiresCount();
+        public Query Query = new Query().Select(new List<string> { "Ad", "Id" }).Take(6).RequiresCount();
 
         SfDropDownList<int, KeyValueDto> DropAltKotaUyg;
         SfDropDownList<int, KeyValueDto> DropBolDisKotaUyg;
@@ -42,6 +53,9 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             new KeyValueDto() { Ad = "Evet(Genel Kontenjandan Al-Bloke Koy)", Id = 3 },
             new KeyValueDto() { Ad = "Evet(Referans dersleri bolum içi değerlendir)(Genel Kontenjandan Al-Bloke Koy)", Id = 4 }
         };
+
+
+        private DialogSettings DialogParams = new DialogSettings { MinHeight = "400px", Width = "900px" };
 
 
         public void Change(@Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
@@ -58,65 +72,41 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         }
 
 
-        protected override void OnInitialized()
-        {
-            ReadDersAcilans();
-
-            ReadPrograms();
-            ReadAkademisyens();
-        }
-
-        void ReadDersAcilans()
-        {
-
-            ApiResponseDto apiResponse = Http.GetFromJsonAsync<ApiResponseDto>("api/dersAcilan").Result;
-
-            if (apiResponse.StatusCode == StatusCodes.Status200OK)
-            {
-                matToaster.Add(apiResponse.Message, MatToastType.Success, "Açılan Dersler getirildi");
-                dersAcilanDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<DersAcilanDto[]>(apiResponse.Result.ToString()).ToList<DersAcilanDto>();
-            }
-            else
-            {
-                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Açılan Ders bilgisi getirilirken hata oluştu!");
-            }
-        }
-
-        void ReadPrograms()
-        {
-            ApiResponseDto<List<ProgramDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<ProgramDto>>>("api/program").Result;
-            programDtos = apiResponse.Result;
-        }
-        void ReadAkademisyens()
-        {
-            ApiResponseDto<List<AkademisyenDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<AkademisyenDto>>>("api/akademisyen").Result;
-            akademisyenDtos = apiResponse.Result;
-        }
-
 
 
         public void ActionCompletedHandler(ActionEventArgs<DersAcilanDto> args)
         {
-            if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
+            try
             {
+                if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
+                {
+
+                }
+                if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+                {
+                    if (args.Action == "Edit")
+                    {
+                        Update(args.Data);
+                    }
+                    else if (args.Action == "Add")
+                    {
+                        Create(args.Data);
+                    }
+
+                }
+                if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
+                {
+                    Delete(args.Data);
+                }
 
             }
-            if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+            catch (Exception ex)
             {
-                if (args.Action == "Edit")
-                {
-                    Update(args.Data);
-                }
-                else if (args.Action == "Add")
-                {
-                    Create(args.Data);
-                }
+                matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
+            }
+            
 
-            }
-            if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
-            {
-                Delete(args.Data);
-            }
+            
         }
 
         public async Task Create(DersAcilanDto dersAcilanDto)
@@ -128,27 +118,21 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 if (apiResponse.StatusCode == StatusCodes.Status200OK)
                 {
                     matToaster.Add(apiResponse.Message, MatToastType.Success);
-                    dersAcilanDtos.FirstOrDefault(x => x.Id == 0).Id = apiResponse.Result.Id;
                     DersAcilanGrid.Refresh();
                 }
                 else
                 {
-                    dersAcilanDtos.Remove(dersAcilanDto);
-                    DersAcilanGrid.Refresh();
-                    matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Açılan Ders Creation Failed");
+                    matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
                 }
             }
             catch (Exception ex)
             {
-                dersAcilanDtos.Remove(dersAcilanDto);
-                DersAcilanGrid.Refresh();
-                matToaster.Add(ex.Message, MatToastType.Danger, "Açılan Ders Creation Failed");
+                matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
             }
         }
 
         public async void Update(DersAcilanDto dersAcilanDto)
         {
-            //this updates the IsCompleted flag only
             try
             {
                 ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>
@@ -156,18 +140,16 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
                 if (!apiResponse.IsError)
                 {
-                    matToaster.Add(apiResponse.Message, MatToastType.Success);
+                    matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
                 }
                 else
                 {
-                    matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Açılan Ders Save Failed");
-                    //update failed gridi boz !
+                    matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
                 }
             }
             catch (Exception ex)
             {
-                matToaster.Add(ex.Message, MatToastType.Danger, "Açılan Ders Save Failed");
-                //update failed gridi boz !
+                matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
             }
         }
 
@@ -185,12 +167,62 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 {
                     matToaster.Add("Açılan Ders Delete Failed: " + response.StatusCode, MatToastType.Danger);
                 }
-                //deleteDialogOpen = false;
             }
             catch (Exception ex)
             {
                 matToaster.Add(ex.Message, MatToastType.Danger, "Açılan Ders Save Failed");
             }
+        }
+
+        async Task Refresh()
+        {
+            totalQuery = new Query();
+            totalQuery.Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)" });
+
+            if (programId.HasValue)
+            {
+                totalQuery.Where("programId", "equal", programId);
+            }
+            else if (bolumId.HasValue)
+            {
+                totalQuery.Where("bolumId", "equal", bolumId);
+            }
+            else if (fakulteId.HasValue)
+            {
+                totalQuery.Where("fakulteId", "equal", fakulteId);
+
+            }
+            
+
+            isGridVisible = true;
+
+
+        }
+
+        public async Task CommandClickHandlerAkademisyen(Syncfusion.Blazor.Grids.CommandClickEventArgs<AkademisyenDto> args)
+        {
+            if (args.CommandColumn.Title == "Akademisyen Ekle")
+            {
+                ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>($"api/dersacilan/UpdateDersAcilanAkademsiyen/{AkademisyeninAtanacagiDersAcId}/{args.RowData.Id}");
+                akademisyenDialogOpen = false;
+
+                if (apiResponse.IsSuccessStatusCode)
+                {
+                    DersAcilanGrid.Refresh();
+                    matToaster.Add(args.RowData.Ad + " " + args.RowData.Soyad, MatToastType.Success, "Akademisyen kaydı güncellendi");
+                }
+                else
+                {
+                    matToaster.Add(args.RowData.Ad + " " + args.RowData.Soyad + " : " + apiResponse.StatusCode, MatToastType.Danger, "Akademisyen kayıt edilemedi");
+                }
+            }
+        }
+
+        int AkademisyeninAtanacagiDersAcId;
+        public async Task AkademisyenAta(int dersAcilanId)
+        {
+            akademisyenDialogOpen = true;
+            AkademisyeninAtanacagiDersAcId = dersAcilanId;
         }
     }
 }
