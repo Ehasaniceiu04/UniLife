@@ -90,15 +90,9 @@
             if (apiResponse.IsSuccessStatusCode)
             {
                 matToaster.Add(apiResponse.Message, MatToastType.Success);
-                //todo = Newtonsoft.Json.JsonConvert.DeserializeObject<HarcDto>
-                //(apiResponse.Result.ToString());
-                //todos.Add(todo);
-                //todo = new TodoDto(); //reset todo after insert
             }
             else
             {
-                //TODO Ahmet 1**
-                //TODO Ahmet 2**
                 harcDtos.Remove(harcDto);
                 HarcGrid.Refresh();
                 matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Harc Creation Failed");
@@ -106,9 +100,6 @@
         }
         catch (Exception ex)
         {
-            //TODO Ahmet 1**: liste içinden değinde gride eklediğini sil demeli !!
-            //TODO Ahmet 2**: Dbden hata geldiği zaman Bu hata sebebini mantıklı şekilde buraya vermemiz gerekiyor. Aynı Idli kayıt gönder patlatıyon.
-
             harcDtos.Remove(harcDto);
             HarcGrid.Refresh();
             matToaster.Add(ex.Message, MatToastType.Danger, "Harc Creation Failed");
