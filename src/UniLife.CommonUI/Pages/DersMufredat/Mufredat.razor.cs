@@ -39,13 +39,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         SfGrid<MufredatDto> MufredatGrid;
 
-        public MufredatDto mufredatDto { get; set; } = new MufredatDto(); // Holds Mufredat being actively modified or created
-                                                                          //[CascadingParameter]
-                                                                          //public MufredatDto SelectedMufredat { get; set; }
-
-
-        //List<MufredatDto> mufredatDtos = new List<MufredatDto>();
-        //List<ProgramDto> programDtos = new List<ProgramDto>();
+        public MufredatDto mufredatDto { get; set; } = new MufredatDto();
 
         private List<Object> Toolbaritems = new List<Object>() { "Add", "Search", "Paste", "Copy", "ColumnChooser", new ItemModel() { Text = "Dersleri Aç", TooltipText = "Click", PrefixIcon = "e-icons e-DoubleArrowRight", Id = "DersleriAc" } };
 
@@ -53,29 +47,6 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         private DialogSettings DialogParams = new DialogSettings { MinHeight = "400px", Width = "900px" };
 
-
-        protected override void OnInitialized()
-        {
-            //ReadMufredats();
-            //ApiResponseDto<List<ProgramDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<ProgramDto>>>("api/program").Result;
-            //programDtos = apiResponse.Result;
-        }
-
-        //void ReadMufredats()
-        //{
-
-        //    ApiResponseDto<List<MufredatDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<MufredatDto>>>("api/mufredat").Result;
-
-        //    if (apiResponse.StatusCode == Status200OK)
-        //    {
-        //        matToaster.Add(apiResponse.Message, MatToastType.Success, "Müfredatlar getirildi");
-        //        mufredatDtos = apiResponse.Result;
-        //    }
-        //    else
-        //    {
-        //        matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Müfredat bilgisi getirilirken hata oluştu!");
-        //    }
-        //}
 
         public async Task MultiplyRecord()
         {
@@ -149,7 +120,6 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         public void CommandClickHandler(CommandClickEventArgs<MufredatDto> args)
         {
-            //Perform your custom command button click operation here. And also with the value in “args” you can differentiate the buttons, if having multiple custom command buttons.
             try
             {
                 if (args.CommandColumn.Title == "Clone")
@@ -166,11 +136,11 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
             }
-            
+
         }
 
         [Parameter]
@@ -186,7 +156,6 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 fakulteId = null;
                 bolumId = null;
 
-                //await ActionCompletedHandler(args);
             }
             else if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
             {
@@ -194,7 +163,6 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 bolumId = null;
                 plazceHolderProgramAd = args.Data.Program.Ad; // ((UniLife.Shared.Dto.Definitions.ProgramDto)args.ForeignKeyData.Values.FirstOrDefault().FirstOrDefault()).Ad;
 
-                //await ActionCompletedHandler(args);
             }
             else if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
             {
@@ -232,7 +200,6 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 }
                 else if (args.Action == "Add")
                 {
-                    //args.Data.ProgramId = programId;
                     await Create(args.Data);
                     MufredatGrid.Refresh();
                     args.Cancel = true;
@@ -258,50 +225,41 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                     ("api/mufredat", mufredatDto);
                 if (apiResponse.IsSuccessStatusCode)
                 {
-                    matToaster.Add(apiResponse.Message, MatToastType.Success);
-                    var recordedDto = Newtonsoft.Json.JsonConvert.DeserializeObject<MufredatDto>(apiResponse.Result.ToString());
-
-                    //mufredatDtos.FirstOrDefault(x => x.Id == 0).Id = recordedDto.Id;
-                    //MufredatGrid.Refresh();
+                    matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+                    
                 }
                 else
                 {
-                    //mufredatDtos.Remove(mufredatDto);
-                    //MufredatGrid.Refresh();
-                    matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Müfredat Creation Failed");
+                    matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
                 }
             }
             catch (Exception ex)
             {
-                //mufredatDtos.Remove(mufredatDto);
-                MufredatGrid.Refresh();
-                matToaster.Add(ex.Message, MatToastType.Danger, "Müfredat Creation Failed");
+                matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
             }
         }
 
 
         public async Task Update(MufredatDto mufredatDto)
         {
-            //this updates the IsCompleted flag only
             try
             {
+                mufredatDto.Program = null;
                 ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>
                     ("api/mufredat", mufredatDto);
 
                 if (!apiResponse.IsError)
                 {
-                    matToaster.Add(apiResponse.Message, MatToastType.Success);
+                    matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
                 }
                 else
                 {
-                    matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Müfredat Save Failed");
-                    //update failed gridi boz !
+                    matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
                 }
             }
             catch (Exception ex)
             {
-                matToaster.Add(ex.Message, MatToastType.Danger, "Müfredat Save Failed");
-                //update failed gridi boz !
+                matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
             }
         }
 
@@ -309,21 +267,19 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         {
             try
             {
-                var response = await Http.DeleteAsync("api/mufredat/" + mufredatDto.Id);
-                if (response.StatusCode == (System.Net.HttpStatusCode)Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
+                var apiResponse = await Http.DeleteAsync("api/mufredat/" + mufredatDto.Id);
+                if (apiResponse.StatusCode == (System.Net.HttpStatusCode)Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
                 {
-                    matToaster.Add("Müfredat Deleted", MatToastType.Success);
-                    //mufredatDtos.Remove(mufredatDto);
+                    matToaster.Add("İşlem başarılı", MatToastType.Success);
                 }
                 else
                 {
-                    matToaster.Add("Müfredat Delete Failed: " + response.StatusCode, MatToastType.Danger);
+                    matToaster.Add("İşlem başarısız", MatToastType.Danger);
                 }
-                //deleteDialogOpen = false;
             }
             catch (Exception ex)
             {
-                matToaster.Add(ex.Message, MatToastType.Danger, "Universite Save Failed");
+                matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
             }
         }
 

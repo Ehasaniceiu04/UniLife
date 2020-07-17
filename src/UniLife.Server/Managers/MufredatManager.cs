@@ -52,14 +52,7 @@ namespace UniLife.Server.Managers
 
         public async Task<ApiResponse> Update(MufredatDto mufredatDto)
         {
-            try
-            {
-                return new ApiResponse(Status200OK, "Updated MufredatDto", await _mufredatStore.Update(mufredatDto));
-            }
-            catch (InvalidDataException dataException)
-            {
-                return new ApiResponse(Status400BadRequest, "Failed to update MufredatDto");
-            }
+                return new ApiResponse(Status200OK, "Müfredat gÜncellendi.", await _mufredatStore.Update(mufredatDto));
         }
 
         public async Task<ApiResponse> Delete(int id)

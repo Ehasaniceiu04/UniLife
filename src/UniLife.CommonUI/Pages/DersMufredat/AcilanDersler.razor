@@ -28,13 +28,13 @@
         <SfGrid @ref="DersAcilanGrid" Query="@totalQuery" TValue="DersAcilanDto" AllowSorting="true" AllowExcelExport="true" AllowPdfExport="true" AllowPaging="true" AllowFiltering="true" Toolbar="@(new List<string>() {  "PdfExport","ExcelExport","ColumnChooser" })" ShowColumnChooser="true">
             <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
             <GridEvents OnActionComplete="ActionCompletedHandler" TValue="DersAcilanDto"></GridEvents>
-            <GridEditSettings ShowDeleteConfirmDialog="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
+            <GridEditSettings Dialog="DialogParams" ShowDeleteConfirmDialog="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
                 <Template>
                     @{
                         DersAcilanDto dAcilanContext = (context as DersAcilanDto);
 
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="form-row mt-2">
                                 <div class="col-12 pb-2">
                                     <div class="form-row">
@@ -56,7 +56,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-12 pb-2">
+                                @*<div class="col-12 pb-2">
                                     <div class="form-row">
                                         <label class="col-md-2 col-form-label" for="Akademisyen">Akademisyen</label>
                                         <SfAutoComplete ID="Akademisyen" CssClass="form-control col-sm-10 pb-1" @bind-Value="@(dAcilanContext.AkademisyenAd)" TValue="string" TItem="Akademisyen" Query="@Query">
@@ -64,7 +64,7 @@
                                             <AutoCompleteFieldSettings Value="Ad" Text="Ad"></AutoCompleteFieldSettings>
                                         </SfAutoComplete>
                                     </div>
-                                </div>
+                                </div>*@
 
                                 <div class="col-12 pb-2">
                                     <div class="form-row">
@@ -122,18 +122,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                        </div>
-                        @*<div class="col-sm-12 col-md-6 pb-2">
-                                <div class="form-row">
-                                    <label class="col-md col-form-label" for="Tel">Açılacak Dönemi</label>
-                                        <SfDropDownList ID="donem" @ref="DropAltKotaUyg" TItem="KeyValueDto" CssClass="col-sm-10 pb-1"
-                                                        TValue="int?" PopupHeight="230px" Placeholder="Sınıf Seçiniz"
-                                                        @bind-Value="@dAcilanContext.DonemId" DataSource="@DonemDtos">
-                                            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                                        </SfDropDownList>
-                                </div>
-                            </div>*@
                     }
                 </Template>
             </GridEditSettings>
@@ -164,7 +152,10 @@
                             DersAcilanDto dersAcInfo = (context as DersAcilanDto);
                             if (dersAcInfo.Akademisyen != null)
                             {
-                                <p>@(dersAcInfo.Akademisyen.Ad)</p>
+                                <div>
+                                    <p>@(dersAcInfo.Akademisyen.Ad) <SfButton IconCss="e-icons e-Resource" EnableRtl="true" OnClick="@(() =>AkademisyenAta(dersAcInfo.Id))" CssClass="e-flat" IsPrimary="true"></SfButton></p>
+                                    
+                                </div>                                
                             }
                             else
                             {

@@ -54,7 +54,7 @@ namespace UniLife.Storage.Stores
         {
             var mufredat = await _db.Mufredats.SingleOrDefaultAsync(t => t.Id == mufredatDto.Id);
             if (mufredat == null)
-                throw new InvalidDataException($"Unable to find Mufredat with ID: {mufredatDto.Id}");
+                throw new InvalidDataException($"Müfredat bulunamadı: {mufredatDto.Id}");
 
             mufredat = _autoMapper.Map(mufredatDto, mufredat);
             _db.Mufredats.Update(mufredat);
