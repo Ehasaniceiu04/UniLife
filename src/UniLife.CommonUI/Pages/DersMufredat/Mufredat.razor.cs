@@ -193,15 +193,21 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                     {
                         args.Data.ProgramId = ProgramValueHolder;
                     }
-                    await Update(args.Data);
+                    if (await Update(args.Data))
+                    {
+
                     MufredatGrid.Refresh();
+                    }
                     args.Cancel = true;
                     await MufredatGrid.CloseEdit();
                 }
                 else if (args.Action == "Add")
                 {
-                    await Create(args.Data);
+                    if (await Create(args.Data))
+                    {
+
                     MufredatGrid.Refresh();
+                    }
                     args.Cancel = true;
                     await MufredatGrid.CloseEdit();
                 }
@@ -209,14 +215,17 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             }
             else if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
             {
-                await Delete(args.Data);
+                if (await Delete(args.Data))
+                {
+
                 MufredatGrid.Refresh();
+                }
                 args.Cancel = true;
                 await MufredatGrid.CloseEdit();
             }
         }
 
-        public async Task Create(MufredatDto mufredatDto)
+        public async Task<bool> Create(MufredatDto mufredatDto)
         {
             try
             {
@@ -226,21 +235,23 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 if (apiResponse.IsSuccessStatusCode)
                 {
                     matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
-                    
+                    return true;
                 }
                 else
                 {
                     matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
+                    return false;
                 }
             }
             catch (Exception ex)
             {
                 matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
+                return false;
             }
         }
 
 
-        public async Task Update(MufredatDto mufredatDto)
+        public async Task<bool> Update(MufredatDto mufredatDto)
         {
             try
             {
@@ -251,19 +262,22 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 if (!apiResponse.IsError)
                 {
                     matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+                    return true;
                 }
                 else
                 {
                     matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
+                    return false;
                 }
             }
             catch (Exception ex)
             {
                 matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
+                return false;
             }
         }
 
-        public async Task Delete(MufredatDto mufredatDto)
+        public async Task<bool> Delete(MufredatDto mufredatDto)
         {
             try
             {
@@ -271,15 +285,18 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 if (apiResponse.StatusCode == (System.Net.HttpStatusCode)Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
                 {
                     matToaster.Add("İşlem başarılı", MatToastType.Success);
+                    return true;
                 }
                 else
                 {
                     matToaster.Add("İşlem başarısız", MatToastType.Danger);
+                    return false;
                 }
             }
             catch (Exception ex)
             {
                 matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
+                return false;
             }
         }
 
