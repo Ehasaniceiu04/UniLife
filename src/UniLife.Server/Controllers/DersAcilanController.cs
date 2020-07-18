@@ -122,9 +122,14 @@ namespace UniLife.Server.Controllers
         [HttpPut]
         [AllowAnonymous]
         public async Task<ApiResponse> Put([FromBody] DersAcilanDto dersAcilanDto)
-            => ModelState.IsValid ?
-                await _dersAcilanManager.Update(dersAcilanDto) :
-                new ApiResponse(Status400BadRequest, "DersAcilan Model is Invalid");
+        {
+            if (ModelState.IsValid)
+            {
+                return await _dersAcilanManager.Update(dersAcilanDto);
+            }
+            else
+                return new ApiResponse(Status400BadRequest, "DersAcilan Model is Invalid");
+        }
 
         [HttpGet]
         [AllowAnonymous]

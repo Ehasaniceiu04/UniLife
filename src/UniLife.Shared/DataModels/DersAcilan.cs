@@ -29,7 +29,7 @@ namespace UniLife.Shared.DataModels
         public int Sube { get; set; } = 1;
 
         public int? AkademisyenId { get; set; }
-        public Akademisyen Akademisyen { get; set; }
+        public virtual Akademisyen Akademisyen { get; set; }
         public int DonemId { get; set; }
         public virtual Donem Donem { get; set; }
         

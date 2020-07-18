@@ -25,99 +25,99 @@
 
 
                 <div class="row">
-                                <div class="col-sm-12 col-md-5">
-                                    <div class="form-group row">
-                                        <label for="Ad" class="col-sm-2 col-form-label">Ders Ad</label>
-                                        <div class="col-sm-10">
-                                            <SfTextBox ID="Ad" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.Ad)"></SfTextBox>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="Kod" class="col-sm-2 col-form-label">Kod</label>
-                                        <div class="col-sm-10">
-                                            <SfTextBox ID="Kod" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.Kod)"></SfTextBox>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="KisaAd" class="col-sm-2 col-form-label">Kisa Ad</label>
-                                        <div class="col-sm-10">
-                                            <SfTextBox ID="KisaAd" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.KisaAd)"></SfTextBox>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="AdEn" class="col-sm-2 col-form-label">İng. Ad</label>
-                                        <div class="col-sm-10">
-                                            <SfTextBox ID="AdEn" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.AdEn)"></SfTextBox>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="DonemId" class="col-sm-2 col-form-label">Dönem</label>
-                                        <div class="col-sm-10">
-                                            <SfDropDownList ID="DonemId" CssClass="form-control-sm" @bind-Value="@(dersDto.DonemId)" TValue="int?" TItem="DonemDto" Index="0" DataSource="donemDtos">
-                                                <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
-                                            </SfDropDownList>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="Durum" class="col-sm-2 col-form-label">Durum</label>
-                                        <div class="col-sm-4">
-                                            <SfCheckBox ID="Durum" CssClass="form-control-sm" @bind-Checked="@(dersDto.Durum)"></SfCheckBox>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-7">
-                                    <div class="form-group row">
-                                        <label for="Akts" class="col-sm-2 col-form-label">Akts</label>
-                                        <div class="col-sm-4">
-                                            <SfNumericTextBox ID="Akts" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.Akts)"></SfNumericTextBox>
-                                        </div>
-                                        <label for="GecmeNotu" class="col-sm-2 col-form-label">Geçme Notu</label>
-                                        <div class="col-sm-4">
-                                            <SfNumericTextBox ID="GecmeNotu" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.GecmeNotu)"></SfNumericTextBox>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="OptikKod" class="col-sm-2 col-form-label">OptikKod</label>
-                                        <div class="col-sm-4">
-                                            <SfTextBox ID="OptikKod" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.OptikKod)"></SfTextBox>
-                                        </div>
-                                        <label for="UygSaat" class="col-sm-2 col-form-label">Uyg.Saat</label>
-                                        <div class="col-sm-4">
-                                            <SfNumericTextBox ID="UygSaat" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.UygSaat)"></SfNumericTextBox>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="LabSaat" class="col-sm-2 col-form-label">Lab.Saat</label>
-                                        <div class="col-sm-4">
-                                            <SfNumericTextBox ID="LabSaat" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.LabSaat)"></SfNumericTextBox>
-                                        </div>
-                                        <label for="Sinif" class="col-sm-2 col-form-label">Sinif</label>
-                                        <div class="col-sm-4">
-                                            <SfNumericTextBox ID="Sinif" CssClass="form-control-sm" @bind-Value="@(dersDto.Sinif)"></SfNumericTextBox>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="TeoSaat" class="col-sm-2 col-form-label">Teo.Saat</label>
-                                        <div class="col-sm-4">
-                                            <SfNumericTextBox ID="TeoSaat" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.TeoSaat)"></SfNumericTextBox>
-                                        </div>
-                                        <label for="Kredi" class="col-sm-2 col-form-label">Kredi</label>
-                                        <div class="col-sm-4">
-                                            <SfNumericTextBox ID="Kredi" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.Kredi)"></SfNumericTextBox>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-group row">
-                                        <label for="Zorunlu" class="col-sm-2 col-form-label">Zorunlu</label>
-                                        <div class="col-sm-4">
-                                            <SfCheckBox ID="Zorunlu" CssClass="form-control-sm" @bind-Checked="@(dersDto.Zorunlu)"></SfCheckBox>
-                                        </div>
-                                        <label for="SecmeliKodu" class="col-sm-2 col-form-label">Seç. Kod</label>
-                                        <div class="col-sm-4">
-                                            <SfTextBox ID="SecmeliKodu" CssClass="form-control-sm" @bind-Value="@(dersDto.SecmeliKodu)" Enabled="@true"></SfTextBox>
-                                        </div>
-                                    </div>
-                                </div>
+                    <div class="col-sm-12 col-md-5">
+                        <div class="form-group row">
+                            <label for="Ad" class="col-sm-2 col-form-label">Ders Ad</label>
+                            <div class="col-sm-10">
+                                <SfTextBox ID="Ad" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.Ad)"></SfTextBox>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="Kod" class="col-sm-2 col-form-label">Kod</label>
+                            <div class="col-sm-10">
+                                <SfTextBox ID="Kod" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.Kod)"></SfTextBox>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="KisaAd" class="col-sm-2 col-form-label">Kisa Ad</label>
+                            <div class="col-sm-10">
+                                <SfTextBox ID="KisaAd" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.KisaAd)"></SfTextBox>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="AdEn" class="col-sm-2 col-form-label">İng. Ad</label>
+                            <div class="col-sm-10">
+                                <SfTextBox ID="AdEn" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.AdEn)"></SfTextBox>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="DonemId" class="col-sm-2 col-form-label">Dönem</label>
+                            <div class="col-sm-10">
+                                <SfDropDownList ID="DonemId" CssClass="form-control-sm" @bind-Value="@(dersDto.DonemId)" TValue="int?" TItem="DonemDto" Index="0" DataSource="donemDtos">
+                                    <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
+                                </SfDropDownList>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="Durum" class="col-sm-2 col-form-label">Durum</label>
+                            <div class="col-sm-4">
+                                <SfCheckBox ID="Durum" CssClass="form-control-sm" @bind-Checked="@(dersDto.Durum)"></SfCheckBox>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-7">
+                        <div class="form-group row">
+                            <label for="Akts" class="col-sm-2 col-form-label">Akts</label>
+                            <div class="col-sm-4">
+                                <SfNumericTextBox ID="Akts" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.Akts)"></SfNumericTextBox>
+                            </div>
+                            <label for="GecmeNotu" class="col-sm-2 col-form-label">Geçme Notu</label>
+                            <div class="col-sm-4">
+                                <SfNumericTextBox ID="GecmeNotu" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.GecmeNotu)"></SfNumericTextBox>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="OptikKod" class="col-sm-2 col-form-label">OptikKod</label>
+                            <div class="col-sm-4">
+                                <SfTextBox ID="OptikKod" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.OptikKod)"></SfTextBox>
+                            </div>
+                            <label for="UygSaat" class="col-sm-2 col-form-label">Uyg.Saat</label>
+                            <div class="col-sm-4">
+                                <SfNumericTextBox ID="UygSaat" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.UygSaat)"></SfNumericTextBox>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="LabSaat" class="col-sm-2 col-form-label">Lab.Saat</label>
+                            <div class="col-sm-4">
+                                <SfNumericTextBox ID="LabSaat" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.LabSaat)"></SfNumericTextBox>
+                            </div>
+                            <label for="Sinif" class="col-sm-2 col-form-label">Sinif</label>
+                            <div class="col-sm-4">
+                                <SfNumericTextBox ID="Sinif" CssClass="form-control-sm" @bind-Value="@(dersDto.Sinif)"></SfNumericTextBox>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="TeoSaat" class="col-sm-2 col-form-label">Teo.Saat</label>
+                            <div class="col-sm-4">
+                                <SfNumericTextBox ID="TeoSaat" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.TeoSaat)"></SfNumericTextBox>
+                            </div>
+                            <label for="Kredi" class="col-sm-2 col-form-label">Kredi</label>
+                            <div class="col-sm-4">
+                                <SfNumericTextBox ID="Kredi" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.Kredi)"></SfNumericTextBox>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="Zorunlu" class="col-sm-2 col-form-label">Zorunlu</label>
+                            <div class="col-sm-4">
+                                <SfCheckBox ID="Zorunlu" CssClass="form-control-sm" @bind-Checked="@(dersDto.Zorunlu)"></SfCheckBox>
+                            </div>
+                            <label for="SecmeliKodu" class="col-sm-2 col-form-label">Seç. Kod</label>
+                            <div class="col-sm-4">
+                                <SfTextBox ID="SecmeliKodu" CssClass="form-control-sm" @bind-Value="@(dersDto.SecmeliKodu)" Enabled="@true"></SfTextBox>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
 
@@ -173,7 +173,6 @@
     }
 
     .e-input-group .e-input-group-icon, .e-input-group.e-control-wrapper .e-input-group-icon {
-         min-height: unset; 
+        min-height: unset;
     }
-
 </style>
