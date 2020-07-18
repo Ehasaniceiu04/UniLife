@@ -18,18 +18,20 @@
 
 @code{
     [Parameter]
-    public OgrenciDto _OgrenciDto { get; set; }
+    public int ogrenciId { get; set; }
 
-    protected override async Task OnInitializedAsync()
+    public OgrenciDto _OgrenciDto { get; set; } = new OgrenciDto();
+
+    protected override void OnInitialized()
     {
-        await ReadOgrenci();
+        ReadOgrenci();
     }
 
-    async Task ReadOgrenci()
+    void ReadOgrenci()
     {
         try
         {
-            ApiResponseDto<OgrenciDto> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<OgrenciDto>>("api/ogrenci/GetOgrenciWithRelations/" + _OgrenciDto.Id);
+            ApiResponseDto<OgrenciDto> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<OgrenciDto>>("api/ogrenci/GetOgrenciWithRelations/" + ogrenciId).Result;
 
             if (apiResponse.StatusCode == Status200OK)
             {

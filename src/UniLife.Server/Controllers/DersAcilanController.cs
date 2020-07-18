@@ -75,7 +75,7 @@ namespace UniLife.Server.Controllers
         [HttpGet]
         [AllowAnonymous]
         [Route("ByZorunlu/{isZorunlu}")]
-        public async Task<ApiResponse> ByZorunlu(bool isZorunlu)
+        public async Task<ApiResponse> ByZorunlu(bool isZorunlu,int sinif)
             => ModelState.IsValid ?
                 await _dersAcilanManager.ByZorunlu(isZorunlu) :
                 new ApiResponse(Status400BadRequest, "DersAcilan Model is Invalid");

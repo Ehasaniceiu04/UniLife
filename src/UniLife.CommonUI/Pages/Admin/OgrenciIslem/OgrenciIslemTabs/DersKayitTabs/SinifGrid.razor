@@ -26,13 +26,13 @@
                     <GridEvents TValue="DersAcilanDto" CommandClicked="CommandClickHandler"></GridEvents>
                     <GridColumns>
                         <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
-                        <GridColumn Width="50">
+                        <GridColumn HeaderText="Kayıt" Width="70">
                             <GridCommandColumns>
                                 <GridCommandColumn Type="CommandButtonType.None" Title="Kayıt Ol" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowDown", CssClass="e-flat" })"></GridCommandColumn>
-                                <GridCommandColumn Type="CommandButtonType.None" Title="Seçmeli Al" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-StrokeColor", CssClass="e-flat" })"></GridCommandColumn>
+                                @*<GridCommandColumn Type="CommandButtonType.None" Title="Seçmeli Al" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-StrokeColor", CssClass="e-flat" })"></GridCommandColumn>*@
                             </GridCommandColumns>
                         </GridColumn>
-                        <GridColumn HeaderText="Seçmeli Ders" TextAlign="TextAlign.Center" Width="120">
+                        <GridColumn HeaderText="Seçmeli" TextAlign="TextAlign.Center" Width="120">
                             <Template>
                                 @{
                                     var dersacilan = (context as DersAcilanDto);
@@ -123,25 +123,13 @@
     </div>
     <div class="row">
         <div class="col-6 text-right">
-            <SfProgressButton Content="Kayıt Ol" OnClick="KayıtOl" CssClass="center-block e-primary">
+            <SfProgressButton Content="Eklenen Derslere Kayıt Ol" OnClick="KayıtOl" CssClass="center-block e-primary">
                 <ProgressButtonSpinSettings Position="SpinPosition.Center"></ProgressButtonSpinSettings>
             </SfProgressButton>
         </div>
     </div>
 </ControlSection>
 
-
-@*<MatDialog @bind-IsOpen="@secmeliDersDialogOpen">
-        <MatDialogTitle>Seçmeli Dersler</MatDialogTitle>
-        <MatDialogContent>
-
-
-
-        </MatDialogContent>
-        <MatDialogActions>
-            <MatButton OnClick="@(e => { secmeliDersDialogOpen = false; })">Cancel</MatButton>
-        </MatDialogActions>
-    </MatDialog>*@
 
 <Dialog Baslik="Ders mevcut" @bind-isDialogOpen="@dialog">
     <p>@dialogText</p>
@@ -268,8 +256,11 @@
             {
                 secmeliDersDialogOpen = true;
                 //Modal içinde girden seçmeli ders seçtiriyoruz.
-                ApiResponseDto<List<DersAcilanDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<DersAcilanDto>>>($"api/dersAcilan/ByZorunlu/{false}").Result;
-                SecmeliDerslerDtos = apiResponse.Result;
+                //ApiResponseDto<List<DersAcilanDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<DersAcilanDto>>>($"api/dersAcilan/ByZorunlu/{false}").Result;
+
+                OData<DersAcilanDto> apiResponse = Http.GetFromJsonAsync<OData<DersAcilanDto>>($"odata/dersAcilans?$filter=Zorunlu eq false and Sinif eq '{args.RowData.Sinif}'").Result;
+
+                SecmeliDerslerDtos = apiResponse.Value;
                 foreach (var item in SecmeliDerslerDtos)
                 {
                     item.YerineSecilenAd = args.RowData.Ad;
@@ -291,16 +282,43 @@
         }
         else
         {
-            secmeliDersDialogOpen = true;
-            //Modal içinde girden seçmeli ders seçtiriyoruz.
-            //ApiResponseDto<List<DersAcilanDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<DersAcilanDto>>>($"api/dersAcilan/ByZorunlu/{false}");
-            OData<DersAcilanDto> apiResponse = await Http.GetFromJsonAsync<OData<DersAcilanDto>>($"odata/dersAcilans?$filter=Zorunlu eq false and SecmeliKodu eq '{args.SecmeliKodu}'");
-            SecmeliDerslerDtos = apiResponse.Value;
-            foreach (var item in SecmeliDerslerDtos)
+            try
             {
-                item.YerineSecilenAd = args.Ad;
-                item.YerineSecilenId = args.Id;
+                secmeliDersDialogOpen = true;
+                //Modal içinde girden seçmeli ders seçtiriyoruz.
+                //ApiResponseDto<List<DersAcilanDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<DersAcilanDto>>>($"api/dersAcilan/ByZorunlu/{false}");
+                OData<DersAcilanDto> apiResponse = await Http.GetFromJsonAsync<OData<DersAcilanDto>>($"odata/dersAcilans?$filter=Zorunlu eq false and SecmeliKodu eq '{args.SecmeliKodu}' and Sinif eq {args.Sinif}");
+
+                if (apiResponse.Value.Count() > 0)
+                {
+                    SecmeliDerslerDtos = apiResponse.Value;
+                    foreach (var item in SecmeliDerslerDtos)
+                    {
+                        item.YerineSecilenAd = args.Ad;
+                        item.YerineSecilenId = args.Id;
+                    }
+                }
+                else
+                    matToaster.Add("", MatToastType.Danger, "İşlem başarısız!");
             }
+            catch (Exception ex)
+            {
+                matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
+            }
+
+
+
+
+            //secmeliDersDialogOpen = true;
+            ////Modal içinde girden seçmeli ders seçtiriyoruz.
+            ////ApiResponseDto<List<DersAcilanDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<DersAcilanDto>>>($"api/dersAcilan/ByZorunlu/{false}");
+            //OData<DersAcilanDto> apiResponse = await Http.GetFromJsonAsync<OData<DersAcilanDto>>($"odata/dersAcilans?$filter=Zorunlu eq false and SecmeliKodu eq '{args.SecmeliKodu}'");
+            //SecmeliDerslerDtos = apiResponse.Value;
+            //foreach (var item in SecmeliDerslerDtos)
+            //{
+            //    item.YerineSecilenAd = args.Ad;
+            //    item.YerineSecilenId = args.Id;
+            //}
         }
 
     }
@@ -321,18 +339,25 @@
     {
         if (args.CommandColumn.Title == "Kayıt Kaldır")
         {
-            var response = await Http.DeleteAsync($"api/DersKayit/DeleteByOgrId_DersId/{appState.OgrenciState.Id}/{args.RowData.Id}");
+            try
+            {
+                var response = await Http.DeleteAsync($"api/DersKayit/DeleteByOgrId_DersId/{appState.OgrenciState.Id}/{args.RowData.Id}");
 
-            if (response.StatusCode == (HttpStatusCode)Status200OK)
-            {
-                matToaster.Add("Ders kayıdı kaldırıldı", MatToastType.Success);
-                DersKayitDtos.RemoveAll(x => x.Id == args.RowData.Id);
-                DersKayitGrid.Refresh();
-                StateHasChanged();
+
+                if (response.StatusCode == (HttpStatusCode)Status200OK)
+                {
+                    matToaster.Add("Ders kayıdı kaldırıldı", MatToastType.Success);
+                    DersKayitDtos.RemoveAll(x => x.Id == args.RowData.Id);
+                    DersKayitGrid.Refresh();
+                    StateHasChanged();
+                    matToaster.Add("İşlem başarılı.", MatToastType.Success);
+                }
+                else
+                    matToaster.Add("İşlem başarısız!", MatToastType.Danger);
             }
-            else
+            catch (Exception ex)
             {
-                matToaster.Add("Ders kayıdı Failed: " + response.StatusCode, MatToastType.Danger);
+                matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
             }
         }
     }
@@ -342,16 +367,36 @@
     async Task KayıtOl()
     {
 
-        List<DersKayitDto> ogrenciDersKayitDtos = new List<DersKayitDto>();
-        foreach (var item in DersKayitDtos)
+        try
         {
-            ogrenciDersKayitDtos.Add(new DersKayitDto { DersAcilanId = item.Id, OgrenciId = appState.OgrenciState.Id, DersYerineSecilenId = item.YerineSecilenId ?? item.Id, DersYerineSecilenAd = item.YerineSecilenAd });
+            List<DersKayitDto> ogrenciDersKayitDtos = new List<DersKayitDto>();
+            foreach (var item in DersKayitDtos)
+            {
+                ogrenciDersKayitDtos.Add(new DersKayitDto { DersAcilanId = item.Id, OgrenciId = appState.OgrenciState.Id, DersYerineSecilenId = item.YerineSecilenId ?? item.Id, DersYerineSecilenAd = item.YerineSecilenAd });
+            }
+
+            ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/DersKayit/OgrenciKayitToDerss", ogrenciDersKayitDtos);
+
+
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+                DersKayitGrid.Refresh();
+                StateHasChanged();
+            }
+            else
+                matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
         }
 
-        ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/DersKayit/OgrenciKayitToDerss", ogrenciDersKayitDtos);
 
-        DersKayitGrid.Refresh();
-        StateHasChanged();
+
+
+
+
     }
 
 

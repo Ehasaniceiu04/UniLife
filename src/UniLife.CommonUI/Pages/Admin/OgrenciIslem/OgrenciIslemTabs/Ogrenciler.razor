@@ -23,7 +23,7 @@
 
                 }
                 <div style="padding:20px">
-                    <SfTab LoadOn="ContentLoad.Dynamic">
+                    <SfTab LoadOn="ContentLoad.Demand">
                         <TabEvents Selecting="OnTabSelecting"></TabEvents>
                         <TabItems>
                             <TabItem>
@@ -31,7 +31,7 @@
                                     <TabHeader Text="Details"></TabHeader>
                                 </ChildContent>
                                 <ContentTemplate>
-                                    <OgrenciBilgi _OgrenciDto="ogrenciDto"></OgrenciBilgi>
+                                    <OgrenciBilgi ogrenciId="ogrenciDto.Id"></OgrenciBilgi>
                                 </ContentTemplate>
                             </TabItem>
                             <TabItem>
@@ -156,36 +156,6 @@
     }
 
 
-
-    //public void RowBound(RowDataBoundEventArgs<OgrenciDto> args)
-    //{
-    //    //Elementin non-public / nonpublic elemanını alıyoruz.
-    //    //PropertyInfo pInfo = args.Row.GetType().GetProperty("ClassList",
-    //    //   System.Reflection.BindingFlags.Public |
-    //    //   System.Reflection.BindingFlags.NonPublic |
-    //    //   System.Reflection.BindingFlags.Instance);
-
-    //    //List<string> ClassList = (List<string>)pInfo.GetValue(args.Row, null);
-
-    //    //if (ClassList.Count < 2)
-    //    //{
-    //    //    this.OgrGrid.DetailCollapseAll();
-    //    //}
-
-
-    //    //if (args.Data.Freight < 25)
-    //    //{
-    //    //    args.Row.AddClass(new string[] { "below-25" });
-    //    //}
-    //    //else if (args.Data.Freight < 35)
-    //    //{
-    //    //    args.Row.AddClass(new string[] { "below-35" });
-    //    //}
-    //    //else
-    //    //{
-    //    //    args.Row.AddClass(new string[] { "above-35" });
-    //    //}
-    //}
 
     [Parameter]
     public EventCallback<OgrenciDto> OgrenciToAkademik { get; set; }

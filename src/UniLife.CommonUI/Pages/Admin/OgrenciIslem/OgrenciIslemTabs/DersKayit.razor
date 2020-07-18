@@ -76,7 +76,7 @@
 <br />
 <div class="card">
 
-    <SfTab @ref="Tab" HeaderPlacement="HeaderPosition.Left" SelectedItem="@selectedItem" LoadOn="ContentLoad.Dynamic">
+    <SfTab @ref="Tab" HeaderPlacement="HeaderPosition.Left" SelectedItem="@selectedItem" LoadOn="ContentLoad.Demand">
         <TabEvents Selecting="OnTabSelecting"></TabEvents>
         <TabItems>
             @if (ogrenciProgramSure >= 1)
