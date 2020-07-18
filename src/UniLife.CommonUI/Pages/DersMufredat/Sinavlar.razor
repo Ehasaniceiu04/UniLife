@@ -21,34 +21,34 @@
                     <div class="form-row">
                         @*açılan ders filtre*@
                         <label class="col-sm-2" for="DropDonem">Dönem:</label>
-                        <SfDropDownList ID="DropDonem" @ref="DropDonem" TItem="DonemDto" CssClass="col-sm-10 pb-1"
+                        <SfDropDownList ID="DropDonem" @ref="DropDonem" ShowClearButton="true" TItem="DonemDto" CssClass="col-sm-10 pb-1"
                                         TValue="int?" PopupHeight="230px" Placeholder="Dönem Seçiniz"
                                         @bind-Value="@_dersAcilanDto.DonemId" DataSource="@donemDtos">
                             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                         </SfDropDownList>
                         <label class="col-sm-2" for="DropFakulte">Fakülte:</label>
-                        <SfDropDownList ID="DropFakulte" @ref="DropFakulte" TItem="KeyValueDto" CssClass="col-sm-10 pb-1"
+                        <SfDropDownList ID="DropFakulte" @ref="DropFakulte" ShowClearButton="true" TItem="KeyValueDto" CssClass="col-sm-10 pb-1"
                                         TValue="int?" PopupHeight="230px" Placeholder="Fakülte Seçiniz"
                                         @bind-Value="@_dersAcilanDto.FakulteId" DataSource="@fakulteDtos">
                             <DropDownListEvents TValue="int?" ValueChange="FakulteToBolum"></DropDownListEvents>
                             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                         </SfDropDownList>
                         <label class="col-sm-2" for="DropBolum">Bolum:</label>
-                        <SfDropDownList ID="DropBolum" @ref="DropBolum" TItem="KeyValueDto" CssClass="col-sm-10 pb-1"
+                        <SfDropDownList ID="DropBolum" @ref="DropBolum" ShowClearButton="true" TItem="KeyValueDto" CssClass="col-sm-10 pb-1"
                                         TValue="int?" PopupHeight="230px" Placeholder="Bölüm Seçiniz"
                                         @bind-Value="@_dersAcilanDto.BolumId" DataSource="@bolumDtos">
                             <DropDownListEvents TValue="int?" ValueChange="BolumToProgram"></DropDownListEvents>
                             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                         </SfDropDownList>
                         <label class="col-sm-2" for="DropProgram">Program:</label>
-                        <SfDropDownList ID="DropProgram" @ref="DropProgram" TItem="KeyValueDto" CssClass="col-sm-10 pb-1"
+                        <SfDropDownList ID="DropProgram" @ref="DropProgram" ShowClearButton="true" TItem="KeyValueDto" CssClass="col-sm-10 pb-1"
                                         TValue="int?" PopupHeight="230px" Placeholder="Program Seçiniz"
                                         @bind-Value="@_dersAcilanDto.ProgramId" DataSource="@programDtos">
                             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                         </SfDropDownList>
                         <label class="col-sm-2" for="DropSinif">Sınıf:</label>
                         <SfDropDownList ID="DropSinif" @ref="DropSinif" TItem="SinifDto" CssClass="col-sm-2 pb-1"
-                                        TValue="int?" Placeholder="Sınıf Seçiniz"
+                                        TValue="int?" ShowClearButton="true"
                                         DataSource="@(sinifDtos)" Value="@(_dersAcilanDto.Sinif)">
                             <DropDownListEvents TValue="int?" ValueChange="SinifChange"></DropDownListEvents>
                             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
@@ -114,6 +114,7 @@
                         @*açılan ders grid OnRecordClick="OnSinavRecordClickHandler" *@
                         <SfGrid ID="SinavGrid" @ref="SinavGrid" DataSource="@SinavDtos" Toolbar="@(new List<string>() { "Add", "Edit", "Delete","ColumnChooser" })" RowHeight="20" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
                             <GridEvents RowSelected="RowSelectedHandlerSinav" OnActionComplete="ActionCompletedHandler" TValue="SinavDto"></GridEvents>
+                            <GridSelectionSettings EnableToggle="false"></GridSelectionSettings>
                             <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
                                 <Template>
                                     @{

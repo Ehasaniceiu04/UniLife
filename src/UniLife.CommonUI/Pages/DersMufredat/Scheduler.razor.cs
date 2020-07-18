@@ -305,7 +305,15 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         {
             if (args.RequestType == "eventCreate")   //To check for request type is event delete
             {
-                args.AddedRecords[0].Subject = SelectedDersAcilanGridRow.DersAd + "-" + args.AddedRecords[0].Subject;
+                if (args.AddedRecords[0].Subject == " ")
+                {
+                    args.AddedRecords[0].Subject = SelectedDersAcilanGridRow.DersAd;
+                }
+                else
+                {
+                    args.AddedRecords[0].Subject = SelectedDersAcilanGridRow.DersAd + "-" + args.AddedRecords[0].Subject;
+
+                }
                 args.AddedRecords[0].DersAcilanId = SelectedDersAcilanGridRow.DersAcilanId;
                 //args.AddedRecords[0].IsBlock = appState.AppSettings.NotAllowOneDerslikMultiReserv;
             }

@@ -41,7 +41,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         List<SinifDto> sinifDtos = new List<SinifDto>
 {
-            new SinifDto() { Ad = "Tümü", Id = 0 },
+            new SinifDto() { Ad = "0", Id = 0 },
             new SinifDto() { Ad = "1", Id = 1 },
             new SinifDto() { Ad = "2", Id = 2 },
             new SinifDto() { Ad = "3", Id = 3 },

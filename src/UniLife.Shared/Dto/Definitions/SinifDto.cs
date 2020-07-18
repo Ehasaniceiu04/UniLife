@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace UniLife.Shared.Dto.Definitions
 {
-    public class SinifDto : EntityDto<int>
+    public class SinifDto : EntityDto<int?>
     {
         public string Ad { get; set; }
     }
