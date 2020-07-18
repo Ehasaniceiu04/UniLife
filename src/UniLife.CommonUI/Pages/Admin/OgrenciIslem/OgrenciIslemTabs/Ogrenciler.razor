@@ -95,53 +95,30 @@
     void ReadOgrencis()
     {
         //ApiResponseDto<List<OgrenciDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDto>>>($"api/Admin/GetOgrenciUsers?pageSize={10}&pageNumber={0}");
-        ApiResponseDto<List<OgrenciDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDto>>>("api/ogrenci").Result;
-
-
-        if (apiResponse.StatusCode == Status200OK)
+        try
         {
-            matToaster.Add(apiResponse.Message, MatToastType.Success, "Öğrenciler getirildi");
-            OgrGridDtos = apiResponse.Result;
+            ApiResponseDto<List<OgrenciDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDto>>>("api/ogrenci").Result;
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                OgrGridDtos = apiResponse.Result;
+                matToaster.Add(apiResponse.Message, MatToastType.Success, "Öğrenciler getirildi.");
+            }
+            else
+                matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
         }
-        else
+        catch (Exception ex)
         {
-            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Öğrenci bilgisi getirilirken hata oluştu!");
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
         }
+
     }
 
 
 
     public async void ActionCompletedHandler(ActionEventArgs<OgrenciDto> args)
     {
-        var FilterApplied = OgrGrid.FilterSettings.Columns; // to get filtered column details
-                                                            //var GroupingApplied = OgrGrid.GroupSettings.Columns; // to get grouped column details
-                                                            //var SortingApplied = OgrGrid.SortSettings.Columns; // to get sorted column details
-                                                            //var Columns = await OgrGrid.GetColumns(); // to get columsn details like visibility and other properties
-
-        //if (args.RequestType == Syncfusion.Blazor.Grids.Action.Filtering)
-        //{
-        //    await ProceedFilter(FilterApplied);
-        //}
+        var FilterApplied = OgrGrid.FilterSettings.Columns;
     }
-
-    //async Task ProceedFilter(List<GridFilterColumn> filtreler)
-    //{
-    //    string query = "?";
-    //    foreach (var item in filtreler)
-    //    {
-    //        query += item.Field + "=" + item.Value.ToString();
-    //    }
-
-    //    ApiResponseDto<List<OgrenciDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDto>>>("api/ogrenci/GetOgrenciQuery" + query);
-
-    //}
-
-
-
-    //public void ActionFailureHandler(Syncfusion.Blazor.Grids.FailureEventArgs args)
-    //{
-    //}
-
 
     public void ActionBeginHandler(ActionEventArgs<OgrenciDto> args)
     {
