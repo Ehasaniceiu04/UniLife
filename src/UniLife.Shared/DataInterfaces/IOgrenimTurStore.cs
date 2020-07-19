@@ -8,16 +8,7 @@ using System.Threading.Tasks;
 
 namespace UniLife.Shared.DataInterfaces
 {
-    public interface IOgrenimTurStore
+    public interface IOgrenimTurStore : IBaseStore<OgrenimTur, OgrenimTurDto>
     {
-        Task<List<OgrenimTurDto>> GetAll();
-
-        Task<OgrenimTurDto> GetById(int id);
-
-        Task<OgrenimTur> Create(OgrenimTurDto ogrenimTurDto);
-
-        Task<OgrenimTur> Update(OgrenimTurDto ogrenimTurDto);
-
-        Task DeleteById(int id);
     }
 }

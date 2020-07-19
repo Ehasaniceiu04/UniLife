@@ -1,9 +1,7 @@
-﻿using UniLife.Server.Middleware.Wrappers;
+﻿using System.Threading.Tasks;
+using UniLife.Server.Middleware.Wrappers;
 using UniLife.Shared.DataInterfaces;
 using UniLife.Shared.Dto.Definitions;
-using System;
-using System.IO;
-using System.Threading.Tasks;
 using static Microsoft.AspNetCore.Http.StatusCodes;
 
 namespace UniLife.Server.Managers
@@ -19,26 +17,12 @@ namespace UniLife.Server.Managers
 
         public async Task<ApiResponse> Get()
         {
-            try
-            {
-                return new ApiResponse(Status200OK, "Retrieved ProgramDtos", await _programStore.GetAll());
-            }
-            catch (Exception ex)
-            {
-                return new ApiResponse(Status400BadRequest, ex.Message);
-            }
+            return new ApiResponse(Status200OK, "Retrieved ProgramDtos", await _programStore.GetAll());
         }
 
         public async Task<ApiResponse> Get(int id)
         {
-            try
-            {
-                return new ApiResponse(Status200OK, "Retrieved ProgramDto", await _programStore.GetById(id));
-            }
-            catch (Exception e)
-            {
-                return new ApiResponse(Status400BadRequest, "Failed to Retrieve ProgramDto");
-            }
+            return new ApiResponse(Status200OK, "Retrieved ProgramDto", await _programStore.GetById(id));
         }
 
         public async Task<ApiResponse> Create(ProgramDto programDto)
@@ -49,39 +33,18 @@ namespace UniLife.Server.Managers
 
         public async Task<ApiResponse> Update(ProgramDto programDto)
         {
-            try
-            {
-                return new ApiResponse(Status200OK, "Updated ProgramDto", await _programStore.Update(programDto));
-            }
-            catch (InvalidDataException dataException)
-            {
-                return new ApiResponse(Status400BadRequest, "Failed to update ProgramDto");
-            }
+            return new ApiResponse(Status200OK, "Updated ProgramDto", await _programStore.Update(programDto));
         }
 
         public async Task<ApiResponse> Delete(int id)
         {
-            try
-            {
-                await _programStore.DeleteById(id);
-                return new ApiResponse(Status200OK, "Soft Delete ProgramDto");
-            }
-            catch (InvalidDataException dataException)
-            {
-                return new ApiResponse(Status400BadRequest, "Failed to update ProgramDto");
-            }
+            await _programStore.DeleteById(id);
+            return new ApiResponse(Status200OK, "Soft Delete ProgramDto");
         }
 
         public async Task<ApiResponse> GetProgramByBolumIds(string[] bolumIds)
         {
-            try
-            {
-                return new ApiResponse(Status200OK, "Retrieved ProgramDtos", await _programStore.GetProgramByBolumIds(bolumIds));
-            }
-            catch (Exception e)
-            {
-                return new ApiResponse(Status400BadRequest, "Failed to Retrieve ProgramDtos");
-            }
+            return new ApiResponse(Status200OK, "Retrieved ProgramDtos", await _programStore.GetProgramByBolumIds(bolumIds));
         }
     }
 }

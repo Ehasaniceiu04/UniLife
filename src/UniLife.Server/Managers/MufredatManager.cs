@@ -1,11 +1,9 @@
-﻿using UniLife.Server.Middleware.Wrappers;
+﻿using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
+using UniLife.Server.Middleware.Wrappers;
 using UniLife.Shared.DataInterfaces;
 using UniLife.Shared.Dto.Definitions;
-using System;
-using System.IO;
-using System.Threading.Tasks;
 using static Microsoft.AspNetCore.Http.StatusCodes;
-using Microsoft.Extensions.Logging;
 
 namespace UniLife.Server.Managers
 {
@@ -22,26 +20,12 @@ namespace UniLife.Server.Managers
 
         public async Task<ApiResponse> Get()
         {
-            try
-            {
-                return new ApiResponse(Status200OK, "Retrieved MufredatDtos", await _mufredatStore.GetAll());
-            }
-            catch (Exception ex)
-            {
-                return new ApiResponse(Status400BadRequest, ex.Message);
-            }
+            return new ApiResponse(Status200OK, "Retrieved MufredatDtos", await _mufredatStore.GetAll());
         }
 
         public async Task<ApiResponse> Get(int id)
         {
-            try
-            {
-                return new ApiResponse(Status200OK, "Retrieved MufredatDto", await _mufredatStore.GetById(id));
-            }
-            catch (Exception e)
-            {
-                return new ApiResponse(Status400BadRequest, "Failed to Retrieve MufredatDto");
-            }
+            return new ApiResponse(Status200OK, "Retrieved MufredatDto", await _mufredatStore.GetById(id));
         }
 
         public async Task<ApiResponse> Create(MufredatDto mufredatDto)
@@ -52,63 +36,36 @@ namespace UniLife.Server.Managers
 
         public async Task<ApiResponse> Update(MufredatDto mufredatDto)
         {
-                return new ApiResponse(Status200OK, "Müfredat gÜncellendi.", await _mufredatStore.Update(mufredatDto));
+            return new ApiResponse(Status200OK, "Müfredat gÜncellendi.", await _mufredatStore.Update(mufredatDto));
         }
 
         public async Task<ApiResponse> Delete(int id)
         {
-            try
-            {
-                await _mufredatStore.DeleteById(id);
-                return new ApiResponse(Status200OK, "Soft Delete MufredatDto");
-            }
-            catch (InvalidDataException dataException)
-            {
-                return new ApiResponse(Status400BadRequest, "Failed to update MufredatDto");
-            }
+            await _mufredatStore.DeleteById(id);
+            return new ApiResponse(Status200OK, "Soft Delete MufredatDto");
         }
 
         public async Task<ApiResponse> Cokla(int id)
         {
-            try
-            {
-                await _mufredatStore.Cokla(id);
-                return new ApiResponse(Status200OK, "Cokla MufredatDto");
-            }
-            catch (InvalidDataException dataException)
-            {
-                return new ApiResponse(Status400BadRequest, "Failed to Cokla MufredatDto");
-            }
+            await _mufredatStore.Cokla(id);
+            return new ApiResponse(Status200OK, "Cokla MufredatDto");
         }
 
         public async Task<ApiResponse> GetMufredatByProgramIds(string[] programIds)
         {
-            try
-            {
-                return new ApiResponse(Status200OK, "Retrieved MufredatDtos", await _mufredatStore.GetMufredatByProgramIds(programIds));
-            }
-            catch (Exception e)
-            {
-                return new ApiResponse(Status400BadRequest, "Failed to Retrieve MufredatDtos");
-            }
+            return new ApiResponse(Status200OK, "Retrieved MufredatDtos", await _mufredatStore.GetMufredatByProgramIds(programIds));
+
         }
 
         public async Task<ApiResponse> GetMufredatState(int mufredatId)
         {
-            try
-            {
-                return new ApiResponse(Status200OK, "Retrieved MufredatDtos", await _mufredatStore.GetMufredatState(mufredatId));
-            }
-            catch (Exception e)
-            {
-                return new ApiResponse(Status400BadRequest, "Failed to GetMufredatState");
-            }
+            return new ApiResponse(Status200OK, "Retrieved MufredatDtos", await _mufredatStore.GetMufredatState(mufredatId));
         }
 
         public async Task<ApiResponse> CreateDersAcilansByMufredatIds(IntEnumarableDto intEnumarableDto)
         {
-                await _mufredatStore.CreateDersAcilansByMufredatIds(intEnumarableDto);
-                return new ApiResponse(Status200OK, "Seçili müfredatların dersleri açıldı.");
+            await _mufredatStore.CreateDersAcilansByMufredatIds(intEnumarableDto);
+            return new ApiResponse(Status200OK, "Seçili müfredatların dersleri açıldı.");
 
         }
     }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using UniLife.Server.Middleware.Wrappers;
 using UniLife.Shared.DataInterfaces;
 using UniLife.Shared.DataModels;
@@ -17,24 +15,17 @@ namespace UniLife.Server.Managers
             _sinavStore = sinavStore;
         }
 
-        
+
 
         public async Task<ApiResponse> GetSinavListByAcilanDersId(int dersId)
         {
-            try
-            {
-                return new ApiResponse(Status200OK, "Retrieved SinavDto", await _sinavStore.GetSinavListByAcilanDersId(dersId));
-            }
-            catch (Exception e)
-            {
-                return new ApiResponse(Status400BadRequest, "Failed to Retrieve SinavDto");
-            }
+            return new ApiResponse(Status200OK, "Retrieved SinavDto", await _sinavStore.GetSinavListByAcilanDersId(dersId));
         }
         public async Task<ApiResponse> PostBulkCreate(SinavDto sinavDto)
         {
             await _sinavStore.PostBulkCreate(sinavDto);
             return new ApiResponse(Status200OK, "Created Sinavs", null);
         }
-        
+
     }
 }

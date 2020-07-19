@@ -1,10 +1,7 @@
-﻿using UniLife.Server.Middleware.Wrappers;
+﻿using System.Threading.Tasks;
+using UniLife.Server.Middleware.Wrappers;
 using UniLife.Shared.DataInterfaces;
 using UniLife.Shared.Dto.Definitions;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
 using static Microsoft.AspNetCore.Http.StatusCodes;
 
 namespace UniLife.Server.Managers
@@ -20,26 +17,13 @@ namespace UniLife.Server.Managers
 
         public async Task<ApiResponse> Get()
         {
-            try
-            {
-                return new ApiResponse(Status200OK, "Retrieved UniversiteDtos", await _universiteStore.GetAll());
-            }
-            catch (Exception ex)
-            {
-                return new ApiResponse(Status400BadRequest, ex.Message);
-            }
+            return new ApiResponse(Status200OK, "Retrieved UniversiteDtos", await _universiteStore.GetAll());
+
         }
 
         public async Task<ApiResponse> Get(int id)
         {
-            try
-            {
-                return new ApiResponse(Status200OK, "Retrieved UniversiteDto", await _universiteStore.GetById(id));
-            }
-            catch (Exception e)
-            {
-                return new ApiResponse(Status400BadRequest, "Failed to Retrieve UniversiteDto");
-            }
+            return new ApiResponse(Status200OK, "Retrieved UniversiteDto", await _universiteStore.GetById(id));
         }
 
         public async Task<ApiResponse> Create(UniversiteDto universiteDto)
@@ -50,27 +34,13 @@ namespace UniLife.Server.Managers
 
         public async Task<ApiResponse> Update(UniversiteDto universiteDto)
         {
-            try
-            {
-                return new ApiResponse(Status200OK, "Updated UniversiteDto", await _universiteStore.Update(universiteDto));
-            }
-            catch (InvalidDataException dataException)
-            {
-                return new ApiResponse(Status400BadRequest, "Failed to update UniversiteDto");
-            }
+            return new ApiResponse(Status200OK, "Updated UniversiteDto", await _universiteStore.Update(universiteDto));
         }
 
         public async Task<ApiResponse> Delete(int id)
         {
-            try
-            {
-                await _universiteStore.DeleteById(id);
-                return new ApiResponse(Status200OK, "Soft Delete UniversiteDto");
-            }
-            catch (InvalidDataException dataException)
-            {
-                return new ApiResponse(Status400BadRequest, "Failed to update UniversiteDto");
-            }
+            await _universiteStore.DeleteById(id);
+            return new ApiResponse(Status200OK, "Soft Delete UniversiteDto");
         }
     }
 }

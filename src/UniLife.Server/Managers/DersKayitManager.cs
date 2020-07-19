@@ -1,11 +1,9 @@
-﻿using UniLife.Server.Middleware.Wrappers;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using UniLife.Server.Middleware.Wrappers;
 using UniLife.Shared.DataInterfaces;
 using UniLife.Shared.DataModels;
 using UniLife.Shared.Dto.Definitions;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
 using static Microsoft.AspNetCore.Http.StatusCodes;
 
 namespace UniLife.Server.Managers
@@ -17,58 +15,34 @@ namespace UniLife.Server.Managers
         public DersKayitManager(IDersKayitStore dersKayitStore) : base(dersKayitStore)
         {
             _dersKayitStore = dersKayitStore;
-            
+
         }
 
         public async Task<ApiResponse> DeleteByOgrId_DersId(int ogrenciId, int dersId)
         {
-            try
-            {
-                await _dersKayitStore.DeleteByOgrId_DersId(ogrenciId, dersId);
-                return new ApiResponse(Status200OK, "Soft Delete DersKayit");
-            }
-            catch (InvalidDataException dataException)
-            {
-                return new ApiResponse(Status400BadRequest, "Failed to delete DersKayit");
-            }
+            await _dersKayitStore.DeleteByOgrId_DersId(ogrenciId, dersId);
+            return new ApiResponse(Status200OK, "Soft Delete DersKayit");
+
         }
 
         public async Task<ApiResponse> OgrenciKayitToDerss(IEnumerable<DersKayitDto> dersKayitDtos)
         {
-            try
-            {
-                await _dersKayitStore.OgrenciKayitToDerss(dersKayitDtos);
-                return new ApiResponse(Status200OK, "Bulk create result");
-            }
-            catch (InvalidDataException dataException)
-            {
-                throw;
-            }
-            
+            await _dersKayitStore.OgrenciKayitToDerss(dersKayitDtos);
+            return new ApiResponse(Status200OK, "Bulk create result");
+
+
         }
 
         public async Task<ApiResponse> PutUpdateOgrencisDersKayits(PutUpdateOgrencisDersKayitsDto putUpdateOgrencisDersKayitsDto)
         {
-            try
-            {
-                return new ApiResponse(Status200OK, "Updated PutUpdateOgrencisDersKayits", await _dersKayitStore.PutUpdateOgrencisDersKayits(putUpdateOgrencisDersKayitsDto));
-            }
-            catch (InvalidDataException dataException)
-            {
-                return new ApiResponse(Status400BadRequest, "Failed to update DersKayit");
-            }
+            return new ApiResponse(Status200OK, "Updated PutUpdateOgrencisDersKayits", await _dersKayitStore.PutUpdateOgrencisDersKayits(putUpdateOgrencisDersKayitsDto));
+
         }
 
         public async Task<ApiResponse> PutUpdateOgrencisDersKayitsDeleteExSubes(ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds)
         {
-            try
-            {
-                return new ApiResponse(Status200OK, "Updated PutUpdateOgrencisDersKayitsDeleteExSubes", await _dersKayitStore.PutUpdateOgrencisDersKayitsDeleteExSubes(reqEntityIdWithOtherEntitiesIds));
-            }
-            catch (InvalidDataException dataException)
-            {
-                return new ApiResponse(Status400BadRequest, "Failed to update DersKayit");
-            }
+            return new ApiResponse(Status200OK, "Updated PutUpdateOgrencisDersKayitsDeleteExSubes", await _dersKayitStore.PutUpdateOgrencisDersKayitsDeleteExSubes(reqEntityIdWithOtherEntitiesIds));
+
         }
     }
 }
