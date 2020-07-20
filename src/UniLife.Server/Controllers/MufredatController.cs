@@ -90,9 +90,9 @@ namespace UniLife.Server.Controllers
         [HttpPost]
         [AllowAnonymous]
         [Route("CreateDersAcilansByMufredatIds")]
-        public async Task<ApiResponse> CreateDersAcilansByMufredatIds([FromBody] IntEnumarableDto intEnumarableDto)
+        public async Task<ApiResponse> CreateDersAcilansByMufredatIds([FromBody] ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds)
             => ModelState.IsValid ?
-                await _mufredatManager.CreateDersAcilansByMufredatIds(intEnumarableDto) :
+                await _mufredatManager.CreateDersAcilansByMufredatIds(reqEntityIdWithOtherEntitiesIds) :
                 new ApiResponse(Status400BadRequest, "Mufredat Model is Invalid");
         
     }

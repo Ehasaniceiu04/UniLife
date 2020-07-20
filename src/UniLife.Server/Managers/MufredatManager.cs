@@ -62,9 +62,9 @@ namespace UniLife.Server.Managers
             return new ApiResponse(Status200OK, "Retrieved MufredatDtos", await _mufredatStore.GetMufredatState(mufredatId));
         }
 
-        public async Task<ApiResponse> CreateDersAcilansByMufredatIds(IntEnumarableDto intEnumarableDto)
+        public async Task<ApiResponse> CreateDersAcilansByMufredatIds(ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds)
         {
-            await _mufredatStore.CreateDersAcilansByMufredatIds(intEnumarableDto);
+            await _mufredatStore.CreateDersAcilansByMufredatIds(reqEntityIdWithOtherEntitiesIds);
             return new ApiResponse(Status200OK, "Seçili müfredatların dersleri açıldı.");
 
         }

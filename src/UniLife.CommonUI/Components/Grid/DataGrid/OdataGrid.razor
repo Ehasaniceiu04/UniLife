@@ -1,22 +1,76 @@
 ﻿@page "/sample"
-@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Buttons
 
-<SfTextBox Placeholder="Enter a Numeric Values" Input="OnInput" CssClass="@CssClass"></SfTextBox>
 
-@code {
+<SfGrid DataSource="@Orders" AllowPaging="true" AllowExcelExport="true" Height="200" @ref="Grid">
+    <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
+    <GridEvents TValue="Order"></GridEvents>
+    <SfToolbar>
+        <ToolbarItems>
+            <ToolbarItem Type="ItemType.Input">
+                <Template>
+                    <SfDropDownList TValue="string" TItem="Select" DataSource=@LocalData Width="200">
+                        <DropDownListFieldSettings Text="text" Value="text"> </DropDownListFieldSettings>
+                        <DropDownListEvents TValue="string" ValueChange="OnChange"> </DropDownListEvents>
+                    </SfDropDownList>
+                    <SfButton ID="SubButton" CssClass="form-control e-warning col-sm-4">Ekle</SfButton>
+                </Template>
+            </ToolbarItem>
+        </ToolbarItems>
+    </SfToolbar>
 
-    public string CssClass { get; set; }
+    <GridColumns>
+        <GridColumn Field=@nameof(Order.OrderID) HeaderText="Order ID" TextAlign="TextAlign.Right" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(Order.CustomerID) HeaderText="Customer Name" Width="150"></GridColumn>
+        <GridColumn Field=@nameof(Order.OrderDate) HeaderText=" Order Date" Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Right" Width="130"></GridColumn>
+        <GridColumn Field=@nameof(Order.Freight) HeaderText="Freight" Format="C2" TextAlign="TextAlign.Right" Width="120"></GridColumn>
+    </GridColumns>
+</SfGrid>
 
-    public void OnInput(InputEventArgs args)
+@code{
+
+    SfGrid<Order> Grid;
+    public List<Order> Orders { get; set; }
+    public class Select
     {
-        if (!System.Text.RegularExpressions.Regex.IsMatch(args.Value, "^[0-9]*$"))
+        public string text { get; set; }
+    }
+    List<Select> LocalData = new List<Select>
+{
+            new Select() { text = "0"},
+            new Select() { text = "1"},
+            new Select() { text = "2"},
+            new Select() { text = "3"},
+            new Select() { text = "4"},
+            new Select() { text = "5"},
+            new Select() { text = "6"},
+            new Select() { text = "7"},
+            new Select() { text = "8"},
+            new Select() { text = "9"},
+    };
+    protected override void OnInitialized()
+    {
+        Orders = Enumerable.Range(1, 10).Select(x => new Order()
         {
-            CssClass = "e-error";
-        }
-        else
-        {
-            CssClass = "e-success";
-        }
-        this.StateHasChanged();
+            OrderID = 1000 + x,
+            CustomerID = (new string[] { "ALFKI", "ANANTR", "ANTON", "BLONP", "BOLID" })[new Random().Next(5)],
+            Freight = 2.1 * x,
+            OrderDate = DateTime.Now.AddDays(-x),
+        }).ToList();
+    }
+    public async Task OnChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<string> args)
+    {
+        await this.Grid.SelectRow(int.Parse(args.Value));
+    }
+
+    public class Order
+    {
+        public int? OrderID { get; set; }
+        public string CustomerID { get; set; }
+        public DateTime? OrderDate { get; set; }
+        public double? Freight { get; set; }
     }
 }

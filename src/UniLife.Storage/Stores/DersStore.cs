@@ -9,6 +9,9 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using System.Threading.Tasks;
+using SQLitePCL;
+using System.Security.Cryptography.X509Certificates;
+
 namespace UniLife.Storage.Stores
 {
     public class DersStore : IDersStore
@@ -98,6 +101,55 @@ namespace UniLife.Storage.Stores
             return _autoMapper.Map<List<DersDto>>(await derss.ToListAsync()) ;
 
 
+        }
+
+        public async Task CreateDersAcilansByDersId(int dersId)
+        {
+            var dumpDersAcilan = await _db.DersAcilans.FirstOrDefaultAsync(x => x.DersId == dersId);
+
+            var ders = await _db.Derss.FirstOrDefaultAsync(x => x.Id == dersId);
+
+            DersAcilan dersAcilan = new DersAcilan
+            {
+                Ad = ders.Ad,
+                AdEn = ders.AdEn,
+                Akts = ders.Akts,
+                BolumId = ders.BolumId,
+                DersId = ders.Id,
+                KisaAd = ders.KisaAd,
+                Kod = ders.Kod + "-" + ders.Id,
+                Kredi = ders.Kredi,
+                LabSaat = ders.LabSaat,
+                MufredatId = ders.MufredatId,
+                OptikKod = ders.OptikKod,
+                ProgramId = ders.ProgramId,
+                SecmeliKodu = ders.SecmeliKodu,
+                Sinif = ders.Sinif,
+                DonemId = ders.DonemId,
+                Durum = ders.Durum,
+                FakulteId = ders.FakulteId,
+                TeoSaat = ders.TeoSaat,
+                UygSaat = ders.UygSaat,
+                Zorunlu = ders.Zorunlu
+            };
+
+            ders.Durum = true;
+
+            var mufredat = await _db.Mufredats.FirstOrDefaultAsync(x=>x.Id == ders.MufredatId);
+            mufredat.Durum = 1;
+
+            if (dumpDersAcilan!=null)
+            {
+                _db.DersAcilans.Remove(dumpDersAcilan);
+            }
+
+            _db.Mufredats.Update(mufredat);
+
+            _db.DersAcilans.Add(dersAcilan);
+
+            _db.Derss.Update(ders);
+
+            await _db.SaveChangesAsync(CancellationToken.None);
         }
     }
 }

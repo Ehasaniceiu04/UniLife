@@ -28,7 +28,6 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         List<DersDto> dersDtos = new List<DersDto>();
 
-        List<MufredatDto> mufredatDtos = new List<MufredatDto>();
 
         List<DonemDto> donemDtos = new List<DonemDto>();
 
@@ -40,11 +39,8 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         {
             ReadDerss();
 
-
-            ApiResponseDto apiResponse = Http.GetFromJsonAsync<ApiResponseDto>("api/mufredat").Result;
-            mufredatDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<MufredatDto[]>(apiResponse.Result.ToString()).ToList<MufredatDto>();
-            ApiResponseDto apiResponseDersTur = Http.GetFromJsonAsync<ApiResponseDto>("api/donem").Result;
-            donemDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<DonemDto[]>(apiResponseDersTur.Result.ToString()).ToList<DonemDto>();
+            ApiResponseDto<List<DonemDto>> apiResponseDonem = Http.GetFromJsonAsync<ApiResponseDto<List<DonemDto>>>("api/donem/current").Result;
+            donemDtos = apiResponseDonem.Result;
 
         }
 
@@ -56,7 +52,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
                 if (apiResponse.IsSuccessStatusCode)
                 {
-                    matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+                    matToaster.Add($"{appState.MufredatState.MufredatAd} müfredatına bağlı dersler getirildi", MatToastType.Success);
                     dersDtos = apiResponse.Result;
                 }
                 else
@@ -67,19 +63,6 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
             }
 
-
-            
-
-            //if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
-            //{
-            //    matToaster.Add(apiResponse.Message, MatToastType.Success, "ders getirildi");
-            //    dersDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<DersDto[]>(apiResponse.Result.ToString()).ToList<DersDto>();
-            //    DersGrid.Refresh();
-            //}
-            //else
-            //{
-            //    matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "ders bilgisi getirilirken hata oluştu!");
-            //}
         }
 
 
@@ -129,18 +112,12 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 }
                 else
                 {
-                    //TODO Ahmet 1**
-                    //TODO Ahmet 2**
                     dersDtos.Remove(dersDto);
-                    //DersGrid.Refresh();
                     matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
                 }
             }
             catch (Exception ex)
             {
-                //TODO Ahmet 1**: liste içinden değinde gride eklediğini sil demeli !!
-                //TODO Ahmet 2**: Dbden hata geldiği zaman Bu hata sebebini mantıklı şekilde buraya vermemiz gerekiyor. Aynı Idli kayıt gönder patlatıyon.
-
                 dersDtos.Remove(dersDto);
                 DersGrid.Refresh();
                 matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
@@ -207,6 +184,44 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             this.StateHasChanged();
         }
 
+        public void QueryCellInfoHandler(QueryCellInfoEventArgs<DersDto> args)
+        {
+            if (args.Data.Durum)
+            {
+                args.Cell.AddStyle(new string[] { "background-color:#80d192" });
+            }
+        }
+
+        public async Task CommandClickHandler(CommandClickEventArgs<DersDto> args)
+        {
+            if (args.CommandColumn.Title == "Dersi Ac")
+            {
+                try
+                {
+
+                    
+                    ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/ders/CreateDersAcilansByDersId", args.RowData.Id);
+                    if (apiResponse.IsSuccessStatusCode)
+                    {
+                        matToaster.Add("Ders açıldı", MatToastType.Success, "İşlem başarılı.");
+                        ReadDerss();
+                    }
+                    else
+                    {
+                        matToaster.Add("", MatToastType.Danger, "İşlem başarısız!");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
+                }
+
+
+
+            }
+
+
+        }
 
     }
 }

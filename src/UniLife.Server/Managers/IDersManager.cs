@@ -13,5 +13,6 @@ namespace UniLife.Server.Managers
         Task<ApiResponse> Delete(int id);
         Task<ApiResponse> GetDersByMufredatId(int mufredatId);
         Task<ApiResponse> GetAcilacakDersByFilterDto(DersFilterDto dersFilterDto);
+        Task<ApiResponse> CreateDersAcilansByDersId(int dersId);
     }
 }

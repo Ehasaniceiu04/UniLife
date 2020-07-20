@@ -73,5 +73,14 @@ namespace UniLife.Server.Controllers
             => ModelState.IsValid ?
                     await _dersManager.GetAcilacakDersByFilterDto(dersFilterDto) :
                     new ApiResponse(Status400BadRequest, "DersFilterDto Model is Invalid");
+
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("CreateDersAcilansByDersId")]
+        public async Task<ApiResponse> CreateDersAcilansByDersId([FromBody] int dersId)
+            => ModelState.IsValid ?
+                    await _dersManager.CreateDersAcilansByDersId(dersId) :
+                    new ApiResponse(Status400BadRequest, "DersFilterDto Model is Invalid");
+        
     }
 }

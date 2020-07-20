@@ -17,7 +17,7 @@
     @*<SfDataManager AdaptorInstance="@typeof(CustomAdaptor)" Adaptor="Adaptors.CustomAdaptor"></SfDataManager>*@
     <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.CheckBox"></GridFilterSettings>
     <GridGroupSettings ShowGroupedColumn="true"></GridGroupSettings>
-    <GridEvents OnActionComplete="ActionCompletedHandler" TValue="DersDto"></GridEvents>
+    <GridEvents CommandClicked="CommandClickHandler" QueryCellInfo="QueryCellInfoHandler" OnActionComplete="ActionCompletedHandler" TValue="DersDto"></GridEvents>
     <GridEditSettings Dialog="DialogParams" ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
         <Template>
             @{
@@ -58,12 +58,12 @@
                                 </SfDropDownList>
                             </div>
                         </div>
-                        <div class="form-group row">
+                        @*<div class="form-group row">
                             <label for="Durum" class="col-sm-2 col-form-label">Durum</label>
                             <div class="col-sm-4">
                                 <SfCheckBox ID="Durum" CssClass="form-control-sm" @bind-Checked="@(dersDto.Durum)"></SfCheckBox>
                             </div>
-                        </div>
+                        </div>*@
                     </div>
                     <div class="col-sm-12 col-md-7">
                         <div class="form-group row">
@@ -143,12 +143,13 @@
         <GridColumn Visible="false" Field=@nameof(DersDto.LabSaat) HeaderText="LabSaat"></GridColumn>
         <GridColumn Visible="false" Field=@nameof(DersDto.TeoSaat) HeaderText="TeoSaat"></GridColumn>
         <GridColumn Visible="false" Field=@nameof(DersDto.Kredi) HeaderText="Kredi"></GridColumn>
-        <GridColumn Visible="false" Field=@nameof(DersDto.Durum) HeaderText="Durum" DisplayAsCheckBox="true"></GridColumn>
+        @*<GridColumn Visible="false" Field=@nameof(DersDto.Durum) HeaderText="Durum" DisplayAsCheckBox="true"></GridColumn>*@
         <GridColumn Field=@nameof(DersDto.Zorunlu) HeaderText="Zorunlu" DisplayAsCheckBox="true"></GridColumn>
         <GridColumn Field=@nameof(DersDto.SecmeliKodu) HeaderText="SecmeliKodu"></GridColumn>
         <GridColumn Field=@nameof(DersDto.Sinif) HeaderText="Sinif"></GridColumn>
         <GridColumn>
             <GridCommandColumns>
+                <GridCommandColumn Type="CommandButtonType.None" Title="Dersi Ac" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-SendToBack", CssClass="e-flat" })"></GridCommandColumn>
                 <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-edit", CssClass="e-flat" })"></GridCommandColumn>
                 <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-delete", CssClass="e-flat" })"></GridCommandColumn>
                 <GridCommandColumn Type="CommandButtonType.Save" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-update", CssClass="e-flat" })"></GridCommandColumn>
@@ -174,5 +175,9 @@
 
     .e-input-group .e-input-group-icon, .e-input-group.e-control-wrapper .e-input-group-icon {
         min-height: unset;
+    }
+    .e-SendToBack:before {
+        content: '\e7fe';
+        color: #80d192;
     }
 </style>

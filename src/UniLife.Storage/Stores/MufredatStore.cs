@@ -148,9 +148,25 @@ namespace UniLife.Storage.Stores
             return await mufredatState.FirstOrDefaultAsync();
         }
 
-        public async Task CreateDersAcilansByMufredatIds(IntEnumarableDto intEnumarableDto)
+        public async Task CreateDersAcilansByMufredatIds(ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds)
         {
-            var mufredatDerss = await _db.Derss.Where(x => intEnumarableDto.EnumerableList.Contains(x.MufredatId)).ToListAsync();
+            var mufredatDerss = await _db.Derss.Where(x => reqEntityIdWithOtherEntitiesIds.EntityId == x.DonemId && reqEntityIdWithOtherEntitiesIds.OtherEntityIds.Contains(x.MufredatId)).ToListAsync();
+
+
+            //RAW delete hard yapıyor.. tehlikeli.
+            //string queryIncludeIds = "";
+            //foreach (var item in mufredatDerss.Select(x=>x.Id))
+            //{
+            //    queryIncludeIds = queryIncludeIds + item.ToString() + ",";
+            //}
+            //queryIncludeIds = queryIncludeIds.TrimEnd(',');
+
+            //var rawBulkDeleteQuery = $"delete from public.'DersAcilans' where 'DersId' in ({queryIncludeIds})";
+
+            //int numberOfRowAffected = await _db.Database.ExecuteSqlCommandAsync(rawBulkDeleteQuery.Replace('\'', '"'));
+
+            var dumpDersAcilans = _db.DersAcilans.Where(x => reqEntityIdWithOtherEntitiesIds.EntityId == x.DonemId && reqEntityIdWithOtherEntitiesIds.OtherEntityIds.Contains(x.MufredatId)).ToList(); //bunlar yeniden geldiği için silinecek.
+
 
             List<DersAcilan> dersAcilans = new List<DersAcilan>();
             foreach (var i in mufredatDerss)
@@ -179,13 +195,25 @@ namespace UniLife.Storage.Stores
                     Zorunlu = i.Zorunlu
                 };
                 dersAcilans.Add(dersAcilan);
+
+                i.Durum = true; // Dersleri açınca durumlarını aktif ediyoruz. Bir başka ifadeyle, "Ders"ler "DersAcilan"a aktarıldığında "Ders" aktif oluyor.
             }
 
+            _db.DersAcilans.RemoveRange(dumpDersAcilans); //aynı dersacilan varsa sil
+            _db.Derss.UpdateRange(mufredatDerss); // açilan dersler in durumunu 1 yap.
 
-            //dersAcilans = _autoMapper.Map<List<DersAcilan>>(mufredatDerss);
 
-            await _db.DersAcilans.AddRangeAsync(dersAcilans);
+            var aktifMufredats = await _db.Mufredats.Where(x=> reqEntityIdWithOtherEntitiesIds.OtherEntityIds.Contains(x.Id)).ToListAsync();
+            aktifMufredats.ForEach(x => { x.Durum = 1;});  //açılan derslerin bağlı oldugu müfredatların durumu 1 yap.
+
+            await _db.DersAcilans.AddRangeAsync(dersAcilans); //açılan dersleri ekle
+
+
+            _db.Mufredats.UpdateRange(aktifMufredats); //1 leri kaydet.
+
             await _db.SaveChangesAsync(CancellationToken.None);
+
+                
         }
     }
 }

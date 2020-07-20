@@ -11,11 +11,14 @@
 @using Syncfusion.Blazor.Data
 
 <style>
+    .e-SendToBack:before {
+        content: '\e7fe';
+        color: #80d192;
+    }
     .e-DoubleArrowRight:before {
         content: '\e7bb';
         color: #e83e8c;
     }
-
     .col-form-label-sm {
         font-size: .775rem;
     }
@@ -25,7 +28,8 @@
 <SfGrid Width="100%" @ref="MufredatGrid" ID="MufredatGrid" TValue="MufredatDto" Query="@totalQuery" ShowColumnChooser="true" AllowSorting="true" AllowFiltering="true" AllowPaging="true" Toolbar="Toolbaritems"
         ContextMenuItems="@(new List<ContextMenuItemModel>() { new ContextMenuItemModel { Text = "Ders Tanımla", Target = ".e-content", Id = "copywithheader" } })">
     <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
-    <GridEvents ContextMenuItemClicked="OnContextMenuClick" CommandClicked="CommandClickHandler" OnActionBegin="OnActionBeginHandler" OnToolbarClick="ToolbarClickHandler" OnActionComplete="ActionCompletedHandler" TValue="MufredatDto"></GridEvents>
+    <GridEvents RowSelecting="OnRowSelecting" QueryCellInfo="QueryCellInfoHandler" ContextMenuItemClicked="OnContextMenuClick" CommandClicked="CommandClickHandler" OnActionBegin="OnActionBeginHandler" OnToolbarClick="ToolbarClickHandler" OnActionComplete="ActionCompletedHandler" TValue="MufredatDto"></GridEvents>
+    <GridSelectionSettings Type="SelectionType.Multiple" CheckboxOnly="true"></GridSelectionSettings>
     <GridEditSettings Dialog="DialogParams" ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
         <Template>
             @{
@@ -83,7 +87,7 @@
         <GridColumn Field="Program.Ad" HeaderText="Program" Type="ColumnType.String"></GridColumn>
         <GridColumn>
             <GridCommandColumns>
-                <GridCommandColumn Type="CommandButtonType.None" Title="DersOlus" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
+                <GridCommandColumn Type="CommandButtonType.None" Title="Tanımlı Dersler" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
                 <GridCommandColumn Type="CommandButtonType.None" Title="Clone" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-copy", CssClass="e-flat" })"></GridCommandColumn>
                 <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-edit", CssClass="e-flat" })"></GridCommandColumn>
                 <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-delete", CssClass="e-flat" })"></GridCommandColumn>
@@ -94,7 +98,7 @@
     </GridColumns>
 </SfGrid>
 
-<MatDialog @bind-IsOpen="@multiDialogOpen" Style="z-index:100">
+<MatDialog Id="multiDialog" @bind-IsOpen="@multiDialogOpen" Style="z-index:100">
     <MatDialogTitle><MatIcon Icon="warning"></MatIcon> Confirm Delete</MatDialogTitle>
     <MatDialogContent>
         "@mufredatDto.Ad" isimli müfredatı çoklamak istediğinize emin misiniz?
@@ -105,3 +109,25 @@
     </MatDialogActions>
 </MatDialog>
 
+<Dialog Baslik="Uyarı!" @bind-isDialogOpen="@isUyariOpen">
+    <p>@dialogUyariText</p>
+</Dialog>
+
+<MatDialog Id="MufredatAcDialog" @bind-IsOpen="@mufredatAcDialogOpen" Style="z-index:100">
+    <MatDialogTitle><MatIcon Icon="warning"></MatIcon>Dönem Seçimi</MatDialogTitle>
+    <MatDialogContent>
+        <p>Seçmiş olduğunuz müfredatların açmak istediğiniz dönemini seçiniz</p>
+        <div class="form-row">
+            <label class="col-sm-2" for="DropDonem">Dönem:</label>
+            <SfDropDownList ID="DropDonem" @ref="DropDonem" TItem="DonemDto" CssClass="col-sm-10 pb-1"
+                            TValue="int?" PopupHeight="230px" Placeholder="Dönem Seçiniz"
+                            @bind-Value="@(AçilacakMufredatlarınSecilenDonemIdsi)" DataSource="@donemDtos">
+                <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+            </SfDropDownList>
+        </div>
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="@(e => { mufredatAcDialogOpen = false; })">Kapat</MatButton>
+        <MatButton OnClick="@MufredatiAc">Aç</MatButton>
+    </MatDialogActions>
+</MatDialog>

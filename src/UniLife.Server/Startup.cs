@@ -138,6 +138,7 @@ namespace UniLife.Server
                   // this enables automatic token cleanup. this is optional.
                   options.EnableTokenCleanup = true;
                   options.TokenCleanupInterval = 3600; //In Seconds 1 hour
+                  //options.TokenCleanupInterval = 5; //5 sec
               })
               .AddAspNetIdentity<ApplicationUser>();
 

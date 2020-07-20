@@ -57,5 +57,11 @@ namespace UniLife.Server.Managers
             var derss = await _dersStore.GetAcilacakDersByFilterDto(dersFilterDto);
             return new ApiResponse(Status200OK, "Selected DersDto", derss);
         }
+
+        public async Task<ApiResponse> CreateDersAcilansByDersId(int dersId)
+        {
+            await _dersStore.CreateDersAcilansByDersId(dersId);
+            return new ApiResponse(Status200OK, "Ders Açıldı", null);
+        }
     }
 }

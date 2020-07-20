@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using MatBlazor;
 using Microsoft.AspNetCore.Components;
 using Syncfusion.Blazor.Data;
+using Syncfusion.Blazor.DropDowns;
 using Syncfusion.Blazor.Grids;
 using Syncfusion.Blazor.Navigations;
 using UniLife.CommonUI.Extensions;
@@ -41,12 +42,19 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         public MufredatDto mufredatDto { get; set; } = new MufredatDto();
 
-        private List<Object> Toolbaritems = new List<Object>() { "Add", "Search", "Paste", "Copy", "ColumnChooser", new ItemModel() { Text = "Dersleri Aç", TooltipText = "Click", PrefixIcon = "e-icons e-DoubleArrowRight", Id = "DersleriAc" } };
+        private List<Object> Toolbaritems = new List<Object>() { "Add", "ColumnChooser", new ItemModel() { Text = "Seçili Mufredatları Aç", TooltipText = "Click", PrefixIcon = "e-icons e-SendToBack", Id = "MufredatDerslerAc" } };
 
         bool multiDialogOpen = false;
 
         private DialogSettings DialogParams = new DialogSettings { MinHeight = "400px", Width = "900px" };
 
+        bool isUyariOpen;
+        string dialogUyariText="";
+
+        List<DonemDto> donemDtos = new List<DonemDto>();
+        SfDropDownList<int?, DonemDto> DropDonem;
+        int? AçilacakMufredatlarınSecilenDonemIdsi;
+        bool mufredatAcDialogOpen;
 
         public async Task MultiplyRecord()
         {
@@ -92,29 +100,39 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
         {
-            if (args.Item.Id == "DersleriAc")
+            if (args.Item.Id == "MufredatDerslerAc")
             {
-                try
+                await ReadDonems();
+
+                mufredatAcDialogOpen = true;
+            }
+        }
+
+        public async Task MufredatiAc()
+        {
+            try
+            {               
+
+                ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds = new ReqEntityIdWithOtherEntitiesIds();
+                reqEntityIdWithOtherEntitiesIds.EntityId = (int)AçilacakMufredatlarınSecilenDonemIdsi;
+                reqEntityIdWithOtherEntitiesIds.OtherEntityIds = (await MufredatGrid.GetSelectedRecords()).Select(x => x.Id).ToList();
+                mufredatAcDialogOpen = false;
+
+                ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/mufredat/CreateDersAcilansByMufredatIds", reqEntityIdWithOtherEntitiesIds);
+
+
+                if (apiResponse.IsSuccessStatusCode)
                 {
-                    IntEnumarableDto intEnumarableDto = new IntEnumarableDto();
-                    intEnumarableDto.EnumerableList = (await MufredatGrid.GetSelectedRecords()).Select(x => x.Id);
-
-                    ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/mufredat/CreateDersAcilansByMufredatIds", intEnumarableDto);
-
-
-                    if (apiResponse.IsSuccessStatusCode)
-                    {
-                        matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
-                    }
-                    else
-                        matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
-                    
+                    matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+                    MufredatGrid.Refresh();
                 }
-                catch (Exception ex)
-                {
-                    matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
-                }
+                else
+                    matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
 
+            }
+            catch (Exception ex)
+            {
+                matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
             }
         }
 
@@ -127,7 +145,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                     mufredatDto = args.RowData;
                     multiDialogOpen = true;
                 }
-                if (args.CommandColumn.Title == "DersOlus")
+                if (args.CommandColumn.Title == "Tanımlı Dersler")
                 {
 
                     ApiResponseDto<MufredatStateDto> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<MufredatStateDto>>($"api/mufredat/GetMufredatState/{args.RowData.Id}").Result;
@@ -297,6 +315,38 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             {
                 matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
                 return false;
+            }
+        }
+
+        public void QueryCellInfoHandler(QueryCellInfoEventArgs<MufredatDto> args)
+        {
+            if (args.Data.Durum==1)
+            {
+                args.Cell.AddStyle(new string[] { "background-color:#80d192" });
+            }
+        }
+
+        public async Task OnRowSelecting(RowSelectingEventArgs<MufredatDto> args)
+        {
+            if (args.Data.Durum ==1)
+            {
+                //args.Cancel = true;
+                isUyariOpen = true;
+                dialogUyariText = $"{args.Data.Ad} müfredatının bazı dersleri aktifleştirilmiş. Kırmızı oka basarak 'Tanımlı Derslerine' göz atabilirsiniz";
+            }
+        }
+
+        async Task ReadDonems()
+        {
+            ApiResponseDto<List<DonemDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<DonemDto>>>("api/donem/current");
+
+            if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
+            {
+                donemDtos = apiResponse.Result;
+            }
+            else
+            {
+                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Donem getirilirken hata oluştu!");
             }
         }
 
