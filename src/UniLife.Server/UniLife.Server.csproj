@@ -106,10 +106,4 @@
     <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Update="Resources\SfResources.en-US.resx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-  </ItemGroup>
-
 </Project>
