@@ -3,14 +3,9 @@ using System.Resources;
 
 namespace UniLife.Server.Helpers
 {
-    public class SyncLocalizer : ISyncfusionStringLocalizer
+    public class SyncfusionLocalizer : ISyncfusionStringLocalizer
     {
         // To get the locale key from mapped resources file
-        //public string Get(string key)
-        //{
-        //    return this.ResourceManager.GetString(key);
-        //}
-
         public string GetText(string key)
         {
             return this.ResourceManager.GetString(key);
@@ -18,11 +13,12 @@ namespace UniLife.Server.Helpers
 
         // To access the resource file and get the exact value for locale key
 
-        public ResourceManager ResourceManager
+        public System.Resources.ResourceManager ResourceManager
         {
             get
             {
-                return UniLife.Server.Resources.SfResources.ResourceManager;
+                // Replace the ApplicationNamespace with your application name.
+                return UniLife.Shared.Resources.SfResources.ResourceManager;
             }
         }
     }

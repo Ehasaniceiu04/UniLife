@@ -52,9 +52,9 @@ using Syncfusion.Blazor;
 using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNet.OData.Builder;
 using Microsoft.AspNetCore.Localization;
+using System.Globalization;
 //using System.Globalization;
 //using System.Collections.Generic;
-//using Microsoft.AspNetCore.Localization;
 //using Microsoft.Extensions.Options;
 
 
@@ -463,32 +463,7 @@ namespace UniLife.Server
             services.AddScoped<HttpClient>();
 
 
-            //#region Localization
-            //// Set the Resx file folder path to access
-            //services.AddLocalization(options => options.ResourcesPath = "Resources");
-            ////services.AddSyncfusionBlazor();
-            //// register a Syncfusion locale service to customize the Syncfusion Blazor component locale culture
-            //services.AddSingleton(typeof(ISyncfusionStringLocalizer), typeof(SyncLocalizer));
-            //services.Configure<RequestLocalizationOptions>(options =>
-            //{
-            //    // Define the list of cultures your app will support
-            //    var supportedCultures = new System.Collections.Generic.List<System.Globalization.CultureInfo>()
-            //    {
-            //        new System.Globalization.CultureInfo("en-US"),
-            //        new System.Globalization.CultureInfo("tr")
-            //    };
-
-            //    // Set the default culture
-            //    options.DefaultRequestCulture = new RequestCulture("tr");
-
-            //    options.SupportedCultures = supportedCultures;
-            //    options.SupportedUICultures = supportedCultures;
-            //    //options.RequestCultureProviders = new System.Collections.Generic.List<IRequestCultureProvider>() {
-            //    //    new QueryStringRequestCultureProvider() // Here, You can also use other localization provider
-            //    //};
-            //});
             
-            //#endregion
 
 
 
@@ -503,6 +478,32 @@ namespace UniLife.Server
                     o.DetailedErrors = true;
                 }
             });
+
+            #region Localization
+            // Set the Resx file folder path to access
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+            //services.AddSyncfusionBlazor();
+            // register a Syncfusion locale service to customize the Syncfusion Blazor component locale culture
+            services.AddSingleton(typeof(ISyncfusionStringLocalizer), typeof(SyncfusionLocalizer));
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                // Define the list of cultures your app will support
+                var supportedCultures = new System.Collections.Generic.List<CultureInfo>()
+                {
+                    new CultureInfo("tr"),
+                    new CultureInfo("en-US"),
+                    new CultureInfo("de"),
+                    new CultureInfo("fr"),
+                    new CultureInfo("ar"),
+                    new CultureInfo("zh"),
+                };
+                // Set the default culture
+                options.DefaultRequestCulture = new RequestCulture("de");
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedCultures;
+            });
+
+            #endregion
 
 
             // Authentication providers
