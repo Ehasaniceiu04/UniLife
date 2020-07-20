@@ -13,6 +13,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
 using UniLife.CommonUI.Components;
+using System.Globalization;
+using Microsoft.JSInterop;
 
 namespace UniLife.Client
 {
@@ -41,6 +43,30 @@ namespace UniLife.Client
             builder.Services.AddScoped<AppState>();
             builder.Services.AddLoadingBar();
             builder.Services.AddSyncfusionBlazor();
+
+            #region Localization
+            // Register the Syncfusion locale service to customize the  SyncfusionBlazor component locale culture
+            builder.Services.AddSingleton(typeof(ISyncfusionStringLocalizer), typeof(SyncfusionLocalizer));
+
+            // Set the default culture of the application
+            CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("tr");
+            CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("tr");
+
+            // Get the modified culture from culture switcher
+            var host = builder.Build();
+            var jsInterop = host.Services.GetRequiredService<IJSRuntime>();
+            var result = await jsInterop.InvokeAsync<string>("cultureInfo.get");
+            if (result != null)
+            {
+                // Set the culture from culture switcher
+                var culture = new CultureInfo(result);
+                CultureInfo.DefaultThreadCurrentCulture = culture;
+                CultureInfo.DefaultThreadCurrentUICulture = culture;
+            }
+            #endregion
+
+
+
             builder.Services.AddMatToaster(config =>
             {
                 config.Position = MatToastPosition.BottomRight;
