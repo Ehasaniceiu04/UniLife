@@ -8,8 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace UniLife.Shared.Resources
-{
+namespace UniLife.Shared.Resources {
     using System;
     
     

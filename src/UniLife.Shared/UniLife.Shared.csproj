@@ -52,6 +52,9 @@
 
   <ItemGroup>
     <Compile Update="Resources\SfResources.Designer.cs">
+	  <DesignTime>True</DesignTime>
+	  <AutoGen>True</AutoGen>
+      <DependentUpon>SfResources.resx</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
   </ItemGroup>
@@ -70,7 +73,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\SfResources.resx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		<Generator>PublicResXFileCodeGenerator</Generator>
+		<LastGenOutput>Resources\SfResources.Designer.cs</LastGenOutput>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\SfResources.tr.resx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
