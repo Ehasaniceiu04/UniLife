@@ -5,55 +5,56 @@
 @using Syncfusion.Blazor.Buttons
 
 
-    <ControlSection>
-        <div class="row pb-2 bg-light text-dark">
-            <div class="col-sm-12 col-md-7">
-                <FakBolPrg @bind-ProgramId="programId"
-                           @bind-BolumId="bolumId"
-                           @bind-FakulteId="fakulteId"></FakBolPrg>
-            </div>
-            <div class="col-sm-12 col-md-5">
-                <div class="form-group row">
-                    <div class="col-sm-3">
-                        @*<SfCheckBox @bind-Checked="@okTopKredi" Name="ahmet" TChecked="bool" EnableRtl="true" Label="Toplam Kredi" ValueChange="@OnChange"></SfCheckBox>*@
-                        <SfRadioButton Label="Toplam Kredi" Name="hangi" Value="TopKredi" @bind-Checked="@stringChecked" TChecked="string" ValueChange="@OnChangeRadio"></SfRadioButton>
-                    </div>
-                    <div class="col-sm-4">
-                        @*<SfCheckBox @bind-Checked="@okBaska" Name="ahmet" TChecked="bool" EnableRtl="true" Label="Başka bişe" ValueChange="@OnChange"></SfCheckBox>*@
-                        <SfRadioButton Label="Toplam Akts" Name="hangi" Value="TopAkts" @bind-Checked="@stringChecked" TChecked="string" ValueChange="@OnChangeRadio"></SfRadioButton>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <SfButton OnClick="Refresh" CssClass="e-success col-sm-12 form-control-sm">Bul / Yenile</SfButton>
-                </div>
-
-                
-            </div>
+<ControlSection>
+    <div class="row pb-2 bg-light text-dark">
+        <div class="col-sm-12 col-md-7">
+            <FakBolPrg @bind-ProgramId="programId"
+                       @bind-BolumId="bolumId"
+                       @bind-FakulteId="fakulteId"></FakBolPrg>
         </div>
+        <div class="col-sm-12 col-md-5">
+            <div class="form-group row">
+                <div class="col-sm-3">
+                    @*<SfCheckBox @bind-Checked="@okTopKredi" Name="ahmet" TChecked="bool" EnableRtl="true" Label="Toplam Kredi" ValueChange="@OnChange"></SfCheckBox>*@
+                    <SfRadioButton Label="Toplam Kredi" Name="hangi" Value="TopKredi" @bind-Checked="@stringChecked" TChecked="string" ValueChange="@OnChangeRadio"></SfRadioButton>
+                </div>
+                <div class="col-sm-4">
+                    @*<SfCheckBox @bind-Checked="@okBaska" Name="ahmet" TChecked="bool" EnableRtl="true" Label="Başka bişe" ValueChange="@OnChange"></SfCheckBox>*@
+                    <SfRadioButton Label="Toplam Akts" Name="hangi" Value="TopAkts" @bind-Checked="@stringChecked" TChecked="string" ValueChange="@OnChangeRadio"></SfRadioButton>
+                </div>
+            </div>
+            <div class="form-group row">
+                <SfButton OnClick="Refresh" CssClass="e-success col-sm-12 form-control-sm">Bul / Yenile</SfButton>
+            </div>
 
-        @if (isGridVisible )
-        {
-            <SfGrid Width="100%" Height="400px" Query="@totalQuery" TValue="OgrenciDersRaporDto" ID="OgrencilerGrid" @ref="OgrencilerGrid" AllowExcelExport="true" AllowPdfExport="true" AllowPaging="true" AllowFiltering="true" Toolbar="@(new List<string>() {  "PdfExport","ExcelExport","ColumnChooser" })" ShowColumnChooser="true">
-                <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
-                <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
-                <GridEvents OnToolbarClick="ToolbarClickHandler" TValue="OgrenciDersRaporDto"></GridEvents>
-                <GridColumns>
-                    <GridColumn Visible="false" Field=@nameof(OgrenciDersRaporDto.Id) Type="ColumnType.Number" IsPrimaryKey="true" Width="50"></GridColumn>
-                    <GridColumn Field=@nameof(OgrenciDersRaporDto.OgrNo) Type="ColumnType.String" HeaderText="OgrenciNo" Width="50"></GridColumn>
-                    <GridColumn Field=@nameof(OgrenciDersRaporDto.Ad) HeaderText="Ad" Type="ColumnType.String" Width="50"></GridColumn>
-                    <GridColumn Field=@nameof(OgrenciDersRaporDto.Soyad) HeaderText="Soyad" Type="ColumnType.String" Width="50"></GridColumn>
-                    <GridColumn Field=@nameof(OgrenciDersRaporDto.Sinif) HeaderText="Sınıf" Type="ColumnType.Number" Width="50"></GridColumn>
-                    <GridColumn Visible="@(stringChecked == "TopKredi")" Field=@nameof(OgrenciDersRaporDto.TopKredi) HeaderText="TopKredi" Type="ColumnType.Number" Width="50"></GridColumn>
-                    <GridColumn Visible="@(stringChecked == "TopAkts")"Field=@nameof(OgrenciDersRaporDto.TopAkts) HeaderText="TopAkts" Type="ColumnType.Number" Width="50"></GridColumn>
-                </GridColumns>
-            </SfGrid>
-        }
-        @*@if (isGridVisible && okBaska)
+
+        </div>
+    </div>
+
+    @if (isGridVisible)
+    {
+        <SfGrid Width="100%" Height="400px" Query="@totalQuery" TValue="OgrenciDersRaporDto" ID="OgrencilerGrid" @ref="OgrencilerGrid" AllowExcelExport="true" AllowPdfExport="true" AllowPaging="true" AllowFiltering="true" Toolbar="@(new List<string>() {  "PdfExport","ExcelExport","ColumnChooser" })" ShowColumnChooser="true">
+            <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+            <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
+            <GridEvents OnToolbarClick="ToolbarClickHandler" TValue="OgrenciDersRaporDto"></GridEvents>
+            <GridPageSettings PageCount="5" PageSizes="new int[]{ 5, 10, 12, 30,10000}"></GridPageSettings>
+            <GridColumns>
+                <GridColumn Visible="false" Field=@nameof(OgrenciDersRaporDto.Id) Type="ColumnType.Number" IsPrimaryKey="true" Width="50"></GridColumn>
+                <GridColumn Field=@nameof(OgrenciDersRaporDto.OgrNo) Type="ColumnType.String" HeaderText="OgrenciNo" Width="50"></GridColumn>
+                <GridColumn Field=@nameof(OgrenciDersRaporDto.Ad) HeaderText="Ad" Type="ColumnType.String" Width="50"></GridColumn>
+                <GridColumn Field=@nameof(OgrenciDersRaporDto.Soyad) HeaderText="Soyad" Type="ColumnType.String" Width="50"></GridColumn>
+                <GridColumn Field=@nameof(OgrenciDersRaporDto.Sinif) HeaderText="Sınıf" Type="ColumnType.Number" Width="50"></GridColumn>
+                <GridColumn Visible="@(stringChecked == "TopKredi")" Field=@nameof(OgrenciDersRaporDto.TopKredi) HeaderText="TopKredi" Type="ColumnType.Number" Width="50"></GridColumn>
+                <GridColumn Visible="@(stringChecked == "TopAkts")" Field=@nameof(OgrenciDersRaporDto.TopAkts) HeaderText="TopAkts" Type="ColumnType.Number" Width="50"></GridColumn>
+            </GridColumns>
+        </SfGrid>
+    }
+    @*@if (isGridVisible && okBaska)
         {
 
         }*@
 
-    </ControlSection>
+</ControlSection>
 
 <style>
     .form-group {

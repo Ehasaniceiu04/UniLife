@@ -1,18 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MatBlazor;
 using Microsoft.AspNetCore.Components;
-using UniLife.Shared.Dto.Definitions;
-using UniLife.Shared.DataModels;
 using Syncfusion.Blazor.Data;
 using Syncfusion.Blazor.Grids;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using UniLife.Shared.Dto.Definitions;
 
 namespace UniLife.CommonUI.Pages.Admin.Raporlar
 {
     public partial class OgrenciRapor : ComponentBase
     {
+        [InjectAttribute]
+        public MatBlazor.IMatToaster matToaster { get; set; }
 
         int? programId;
         int? bolumId;
@@ -21,7 +21,7 @@ namespace UniLife.CommonUI.Pages.Admin.Raporlar
         private bool okKayitNeden = false;
         private bool okOgrDurum = false;
 
-        private bool isGridVisible = false; 
+        private bool isGridVisible = false;
 
 
         SfGrid<OgrenciDto> OgrencilerGrid;
@@ -54,34 +54,44 @@ namespace UniLife.CommonUI.Pages.Admin.Raporlar
 
         async Task Refresh()
         {
-            totalQuery = new Query();
-            totalQuery.Expand(new List<string> { "Program($select=Id,Ad)" });
+            try
+            {
+                totalQuery = new Query();
+                totalQuery.Expand(new List<string> { "Program($select=Id,Ad)" });
 
-            if (programId.HasValue)
-            {
-                totalQuery.Where("programId", "equal", programId);
-            }
-            else if (bolumId.HasValue)
-            {
-                totalQuery.Where("bolumId", "equal", bolumId);
-            }
-            else if (fakulteId.HasValue)
-            {
-                totalQuery.Where("fakulteId", "equal", fakulteId);
+                if (programId.HasValue)
+                {
+                    totalQuery.Where("programId", "equal", programId);
+                }
+                else if (bolumId.HasValue)
+                {
+                    totalQuery.Where("bolumId", "equal", bolumId);
+                }
+                else if (fakulteId.HasValue)
+                {
+                    totalQuery.Where("fakulteId", "equal", fakulteId);
+
+                }
+                if (okKayitNeden)
+                {
+                    totalQuery.Expand(new List<string> { "KayitNeden($select=Id,Ad)" });
+                    okKayitNeden = true;
+                }
+                if (okOgrDurum)
+                {
+                    totalQuery.Expand(new List<string> { "OgrenimDurum($select=Id,Ad)" });
+                    okOgrDurum = true;
+                }
+
+                isGridVisible = true;
 
             }
-            if (okKayitNeden)
+            catch (Exception ex)
             {
-                totalQuery.Expand(new List<string> { "KayitNeden($select=Id,Ad)" });
-                okKayitNeden = true;
-            }
-            if (okOgrDurum)
-            {
-                totalQuery.Expand(new List<string> { "OgrenimDurum($select=Id,Ad)" });
-                okOgrDurum = true;
+                matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
             }
 
-            isGridVisible = true;
+
 
 
         }

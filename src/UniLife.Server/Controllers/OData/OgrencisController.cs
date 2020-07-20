@@ -19,68 +19,68 @@ namespace UniLife.Server.Controllers
         }
 
 
-        [EnableQuery()]
-        [HttpGet]
-        //[Authorize(Permissions.Ogrenci.Create)]
-        [ODataRoute("GetOgrenciDers(TopKredi={TopKredi})")]
-        public IEnumerable<OgrenciDersRaporDto> GetOgrenciDers([FromODataUri] bool TopKredi)
-        {
+        //[EnableQuery()]
+        //[HttpGet]
+        ////[Authorize(Permissions.Ogrenci.Create)]
+        //[ODataRoute("GetOgrenciDers(TopKredi={TopKredi})")]
+        //public IEnumerable<OgrenciDersRaporDto> GetOgrenciDers([FromODataUri] bool TopKredi)
+        //{
 
-            var filteredQuery = from o in _applicationDbContext.Ogrencis
-                                join dk in _applicationDbContext.DersKayits on o.Id equals dk.OgrenciId
-                                join da in _applicationDbContext.DersAcilans on dk.DersAcilanId equals da.Id
-                                group da by new { o.Id, o.OgrNo, o.Ad, o.Soyad }
-                                into grp
-                                select new OgrenciDersRaporDto
-                                {
-                                    Id = grp.Key.Id,
-                                    OgrNo = grp.Key.OgrNo,
-                                    Ad = grp.Key.Ad,
-                                    Soyad = grp.Key.Soyad,
-                                    TopKredi = grp.Sum(t => t.Kredi)
-                                };
+        //    var filteredQuery = from o in _applicationDbContext.Ogrencis
+        //                        join dk in _applicationDbContext.DersKayits on o.Id equals dk.OgrenciId
+        //                        join da in _applicationDbContext.DersAcilans on dk.DersAcilanId equals da.Id
+        //                        group da by new { o.Id, o.OgrNo, o.Ad, o.Soyad }
+        //                        into grp
+        //                        select new OgrenciDersRaporDto
+        //                        {
+        //                            Id = grp.Key.Id,
+        //                            OgrNo = grp.Key.OgrNo,
+        //                            Ad = grp.Key.Ad,
+        //                            Soyad = grp.Key.Soyad,
+        //                            TopKredi = grp.Sum(t => t.Kredi)
+        //                        };
 
-            return filteredQuery;
-        }
-
-
-
-        [EnableQuery()]
-        [HttpGet]
-        //[Authorize(Permissions.Ogrenci.Create)]
-        [ODataRoute("GetTopAta(ProgramId={ProgramId},KayitNedenId={KayitNedenId},OgrenimDurumId={OgrenimDurumId},Sinif={Sinif},Cinsiyet={Cinsiyet})")]
-        public IEnumerable<Ogrenci> GetTopAta([FromODataUri] int ProgramId
-                                            , [FromODataUri] int KayitNedenId
-                                            , [FromODataUri] int OgrenimDurumId
-                                            , [FromODataUri] int Sinif
-                                            , [FromODataUri] int Cinsiyet
-                                             )
-        {
-
-            //var filteredQuery = from o in _applicationDbContext.Ogrencis.WhereIf(ProgramId != 0, x => x.ProgramId == ProgramId)
-            //                                                            .WhereIf(KayitNedenId != 0, x => x.KayitNedenId == KayitNedenId)
-            //                                                            .WhereIf(OgrenimDurumId != 0, x => x.OgrenimDurumId == OgrenimDurumId)
-            //                                                            .WhereIf(Sinif != 0, x => x.Sinif == Sinif)
-            //                                                            .WhereIf(Cinsiyet != 0, x => x.IsMale == (Cinsiyet == 2))
-            //                    join a in _applicationDbContext.Akademisyens on o.DanismanId equals a.Id into akaLeft
-            //                    from m in akaLeft.DefaultIfEmpty()
-            //                    join p in _applicationDbContext.Programs on o.ProgramId equals p.Id
-            //                    select o;
-
-            var filteredQuery = from o in _applicationDbContext.Ogrencis.Where(x => ProgramId == 0 ? true : x.ProgramId == ProgramId)
-                                                                        .Where(x => KayitNedenId == 0 ? true : x.KayitNedenId == KayitNedenId)
-                                                                        .Where(x => OgrenimDurumId == 0 ? true : x.OgrenimDurumId == OgrenimDurumId)
-                                                                        .Where(x => Sinif == 0 ? true : x.Sinif == Sinif)
-                                                                        .Where(x => Cinsiyet == 0 ? true : x.IsMale == (Cinsiyet == 2))
-                                    //join p in _applicationDbContext.Programs on o.ProgramId equals p.Id
-                                    //join a in _applicationDbContext.Akademisyens on o.DanismanId equals a.Id into akaLeft
-                                    //from m in akaLeft.DefaultIfEmpty()
-
-                                select o;
+        //    return filteredQuery;
+        //}
 
 
-            return filteredQuery;
-        }
+
+        //[EnableQuery()]
+        //[HttpGet]
+        ////[Authorize(Permissions.Ogrenci.Create)]
+        //[ODataRoute("GetTopAta(ProgramId={ProgramId},KayitNedenId={KayitNedenId},OgrenimDurumId={OgrenimDurumId},Sinif={Sinif},Cinsiyet={Cinsiyet})")]
+        //public IEnumerable<Ogrenci> GetTopAta([FromODataUri] int ProgramId
+        //                                    , [FromODataUri] int KayitNedenId
+        //                                    , [FromODataUri] int OgrenimDurumId
+        //                                    , [FromODataUri] int Sinif
+        //                                    , [FromODataUri] int Cinsiyet
+        //                                     )
+        //{
+
+        //    //var filteredQuery = from o in _applicationDbContext.Ogrencis.WhereIf(ProgramId != 0, x => x.ProgramId == ProgramId)
+        //    //                                                            .WhereIf(KayitNedenId != 0, x => x.KayitNedenId == KayitNedenId)
+        //    //                                                            .WhereIf(OgrenimDurumId != 0, x => x.OgrenimDurumId == OgrenimDurumId)
+        //    //                                                            .WhereIf(Sinif != 0, x => x.Sinif == Sinif)
+        //    //                                                            .WhereIf(Cinsiyet != 0, x => x.IsMale == (Cinsiyet == 2))
+        //    //                    join a in _applicationDbContext.Akademisyens on o.DanismanId equals a.Id into akaLeft
+        //    //                    from m in akaLeft.DefaultIfEmpty()
+        //    //                    join p in _applicationDbContext.Programs on o.ProgramId equals p.Id
+        //    //                    select o;
+
+        //    var filteredQuery = from o in _applicationDbContext.Ogrencis.Where(x => ProgramId == 0 ? true : x.ProgramId == ProgramId)
+        //                                                                .Where(x => KayitNedenId == 0 ? true : x.KayitNedenId == KayitNedenId)
+        //                                                                .Where(x => OgrenimDurumId == 0 ? true : x.OgrenimDurumId == OgrenimDurumId)
+        //                                                                .Where(x => Sinif == 0 ? true : x.Sinif == Sinif)
+        //                                                                .Where(x => Cinsiyet == 0 ? true : x.IsMale == (Cinsiyet == 2))
+        //                            //join p in _applicationDbContext.Programs on o.ProgramId equals p.Id
+        //                            //join a in _applicationDbContext.Akademisyens on o.DanismanId equals a.Id into akaLeft
+        //                            //from m in akaLeft.DefaultIfEmpty()
+
+        //                        select o;
+
+
+        //    return filteredQuery;
+        //}
 
         [Microsoft.AspNet.OData.EnableQuery()]
         [HttpGet]

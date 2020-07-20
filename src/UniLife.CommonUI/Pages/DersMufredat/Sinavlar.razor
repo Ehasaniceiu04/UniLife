@@ -68,6 +68,7 @@
                         <SfGrid ID="DersAcGrid" @ref="DersAcGrid" DataSource="@DersAcDtos" RowHeight="20" AllowSorting="true" AllowFiltering="true" AllowSelection="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
                             <GridEvents OnRecordClick="OnRecordClickHandler" RowSelected="RowSelectedHandler" TValue="DersAcilanDto" CommandClicked="CommandClickHandler"></GridEvents>
                             <GridSelectionSettings CellSelectionMode="CellSelectionMode.BoxWithBorder" CheckboxOnly="true" Type="SelectionType.Multiple" PersistSelection="true"></GridSelectionSettings>
+                            <GridPageSettings PageCount="5" PageSizes="new int[]{ 5, 10, 12, 30 }"></GridPageSettings>
                             <GridColumns>
                                 <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
                                 <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
@@ -114,7 +115,7 @@
                         @*açılan ders grid OnRecordClick="OnSinavRecordClickHandler" *@
                         <SfGrid ID="SinavGrid" @ref="SinavGrid" DataSource="@SinavDtos" Toolbar="@(new List<string>() { "Add", "Edit", "Delete","ColumnChooser" })" RowHeight="20" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
                             <GridEvents RowSelected="RowSelectedHandlerSinav" OnActionComplete="ActionCompletedHandler" TValue="SinavDto"></GridEvents>
-                            <GridSelectionSettings EnableToggle="false"></GridSelectionSettings>
+                            <GridSelectionSettings></GridSelectionSettings>
                             <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
                                 <Template>
                                     @{

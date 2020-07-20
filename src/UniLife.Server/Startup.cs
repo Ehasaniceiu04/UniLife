@@ -616,16 +616,19 @@ namespace UniLife.Server
         {
             var builder = new ODataConventionModelBuilder();
             var objOgrenci = builder.EntitySet<Ogrenci>("Ogrencis");
-            FunctionConfiguration getOgrOptional = objOgrenci.EntityType.Collection.Function("GetTopAta"); //http://localhost:53414/odata/ogrencis/GetOgr(ahmet='12',....)
-            getOgrOptional.Parameter<int>("ProgramId").Optional();
-            getOgrOptional.Parameter<int>("KayitNedenId").Optional();
-            getOgrOptional.Parameter<int>("OgrenimDurumId").Optional();
-            getOgrOptional.Parameter<int>("Sinif").Optional();
-            getOgrOptional.Parameter<int>("Cinsiyet").Optional();
-            getOgrOptional.ReturnsCollectionFromEntitySet<Ogrenci>("Ogrencis");
+
+            //FunctionConfiguration getOgrOptional = objOgrenci.EntityType.Collection.Function("GetTopAta"); //http://localhost:53414/odata/ogrencis/GetOgr(ahmet='12',....)
+            //getOgrOptional.Parameter<int>("ProgramId").Optional();
+            //getOgrOptional.Parameter<int>("KayitNedenId").Optional();
+            //getOgrOptional.Parameter<int>("OgrenimDurumId").Optional();
+            //getOgrOptional.Parameter<int>("Sinif").Optional();
+            //getOgrOptional.Parameter<int>("Cinsiyet").Optional();
+            //getOgrOptional.ReturnsCollectionFromEntitySet<Ogrenci>("Ogrencis");
+
             //FunctionConfiguration getOgrdersOptional = objOgrenci.EntityType.Collection.Function("GetOgrenciDers");
             //getOgrdersOptional.Parameter<bool>("TopKredi").Optional();
             //getOgrdersOptional.ReturnsCollectionFromEntitySet<UniLife.Shared.Dto.Definitions.OgrenciDersRaporDto>("Ogrencis");
+            
             builder.EntitySet<UniLife.Shared.Dto.Definitions.OgrenciDersRaporDto>("OgrenciDersRapors");
             builder.EntitySet<Bolum>("Bolums");
             builder.EntitySet<DersAcilan>("DersAcilans");
