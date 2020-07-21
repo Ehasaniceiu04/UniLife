@@ -3,52 +3,58 @@
 @inject IMatToaster matToaster
 
 @using System.Net
+@using Syncfusion.Blazor.Buttons
 
-    <ControlSection>
-        <SfGrid Width="100%" Height="85%" AllowResizing="true" @ref="UniGrid" DataSource="@universiteDtos" Toolbar="@(new List<string>() { "Add" })" AllowPaging="true" AllowFiltering="true">
-            <GridEvents OnActionComplete="ActionCompletedHandler" TValue="UniversiteDto"></GridEvents>
-            <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
-            <GridColumns>
-                <GridColumn Visible="false" Field=@nameof(UniversiteDto.Id) HeaderText="Üniversite ID" Edit="false" AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
-                <GridColumn Field=@nameof(UniversiteDto.Ad) HeaderText="Üniversite İsim" Width="170"></GridColumn>
-                <GridColumn HeaderText="Manage Records" Width="150">
-                    <GridCommandColumns>
-                        <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-edit", CssClass = "e-flat" })"></GridCommandColumn>
-                        <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-delete", CssClass = "e-flat" })"></GridCommandColumn>
-                        <GridCommandColumn Type="CommandButtonType.Save" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-update", CssClass = "e-flat" })"></GridCommandColumn>
-                        <GridCommandColumn Type="CommandButtonType.Cancel" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-cancel-icon", CssClass = "e-flat" })"></GridCommandColumn>
-                    </GridCommandColumns>
-                </GridColumn>
-            </GridColumns>
-        </SfGrid>
-    </ControlSection>
+<ControlSection>
+    <SfGrid  Width="100%" Height="85%" AllowResizing="true" @ref="UniGrid" DataSource="@universiteDtos" Toolbar="@(new List<string>() { "Add" })" AllowPaging="true" AllowFiltering="true">
+        <GridEvents OnActionComplete="ActionCompletedHandler" TValue="UniversiteDto"></GridEvents>
+        <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
+        <GridColumns>
+            <GridColumn Visible="false" Field=@nameof(UniversiteDto.Id) HeaderText="Üniversite ID" Edit="false" AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+            <GridColumn Field=@nameof(UniversiteDto.Ad) HeaderText="Üniversite İsim" Width="170"></GridColumn>
+            <GridColumn HeaderText="Manage Records" Width="150">
+                <GridCommandColumns>
+                    <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-edit", CssClass = "e-flat" })"></GridCommandColumn>
+                    <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-delete", CssClass = "e-flat" })"></GridCommandColumn>
+                    <GridCommandColumn Type="CommandButtonType.Save" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-update", CssClass = "e-flat" })"></GridCommandColumn>
+                    <GridCommandColumn Type="CommandButtonType.Cancel" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-cancel-icon", CssClass = "e-flat" })"></GridCommandColumn>
+                </GridCommandColumns>
+            </GridColumn>
+        </GridColumns>
+    </SfGrid>
+</ControlSection>
 
-    <style type="text/css" class="cssStyles">
-        .e-grid .e-altrow {
-            background-color: #fafafa;
-        }
-    </style>
+
+<style type="text/css" class="cssStyles">
+    .e-grid .e-altrow {
+        background-color: #fafafa;
+    }
+</style>
 
 
 @code{
 
     SfGrid<UniversiteDto> UniGrid;
 
-    List<UniversiteDto> universiteDtos = new List<UniversiteDto>();
+    List<UniversiteDto> universiteDtos;// = new List<UniversiteDto>();
 
-    protected override void OnInitialized()
+    
+    protected override async Task OnInitializedAsync()
     {
-        ReadUniversites();
+
+        await ReadUniversites();
     }
 
-    void ReadUniversites()
+    protected async Task ReadUniversites()
     {
-        ApiResponseDto<List<UniversiteDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<UniversiteDto>>>("api/universite").Result;
+        ApiResponseDto<List<UniversiteDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<UniversiteDto>>>("api/universite");
 
         if (apiResponse.StatusCode == Status200OK)
         {
             matToaster.Add(apiResponse.Message, MatToastType.Success, "Üniversiteler getirildi");
             universiteDtos = apiResponse.Result;
+            UniGrid.Refresh();
+            StateHasChanged();
         }
         else
         {

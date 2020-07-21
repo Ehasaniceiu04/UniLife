@@ -43,6 +43,7 @@
 
   <ItemGroup>
     <Content Remove="Components\Grid\DataGrid\Scheduler.razor" />
+    <Content Remove="Pages\Dashboard2.razor" />
   </ItemGroup>
 
   <ItemGroup>
@@ -51,13 +52,29 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="3.1.4" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.4" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />
-    <PackageReference Include="Syncfusion.Blazor" Version="18.2.0.45" />
+    <PackageReference Include="Syncfusion.Blazor" Version="18.2.0.46" />
     <PackageReference Include="System.Net.Http.Json" Version="3.2.0" />
     <PackageReference Include="Toolbelt.Blazor.LoadingBar" Version="12.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\UniLife.Shared\UniLife.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Watch Remove="Pages\Dashboard2.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\Dashboard2.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Pages\Dashboard2.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Pages\Dashboard2.razor" />
   </ItemGroup>
 
 </Project>

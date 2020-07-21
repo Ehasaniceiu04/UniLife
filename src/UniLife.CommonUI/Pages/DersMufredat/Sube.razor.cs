@@ -1,18 +1,16 @@
 ﻿using MatBlazor;
 using Microsoft.AspNetCore.Components;
 using Syncfusion.Blazor.DropDowns;
+using Syncfusion.Blazor.Navigations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using UniLife.CommonUI.Extensions;
-using UniLife.Shared.Extensions;
-using UniLife.Shared;
-using UniLife.Shared.DataModels;
 using UniLife.Shared.Dto;
 using UniLife.Shared.Dto.Definitions;
-using Syncfusion.Blazor.Navigations;
+using UniLife.Shared.Extensions;
 
 namespace UniLife.CommonUI.Pages.DersMufredat
 {
@@ -299,7 +297,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 SubelendirAllow = false;
                 //Toolbaritems = new List<Object>() { new ItemModel() { Text = "Şubeleri Temizle", TooltipText = "Click", Id = "SubeTemizle" } };
 
-                await DersSubeGrid.EnableToolbarItems(new List<string>() { "SubeTemizle" },true);
+                await DersSubeGrid.EnableToolbarItems(new List<string>() { "SubeTemizle" }, true);
             }
             StateHasChanged();
 
@@ -390,7 +388,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         async Task DersiSubelendir()
         {
             IsStateSubelendir = true;
-            
+
 
             var selectedDersAcilan = (await DersAcGrid.GetSelectedRecords()).FirstOrDefault();
 
@@ -553,7 +551,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         {
             if (args.CommandColumn.Title == "Akademisyen Ekle")
             {
-                ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>($"api/dersacilan/UpdateDersAcilanAkademsiyen/{selectedDersAcilanSube.Id}/{args.RowData.Id}" );
+                ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>($"api/dersacilan/UpdateDersAcilanAkademsiyen/{selectedDersAcilanSube.Id}/{args.RowData.Id}");
                 akademisyenDialogOpen = false;
 
                 if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
@@ -582,7 +580,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         }
 
         async Task SeciliOgrTasi()
-        { 
+        {
             var selectedOrg = (await OgrenciGrid.GetSelectedRecords()).FirstOrDefault();
             if (selectedOrg == null)
             {
@@ -602,7 +600,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                     PutUpdateOgrencisDersKayitsDto putUpdateOgrencisDersKayitsDto = new PutUpdateOgrencisDersKayitsDto();
                     putUpdateOgrencisDersKayitsDto.SelectedDersAcilanId = selectedDersAcilanSube.Id;
                     putUpdateOgrencisDersKayitsDto.PointedDersAcilanId = DersSubeDtos.Where(x => x.Sube == selectedSube).FirstOrDefault().Id;
-                    putUpdateOgrencisDersKayitsDto.OgrenciIds =(await OgrenciGrid.GetSelectedRecords()).Select(x=>x.Id);
+                    putUpdateOgrencisDersKayitsDto.OgrenciIds = (await OgrenciGrid.GetSelectedRecords()).Select(x => x.Id);
 
 
                     ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>("api/derskayit/PutUpdateOgrencisDersKayits", putUpdateOgrencisDersKayitsDto);
@@ -625,7 +623,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                     }
                 }
 
-                
+
             }
         }
 
@@ -633,8 +631,8 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         {
             if (args.Item.Id == "SubeTemizle")
             {
-                List<int> silinecekDersAcilanIds = DersSubeDtos.Where(x=>x.Sube!=1).Select(x => x.Id).ToList();
-                if (silinecekDersAcilanIds.Count()<1)
+                List<int> silinecekDersAcilanIds = DersSubeDtos.Where(x => x.Sube != 1).Select(x => x.Id).ToList();
+                if (silinecekDersAcilanIds.Count() < 1)
                 {
                     dialogUyariText = "Birden fazla şube mevcut değil.";
                     isUyariOpen = true;

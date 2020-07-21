@@ -10,10 +10,10 @@ namespace UniLife.Shared.Dto.Definitions
 
         public virtual ApplicationUserDto ApplicationUser { get; set; }
 
-        [Required]
-        [StringLength(64, ErrorMessage = "{0} uzunluğu {2} ila {1} arasında olmalıdır.", MinimumLength = 2)]
-        [RegularExpression(@"[^\s]+", ErrorMessage = "Boşluk bırakmayınız.")]
-        [Display(Name = "Ad")]
+        //[Required]
+        //[StringLength(64, ErrorMessage = "{0} uzunluğu {2} ila {1} arasında olmalıdır.", MinimumLength = 2)]
+        //[RegularExpression(@"[^\s]+", ErrorMessage = "Boşluk bırakmayınız.")]
+        //[Display(Name = "Ad")]
         public string Ad { get; set; }
 
         public string Soyad { get; set; }
@@ -74,13 +74,14 @@ namespace UniLife.Shared.Dto.Definitions
         //[Display(Name = "KullanıcıTCKN")]
         //public string UserName { get; set; }
         public int TenantId { get; set; }
-        [Required]
-        [DataType(DataType.EmailAddress)]
-        [EmailAddress]
-        [Display(Name = "Email")]
+        //[Required]
+        //[DataType(DataType.EmailAddress)]
+        //[EmailAddress]
+        //[Display(Name = "Email")]
         public string Email { get; set; }
         public string EmailOutValid {
             get { return Email; }
+            //set { Email = value; }
         }
         public virtual List<string> Roles { get; set; }
         public virtual List<KeyValuePair<string, string>> ExposedClaims { get; set; }

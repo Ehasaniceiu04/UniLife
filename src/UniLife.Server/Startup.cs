@@ -144,7 +144,7 @@ namespace UniLife.Server
 
             //X509Certificate2 cert = null;
 
-            services.AddSyncfusionBlazor();
+            //services.AddSyncfusionBlazor();
 
 
             //// 
@@ -481,8 +481,8 @@ namespace UniLife.Server
 
             #region Localization
             // Set the Resx file folder path to access
-            services.AddLocalization(options => options.ResourcesPath = "Resources");
-            //services.AddSyncfusionBlazor();
+            //services.AddLocalization(options => options.ResourcesPath = "Resources");
+            services.AddSyncfusionBlazor();
             // register a Syncfusion locale service to customize the Syncfusion Blazor component locale culture
             services.AddSingleton(typeof(ISyncfusionStringLocalizer), typeof(SyncfusionLocalizer));
             services.Configure<RequestLocalizationOptions>(options =>
@@ -498,7 +498,7 @@ namespace UniLife.Server
                     new CultureInfo("zh"),
                 };
                 // Set the default culture
-                options.DefaultRequestCulture = new RequestCulture("de");
+                options.DefaultRequestCulture = new RequestCulture("en-US");
                 options.SupportedCultures = supportedCultures;
                 options.SupportedUICultures = supportedCultures;
             });
