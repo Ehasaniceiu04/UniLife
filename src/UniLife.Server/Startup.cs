@@ -431,6 +431,7 @@ namespace UniLife.Server
             services.AddTransient<IDerslikManager, DerslikManager>();
             services.AddTransient<IDerslikRezervManager, DerslikRezervManager>();
             services.AddTransient<IUserProfileManager, UserProfileManager>();
+            services.AddTransient<IYabanciBasvuruManager, YabanciBasvuruManager>();
 
 
 

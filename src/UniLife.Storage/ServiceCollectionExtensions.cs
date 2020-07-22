@@ -44,6 +44,7 @@ namespace UniLife.Storage
             services.AddTransient<ISinavTipStore, SinavTipStore>();
             services.AddTransient<ISinavTurStore, SinavTurStore>();
             services.AddTransient<ISinavKayitStore, SinavKayitStore>();
+            services.AddTransient<IYabanciBasvuruStore, YabanciBasvuruStore>();
 
             services.AddTransient<IBinaStore, BinaStore>();
             services.AddTransient<IDerslikStore, DerslikStore>();

@@ -194,7 +194,7 @@
 </div>
 
 
-<Dialog Baslik="Seçilen Dersin Programı" @bind-isDialogOpen="@isDersPrgDialogOpen">
+<Dialog Baslik="@dialogBaslik" @bind-isDialogOpen="@isDersPrgDialogOpen">
     <div class="row">
         <SfGrid ID="SecDrsProgramGrid" @ref="SecDrsProgramGrid" TValue="DerslikRezervDto" DataSource="@SecDrsPrgDtos" RowHeight="20">
             @*<SfDataManager Url="http://localhost:53414/odata/DerslikRezervs?$expand=Derslik($select=Id,Ad)" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>*@

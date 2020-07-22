@@ -12,8 +12,19 @@ namespace UniLife.Shared.AuthorizationDefinitions
 
     public static class Permissions
     {
-        
-             public static class DerslikRezerv
+
+        public static class YabanciBasvuru
+        {
+            [Description("Create a new YabanciBasvuru")]
+            public const string Create = nameof(YabanciBasvuru) + "." + nameof(Actions.Create);
+            [Description("Read YabanciBasvurus")]
+            public const string Read = nameof(YabanciBasvuru) + "." + nameof(Actions.Read);
+            [Description("Edit existing YabanciBasvurus")]
+            public const string Update = nameof(YabanciBasvuru) + "." + nameof(Actions.Update);
+            [Description("Delete any YabanciBasvuru")]
+            public const string Delete = nameof(YabanciBasvuru) + "." + nameof(Actions.Delete);
+        }
+        public static class DerslikRezerv
         {
             [Description("Create a new DerslikRezerv")]
             public const string Create = nameof(DerslikRezerv) + "." + nameof(Actions.Create);

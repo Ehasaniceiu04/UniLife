@@ -1,0 +1,216 @@
+﻿@page "/yabanci_Basvuru"
+@using Syncfusion.Blazor.DropDowns
+@using UniLife.Shared.Dto.Definitions
+@using UniLife.Shared.DataModels
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Calendars
+@using Syncfusion.Blazor.Buttons
+@inject NavigationManager navigationManager
+@inject HttpClient Http;
+@inject IMatToaster matToaster
+
+<ControlSection>
+
+    <div>
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <p>Başlık</p>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <SfDropDownList TValue="string" FloatLabelType="FloatLabelType.Auto" Placeholder="Sinav lokasyonu Seçin" TItem="TextKeyval" @bind-Value="@yabanciBasvuru.Ulke" DataSource="@SinavLokasyons">
+                    <DropDownListFieldSettings Value="Ad"></DropDownListFieldSettings>
+                </SfDropDownList>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <SfTextBox ID="Ad" FloatLabelType="FloatLabelType.Auto" Placeholder="Name(Ad)" CssClass="form-control-sm" @bind-Value="yabanciBasvuru.Ad"></SfTextBox>
+            </div>
+            <div class="form-group col-md-6">
+                <SfTextBox ID="Soyad" FloatLabelType="FloatLabelType.Auto" Placeholder="Surname(Soyad)" CssClass="form-control-sm" @bind-Value="@(yabanciBasvuru.Soyad)"></SfTextBox>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <SfTextBox ID="BabaAd" FloatLabelType="FloatLabelType.Auto" Placeholder="Father Name(Baba Adı)" CssClass="form-control-sm" @bind-Value="yabanciBasvuru.BabaAd"></SfTextBox>
+            </div>
+            <div class="form-group col-md-6">
+                <SfTextBox ID="AnaAd" FloatLabelType="FloatLabelType.Auto" Placeholder="Mother Name(Anne Adı)" CssClass="form-control-sm" @bind-Value="@(yabanciBasvuru.AnaAd)"></SfTextBox>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <SfTextBox ID="DogumYer" @bind-Value="yabanciBasvuru.DogumYer" Placeholder="Place of Birth(Doğum yeri)" FloatLabelType="FloatLabelType.Auto" CssClass="form-control-sm"></SfTextBox>
+            </div>
+            <div class="form-group col-md-6">
+                <SfDatePicker ID="DogumTarih" @bind-Value="@(yabanciBasvuru.DogumTarih)" FloatLabelType="FloatLabelType.Auto" CssClass="form-control-sm" Placeholder="Mother Name(Anne Adı)"></SfDatePicker>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <SfTextBox ID="Email" Placeholder="Mail(Mail Adresi)" @bind-Value="yabanciBasvuru.Email" FloatLabelType="FloatLabelType.Auto" CssClass="form-control-sm"></SfTextBox>
+            </div>
+            <div class="form-group col-md-6">
+                <SfDropDownList TValue="string" FloatLabelType="FloatLabelType.Auto" Placeholder="Gender(Cinsiyet)" TItem="TextKeyval" @bind-Value="@yabanciBasvuru.Cinsiyet" DataSource="@Cinsiyet">
+                    <DropDownListFieldSettings Value="Ad"></DropDownListFieldSettings>
+                </SfDropDownList>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <SfTextBox ID="PassportNo" FloatLabelType="FloatLabelType.Auto" Placeholder="Passport Number(Pasaport No)" CssClass="form-control-sm" @bind-Value="yabanciBasvuru.PassportNo"></SfTextBox>
+            </div>
+            <div class="form-group col-md-6">
+                <SfDropDownList TValue="string" FloatLabelType="FloatLabelType.Auto" Placeholder="Country name you live in(Yaşadığınız Ülke)" TItem="TextKeyval" @bind-Value="@yabanciBasvuru.YasaUlke" DataSource="@YasaLokasyons">
+                    <DropDownListFieldSettings Value="Ad"></DropDownListFieldSettings>
+                </SfDropDownList>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <SfTextBox ID="IletisimBilgisi" FloatLabelType="FloatLabelType.Auto" Placeholder="Comminication Information(Phone, Facebook, Instagram, Twitter)(İletişim)" CssClass="form-control-sm" @bind-Value="yabanciBasvuru.IletisimBilgisi"></SfTextBox>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <SfTextBox ID="Adres" FloatLabelType="FloatLabelType.Auto" Placeholder="Address(Adres)" CssClass="form-control-sm" @bind-Value="yabanciBasvuru.Adres"></SfTextBox>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <SfDropDownList ID="LiseMezuniyetAlan" TValue="string" FloatLabelType="FloatLabelType.Auto" Placeholder="High School Graduation Field(Lise Mezuniyet Alanı)" TItem="TextKeyval" @bind-Value="@yabanciBasvuru.LiseMezuniyetAlan" DataSource="@LiseMezuniyetAlan">
+                    <DropDownListFieldSettings Value="Ad"></DropDownListFieldSettings>
+                </SfDropDownList>
+            </div>
+            <div class="form-group col-md-6">
+                <SfDropDownList ID="LiseDurum" TValue="string" FloatLabelType="FloatLabelType.Auto" Placeholder="High School Status(Lise Durumu)" TItem="TextKeyval" @bind-Value="@yabanciBasvuru.LiseDurum" DataSource="@LiseDurum">
+                    <DropDownListFieldSettings Value="Ad"></DropDownListFieldSettings>
+                </SfDropDownList>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <SfTextBox ID="Tercih1" FloatLabelType="FloatLabelType.Auto" Placeholder="Choice(Tercih)(Faculty-Higher School-Vocational School-Programme)" CssClass="form-control-sm" @bind-Value="yabanciBasvuru.Tercih1"></SfTextBox>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <SfTextBox ID="Tercih2" FloatLabelType="FloatLabelType.Auto" Placeholder="Choice(Tercih)(Faculty-Higher School-Vocational School-Programme)" CssClass="form-control-sm" @bind-Value="yabanciBasvuru.Tercih2"></SfTextBox>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <SfTextBox ID="Tercih3" FloatLabelType="FloatLabelType.Auto" Placeholder="Choice(Tercih)(Faculty-Higher School-Vocational School-Programme)" CssClass="form-control-sm" @bind-Value="yabanciBasvuru.Tercih3"></SfTextBox>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <SfTextBox ID="Tercih4" FloatLabelType="FloatLabelType.Auto" Placeholder="Choice(Tercih)(Faculty-Higher School-Vocational School-Programme)" CssClass="form-control-sm" @bind-Value="yabanciBasvuru.Tercih4"></SfTextBox>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <SfTextBox ID="Tercih5" FloatLabelType="FloatLabelType.Auto" Placeholder="Choice(Tercih)(Faculty-Higher School-Vocational School-Programme)" CssClass="form-control-sm" @bind-Value="yabanciBasvuru.Tercih5"></SfTextBox>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <SfCheckBox @bind-Checked="@yabanciBasvuru.Accept" TChecked="bool" Label="I have read and accept the personal data protection law (Kişisel verileri koruma kanunu okudum kabul ediyorum) kanun(law)" ValueChange="@OnChange"></SfCheckBox>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-2 offset-sm-2">
+                <SfButton OnClick="Kabul" CssClass="e-success form-control-sm">Save Application (Kabul)</SfButton>
+            </div>
+            <div class="form-group col-md-2 offset-sm-2">
+                <SfButton OnClick="Vazgec" CssClass="e-danger form-control-sm">Cancel (Vazgeç)</SfButton>
+            </div>
+        </div>
+    </div>
+</ControlSection>
+
+@code{
+
+    YabanciBasvuruDto yabanciBasvuru;
+
+    protected override async Task OnInitializedAsync()
+    {
+        yabanciBasvuru = new YabanciBasvuruDto();
+    }
+
+    public class TextKeyval
+    {
+        public string Ad { get; set; }
+
+        public string Kod { get; set; }
+    }
+
+    List<TextKeyval> SinavLokasyons = new List<TextKeyval>
+{
+        new TextKeyval() { Ad= "Azerbaycan(Baku)", Kod = "AU" },
+        new TextKeyval() { Ad= "Bermuda", Kod = "BM" },
+        new TextKeyval() { Ad= "Canada", Kod = "CA" },
+        new TextKeyval() { Ad= "Cameroon", Kod = "CM" }
+    };
+
+    List<TextKeyval> YasaLokasyons = new List<TextKeyval>
+{
+        new TextKeyval() { Ad= "Turkiye", Kod = "AU" },
+        new TextKeyval() { Ad= "Bermuda", Kod = "BM" },
+        new TextKeyval() { Ad= "Canada", Kod = "CA" },
+        new TextKeyval() { Ad= "Cameroon", Kod = "CM" }
+    };
+
+    List<TextKeyval> LiseMezuniyetAlan = new List<TextKeyval>
+{
+        new TextKeyval() { Ad= "Quantitative(Sayisal)", Kod = "AU" },
+        new TextKeyval() { Ad= "Linguistic(Dil)", Kod = "BM" },
+        new TextKeyval() { Ad= "Social(Sözel)", Kod = "CA" }
+    };
+
+    List<TextKeyval> LiseDurum = new List<TextKeyval>
+{
+        new TextKeyval() { Ad= "Graduated(Mezun)", Kod = "AU" },
+        new TextKeyval() { Ad= "Studying(okuyor)", Kod = "BM" },
+        new TextKeyval() { Ad= "Quit(Bıraktı)", Kod = "CA" }
+    };
+
+    List<TextKeyval> Cinsiyet = new List<TextKeyval>
+{
+        new TextKeyval() { Ad= "(Female)Kadın", Kod = "k" },
+        new TextKeyval() { Ad= "(Male)Erkek", Kod = "e" },
+    };
+
+    private void OnChange(Syncfusion.Blazor.Buttons.ChangeEventArgs<bool> args)
+    {
+
+    }
+
+    async Task Kabul()
+    {
+        try
+        {
+            ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/yabancibasvuru", yabanciBasvuru);
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success, "Succesfully created.(Başvuru gerçekleşti)");
+            }
+            else
+                matToaster.Add(apiResponse.Message, MatToastType.Danger, "System error! (Hata oluştu!)");
+
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "System error! (Hata oluştu!)");
+        }
+    }
+
+    async Task Vazgec()
+    {
+        navigationManager.NavigateTo("/");
+    }
+
+}

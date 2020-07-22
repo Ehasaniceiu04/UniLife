@@ -69,6 +69,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         Syncfusion.Blazor.Schedule.SfSchedule<DerslikRezervDto> DersProgramSche;
 
         bool isDersPrgDialogOpen;
+        string dialogBaslik="Seçilen dersin programı";
 
         
         Syncfusion.Blazor.Grids.SfGrid<DerslikRezervDto> SecDrsProgramGrid;
@@ -386,8 +387,10 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 string oDataQuery = $"odata/DerslikRezervs?$expand=ResourceData($select=Id,Ad)&$filter=DersAcilanId eq {args.RowData.DersAcilanId}";
                 OData<DerslikRezervDto> apiResponse = await Http.GetFromJsonAsync<OData<DerslikRezervDto>>(oDataQuery);
                 SecDrsPrgDtos = apiResponse.Value;
-                
+
+                dialogBaslik = $"{args.RowData.DersAd} dersinin programı";
                 isDersPrgDialogOpen = true;
+                
                 //await DersAcGrid.ClearSelection();
                 //DersAcGrid.SelectedRowIndex = clickedRowIndex;
 
