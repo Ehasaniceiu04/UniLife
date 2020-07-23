@@ -44,6 +44,9 @@ namespace UniLife.Storage
                     }
                 }
             };
+            //Policies.IsOgrenci,
+            //Policies.IsAkademisyen,
+            //Policies.IsPersonel,
         }
 
         // Clients want to access resources.

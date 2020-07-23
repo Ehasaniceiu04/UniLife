@@ -1217,6 +1217,11 @@ namespace UniLife.Server.Managers
             return null;
         }
 
-        
+        //private async Task Deneme(ClaimsPrincipal userClaimsPrincipal)
+        //{
+        //    _userManager.getrol
+        //}
+
+
     }
 }

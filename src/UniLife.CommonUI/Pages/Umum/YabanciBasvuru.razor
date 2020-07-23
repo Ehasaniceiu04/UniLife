@@ -45,7 +45,7 @@
                 <SfTextBox ID="DogumYer" @bind-Value="yabanciBasvuru.DogumYer" Placeholder="Place of Birth(Doğum yeri)" FloatLabelType="FloatLabelType.Auto" CssClass="form-control-sm"></SfTextBox>
             </div>
             <div class="form-group col-md-6">
-                <SfDatePicker ID="DogumTarih" @bind-Value="@(yabanciBasvuru.DogumTarih)" FloatLabelType="FloatLabelType.Auto" CssClass="form-control-sm" Placeholder="Mother Name(Anne Adı)"></SfDatePicker>
+                <SfDatePicker ID="DogumTarih" @bind-Value="@(yabanciBasvuru.DogumTarih)" FloatLabelType="FloatLabelType.Auto" Placeholder="Date of Birth(Doğum Tarihi)"></SfDatePicker>
             </div>
         </div>
         <div class="form-row">
@@ -197,6 +197,7 @@
             if (apiResponse.IsSuccessStatusCode)
             {
                 matToaster.Add(apiResponse.Message, MatToastType.Success, "Succesfully created.(Başvuru gerçekleşti)");
+                navigationManager.NavigateTo("/");
             }
             else
                 matToaster.Add(apiResponse.Message, MatToastType.Danger, "System error! (Hata oluştu!)");

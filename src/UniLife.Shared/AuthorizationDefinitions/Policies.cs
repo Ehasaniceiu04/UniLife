@@ -8,6 +8,9 @@ namespace UniLife.Shared.AuthorizationDefinitions
     public static class Policies
     {
         public const string IsAdmin = "IsAdmin";
+        public const string IsOgrenci = "IsOgrenci";
+        public const string IsAkademisyen = "IsAkademisyen";
+        public const string IsPersonel = "IsPersonel";
         public const string IsUser = "IsUser";
         public const string IsReadOnly = "IsReadOnly";
         public const string IsMyDomain = "IsMyDomain";
@@ -17,6 +20,30 @@ namespace UniLife.Shared.AuthorizationDefinitions
             return new AuthorizationPolicyBuilder()
                 .RequireAuthenticatedUser()
                 .RequireClaim("IsAdministrator")
+                .Build();
+        }
+
+        public static AuthorizationPolicy IsOgrenciPolicy()
+        {
+            return new AuthorizationPolicyBuilder()
+                .RequireAuthenticatedUser()
+                .RequireClaim("IsOgrenci")
+                .Build();
+        }
+
+        public static AuthorizationPolicy IsAkademisyenPolicy()
+        {
+            return new AuthorizationPolicyBuilder()
+                .RequireAuthenticatedUser()
+                .RequireClaim("IsAkademisyen")
+                .Build();
+        }
+
+        public static AuthorizationPolicy IsPersonelPolicy()
+        {
+            return new AuthorizationPolicyBuilder()
+                .RequireAuthenticatedUser()
+                .RequireClaim("IsPersonel")
                 .Build();
         }
 

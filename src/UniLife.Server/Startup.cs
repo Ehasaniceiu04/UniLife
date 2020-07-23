@@ -266,6 +266,9 @@ namespace UniLife.Server
             services.AddAuthorization(options =>
             {
                 options.AddPolicy(Policies.IsAdmin, Policies.IsAdminPolicy());
+                options.AddPolicy(Policies.IsOgrenci, Policies.IsOgrenciPolicy());
+                options.AddPolicy(Policies.IsAkademisyen, Policies.IsAkademisyenPolicy());
+                options.AddPolicy(Policies.IsPersonel, Policies.IsPersonelPolicy());
                 options.AddPolicy(Policies.IsUser, Policies.IsUserPolicy());
                 options.AddPolicy(Policies.IsReadOnly, Policies.IsReadOnlyPolicy());
                 options.AddPolicy(Policies.IsMyDomain, Policies.IsMyDomainPolicy());  // valid only on serverside operations

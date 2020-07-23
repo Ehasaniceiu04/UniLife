@@ -224,7 +224,6 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 if (response.StatusCode == (System.Net.HttpStatusCode)Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
                 {
                     matToaster.Add("Açılan Ders Deleted", MatToastType.Success);
-                    dersAcilanDtos.Remove(dersAcilanDto);
                     return true;
                 }
                 else

@@ -151,5 +151,10 @@ namespace UniLife.Storage.Stores
 
             await _db.SaveChangesAsync(CancellationToken.None);
         }
+
+        //void deneme()
+        //{
+        //    _db.Context.UserRoles
+        //}
     }
 }

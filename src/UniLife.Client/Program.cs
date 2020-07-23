@@ -32,6 +32,9 @@ namespace UniLife.Client
             builder.Services.AddAuthorizationCore(config =>
             {
                 config.AddPolicy(Policies.IsAdmin, Policies.IsAdminPolicy());
+                config.AddPolicy(Policies.IsOgrenci, Policies.IsOgrenciPolicy());
+                config.AddPolicy(Policies.IsAkademisyen, Policies.IsAkademisyenPolicy());
+                config.AddPolicy(Policies.IsPersonel, Policies.IsPersonelPolicy());
                 config.AddPolicy(Policies.IsUser, Policies.IsUserPolicy());
                 config.AddPolicy(Policies.IsReadOnly, Policies.IsUserPolicy());
                 // config.AddPolicy(Policies.IsMyDomain, Policies.IsMyDomainPolicy());  Only works on the server end
