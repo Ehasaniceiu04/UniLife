@@ -3,69 +3,61 @@
 @attribute [Authorize(Policy = Policies.IsAdmin)]
 @inject HttpClient Http
 @inject IMatToaster matToaster
-@using Newtonsoft.Json
 @using UniLife.Shared.Dto.Definitions
 @using UniLife.CommonUI.Pages.Admin.PersonelIslem.PersonelIslemTabs.PersonellerTabs
 @using Syncfusion.Blazor.SplitButtons
-@using System.Reflection;
 @inject AppState appState
 
 
 
 <ControlSection>
-        <SfGrid ID="OgrGrid" @ref="OgrGrid" AllowSorting="true" AllowFiltering="true" AllowPaging="true" DataSource="@AkaGridDtos">
-            @*OnActionFailure="ActionFailureHandler"  OnActionBegin="ActionBeginHandler" DetailDataBound="DetailDataBound" RowDataBound="RowBound"*@
-            <GridEvents TValue="PersonelDto" DetailDataBound="DetailDataBound" CommandClicked="CommandClickHandler" OnActionBegin="ActionBeginHandler" OnActionComplete="ActionCompletedHandler"></GridEvents>
-            <GridTemplates>
-                <DetailTemplate>
-                    @{
-                        var personelDto = (context as UniLife.Shared.Dto.Definitions.PersonelDto);
-                    }
-                    <div style="padding:20px">
-                        <SfTab LoadOn="ContentLoad.Dynamic">
-                            <TabEvents Selecting="OnTabSelecting"></TabEvents>
-                            <TabItems>
-                                <TabItem>
-                                    <ChildContent>
-                                        <TabHeader Text="Details"></TabHeader>
-                                    </ChildContent>
-                                    <ContentTemplate>
-                                        <PersonelBilgi _PersonelDto="personelDto"></PersonelBilgi>
-                                    </ContentTemplate>
-                                </TabItem>
-                                <TabItem>
-                                    <ChildContent>
-                                        <TabHeader Text="Roles"></TabHeader>
-                                    </ChildContent>
-                                    <ContentTemplate>
-                                        <PersonelRoles _PersonelDto="personelDto"></PersonelRoles>
-                                    </ContentTemplate>
-                                </TabItem>
-                                <TabItem>
-                                    <ChildContent>
-                                        <TabHeader Text="Report"></TabHeader>
-                                    </ChildContent>
-                                    <ContentTemplate>
-                                    </ContentTemplate>
-                                </TabItem>
-                            </TabItems>
-                        </SfTab>
-                    </div>
-                </DetailTemplate>
-            </GridTemplates>
-            <GridColumns>
-                <GridColumn Visible="false" Field=@nameof(PersonelDto.ApplicationUserId) HeaderText="AppUserId" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
-                <GridColumn Field=@nameof(PersonelDto.Ad) HeaderText="Ad"> </GridColumn>
-                <GridColumn Field=@nameof(PersonelDto.Soyad) HeaderText="Soyad"></GridColumn>
-                <GridColumn Field=@nameof(PersonelDto.TCKN) HeaderText="TCKN"></GridColumn>
-                <GridColumn Field=@nameof(PersonelDto.PersNo) HeaderText="Personel No"></GridColumn>
-                <GridColumn>
-                    <GridCommandColumns>
-                        <GridCommandColumn Type="CommandButtonType.None" Title="Akademik Bilgiler" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
-                    </GridCommandColumns>
-                </GridColumn>
-            </GridColumns>
-        </SfGrid>
+    <SfGrid ID="PersGrid" @ref="PersGrid" AllowSorting="true" AllowFiltering="true" AllowPaging="true" DataSource="@PersGridDtos">
+        @*OnActionFailure="ActionFailureHandler" DetailDataBound="DetailDataBound" OnActionBegin="ActionBeginHandler" DetailDataBound="DetailDataBound" RowDataBound="RowBound"*@
+        <GridEvents TValue="PersonelDto" CommandClicked="CommandClickHandler" OnActionComplete="ActionCompletedHandler"></GridEvents>
+        <Syncfusion.Blazor.Grids.GridSelectionSettings EnableToggle="false"></Syncfusion.Blazor.Grids.GridSelectionSettings>
+        <GridTemplates>
+            <DetailTemplate>
+                @{
+                    var personelDto = (context as UniLife.Shared.Dto.Definitions.PersonelDto);
+                }
+                <div style="padding:20px">
+                    <SfTab LoadOn="ContentLoad.Demand">
+                        <TabEvents Selecting="OnTabSelecting"></TabEvents>
+                        <TabItems>
+                            <TabItem>
+                                <ChildContent>
+                                    <TabHeader Text="Details"></TabHeader>
+                                </ChildContent>
+                                <ContentTemplate>
+                                    <PersonelBilgi _PersonelDto="personelDto"></PersonelBilgi>
+                                </ContentTemplate>
+                            </TabItem>
+                            <TabItem>
+                                <ChildContent>
+                                    <TabHeader Text="Roles"></TabHeader>
+                                </ChildContent>
+                                <ContentTemplate>
+                                    <PersonelRoles _PersonelDto="personelDto"></PersonelRoles>
+                                </ContentTemplate>
+                            </TabItem>
+                        </TabItems>
+                    </SfTab>
+                </div>
+            </DetailTemplate>
+        </GridTemplates>
+        <GridColumns>
+            <GridColumn Visible="false" Field=@nameof(PersonelDto.ApplicationUserId) HeaderText="AppUserId" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+            <GridColumn Field=@nameof(PersonelDto.Ad) HeaderText="Ad"> </GridColumn>
+            <GridColumn Field=@nameof(PersonelDto.Soyad) HeaderText="Soyad"></GridColumn>
+            <GridColumn Field=@nameof(PersonelDto.TCKN) HeaderText="TCKN"></GridColumn>
+            <GridColumn Field=@nameof(PersonelDto.PersNo) HeaderText="Personel No"></GridColumn>
+            <GridColumn>
+                <GridCommandColumns>
+                    <GridCommandColumn Type="CommandButtonType.None" Title="Personel Bilgiler" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
+                </GridCommandColumns>
+            </GridColumn>
+        </GridColumns>
+    </SfGrid>
         <div class="col-12 text-right">
             <SfProgressButton OnClick="AddNew" Content="Yeni Personel Kaydı >" CssClass="center-block e-primary">
                 <ProgressButtonSpinSettings Position="SpinPosition.Right"></ProgressButtonSpinSettings>
@@ -78,28 +70,25 @@
 @code{
 
 
-    public SfGrid<PersonelDto> OgrGrid;
-    PersonelDto target;
+    public SfGrid<PersonelDto> PersGrid;
+    //PersonelDto target;
 
-    List<PersonelDto> AkaGridDtos = new List<PersonelDto>();
+    List<PersonelDto> PersGridDtos=new List<PersonelDto>();
 
-    public PersonelDto _PersonelDto { get; set; } = new PersonelDto();
-
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        await ReadPersonels();
+        ReadPersonels();
     }
 
-    async Task ReadPersonels()
+    void ReadPersonels()
     {
-        //ApiResponseDto<List<PersonelDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<PersonelDto>>>($"api/Admin/GetPersonelUsers?pageSize={10}&pageNumber={0}");
-        ApiResponseDto<List<PersonelDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<PersonelDto>>>("api/personel");
+        ApiResponseDto<List<PersonelDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<PersonelDto>>>("api/personel").Result;
 
 
         if (apiResponse.StatusCode == Status200OK)
         {
             matToaster.Add(apiResponse.Message, MatToastType.Success, "Personeller getirildi");
-            AkaGridDtos = apiResponse.Result;
+            PersGridDtos = apiResponse.Result;
         }
         else
         {
@@ -111,18 +100,7 @@
 
     public async void ActionCompletedHandler(ActionEventArgs<PersonelDto> args)
     {
-        var FilterApplied = OgrGrid.FilterSettings.Columns; // to get filtered column details
-                                                            //var GroupingApplied = OgrGrid.GroupSettings.Columns; // to get grouped column details
-                                                            //var SortingApplied = OgrGrid.SortSettings.Columns; // to get sorted column details
-                                                            //var Columns = await OgrGrid.GetColumns(); // to get columsn details like visibility and other properties
-
-    }
-
-
-
-    public void ActionBeginHandler(ActionEventArgs<PersonelDto> args)
-    {
-
+        var FilterApplied = PersGrid.FilterSettings.Columns;
     }
 
 
@@ -132,11 +110,10 @@
 
     public void CommandClickHandler(CommandClickEventArgs<PersonelDto> args)
     {
-        if (args.CommandColumn.Title == "Akademik Bilgiler")
+        if (args.CommandColumn.Title == "Personel Bilgiler")
         {
-            _PersonelDto = args.RowData;
-            appState.PersonelState = _PersonelDto;
-            PersonelToBilgiler.InvokeAsync(_PersonelDto);
+            appState.PersonelState = args.RowData;
+            PersonelToBilgiler.InvokeAsync(args.RowData);
 
         }
     }
@@ -154,12 +131,12 @@
         }
     }
 
-    public async Task DetailDataBound(DetailDataBoundEventArgs<PersonelDto> args)
-    {
-        if (target != null)
-            await OgrGrid.DetailExpandCollapseRow(target);
-        target = args.Data;
-    }
+    //public async Task DetailDataBound(DetailDataBoundEventArgs<PersonelDto> args)
+    //{
+    //    if (target != null)
+    //        await OgrGrid.DetailExpandCollapseRow(target);
+    //    target = args.Data;
+    //}
 }
 
 
