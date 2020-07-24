@@ -23,19 +23,19 @@ namespace UniLife.Server.Controllers
 
         // GET: api/Derslik
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<ApiResponse> Get()
             => await _derslikManager.Get();
 
         //[HttpGet]
-        //[AllowAnonymous]
+        //[Authorize]
         //[Route("GetDerslikByBinaId/{binaId}")]
         //public async Task<ApiResponse> GetDerslikByBinaId(int binaId)
         //    => await _derslikManager.GetDerslikByBinaId();
 
         // GET: api/Derslik/5
         [HttpGet("{id}")]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<ApiResponse> Get(int id)
             => ModelState.IsValid ?
                 await _derslikManager.Get(id) :
@@ -43,7 +43,7 @@ namespace UniLife.Server.Controllers
 
         // POST: api/Derslik
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Permissions.Derslik.Create)]
         public async Task<ApiResponse> Post([FromBody] DerslikDto derslikDto)
             => ModelState.IsValid ?
                 await _derslikManager.Create(derslikDto) :
@@ -51,7 +51,7 @@ namespace UniLife.Server.Controllers
 
         // Put: api/Derslik
         [HttpPut]
-        [AllowAnonymous]
+        [Authorize(Permissions.Derslik.Update)]
         public async Task<ApiResponse> Put([FromBody] DerslikDto derslikDto)
             => ModelState.IsValid ?
                 await _derslikManager.Update(derslikDto) :

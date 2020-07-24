@@ -11,6 +11,9 @@ using Microsoft.AspNetCore.Builder;
 using UniLife.Storage;
 using System.Collections.Generic;
 using UniLife.Shared.DataModels;
+using IdentityServer4.Extensions;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 
 namespace UniLife.Server.Controllers
 {
@@ -19,51 +22,96 @@ namespace UniLife.Server.Controllers
     public class OgrenciController : ControllerBase
     {
         private readonly IOgrenciManager _ogrenciManager;
+        private readonly ILogger<OgrenciController> _logger;
         //private readonly IApplicationDbContext _applicationDbContext;
 
-        public OgrenciController(IOgrenciManager ogrenciManager, IApplicationDbContext applicationDbContext)
+        public OgrenciController(IOgrenciManager ogrenciManager, ILogger<OgrenciController> logger)//, IApplicationDbContext applicationDbContext
         {
             _ogrenciManager = ogrenciManager;
+            _logger = logger;
             //_applicationDbContext = applicationDbContext;
         }
 
         // GET: api/Ogrenci
         [HttpGet]
-        //[AllowAnonymous]
-        //[Authorize(Permissions.Ogrenci.Read)]
+        [Authorize(Roles ="Administrator,Personel")]
         public async Task<ApiResponse> Get()
-            => await _ogrenciManager.Get();
+        {
+            return await _ogrenciManager.Get();
+        }
+            //=> await _ogrenciManager.Get();
 
         // GET: api/Ogrenci/5
         [HttpGet("{id}")]
-        [AllowAnonymous]
+        [Authorize(Permissions.Ogrenci.Read)]
         public async Task<ApiResponse> Get(int id)
-            => ModelState.IsValid ?
-                await _ogrenciManager.Get(id) :
-                new ApiResponse(Status400BadRequest, "Ogrenci Model is Invalid");
+        {
+            if (ModelState.IsValid)
+            {
+                var ogrenci = await _ogrenciManager.Get(id);
+                if (User.IsInRole("Ogrenci"))
+                {
+                    return await CheckIsOgrenciHimSelf(id, ogrenci);
+                }
 
-        // GET: api/Ogrenci/5
+                return ogrenci;
+            }
+            else
+            {
+                return new ApiResponse(Status400BadRequest, "Öğrenci bilgilerinde eksik var.");
+            }
+        }
+
+        private async Task<ApiResponse> CheckIsOgrenciHimSelf(int id, ApiResponse ogrenci)
+        {
+            if (User.GetSubjectId() == (ogrenci.Result as OgrenciDto).ApplicationUserId.ToString())
+            {
+                return ogrenci;
+            }
+            else
+            {
+                _logger.LogError($"{User.GetSubjectId()} öğrencisi, {id} id li öğrenci bilgilerine ulaşmaya çalıştı.");
+                return new ApiResponse(Status401Unauthorized, "Başka öğrencilerin bilgilerini görme yetkiniz yok. Bu işlem adınıza loglanmıştır!");
+            }
+        }
+
+
+        // GET: api/Ogrenci/GetOgrenciWithRelations/5
         [HttpGet]
         [Route("GetOgrenciWithRelations/{id}")]
-        [AllowAnonymous]
+        [Authorize(Permissions.Ogrenci.Read)]
         public async Task<ApiResponse> GetOgrenciWithRelations(int id)
-            => ModelState.IsValid ?
-                await _ogrenciManager.GetOgrenciWithRelations(id) :
-                new ApiResponse(Status400BadRequest, "Ogrenci Model is Invalid");
-
-        [HttpGet]
-        [Route("GetOgrenciQuery")]
-        [AllowAnonymous]
-        public async Task<ApiResponse> GetOgrenciQuery([FromQuery]OgrenciDto Ogrenci)
         {
-            return await _ogrenciManager.GetOgrenciQuery(Ogrenci);
+            if (ModelState.IsValid)
+            {
+                var ogrenci = await _ogrenciManager.GetOgrenciWithRelations(id);
+                if (User.IsInRole("Ogrenci"))
+                {
+                    return await CheckIsOgrenciHimSelf(id, ogrenci);
+                }
+
+                return ogrenci;
+            }
+            else
+            {
+                return new ApiResponse(Status400BadRequest, "Öğrenci bilgilerinde eksik var.");
+            }
         }
+
+        //[HttpGet]
+        //[Route("GetOgrenciQuery")]
+        //[AllowAnonymous]
+        //public async Task<ApiResponse> GetOgrenciQuery([FromQuery]OgrenciDto Ogrenci)
+        //{
+        //    return await _ogrenciManager.GetOgrenciQuery(Ogrenci);
+        //}
 
 
         // GET: api/Ogrenci/GetOgrenciListBySinavId/5
         [HttpGet]
         [Route("GetOgrenciListBySinavId/{sinavId}")]
-        [AllowAnonymous]
+        [Authorize(Permissions.Ogrenci.Read)]
+        [Authorize(Roles = "Administrator,Personel")]
         public async Task<ApiResponse> GetOgrenciListBySinavId(int sinavId)
             => ModelState.IsValid ?
                 await _ogrenciManager.GetOgrenciListBySinavId(sinavId) :
@@ -72,7 +120,8 @@ namespace UniLife.Server.Controllers
 
         [HttpGet]
         [Route("GetOgrenciListByDersAcId/{dersAcId}")]
-        [AllowAnonymous]
+        [Authorize(Permissions.Ogrenci.Read)]
+        [Authorize(Roles = "Administrator,Personel")]
         public async Task<ApiResponse> GetOgrenciListByDersAcId(int dersAcId)
             => ModelState.IsValid ?
                 await _ogrenciManager.GetOgrenciListByDersAcId(dersAcId) :
@@ -83,31 +132,31 @@ namespace UniLife.Server.Controllers
 
         // POST: api/Ogrenci
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Permissions.Ogrenci.Create)]
         public async Task<ApiResponse> Post([FromBody] OgrenciDto ogrenciDto)
             => ModelState.IsValid ?
                 await _ogrenciManager.Create(ogrenciDto) :
                 new ApiResponse(Status400BadRequest, "Ogrenci Model is Invalid");
 
         [HttpPost]
-        [AllowAnonymous]
         [Route("SetDanismanToOgrencis")]
+        [Authorize(Permissions.Ogrenci.Update)]
         public async Task<ApiResponse> SetDanismanToOgrencis([FromBody] ReqEntityIdWithOtherEntitiesIds ReqEntityIdWithOtherEntitiesIds)
             => ModelState.IsValid ?
                 await _ogrenciManager.SetDanismanToOgrencis(ReqEntityIdWithOtherEntitiesIds) :
                 new ApiResponse(Status400BadRequest, "SetDanismanToOgrencis is Invalid");
 
         [HttpPost]
-        [AllowAnonymous]
         [Route("SetMufredatToOgrencis")]
+        [Authorize(Permissions.Ogrenci.Update)]
         public async Task<ApiResponse> SetMufredatToOgrencis([FromBody] ReqEntityIdWithOtherEntitiesIds ReqEntityIdWithOtherEntitiesIds)
             => ModelState.IsValid ?
                 await _ogrenciManager.SetMufredatToOgrencis(ReqEntityIdWithOtherEntitiesIds) :
                 new ApiResponse(Status400BadRequest, "SetMufredatToOgrencis is Invalid");
 
         [HttpPost]
-        [AllowAnonymous]
         [Route("OgrencisSinifAtlat")]
+        [Authorize(Permissions.Ogrenci.Update)]
         public async Task<ApiResponse> OgrencisSinifAtlat([FromBody] ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds)
             => ModelState.IsValid ?
                 await _ogrenciManager.OgrencisSinifAtlat(reqEntityIdWithOtherEntitiesIds) :
@@ -119,7 +168,7 @@ namespace UniLife.Server.Controllers
 
         // Put: api/Ogrenci
         [HttpPut]
-        [AllowAnonymous]
+        [Authorize(Permissions.Ogrenci.Update)]
         public async Task<ApiResponse> Put([FromBody] OgrenciDto ogrenciDto)
             => ModelState.IsValid ?
                 await _ogrenciManager.Update(ogrenciDto) :

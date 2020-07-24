@@ -24,14 +24,14 @@ namespace UniLife.Server.Controllers
 
         // GET: api/OgrenimTur
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<ApiResponse> Get()
             => await _ogrenimTurManager.Get();
 
 
         // GET: api/OgrenimTur/5
         [HttpGet("{id}")]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<ApiResponse> Get(int id)
             => ModelState.IsValid ?
                 await _ogrenimTurManager.Get(id) :
@@ -39,7 +39,7 @@ namespace UniLife.Server.Controllers
 
         // POST: api/OgrenimTur
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Roles = "Administrator,Personel")]
         public async Task<ApiResponse> Post([FromBody] OgrenimTurDto ogrenimTurDto)
             => ModelState.IsValid ?
                 await _ogrenimTurManager.Create(ogrenimTurDto) :
@@ -47,7 +47,7 @@ namespace UniLife.Server.Controllers
 
         // Put: api/OgrenimTur
         [HttpPut]
-        [AllowAnonymous]
+        [Authorize(Roles = "Administrator,Personel")]
         public async Task<ApiResponse> Put([FromBody] OgrenimTurDto ogrenimTurDto)
             => ModelState.IsValid ?
                 await _ogrenimTurManager.Update(ogrenimTurDto) :
@@ -55,7 +55,7 @@ namespace UniLife.Server.Controllers
 
         // DELETE: api/OgrenimTur/5
         [HttpDelete("{id}")]
-        [Authorize(Permissions.Universite.Delete)]
+        [Authorize(Roles = "Administrator,Personel")]
         public async Task<ApiResponse> Delete(int id)
             => await _ogrenimTurManager.Delete(id);
     }

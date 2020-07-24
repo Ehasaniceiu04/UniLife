@@ -23,20 +23,21 @@ namespace UniLife.Server.Controllers
 
         // GET: api/DersKayit
         [HttpGet]
-        [AllowAnonymous]
+        //[Authorize(Permissions.DersKayit.Read)]
+        [Authorize(Roles = "Administrator,Personel")]
         public async Task<ApiResponse> Get()
             => await _dersKayitManager.Get();
 
         // GET: api/DersKayit/5
         [HttpGet("{id}")]
-        [AllowAnonymous]
+        [Authorize(Permissions.DersKayit.Read)]
         public async Task<ApiResponse> Get(int id)
             => ModelState.IsValid ?
                 await _dersKayitManager.Get(id) :
                 new ApiResponse(Status400BadRequest, "DersKayit Model is Invalid");
 
         //[HttpGet]
-        //[AllowAnonymous]
+        //[Authorize]
         //[Route("GetDersKayitByMufredatId/{mufredatId}")]
         //public async Task<ApiResponse> GetDersKayitByMufredatId(int mufredatId)
         //    => ModelState.IsValid ?
@@ -46,7 +47,7 @@ namespace UniLife.Server.Controllers
 
         // POST: api/DersKayit
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Permissions.DersKayit.Create)]
         public async Task<ApiResponse> Post([FromBody] DersKayitDto dersKayitDto)
             => ModelState.IsValid ?
                 await _dersKayitManager.Create(dersKayitDto) :
@@ -54,7 +55,7 @@ namespace UniLife.Server.Controllers
 
         // Put: api/DersKayit
         [HttpPut]
-        [AllowAnonymous]
+        [Authorize(Permissions.DersKayit.Update)]
         public async Task<ApiResponse> Put([FromBody] DersKayitDto dersKayitDto)
             => ModelState.IsValid ?
                 await _dersKayitManager.Update(dersKayitDto) :
@@ -67,8 +68,8 @@ namespace UniLife.Server.Controllers
             => await _dersKayitManager.Delete(id);
 
         [HttpPost]
-        [AllowAnonymous]
         [Route("OgrenciKayitToDerss")]
+        [Authorize(Permissions.DersKayit.Create)]
         public async Task<ApiResponse> OgrenciKayitToDerss([FromBody] List<DersKayitDto> ogrenciDersKayitDtos)
         {
             if (ModelState.IsValid)
@@ -89,7 +90,7 @@ namespace UniLife.Server.Controllers
 
 
         [HttpPut]
-        [AllowAnonymous]
+        [Authorize(Permissions.DersKayit.Update)]
         [Route("PutUpdateOgrencisDersKayits")]
         public async Task<ApiResponse> PutUpdateOgrencisDersKayits(PutUpdateOgrencisDersKayitsDto putUpdateOgrencisDersKayitsDto)
            => ModelState.IsValid ?
@@ -98,7 +99,8 @@ namespace UniLife.Server.Controllers
 
 
         [HttpPut]
-        [AllowAnonymous]
+        [Authorize(Permissions.DersKayit.Update)]
+        [Authorize(Permissions.DersAcilan.Delete)]
         [Route("PutUpdateOgrencisDersKayitsDeleteExSubes")]
         public async Task<ApiResponse> PutUpdateOgrencisDersKayitsDeleteExSubes(ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds)
            => ModelState.IsValid ?

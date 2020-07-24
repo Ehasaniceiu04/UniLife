@@ -22,13 +22,13 @@ namespace UniLife.Server.Controllers
 
         // GET: api/Harc
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<ApiResponse> Get()
             => await _harcManager.Get();
 
         // GET: api/Harc/5
         [HttpGet("{id}")]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<ApiResponse> Get(int id)
             => ModelState.IsValid ?
                 await _harcManager.Get(id) :
@@ -36,7 +36,7 @@ namespace UniLife.Server.Controllers
 
         // POST: api/Harc
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Permissions.Harc.Create)]
         public async Task<ApiResponse> Post([FromBody] HarcDto harcDto)
             => ModelState.IsValid ?
                 await _harcManager.Create(harcDto) :
@@ -44,7 +44,7 @@ namespace UniLife.Server.Controllers
 
         // Put: api/Harc
         [HttpPut]
-        [AllowAnonymous]
+        [Authorize(Permissions.Harc.Update)]
         public async Task<ApiResponse> Put([FromBody] HarcDto harcDto)
             => ModelState.IsValid ?
                 await _harcManager.Update(harcDto) :

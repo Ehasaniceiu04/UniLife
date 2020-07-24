@@ -22,13 +22,13 @@ namespace UniLife.Server.Controllers
 
         // GET: api/Todo
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<ApiResponse> Get()
             => await _todoManager.Get();
 
         // GET: api/Todo/5
         [HttpGet("{id}")]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<ApiResponse> Get(int id)
             => ModelState.IsValid ?
                 await _todoManager.Get(id) :
@@ -36,7 +36,7 @@ namespace UniLife.Server.Controllers
 
         // POST: api/Todo
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Permissions.Todo.Create)]
         public async Task<ApiResponse> Post([FromBody] TodoDto todo)
             => ModelState.IsValid ?
                 await _todoManager.Create(todo) :
@@ -44,7 +44,7 @@ namespace UniLife.Server.Controllers
 
         // Put: api/Todo
         [HttpPut]
-        [AllowAnonymous]
+        [Authorize(Permissions.Todo.Update)]
         public async Task<ApiResponse> Put([FromBody] TodoDto todo)
             => ModelState.IsValid ?
                 await _todoManager.Update(todo) :

@@ -22,20 +22,19 @@ namespace UniLife.Server.Controllers
 
         // GET: api/Ders
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize(Permissions.Ders.Read)]
         public async Task<ApiResponse> Get()
             => await _dersManager.Get();
 
         // GET: api/Ders/5
         [HttpGet("{id}")]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<ApiResponse> Get(int id)
             => ModelState.IsValid ?
                 await _dersManager.Get(id) :
                 new ApiResponse(Status400BadRequest, "Ders Model is Invalid");
 
         [HttpGet]
-        [AllowAnonymous]
         [Route("GetDersByMufredatId/{mufredatId}")]
         public async Task<ApiResponse> GetDersByMufredatId(int mufredatId)
             => ModelState.IsValid ?
@@ -45,7 +44,7 @@ namespace UniLife.Server.Controllers
 
         // POST: api/Ders
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Permissions.Ders.Create)]
         public async Task<ApiResponse> Post([FromBody] DersDto dersDto)
             => ModelState.IsValid ?
                 await _dersManager.Create(dersDto) :
@@ -53,7 +52,7 @@ namespace UniLife.Server.Controllers
 
         // Put: api/Ders
         [HttpPut]
-        [AllowAnonymous]
+        [Authorize(Permissions.Ders.Update)]
         public async Task<ApiResponse> Put([FromBody] DersDto dersDto)
             => ModelState.IsValid ?
                 await _dersManager.Update(dersDto) :
@@ -67,7 +66,7 @@ namespace UniLife.Server.Controllers
 
 
         [HttpPost]
-        [AllowAnonymous]
+        //[Authorize(Permissions.Ders.Read)]
         [Route("GetAcilacakDersByFilterDto")]
         public async Task<ApiResponse> GetAcilacakDersByFilterDto([FromBody] DersFilterDto dersFilterDto)
             => ModelState.IsValid ?
@@ -75,7 +74,7 @@ namespace UniLife.Server.Controllers
                     new ApiResponse(Status400BadRequest, "DersFilterDto Model is Invalid");
 
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Permissions.Ders.Create)]
         [Route("CreateDersAcilansByDersId")]
         public async Task<ApiResponse> CreateDersAcilansByDersId([FromBody] int dersId)
             => ModelState.IsValid ?

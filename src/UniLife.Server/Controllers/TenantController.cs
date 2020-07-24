@@ -22,11 +22,13 @@ namespace UniLife.Server.Controllers
 
         // GET: api/Tenants
         [HttpGet]
+        [Authorize(Roles = "Administrator,Personel")]
         public async Task<ApiResponse> Get()
             => await _tenantManager.Get();
 
         // GET: api/Tenants/5
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ApiResponse> Get(int id)
             => ModelState.IsValid ?
                 await _tenantManager.Get(id) :
@@ -34,6 +36,7 @@ namespace UniLife.Server.Controllers
 
         // POST: api/Tenants
         [HttpPost]
+        [Authorize]
         public async Task<ApiResponse> Post([FromBody] TenantDto tenant)
             => ModelState.IsValid ?
             await _tenantManager.Create(tenant) :
@@ -41,12 +44,14 @@ namespace UniLife.Server.Controllers
 
         // PUT: api/Tenants/5
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<ApiResponse> Put([FromBody] TenantDto tenant)
             => ModelState.IsValid ? await _tenantManager.Update(tenant)
             : new ApiResponse(Status400BadRequest, "Tenant Model is Invalid");
 
         // DELETE: api/Tenants/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<ApiResponse> Delete(int id)
             => await _tenantManager.Delete(id);
     }

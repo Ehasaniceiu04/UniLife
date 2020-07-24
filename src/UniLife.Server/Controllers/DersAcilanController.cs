@@ -25,13 +25,13 @@ namespace UniLife.Server.Controllers
 
         // GET: api/DersAcilan
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize(Permissions.DersAcilan.Read)]
         public async Task<ApiResponse> Get()
             => await _dersAcilanManager.Get();
 
         // GET: api/DersAcilan/5
         [HttpGet("{id}")]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<ApiResponse> Get(int id)
             => ModelState.IsValid ?
                 await _dersAcilanManager.Get(id) :
@@ -39,7 +39,7 @@ namespace UniLife.Server.Controllers
 
         [Obsolete("öğrencinin kayıtlı olduğu dersleri sınıf componentinden çekersen kullanabilirsin. Biz parenttan yolluyoruz.")]
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize(Permissions.DersAcilan.Read)]
         [Route("GetKayitliDerssByOgrenciId/{ogrenciId}/{sinif}/{donemId}")]
         public async Task<ApiResponse> GetKayitliDerssByOgrenciId(int ogrenciId,int sinif,int donemId)
             => ModelState.IsValid ?
@@ -47,7 +47,7 @@ namespace UniLife.Server.Controllers
                 new ApiResponse(Status400BadRequest, "DersAcilan Model is Invalid");
 
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize(Permissions.DersAcilan.Read)]
         [Route("GetKayitliDerssByOgrenciIdDonemId/{ogrenciId}/{donemId}")]
         public async Task<ApiResponse> GetKayitliDerssByOgrenciIdDonemId(int ogrenciId, int donemId)
             => ModelState.IsValid ?
@@ -55,7 +55,7 @@ namespace UniLife.Server.Controllers
                 new ApiResponse(Status400BadRequest, "DersAcilan Model is Invalid");
 
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize(Permissions.DersAcilan.Read)]
         [Route("GetDersAcilanSubelerByDersKod/{dersKod}")]
         public async Task<ApiResponse> GetDersAcilanSubelerByDersKod(string dersKod)
             => ModelState.IsValid ?
@@ -64,7 +64,7 @@ namespace UniLife.Server.Controllers
 
 
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize(Permissions.DersAcilan.Read)]
         [Route("GetDersAcilanSpecByDersAcId/{dersAcilanId}")]
         public async Task<ApiResponse> GetDersAcilanSpecByDersAcId(int dersAcilanId)
             => ModelState.IsValid ?
@@ -73,7 +73,7 @@ namespace UniLife.Server.Controllers
         
 
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize(Permissions.DersAcilan.Read)]
         [Route("ByZorunlu/{isZorunlu}")]
         public async Task<ApiResponse> ByZorunlu(bool isZorunlu,int sinif)
             => ModelState.IsValid ?
@@ -82,7 +82,7 @@ namespace UniLife.Server.Controllers
 
         
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Permissions.DersAcilan.Read)]
         [Route("PostDersAcilansByFilters")]
         public async Task<ApiResponse> PostDersAcilansByFilters([FromBody] SinavDersAcDto sinavDersAcDto)
             => ModelState.IsValid ?
@@ -90,7 +90,7 @@ namespace UniLife.Server.Controllers
                 new ApiResponse(Status400BadRequest, "DersAcilan Model is Invalid");
 
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Permissions.DersAcilan.Read)]
         [Route("DersAcilansByLongFilters")]
         public async Task<ApiResponse> DersAcilansByLongFilters([FromBody] ReqDersAcilansByLongFilters reqDersAcilansByLongFilters)
             => ModelState.IsValid ?
@@ -99,7 +99,7 @@ namespace UniLife.Server.Controllers
 
 
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Permissions.DersAcilan.Create)]
         [Route("PostCreateNewSubesAndUpdateOgrenciSubes")]
         public async Task<ApiResponse> PostCreateNewSubesAndUpdateOgrenciSubes([FromBody] SubeDersAcilanOgrenciCreateDto subeDersAcilanOgrenciCreateDto)
             => ModelState.IsValid ?
@@ -112,7 +112,7 @@ namespace UniLife.Server.Controllers
 
         // POST: api/DersAcilan
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Permissions.DersAcilan.Create)]
         public async Task<ApiResponse> Post([FromBody] DersAcilanDto dersAcilanDto)
             => ModelState.IsValid ?
                 await _dersAcilanManager.Create(dersAcilanDto) :
@@ -120,7 +120,7 @@ namespace UniLife.Server.Controllers
 
         // Put: api/DersAcilan
         [HttpPut]
-        [AllowAnonymous]
+        [Authorize(Permissions.DersAcilan.Update)]
         public async Task<ApiResponse> Put([FromBody] DersAcilanDto dersAcilanDto)
         {
             if (ModelState.IsValid)
@@ -132,7 +132,7 @@ namespace UniLife.Server.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize(Permissions.DersAcilan.Update)]
         [Route("UpdateDersAcilanAkademsiyen/{dersAcilanId}/{akademisyenId}")]
         public async Task<ApiResponse> UpdateDersAcilanAkademsiyen(int dersAcilanId, int akademisyenId)
            => ModelState.IsValid ?
@@ -146,8 +146,8 @@ namespace UniLife.Server.Controllers
             => await _dersAcilanManager.Delete(id);
 
         [HttpPost]
-        [AllowAnonymous]
         [Route("CreateDersAcilanByDers")]
+        [Authorize(Permissions.DersAcilan.Create)]
         public async Task<ApiResponse> CreateDersAcilanByDers([FromBody] DersAcDto dersAcDto)
             => ModelState.IsValid ?
                     await _dersAcilanManager.CreateDersAcilanByDers(dersAcDto) :
@@ -156,15 +156,15 @@ namespace UniLife.Server.Controllers
 
         
         [HttpPost]
-        [AllowAnonymous]
         [Route("GetAcilanDersByFilterDto")]
+        [Authorize(Permissions.DersAcilan.Read)]
         public async Task<ApiResponse> GetAcilanDersByFilterDto([FromBody] DersAcilanFilterDto dersAcilanFilterDto)
             => ModelState.IsValid ?
                     await _dersAcilanManager.GetAcilanDersByFilterDto(dersAcilanFilterDto) :
                     new ApiResponse(Status400BadRequest, "DersAcilanFilterDto Model is Invalid");
 
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize(Permissions.DersAcilan.Read)]
         [Route("GetAcilanDersByMufredatId/{mufredatId}/{sinif}/{donemId}")]
         public async Task<ApiResponse> GetAcilanDersByMufredatId(int mufredatId,int sinif,int donemId)
             => ModelState.IsValid ?

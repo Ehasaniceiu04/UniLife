@@ -25,21 +25,21 @@ namespace UniLife.Server.Controllers
 
         // GET: api/Donem
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<ApiResponse> Get()
             => await _donemManager.Get();
 
         // GET: api/Donem
         [HttpGet]
-        [AllowAnonymous]
         [Route("Current")]
+        [Authorize]
         public async Task<ApiResponse> Current()
             => await _donemManager.Current();
 
 
         // GET: api/Donem/5
         [HttpGet("{id}")]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<ApiResponse> Get(int id)
             => ModelState.IsValid ?
                 await _donemManager.Get(id) :
@@ -47,7 +47,7 @@ namespace UniLife.Server.Controllers
 
         // POST: api/Donem
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Permissions.Donem.Create)]
         public async Task<ApiResponse> Post([FromBody] DonemDto donemDto)
             => ModelState.IsValid ?
                 await _donemManager.Create(donemDto) :
@@ -55,7 +55,7 @@ namespace UniLife.Server.Controllers
 
         // Put: api/Donem
         [HttpPut]
-        [AllowAnonymous]
+        [Authorize(Permissions.Donem.Update)]
         public async Task<ApiResponse> Put([FromBody] DonemDto donemDto)
             => ModelState.IsValid ?
                 await _donemManager.Update(donemDto) :

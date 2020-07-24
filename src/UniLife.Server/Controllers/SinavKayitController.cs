@@ -24,14 +24,14 @@ namespace UniLife.Server.Controllers
 
         // GET: api/SinavKayit
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize(Roles = "Administrator,Personel")]
         public async Task<ApiResponse> Get()
             => await _sinavKayitManager.Get();
 
 
         // GET: api/SinavKayit/5
         [HttpGet("{id}")]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<ApiResponse> Get(int id)
             => ModelState.IsValid ?
                 await _sinavKayitManager.Get(id) :
@@ -39,7 +39,7 @@ namespace UniLife.Server.Controllers
 
         // POST: api/SinavKayit
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Permissions.SinavKayit.Create)]
         public async Task<ApiResponse> Post([FromBody] SinavKayitDto sinavKayitDto)
             => ModelState.IsValid ?
                 await _sinavKayitManager.Create(sinavKayitDto) :
@@ -47,7 +47,7 @@ namespace UniLife.Server.Controllers
 
         // Put: api/SinavKayit
         [HttpPut]
-        [AllowAnonymous]
+        [Authorize(Permissions.SinavKayit.Update)]
         public async Task<ApiResponse> Put([FromBody] SinavKayitDto sinavKayitDto)
             => ModelState.IsValid ?
                 await _sinavKayitManager.Update(sinavKayitDto) :

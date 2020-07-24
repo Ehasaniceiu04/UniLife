@@ -25,13 +25,13 @@ namespace UniLife.Server.Controllers
 
         // GET: api/DonemTip
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<ApiResponse> Get()
             => await _donemTipManager.Get();
 
         // GET: api/DonemTip/5
         [HttpGet("{id}")]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<ApiResponse> Get(int id)
             => ModelState.IsValid ?
                 await _donemTipManager.Get(id) :
@@ -39,7 +39,7 @@ namespace UniLife.Server.Controllers
 
         // POST: api/DonemTip
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Permissions.Donem.Create)]
         public async Task<ApiResponse> Post([FromBody] DonemTipDto donemTipDto)
             => ModelState.IsValid ?
                 await _donemTipManager.Create(donemTipDto) :
@@ -47,7 +47,7 @@ namespace UniLife.Server.Controllers
 
         // Put: api/DonemTip
         [HttpPut]
-        [AllowAnonymous]
+        [Authorize(Permissions.Donem.Update)]
         public async Task<ApiResponse> Put([FromBody] DonemTipDto donemTipDto)
             => ModelState.IsValid ?
                 await _donemTipManager.Update(donemTipDto) :
@@ -55,7 +55,7 @@ namespace UniLife.Server.Controllers
 
         // DELETE: api/DonemTip/5
         [HttpDelete("{id}")]
-        [Authorize(Permissions.Universite.Delete)]
+        [Authorize(Permissions.Donem.Delete)]
         public async Task<ApiResponse> Delete(int id)
             => await _donemTipManager.Delete(id);
     }

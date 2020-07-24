@@ -26,14 +26,14 @@ namespace UniLife.Server.Controllers
 
         // GET: api/Sinav
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize(Roles = "Administrator,Personel")]
         public async Task<ApiResponse> Get()
             => await _SinavManager.Get();
 
 
         // GET: api/Sinav/5
         [HttpGet("{id}")]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<ApiResponse> Get(int id)
             => ModelState.IsValid ?
                 await _SinavManager.Get(id) :
@@ -41,7 +41,7 @@ namespace UniLife.Server.Controllers
 
         [HttpGet]
         [Route("GetSinavListByAcilanDersId/{dersId}")]
-        [AllowAnonymous]
+        [Authorize(Permissions.Sinav.Read)]
         public async Task<ApiResponse> GetSinavListByAcilanDersId(int dersId)
             => ModelState.IsValid ?
                 await _SinavManager.GetSinavListByAcilanDersId(dersId) :
@@ -50,7 +50,7 @@ namespace UniLife.Server.Controllers
 
         // POST: api/Sinav
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Permissions.Sinav.Create)]
         public async Task<ApiResponse> Post([FromBody] SinavDto SinavDto)
             => ModelState.IsValid ?
                 await _SinavManager.Create(SinavDto) :
@@ -58,8 +58,8 @@ namespace UniLife.Server.Controllers
 
         // POST: api/Sinav/PostBulkCreate
         [HttpPost]
-        [AllowAnonymous]
         [Route("PostBulkCreate")]
+        [Authorize(Permissions.Sinav.Create)]
         public async Task<ApiResponse> PostBulkCreate([FromBody] SinavDto SinavDto)
             => ModelState.IsValid ?
                 await _SinavManager.PostBulkCreate(SinavDto) :
@@ -78,7 +78,7 @@ namespace UniLife.Server.Controllers
 
         // Put: api/Sinav
         [HttpPut]
-        [AllowAnonymous]
+        [Authorize(Permissions.Sinav.Update)]
         public async Task<ApiResponse> Put([FromBody] SinavDto SinavDto)
             => ModelState.IsValid ?
                 await _SinavManager.Update(SinavDto) :
@@ -86,7 +86,7 @@ namespace UniLife.Server.Controllers
 
         // DELETE: api/Sinav/5
         [HttpDelete("{id}")]
-        [Authorize(Permissions.Universite.Delete)]
+        [Authorize(Permissions.Sinav.Delete)]
         public async Task<ApiResponse> Delete(int id)
             => await _SinavManager.Delete(id);
 

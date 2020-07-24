@@ -24,14 +24,14 @@ namespace UniLife.Server.Controllers
 
         // GET: api/FakulteTur
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<ApiResponse> Get()
             => await _fakulteTurManager.Get();
 
 
         // GET: api/FakulteTur/5
         [HttpGet("{id}")]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<ApiResponse> Get(int id)
             => ModelState.IsValid ?
                 await _fakulteTurManager.Get(id) :
@@ -39,7 +39,7 @@ namespace UniLife.Server.Controllers
 
         // POST: api/FakulteTur
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Permissions.Fakulte.Create)]
         public async Task<ApiResponse> Post([FromBody] FakulteTurDto fakulteTurDto)
             => ModelState.IsValid ?
                 await _fakulteTurManager.Create(fakulteTurDto) :
@@ -47,7 +47,7 @@ namespace UniLife.Server.Controllers
 
         // Put: api/FakulteTur
         [HttpPut]
-        [AllowAnonymous]
+        [Authorize(Permissions.Fakulte.Update)]
         public async Task<ApiResponse> Put([FromBody] FakulteTurDto fakulteTurDto)
             => ModelState.IsValid ?
                 await _fakulteTurManager.Update(fakulteTurDto) :
@@ -55,7 +55,7 @@ namespace UniLife.Server.Controllers
 
         // DELETE: api/FakulteTur/5
         [HttpDelete("{id}")]
-        [Authorize(Permissions.Universite.Delete)]
+        [Authorize(Permissions.Fakulte.Delete)]
         public async Task<ApiResponse> Delete(int id)
             => await _fakulteTurManager.Delete(id);
     }

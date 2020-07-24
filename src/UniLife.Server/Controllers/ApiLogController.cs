@@ -26,7 +26,7 @@ namespace UniLife.Server.Controllers
         =>  await _apiLogManager.Get();
 
         // GET: api/ApiLog/ApplicationUserId
-        [HttpGet("[action]")]
+        [HttpGet("[action]/{userId}")]
         [Authorize(Policy = Policies.IsAdmin)]
         public async Task<ApiResponse> GetByApplicationUserId(string userId)
         =>  await _apiLogManager.GetByApplicationUserId(new Guid(userId));

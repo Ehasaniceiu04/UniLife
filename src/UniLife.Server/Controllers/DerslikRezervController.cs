@@ -23,13 +23,13 @@ namespace UniLife.Server.Controllers
 
         // GET: api/DerslikRezerv
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<ApiResponse> Get()
             => await _derslikRezervManager.Get();
 
         // GET: api/DerslikRezerv/5
         [HttpGet("{id}")]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<ApiResponse> Get(int id)
             => ModelState.IsValid ?
                 await _derslikRezervManager.Get(id) :
@@ -37,7 +37,7 @@ namespace UniLife.Server.Controllers
 
         // POST: api/DerslikRezerv
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Permissions.DerslikRezerv.Create)]
         public async Task<ApiResponse> Post([FromBody] DerslikRezervDto derslikRezervDto)
             => ModelState.IsValid ?
                 await _derslikRezervManager.Create(derslikRezervDto) :
@@ -45,7 +45,7 @@ namespace UniLife.Server.Controllers
 
         // Put: api/DerslikRezerv
         [HttpPut]
-        [AllowAnonymous]
+        [Authorize(Permissions.DerslikRezerv.Update)]
         public async Task<ApiResponse> Put([FromBody] DerslikRezervDto derslikRezervDto)
             => ModelState.IsValid ?
                 await _derslikRezervManager.Update(derslikRezervDto) :

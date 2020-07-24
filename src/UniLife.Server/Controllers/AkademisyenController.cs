@@ -24,14 +24,14 @@ namespace UniLife.Server.Controllers
 
         // GET: api/Akademisyen
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize(Permissions.Akademisyen.Read)]
         public async Task<ApiResponse> Get()
             => await _akademisyenManager.Get();
 
 
         // GET: api/Akademisyen/5
         [HttpGet("{id}")]
-        [AllowAnonymous]
+        [Authorize(Permissions.Akademisyen.Read)]
         public async Task<ApiResponse> Get(int id)
             => ModelState.IsValid ?
                 await _akademisyenManager.Get(id) :
@@ -39,7 +39,7 @@ namespace UniLife.Server.Controllers
 
         // POST: api/Akademisyen
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Permissions.Akademisyen.Create)]
         public async Task<ApiResponse> Post([FromBody] AkademisyenDto akademisyenDto)
             => ModelState.IsValid ?
                 await _akademisyenManager.Create(akademisyenDto) :
@@ -47,7 +47,7 @@ namespace UniLife.Server.Controllers
 
         // Put: api/Akademisyen
         [HttpPut]
-        [AllowAnonymous]
+        [Authorize(Permissions.Akademisyen.Update)]
         public async Task<ApiResponse> Put([FromBody] AkademisyenDto akademisyenDto)
             => ModelState.IsValid ?
                 await _akademisyenManager.Update(akademisyenDto) :

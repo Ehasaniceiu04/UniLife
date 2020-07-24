@@ -55,7 +55,7 @@ namespace UniLife.Storage
             //Seed clients and Api
             await SeedIdentityServerAsync();
 
-            //Seed blazorboilerplate data
+            //Seed Unilife data
             await SeedUniLifeAsync();
         }
 
@@ -77,8 +77,8 @@ namespace UniLife.Storage
                 await EnsureRoleAsync(adminRoleName, "Default administrator", ApplicationPermissions.GetAllPermissionValues());
                 await EnsureRoleAsync(userRoleName, "Default user", new string[] { });
 
-                await CreateUserAsync("admin", "admin123", "Admin", "Blazor", "Administrator", "admin@blazoreboilerplate.com", "+1 (123) 456-7890", new string[] { adminRoleName });
-                await CreateUserAsync("user", "user123", "User", "Blazor", "User Blazor", "user@blazoreboilerplate.com", "+1 (123) 456-7890`", new string[] { userRoleName });
+                await CreateUserAsync("admin", "admin123", "Admin", "Blazor", "Administrator", "admin@unilife.com", "+1 (123) 456-7890", new string[] { adminRoleName });
+                await CreateUserAsync("user", "user123", "User", "Blazor", "User Blazor", "user@unilife.com", "+1 (123) 456-7890`", new string[] { userRoleName });
 
                 _logger.LogInformation("Inbuilt account generation completed");
             }

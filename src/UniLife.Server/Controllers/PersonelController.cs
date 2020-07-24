@@ -24,14 +24,14 @@ namespace UniLife.Server.Controllers
 
         // GET: api/Personel
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize(Permissions.Personel.Read)]
         public async Task<ApiResponse> Get()
             => await _personelManager.Get();
 
 
         // GET: api/Personel/5
         [HttpGet("{id}")]
-        [AllowAnonymous]
+        [Authorize(Permissions.Personel.Read)]
         public async Task<ApiResponse> Get(int id)
             => ModelState.IsValid ?
                 await _personelManager.Get(id) :
@@ -39,7 +39,7 @@ namespace UniLife.Server.Controllers
 
         // POST: api/Personel
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Permissions.Personel.Create)]
         public async Task<ApiResponse> Post([FromBody] PersonelDto personelDto)
             => ModelState.IsValid ?
                 await _personelManager.Create(personelDto) :
@@ -47,7 +47,7 @@ namespace UniLife.Server.Controllers
 
         // Put: api/Personel
         [HttpPut]
-        [AllowAnonymous]
+        [Authorize(Permissions.Personel.Update)]
         public async Task<ApiResponse> Put([FromBody] PersonelDto personelDto)
             => ModelState.IsValid ?
                 await _personelManager.Update(personelDto) :

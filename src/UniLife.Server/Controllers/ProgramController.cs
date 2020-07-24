@@ -25,13 +25,13 @@ namespace UniLife.Server.Controllers
 
         // GET: api/Program
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<ApiResponse> Get()
             => await _programManager.Get();
 
         // GET: api/Program/5
         [HttpGet("{id}")]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<ApiResponse> Get(int id)
             => ModelState.IsValid ?
                 await _programManager.Get(id) :
@@ -39,7 +39,7 @@ namespace UniLife.Server.Controllers
 
         // POST: api/Program
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Permissions.Program.Create)]
         public async Task<ApiResponse> Post([FromBody] ProgramDto programDto)
             => ModelState.IsValid ?
                 await _programManager.Create(programDto) :
@@ -47,7 +47,7 @@ namespace UniLife.Server.Controllers
 
         // Put: api/Program
         [HttpPut]
-        [AllowAnonymous]
+        [Authorize(Permissions.Program.Update)]
         public async Task<ApiResponse> Put([FromBody] ProgramDto programDto)
             => ModelState.IsValid ?
                 await _programManager.Update(programDto) :
@@ -60,7 +60,7 @@ namespace UniLife.Server.Controllers
             => await _programManager.Delete(id);
 
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize]
         [Route("GetProgramByBolumIds/{bolumIds}")]
         public async Task<ApiResponse> GetProgramByBolumIds(string bolumIds)
         => ModelState.IsValid ?

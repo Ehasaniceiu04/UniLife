@@ -24,14 +24,14 @@ namespace UniLife.Server.Controllers
 
         // GET: api/OgrenimDurum
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<ApiResponse> Get()
             => await _ogrenimDurumManager.Get();
 
 
         // GET: api/OgrenimDurum/5
         [HttpGet("{id}")]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<ApiResponse> Get(int id)
             => ModelState.IsValid ?
                 await _ogrenimDurumManager.Get(id) :
@@ -39,7 +39,7 @@ namespace UniLife.Server.Controllers
 
         // POST: api/OgrenimDurum
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Roles = "Administrator,Personel")]
         public async Task<ApiResponse> Post([FromBody] OgrenimDurumDto ogrenimDurumDto)
             => ModelState.IsValid ?
                 await _ogrenimDurumManager.Create(ogrenimDurumDto) :
@@ -47,7 +47,7 @@ namespace UniLife.Server.Controllers
 
         // Put: api/OgrenimDurum
         [HttpPut]
-        [AllowAnonymous]
+        [Authorize(Roles = "Administrator,Personel")]
         public async Task<ApiResponse> Put([FromBody] OgrenimDurumDto ogrenimDurumDto)
             => ModelState.IsValid ?
                 await _ogrenimDurumManager.Update(ogrenimDurumDto) :
@@ -55,7 +55,7 @@ namespace UniLife.Server.Controllers
 
         // DELETE: api/OgrenimDurum/5
         [HttpDelete("{id}")]
-        [Authorize(Permissions.Universite.Delete)]
+        [Authorize(Roles = "Administrator,Personel")]
         public async Task<ApiResponse> Delete(int id)
             => await _ogrenimDurumManager.Delete(id);
     }

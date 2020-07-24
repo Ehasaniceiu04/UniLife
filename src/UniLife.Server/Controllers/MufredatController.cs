@@ -25,13 +25,13 @@ namespace UniLife.Server.Controllers
 
         // GET: api/Mufredat
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<ApiResponse> Get()
             => await _mufredatManager.Get();
 
         // GET: api/Mufredat/5
         [HttpGet("{id}")]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<ApiResponse> Get(int id)
             => ModelState.IsValid ?
                 await _mufredatManager.Get(id) :
@@ -39,7 +39,7 @@ namespace UniLife.Server.Controllers
 
         // POST: api/Mufredat
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Permissions.Mufredat.Create)]
         public async Task<ApiResponse> Post([FromBody] MufredatDto mufredatDto)
             => ModelState.IsValid ?
                 await _mufredatManager.Create(mufredatDto) :
@@ -47,7 +47,7 @@ namespace UniLife.Server.Controllers
 
         // Put: api/Mufredat
         [HttpPut]
-        [AllowAnonymous]
+        [Authorize(Permissions.Mufredat.Update)]
         public async Task<ApiResponse> Put([FromBody] MufredatDto mufredatDto)
             => ModelState.IsValid ?
                 await _mufredatManager.Update(mufredatDto) :
@@ -63,7 +63,7 @@ namespace UniLife.Server.Controllers
         // Müfredat çokla: api/Mufredat/Cokla/5
         //[HttpGet("{id}")]
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize(Permissions.Mufredat.Create)]
         [Route("Cokla/{id}")]
         public async Task<ApiResponse> Cokla(int id)
             => ModelState.IsValid ?
@@ -72,7 +72,7 @@ namespace UniLife.Server.Controllers
 
 
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize]
         [Route("GetMufredatByProgramIds/{programIds}")]
         public async Task<ApiResponse> GetMufredatByProgramIds(string programIds)
         => ModelState.IsValid ?
@@ -80,7 +80,7 @@ namespace UniLife.Server.Controllers
                 new ApiResponse(Status400BadRequest, "Mufredat Model is Invalid");
 
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize]
         [Route("GetMufredatState/{mufredatId}")]
         public async Task<ApiResponse> GetMufredatState(int mufredatId)
         => ModelState.IsValid ?
@@ -88,7 +88,7 @@ namespace UniLife.Server.Controllers
                 new ApiResponse(Status400BadRequest, "Mufredat Model is Invalid");
 
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Permissions.Mufredat.Create)]
         [Route("CreateDersAcilansByMufredatIds")]
         public async Task<ApiResponse> CreateDersAcilansByMufredatIds([FromBody] ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds)
             => ModelState.IsValid ?
