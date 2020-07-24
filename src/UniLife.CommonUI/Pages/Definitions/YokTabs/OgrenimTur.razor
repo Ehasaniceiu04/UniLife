@@ -5,7 +5,7 @@
 @using System.Net
 
 <ControlSection>
-    <SfGrid Width="100%" Height="85%" AllowResizing="true" @ref="UniGrid" DataSource="@ogrenimTurDtos" Toolbar="@(new List<string>() { "Add" })" AllowPaging="true" AllowFiltering="true">
+    <SfGrid Width="100%" Height="85%" AllowResizing="true" @ref="OgrTurGrid" DataSource="@ogrenimTurDtos" Toolbar="@(new List<string>() { "Add" })" AllowPaging="true" AllowFiltering="true">
         <GridEvents OnActionComplete="ActionCompletedHandler" TValue="OgrenimTurDto"></GridEvents>
         <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
         <GridColumns>
@@ -32,18 +32,18 @@
 
 @code{
 
-    SfGrid<OgrenimTurDto> UniGrid;
+    SfGrid<OgrenimTurDto> OgrTurGrid;
 
-    List<OgrenimTurDto> ogrenimTurDtos = new List<OgrenimTurDto>();
+    List<OgrenimTurDto> ogrenimTurDtos= new List<OgrenimTurDto>();
 
     protected override void OnInitialized()
     {
         ReadOgrenimTurs();
     }
 
-    void ReadOgrenimTurs()
+    protected void ReadOgrenimTurs()
     {
-        ApiResponseDto<List<OgrenimTurDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<OgrenimTurDto>>>("api/ogrenimTur").Result;
+        ApiResponseDto<List<OgrenimTurDto>> apiResponse =Http.GetFromJsonAsync<ApiResponseDto<List<OgrenimTurDto>>>("api/ogrenimTur").Result;
 
         if (apiResponse.StatusCode == Status200OK)
         {
@@ -88,26 +88,18 @@
             if (apiResponse.StatusCode == Status200OK)
             {
                 matToaster.Add(apiResponse.Message, MatToastType.Success);
-                //todo = Newtonsoft.Json.JsonConvert.DeserializeObject<OgrenimTurDto>(apiResponse.Result.ToString());
-                //todos.Add(todo);
-                //todo = new TodoDto(); //reset todo after insert
             }
             else
             {
-                //TODO Ahmet 1**
-                //TODO Ahmet 2**
                 ogrenimTurDtos.Remove(ogrenimTurDto);
-                UniGrid.Refresh();
+                OgrTurGrid.Refresh();
                 matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "ogrenimTur Creation Failed");
             }
         }
         catch (Exception ex)
         {
-            //TODO Ahmet 1**: liste içinden değinde gride eklediğini sil demeli !!
-            //TODO Ahmet 2**: Dbden hata geldiği zaman Bu hata sebebini mantıklı şekilde buraya vermemiz gerekiyor. Aynı Idli kayıt gönder patlatıyon.
-
             ogrenimTurDtos.Remove(ogrenimTurDto);
-            UniGrid.Refresh();
+            OgrTurGrid.Refresh();
             matToaster.Add(ex.Message, MatToastType.Danger, "OgrenimTur Creation Failed");
         }
     }
