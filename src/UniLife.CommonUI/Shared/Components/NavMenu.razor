@@ -48,10 +48,10 @@
                     </MatNavItem>
                 </MatNavSubMenuHeader>
                 <MatNavSubMenuList>
-                    @if (user == null ? false : (user.HasClaim("permission", "DersKayit.Read") &&
-                                     user.HasClaim("permission", "DersKayit.Create") &&
-                                     user.HasClaim("permission", "DersKayit.Update") &&
-                                     user.HasClaim("permission", "DersKayit.Delete")))
+                    @if (user == null ? false : (user.HasClaim("permission", Permissions.DersKayit.Read) &&
+                                     user.HasClaim("permission", Permissions.DersKayit.Create) &&
+                                     user.HasClaim("permission", Permissions.DersKayit.Update) &&
+                                     user.HasClaim("permission", Permissions.DersKayit.Delete)))
                     {
                         <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/dersKayit").AbsoluteUri">
                             <MatIcon>business</MatIcon> <span class="miniHover">Ders Kayıt</span>
