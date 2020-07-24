@@ -7,31 +7,10 @@
     <AuthorizeView Roles="Personel" Context="AuthorizeContext">
         <Authorized>
             <MatNavItem Href="@navigationManager.ToAbsoluteUri(" ").AbsoluteUri" NavLinkMatch="NavLinkMatch.All">
-                <MatIcon>home</MatIcon> <span class="miniHover">Personel Bilgi Sistemi</span>
-            </MatNavItem>
-        </Authorized>
-    </AuthorizeView>
-
-
-
-    @*Öğrenci   Policy="@Policies.IsOgrenci"  *@
-    <AuthorizeView Roles="Ogrenci" Context="AuthorizeContext">
-        <Authorized>
-            <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci").AbsoluteUri" NavLinkMatch="NavLinkMatch.All">
                 <MatIcon>home</MatIcon> <span class="miniHover">Öğrenci Bilgi Sistemi</span>
             </MatNavItem>
         </Authorized>
     </AuthorizeView>
-
-    @*Akademisyen   Policy="@Policies.IsAkademisyen"  *@
-    <AuthorizeView Roles="Akademisyen" Context="AuthorizeContext">
-        <Authorized>
-            <MatNavItem Href="@navigationManager.ToAbsoluteUri("Akademisyen").AbsoluteUri" NavLinkMatch="NavLinkMatch.All">
-                <MatIcon>home</MatIcon> <span class="miniHover">Akademisyen Bilgi Sistemi</span>
-            </MatNavItem>
-        </Authorized>
-    </AuthorizeView>
-
 
 
 
@@ -260,11 +239,11 @@
                 </MatNavSubMenuList>
             </MatNavSubMenu>
         </Authorized>
-        <NotAuthorized>
+        @*<NotAuthorized>
             <MatNavItem Href="@navigationManager.ToAbsoluteUri(" ").AbsoluteUri" Disabled="true">
                 <MatIcon>supervisor_account</MatIcon> <span class="miniHover">Temp</span>
             </MatNavItem>
-        </NotAuthorized>
+        </NotAuthorized>*@
     </AuthorizeView>
 
 
@@ -354,9 +333,9 @@
         }
     }
 
-    protected override async Task OnInitializedAsync()
-    {
-        user = (await authenticationStateTask).User;
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    user = (await authenticationStateTask).User;
 
-    }
+    //}
 }

@@ -1,23 +1,59 @@
 ﻿@page "/"
+@using UniLife.CommonUI.Pages.Ogrenci
+@using UniLife.CommonUI.Pages.Akademisyen
+@*@using UniLife.CommonUI.Pages.Personel*@
+@using UniLife.CommonUI.Pages.Admin
+@using UniLife.CommonUI.Pages.Umum
 
 
 
+<div class="content">
 
-    <div class="content">
-        
+    @if (user == null)
+    {
+
+    }
+    else if (user.IsInRole("Ogrenci"))
+    {
+        <Ogrenci></Ogrenci>
+    }
+    else if (user.IsInRole("Personel"))
+    {
         <Dashboard2></Dashboard2>
+    }
+    else if (user.IsInRole("Akademisyen"))
+    {
+        <Akademisyen></Akademisyen>
+    }
+    else if (user.IsInRole("Admin"))
+    {
+        <Dashboard2></Dashboard2>
+    }
 
 
-        <MatSnackbar @bind-IsOpen="@lazySnackbarIsOpen">
-            <MatSnackbarContent>Uni-life öğrenci bilgi sistemine hoş geldiniz. <a href="https://www.google.com/" target="_blank">link metni</a>.</MatSnackbarContent>
-            <MatSnackbarActions>
-                <MatIconButton Icon="@MatIconNames.Stars" Link="https://www.google.com/" style="color: white !important;" target="_blank"></MatIconButton>
-            </MatSnackbarActions>
-        </MatSnackbar>
 
-    </div>
-@functions {
-    
+
+
+    <MatSnackbar @bind-IsOpen="@lazySnackbarIsOpen">
+        <MatSnackbarContent>Uni-life öğrenci bilgi sistemine hoş geldiniz. <a href="https://www.google.com/" target="_blank">link metni</a>.</MatSnackbarContent>
+        <MatSnackbarActions>
+            <MatIconButton Icon="@MatIconNames.Stars" Link="https://www.google.com/" style="color: white !important;" target="_blank"></MatIconButton>
+        </MatSnackbarActions>
+    </MatSnackbar>
+
+</div>
+@code {
+
+
+    [CascadingParameter]
+    Task<AuthenticationState> authenticationStateTask { get; set; }
+
+    ClaimsPrincipal user;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        user = (await authenticationStateTask).User;
+    }
 
     bool lazySnackbarIsOpen = false;
 

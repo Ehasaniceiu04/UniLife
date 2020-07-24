@@ -30,5 +30,11 @@
 
         for (let path of paths)
             document.cookie = `${cookieName}=; path=${path}; expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
+    },
+    deleteCookieFromWithoutName: function () {
+        //Üstteki olmazsa buna gelecen denemedik daha!
+        var cookies = document.cookie.split(";");
+        for (var i = 0; i < cookies.length; i++)
+            eraseCookie(cookies[i].split("=")[0]);
     }
 }
