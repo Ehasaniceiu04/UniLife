@@ -13,7 +13,7 @@
             }
             else
             {
-                <span class="miniHover"><b><a href="/account/profile">@userInfo.UserName</a></b></span>
+                <span class="miniHover"><b><a href="/account/profile">@($"{userInfo.FirstName} ({userInfo.UserName})")</a></b></span>
             }
         </div>
     </Authorized>
