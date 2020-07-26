@@ -41,5 +41,11 @@ namespace UniLife.Server.Managers
             await _sinavKayitStore.DeleteById(id);
             return new ApiResponse(Status200OK, "Soft Delete SinavKayitDto");
         }
+
+        public async Task<ApiResponse> GetOgrenciNotlar(int ogrenciId)
+        {
+            var ogrenciNots = await _sinavKayitStore.GetOgrenciNotlar(ogrenciId);
+            return new ApiResponse(Status200OK, "Öğrenci notları getirildi", ogrenciNots);
+        }
     }
 }

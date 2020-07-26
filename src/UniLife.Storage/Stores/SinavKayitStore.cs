@@ -21,7 +21,7 @@ namespace UniLife.Storage.Stores
         {
             _db = db;
             _autoMapper = autoMapper;
-        }       
+        }
 
         public async Task<List<SinavKayitDto>> GetAll()
         {
@@ -70,6 +70,31 @@ namespace UniLife.Storage.Stores
 
             _db.SinavKayits.Remove(sinavKayit);
             await _db.SaveChangesAsync(CancellationToken.None);
+        }
+
+        public async Task<List<OgrenciNotlarDto>> GetOgrenciNotlar(int ogrenciId)
+        {
+            var ogrenciNotlar = from sk in _db.SinavKayits.Where(x => x.OgrenciId == ogrenciId)
+                                join s in _db.Sinavs on sk.SinavId equals s.Id
+                                join da in _db.DersAcilans on s.DersAcilanId equals da.Id
+                                join d in _db.Donems on da.DonemId equals d.Id
+                                join st in _db.SinavTips on s.SinavTipId equals st.Id
+                                select new OgrenciNotlarDto
+                                {
+                                    SinavKayitId = sk.Id,
+                                    SinavId = sk.SinavId,
+                                    SinavTip = st.Ad,
+                                    DersKisaAd = da.KisaAd,
+                                    DersAd = da.Ad,
+                                    OgrenciId = sk.OgrenciId,
+                                    OgrNot = sk.OgrNot,
+                                    Donem =d.Ad,
+                                    Sinif = da.Sinif
+                                };
+
+
+
+            return await ogrenciNotlar.ToListAsync();
         }
     }
 }

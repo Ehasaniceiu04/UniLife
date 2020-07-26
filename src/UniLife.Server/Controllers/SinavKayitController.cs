@@ -58,5 +58,15 @@ namespace UniLife.Server.Controllers
         [Authorize(Permissions.SinavKayit.Delete)]
         public async Task<ApiResponse> Delete(int id)
             => await _sinavKayitManager.Delete(id);
+
+
+
+        [HttpGet]
+        [Authorize(Permissions.SinavKayit.Read)]
+        [Route("GetOgrenciNotlar/{ogrenciId}")]
+        public async Task<ApiResponse> GetOgrenciNotlar(int ogrenciId)
+        => ModelState.IsValid ?
+            await _sinavKayitManager.GetOgrenciNotlar(ogrenciId) :
+            new ApiResponse(Status400BadRequest, "SinavKayit Model is Invalid");
     }
 }

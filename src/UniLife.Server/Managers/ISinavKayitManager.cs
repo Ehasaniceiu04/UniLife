@@ -12,5 +12,6 @@ namespace UniLife.Server.Managers
         Task<ApiResponse> Create(SinavKayitDto sinavKayitDto);
         Task<ApiResponse> Update(SinavKayitDto sinavKayitDto);
         Task<ApiResponse> Delete(int id);
+        Task<ApiResponse> GetOgrenciNotlar(int ogrenciId);
     }
 }

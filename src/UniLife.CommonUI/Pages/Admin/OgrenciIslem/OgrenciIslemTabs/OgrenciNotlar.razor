@@ -1,34 +1,48 @@
 ﻿@inject HttpClient Http;
 @using UniLife.Shared.Dto.Definitions
 @inject IMatToaster matToaster
+@inject AppState appState
 
-
-<div class="row">
-    <SfGrid DataSource="@OgrNotlar" Toolbar="@(new List<string>() {"Edit", "Update", "Cancel" })" AllowPaging="true">
+    <SfGrid ID="OgrNotlar" @ref="OgrNotlar" DataSource="@ogrenciNotlarDtos" Toolbar="@(new List<string>() {"Edit", "Update", "Cancel" })" AllowPaging="true">
         <GridEditSettings AllowAdding="true" AllowDeleting="true" AllowEditing="true"></GridEditSettings>
         <GridColumns>
-            <GridColumn Field=@nameof(OrdersDetails.OrderID) HeaderText="Order ID" IsPrimaryKey="true" ValidationRules="@(new ValidationRules{ Required=true, Number=true})" TextAlign="TextAlign.Right" Width="140"></GridColumn>
-            @*<GridColumn Field=@nameof(OrdersDetails.CustomerID) HeaderText="Customer Name" ValidationRules="@(new ValidationRules{ Required=true})" Width="150">
-                    <EditTemplate>
-                        <SfAutoComplete TItem="OrdersDetails" TValue="string" ID="CustomerID" @bind-Value="@((context as OrdersDetails).CustomerID)" DataSource="@GridData">
-                            <AutoCompleteFieldSettings Value="CustomerID"></AutoCompleteFieldSettings>
-                        </SfAutoComplete>
-                    </EditTemplate>
-                </GridColumn>*@
-            <GridColumn Field=@nameof(OrdersDetails.Freight) HeaderText="Freight" ValidationRules="@(new ValidationRules{ Required=true, Range = new double[]{1, 1000}})" EditType="EditType.NumericEdit" Format="C2" TextAlign="TextAlign.Right" Width="140"></GridColumn>
-            <GridColumn Field=@nameof(OrdersDetails.OrderDate) HeaderText="Order Date" EditType="EditType.DatePickerEdit" Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Right" Width="160"></GridColumn>
-            <GridColumn Field=@nameof(OrdersDetails.ShipCountry) HeaderText="Ship Country" EditType="EditType.DropDownEdit" Width="150"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(OgrenciNotlarDto.SinavId) HeaderText="Sinav Id" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciNotlarDto.SinavTip) HeaderText="Sinav Tip"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciNotlarDto.DersAd) HeaderText="Ders Ad"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(OgrenciNotlarDto.OgrenciId) HeaderText="Ogrenci Id"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciNotlarDto.OgrNot) HeaderText="Notu"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciNotlarDto.Donem) HeaderText="Dönem"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciNotlarDto.Sinif) HeaderText="Sınıf"></GridColumn>
         </GridColumns>
     </SfGrid>
-</div>
 
 @code{
 
     SfGrid<OgrenciNotlarDto> OgrNotlar;
 
+    List<OgrenciNotlarDto> ogrenciNotlarDtos;
+
     protected override async Task OnInitializedAsync()
     {
+        try
+        {
+            ApiResponseDto<List<OgrenciNotlarDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciNotlarDto>>>("api/sinavKayit/GetOgrenciNotlar/" + appState.OgrenciState.Id);
 
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                matToaster.Add($"{appState.OgrenciState.Ad} 'nin not bilgileri getirildi.", MatToastType.Success);
+                ogrenciNotlarDtos = apiResponse.Result;
+            }
+            else
+            {
+                ogrenciNotlarDtos = new List<OgrenciNotlarDto>();
+                matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
+            }
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
+        }
     }
 
 }
