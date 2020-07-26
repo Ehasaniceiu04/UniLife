@@ -68,5 +68,17 @@ namespace UniLife.Server.Controllers
         => ModelState.IsValid ?
             await _sinavKayitManager.GetOgrenciNotlar(ogrenciId) :
             new ApiResponse(Status400BadRequest, "SinavKayit Model is Invalid");
+
+
+        [HttpGet]
+        [Authorize(Permissions.SinavKayit.Read)]
+        [Route("GetSinavKayitOgrenciNotlar/{sinavId}")]
+        public async Task<ApiResponse> GetSinavKayitOgrenciNotlar(int sinavId)
+        => ModelState.IsValid ?
+            await _sinavKayitManager.GetSinavKayitOgrenciNotlar(sinavId) :
+            new ApiResponse(Status400BadRequest, "SinavKayit Model is Invalid");
+
+
+        
     }
 }

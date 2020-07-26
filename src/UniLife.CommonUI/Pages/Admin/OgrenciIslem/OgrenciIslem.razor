@@ -5,7 +5,7 @@
 @*@attribute [Authorize(Policy = Policies.IsAdmin)]*@
 
 <div class="control-section e-tab-section">
-    <SfTab @ref="Tab" CssClass="BlazorTab" LoadOn="ContentLoad.Demand">
+    <SfTab @ref="Tab" LoadOn="ContentLoad.Dynamic">
         @*Selected="OnTabSelected" Selecting="OnTabSelecting"*@
         <TabEvents Created="TabCreate" Selecting="OnTabSelecting"></TabEvents>
         <TabItems>
@@ -58,6 +58,7 @@
         Tab.EnableTab(0, true);
         Tab.EnableTab(1, tabIndex > 0);
         Tab.EnableTab(2, tabIndex > 0);
+        Tab.EnableTab(3, tabIndex > 0);
         Tab.Select(tabIndex);
     }
 
@@ -72,6 +73,7 @@
         Tab.EnableTab(0, true);
         Tab.EnableTab(1, false);
         Tab.EnableTab(2, false);
+        Tab.EnableTab(3, false);
     }
 
     public async void onDonemChange()

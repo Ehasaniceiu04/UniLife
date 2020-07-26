@@ -14,5 +14,8 @@ namespace UniLife.CommonUI.Services.Contracts
         //Task<ApiResponseDto> UpsertOgrenci(OgrenciDto ogrenciDto);
         Task<ApiResponseDto> Get();
         //Task<ApiResponseDto> GetOgrenci();
+        
+        Task<ApiResponseDto> GetAkademisyenState();
+        
     }
 }

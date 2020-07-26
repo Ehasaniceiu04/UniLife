@@ -90,7 +90,15 @@ namespace UniLife.Server.Controllers
         public async Task<ApiResponse> Delete(int id)
             => await _SinavManager.Delete(id);
 
+        [HttpGet]
+        [Route("GetSinavlarByAkademisyenId/{akaId}")]
+        [Authorize(Permissions.Sinav.Read)]
+        public async Task<ApiResponse> GetSinavlarByAkademisyenId(int akaId)
+            => ModelState.IsValid ?
+                await _SinavManager.GetSinavlarByAkademisyenId(akaId) :
+                new ApiResponse(Status400BadRequest, "akaId is Invalid");
 
-        
+
+
     }
 }

@@ -6,18 +6,21 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Threading.Tasks;
 using static Microsoft.AspNetCore.Http.StatusCodes;
+using UniLife.Shared.DataInterfaces;
 
 namespace UniLife.Server.Managers
 {
     public class UserProfileManager : IUserProfileManager
     {
         private readonly IUserProfileStore _userProfileStore;
+        private readonly IAkademisyenStore _akademisyenStore;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public UserProfileManager(IUserProfileStore userProfileStore, IHttpContextAccessor httpContextAccessor)
+        public UserProfileManager(IUserProfileStore userProfileStore, IHttpContextAccessor httpContextAccessor, IAkademisyenStore akademisyenStore)
         {
             _userProfileStore = userProfileStore;
             _httpContextAccessor = httpContextAccessor;
+            _akademisyenStore = akademisyenStore;
         }
 
         public async Task<string> GetLastPageVisited(string userName)
@@ -45,5 +48,15 @@ namespace UniLife.Server.Managers
                 return new ApiResponse(Status400BadRequest, "Failed to Retrieve User Profile");
             }
         }
+
+        public async Task<ApiResponse> GetAkademisyenState()
+        {
+            var userId = new Guid(_httpContextAccessor.HttpContext.User.FindFirst(JwtClaimTypes.Subject).Value);
+
+            var akademisyen = await _akademisyenStore.GetAkademisyenState(userId);
+
+            return new ApiResponse(Status200OK, "Retrieved Akademisyen state", akademisyen);
+        }
+        
     }
 }

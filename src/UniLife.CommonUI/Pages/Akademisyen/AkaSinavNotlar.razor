@@ -1,0 +1,70 @@
+﻿@page "/akademisyen/SinavNot"
+@using Syncfusion.Blazor.Navigations
+@using UniLife.CommonUI.Pages.Akademisyen.AkaSinavNotlarTab
+@using UniLife.Shared.Dto.Definitions
+
+@*sınavları listeleyecez
+    seçilen sınavın öğrencilerini açacak notlar girilecek.*@
+
+<div class="control-section e-tab-section">
+    <SfTab @ref="SinavNotTab" LoadOn="ContentLoad.Demand">
+        @*Selected="OnTabSelected" Selecting="OnTabSelecting"*@
+        <TabEvents Created="TabCreate" Selecting="OnTabSelecting"></TabEvents>
+        <TabItems>
+            <TabItem>
+                <ChildContent>
+                    <TabHeader Text="Sinavlar"></TabHeader>
+                </ChildContent>
+                <ContentTemplate>
+                    <AkaSinavlar SinavToNotlar="SinavToNotlar"></AkaSinavlar>
+                </ContentTemplate>
+            </TabItem>
+            <TabItem>
+                <ChildContent>
+                    <TabHeader Text="Notlar"></TabHeader>
+                </ChildContent>
+                <ContentTemplate>
+                    <AkaNotlar _AkademisyenSinavDto ="_AkademisyenSinavDto"></AkaNotlar>
+                </ContentTemplate>
+            </TabItem>
+        </TabItems>
+    </SfTab>
+</div>
+
+@code{
+
+    SfTab SinavNotTab;
+
+
+    AkademisyenSinavDto _AkademisyenSinavDto;
+
+    public void TabCreate()
+    {
+        SinavNotTab.EnableTab(0, true);
+        SinavNotTab.EnableTab(1, false);
+    }
+    public void OnTabSelecting(SelectingEventArgs args)
+    {
+        if (args.IsSwiped)
+        {
+            args.Cancel = true;
+        }
+        if (args.SelectedIndex == 0)
+        {
+            SinavNotTab.EnableTab(1, false);
+        }
+    }
+
+    public void SinavToNotlar(AkademisyenSinavDto AkademisyenSinavDto)
+    {
+        _AkademisyenSinavDto = AkademisyenSinavDto;
+        TabDegis(1);
+    }
+
+    public void TabDegis(int tabIndex)
+    {
+        SinavNotTab.EnableTab(0, true);
+        SinavNotTab.EnableTab(1, tabIndex > 0);
+        SinavNotTab.Select(tabIndex);
+    }
+}

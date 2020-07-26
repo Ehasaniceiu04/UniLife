@@ -26,5 +26,10 @@ namespace UniLife.CommonUI.Services.Implementations
         {
             return await _httpClient.PostJsonAsync<ApiResponseDto>("api/UserProfile/Upsert", userProfile);
         }
+
+        public async Task<ApiResponseDto> GetAkademisyenState()
+        {
+            return await _httpClient.GetJsonAsyncExtension<ApiResponseDto>("api/UserProfile/GetAkademisyenState");
+        }
     }
 }

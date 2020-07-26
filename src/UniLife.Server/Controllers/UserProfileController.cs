@@ -31,5 +31,11 @@ namespace UniLife.Server.Controllers
             => ModelState.IsValid ?
                 await _userProfileManager.Upsert(userProfile) :
                 new ApiResponse(Status400BadRequest, "User Model is Invalid");
+
+        // GET: api/UserProfile/GetAkademisyenState
+        [HttpGet("GetAkademisyenState")]
+        public async Task<ApiResponse> GetAkademisyenState()
+            => await _userProfileManager.GetAkademisyenState();
+        
     }
 }

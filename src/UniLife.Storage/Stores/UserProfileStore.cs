@@ -19,7 +19,7 @@ namespace UniLife.Storage.Stores
 
         public async Task<string> GetLastPageVisited(string userName)
         {
-            string lastPageVisited = "/dashboard";
+            string lastPageVisited = "/";
             var userProfile = await (from userProf in _applicationDbContext.UserProfiles
                                      join user in _applicationDbContext.Users on userProf.UserId equals user.Id
                                      where user.UserName == userName

@@ -49,9 +49,9 @@
                 </MatNavSubMenuHeader>
                 <MatNavSubMenuList>
                     @if (user == null ? false : (user.HasClaim("permission", Permissions.DersKayit.Read) &&
-                               user.HasClaim("permission", Permissions.DersKayit.Create) &&
-                               user.HasClaim("permission", Permissions.DersKayit.Update) &&
-                               user.HasClaim("permission", Permissions.DersKayit.Delete)))
+                            user.HasClaim("permission", Permissions.DersKayit.Create) &&
+                            user.HasClaim("permission", Permissions.DersKayit.Update) &&
+                            user.HasClaim("permission", Permissions.DersKayit.Delete)))
                     {
                         <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/dersKayit").AbsoluteUri">
                             <MatIcon>business</MatIcon> <span class="miniHover">Ders Kayıt</span>
@@ -305,46 +305,63 @@
         </Authorized>
     </AuthorizeView>
 
-    @*<AuthorizeView Policy="@Policies.IsUser" Context="AuthorizeContext">
+
+    <AuthorizeView Roles="Akademisyen" Context="AuthorizeContext">
         <Authorized>
-            <MatNavSubMenu>
-                <MatNavSubMenuHeader>
-                    <MatNavItem AllowSelection="false">
-                        <MatIcon>stars</MatIcon><span class="miniHover">Temp</span>
-                    </MatNavItem>
-                </MatNavSubMenuHeader>
-                <MatNavSubMenuList>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("todo_list").AbsoluteUri">
-                        <MatIcon>list_alt</MatIcon> <span class="miniHover">Todo List</span>
-                    </MatNavItem>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("drag_and_drop").AbsoluteUri">
-                        <MatIcon>touch_app</MatIcon> <span class="miniHover">Drag and Drop</span>
-                    </MatNavItem>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("screenshots").AbsoluteUri">
-                        <MatIcon>screen_share</MatIcon> <span class="miniHover">Screenshots</span>
-                    </MatNavItem>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("paydas").AbsoluteUri">
-                        <MatIcon>screen_share</MatIcon> <span class="miniHover">Paydaş İşlemler</span>
-                    </MatNavItem>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("deneme").AbsoluteUri">
-                        <MatIcon>screen_share</MatIcon> <span class="miniHover">Raporlar</span>
-                    </MatNavItem>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("dashboard").AbsoluteUri">
-                        <MatIcon>screen_share</MatIcon> <span class="miniHover">Dashboard</span>
-                    </MatNavItem>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("email_view").AbsoluteUri" Disabled="@(!IsLoggedIn)">
-                        <MatIcon>inbox</MatIcon> <span class="miniHover">Read Email</span>
-                    </MatNavItem>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("email").AbsoluteUri" Disabled="@(!IsLoggedIn)">
-                        <MatIcon>send</MatIcon> <span class="miniHover">Send Email</span>
-                    </MatNavItem>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("forum").AbsoluteUri" Disabled="@(!IsLoggedIn)">
-                        <MatIcon>forum</MatIcon> <span class="miniHover">Forum</span>
-                    </MatNavItem>
-                </MatNavSubMenuList>
-            </MatNavSubMenu>
+            <MatNavItem Href="@navigationManager.ToAbsoluteUri("akademisyen/SinavNot").AbsoluteUri" NavLinkMatch="NavLinkMatch.All">
+                <MatIcon>stars</MatIcon> <span class="miniHover">Not İşlemleri</span>
+            </MatNavItem>
         </Authorized>
-    </AuthorizeView>*@
+    </AuthorizeView>
+
+    <AuthorizeView Roles="Akademisyen" Context="AuthorizeContext">
+        <Authorized>
+            <MatNavItem Href="@navigationManager.ToAbsoluteUri(" ").AbsoluteUri" NavLinkMatch="NavLinkMatch.All">
+                <MatIcon>stars</MatIcon> <span class="miniHover">Danışmanlık İşlemleri</span>
+            </MatNavItem>
+        </Authorized>
+    </AuthorizeView>
+
+    @*<AuthorizeView Policy="@Policies.IsUser" Context="AuthorizeContext">
+            <Authorized>
+                <MatNavSubMenu>
+                    <MatNavSubMenuHeader>
+                        <MatNavItem AllowSelection="false">
+                            <MatIcon>stars</MatIcon><span class="miniHover">Temp</span>
+                        </MatNavItem>
+                    </MatNavSubMenuHeader>
+                    <MatNavSubMenuList>
+                        <MatNavItem Href="@navigationManager.ToAbsoluteUri("todo_list").AbsoluteUri">
+                            <MatIcon>list_alt</MatIcon> <span class="miniHover">Todo List</span>
+                        </MatNavItem>
+                        <MatNavItem Href="@navigationManager.ToAbsoluteUri("drag_and_drop").AbsoluteUri">
+                            <MatIcon>touch_app</MatIcon> <span class="miniHover">Drag and Drop</span>
+                        </MatNavItem>
+                        <MatNavItem Href="@navigationManager.ToAbsoluteUri("screenshots").AbsoluteUri">
+                            <MatIcon>screen_share</MatIcon> <span class="miniHover">Screenshots</span>
+                        </MatNavItem>
+                        <MatNavItem Href="@navigationManager.ToAbsoluteUri("paydas").AbsoluteUri">
+                            <MatIcon>screen_share</MatIcon> <span class="miniHover">Paydaş İşlemler</span>
+                        </MatNavItem>
+                        <MatNavItem Href="@navigationManager.ToAbsoluteUri("deneme").AbsoluteUri">
+                            <MatIcon>screen_share</MatIcon> <span class="miniHover">Raporlar</span>
+                        </MatNavItem>
+                        <MatNavItem Href="@navigationManager.ToAbsoluteUri("dashboard").AbsoluteUri">
+                            <MatIcon>screen_share</MatIcon> <span class="miniHover">Dashboard</span>
+                        </MatNavItem>
+                        <MatNavItem Href="@navigationManager.ToAbsoluteUri("email_view").AbsoluteUri" Disabled="@(!IsLoggedIn)">
+                            <MatIcon>inbox</MatIcon> <span class="miniHover">Read Email</span>
+                        </MatNavItem>
+                        <MatNavItem Href="@navigationManager.ToAbsoluteUri("email").AbsoluteUri" Disabled="@(!IsLoggedIn)">
+                            <MatIcon>send</MatIcon> <span class="miniHover">Send Email</span>
+                        </MatNavItem>
+                        <MatNavItem Href="@navigationManager.ToAbsoluteUri("forum").AbsoluteUri" Disabled="@(!IsLoggedIn)">
+                            <MatIcon>forum</MatIcon> <span class="miniHover">Forum</span>
+                        </MatNavItem>
+                    </MatNavSubMenuList>
+                </MatNavSubMenu>
+            </Authorized>
+        </AuthorizeView>*@
 
 
     <AuthorizeView Policy="@Policies.IsAdmin" Context="AuthorizeContext">

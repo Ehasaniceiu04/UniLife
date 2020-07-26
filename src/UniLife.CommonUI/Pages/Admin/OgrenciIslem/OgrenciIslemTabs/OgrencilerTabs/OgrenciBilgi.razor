@@ -22,7 +22,7 @@
         <div class="form-group row">
             <label for="Ad" class="col-sm-2 col-form-label-sm">Belge:</label>
             <div class="col-sm-8">
-                <SfDropDownList TValue="string" CssClass="form-control-sm" FloatLabelType="FloatLabelType.Auto" Placeholder="Belge seçimi" TItem="TextKeyval" @bind-Value="@selectedBelgeTip" DataSource="@BelgeTip">
+                <SfDropDownList TValue="string" CssClass="form-control-sm" Placeholder="Belge seçimi" TItem="TextKeyval" @bind-Value="@selectedBelgeTip" DataSource="@BelgeTip">
                     <DropDownListFieldSettings Text="Ad" Value="Kod"></DropDownListFieldSettings>
                 </SfDropDownList>
             </div>
@@ -33,6 +33,9 @@
 
     </div>
 </div>
+
+
+
 
 @code{
     [Parameter]

@@ -18,5 +18,6 @@ namespace UniLife.Shared.DataInterfaces
 
         Task DeleteById(int id);
         Task<List<OgrenciNotlarDto>> GetOgrenciNotlar(int ogrenciId);
+        Task<List<SinavOgrNotlarDto>> GetSinavKayitOgrenciNotlar(int sinavId);
     }
 }

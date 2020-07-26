@@ -97,21 +97,22 @@ namespace UniLife.CommonUI
             return new UserProfileDto();
         }
 
-        //public async Task<OgrenciDto> GetOgrenciUserProfile()
-        //{
-        //    if (OgrenciUserProfile != null && OgrenciUserProfile.ApplicationUserId != Guid.Empty)
-        //    {
-        //        return OgrenciUserProfile;
-        //    }
+        public async Task<AkademisyenDto> GetAkademisyenState()
+        {
+            if (AkademisyenState != null && AkademisyenState.Id != 0)
+            {
+                return AkademisyenState;
+            }
 
-        //    ApiResponseDto apiResponse = await _userProfileApi.GetOgrenci();
+            ApiResponseDto apiResponse = await _userProfileApi.GetAkademisyenState();
 
-        //    if (apiResponse.StatusCode == Status200OK)
-        //    {
-        //        return JsonConvert.DeserializeObject<OgrenciDto>(apiResponse.Result.ToString());
-        //    }
-        //    return new OgrenciDto();
-        //}
+            if (apiResponse.StatusCode == Status200OK)
+            {
+                AkademisyenState = JsonConvert.DeserializeObject<AkademisyenDto>(apiResponse.Result.ToString());
+                return AkademisyenState;
+            }
+            return new AkademisyenDto();
+        }
 
         public async Task UpdateUserProfileCount(int count)
         {
@@ -155,7 +156,7 @@ namespace UniLife.CommonUI
             }
             else
             {
-                UserProfile.LastPageVisited = uri;
+                //UserProfile.LastPageVisited = uri;
                 await UpdateUserProfile();
                 NotifyStateChanged();
             }

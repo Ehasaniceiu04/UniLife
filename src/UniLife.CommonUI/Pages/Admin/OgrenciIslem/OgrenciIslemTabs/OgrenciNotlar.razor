@@ -3,18 +3,19 @@
 @inject IMatToaster matToaster
 @inject AppState appState
 
-    <SfGrid ID="OgrNotlar" @ref="OgrNotlar" DataSource="@ogrenciNotlarDtos" Toolbar="@(new List<string>() {"Edit", "Update", "Cancel" })" AllowPaging="true">
-        <GridEditSettings AllowAdding="true" AllowDeleting="true" AllowEditing="true"></GridEditSettings>
-        <GridColumns>
-            <GridColumn Visible="false" Field=@nameof(OgrenciNotlarDto.SinavId) HeaderText="Sinav Id" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
-            <GridColumn Field=@nameof(OgrenciNotlarDto.SinavTip) HeaderText="Sinav Tip"></GridColumn>
-            <GridColumn Field=@nameof(OgrenciNotlarDto.DersAd) HeaderText="Ders Ad"></GridColumn>
-            <GridColumn Visible="false" Field=@nameof(OgrenciNotlarDto.OgrenciId) HeaderText="Ogrenci Id"></GridColumn>
-            <GridColumn Field=@nameof(OgrenciNotlarDto.OgrNot) HeaderText="Notu"></GridColumn>
-            <GridColumn Field=@nameof(OgrenciNotlarDto.Donem) HeaderText="Dönem"></GridColumn>
-            <GridColumn Field=@nameof(OgrenciNotlarDto.Sinif) HeaderText="Sınıf"></GridColumn>
-        </GridColumns>
-    </SfGrid>
+<SfGrid ID="OgrNotlar" @ref="OgrNotlar" DataSource="@ogrenciNotlarDtos" Toolbar="@(new List<string>() {"Edit", "Update", "Cancel" })" AllowPaging="true">
+    <GridEditSettings AllowEditing="true"></GridEditSettings>
+    <GridEvents TValue="OgrenciNotlarDto" OnActionComplete="ActionCompletedHandler"></GridEvents>
+    <GridColumns>
+        <GridColumn Visible="false" Field=@nameof(OgrenciNotlarDto.SinavId) HeaderText="Sinav Id" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciNotlarDto.SinavTip) HeaderText="Sinav Tip" AllowEditing="false"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciNotlarDto.DersAd) HeaderText="Ders Ad" AllowEditing="false"></GridColumn>
+        <GridColumn Visible="false" Field=@nameof(OgrenciNotlarDto.OgrenciId) AllowEditing="false" HeaderText="Ogrenci Id"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciNotlarDto.OgrNot) HeaderText="Notu"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciNotlarDto.Donem) HeaderText="Dönem" AllowEditing="false"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciNotlarDto.Sinif) HeaderText="Sınıf" AllowEditing="false"></GridColumn>
+    </GridColumns>
+</SfGrid>
 
 @code{
 
@@ -43,6 +44,38 @@
         {
             matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
         }
+    }
+
+    public async Task ActionCompletedHandler(ActionEventArgs<OgrenciNotlarDto> args)
+    {
+
+        try
+        {
+            if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+            {
+                SinavKayitDto sinavKayitDto = new SinavKayitDto
+                {
+                    Id = args.Data.SinavKayitId,
+                    OgrenciId = args.Data.OgrenciId,
+                    OgrNot = args.Data.OgrNot,
+                    SinavId = args.Data.SinavId
+                };
+
+
+                ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>("api/sinavKayit", sinavKayitDto);
+                if (apiResponse.IsSuccessStatusCode)
+                {
+                    matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+                }
+                else
+                    matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
+            }
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
+        }
+
     }
 
 }

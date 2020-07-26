@@ -10,5 +10,6 @@ namespace UniLife.Server.Managers
     {
         Task<ApiResponse> GetSinavListByAcilanDersId(int dersId);
         Task<ApiResponse> PostBulkCreate(SinavDto sinavDto);
+        Task<ApiResponse> GetSinavlarByAkademisyenId(int akaId);
     }
 }

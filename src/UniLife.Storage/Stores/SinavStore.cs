@@ -22,7 +22,7 @@ namespace UniLife.Storage.Stores
             _autoMapper = autoMapper;
         }
 
-        
+       
 
         public async Task<List<SinavDto>> GetSinavListByAcilanDersId(int dersId)
         {
@@ -110,10 +110,24 @@ namespace UniLife.Storage.Stores
                 await _db.SaveChangesAsync(CancellationToken.None);
                 context.Commit();
             }
-                
+        }
 
-            
+        public async Task<List<AkademisyenSinavDto>> GetSinavlarByAkademisyenId(int akaId)
+        {
+            var sinavList = from da in _db.DersAcilans.Where(x => x.AkademisyenId == akaId)
+                            join s in _db.Sinavs on da.Id equals s.DersAcilanId
+                            join st in _db.SinavTips on s.SinavTipId equals st.Id
+                            join d in _db.Donems on da.DonemId equals d.Id
+                            select new AkademisyenSinavDto
+                            {
+                                SinavId = s.Id,
+                                DersAd = da.Ad,
+                                SinavTip = st.Ad,
+                                Donem = d.Ad,
+                                Sinif = da.Sinif
+                            };
 
+            return await sinavList.ToListAsync();
 
         }
     }

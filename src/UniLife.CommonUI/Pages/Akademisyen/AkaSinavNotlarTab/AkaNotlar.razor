@@ -1,0 +1,80 @@
+﻿@inject HttpClient Http;
+@inject IMatToaster matToaster
+@using UniLife.Shared.Dto.Definitions
+@using Syncfusion.Blazor.Navigations
+
+
+<SfGrid ID="grdNotlar" @ref="grdNotlar" DataSource="@sinavOgrNotlarDtos" Toolbar="@(new List<string>() {"Edit", "Update", "Cancel", "ExcelExport", "CsvExport", "PdfExport" })" AllowPaging="true">
+    <GridEvents TValue="SinavOgrNotlarDto" OnActionComplete="ActionCompletedHandler"></GridEvents>
+    <GridEditSettings AllowEditing="true"></GridEditSettings>
+    <GridColumns>
+        <GridColumn Visible="false" Field=@nameof(SinavOgrNotlarDto.SinavKayitId) HeaderText="Sinav Id" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+        <GridColumn Visible="false" Field=@nameof(SinavOgrNotlarDto.SinavId) HeaderText="SinavId"></GridColumn>
+        <GridColumn Visible="false" Field=@nameof(SinavOgrNotlarDto.OgrenciId) HeaderText="OgrenciId"></GridColumn>
+        <GridColumn AllowEditing="false" Field=@nameof(SinavOgrNotlarDto.OgrenciAd) HeaderText="Öğrenci"></GridColumn>
+        <GridColumn AllowEditing="false" Field=@nameof(SinavOgrNotlarDto.OgrenciNo) HeaderText="No"></GridColumn>
+        <GridColumn Field=@nameof(SinavOgrNotlarDto.OgrNot) HeaderText="Notu"></GridColumn>
+    </GridColumns>
+</SfGrid>
+
+
+@code{
+
+
+    SfGrid<SinavOgrNotlarDto> grdNotlar;
+
+    List<SinavOgrNotlarDto> sinavOgrNotlarDtos;
+
+
+
+    [Parameter]
+    public AkademisyenSinavDto _AkademisyenSinavDto { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+
+            ApiResponseDto<List<SinavOgrNotlarDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<SinavOgrNotlarDto>>>("api/sinavkayit/GetSinavKayitOgrenciNotlar/" + _AkademisyenSinavDto.SinavId);
+
+
+
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                sinavOgrNotlarDtos = apiResponse.Result;
+                matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+
+            }
+            else
+                matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
+        }
+    }
+
+
+    public async void ActionCompletedHandler(ActionEventArgs<SinavOgrNotlarDto> args)
+    {
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+        {
+            SinavKayitDto sinavKayitDto = new SinavKayitDto
+            {
+                Id = args.Data.SinavKayitId,
+                OgrenciId = args.Data.OgrenciId,
+                OgrNot = args.Data.OgrNot,
+                SinavId = args.Data.SinavId
+            };
+
+
+            ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>("api/sinavKayit", sinavKayitDto);
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+            }
+            else
+                matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
+        }
+    }
+}

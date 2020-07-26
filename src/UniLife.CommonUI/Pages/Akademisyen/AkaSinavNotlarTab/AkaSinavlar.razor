@@ -1,0 +1,74 @@
+﻿@inject HttpClient Http;
+@using UniLife.Shared.Dto.Definitions
+@inject IMatToaster matToaster
+@inject AppState appState
+
+<SfGrid ID="grdSinavlar" @ref="grdSinavlar" DataSource="@AkademisyenSinavDtos" Toolbar="@(new List<string>() {"ExcelExport", "CsvExport", "PdfExport" })" AllowPaging="true">
+    <GridEvents TValue="AkademisyenSinavDto" CommandClicked="CommandClickHandler"></GridEvents>
+    <GridColumns>
+        <GridColumn Visible="false" Field=@nameof(AkademisyenSinavDto.SinavId) HeaderText="Sinav Id" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+        <GridColumn Field=@nameof(AkademisyenSinavDto.DersAd) HeaderText="Ders Ad"></GridColumn>
+        <GridColumn Field=@nameof(AkademisyenSinavDto.SinavTip) HeaderText="Sinav Tip"></GridColumn>
+        <GridColumn Field=@nameof(AkademisyenSinavDto.Sinif) HeaderText="Sinif"></GridColumn>
+        <GridColumn Field=@nameof(AkademisyenSinavDto.Donem) HeaderText="Dönem"></GridColumn>
+        <GridColumn>
+            <GridCommandColumns>
+                <GridCommandColumn Type="CommandButtonType.None" Title="Öğrenci Notları" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
+            </GridCommandColumns>
+        </GridColumn>
+    </GridColumns>
+</SfGrid>
+
+@code{
+
+    SfGrid<AkademisyenSinavDto> grdSinavlar;
+
+    List<AkademisyenSinavDto> AkademisyenSinavDtos;
+
+    AkademisyenDto akademisyenDto = new AkademisyenDto();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        try
+        {
+            akademisyenDto = await appState.GetAkademisyenState();
+
+            ApiResponseDto<List<AkademisyenSinavDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<AkademisyenSinavDto>>>("api/sinav/GetSinavlarByAkademisyenId/" + akademisyenDto.Id);
+
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                matToaster.Add($"Sinav bilgileri getirildi.", MatToastType.Success);
+                AkademisyenSinavDtos = apiResponse.Result;
+            }
+            else
+            {
+                AkademisyenSinavDtos = new List<AkademisyenSinavDto>();
+                matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
+            }
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
+        }
+    }
+
+    [Parameter]
+    public EventCallback<AkademisyenSinavDto> SinavToNotlar { get; set; }
+
+    public void CommandClickHandler(CommandClickEventArgs<AkademisyenSinavDto> args)
+    {
+        if (args.CommandColumn.Title == "Öğrenci Notları")
+        {
+            SinavToNotlar.InvokeAsync(args.RowData);
+        }
+    }
+}
+
+<style  type="text/css" class="cssStyles">
+    .e-DoubleArrowRight:before {
+        content: '\e7bb';
+        color: #e83e8c;
+    }
+</style>
