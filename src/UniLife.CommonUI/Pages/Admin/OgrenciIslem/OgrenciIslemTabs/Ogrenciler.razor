@@ -25,7 +25,7 @@
                     <TabItems>
                         <TabItem>
                             <ChildContent>
-                                <TabHeader Text="Details"></TabHeader>
+                                <TabHeader Text="Detay"></TabHeader>
                             </ChildContent>
                             <ContentTemplate>
                                 <OgrenciBilgi ogrenciId="ogrenciInfo.Id"></OgrenciBilgi>
@@ -33,7 +33,15 @@
                         </TabItem>
                         <TabItem>
                             <ChildContent>
-                                <TabHeader Text="Roles"></TabHeader>
+                                <TabHeader Text="İletişim Bilgileri"></TabHeader>
+                            </ChildContent>
+                            <ContentTemplate>
+                                <OgrenciIletisim _OgrenciDto="ogrenciInfo"></OgrenciIletisim>
+                            </ContentTemplate>
+                        </TabItem>
+                        <TabItem>
+                            <ChildContent>
+                                <TabHeader Text="Roller"></TabHeader>
                             </ChildContent>
                             <ContentTemplate>
                                 <OgrenciRoles _OgrenciDto="ogrenciInfo"></OgrenciRoles>

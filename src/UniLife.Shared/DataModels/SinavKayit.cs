@@ -10,5 +10,7 @@ namespace UniLife.Shared.DataModels
         public virtual Sinav Sinav{ get; set; }
         public int OgrenciId { get; set; }
         public virtual Ogrenci Ogrenci { get; set; }
+
+        public double OgrNot { get; set; }
     }
 }

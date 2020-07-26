@@ -1,7 +1,7 @@
 ﻿@page "/"
 @using UniLife.CommonUI.Pages.Ogrenci
 @using UniLife.CommonUI.Pages.Akademisyen
-@*@using UniLife.CommonUI.Pages.Personel*@
+@using UniLife.CommonUI.Pages.Personel
 @using UniLife.CommonUI.Pages.Admin
 @using UniLife.CommonUI.Pages.Umum
 
@@ -19,7 +19,7 @@
     }
     else if (user.IsInRole("Personel"))
     {
-        <Dashboard2></Dashboard2>
+        <Personel></Personel>
     }
     else if (user.IsInRole("Akademisyen"))
     {

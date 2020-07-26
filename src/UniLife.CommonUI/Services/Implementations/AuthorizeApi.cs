@@ -32,6 +32,9 @@ namespace UniLife.CommonUI.Services.Implementations
 
         public async Task<ApiResponseDto> Login(LoginDto loginParameters)
         {
+
+            
+
             ApiResponseDto resp;
 
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, "api/Account/Login");
@@ -88,11 +91,10 @@ namespace UniLife.CommonUI.Services.Implementations
                 foreach (var cookie in cookies[0].Split(';'))
                 {
                     var cookieParts = cookie.Split('=');
-                    //await _jsRuntime.InvokeVoidAsync("jsInterops.removeCookie", cookieParts[0]);
-                    //await _jsRuntime.InvokeVoidAsync("jsInterops.eraseCookie", cookieParts[0]);
-                    //await _jsRuntime.InvokeVoidAsync("jsInterops.delete_cookie", cookieParts[0]);
+                    await _jsRuntime.InvokeVoidAsync("jsInterops.removeCookie", cookieParts[0]);
+                    await _jsRuntime.InvokeVoidAsync("jsInterops.eraseCookie", cookieParts[0]);
                     await _jsRuntime.InvokeVoidAsync("jsInterops.deleteCookieFromAllPaths", cookieParts[0]);
-                    
+
                 }
             }
 #endif

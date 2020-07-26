@@ -11,14 +11,6 @@
     eraseCookie: function (cookieName) {
         document.cookie = cookieName + '=; Max-Age=-99999999;';
     },
-    delete_cookie: function (cookieName) {
-        if (get_cookie(name)) {
-            document.cookie = cookieName + "=" +
-                ((window.location.pathname) ? ";path=" + window.location.pathname : "") +
-                ((window.location.hostname) ? ";domain=" + window.location.hostname : "") +
-                ";expires=Thu, 01 Jan 1970 00:00:01 GMT";
-        }
-    },
     deleteCookieFromAllPaths: function (cookieName)
     {
         var path = window.location.pathname;
@@ -30,11 +22,16 @@
 
         for (let path of paths)
             document.cookie = `${cookieName}=; path=${path}; expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
+
+        window.location = "/account/login"; // TO REFRESH THE PAGE
     },
     deleteCookieFromWithoutName: function () {
         //Üstteki olmazsa buna gelecen denemedik daha!
-        var cookies = document.cookie.split(";");
-        for (var i = 0; i < cookies.length; i++)
-            eraseCookie(cookies[i].split("=")[0]);
+        
+    },
+    belgePrint: function (adres) {
+        console.log(adres);
+        var myWindow = window.open(adres, '_blank');
+        myWindow.print();
     }
 }

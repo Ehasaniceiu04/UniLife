@@ -64,7 +64,7 @@ namespace UniLife.Shared.Dto.Definitions
         public decimal OdenenTopUcret { get; set; }
         public decimal GenelBakiye { get; set; }
         public bool IsMale { get; set; }
-
+        public string Adres { get; set; }
         //from UserInfoDTO
         public bool IsAuthenticated { get; set; }
 

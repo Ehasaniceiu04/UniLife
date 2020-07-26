@@ -2,6 +2,10 @@
 @using UniLife.Shared.Dto.Definitions
 @inject IMatToaster matToaster
 @inject Microsoft.AspNetCore.Components.NavigationManager UriHelper
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Buttons
+@inject IJSRuntime JsRuntime
 
 <div style="display:inline-flex">
     <div style="float:left;padding:45px;padding-top:70px"><img class="photo" src="@UriHelper.ToAbsoluteUri($"https://blazor.syncfusion.com/demos/images/Grid/1.png")" alt="@_OgrenciDto.Id" /></div>
@@ -13,6 +17,20 @@
         <span class="title">Bolum:</span> <span class="content">@_OgrenciDto.BolumAdi</span><br />
         <span id="mufredat" class="title">Müfredat:</span> <span class="content">@_OgrenciDto.MufredatAdi</span><br />
         <span class="title">Mail:</span> <span class="content ">@_OgrenciDto.Email</span>
+    </div>
+    <div style="padding-top:42px">
+        <div class="form-group row">
+            <label for="Ad" class="col-sm-2 col-form-label-sm">Belge:</label>
+            <div class="col-sm-8">
+                <SfDropDownList TValue="string" CssClass="form-control-sm" FloatLabelType="FloatLabelType.Auto" Placeholder="Belge seçimi" TItem="TextKeyval" @bind-Value="@selectedBelgeTip" DataSource="@BelgeTip">
+                    <DropDownListFieldSettings Text="Ad" Value="Kod"></DropDownListFieldSettings>
+                </SfDropDownList>
+            </div>
+            <div class="col-sm-2">
+                <SfButton OnClick="FetchBelge" CssClass="e-success form-control-sm">Yazdır</SfButton>
+            </div>
+        </div>
+
     </div>
 </div>
 
@@ -44,10 +62,42 @@
         }
         catch (Exception ex)
         {
-
             matToaster.Add("İncelenmek üzere kayıt edilmiştir. " + ex.Message, MatToastType.Danger, "Hata oluştu!");
         }
+    }
 
+    public class TextKeyval
+    {
+        public string Ad { get; set; }
 
+        public string Kod { get; set; }
+    }
+
+    string selectedBelgeTip;
+    List<TextKeyval> BelgeTip = new List<TextKeyval>
+{
+        new TextKeyval() { Ad= "Öğrenci Belgesi", Kod = "OgrenciBelgesi" },
+        new TextKeyval() { Ad= "Transkript", Kod = "Transkript" }
+    };
+
+    async Task FetchBelge()
+    {
+
+        await NavTo(selectedBelgeTip, true);
+    }
+
+    public async Task NavTo(string url, bool isNewTab)
+    {
+        if (isNewTab)
+        {
+            //await JsRuntime.InvokeAsync<object>("open", new object[] { $"{UriHelper.BaseUri}/{selectedBelgeTip}", "_blank" });
+            await JsRuntime.InvokeVoidAsync("jsInterops.belgePrint", $"{UriHelper.BaseUri}{selectedBelgeTip}");
+
+            //window.print()
+        }
+        else
+        {
+            UriHelper.NavigateTo(url);
+        }
     }
 }

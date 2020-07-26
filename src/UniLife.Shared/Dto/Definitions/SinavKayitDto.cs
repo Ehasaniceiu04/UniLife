@@ -8,5 +8,6 @@ namespace UniLife.Shared.Dto.Definitions
     {
         public int SinavId { get; set; }
         public int OgrenciId { get; set; }
+        public double OgrNot { get; set; }
     }
 }

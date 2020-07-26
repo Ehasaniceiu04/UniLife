@@ -1,0 +1,32 @@
+﻿@using Syncfusion.Blazor.Inputs
+@using UniLife.Shared.Dto.Definitions
+
+<div class="row pb-2 bg-light text-dark">
+    <div class="col-sm-12 col-md-6">
+        <div class="form-group row">
+            <label for="Adres" class="col-sm-2 col-form-label-sm">Adres:</label>
+            <div class="col-sm-4">
+                <SfTextBox ID="Adres" @bind-Value="@_OgrenciDto.Adres"></SfTextBox>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-6">
+        <div class="form-group row">
+            <label for="Email" class="col-sm-2 col-form-label-sm">Email</label>
+            <div class="col-sm-4">
+                <SfTextBox ID="Email" CssClass="form-control-sm" @bind-Value="@(_OgrenciDto.Email)"></SfTextBox>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code{
+    [Parameter]
+    public OgrenciDto _OgrenciDto { get; set; }
+
+    //override Task OnAfterRenderAsync(bool firstRender)
+    //{
+    //    ApiResponseDto<MufredatStateDto> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<MufredatStateDto>>($"api/ogrenci/{args.RowData.Id}").Result;
+    //    return base.OnAfterRenderAsync(firstRender);
+    //}
+}
