@@ -493,7 +493,7 @@ namespace UniLife.Server.Managers
             {
                 Guid possibleUserId = Guid.NewGuid();
 
-
+                ogrenciDto.OgrNo = "U"+GenerateUserId();
 
                 var user = new ApplicationUser
                 {
@@ -605,6 +605,15 @@ namespace UniLife.Server.Managers
                 _logger.LogError($"Yeni öğrenci kullanıcısı oluşturulamadı: {ex.Message}");
                 return new ApiResponse(Status400BadRequest, "Yeni öğrenci kullanıcısı oluşturulamadı.");
             }
+        }
+
+        private static string GenerateUserId()
+        {
+            DateTime dtReturn = DateTime.Now.ToLocalTime();
+            DateTime dtEPoch = new DateTime(2020, 7, 27, 0, 0, 0, DateTimeKind.Utc);
+            DateTime dtTime = dtReturn.Subtract(new TimeSpan(dtEPoch.Ticks));
+            long lngTimeSpan = dtTime.Ticks / 100;
+            return lngTimeSpan.ToString();
         }
 
         public async Task<ApiResponse> CreateAkademisyen(AkademisyenDto akademisyenDto)

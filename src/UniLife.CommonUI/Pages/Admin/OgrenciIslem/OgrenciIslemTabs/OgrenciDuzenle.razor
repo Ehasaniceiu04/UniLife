@@ -27,7 +27,7 @@
                         <div class="col-sm-12 col-md-6">
                             <div class="form-row form-group form-inline ">
                                 <label class="col-sm-2" for="OgrNo">Öğrenci NO:</label>
-                                <SfTextBox @bind-Value="@_OgrenciDto.OgrNo" ID="OgrNo" CssClass="col-sm-4"></SfTextBox>
+                                <SfTextBox @bind-Value="@_OgrenciDto.OgrNo" Enabled="false" ID="OgrNo" CssClass="col-sm-4"></SfTextBox>
                                 <label class="col-sm-2" for="DosNo">Dosya NO:</label>
                                 <SfTextBox ID="DosNo" CssClass="col-sm-2"></SfTextBox>
                                 <SfCheckBox Label="Durum" CssClass="col-sm-1" @bind-Checked="@_OgrenciDto.Durum"></SfCheckBox>
@@ -152,10 +152,13 @@
                 <SfUploader ID="UploadFiles" DropArea=".control-fluid" MinFileSize=1000 MaxFileSize=1500000>
                     <UploaderEvents ValueChange="OnChangeUpload" OnRemove="onRemove"></UploaderEvents>
                     @*<UploaderAsyncSettings SaveUrl="http://localhost:53414/services/api/uploadbox/Save" RemoveUrl="https://aspnetmvc.syncfusion.com/services/api/uploadbox/Remove"></UploaderAsyncSettings>*@
-                    @*<UploaderFiles>
-                    <UploaderUploadedFiles Name="@(_OgrenciDto.ApplicationUserId.ToString())" Size=12000 Type=".png"></UploaderUploadedFiles>
-                </UploaderFiles>*@
+                    <UploaderFiles>
+                        <UploaderUploadedFiles Name="@(_OgrenciDto.ApplicationUserId.ToString())" Size=12000 Type=".png"></UploaderUploadedFiles>
+                    </UploaderFiles>
                 </SfUploader>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
+                <SfTextBox @ref="date" Placeholder="Date of Birth" Created="@onCreateDate"></SfTextBox>
             </div>
 
             <div class="row">
@@ -461,6 +464,9 @@
                 var apiResponse = await ((IdentityAuthenticationStateProvider)authStateProvider).Create(_OgrenciDto);
                 if (apiResponse.IsSuccessStatusCode)
                 {
+
+                    _OgrenciDto.OgrNo = Newtonsoft.Json.JsonConvert.DeserializeObject<OgrenciDto>(apiResponse.Result.ToString()).OgrNo;
+
                     matToaster.Add(apiResponse.Message, MatToastType.Success);
                     await GoBackOgrenci();
                 }
@@ -577,6 +583,12 @@
             filestream.Close();
             file.Stream.Close();
         }
+    }
+
+    SfTextBox date;
+    public void onCreateDate()
+    {
+        this.date.AddIcon("append", "e-date-icon");
     }
 }
 
@@ -785,4 +797,9 @@
     }
     /*Autocomplate end*/
 
+    .e-input-calendar::before {
+        content: '\e901';
+        font-family: e-icons;
+        font-size: 13px;
+    }
 </style>
