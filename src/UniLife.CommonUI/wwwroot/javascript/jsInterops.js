@@ -3,6 +3,8 @@
         document.cookie = cookie;
     },
     removeCookie: function (cookieName) {
+        window.location = "/"; // TO REFRESH THE PAGE
+
         console.log(cookieName + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;');
         console.log(document.cookie);
         document.cookie = cookieName + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
@@ -23,7 +25,7 @@
         for (let path of paths)
             document.cookie = `${cookieName}=; path=${path}; expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
 
-        window.location = "/account/login"; // TO REFRESH THE PAGE
+        
     },
     deleteCookieFromWithoutName: function () {
         //Üstteki olmazsa buna gelecen denemedik daha!
