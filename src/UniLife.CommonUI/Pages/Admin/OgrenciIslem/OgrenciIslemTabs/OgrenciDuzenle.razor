@@ -7,18 +7,17 @@
 @using Syncfusion.Blazor.SplitButtons
 @inject AuthenticationStateProvider authStateProvider
 @using Syncfusion.Blazor.Calendars
-
-
+@using System.IO;
 
 
 <div class="card">
     <div class="row info-panel">
         <div class="col-sm-12 col-md-12">
             @*<div class="row">
-                    <div class="col-sm-12 text-center">
-                        <p>Akademik Bilgiler</p>
-                    </div>
-                </div>*@
+            <div class="col-sm-12 text-center">
+                <p>Akademik Bilgiler</p>
+            </div>
+        </div>*@
             <div class="server-action-menu">
                 @*Model=@_OgrenciDto OnValidSubmit="Kaydet"*@
                 <EditForm EditContext="@EC">
@@ -141,10 +140,22 @@
                                 </SfDropDownList>
                             </div>
 
+
                         </div>
                     </div>
 
                 </EditForm>
+            </div>
+
+            <div class="control_wrapper">
+                <p>Resim Ekleyiniz. maks: 1.5 MB</p>
+                <SfUploader ID="UploadFiles" DropArea=".control-fluid" MinFileSize=1000 MaxFileSize=1500000>
+                    <UploaderEvents ValueChange="OnChangeUpload" OnRemove="onRemove"></UploaderEvents>
+                    @*<UploaderAsyncSettings SaveUrl="http://localhost:53414/services/api/uploadbox/Save" RemoveUrl="https://aspnetmvc.syncfusion.com/services/api/uploadbox/Remove"></UploaderAsyncSettings>*@
+                    @*<UploaderFiles>
+                    <UploaderUploadedFiles Name="@(_OgrenciDto.ApplicationUserId.ToString())" Size=12000 Type=".png"></UploaderUploadedFiles>
+                </UploaderFiles>*@
+                </SfUploader>
             </div>
 
             <div class="row">
@@ -169,6 +180,8 @@
 
 
 @code {
+
+
 
     private EditContext EC { get; set; }
     private async Task SubmitHandler()
@@ -529,9 +542,51 @@
             matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Kayit neden getirilirken hata oluştu!");
         }
     }
+
+    public void OnFileRemove(RemovingEventArgs args)
+    {
+        args.PostRawFile = false;
+    }
+
+    private void onRemove(RemovingEventArgs args)
+    {
+        args.PostRawFile = false;
+
+
+        //BU gerçekten siliyor.
+        //foreach (var removeFile in args.FilesData)
+        //{
+        //    var rootPath = @"../UniLife.CommonUI/wwwroot/images/ogrenci/";
+        //    if (File.Exists(Path.Combine(rootPath, removeFile.Name)))
+        //    {
+        //        File.Delete(Path.Combine(rootPath, removeFile.Name));
+        //    }
+        //}
+    }
+
+    private void OnChangeUpload(UploadChangeEventArgs args)
+    {
+        foreach (var file in args.Files)
+        {
+            //var path = @"path" + file.FileInfo.Name;
+
+            var path = @"../UniLife.CommonUI/wwwroot/images/ogrenci/" + _OgrenciDto.ApplicationUserId.ToString()+"."+ file.FileInfo.Type;
+
+            FileStream filestream = new FileStream(path, FileMode.Create, FileAccess.Write);
+            file.Stream.WriteTo(filestream);
+            filestream.Close();
+            file.Stream.Close();
+        }
+    }
 }
 
 <style>
+
+    .control_wrapper {
+        width: 350px;
+        margin: 0 auto;
+    }
+
     textarea.e-input,
     .e-float-input textarea,
     .e-float-input.e-control-wrapper textarea,

@@ -8,7 +8,8 @@
 @inject IJSRuntime JsRuntime
 
 <div style="display:inline-flex">
-    <div style="float:left;padding:45px;padding-top:70px"><img class="photo" src="@UriHelper.ToAbsoluteUri($"https://blazor.syncfusion.com/demos/images/Grid/1.png")" alt="@_OgrenciDto.Id" /></div>
+    @*<div style="float:left;padding:45px;padding-top:70px"><img class="photo" src="@UriHelper.ToAbsoluteUri($"https://blazor.syncfusion.com/demos/images/Grid/1.png")" alt="@_OgrenciDto.Id" /></div>*@
+    <div style="float:left;padding:45px;padding-top:70px"><img class="photo" src="@($"http://localhost:53414/_content/UniLife.CommonUI/images/ogrenci/{_OgrenciDto.ApplicationUserId.ToString()}.png")" alt="@_OgrenciDto.Id" /></div>
     <div style="padding-top:42px">
         <span style="font-size: x-large;font-weight: bold;">@_OgrenciDto.Ad @_OgrenciDto.Soyad </span><br />
         <h5 style="font-weight:400 !important;">@_OgrenciDto.ProgramAdi</h5><br />

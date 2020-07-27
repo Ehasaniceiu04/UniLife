@@ -47,6 +47,7 @@ namespace UniLife.Storage.Stores
                                        join m in _db.Mufredats on o.MufredatId equals m.Id
                                        select new OgrenciDto
                                        {
+                                           ApplicationUserId = o.ApplicationUserId,
                                            Id = o.Id,
                                            Ad = o.Ad,
                                            Soyad = o.Soyad,
