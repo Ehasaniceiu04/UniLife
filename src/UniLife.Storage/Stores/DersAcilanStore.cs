@@ -503,6 +503,25 @@ namespace UniLife.Storage.Stores
             await _db.SaveChangesAsync(CancellationToken.None);
         }
 
+        public async Task<List<OgrenciDerslerDto>> GetDersSonucByOgrenciId(int ogrenciId)
+        {
+            var dersSonucs = from dk in _db.DersKayits.Where(x=>x.OgrenciId == ogrenciId)
+                             join da in _db.DersAcilans on dk.DersAcilanId equals da.Id
+                             select new OgrenciDerslerDto
+                             {
+                                 OgrenciId = dk.OgrenciId,
+                                 DersAcilanId = da.Id,
+                                 Sube = da.Sube,
+                                 DersKod = da.Kod,
+                                 DersAd = da.Ad,
+                                 SonucDurum = ((DersSonucDurum)dk.SonucDurum).ToString(),
+                                 Ort = dk.Ort,
+                                 Not = dk.Not,
+                                 Durumu = ((DersSonuc)dk.Sonuc).ToString()
+                             };
+
+            return _autoMapper.Map<List<OgrenciDerslerDto>>(await dersSonucs.ToListAsync());
+        }
 
     }
 }

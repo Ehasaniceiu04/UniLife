@@ -46,6 +46,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\OData\SinavKayitsController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="IdentityServer4" Version="3.1.3" />
     <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="3.0.1" />

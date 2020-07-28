@@ -14,5 +14,9 @@ namespace UniLife.Shared.DataModels
 
         public string DersYerineSecilenAd { get; set; }
 
+        public double Ort { get; set; }
+        public string Not { get; set; }
+        public int SonucDurum { get; set; } // UniLife.Shared.Dto.DersSonucDurum enumu
+        public int Sonuc { get; set; }
     }
 }

@@ -1,141 +1,79 @@
 ﻿@page "/deneme"
-@using Syncfusion.Blazor.Popups
-@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Data
 
-<div class="login-form">
-    <div class='wrap'>
-        <div id="heading">Sign In</div>
-        <div id="input-container">
-            <div class="e-float-input e-input-group">
-                <input id="username" type="text" @bind-value="@UserName" @onfocus="@OnFocus" required />
-                <span class="e-float-line"></span>
-                <label class="e-float-text">Username</label>
-            </div>
-            <div class="e-float-input e-input-group">
-                <input id="password" type="password" @bind-value="@Password" @onfocus="@OnFocus" required />
-                <span class="e-float-line"></span>
-                <label class="e-float-text">Password</label>
-            </div>
-        </div>
-        @if (!string.IsNullOrEmpty(this.ErrorMessage))
-        {
-            <div class="error-container">
-                @ErrorMessage
-            </div>
-        }
-        <div class="button-container">
-            <SfButton @onclick="@OnSubmit">Log In</SfButton>
-        </div>
-    </div>
-</div>
-<SfDialog ID="dialog" IsModal="true" Width="280px" @bind-Visible="@Visibility">
-    <DialogTemplates>
-        <Header> Success </Header>
-        <Content> Congratulations! Login Success </Content>
-    </DialogTemplates>
-    <DialogButtons>
-        <DialogButton Content="Dismiss" IsPrimary="true" OnClick="@CloseDialog" />
-    </DialogButtons>
-    <DialogEvents OnOpen="@Validation"></DialogEvents>
-</SfDialog>
+<SfGrid DataSource="@Employees" Height="315px">
+    <GridEvents TValue="EmployeeData" DetailDataBound="DetailDataBoundHandler"></GridEvents>
+    <GridTemplates>
+        <DetailTemplate>
+            @{
+                var employee = (context as EmployeeData);
+                <SfGrid DataSource="@Orders" Query="@(new Query().Where("EmployeeID", "equal", employee.EmployeeID))">
+                    <GridColumns>
+                        <GridColumn Field=@nameof(Order.OrderID) HeaderText="First Name" Width="110"> </GridColumn>
+                        <GridColumn Field=@nameof(Order.CustomerName) HeaderText="Last Name" Width="110"></GridColumn>
+                        <GridColumn Field=@nameof(Order.ShipCountry) HeaderText="Title" Width="110"></GridColumn>
+                    </GridColumns>
+                </SfGrid>
+            }
+        </DetailTemplate>
+    </GridTemplates>
+    <GridColumns>
+        <GridColumn Field=@nameof(EmployeeData.FirstName) HeaderText="First Name" Width="110"> </GridColumn>
+        <GridColumn Field=@nameof(EmployeeData.LastName) HeaderText="Last Name" Width="110"></GridColumn>
+        <GridColumn Field=@nameof(EmployeeData.Title) HeaderText="Title" Width="110"></GridColumn>
+        <GridColumn Field=@nameof(EmployeeData.Country) HeaderText="Country" Width="110"></GridColumn>
+    </GridColumns>
+</SfGrid>
 
-<style>
-    .wrap {
-        box-sizing: border-box;
-        margin: 0 auto;
-        padding: 20px 30px;
-        width: 340px;
-        background: #f7f7f7;
-    }
+@code{
 
-    #input-container .e-float-input { /* csslint allow: adjoining-classes */
-        margin: 17px 0;
-    }
+    List<EmployeeData> Employees = new List<EmployeeData>
+{
+        new EmployeeData() {EmployeeID = 1001, FirstName="Nancy", LastName="Fuller", Title="Sales Representative", Country="USA"},
+        new EmployeeData() {EmployeeID = 1002, FirstName="Andrew", LastName="Davolio", Title="Vice President", Country="UK"},
+        new EmployeeData() {EmployeeID = 1003, FirstName="Janet", LastName="Leverling", Title="Sales", Country="UK"},
+        new EmployeeData() {EmployeeID = 1004, FirstName="Margaret", LastName="Peacock", Title="Sales Manager", Country="UAE"},
+        new EmployeeData() {EmployeeID = 1005, FirstName="Steven", LastName="Buchanan", Title="Inside Sales Coordinator", Country="USA"},
+        new EmployeeData() {EmployeeID = 1006, FirstName="Smith", LastName="Steven", Title="HR Manager", Country="UAE"},
+    };
 
-    .wrap #input-container .e-control e-btn { /* csslint allow: adjoining-classes */
-        margin: 3% 26%;
-    }
+    List<Order> Orders = new List<Order> {
+        new Order() {EmployeeID = 1001, OrderID=001, CustomerName="Nancy", ShipCountry="USA"},
+        new Order() {EmployeeID = 1001, OrderID=002, CustomerName="Steven", ShipCountry="UR"},
+        new Order() {EmployeeID = 1002, OrderID=003, CustomerName="Smith", ShipCountry="UK"},
+        new Order() {EmployeeID = 1002, OrderID=004, CustomerName="Smith", ShipCountry="USA"},
+        new Order() {EmployeeID = 1003, OrderID=005, CustomerName="Nancy", ShipCountry="ITA"},
+        new Order() {EmployeeID = 1003, OrderID=006, CustomerName="Nancy", ShipCountry="UK"},
+        new Order() {EmployeeID = 1003, OrderID=007, CustomerName="Steven", ShipCountry="GER"},
+        new Order() {EmployeeID = 1004, OrderID=008, CustomerName="Andrew", ShipCountry="GER"},
+        new Order() {EmployeeID = 1005, OrderID=009, CustomerName="Fuller", ShipCountry="USA"},
+        new Order() {EmployeeID = 1006, OrderID=010, CustomerName="Leverling", ShipCountry="UAE"},
+        new Order() {EmployeeID = 1006, OrderID=011, CustomerName="Margaret", ShipCountry="KEN"},
+        new Order() {EmployeeID = 1007, OrderID=012, CustomerName="Buchanan", ShipCountry="GER"},
+        new Order() {EmployeeID = 1008, OrderID=013, CustomerName="Nancy", ShipCountry="USA"},
+        new Order() {EmployeeID = 1006, OrderID=014, CustomerName="Andrew", ShipCountry="UAE"},
+    };
 
-    .button-container {
-        padding: 20px 0 0;
-        width: 100%;
-    }
-
-        .button-container .e-btn { /* csslint allow: adjoining-classes */
-            width: 100%;
-            height: 36px;
-        }
-
-    #heading {
-        color: #333;
-        font-weight: bold;
-        margin: 0 0 15px;
-        text-align: center;
-        font-size: 20px;
-    }
-
-    .login-form {
-        width: 340px;
-        margin: 50px auto;
-    }
-
-    #dialog.e-dialog .e-footer-content {
-        text-align: center;
-    }
-
-    .error-container {
-        color: red;
-    }
-</style>
-
-@code {
-    private string UserName { get; set; } = "";
-    private string Password { get; set; } = "";
-    private bool Visibility { get; set; } = false;
-    private string ErrorMessage { get; set; } = "";
-
-    private void OnSubmit()
+    public class EmployeeData
     {
-        this.Visibility = true;
+        public int? EmployeeID { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Title { get; set; }
+        public string Country { get; set; }
     }
 
-    private void CloseDialog()
+    public class Order
     {
-        this.Visibility = false;
+        public int? EmployeeID { get; set; }
+        public int? OrderID { get; set; }
+        public string CustomerName { get; set; }
+        public string ShipCountry { get; set; }
     }
 
-    private void OnFocus()
+    public void DetailDataBoundHandler(DetailDataBoundEventArgs<EmployeeData> args)
     {
-        this.ErrorMessage = "";
-    }
-
-    private void Validation(BeforeOpenEventArgs args)
-    {
-        if (this.UserName == "" && this.Password == "")
-        {
-            args.Cancel = true;
-            this.ErrorMessage = "Enter the Username and Password";
-        }
-        else if (this.UserName == "")
-        {
-            args.Cancel = true;
-            this.ErrorMessage = "Enter the username";
-        }
-        else if (this.Password == "")
-        {
-            args.Cancel = true;
-            this.ErrorMessage = "Enter the password";
-        }
-        else if (this.UserName.Length < 4)
-        {
-            args.Cancel = true;
-            this.ErrorMessage = "Username must be minimum 4 characters";
-        }
-        else
-        {
-            args.Cancel = false;
-            this.UserName = "";
-            this.Password = "";
-        }
+        // Here you can customize your code
     }
 }

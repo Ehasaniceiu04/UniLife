@@ -140,24 +140,24 @@
                                 </SfDropDownList>
                             </div>
 
-                            
+
                         </div>
                     </div>
 
                 </EditForm>
             </div>
             <div class="control_wrapper">
-                                <p>Resim Ekleyiniz. maks: 1.5 MB</p>
-                                <SfUploader ID="UploadFiles" DropArea=".control-fluid" MinFileSize=1000 MaxFileSize=1500000>
-                                    <UploaderEvents ValueChange="OnChangeUpload" OnRemove="onRemove"></UploaderEvents>
-                                    @*<UploaderAsyncSettings SaveUrl="http://localhost:53414/services/api/uploadbox/Save" RemoveUrl="https://aspnetmvc.syncfusion.com/services/api/uploadbox/Remove"></UploaderAsyncSettings>*@
-                                    <UploaderFiles>
-                                        <UploaderUploadedFiles Name="@(_OgrenciDto.ApplicationUserId.ToString())" Size=12000 Type=".png"></UploaderUploadedFiles>
-                                    </UploaderFiles>
-                                </SfUploader>
-                            </div>
-            
-            
+                <p>Resim Ekleyiniz. maks: 1.5 MB</p>
+                <SfUploader ID="UploadFiles" DropArea=".control-fluid" MinFileSize=1000 MaxFileSize=1500000>
+                    <UploaderEvents ValueChange="OnChangeUpload" OnRemove="onRemove"></UploaderEvents>
+                    @*<UploaderAsyncSettings SaveUrl="http://localhost:53414/services/api/uploadbox/Save" RemoveUrl="https://aspnetmvc.syncfusion.com/services/api/uploadbox/Remove"></UploaderAsyncSettings>*@
+                    <UploaderFiles>
+                        <UploaderUploadedFiles Name="@(_OgrenciDto.ApplicationUserId.ToString())" Size=12000 Type=".png"></UploaderUploadedFiles>
+                    </UploaderFiles>
+                </SfUploader>
+            </div>
+
+
 
             <div class="row">
                 <div class="col-6 text-left">

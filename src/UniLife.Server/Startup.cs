@@ -643,6 +643,8 @@ namespace UniLife.Server
             builder.EntitySet<DerslikRezerv>("DerslikRezervs");
             builder.EntitySet<Derslik>("Dersliks");
             builder.EntitySet<Mufredat>("Mufredats");
+            builder.EntitySet<Sinav>("Sinavs");
+            //builder.EntitySet<SinavKayit>("SinavKayits");
             return builder.GetEdmModel();
         }
     }

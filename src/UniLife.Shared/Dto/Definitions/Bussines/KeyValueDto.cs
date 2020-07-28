@@ -11,5 +11,7 @@ namespace UniLife.Shared.Dto.Definitions
         public string Ad { get; set; }
 
         public int IntValue { get; set; }
+
+        public double DoubleValue { get; set; }
     }
 }

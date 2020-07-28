@@ -1,0 +1,77 @@
+﻿@inject HttpClient Http;
+@using UniLife.Shared.Dto.Definitions
+@inject IMatToaster matToaster
+@inject AppState appState
+
+<SfGrid ID="grdDersler" @ref="grdDersler" DataSource="@akademisyenDersDtos" Toolbar="@(new List<string>() {"ExcelExport", "CsvExport", "PdfExport" })" AllowPaging="true">
+    <GridEvents TValue="AkademisyenDersDto" CommandClicked="CommandClickHandler"></GridEvents>
+    <GridColumns>
+        <GridColumn Visible="false" Field=@nameof(AkademisyenDersDto.DersAcilanId) HeaderText="DersAcilanId" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+        <GridColumn Field=@nameof(AkademisyenDersDto.DersKod) HeaderText="DersKod"></GridColumn>
+        <GridColumn Field=@nameof(AkademisyenDersDto.DersAd) HeaderText="DersAd"></GridColumn>
+        <GridColumn Field=@nameof(AkademisyenDersDto.SonucDurum) HeaderText="S.Durum"></GridColumn>
+        <GridColumn Field=@nameof(AkademisyenDersDto.SinavNotlari) HeaderText="Sinav Notlar"></GridColumn>
+        <GridColumn Field=@nameof(AkademisyenDersDto.Ort) HeaderText="Ort"></GridColumn>
+        <GridColumn Field=@nameof(AkademisyenDersDto.Not) HeaderText="Not"></GridColumn>
+        <GridColumn Field=@nameof(AkademisyenDersDto.Durumu) HeaderText="Durumu"></GridColumn>
+        <GridColumn>
+            <GridCommandColumns>
+                <GridCommandColumn Type="CommandButtonType.None" Title="Öğrenci Dersleri" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
+            </GridCommandColumns>
+        </GridColumn>
+    </GridColumns>
+</SfGrid>
+
+@code{
+
+    SfGrid<AkademisyenDersDto> grdDersler;
+
+    List<AkademisyenDersDto> akademisyenDersDtos;
+
+    AkademisyenDto akademisyenDto = new AkademisyenDto();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        try
+        {
+            akademisyenDto = await appState.GetAkademisyenState();
+
+            ApiResponseDto<List<AkademisyenDersDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<AkademisyenDersDto>>>("api/sinav/GetDersAcilanByAkademisyenId/" + akademisyenDto.Id);
+
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                matToaster.Add($"Sinav bilgileri getirildi.", MatToastType.Success);
+                //AkademisyenSinavDtos = apiResponse.Result;
+            }
+            else
+            {
+                //AkademisyenSinavDtos = new List<AkademisyenSinavDto>();
+                matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
+            }
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
+        }
+    }
+
+    [Parameter]
+    public EventCallback<AkademisyenDersDto> SinavToNotlar { get; set; }
+
+    public void CommandClickHandler(CommandClickEventArgs<AkademisyenDersDto> args)
+    {
+        if (args.CommandColumn.Title == "Öğrenci Dersleri")
+        {
+            SinavToNotlar.InvokeAsync(args.RowData);
+        }
+    }
+}
+
+<style type="text/css" class="cssStyles">
+    .e-DoubleArrowRight:before {
+        content: '\e7bb';
+        color: #e83e8c;
+    }
+</style>

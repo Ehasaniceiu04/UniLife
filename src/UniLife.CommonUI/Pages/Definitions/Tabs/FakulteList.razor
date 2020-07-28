@@ -13,8 +13,17 @@
         }
     </style>*@
 
-<ControlSection>
-    
+
+@if (fakulteDtos == null)
+{
+    <LoadingBackground ShowLogoBox="true">
+        <label>Fakülteler Yükleniyor.</label>
+    </LoadingBackground>
+}
+else
+{
+    <ControlSection>
+
         <SfGrid ShowColumnChooser="true" @ref="FakulteGrid" DataSource="@fakulteDtos" Toolbar="@(new List<string>() { "Add", "Edit", "Delete","ColumnChooser" })" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowGrouping="true" ColumnMenuItems=@MenuItems ShowColumnMenu="true" Width="100%">
             @*<SfDataManager AdaptorInstance="@typeof(CustomAdaptor)" Adaptor="Adaptors.CustomAdaptor"></SfDataManager>*@
             <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.CheckBox"></GridFilterSettings>
@@ -29,9 +38,9 @@
                         <div class="col-md-10 offset-md-1">
                             <div class="form-row mt-4">
                                 @*<div class="col-sm-5 pb-3">
-                                    <label for="Id">Id</label>
-                                    <SfTextBox ID="Id" CssClass="form-control" Value="@(fakulteInfo.Id.ToString())" Enabled="@false"></SfTextBox>
-                                </div>*@
+                                        <label for="Id">Id</label>
+                                        <SfTextBox ID="Id" CssClass="form-control" Value="@(fakulteInfo.Id.ToString())" Enabled="@false"></SfTextBox>
+                                    </div>*@
                                 <div class="col-sm-3 pb-3">
                                     <label for="Ad">Ad</label>
                                     <SfTextBox ID="Ad" Placeholder="Ad" CssClass="form-control" @bind-Value="@(fakulteInfo.Ad)"></SfTextBox>
@@ -89,13 +98,13 @@
                                         <label class="col-md col-form-label" for="IlceId">IlceId</label>
                                         <SfNumericTextBox ID="IlceId" CssClass="form-control col-md-1" @bind-Value="@(fakulteInfo.IlceId)"></SfNumericTextBox>
                                         <label class="col-md col-form-label" for="IlKod">IlKod</label>
-                                        <SfNumericTextBox ID="IlKod" CssClass="form-control col-md-1" @bind-Value="@(fakulteInfo.IlKod)" ></SfNumericTextBox>
+                                        <SfNumericTextBox ID="IlKod" CssClass="form-control col-md-1" @bind-Value="@(fakulteInfo.IlKod)"></SfNumericTextBox>
                                         <label class="col-md col-form-label" for="Tip">Tip</label>
-                                        <SfNumericTextBox ID="Tip" CssClass="form-control col-md-1" @bind-Value="@(fakulteInfo.Tip)" ></SfNumericTextBox>
+                                        <SfNumericTextBox ID="Tip" CssClass="form-control col-md-1" @bind-Value="@(fakulteInfo.Tip)"></SfNumericTextBox>
                                         <label class="col-md col-form-label" for="Web">Web</label>
-                                        <SfNumericTextBox ID="OgrenimSure" CssClass="form-control col-md-1" @bind-Value="@(fakulteInfo.OgrenimSure)" ></SfNumericTextBox>
+                                        <SfNumericTextBox ID="OgrenimSure" CssClass="form-control col-md-1" @bind-Value="@(fakulteInfo.OgrenimSure)"></SfNumericTextBox>
                                         <label class="col-md col-form-label" for="DiplomaAd">DiplomaAd</label>
-                                        <SfTextBox ID="DiplomaAd" CssClass="form-control col-md-1" @bind-Value="@(fakulteInfo.DiplomaAd)" ></SfTextBox>
+                                        <SfTextBox ID="DiplomaAd" CssClass="form-control col-md-1" @bind-Value="@(fakulteInfo.DiplomaAd)"></SfTextBox>
                                         <label class="col-md col-form-label" for="BirimID">BirimID</label>
                                         <SfNumericTextBox ID="BirimID" CssClass="form-control col-md-1" @bind-Value="@(fakulteInfo.BirimID)"></SfNumericTextBox>
                                     </div>
@@ -132,7 +141,10 @@
 
             </GridColumns>
         </SfGrid>
-</ControlSection>
+    </ControlSection>
+
+}
+
 
 
 @code{
@@ -166,7 +178,7 @@
 
     async Task ReadUniversites()
     {
-        ApiResponseDto apiResponse =await Http.GetFromJsonAsync<ApiResponseDto>("api/fakulte");
+        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/fakulte");
 
         if (apiResponse.StatusCode == Status200OK)
         {

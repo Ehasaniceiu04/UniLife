@@ -53,5 +53,11 @@ namespace UniLife.Server.Managers
             var ogrenciNots = await _sinavKayitStore.GetSinavKayitOgrenciNotlar(sinavId);
             return new ApiResponse(Status200OK, "Sınav öğrenci notları getirildi", ogrenciNots);
         }
+
+        public async Task<ApiResponse> GetOgrenciSinavsByDers(int ogrenciId, int dersAcilanId)
+        {
+            var ogrenciNots = await _sinavKayitStore.GetOgrenciSinavsByDers(ogrenciId, dersAcilanId);
+            return new ApiResponse(Status200OK, "Sınav öğrenci notları getirildi", ogrenciNots);
+        }
     }
 }

@@ -1,0 +1,113 @@
+﻿@inject HttpClient Http;
+@using UniLife.Shared.Dto.Definitions
+@inject IMatToaster matToaster
+@inject AppState appState
+@using Syncfusion.Blazor.Data
+
+@if (ogrenciDerslerDtos == null)
+{
+    <LoadingBackground ShowLogoBox="true">
+        <label>Dersler Yükleniyor...</label>
+    </LoadingBackground>
+}
+else
+{
+    <SfGrid ID="grdDersler" @ref="grdDersler" DataSource="@ogrenciDerslerDtos" Toolbar="@(new List<string>() {"ExcelExport", "CsvExport", "PdfExport" })" AllowPaging="true">
+        <GridEvents TValue="OgrenciDerslerDto" CommandClicked="CommandClickHandler" DetailDataBound="DetailDataBoundHandler"></GridEvents>
+        <GridTemplates>
+            <DetailTemplate>
+                @{
+//var ogrenciDerslerInfo = (context as OgrenciDerslerDto);
+                    <SfGrid DataSource="sinavKayitDtos" TValue="KeyValueDto">
+                        <GridColumns>
+                            <GridColumn Field=@nameof(KeyValueDto.Ad) HeaderText="Sinav Ad" Width="110"></GridColumn>
+                            <GridColumn Field=@nameof(KeyValueDto.DoubleValue) HeaderText="Öğrenci Not" Width="110"></GridColumn>
+                        </GridColumns>
+                    </SfGrid>
+                    
+                    @*<SfGrid TValue="SinavKayitDto">
+                        <SfDataManager Url="@($"odata/sinavkayits?$expand=sinav($select=Ad;$filter=dersacilanId eq {ogrenciDerslerInfo.DersAcilanId})&$select=OgrNot&$filter=OgrenciId eq {ogrenciDerslerInfo.OgrenciId}")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+                        <GridColumns>
+                            <GridColumn Field="Sinav.Ad" HeaderText="Sinav Ad" Width="110"></GridColumn>
+                            <GridColumn Field=@nameof(SinavKayitDto.OgrNot) HeaderText="Öğrenci Not" Width="110"></GridColumn>
+                        </GridColumns>
+                    </SfGrid>*@
+                }
+            </DetailTemplate>
+        </GridTemplates>
+        <GridColumns>
+            <GridColumn Visible="false" Field=@nameof(OgrenciDerslerDto.DersAcilanId) HeaderText="DersAcilanId" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciDerslerDto.DersKod) HeaderText="DersKod"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciDerslerDto.DersAd) HeaderText="DersAd"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciDerslerDto.SonucDurum) HeaderText="S.Durum"></GridColumn>
+            @*<GridColumn Field=@nameof(OgrenciDerslerDto.SinavNotlari) HeaderText="Sinav Notlar"></GridColumn>*@
+            <GridColumn Field=@nameof(OgrenciDerslerDto.Ort) HeaderText="Ort"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciDerslerDto.Not) HeaderText="Not"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciDerslerDto.Durumu) HeaderText="Durumu"></GridColumn>
+            <GridColumn>
+                <GridCommandColumns>
+                    <GridCommandColumn Type="CommandButtonType.None" Title="Öğrenci Dersleri" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
+                </GridCommandColumns>
+            </GridColumn>
+        </GridColumns>
+    </SfGrid>
+
+}
+
+
+
+@code{
+
+    SfGrid<OgrenciDerslerDto> grdDersler;
+
+    List<OgrenciDerslerDto> ogrenciDerslerDtos;
+
+    List<KeyValueDto> sinavKayitDtos;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        try
+        {
+
+            ApiResponseDto<List<OgrenciDerslerDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDerslerDto>>>("api/dersAcilan/GetDersSonucByOgrenciId/" + appState.OgrenciState.Id);
+
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                matToaster.Add($"Öğrenci ders bilgileri getirildi.", MatToastType.Success);
+                ogrenciDerslerDtos = apiResponse.Result;
+            }
+            else
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
+            }
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
+        }
+    }
+
+
+    public void CommandClickHandler(CommandClickEventArgs<OgrenciDerslerDto> args)
+    {
+        if (args.CommandColumn.Title == "Öğrenci Dersleri")
+        {
+            //SinavToNotlar.InvokeAsync(args.RowData);
+        }
+    }
+
+    public async Task DetailDataBoundHandler(DetailDataBoundEventArgs<OgrenciDerslerDto> args)
+    {
+        ApiResponseDto<List<KeyValueDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<KeyValueDto>>>($"api/SinavKayit/GetOgrenciSinavsByDers/{args.Data.OgrenciId}/{args.Data.DersAcilanId}");
+        sinavKayitDtos = apiResponse.Result;
+
+    }
+}
+
+<style type="text/css" class="cssStyles">
+    .e-DoubleArrowRight:before {
+        content: '\e7bb';
+        color: #e83e8c;
+    }
+</style>

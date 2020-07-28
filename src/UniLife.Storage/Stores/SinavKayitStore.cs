@@ -115,5 +115,20 @@ namespace UniLife.Storage.Stores
 
             return await ogrenciNotlar.ToListAsync();
         }
+
+        public async Task<List<KeyValueDto>> GetOgrenciSinavsByDers(int ogrenciId, int dersAcilanId)
+        {
+            var ogrenciNotlar = from sk in _db.SinavKayits.Where(x => x.OgrenciId == ogrenciId)
+                                join s in _db.Sinavs.Where(x=>x.DersAcilanId == dersAcilanId ) on sk.SinavId equals s.Id
+                                select new KeyValueDto
+                                {
+                                    Ad = s.Ad,
+                                    DoubleValue = sk.OgrNot
+                                };
+
+
+
+            return await ogrenciNotlar.ToListAsync();
+        }
     }
 }
