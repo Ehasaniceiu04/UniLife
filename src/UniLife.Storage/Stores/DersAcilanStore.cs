@@ -505,22 +505,38 @@ namespace UniLife.Storage.Stores
 
         public async Task<List<OgrenciDerslerDto>> GetDersSonucByOgrenciId(int ogrenciId)
         {
-            var dersSonucs = from dk in _db.DersKayits.Where(x=>x.OgrenciId == ogrenciId)
-                             join da in _db.DersAcilans on dk.DersAcilanId equals da.Id
-                             select new OgrenciDerslerDto
-                             {
-                                 OgrenciId = dk.OgrenciId,
-                                 DersAcilanId = da.Id,
-                                 Sube = da.Sube,
-                                 DersKod = da.Kod,
-                                 DersAd = da.Ad,
-                                 SonucDurum = ((DersSonucDurum)dk.SonucDurum).ToString(),
-                                 Ort = dk.Ort,
-                                 Not = dk.Not,
-                                 Durumu = ((DersSonuc)dk.Sonuc).ToString()
-                             };
+            var dersSonucs = await (from dk in _db.DersKayits.Where(x => x.OgrenciId == ogrenciId)
+                                    join da in _db.DersAcilans on dk.DersAcilanId equals da.Id
+                                    select new OgrenciDerslerDto
+                                    {
+                                        OgrenciId = dk.OgrenciId,
+                                        DersAcilanId = da.Id,
+                                        Sube = da.Sube,
+                                        DersKod = da.Kod,
+                                        DersAd = da.Ad,
+                                        SonucDurum = ((DersSonucDurum)dk.SonucDurum).ToString(),
+                                        Ort = dk.Ort,
+                                        Not = dk.Not,
+                                        Durumu = ((DersSonuc)dk.Sonuc).ToString()
+                                    }).ToListAsync();
 
-            return _autoMapper.Map<List<OgrenciDerslerDto>>(await dersSonucs.ToListAsync());
+            var sinavSonucs = await (from sk in _db.SinavKayits.Where(x => x.OgrenciId == ogrenciId)
+                                     join s in _db.Sinavs on sk.SinavId equals s.Id
+                                     select new KeyValueDto
+                                     {
+                                         Id = s.Id,
+                                         IntValue = s.DersAcilanId,
+                                         Ad = s.Ad,
+                                         DoubleValue = sk.OgrNot
+                                     }).ToListAsync();
+
+            foreach (var item in dersSonucs)
+            {
+                item.SinavNotlari = String.Join(" ", sinavSonucs.Where(x => x.IntValue == item.DersAcilanId).Select(x => x.Ad + ":" + x.DoubleValue)); 
+            }
+
+            return _autoMapper.Map<List<OgrenciDerslerDto>>(dersSonucs);
+            //return null;
         }
 
     }

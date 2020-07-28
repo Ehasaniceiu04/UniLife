@@ -6,6 +6,7 @@
 
 @if (ogrenciDerslerDtos == null)
 {
+    
     <LoadingBackground ShowLogoBox="true">
         <label>Dersler Yükleniyor...</label>
     </LoadingBackground>
@@ -13,17 +14,17 @@
 else
 {
     <SfGrid ID="grdDersler" @ref="grdDersler" DataSource="@ogrenciDerslerDtos" Toolbar="@(new List<string>() {"ExcelExport", "CsvExport", "PdfExport" })" AllowPaging="true">
-        <GridEvents TValue="OgrenciDerslerDto" CommandClicked="CommandClickHandler" DetailDataBound="DetailDataBoundHandler"></GridEvents>
+        <GridEvents TValue="OgrenciDerslerDto" CommandClicked="CommandClickHandler" ></GridEvents>
         <GridTemplates>
             <DetailTemplate>
                 @{
-//var ogrenciDerslerInfo = (context as OgrenciDerslerDto);
-                    <SfGrid DataSource="sinavKayitDtos" TValue="KeyValueDto">
+                    //var ogrenciDerslerInfo = (context as OgrenciDerslerDto);
+                    @*<SfGrid DataSource="sinavKayitDtos" TValue="KeyValueDto">
                         <GridColumns>
                             <GridColumn Field=@nameof(KeyValueDto.Ad) HeaderText="Sinav Ad" Width="110"></GridColumn>
                             <GridColumn Field=@nameof(KeyValueDto.DoubleValue) HeaderText="Öğrenci Not" Width="110"></GridColumn>
                         </GridColumns>
-                    </SfGrid>
+                    </SfGrid>*@
                     
                     @*<SfGrid TValue="SinavKayitDto">
                         <SfDataManager Url="@($"odata/sinavkayits?$expand=sinav($select=Ad;$filter=dersacilanId eq {ogrenciDerslerInfo.DersAcilanId})&$select=OgrNot&$filter=OgrenciId eq {ogrenciDerslerInfo.OgrenciId}")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
@@ -40,7 +41,7 @@ else
             <GridColumn Field=@nameof(OgrenciDerslerDto.DersKod) HeaderText="DersKod"></GridColumn>
             <GridColumn Field=@nameof(OgrenciDerslerDto.DersAd) HeaderText="DersAd"></GridColumn>
             <GridColumn Field=@nameof(OgrenciDerslerDto.SonucDurum) HeaderText="S.Durum"></GridColumn>
-            @*<GridColumn Field=@nameof(OgrenciDerslerDto.SinavNotlari) HeaderText="Sinav Notlar"></GridColumn>*@
+            <GridColumn Field=@nameof(OgrenciDerslerDto.SinavNotlari) HeaderText="Sinav Notlar"></GridColumn>
             <GridColumn Field=@nameof(OgrenciDerslerDto.Ort) HeaderText="Ort"></GridColumn>
             <GridColumn Field=@nameof(OgrenciDerslerDto.Not) HeaderText="Not"></GridColumn>
             <GridColumn Field=@nameof(OgrenciDerslerDto.Durumu) HeaderText="Durumu"></GridColumn>
@@ -66,10 +67,8 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-
         try
         {
-
             ApiResponseDto<List<OgrenciDerslerDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDerslerDto>>>("api/dersAcilan/GetDersSonucByOgrenciId/" + appState.OgrenciState.Id);
 
             if (apiResponse.IsSuccessStatusCode)
@@ -97,12 +96,12 @@ else
         }
     }
 
-    public async Task DetailDataBoundHandler(DetailDataBoundEventArgs<OgrenciDerslerDto> args)
-    {
-        ApiResponseDto<List<KeyValueDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<KeyValueDto>>>($"api/SinavKayit/GetOgrenciSinavsByDers/{args.Data.OgrenciId}/{args.Data.DersAcilanId}");
-        sinavKayitDtos = apiResponse.Result;
+    //public async Task DetailDataBoundHandler(DetailDataBoundEventArgs<OgrenciDerslerDto> args)
+    //{
+    //    ApiResponseDto<List<KeyValueDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<KeyValueDto>>>($"api/SinavKayit/GetOgrenciSinavsByDers/{args.Data.OgrenciId}/{args.Data.DersAcilanId}");
+    //    sinavKayitDtos = apiResponse.Result;
 
-    }
+    //}
 }
 
 <style type="text/css" class="cssStyles">

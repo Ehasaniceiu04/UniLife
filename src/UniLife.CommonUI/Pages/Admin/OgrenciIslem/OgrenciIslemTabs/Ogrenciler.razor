@@ -8,63 +8,75 @@
 @using Syncfusion.Blazor.SplitButtons
 @inject AppState appState
 
+@if (OgrGridDtos == null)
+{
 
-<SfGrid ID="OgrGrid" @ref="OgrGrid" AllowSorting="true" AllowFiltering="true" AllowPaging="true" DataSource="@OgrGridDtos">
-    @*OnActionFailure="ActionFailureHandler" DetailDataBound="DetailDataBound"  OnActionBegin="ActionBeginHandler" DetailDataBound="DetailDataBound" RowDataBound="RowBound"*@
-    <GridEvents TValue="OgrenciDto" CommandClicked="CommandClickHandler" OnActionBegin="ActionBeginHandler" OnActionComplete="ActionCompletedHandler"></GridEvents>
-    <GridTemplates>
-        <DetailTemplate>
-            @{
-                var ogrenciInfo = (context as OgrenciDto);
+    <LoadingBackground ShowLogoBox="true">
+        <label>Öğrenciler Yükleniyor...</label>
+    </LoadingBackground>
+}
+else
+{
+    <SfGrid ID="OgrGrid" @ref="OgrGrid" AllowSorting="true" AllowFiltering="true" AllowPaging="true" DataSource="@OgrGridDtos">
+        @*OnActionFailure="ActionFailureHandler" DetailDataBound="DetailDataBound"  OnActionBegin="ActionBeginHandler" DetailDataBound="DetailDataBound" RowDataBound="RowBound"*@
+        <GridEvents TValue="OgrenciDto" CommandClicked="CommandClickHandler" OnActionBegin="ActionBeginHandler" OnActionComplete="ActionCompletedHandler"></GridEvents>
+        <GridTemplates>
+            <DetailTemplate>
+                @{
+                    var ogrenciInfo = (context as OgrenciDto);
 
-            }
-            <div style="padding:20px">
+                }
+                <div style="padding:20px">
 
-                <SfTab LoadOn="ContentLoad.Demand">
-                    <TabEvents Selecting="OnTabSelecting"></TabEvents>
-                    <TabItems>
-                        <TabItem>
-                            <ChildContent>
-                                <TabHeader Text="Detay"></TabHeader>
-                            </ChildContent>
-                            <ContentTemplate>
-                                <OgrenciBilgi ogrenciId="ogrenciInfo.Id"></OgrenciBilgi>
-                            </ContentTemplate>
-                        </TabItem>
-                        <TabItem>
-                            <ChildContent>
-                                <TabHeader Text="İletişim Bilgileri"></TabHeader>
-                            </ChildContent>
-                            <ContentTemplate>
-                                <OgrenciIletisim _OgrenciDto="ogrenciInfo"></OgrenciIletisim>
-                            </ContentTemplate>
-                        </TabItem>
-                        <TabItem>
-                            <ChildContent>
-                                <TabHeader Text="Roller"></TabHeader>
-                            </ChildContent>
-                            <ContentTemplate>
-                                <OgrenciRoles _OgrenciDto="ogrenciInfo"></OgrenciRoles>
-                            </ContentTemplate>
-                        </TabItem>
-                    </TabItems>
-                </SfTab>
-            </div>
-        </DetailTemplate>
-    </GridTemplates>
-    <GridColumns>
-        <GridColumn Visible="false" Field=@nameof(OgrenciDto.ApplicationUserId) AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
-        <GridColumn Field=@nameof(OgrenciDto.Ad) HeaderText="Ad"> </GridColumn>
-        <GridColumn Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad"></GridColumn>
-        <GridColumn Field=@nameof(OgrenciDto.TCKN) HeaderText="TCKN"></GridColumn>
-        <GridColumn Field=@nameof(OgrenciDto.OgrNo) HeaderText="Öğrenci No"></GridColumn>
-        <GridColumn>
-            <GridCommandColumns>
-                <GridCommandColumn Type="CommandButtonType.None" Title="Akademik Bilgiler" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
-            </GridCommandColumns>
-        </GridColumn>
-    </GridColumns>
-</SfGrid>
+                    <SfTab LoadOn="ContentLoad.Demand">
+                        <TabEvents Selecting="OnTabSelecting"></TabEvents>
+                        <TabItems>
+                            <TabItem>
+                                <ChildContent>
+                                    <TabHeader Text="Detay"></TabHeader>
+                                </ChildContent>
+                                <ContentTemplate>
+                                    <OgrenciBilgi ogrenciId="ogrenciInfo.Id"></OgrenciBilgi>
+                                </ContentTemplate>
+                            </TabItem>
+                            <TabItem>
+                                <ChildContent>
+                                    <TabHeader Text="İletişim Bilgileri"></TabHeader>
+                                </ChildContent>
+                                <ContentTemplate>
+                                    <OgrenciIletisim _OgrenciDto="ogrenciInfo"></OgrenciIletisim>
+                                </ContentTemplate>
+                            </TabItem>
+                            <TabItem>
+                                <ChildContent>
+                                    <TabHeader Text="Roller"></TabHeader>
+                                </ChildContent>
+                                <ContentTemplate>
+                                    <OgrenciRoles _OgrenciDto="ogrenciInfo"></OgrenciRoles>
+                                </ContentTemplate>
+                            </TabItem>
+                        </TabItems>
+                    </SfTab>
+                </div>
+            </DetailTemplate>
+        </GridTemplates>
+        <GridColumns>
+            <GridColumn Visible="false" Field=@nameof(OgrenciDto.ApplicationUserId) AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciDto.Ad) HeaderText="Ad"> </GridColumn>
+            <GridColumn Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciDto.TCKN) HeaderText="TCKN"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciDto.OgrNo) HeaderText="Öğrenci No"></GridColumn>
+            <GridColumn>
+                <GridCommandColumns>
+                    <GridCommandColumn Type="CommandButtonType.None" Title="Akademik Bilgiler" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
+                </GridCommandColumns>
+            </GridColumn>
+        </GridColumns>
+    </SfGrid>
+}
+
+
+
 <div class="col-12 text-right">
     <SfProgressButton OnClick="AddNew" Content="Yeni Öğrenci Kaydı >" CssClass="center-block e-primary">
         <ProgressButtonSpinSettings Position="SpinPosition.Right"></ProgressButtonSpinSettings>
@@ -95,7 +107,7 @@
         //ApiResponseDto<List<OgrenciDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDto>>>($"api/Admin/GetOgrenciUsers?pageSize={10}&pageNumber={0}");
         try
         {
-            ApiResponseDto<List<OgrenciDto>> apiResponse =await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDto>>>("api/ogrenci");
+            ApiResponseDto<List<OgrenciDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDto>>>("api/ogrenci");
             if (apiResponse.IsSuccessStatusCode)
             {
                 OgrGridDtos = apiResponse.Result;

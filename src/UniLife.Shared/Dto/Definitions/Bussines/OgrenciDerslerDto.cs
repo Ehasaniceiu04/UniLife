@@ -18,6 +18,7 @@ namespace UniLife.Shared.Dto.Definitions
         public double Ort { get; set; }
         public string Not { get; set; }
         public string Durumu { get; set; }
+        public string SinavNotlari { get; set; }
 
     }
 }
