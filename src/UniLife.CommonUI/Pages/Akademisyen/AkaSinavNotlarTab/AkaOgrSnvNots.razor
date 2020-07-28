@@ -1,54 +1,77 @@
 ﻿@inject HttpClient Http;
 @inject IMatToaster matToaster
 @using UniLife.Shared.Dto.Definitions
-
 <div class="col-lg-12 control-section">
     <div class="content-wrapper">
         <div class="row">
-            <div class='e-mastertext'><b>Master Grid</b></div>
-            @*SelectedRowIndex=2*@
-        <SfGrid DataSource="@ogrenciDersKayitDtos" TValue="OgrenciDersKayitDto">
-            <GridEvents TValue="OgrenciDersKayitDto" RowSelected="RowSelecthandler"></GridEvents>
-            <GridColumns>
-                <GridColumn Visible="false" Field=@nameof(OgrenciDersKayitDto.OgrId) HeaderText="ogrenci Id" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
-                <GridColumn Field=@nameof(OgrenciDersKayitDto.OgrNo) HeaderText="OgrenciNo"></GridColumn>
-                <GridColumn Field=@nameof(OgrenciDersKayitDto.OgrAd) HeaderText="Ad"></GridColumn>
-                <GridColumn Field=@nameof(OgrenciDersKayitDto.OgrSoy) HeaderText="Soyad"></GridColumn>
-                <GridColumn Field=@nameof(OgrenciDersKayitDto.AlTip) HeaderText="AlTip"></GridColumn>
-                <GridColumn Field=@nameof(OgrenciDersKayitDto.HBN) HeaderText="HBN"></GridColumn>
-                <GridColumn Field=@nameof(OgrenciDersKayitDto.TSkor) HeaderText="TSkor"></GridColumn>
-                <GridColumn Field=@nameof(OgrenciDersKayitDto.HarfN) HeaderText="HarfN"></GridColumn>
-                <GridColumn Field=@nameof(OgrenciDersKayitDto.GecDurum) HeaderText="GecDurum"></GridColumn>
-            </GridColumns>
-        </SfGrid>
-            <div class='e-statustext'>Seçilen öğrenci: <b>@SelectedOgr</b></div>
-            <SfGrid DataSource="@sinavSinavKayitDtos">
-                <GridColumns>
-                    <GridColumn Visible="false" Field=@nameof(SinavSinavKayitDto.SinavKayitId) HeaderText="SinavKayitId" Width="110"> </GridColumn>
-                    <GridColumn Visible="false" Field=@nameof(SinavSinavKayitDto.SinavId) HeaderText="SinavId" Width="110"></GridColumn>
-                    <GridColumn Field=@nameof(SinavSinavKayitDto.SinavAd) HeaderText="Sinav Adı" Width="110"></GridColumn>
-                    <GridColumn Field=@nameof(SinavSinavKayitDto.EtkiOran) HeaderText="Etki Oran" Width="110"></GridColumn>
-                    <GridColumn Field=@nameof(SinavSinavKayitDto.OgrNot) HeaderText="Not" Width="110"></GridColumn>
-                </GridColumns>
-            </SfGrid>
+            @if (ogrenciDersKayitDtos == null)
+            {
+                <LoadingBackground ShowLogoBox="true">
+                    <label>Öğrenci Notları Yükleniyor...</label>
+                </LoadingBackground>
+            }
+            else
+            {
+                <div class='e-mastertext'><b>@($"{_dersAcilanDto.Ad} dersi öğrenci notları")</b></div>
+                <SfGrid SelectedRowIndex=1 DataSource="@ogrenciDersKayitDtos" TValue="OgrenciDersKayitDto">
+                    <GridEvents TValue="OgrenciDersKayitDto" RowSelected="RowSelecthandler"></GridEvents>
+                    <GridColumns>
+                        <GridColumn Visible="false" Field=@nameof(OgrenciDersKayitDto.OgrId) HeaderText="ogrenci Id" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+                        <GridColumn Field=@nameof(OgrenciDersKayitDto.OgrNo) HeaderText="OgrenciNo"></GridColumn>
+                        <GridColumn Field=@nameof(OgrenciDersKayitDto.OgrAd) HeaderText="Ad"></GridColumn>
+                        <GridColumn Field=@nameof(OgrenciDersKayitDto.OgrSoy) HeaderText="Soyad"></GridColumn>
+                        <GridColumn Field=@nameof(OgrenciDersKayitDto.AlTip) HeaderText="AlTip"></GridColumn>
+                        <GridColumn Field=@nameof(OgrenciDersKayitDto.HBN) HeaderText="HBN"></GridColumn>
+                        <GridColumn Field=@nameof(OgrenciDersKayitDto.TSkor) HeaderText="TSkor"></GridColumn>
+                        <GridColumn Field=@nameof(OgrenciDersKayitDto.HarfN) HeaderText="HarfN"></GridColumn>
+                        <GridColumn Field=@nameof(OgrenciDersKayitDto.GecDurum) HeaderText="GecDurum"></GridColumn>
+                    </GridColumns>
+                </SfGrid>
+                <div class='e-statustext'>Seçilen öğrenci: <b>@SelectedOgr</b></div>
+                <SfGrid DataSource="@sinavSinavKayitDtos">
+                    <GridEvents TValue="SinavSinavKayitDto" OnActionComplete="ActionCompletedHandler"></GridEvents>
+                    <GridEditSettings AllowEditing="true"></GridEditSettings>
+                    <GridColumns>
+                        <GridColumn Visible="false" Field=@nameof(SinavSinavKayitDto.SinavKayitId) IsPrimaryKey="true" HeaderText="SinavKayitId" Width="110"> </GridColumn>
+                        <GridColumn Visible="false" Field=@nameof(SinavSinavKayitDto.SinavId) HeaderText="SinavId" Width="110"></GridColumn>
+                        <GridColumn AllowEditing="false" Field=@nameof(SinavSinavKayitDto.SinavAd) HeaderText="Sinav Adı" Width="110"></GridColumn>
+                        <GridColumn AllowEditing="false" Field=@nameof(SinavSinavKayitDto.EtkiOran) HeaderText="Etki Oran" Width="110"></GridColumn>
+                        <GridColumn Field=@nameof(SinavSinavKayitDto.OgrNot) HeaderText="Not" Width="110"></GridColumn>
+                        <GridColumn HeaderText="Manage Records" Width="150">
+                            <GridCommandColumns>
+                                <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-edit", CssClass = "e-flat" })"></GridCommandColumn>
+                                <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-delete", CssClass = "e-flat" })"></GridCommandColumn>
+                                <GridCommandColumn Type="CommandButtonType.Save" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-update", CssClass = "e-flat" })"></GridCommandColumn>
+                                <GridCommandColumn Type="CommandButtonType.Cancel" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-cancel-icon", CssClass = "e-flat" })"></GridCommandColumn>
+                            </GridCommandColumns>
+                        </GridColumn>
+                    </GridColumns>
+                </SfGrid>
+            }
+
+
+
         </div>
     </div>
 </div>
-@code{
-    [Parameter]
-    public int _dersAcilanId{ get; set; }
+    @code{
+        [Parameter]
+        public int _dersAcilanId { get; set; }
 
-    List<OgrenciDersKayitDto> ogrenciDersKayitDtos;
+        [Parameter]
+        public DersAcilanDto _dersAcilanDto { get; set; }
 
-    List<SinavSinavKayitDto> sinavSinavKayitDtos;
+        List<OgrenciDersKayitDto> ogrenciDersKayitDtos;
 
-    public string SelectedOgr { get; set; }
+        List<SinavSinavKayitDto> sinavSinavKayitDtos;
+
+public string SelectedOgr { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            ApiResponseDto<List<OgrenciDersKayitDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDersKayitDto>>>("api/derskayit/GetOgrenciDersKayitsByDers/" + _dersAcilanId);
+            ApiResponseDto<List<OgrenciDersKayitDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDersKayitDto>>>("api/derskayit/GetOgrenciDersKayitsByDers/" + _dersAcilanDto.Id);
 
             if (apiResponse.IsSuccessStatusCode)
             {
@@ -67,11 +90,11 @@
 
     public async Task RowSelecthandler(RowSelectEventArgs<OgrenciDersKayitDto> args)
     {
-        SelectedOgr = args.Data.OgrAd+" "+ args.Data.OgrSoy;
+        SelectedOgr = args.Data.OgrAd + " " + args.Data.OgrSoy;
 
         try
         {
-            ApiResponseDto<List<SinavSinavKayitDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<SinavSinavKayitDto>>>($"api/Sinavkayit/GetSinavKayitsByOgrenciDers/{args.Data.OgrId}/{_dersAcilanId}");
+            ApiResponseDto<List<SinavSinavKayitDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<SinavSinavKayitDto>>>($"api/Sinavkayit/GetSinavKayitsByOgrenciDers/{args.Data.OgrId}/{_dersAcilanDto.Id}");
             if (apiResponse.IsSuccessStatusCode)
             {
                 sinavSinavKayitDtos = apiResponse.Result;
@@ -87,15 +110,30 @@
 
 
     }
-}
 
-
-<style>
-    .e-statustext,
-    .e-mastertext {
-        font-size: 15px;
-        font-family: Roboto;
-        opacity: 0.87;
-        padding: 1em;
+    public async void ActionCompletedHandler(ActionEventArgs<SinavSinavKayitDto> args)
+    {
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+        {
+            //ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>("api/sinavKayit/UpdateSinavKayit", sinavKayitDto);
+            ApiResponseDto<List<SinavKayitDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<SinavKayitDto>>>($"api/Sinavkayit/UpdateSinavKayit/{args.Data.SinavKayitId}/{args.Data.OgrNot}");
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+            }
+            else
+                matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
+        }
     }
-</style>
+    }
+
+
+    <style>
+        .e-statustext,
+        .e-mastertext {
+            font-size: 15px;
+            font-family: Roboto;
+            opacity: 0.87;
+            padding: 1em;
+        }
+    </style>

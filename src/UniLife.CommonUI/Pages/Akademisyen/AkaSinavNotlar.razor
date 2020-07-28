@@ -16,7 +16,6 @@
                     <TabHeader Text="Dersler"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
-                    @*<AkaSinavlar SinavToNotlar="SinavToNotlar"></AkaSinavlar>*@
                     <AkaDersler DerslerToOgrNotlar="DerslerToOgrNotlar"></AkaDersler>
                 </ContentTemplate>
             </TabItem>
@@ -25,10 +24,10 @@
                     <TabHeader Text="Öğrenci Notları"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
-                    <AkaOgrSnvNots _dersAcilanId="_dersAcilanId"></AkaOgrSnvNots>
+                    <AkaOgrSnvNots _dersAcilanDto="_dersAcilanDto"></AkaOgrSnvNots>
                 </ContentTemplate>
             </TabItem>
-            <TabItem>
+            @*<TabItem>
                 <ChildContent>
                     <TabHeader Text="Sinavlar"></TabHeader>
                 </ChildContent>
@@ -43,7 +42,7 @@
                 <ContentTemplate>
                     <AkaNotlar _AkademisyenSinavDto="_AkademisyenSinavDto"></AkaNotlar>
                 </ContentTemplate>
-            </TabItem>
+            </TabItem>*@
         </TabItems>
     </SfTab>
 </div>
@@ -55,12 +54,13 @@
 
     AkademisyenSinavDto _AkademisyenSinavDto;
 
-    int _dersAcilanId;
+    //int _dersAcilanId;
+    DersAcilanDto _dersAcilanDto;
 
     public void TabCreate()
     {
-        //SinavNotTab.EnableTab(0, true);
-        //SinavNotTab.EnableTab(1, false);
+        SinavNotTab.EnableTab(0, true);
+        SinavNotTab.EnableTab(1, false);
     }
     public void OnTabSelecting(SelectingEventArgs args)
     {
@@ -74,15 +74,15 @@
         }
     }
 
-    public void SinavToNotlar(AkademisyenSinavDto AkademisyenSinavDto)
-    {
-        _AkademisyenSinavDto = AkademisyenSinavDto;
-        TabDegis(1);
-    }
+    //public void SinavToNotlar(AkademisyenSinavDto AkademisyenSinavDto)
+    //{
+    //    _AkademisyenSinavDto = AkademisyenSinavDto;
+    //    TabDegis(1);
+    //}
 
-    public void DerslerToOgrNotlar(int dersAcilanId)
+    public void DerslerToOgrNotlar(DersAcilanDto dersAcilanDto)
     {
-        _dersAcilanId = dersAcilanId;
+        _dersAcilanDto = dersAcilanDto;
         TabDegis(1);
     }
 

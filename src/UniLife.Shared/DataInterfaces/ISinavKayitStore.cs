@@ -21,5 +21,6 @@ namespace UniLife.Shared.DataInterfaces
         Task<List<SinavOgrNotlarDto>> GetSinavKayitOgrenciNotlar(int sinavId);
         Task<List<KeyValueDto>> GetOgrenciSinavsByDers(int ogrenciId, int dersAcilanId);
         Task<List<SinavSinavKayitDto>> GetSinavKayitsByOgrenciDers(int ogrenciId, int dersAcilanId);
+        Task UpdateSinavKayit(int sinavkayitId, double orgNot);
     }
 }

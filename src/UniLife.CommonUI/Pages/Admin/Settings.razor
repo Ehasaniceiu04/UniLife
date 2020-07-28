@@ -1,0 +1,25 @@
+﻿@page "/admin/Settings"
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Inputs
+
+<div class="row pb-2 bg-light text-dark">
+    <div class="col-sm-12 col-md-6">
+        <div class="form-group row">
+            <label for="DropDonem" class="col-sm-3 col-form-label-sm">Öğrenci Numarası Deseni</label>
+            <div class="col-sm-6">
+                <SfTextBox ID="OgrNoDesen" CssClass="form-control-sm" @bind-Value="ogrNoDesen"></SfTextBox>
+            </div>
+            <label for="DropSinif" class="col-sm-2 col-form-label-sm">Sınıf</label>
+            <div class="col-sm-3">
+                
+            </div>
+        </div>
+
+    </div>
+    <div class="col-sm-12 col-md-6">
+
+    </div>
+</div>
+@code{
+    string ogrNoDesen="yy,ff,bb";
+}

@@ -148,5 +148,13 @@ namespace UniLife.Storage.Stores
 
             return await ogrenciNotlar.ToListAsync();
         }
+
+        public async Task UpdateSinavKayit(int sinavkayitId, double orgNot)
+        {
+            var sk = await _db.SinavKayits.FirstOrDefaultAsync(x => x.Id == sinavkayitId);
+            sk.OgrNot = orgNot;
+            _db.SinavKayits.Update(sk);
+            await _db.SaveChangesAsync(CancellationToken.None);
+        }
     }
 }

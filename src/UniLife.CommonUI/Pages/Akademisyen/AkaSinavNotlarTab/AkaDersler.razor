@@ -74,13 +74,13 @@
     }
 
     [Parameter]
-    public EventCallback<int> DerslerToOgrNotlar { get; set; }
+    public EventCallback<DersAcilanDto> DerslerToOgrNotlar { get; set; }
 
     public void CommandClickHandler(CommandClickEventArgs<DersAcilanDto> args)
     {
         if (args.CommandColumn.Title == "Ders Sınavları")
         {
-            DerslerToOgrNotlar.InvokeAsync(args.RowData.Id);
+            DerslerToOgrNotlar.InvokeAsync(args.RowData);
         }
     }
 }
