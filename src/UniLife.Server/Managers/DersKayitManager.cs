@@ -44,5 +44,11 @@ namespace UniLife.Server.Managers
             return new ApiResponse(Status200OK, "Updated PutUpdateOgrencisDersKayitsDeleteExSubes", await _dersKayitStore.PutUpdateOgrencisDersKayitsDeleteExSubes(reqEntityIdWithOtherEntitiesIds));
 
         }
+
+        public async Task<ApiResponse> GetOgrenciDersKayitsByDers(int dersAcilanId)
+        {
+            var ogrenciDersKayits = await _dersKayitStore.GetOgrenciDersKayitsByDers(dersAcilanId);
+            return new ApiResponse(Status200OK, "GetOgrenciDersKayitsByDers fetched", ogrenciDersKayits);
+        }
     }
 }

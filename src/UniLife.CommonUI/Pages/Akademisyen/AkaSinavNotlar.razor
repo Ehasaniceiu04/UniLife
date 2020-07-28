@@ -13,6 +13,23 @@
         <TabItems>
             <TabItem>
                 <ChildContent>
+                    <TabHeader Text="Dersler"></TabHeader>
+                </ChildContent>
+                <ContentTemplate>
+                    @*<AkaSinavlar SinavToNotlar="SinavToNotlar"></AkaSinavlar>*@
+                    <AkaDersler DerslerToOgrNotlar="DerslerToOgrNotlar"></AkaDersler>
+                </ContentTemplate>
+            </TabItem>
+            <TabItem>
+                <ChildContent>
+                    <TabHeader Text="Öğrenci Notları"></TabHeader>
+                </ChildContent>
+                <ContentTemplate>
+                    <AkaOgrSnvNots _dersAcilanId="_dersAcilanId"></AkaOgrSnvNots>
+                </ContentTemplate>
+            </TabItem>
+            <TabItem>
+                <ChildContent>
                     <TabHeader Text="Sinavlar"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
@@ -24,7 +41,7 @@
                     <TabHeader Text="Notlar"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
-                    <AkaNotlar _AkademisyenSinavDto ="_AkademisyenSinavDto"></AkaNotlar>
+                    <AkaNotlar _AkademisyenSinavDto="_AkademisyenSinavDto"></AkaNotlar>
                 </ContentTemplate>
             </TabItem>
         </TabItems>
@@ -38,10 +55,12 @@
 
     AkademisyenSinavDto _AkademisyenSinavDto;
 
+    int _dersAcilanId;
+
     public void TabCreate()
     {
-        SinavNotTab.EnableTab(0, true);
-        SinavNotTab.EnableTab(1, false);
+        //SinavNotTab.EnableTab(0, true);
+        //SinavNotTab.EnableTab(1, false);
     }
     public void OnTabSelecting(SelectingEventArgs args)
     {
@@ -60,6 +79,14 @@
         _AkademisyenSinavDto = AkademisyenSinavDto;
         TabDegis(1);
     }
+
+    public void DerslerToOgrNotlar(int dersAcilanId)
+    {
+        _dersAcilanId = dersAcilanId;
+        TabDegis(1);
+    }
+
+
 
     public void TabDegis(int tabIndex)
     {

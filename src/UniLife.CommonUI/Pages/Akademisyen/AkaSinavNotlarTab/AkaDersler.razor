@@ -2,29 +2,45 @@
 @using UniLife.Shared.Dto.Definitions
 @inject IMatToaster matToaster
 @inject AppState appState
+@using Syncfusion.Blazor.Data
 
-<SfGrid ID="grdDersler" @ref="grdDersler" DataSource="@akademisyenDersDtos" Toolbar="@(new List<string>() {"ExcelExport", "CsvExport", "PdfExport" })" AllowPaging="true">
-    <GridEvents TValue="AkademisyenDersDto" CommandClicked="CommandClickHandler"></GridEvents>
+@*<SfGrid ID="grdDersler" @ref="grdDersler" DataSource="@akademisyenDersDtos" Toolbar="@(new List<string>() {"ExcelExport", "CsvExport", "PdfExport" })" AllowPaging="true">
+        <GridEvents TValue="AkademisyenDersDto" CommandClicked="CommandClickHandler"></GridEvents>
+        <GridColumns>
+            <GridColumn Visible="false" Field=@nameof(AkademisyenDersDto.DersAcilanId) HeaderText="DersAcilanId" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+            <GridColumn Field=@nameof(AkademisyenDersDto.DersKod) HeaderText="DersKod"></GridColumn>
+            <GridColumn Field=@nameof(AkademisyenDersDto.DersAd) HeaderText="DersAd"></GridColumn>
+            <GridColumn Field=@nameof(AkademisyenDersDto.SonucDurum) HeaderText="S.Durum"></GridColumn>
+            <GridColumn Field=@nameof(AkademisyenDersDto.SinavNotlari) HeaderText="Sinav Notlar"></GridColumn>
+            <GridColumn Field=@nameof(AkademisyenDersDto.Ort) HeaderText="Ort"></GridColumn>
+            <GridColumn Field=@nameof(AkademisyenDersDto.Not) HeaderText="Not"></GridColumn>
+            <GridColumn Field=@nameof(AkademisyenDersDto.Durumu) HeaderText="Durumu"></GridColumn>
+            <GridColumn>
+                <GridCommandColumns>
+                    <GridCommandColumn Type="CommandButtonType.None" Title="Öğrenci Dersleri" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
+                </GridCommandColumns>
+            </GridColumn>
+        </GridColumns>
+    </SfGrid>*@
+<SfGrid ID="grdDersler" @ref="grdDersler" TValue="DersAcilanDto" Toolbar="@(new List<string>() {"ExcelExport", "CsvExport", "PdfExport" })" AllowPaging="true">
+    <SfDataManager Url="@($"odata/dersacilans?$expand=akademisyen($select=Ad,Id)&$select=Ad,Id,Kod&$filter=akademisyen/Id eq {akademisyenDto.Id}")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+    <GridEvents TValue="DersAcilanDto" CommandClicked="CommandClickHandler"></GridEvents>
     <GridColumns>
-        <GridColumn Visible="false" Field=@nameof(AkademisyenDersDto.DersAcilanId) HeaderText="DersAcilanId" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
-        <GridColumn Field=@nameof(AkademisyenDersDto.DersKod) HeaderText="DersKod"></GridColumn>
-        <GridColumn Field=@nameof(AkademisyenDersDto.DersAd) HeaderText="DersAd"></GridColumn>
-        <GridColumn Field=@nameof(AkademisyenDersDto.SonucDurum) HeaderText="S.Durum"></GridColumn>
-        <GridColumn Field=@nameof(AkademisyenDersDto.SinavNotlari) HeaderText="Sinav Notlar"></GridColumn>
-        <GridColumn Field=@nameof(AkademisyenDersDto.Ort) HeaderText="Ort"></GridColumn>
-        <GridColumn Field=@nameof(AkademisyenDersDto.Not) HeaderText="Not"></GridColumn>
-        <GridColumn Field=@nameof(AkademisyenDersDto.Durumu) HeaderText="Durumu"></GridColumn>
+        <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="DersAcilanId" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+        <GridColumn Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kod"></GridColumn>
+        <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Ad"></GridColumn>
         <GridColumn>
             <GridCommandColumns>
-                <GridCommandColumn Type="CommandButtonType.None" Title="Öğrenci Dersleri" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
+                <GridCommandColumn Type="CommandButtonType.None" Title="Ders Sınavları" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
             </GridCommandColumns>
         </GridColumn>
     </GridColumns>
 </SfGrid>
 
+
 @code{
 
-    SfGrid<AkademisyenDersDto> grdDersler;
+    SfGrid<DersAcilanDto> grdDersler;
 
     List<AkademisyenDersDto> akademisyenDersDtos;
 
@@ -38,18 +54,18 @@
         {
             akademisyenDto = await appState.GetAkademisyenState();
 
-            ApiResponseDto<List<AkademisyenDersDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<AkademisyenDersDto>>>("api/sinav/GetDersAcilanByAkademisyenId/" + akademisyenDto.Id);
+            //ApiResponseDto<List<AkademisyenDersDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<AkademisyenDersDto>>>("api/sinav/GetDersAcilanByAkademisyenId/" + akademisyenDto.Id);
 
-            if (apiResponse.IsSuccessStatusCode)
-            {
-                matToaster.Add($"Sinav bilgileri getirildi.", MatToastType.Success);
-                //AkademisyenSinavDtos = apiResponse.Result;
-            }
-            else
-            {
-                //AkademisyenSinavDtos = new List<AkademisyenSinavDto>();
-                matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
-            }
+            //if (apiResponse.IsSuccessStatusCode)
+            //{
+            //    matToaster.Add($"Sinav bilgileri getirildi.", MatToastType.Success);
+            //    //AkademisyenSinavDtos = apiResponse.Result;
+            //}
+            //else
+            //{
+            //    //AkademisyenSinavDtos = new List<AkademisyenSinavDto>();
+            //    matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
+            //}
         }
         catch (Exception ex)
         {
@@ -58,13 +74,13 @@
     }
 
     [Parameter]
-    public EventCallback<AkademisyenDersDto> SinavToNotlar { get; set; }
+    public EventCallback<int> DerslerToOgrNotlar { get; set; }
 
-    public void CommandClickHandler(CommandClickEventArgs<AkademisyenDersDto> args)
+    public void CommandClickHandler(CommandClickEventArgs<DersAcilanDto> args)
     {
-        if (args.CommandColumn.Title == "Öğrenci Dersleri")
+        if (args.CommandColumn.Title == "Ders Sınavları")
         {
-            SinavToNotlar.InvokeAsync(args.RowData);
+            DerslerToOgrNotlar.InvokeAsync(args.RowData.Id);
         }
     }
 }

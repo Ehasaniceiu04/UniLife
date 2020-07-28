@@ -37,6 +37,25 @@ namespace UniLife.Storage.Stores
             }
         }
 
+        public async Task<List<OgrenciDersKayitDto>> GetOgrenciDersKayitsByDers(int dersAcilanId)
+        {
+            var ogrenciDersKayits = from dk in _db.DersKayits.Where(x => x.DersAcilanId == dersAcilanId)
+                                    join o in _db.Ogrencis on dk.OgrenciId equals o.Id
+                                    select new OgrenciDersKayitDto
+                                    {
+                                        OgrId = o.Id,
+                                        OgrNo = o.OgrNo,
+                                        OgrAd = o.Ad,
+                                        OgrSoy = o.Soyad,
+                                        AlTip = dk.AlTip,
+                                        HBN = dk.HBN,
+                                        TSkor = dk.TSkor,
+                                        HarfN = dk.HarfNot,
+                                        GecDurum= dk.GecDurum?"Geçti":"Kaldı"
+                                    };
+            return await ogrenciDersKayits.ToListAsync();
+        }
+
         public async Task OgrenciKayitToDerss(IEnumerable<DersKayitDto> dersKayitDtos)
         {
             var silinecekler = from k in _db.DersKayits.Where(x => (x.OgrenciId == dersKayitDtos.FirstOrDefault().OgrenciId) && dersKayitDtos.Select(x => x.DersAcilanId).Contains(x.DersAcilanId))

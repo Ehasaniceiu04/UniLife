@@ -7,6 +7,7 @@
 @using UniLife.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs.OgrencilerTabs
 @using Syncfusion.Blazor.SplitButtons
 @inject AppState appState
+@inject IJSRuntime Runtime
 
 @if (OgrGridDtos == null)
 {
@@ -19,7 +20,7 @@ else
 {
     <SfGrid ID="OgrGrid" @ref="OgrGrid" AllowSorting="true" AllowFiltering="true" AllowPaging="true" DataSource="@OgrGridDtos">
         @*OnActionFailure="ActionFailureHandler" DetailDataBound="DetailDataBound"  OnActionBegin="ActionBeginHandler" DetailDataBound="DetailDataBound" RowDataBound="RowBound"*@
-        <GridEvents TValue="OgrenciDto" CommandClicked="CommandClickHandler" OnActionBegin="ActionBeginHandler" OnActionComplete="ActionCompletedHandler"></GridEvents>
+        <GridEvents TValue="OgrenciDto" CommandClicked="CommandClickHandler" DetailDataBound="DetailDataBound" DataBound="DataBound" OnActionBegin="ActionBeginHandler" OnActionComplete="ActionCompletedHandler"></GridEvents>
         <GridTemplates>
             <DetailTemplate>
                 @{
@@ -169,6 +170,36 @@ else
         {
             args.Cancel = true;
         }
+    }
+
+
+    public bool firstrender { get; set; } = true;
+    public async Task DataBound()
+    {
+        if (firstrender)
+        {
+            var dotNetReference = DotNetObjectReference.Create(this);           // create dotnet ref
+            await Runtime.InvokeAsync<string>("detail", dotNetReference);       // send the dotnet ref to JS side
+            firstrender = false;
+        }
+    }
+    public async Task DetailDataBound(DetailDataBoundEventArgs<OgrenciDto> args)
+    {
+        if (target != null)
+        {
+            if (target == args.Data)              // return when target is equal to args.data
+            {
+                return;
+            }
+            await OgrGrid.DetailExpandCollapseRow(target);
+        }
+        target = args.Data;
+    }
+
+    [JSInvokable("DetailCollapse")]              // method called from JS when collapse is done 
+    public void DetailRowCollapse()
+    {
+        target = null;                   // empty the target when collapse action is done  
     }
 }
 

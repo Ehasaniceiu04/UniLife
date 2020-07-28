@@ -1,0 +1,101 @@
+﻿@inject HttpClient Http;
+@inject IMatToaster matToaster
+@using UniLife.Shared.Dto.Definitions
+
+<div class="col-lg-12 control-section">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class='e-mastertext'><b>Master Grid</b></div>
+            @*SelectedRowIndex=2*@
+        <SfGrid DataSource="@ogrenciDersKayitDtos" TValue="OgrenciDersKayitDto">
+            <GridEvents TValue="OgrenciDersKayitDto" RowSelected="RowSelecthandler"></GridEvents>
+            <GridColumns>
+                <GridColumn Visible="false" Field=@nameof(OgrenciDersKayitDto.OgrId) HeaderText="ogrenci Id" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+                <GridColumn Field=@nameof(OgrenciDersKayitDto.OgrNo) HeaderText="OgrenciNo"></GridColumn>
+                <GridColumn Field=@nameof(OgrenciDersKayitDto.OgrAd) HeaderText="Ad"></GridColumn>
+                <GridColumn Field=@nameof(OgrenciDersKayitDto.OgrSoy) HeaderText="Soyad"></GridColumn>
+                <GridColumn Field=@nameof(OgrenciDersKayitDto.AlTip) HeaderText="AlTip"></GridColumn>
+                <GridColumn Field=@nameof(OgrenciDersKayitDto.HBN) HeaderText="HBN"></GridColumn>
+                <GridColumn Field=@nameof(OgrenciDersKayitDto.TSkor) HeaderText="TSkor"></GridColumn>
+                <GridColumn Field=@nameof(OgrenciDersKayitDto.HarfN) HeaderText="HarfN"></GridColumn>
+                <GridColumn Field=@nameof(OgrenciDersKayitDto.GecDurum) HeaderText="GecDurum"></GridColumn>
+            </GridColumns>
+        </SfGrid>
+            <div class='e-statustext'>Seçilen öğrenci: <b>@SelectedOgr</b></div>
+            <SfGrid DataSource="@sinavSinavKayitDtos">
+                <GridColumns>
+                    <GridColumn Visible="false" Field=@nameof(SinavSinavKayitDto.SinavKayitId) HeaderText="SinavKayitId" Width="110"> </GridColumn>
+                    <GridColumn Visible="false" Field=@nameof(SinavSinavKayitDto.SinavId) HeaderText="SinavId" Width="110"></GridColumn>
+                    <GridColumn Field=@nameof(SinavSinavKayitDto.SinavAd) HeaderText="Sinav Adı" Width="110"></GridColumn>
+                    <GridColumn Field=@nameof(SinavSinavKayitDto.EtkiOran) HeaderText="Etki Oran" Width="110"></GridColumn>
+                    <GridColumn Field=@nameof(SinavSinavKayitDto.OgrNot) HeaderText="Not" Width="110"></GridColumn>
+                </GridColumns>
+            </SfGrid>
+        </div>
+    </div>
+</div>
+@code{
+    [Parameter]
+    public int _dersAcilanId{ get; set; }
+
+    List<OgrenciDersKayitDto> ogrenciDersKayitDtos;
+
+    List<SinavSinavKayitDto> sinavSinavKayitDtos;
+
+    public string SelectedOgr { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            ApiResponseDto<List<OgrenciDersKayitDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDersKayitDto>>>("api/derskayit/GetOgrenciDersKayitsByDers/" + _dersAcilanId);
+
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                ogrenciDersKayitDtos = apiResponse.Result;
+                matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+
+            }
+            else
+                matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
+        }
+    }
+
+    public async Task RowSelecthandler(RowSelectEventArgs<OgrenciDersKayitDto> args)
+    {
+        SelectedOgr = args.Data.OgrAd+" "+ args.Data.OgrSoy;
+
+        try
+        {
+            ApiResponseDto<List<SinavSinavKayitDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<SinavSinavKayitDto>>>($"api/Sinavkayit/GetSinavKayitsByOgrenciDers/{args.Data.OgrId}/{_dersAcilanId}");
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                sinavSinavKayitDtos = apiResponse.Result;
+                matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+            }
+            else
+                matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
+        }
+
+
+    }
+}
+
+
+<style>
+    .e-statustext,
+    .e-mastertext {
+        font-size: 15px;
+        font-family: Roboto;
+        opacity: 0.87;
+        padding: 1em;
+    }
+</style>

@@ -107,7 +107,13 @@ namespace UniLife.Server.Controllers
                await _dersKayitManager.PutUpdateOgrencisDersKayitsDeleteExSubes(reqEntityIdWithOtherEntitiesIds) :
                new ApiResponse(Status400BadRequest, "PutUpdateOgrencisDersKayitsDeleteExSubes Model is Invalid");
 
-
+        [HttpGet]
+        [Authorize(Permissions.DersKayit.Read)]
+        [Route("GetOgrenciDersKayitsByDers/{dersAcilanId}")]
+        public async Task<ApiResponse> GetOgrenciDersKayitsByDers(int dersAcilanId)
+            => ModelState.IsValid ?
+                await _dersKayitManager.GetOgrenciDersKayitsByDers(dersAcilanId) :
+                new ApiResponse(Status400BadRequest, "DersKayit Model is Invalid");
         
     }
 }

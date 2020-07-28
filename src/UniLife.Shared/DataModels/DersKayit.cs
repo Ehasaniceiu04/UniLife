@@ -18,5 +18,10 @@ namespace UniLife.Shared.DataModels
         public string Not { get; set; }
         public int SonucDurum { get; set; } // UniLife.Shared.Dto.DersSonucDurum enumu
         public int Sonuc { get; set; }
+        public int HBN { get; set; }
+        public double TSkor { get; set; }
+        public string HarfNot { get; set; }
+        public bool GecDurum { get; set; }
+        public string AlTip { get; set; }
     }
 }
