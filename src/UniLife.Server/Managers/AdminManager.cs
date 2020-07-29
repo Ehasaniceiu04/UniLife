@@ -229,7 +229,7 @@ namespace UniLife.Server.Managers
                         TCKN = applicationUser.UserName,
                         Email = applicationUser.Email,
                         ApplicationUserId = applicationUser.Id,
-                        OgrNo = applicationUser.UserName
+                        OgrNo = Convert.ToInt64(applicationUser.UserName)
                         //Roles = await _userManager.GetRolesAsync(applicationUser).ConfigureAwait(true) as List<string>
                     });
                 }

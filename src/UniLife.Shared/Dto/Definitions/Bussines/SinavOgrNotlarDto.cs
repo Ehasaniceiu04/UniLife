@@ -13,6 +13,6 @@ namespace UniLife.Shared.Dto.Definitions
         public int OgrenciId { get; set; }
         public double OgrNot { get; set; }
         public string OgrenciAd { get; set; }
-        public string OgrenciNo { get; set; }
+        public long OgrenciNo { get; set; }
     }
 }

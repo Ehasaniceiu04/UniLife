@@ -9,5 +9,6 @@ namespace UniLife.Shared
     public class Settings
     {
         public bool NotAllowOneDerslikMultiReserv { get; set; }
+        public string OgrNoDesen { get; set; }
     }
 }

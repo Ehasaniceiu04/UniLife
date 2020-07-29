@@ -1,16 +1,14 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Threading.Tasks;
-
-using static Microsoft.AspNetCore.Http.StatusCodes;
-
 using UniLife.CommonUI.Services.Contracts;
+using UniLife.Shared;
 using UniLife.Shared.Dto;
 using UniLife.Shared.Dto.Account;
-using Newtonsoft.Json;
 using UniLife.Shared.Dto.Definitions;
-using System.Collections.Generic;
-using Syncfusion.Blazor.CircularGauge;
-using UniLife.Shared;
+using static Microsoft.AspNetCore.Http.StatusCodes;
+//using System.Net.Http;
+//using UniLife.CommonUI.Extensions;
 
 namespace UniLife.CommonUI
 {
@@ -113,6 +111,25 @@ namespace UniLife.CommonUI
             }
             return new AkademisyenDto();
         }
+
+        //public async Task<Settings> GetAppSettings()
+        //{
+        //    if (AppSettings != null)
+        //    {
+        //        return AppSettings;
+        //    }
+        //    HttpClient Http=new HttpClient();
+        //    ApiResponseDto apiResponse = await _userProfileApi.GetAkademisyenState();
+        //    Settings settings = await Http.GetJsonAsyncExtension<Settings>("settings.json");
+        //    //        appState.AppSettings = settings;
+
+        //    if (apiResponse.StatusCode == Status200OK)
+        //    {
+        //        AkademisyenState = JsonConvert.DeserializeObject<AkademisyenDto>(apiResponse.Result.ToString());
+        //        return AkademisyenState;
+        //    }
+        //    return new AkademisyenDto();
+        //}
 
         public async Task UpdateUserProfileCount(int count)
         {

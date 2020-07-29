@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using static Microsoft.AspNetCore.Http.StatusCodes;
 using UniLife.Shared.Dto.Definitions;
 using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
 
 namespace UniLife.Server.Controllers
 {
@@ -17,11 +18,13 @@ namespace UniLife.Server.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IAccountManager _accountManager;
+        public IConfiguration Configuration { get; }
 
         private readonly ApiResponse _invalidUserModel;
 
-        public AccountController(IAccountManager accountManager)
+        public AccountController(IAccountManager accountManager, IConfiguration configuration)
         {
+            Configuration = configuration;
             _accountManager = accountManager;
             _invalidUserModel = new ApiResponse(Status400BadRequest, "User Model is Invalid"); // Could we inject this? As some form of 'Errors which has constant values'?
         }
@@ -105,7 +108,7 @@ namespace UniLife.Server.Controllers
         [HttpPost("CreateOgrenci")]
         [Authorize(Permissions.User.Create)]
         public async Task<ApiResponse> CreateOgrenci(OgrenciDto ogrenciDto)
-        => ModelState.IsValid ? await _accountManager.CreateOgrenci(ogrenciDto) : _invalidUserModel;
+        => ModelState.IsValid ? await _accountManager.CreateOgrenci(ogrenciDto, Configuration["UniLife:OgrNoDesen"]) : _invalidUserModel;
 
         ///----------Admin AkademisyenUser Management Interface Methods
         // POST: api/Account/Create

@@ -27,7 +27,7 @@
                         <div class="col-sm-12 col-md-6">
                             <div class="form-row form-group form-inline ">
                                 <label class="col-sm-2" for="OgrNo">Öğrenci NO:</label>
-                                <SfTextBox @bind-Value="@_OgrenciDto.OgrNo" Enabled="false" ID="OgrNo" CssClass="col-sm-4"></SfTextBox>
+                                <SfNumericTextBox @bind-Value="@_OgrenciDto.OgrNo" Enabled="false" ID="OgrNo" CssClass="col-sm-4"></SfNumericTextBox>
                                 <label class="col-sm-2" for="DosNo">Dosya NO:</label>
                                 <SfTextBox ID="DosNo" CssClass="col-sm-2"></SfTextBox>
                                 <SfCheckBox Label="Durum" CssClass="col-sm-1" @bind-Checked="@_OgrenciDto.Durum"></SfCheckBox>

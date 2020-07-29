@@ -8,7 +8,7 @@ namespace UniLife.Shared.Dto.Definitions
         public string Ad { get; set; }
 
         public string KisaAd { get; set; }
-        public int Kod { get; set; }
+        public string Kod { get; set; }
         public string AdEn { get; set; }
         public string OsymKod { get; set; }
         public int OgrenimTurId { get; set; }

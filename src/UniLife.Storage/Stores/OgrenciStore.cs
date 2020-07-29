@@ -181,5 +181,10 @@ namespace UniLife.Storage.Stores
             await _db.SaveChangesAsync(CancellationToken.None);
 
         }
+
+        public async Task<long> GetLastOgrNo(int fakId, int bolId)
+        {
+            return await _db.Ogrencis.Where(x => x.FakulteId == fakId && x.BolumId == bolId).MaxAsync(x => x.OgrNo);
+        }
     }
 }

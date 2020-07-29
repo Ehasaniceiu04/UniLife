@@ -37,7 +37,7 @@ namespace UniLife.Server.Managers
         // Admin policies. 
 
         Task<ApiResponse> Create(RegisterDto parameters);
-        Task<ApiResponse> CreateOgrenci(OgrenciDto ogrenciDto);
+        Task<ApiResponse> CreateOgrenci(OgrenciDto ogrenciDto, string ogrNoDesen);
         Task<ApiResponse> CreateAkademisyen(AkademisyenDto akademisyenDto);
         Task<ApiResponse> CreatePersonel(PersonelDto personelDto);
 

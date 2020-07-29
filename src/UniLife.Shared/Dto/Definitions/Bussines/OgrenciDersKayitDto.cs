@@ -10,7 +10,7 @@ namespace UniLife.Shared.Dto.Definitions
     public class OgrenciDersKayitDto
     {
         public int OgrId { get; set; }
-        public string OgrNo { get; set; }
+        public long OgrNo { get; set; }
         public string OgrAd { get; set; }
         public string OgrSoy { get; set; }
         public string AlTip { get; set; }

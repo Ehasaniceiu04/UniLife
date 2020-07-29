@@ -11,7 +11,7 @@ namespace UniLife.Shared.Dto.Definitions
     {
         [Key]
         public int Id { get; set; }
-        public string OgrNo { get; set; }
+        public long OgrNo { get; set; }
         public string Ad { get; set; }
         public string Soyad { get; set; }
         public double TopKredi { get; set; }

@@ -35,6 +35,9 @@ namespace UniLife.Server.Managers
         private readonly IConfiguration _configuration;
         private readonly SignInManager<ApplicationUser> _signInManager;
 
+        private readonly IFakulteStore _fakulteStore;
+        private readonly IBolumStore _bolumStore;
+
         private static readonly UserInfoDto LoggedOutUser = new UserInfoDto { IsAuthenticated = false, Roles = new List<string>() };
 
         public AccountManager(UserManager<ApplicationUser> userManager,
@@ -46,7 +49,9 @@ namespace UniLife.Server.Managers
             IConfiguration configuration,
             IOgrenciStore ogrenciStore,
             IAkademisyenStore akademisyenStore,
-            IPersonelStore personelStore)
+            IPersonelStore personelStore,
+            IFakulteStore fakulteStore,
+            IBolumStore bolumStore)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -58,6 +63,8 @@ namespace UniLife.Server.Managers
             _ogrenciStore = ogrenciStore;
             _akademisyenStore = akademisyenStore;
             _personelStore = personelStore;
+            _fakulteStore = fakulteStore;
+            _bolumStore = bolumStore;
         }
 
         public async Task<ApiResponse> ConfirmEmail(ConfirmEmailDto parameters)
@@ -305,7 +312,7 @@ namespace UniLife.Server.Managers
             }
             catch (Exception ex)
             {
-                _logger.LogInformation("Accountmanager _ogrenciStore.Update güncelleme hatsı: {0} inner {1} stacktrace:{2}", ex.Message,ex.InnerException,ex.StackTrace);
+                _logger.LogInformation("Accountmanager _ogrenciStore.Update güncelleme hatsı: {0} inner {1} stacktrace:{2}", ex.Message, ex.InnerException, ex.StackTrace);
                 return new ApiResponse(Status400BadRequest, "Öğrenci kullanıcı güncellemesi hatası oluştu: {0}", ex.Message);
             }
 
@@ -396,7 +403,7 @@ namespace UniLife.Server.Managers
             return new ApiResponse(Status200OK, "Kullanıcı bilgileri güncellendi");
         }
 
-        
+
 
 
         public async Task<ApiResponse> Create(RegisterDto parameters)
@@ -487,17 +494,18 @@ namespace UniLife.Server.Managers
             }
         }
 
-        public async Task<ApiResponse> CreateOgrenci(OgrenciDto ogrenciDto)
+        public async Task<ApiResponse> CreateOgrenci(OgrenciDto ogrenciDto, string ogrNoDesen)
         {
             try
             {
                 Guid possibleUserId = Guid.NewGuid();
 
-                ogrenciDto.OgrNo = "U"+GenerateUserId();
+                //ogrenciDto.OgrNo = "U"+ GenerateTimeStampUserId();
+                ogrenciDto.OgrNo = await GenerateOgrNoByDesen(ogrenciDto, ogrNoDesen);
 
                 var user = new ApplicationUser
                 {
-                    UserName = ogrenciDto.OgrNo,
+                    UserName = ogrenciDto.OgrNo.ToString(),
                     FirstName = ogrenciDto.Ad,
                     LastName = ogrenciDto.Soyad,
                     FullName = ogrenciDto.Ad + " " + ogrenciDto.Soyad,
@@ -517,7 +525,7 @@ namespace UniLife.Server.Managers
                 {
                     var claimsResult = _userManager.AddClaimsAsync(user, new Claim[]{
                         new Claim(Policies.IsUser, string.Empty),
-                        new Claim(JwtClaimTypes.Name, ogrenciDto.OgrNo),
+                        new Claim(JwtClaimTypes.Name, ogrenciDto.OgrNo.ToString()),
                         new Claim(JwtClaimTypes.Email, ogrenciDto.Email),
                         new Claim(JwtClaimTypes.EmailVerified, "false", ClaimValueTypes.Boolean)
                     }).Result;
@@ -589,7 +597,7 @@ namespace UniLife.Server.Managers
                 {
                     ApplicationUserId = user.Id,
                     IsAuthenticated = false,
-                    OgrNo = user.UserName,
+                    OgrNo = ogrenciDto.OgrNo,//user.UserName,
                     Email = user.Email,
                     Ad = user.FirstName,
                     Soyad = user.LastName,
@@ -607,13 +615,52 @@ namespace UniLife.Server.Managers
             }
         }
 
-        private static string GenerateUserId()
+        private static string GenerateTimeStampUserId()
         {
             DateTime dtReturn = DateTime.Now.ToLocalTime();
             DateTime dtEPoch = new DateTime(2020, 7, 27, 0, 0, 0, DateTimeKind.Utc);
             DateTime dtTime = dtReturn.Subtract(new TimeSpan(dtEPoch.Ticks));
             long lngTimeSpan = dtTime.Ticks / 100;
             return lngTimeSpan.ToString();
+        }
+
+        private async Task<long> GenerateOgrNoByDesen(OgrenciDto ogrenciDto, string ogrNoDesen)
+        {
+            long sonOgrNo = await _ogrenciStore.GetLastOgrNo((int)ogrenciDto.FakulteId, (int)ogrenciDto.BolumId);
+            if (sonOgrNo != 0)
+            {
+                return sonOgrNo + 1;
+            }
+            else
+            {
+                string[] diziDesen = ogrNoDesen.Split(",");
+                string virgulsuzDesen = ogrNoDesen.Replace(",", "");
+
+
+                //yyyy
+                int ogrYilFormat = virgulsuzDesen.Count(x => x == 'y');
+                string yilFormat = "";
+                for (int i = 0; i < ogrYilFormat; i++)
+                {
+                    yilFormat += "y";
+                }
+                string ogrYil = DateTime.Now.ToString(yilFormat);
+
+                //fff
+                int orgFakCount = virgulsuzDesen.Count(x => x == 'f');
+                var fakulte = await _fakulteStore.GetById((int)ogrenciDto.FakulteId);
+                string orgFakKod = fakulte.Kod.PadLeft(orgFakCount, '0');
+
+                //bbb
+                int orgBolCount = virgulsuzDesen.Count(x => x == 'b');
+                var bolum = await _bolumStore.GetById((int)ogrenciDto.BolumId);
+                string orgBolKod = bolum.Kod.PadLeft(orgBolCount, '0');
+
+                long generatedOgrNo = Convert.ToInt64(ogrYil + orgFakKod + orgBolKod + "1");
+
+                return generatedOgrNo;
+            }
+            
         }
 
         public async Task<ApiResponse> CreateAkademisyen(AkademisyenDto akademisyenDto)
@@ -855,7 +902,7 @@ namespace UniLife.Server.Managers
             }
         }
 
-        
+
 
         public async Task<ApiResponse> Delete(string id)
         {
@@ -1086,7 +1133,7 @@ namespace UniLife.Server.Managers
             }
             return new ApiResponse(Status200OK, "Roller Güncellendi.");
         }
-        
+
 
         public async Task<ApiResponse> AdminResetUserPasswordAsync(Guid id, string newPassword, ClaimsPrincipal userClaimsPrincipal)
         {
