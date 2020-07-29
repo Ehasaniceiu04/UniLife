@@ -41,6 +41,8 @@ namespace UniLife.Shared.DataModels
 
         public int OgrenimDurumId { get; set; }
         public virtual OgrenimDurum OgrenimDurum{ get; set; }
+        public int OgrenimTurId { get; set; }
+        public virtual OgrenimTur OgrenimTur { get; set; }
         public bool Durum { get; set; }
 
         [System.ComponentModel.DataAnnotations.Schema.ForeignKey("Danisman")]

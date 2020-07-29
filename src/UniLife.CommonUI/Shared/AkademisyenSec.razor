@@ -1,0 +1,54 @@
+﻿@using Syncfusion.Blazor.Data
+@using UniLife.Shared.Dto.Definitions
+@using Syncfusion.Blazor.Grids
+<Dialog Baslik="Akademisyenler" @bind-isDialogOpen="@isAkademisyenDialogOpen">
+    <div class="row">
+        <SfGrid ID="AkademisyenGrid" @ref="AkademisyenGrid" TValue="AkademisyenDto" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowFiltering="true">
+            <SfDataManager Url="odata/akademisyens" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+            <GridEvents TValue="AkademisyenDto" CommandClicked="CommandClickedAkademisyen"></GridEvents>
+            <GridColumns>
+                <GridColumn Visible="false" Field=@nameof(AkademisyenDto.Id) IsPrimaryKey="true" TextAlign="TextAlign.Right"></GridColumn>
+                <GridColumn Field=@nameof(AkademisyenDto.Ad) HeaderText="Ad"></GridColumn>
+                <GridColumn Field=@nameof(AkademisyenDto.Soyad) HeaderText="Soyad"></GridColumn>
+                <GridColumn Field=@nameof(AkademisyenDto.TCKN) HeaderText="TCKN"></GridColumn>
+                <GridColumn Field=@nameof(AkademisyenDto.OgrtNo) HeaderText="Akademisyen No"></GridColumn>
+                <GridColumn>
+                    <GridCommandColumns>
+                        <GridCommandColumn Type="CommandButtonType.None" Title="Akademisyen Ekle" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-Circle_Add", CssClass="e-flat" })"></GridCommandColumn>
+                    </GridCommandColumns>
+                </GridColumn>
+            </GridColumns>
+        </SfGrid>
+    </div>
+</Dialog>
+@code{
+    SfGrid<AkademisyenDto> AkademisyenGrid;
+
+    [Parameter]
+    public EventCallback<AkademisyenDto> CommandClickHandlerAkademisyen{ get; set; }
+
+    public async Task CommandClickedAkademisyen(Syncfusion.Blazor.Grids.CommandClickEventArgs<AkademisyenDto> args)
+    {
+        if (args.CommandColumn.Title == "Akademisyen Ekle")
+        {
+            await CommandClickHandlerAkademisyen.InvokeAsync(args.RowData);
+            isAkademisyenDialogOpen = false;
+        }
+    }
+
+    private bool _value;
+    [Parameter]
+    public bool isAkademisyenDialogOpen
+    {
+        get => _value;
+        set
+        {
+            if (_value == value) return;
+            _value = value;
+            isAkademisyenDialogOpenChanged.InvokeAsync(value);
+        }
+    }
+
+    [Parameter]
+    public EventCallback<bool> isAkademisyenDialogOpenChanged { get; set; }
+}

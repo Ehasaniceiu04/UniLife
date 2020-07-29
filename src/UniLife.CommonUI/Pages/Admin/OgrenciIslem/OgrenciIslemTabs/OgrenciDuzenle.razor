@@ -8,16 +8,17 @@
 @inject AuthenticationStateProvider authStateProvider
 @using Syncfusion.Blazor.Calendars
 @using System.IO;
+@inject AppState appState
 
 
 <div class="card">
     <div class="row info-panel">
         <div class="col-sm-12 col-md-12">
             @*<div class="row">
-            <div class="col-sm-12 text-center">
-                <p>Akademik Bilgiler</p>
-            </div>
-        </div>*@
+                    <div class="col-sm-12 text-center">
+                        <p>Akademik Bilgiler</p>
+                    </div>
+                </div>*@
             <div class="server-action-menu">
                 @*Model=@_OgrenciDto OnValidSubmit="Kaydet"*@
                 <EditForm EditContext="@EC">
@@ -99,10 +100,11 @@
                                 <label class="col-sm-2" for="AyrTarih">Ayrılma Tarihi:</label>
                                 <SfDatePicker ID="AyrTarih" TValue="DateTime?" @bind-Value="@_OgrenciDto.AyrilTarih" CssClass="col-sm-4 pb-1" Placeholder="Ayrılma Tarihi"></SfDatePicker>
 
-                                <label class="col-sm-2" for="ogrentip">Öğrenim Tipi:</label>
-                                <SfDropDownList ID="ogrentip" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
-                                    <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
-                                    <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
+                                <label class="col-sm-2" for="ogrentip">Öğrenim Türü:</label>
+                                <SfDropDownList ID="DropOgrenimTur" @ref="DropOgrenimTur" TItem="OgrenimTurDto" CssClass="col-sm-4 pb-1"
+                                                TValue="int?" PopupHeight="230px" Placeholder="Bölüm"
+                                                @bind-Value="@_OgrenciDto.OgrenimTurId" DataSource="@ogrenimTurDtos">
+                                    <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                                 </SfDropDownList>
                                 <label class="col-sm-2" for="notsis">Not Sistemi:</label>
                                 <SfDropDownList ID="notsis" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
@@ -130,7 +132,7 @@
                                     <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
                                 </SfDropDownList>
                                 <label class="col-sm-2" for="danis">Danışmanı:</label>
-                                <SfTextBox ID="danis" CssClass="col-sm-4"></SfTextBox>
+                                <SfButton ID="danis" IconCss="e-icons e-Resource" EnableRtl="true" OnClick="AkademisyenAta" CssClass="e-flat col-sm-4" IsPrimary="true">@(string.IsNullOrWhiteSpace(danismanAd) ?"Ekle": danismanAd)</SfButton>
                                 <label class="col-sm-2" for="digDanisman">Diğer Danışman:</label>
                                 <SfTextBox ID="digDanisman" CssClass="col-sm-4"></SfTextBox>
                                 <label class="col-sm-2" for="capYan">Çap Yandal Durum:</label>
@@ -176,12 +178,23 @@
     </div>
 </div>
 
-
+@if (akaDialogOpen)
+{
+    @*<ProgramSec CommandClickHandlerProgram="AkaSecildi" @bind-isProgramDialogOpen="@akaDialogOpen"></ProgramSec>*@
+    <AkademisyenSec CommandClickHandlerAkademisyen="AkaSecildi" @bind-isAkademisyenDialogOpen="@akaDialogOpen"></AkademisyenSec>
+}
 
 
 
 @code {
 
+    string danismanAd;
+    bool akaDialogOpen;
+    async Task AkaSecildi(AkademisyenDto akademisyenDto)
+    {
+        danismanAd = akademisyenDto.Ad + " " + akademisyenDto.Soyad;
+        _OgrenciDto.DanismanId = akademisyenDto.Id;
+    }
 
 
     private EditContext EC { get; set; }
@@ -231,6 +244,7 @@
     SfDropDownList<int?, SinifDto> DropSinif;
     SfDropDownList<int?, KayitNedenDto> DropKayitNeden;
     SfDropDownList<int?, OgrenimDurumDto> DropOgrenimDurum;
+    SfDropDownList<int?, OgrenimTurDto> DropOgrenimTur;
 
 
 
@@ -247,6 +261,7 @@
     List<MufredatDto> mufredatDtos = new List<MufredatDto>();
     List<KayitNedenDto> kayitNedenDtos = new List<KayitNedenDto>();
     List<OgrenimDurumDto> ogrenimDurumDtos = new List<OgrenimDurumDto>();
+    List<OgrenimTurDto> ogrenimTurDtos = new List<OgrenimTurDto>();
 
     List<SinifDto> sinifDtos = new List<SinifDto>
 {
@@ -282,16 +297,23 @@
 
     protected override void OnInitialized()
     {
+        danismanAd = "";
+
         EC = new EditContext(_OgrenciDto);
 
         ReadFakultes().ConfigureAwait(true);
         ReadKayitNedens().ConfigureAwait(true);
         ReadOgrenimDurums().ConfigureAwait(true);
+        ReadOgrenimTurs().ConfigureAwait(true);
         if (_OgrenciDto.Id != 0)
         {
             ReadBolums(_OgrenciDto.FakulteId).ConfigureAwait(true);
             ReadPrograms(_OgrenciDto.BolumId).ConfigureAwait(true);
             ReadMufredats(_OgrenciDto.ProgramId).ConfigureAwait(true);
+        }
+        if (_OgrenciDto.DanismanId.HasValue)
+        {
+            ReadAkademisyens(_OgrenciDto.DanismanId).ConfigureAwait(true);
         }
         //StateHasChanged();
     }
@@ -445,6 +467,29 @@
         }
     }
 
+    async Task ReadAkademisyens(int? DanismanId)
+    {
+
+        try
+        {
+            OData<AkademisyenDto> apiResponse = await Http.GetFromJsonAsync<OData<AkademisyenDto>>($"odata/akademisyens?$select=Id,Ad,Soyad&$filter=Id eq {_OgrenciDto.DanismanId}");
+
+            if (apiResponse.Value.Count != 0)
+            {
+                var akaDanisman = apiResponse.Value.FirstOrDefault();
+                danismanAd = akaDanisman.Ad + " " + akaDanisman.Soyad;
+            }
+            else
+                matToaster.Add("Danisman bilgisi getirilemedi", MatToastType.Danger, "Hata oluştu!");
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
+        }
+    }
+
+
+
     [Parameter]
     public EventCallback<int> AkademikToOgrenci { get; set; }
 
@@ -467,7 +512,8 @@
 
                     matToaster.Add(apiResponse.Message, MatToastType.Success);
 
-                    await GoBackOgrenci();
+                    //await GoBackOgrenci();
+                    appState.OgrenciState = _OgrenciDto;
                 }
                 else
                 {
@@ -547,6 +593,22 @@
             matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Kayit neden getirilirken hata oluştu!");
         }
     }
+    async Task ReadOgrenimTurs()
+    {
+        ApiResponseDto<List<OgrenimTurDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenimTurDto>>>("api/ogrenimtur");
+
+        if (apiResponse.StatusCode == Status200OK)
+        {
+            ogrenimTurDtos = apiResponse.Result;
+
+        }
+        else
+        {
+            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Öğrenim türü getirilirken hata oluştu!");
+        }
+    }
+
+
 
     public void OnFileRemove(RemovingEventArgs args)
     {
@@ -575,7 +637,7 @@
         {
             //var path = @"path" + file.FileInfo.Name;
 
-            var path = @"../UniLife.CommonUI/wwwroot/images/ogrenci/" + _OgrenciDto.ApplicationUserId.ToString()+"."+ file.FileInfo.Type;
+            var path = @"../UniLife.CommonUI/wwwroot/images/ogrenci/" + _OgrenciDto.ApplicationUserId.ToString() + "." + file.FileInfo.Type;
 
             FileStream filestream = new FileStream(path, FileMode.Create, FileAccess.Write);
             file.Stream.WriteTo(filestream);
@@ -588,6 +650,12 @@
     public void onCreateDate()
     {
         this.date.AddIcon("append", "e-date-icon");
+    }
+
+
+    public void AkademisyenAta()
+    {
+        akaDialogOpen = true;
     }
 }
 
