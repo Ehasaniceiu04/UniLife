@@ -141,10 +141,13 @@
                                     <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
                                 </SfDropDownList>
                             </div>
+                            <div class="form-row">
+                                <SfTextBox Placeholder="Bilgi Notu" @bind-Value="@_OgrenciDto.BilgNotu" CssClass="col-sm-12" Enabled="true" Readonly="false" FloatLabelType="@FloatLabelType.Auto" Multiline="true"></SfTextBox>
+                            </div>
 
 
+                            </div>
                         </div>
-                    </div>
 
                 </EditForm>
             </div>

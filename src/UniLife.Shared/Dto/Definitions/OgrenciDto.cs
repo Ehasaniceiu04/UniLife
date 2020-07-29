@@ -67,6 +67,7 @@ namespace UniLife.Shared.Dto.Definitions
         public decimal GenelBakiye { get; set; }
         public bool IsMale { get; set; }
         public string Adres { get; set; }
+        public string BilgNotu { get; set; }
         //from UserInfoDTO
         public bool IsAuthenticated { get; set; }
 
@@ -94,6 +95,7 @@ namespace UniLife.Shared.Dto.Definitions
         public string ProgramAdi { get; set; }
         public string BolumAdi { get; set; }
         public long SinavKayitId { get; set; }
+
 
         public int Sube { get; set; }
 

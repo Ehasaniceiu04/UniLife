@@ -57,6 +57,7 @@ namespace UniLife.Storage.Stores
                                            MufredatAdi = m.Ad,
                                            Email = o.Email,
                                            OgrNo = o.OgrNo,
+                                           BilgNotu = o.BilgNotu
                                            //Roles = r.Name
                                        }).FirstOrDefaultAsync();
 
