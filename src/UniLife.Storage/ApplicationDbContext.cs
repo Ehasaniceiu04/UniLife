@@ -58,6 +58,7 @@ namespace UniLife.Storage
         public DbSet<YabanciBasvuru> YabancıBasvurus { get; set; }
         public DbSet<Il> Ils { get; set; }
         public DbSet<Nufus> Nufuss { get; set; }
+        public DbSet<Askerlik> Askerliks{ get; set; }
 
 
         //TODO Bunu böyle bırakacakmıyız.

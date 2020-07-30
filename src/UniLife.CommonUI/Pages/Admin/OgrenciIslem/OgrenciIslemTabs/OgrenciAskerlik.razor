@@ -1,0 +1,125 @@
+﻿@using UniLife.Shared.Dto.Definitions
+@using UniLife.Shared.DataModels
+@inject HttpClient Http;
+@inject IMatToaster matToaster
+@using Syncfusion.Blazor.DropDowns;
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Calendars
+
+<ControlSection>
+    <div class="row pb-2 bg-light text-dark" style="margin-right: unset;margin-left: unset;">
+        <div class="col-sm-12 col-md-6">
+            <div class="form-group row">
+                <label for="Adres" class="col-sm-2 col-form-label-sm">AskerlikDurum</label>
+                <div class="col-sm-10">
+                    <SfDropDownList ID="DropDurum" @ref="DropDurum" ShowClearButton="true" TItem="KeyValueDto" CssClass="form-control"
+                                    TValue="int?" PopupHeight="230px" Placeholder="Durum Seçiniz"
+                                    @bind-Value="@Askerlik.Durum" DataSource="@durums">
+                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                    </SfDropDownList>
+                </div>
+                <label for="Tecil" class="col-sm-2 col-form-label-sm">Tecil Tarih</label>
+                <div class="col-sm-10">
+                    <SfDatePicker ID="Tecil" @bind-Value="@Askerlik.Tecil" TValue="DateTime?" CssClass="form-control"></SfDatePicker>
+                </div>
+                <label for="Terhis" class="col-sm-2 col-form-label-sm">Terhis Tarih</label>
+                <div class="col-sm-10">
+                    <SfDatePicker ID="Terhis" @bind-Value="@Askerlik.Terhis" TValue="DateTime?" CssClass="form-control"></SfDatePicker>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6">
+            <div class="form-group row">
+                <label for="Alinis" class="col-sm-2 col-form-label-sm">Aliniş Tarih</label>
+                <div class="col-sm-10">
+                    <SfDatePicker ID="Alinis" @bind-Value="@Askerlik.Alinis" TValue="DateTime?" CssClass="form-control"></SfDatePicker>
+                </div>
+                <label for="Islem" class="col-sm-2 col-form-label-sm">İşlem Tarih</label>
+                <div class="col-sm-10">
+                    <SfDatePicker ID="Islem" @bind-Value="@Askerlik.Islem" TValue="DateTime?" CssClass="form-control"></SfDatePicker>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-5">
+                    <SfButton OnClick="Kaydet" CssClass="e-success form-control">Kaydet</SfButton>
+                </div>
+            </div>
+        </div>
+        </div>
+</ControlSection>
+@code{
+    public AskerlikDto Askerlik { get; set; } = new AskerlikDto();
+
+    List<KeyValueDto> durums = new List<KeyValueDto>
+{
+        new KeyValueDto() { Ad= "Yapmadı", Id = 0 },
+        new KeyValueDto() { Ad= "Yaptı", Id = 1 },
+    };
+
+    bool IsEdit;
+
+    [Parameter]
+    public OgrenciDto _OgrenciDto { get; set; }
+
+    SfDropDownList<int?, KeyValueDto> DropDurum;
+
+    protected async override Task OnInitializedAsync()
+    {
+        await GetAskerlik();
+    }
+
+    async Task GetAskerlik()
+    {
+        try
+        {
+            OData<AskerlikDto> apiResponse = await Http.GetFromJsonAsync<OData<AskerlikDto>>($"odata/askerliks?$filter=ApplicationUserId eq {_OgrenciDto.ApplicationUserId}");
+
+
+            if (apiResponse.Value.Count != 0)
+            {
+                Askerlik = apiResponse.Value.FirstOrDefault();
+                IsEdit = true;
+            }
+            else
+            {
+                IsEdit = false;
+            }
+
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
+        }
+    }
+
+    async Task Kaydet()
+    {
+        try
+        {
+            ApiResponseDto apiResponse;
+            Askerlik.ApplicationUserId = _OgrenciDto.ApplicationUserId;
+            if (IsEdit)
+            {
+                apiResponse = await Http.PutJsonAsync<ApiResponseDto>("api/askerlik", Askerlik);
+            }
+            else
+            {
+                apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/askerlik", Askerlik);
+
+            }
+
+
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+            }
+            else
+                matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
+        }
+    }
+}

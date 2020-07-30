@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using UniLife.Storage;
@@ -9,9 +10,10 @@ using UniLife.Storage;
 namespace UniLife.Storage.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200730161227_askerlik")]
+    partial class askerlik
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -378,7 +380,7 @@ namespace UniLife.Storage.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<DateTime?>("Alinis")
+                    b.Property<DateTime>("Alinis")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid>("ApplicationUserId")
@@ -398,7 +400,7 @@ namespace UniLife.Storage.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime?>("Islem")
+                    b.Property<DateTime>("Islem")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid>("ModifiedBy")
@@ -409,10 +411,10 @@ namespace UniLife.Storage.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<DateTime?>("Tecil")
+                    b.Property<DateTime>("Tecil")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<DateTime?>("Terhis")
+                    b.Property<DateTime>("Terhis")
                         .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
