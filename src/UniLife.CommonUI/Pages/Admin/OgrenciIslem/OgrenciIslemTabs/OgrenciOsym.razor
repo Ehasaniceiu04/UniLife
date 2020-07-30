@@ -1,0 +1,133 @@
+﻿@using UniLife.Shared.Dto.Definitions
+@using UniLife.Shared.DataModels
+@inject HttpClient Http;
+@inject IMatToaster matToaster
+@using Syncfusion.Blazor.DropDowns;
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Buttons
+
+
+<ControlSection>
+    <div class="row pb-2 bg-light text-dark" style="margin-right: unset;margin-left: unset;">
+        <div class="col-sm-12 col-md-6">
+            <div class="form-group row">
+                <label for="OsymTip" class="col-sm-2 col-form-label-sm">OsymTip</label>
+                <div class="col-sm-10">
+                    <SfTextBox ID="OsymTip" @bind-Value="@(_Osym.OsymTip)" 
+                               Multiline="true"></SfTextBox>
+                </div>
+                <label for="Yil" class="col-sm-2 col-form-label-sm">Yil</label>
+                <div class="col-sm-10">
+                    <SfTextBox ID="Yil" @bind-Value="@(_Osym.Yil)" CssClass="form-control"></SfTextBox>
+                </div>
+                <label for="Puan" class="col-sm-2 col-form-label-sm">Puan</label>
+                <div class="col-sm-10">
+                    <SfTextBox ID="Puan" @bind-Value="@(_Osym.Puan)" CssClass="form-control"></SfTextBox>
+                </div>
+                <label for="PuanTuru" class="col-sm-2 col-form-label-sm">PuanTuru</label>
+                <div class="col-sm-10">
+                    <SfTextBox ID="PuanTuru" @bind-Value="@(_Osym.PuanTuru)" CssClass="form-control"></SfTextBox>
+                </div>
+                <label for="TercihSirasi" class="col-sm-2 col-form-label-sm">TercihSirasi</label>
+                <div class="col-sm-10">
+                    <SfNumericTextBox ID="TercihSirasi" @bind-Value="@(_Osym.TercihSirasi)" CssClass="form-control"></SfNumericTextBox>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-sm-12 col-md-6">
+            <div class="form-group row">
+                <label for="BolumKodu" class="col-sm-2 col-form-label-sm">BolumKodu</label>
+                <div class="col-sm-10">
+                    <SfTextBox ID="BolumKodu" @bind-Value="@(_Osym.BolumKodu)" CssClass="form-control"></SfTextBox>
+                </div>
+                <label for="PuanYuzde" class="col-sm-2 col-form-label-sm">PuanYuzdesi</label>
+                <div class="col-sm-10">
+                    <SfTextBox ID="PuanYuzde" @bind-Value="@(_Osym.PuanYuzde)" CssClass="form-control"></SfTextBox>
+                </div>
+                <label for="BasariSira" class="col-sm-2 col-form-label-sm">BasariSira</label>
+                <div class="col-sm-10">
+                    <SfNumericTextBox ID="BasariSira" @bind-Value="@(_Osym.BasariSira)" CssClass="form-control"></SfNumericTextBox>
+                </div>
+                <label for="BasariPuan" class="col-sm-2 col-form-label-sm">BasariPuan</label>
+                <div class="col-sm-10">
+                    <SfNumericTextBox ID="BasariPuan" @bind-Value="@(_Osym.BasariPuan)" CssClass="form-control"></SfNumericTextBox>
+                </div>
+                <div class="col-sm-12">
+                    <SfCheckBox ID="OkulBirinci" Label="Okul Birincisi" CssClass="col-sm-1" @bind-Checked="@_Osym.OkulBirinci"></SfCheckBox>
+                </div>
+            </div>
+        </div>
+    </div>
+</ControlSection>
+
+@code{
+    public OsymDto _Osym { get; set; } = new OsymDto();
+
+
+    bool IsEdit;
+
+    [Parameter]
+    public OgrenciDto _OgrenciDto { get; set; }
+
+    SfDropDownList<int?, KeyValueDto> DropDurum;
+
+    protected async override Task OnInitializedAsync()
+    {
+        await GetOsym();
+    }
+
+    async Task GetOsym()
+    {
+        try
+        {
+            //OData<OsymDto> apiResponse = await Http.GetFromJsonAsync<OData<OsymDto>>($"odata/osyms?$filter=ApplicationUserId eq {_OgrenciDto.ApplicationUserId}");
+            ApiResponseDto<OsymDto> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<OsymDto>>("api/osym/GetByAppId"+ _OgrenciDto.ApplicationUserId);
+
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                _Osym = apiResponse.Result;
+                IsEdit = true;
+            }
+            else
+            {
+                IsEdit = false;
+            }
+
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
+        }
+    }
+
+    async Task Kaydet()
+    {
+        try
+        {
+            ApiResponseDto apiResponse;
+            _Osym.ApplicationUserId = _OgrenciDto.ApplicationUserId;
+            if (IsEdit)
+            {
+                apiResponse = await Http.PutJsonAsync<ApiResponseDto>("api/osym", _Osym);
+            }
+            else
+            {
+                apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/osym", _Osym);
+
+            }
+
+
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+            }
+            else
+                matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
+        }
+    }
+}

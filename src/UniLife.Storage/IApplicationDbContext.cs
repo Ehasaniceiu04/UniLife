@@ -45,7 +45,7 @@ namespace UniLife.Storage
         public DbSet<Il> Ils { get; set; }
         public DbSet<Nufus> Nufuss { get; set; }
         public DbSet<Askerlik> Askerliks { get; set; }
-
+        public DbSet<Osym> Osyms { get; set; }
 
         //TODO Bunu böyle bırakacakmıyız.
         public Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade Database { get; set; }

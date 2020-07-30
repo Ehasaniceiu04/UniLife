@@ -65,6 +65,14 @@
                     <OgrenciAskerlik _OgrenciDto="_OgrenciDto"></OgrenciAskerlik>
                 </ContentTemplate>
             </TabItem>
+            <TabItem>
+                <ChildContent>
+                    <TabHeader Text="Ösym Bilgileri"></TabHeader>
+                </ChildContent>
+                <ContentTemplate>
+                    <OgrenciOsym _OgrenciDto="_OgrenciDto"></OgrenciOsym>
+                </ContentTemplate>
+            </TabItem>
         </TabItems>
     </SfTab>
 </div>
@@ -85,6 +93,8 @@
         Tab.EnableTab(3, tabIndex > 0);
         Tab.EnableTab(4, tabIndex > 0);
         Tab.EnableTab(5, tabIndex > 0);
+        Tab.EnableTab(6, tabIndex > 0);
+        Tab.EnableTab(7, tabIndex > 0);
         Tab.Select(tabIndex);
     }
 
@@ -102,6 +112,8 @@
         Tab.EnableTab(3, false);
         Tab.EnableTab(4, false);
         Tab.EnableTab(5, false);
+        Tab.EnableTab(6, false);
+        Tab.EnableTab(7, false);
     }
 
     public async void onDonemChange()

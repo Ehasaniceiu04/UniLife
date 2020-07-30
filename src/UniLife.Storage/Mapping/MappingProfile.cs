@@ -57,6 +57,7 @@ namespace UniLife.Storage.Mapping
             CreateMap<DerslikRezerv, DerslikRezervDto>().ReverseMap();
             CreateMap<YabanciBasvuru, YabanciBasvuruDto>().ReverseMap();
             CreateMap<Nufus, NufusDto>().ReverseMap();
+            CreateMap<Osym, OsymDto>().ReverseMap();
             CreateMap<Askerlik, AskerlikDto>().ReverseMap();
         }
     }
