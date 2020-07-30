@@ -433,6 +433,7 @@ namespace UniLife.Server
             services.AddTransient<IBinaManager, BinaManager>();
             services.AddTransient<IDerslikManager, DerslikManager>();
             services.AddTransient<IDerslikRezervManager, DerslikRezervManager>();
+            services.AddTransient<INufusManager, NufusManager>();
             services.AddTransient<IUserProfileManager, UserProfileManager>();
             services.AddTransient<IYabanciBasvuruManager, YabanciBasvuruManager>();
 
@@ -644,6 +645,8 @@ namespace UniLife.Server
             builder.EntitySet<Derslik>("Dersliks");
             builder.EntitySet<Mufredat>("Mufredats");
             builder.EntitySet<Sinav>("Sinavs");
+            builder.EntitySet<Il>("Ils");
+            builder.EntitySet<Nufus>("Nufuss");
             //builder.EntitySet<SinavKayit>("SinavKayits");
             return builder.GetEdmModel();
         }

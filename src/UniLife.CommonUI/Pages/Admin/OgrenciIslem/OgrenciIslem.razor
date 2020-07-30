@@ -5,7 +5,7 @@
 @*@attribute [Authorize(Policy = Policies.IsAdmin)]*@
 
 <div class="control-section e-tab-section">
-    <SfTab @ref="Tab" LoadOn="ContentLoad.Dynamic">
+    <SfTab @ref="Tab" LoadOn="ContentLoad.Demand">
         @*Selected="OnTabSelected" Selecting="OnTabSelecting"*@
         <TabEvents Created="TabCreate" Selecting="OnTabSelecting"></TabEvents>
         <TabItems>
@@ -49,6 +49,14 @@
                     <OgrenciNotlar></OgrenciNotlar>
                 </ContentTemplate>
             </TabItem>
+            <TabItem>
+                <ChildContent>
+                    <TabHeader Text="Nûfus Bilgileri"></TabHeader>
+                </ChildContent>
+                <ContentTemplate>
+                    <OgrenciNufus _OgrenciDto="_OgrenciDto"></OgrenciNufus>
+                </ContentTemplate>
+            </TabItem>
         </TabItems>
     </SfTab>
 </div>
@@ -68,6 +76,7 @@
         Tab.EnableTab(2, tabIndex > 0);
         Tab.EnableTab(3, tabIndex > 0);
         Tab.EnableTab(4, tabIndex > 0);
+        Tab.EnableTab(5, tabIndex > 0);
         Tab.Select(tabIndex);
     }
 
@@ -84,6 +93,7 @@
         Tab.EnableTab(2, false);
         Tab.EnableTab(3, false);
         Tab.EnableTab(4, false);
+        Tab.EnableTab(5, false);
     }
 
     public async void onDonemChange()

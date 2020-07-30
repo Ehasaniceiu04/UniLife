@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using UniLife.Storage;
@@ -9,9 +10,10 @@ using UniLife.Storage;
 namespace UniLife.Storage.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200729230920_nufusil")]
+    partial class nufusil
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1271,43 +1273,6 @@ namespace UniLife.Storage.Migrations
                     b.ToTable("Harcs");
                 });
 
-            modelBuilder.Entity("UniLife.Shared.DataModels.Il", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Ad")
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp without time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("Kod")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid>("ModifiedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("ModifiedOn")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp without time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Ils");
-                });
-
             modelBuilder.Entity("UniLife.Shared.DataModels.KayitNeden", b =>
                 {
                     b.Property<int>("Id")
@@ -1454,71 +1419,6 @@ namespace UniLife.Storage.Migrations
                     b.HasIndex("ProgramId");
 
                     b.ToTable("Mufredats");
-                });
-
-            modelBuilder.Entity("UniLife.Shared.DataModels.Nufus", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Adres")
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("ApplicationUserId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Banka")
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp without time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.Property<string>("HesapNo")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Iban")
-                        .HasColumnType("text");
-
-                    b.Property<int>("IlId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Ilce")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<Guid>("ModifiedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("ModifiedOn")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp without time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.Property<string>("Sube")
-                        .HasColumnType("text");
-
-                    b.Property<string>("SubeKod")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Telefon")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("IlId");
-
-                    b.ToTable("Nufuss");
                 });
 
             modelBuilder.Entity("UniLife.Shared.DataModels.Ogrenci", b =>
@@ -2577,21 +2477,6 @@ namespace UniLife.Storage.Migrations
                     b.HasOne("UniLife.Shared.DataModels.Program", "Program")
                         .WithMany()
                         .HasForeignKey("ProgramId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("UniLife.Shared.DataModels.Nufus", b =>
-                {
-                    b.HasOne("UniLife.Shared.DataModels.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("UniLife.Shared.DataModels.Il", "Il")
-                        .WithMany()
-                        .HasForeignKey("IlId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

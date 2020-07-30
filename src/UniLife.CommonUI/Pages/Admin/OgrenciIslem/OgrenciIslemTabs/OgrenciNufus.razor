@@ -1,0 +1,158 @@
+﻿@using UniLife.Shared.Dto.Definitions
+@using UniLife.Shared.DataModels
+@inject HttpClient Http;
+@inject IMatToaster matToaster
+@using Syncfusion.Blazor.DropDowns;
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Buttons
+
+<ControlSection>
+    <div class="row pb-2 bg-light text-dark">
+        <div class="col-sm-12 col-md-6">
+            <div class="form-group row">
+                <label for="Adres" class="col-sm-2 col-form-label-sm">Adres</label>
+                <div class="col-sm-10">
+                    <SfTextBox ID="Adres" @bind-Value="@(Nufus.Adres)" CssClass="form-control" Multiline="true"></SfTextBox>
+                </div>
+                <label for="dropIl" class="col-sm-2 col-form-label-sm">Il / İlçe</label>
+                <div class="col-sm-5">
+                    <SfDropDownList ID="dropIl" @ref="dropIl" ShowClearButton="true" Index="0" TItem="IlDto" CssClass="form-control"
+                                    TValue="int?" PopupHeight="230px" Placeholder="İl seçiniz..."
+                                    @bind-Value="@Nufus.IlId" DataSource="@IlsList">
+                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                    </SfDropDownList>
+                </div>
+                <div class="col-sm-5">
+                    <SfTextBox @bind-Value="@(Nufus.Ilce)" CssClass="form-control"></SfTextBox>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="Telefon" class="col-sm-2 col-form-label-sm">Telefon</label>
+                <div class="col-sm-10">
+                    <SfTextBox ID="Telefon" @bind-Value="@(Nufus.Telefon)" CssClass="form-control"></SfTextBox>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="Banka" class="col-sm-2 col-form-label-sm">Banka Ad</label>
+                <div class="col-sm-10">
+                    <SfTextBox ID="Banka" @bind-Value="@(Nufus.Banka)" CssClass="form-control"></SfTextBox>
+                </div>
+                <label for="Sube" class="col-sm-2 col-form-label-sm">Sube</label>
+                <div class="col-sm-10">
+                    <SfTextBox ID="Sube" @bind-Value="@(Nufus.Sube)" CssClass="form-control"></SfTextBox>
+                </div>
+                <label for="SubeKod" class="col-sm-2 col-form-label-sm">SubeKod</label>
+                <div class="col-sm-10">
+                    <SfTextBox ID="SubeKod" @bind-Value="@(Nufus.SubeKod)" CssClass="form-control"></SfTextBox>
+                </div>
+                <label for="HesapNo" class="col-sm-2 col-form-label-sm">HesapNo</label>
+                <div class="col-sm-10">
+                    <SfTextBox ID="HesapNo" @bind-Value="@(Nufus.HesapNo)" CssClass="form-control"></SfTextBox>
+                </div>
+                <label for="Iban" class="col-sm-2 col-form-label-sm">Iban</label>
+                <div class="col-sm-10">
+                    <SfTextBox ID="Iban" @bind-Value="@(Nufus.Iban)" CssClass="form-control"></SfTextBox>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-3">
+                    <SfButton OnClick="Kaydet" CssClass="e-success form-control">Yenile</SfButton>
+                </div>
+                
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6">
+
+        </div>
+    </div>
+</ControlSection>
+
+@code{
+    public NufusDto Nufus { get; set; } = new NufusDto();
+    List<IlDto> IlsList=new List<IlDto>();
+
+    SfDropDownList<int?, IlDto> dropIl;
+
+    bool IsEdit;
+
+    [Parameter]
+    public OgrenciDto _OgrenciDto { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        await ReadIller();
+        await GetNufus();
+    }
+
+    async Task ReadIller()
+    {
+        try
+        {
+            OData<IlDto> apiResponse = await Http.GetFromJsonAsync<OData<IlDto>>($"odata/ils?$select=Id,Ad");
+            //OData<KeyValueDto> apiResponse = await Http.GetFromJsonAsync<OData<KeyValueDto>>($"odata/fakultes?$select=Id,Ad");
+            if (apiResponse.Value.Count != 0)
+            {
+                IlsList = apiResponse.Value;
+            }
+            else
+                matToaster.Add("", MatToastType.Danger, "İller getirilirken hata oluştu!");
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
+        }
+    }
+    async Task GetNufus()
+    {
+        try
+        {
+            OData<NufusDto> apiResponse = await Http.GetFromJsonAsync<OData<NufusDto>>($"odata/nufuss?$filter=ApplicationUserId eq {_OgrenciDto.ApplicationUserId}");
+
+
+            if (apiResponse.Value.Count != 0)
+            {
+                Nufus = apiResponse.Value.FirstOrDefault();
+                IsEdit = true;
+            }
+            else
+            {
+                IsEdit = false;
+            }
+
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
+        }
+    }
+
+    async Task Kaydet()
+    {
+        try
+        {
+            ApiResponseDto apiResponse;
+            Nufus.ApplicationUserId = _OgrenciDto.ApplicationUserId;
+            if (IsEdit)
+            {
+                apiResponse = await Http.PutJsonAsync<ApiResponseDto>("api/nufus", Nufus);
+            }
+            else
+            {
+                apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/nufus", Nufus);
+
+            }
+
+
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+            }
+            else
+                matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
+        }
+    }
+}

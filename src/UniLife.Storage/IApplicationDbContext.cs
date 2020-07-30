@@ -42,6 +42,8 @@ namespace UniLife.Storage
         public DbSet<Derslik> Dersliks { get; set; }
         public DbSet<DerslikRezerv> DerslikRezervs { get; set; }
         public DbSet<YabanciBasvuru> YabancıBasvurus { get; set; }
+        public DbSet<Il> Ils { get; set; }
+        public DbSet<Nufus> Nufuss { get; set; }
 
         //TODO Bunu böyle bırakacakmıyız.
         public Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade Database { get; set; }

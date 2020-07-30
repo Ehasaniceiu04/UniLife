@@ -49,6 +49,7 @@ namespace UniLife.Storage
             services.AddTransient<IBinaStore, BinaStore>();
             services.AddTransient<IDerslikStore, DerslikStore>();
             services.AddTransient<IDerslikRezervStore, DerslikRezervStore>();
+            services.AddTransient<INufusStore, NufusStore>();
 
             //services.AddTransient<ITenantStore, TenantStore>();
             services.AddTransient<IApiLogStore, ApiLogStore>();
