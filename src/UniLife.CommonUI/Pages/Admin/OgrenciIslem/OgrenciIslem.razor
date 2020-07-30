@@ -5,7 +5,7 @@
 @*@attribute [Authorize(Policy = Policies.IsAdmin)]*@
 
 <div class="control-section e-tab-section">
-    <SfTab @ref="Tab" LoadOn="ContentLoad.Demand">
+    <SfTab @ref="Tab" LoadOn="ContentLoad.Dynamic">
         @*Selected="OnTabSelected" Selecting="OnTabSelecting"*@
         <TabEvents Created="TabCreate" Selecting="OnTabSelecting"></TabEvents>
         <TabItems>
