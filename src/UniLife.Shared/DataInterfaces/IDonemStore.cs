@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq.Expressions;
 
 namespace UniLife.Shared.DataInterfaces
 {
@@ -20,5 +21,7 @@ namespace UniLife.Shared.DataInterfaces
 
         Task DeleteById(int id);
         Task<List<DonemDto>> Current();
+
+        Task<IEnumerable<DonemDto>> GetWhere(Expression<Func<Donem, bool>> predicate);
     }
 }

@@ -8,6 +8,9 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Linq.Expressions;
+using System;
+
 namespace UniLife.Storage.Stores
 {
     public class DonemStore : IDonemStore
@@ -76,6 +79,12 @@ namespace UniLife.Storage.Stores
             //var asd = _autoMapper.Map<List<DonemDto>>((await _db.Donems.Where(e => !_db.Donems.Any(e2 => e2.Yil > e.Yil)).ToListAsync()));
             var asd = _autoMapper.Map<List<DonemDto>>((await _db.Donems.Where(e => e.Yil == _db.Donems.Max(e2 => (int)e2.Yil)).ToListAsync()));
             return asd;
+        }
+
+        public async Task<IEnumerable<DonemDto>> GetWhere(Expression<Func<Donem, bool>> predicate)
+        {
+            var result = await _db.Context.Set<Donem>().Where(predicate).ToListAsync();
+            return _autoMapper.Map<IEnumerable<DonemDto>>(result);
         }
     }
 }

@@ -9,6 +9,9 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Linq.Expressions;
+using System;
+
 namespace UniLife.Storage.Stores
 {
     public class BaseStore<T,TDto> : IBaseStore<T, TDto> where T: Entity<int>, new() 
@@ -73,6 +76,13 @@ namespace UniLife.Storage.Stores
 
             _db.Context.Set<T>().Remove(t);
             await _db.SaveChangesAsync(CancellationToken.None);
+        }
+
+
+        public async Task<IEnumerable<TDto>> GetWhere(Expression<Func<T, bool>> predicate)
+        {
+            var result = await _db.Context.Set<T>().Where(predicate).ToListAsync();
+            return _autoMapper.Map<IEnumerable<TDto>>(result);
         }
     }
 }

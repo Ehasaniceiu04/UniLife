@@ -37,6 +37,7 @@ namespace UniLife.Server.Managers
 
         private readonly IFakulteStore _fakulteStore;
         private readonly IBolumStore _bolumStore;
+        private readonly IDonemStore _donemStore;
 
         private static readonly UserInfoDto LoggedOutUser = new UserInfoDto { IsAuthenticated = false, Roles = new List<string>() };
 
@@ -51,7 +52,8 @@ namespace UniLife.Server.Managers
             IAkademisyenStore akademisyenStore,
             IPersonelStore personelStore,
             IFakulteStore fakulteStore,
-            IBolumStore bolumStore)
+            IBolumStore bolumStore,
+            IDonemStore donemStore)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -65,6 +67,7 @@ namespace UniLife.Server.Managers
             _personelStore = personelStore;
             _fakulteStore = fakulteStore;
             _bolumStore = bolumStore;
+            _donemStore = donemStore;
         }
 
         public async Task<ApiResponse> ConfirmEmail(ConfirmEmailDto parameters)
@@ -626,25 +629,28 @@ namespace UniLife.Server.Managers
 
         private async Task<long> GenerateOgrNoByDesen(OgrenciDto ogrenciDto, string ogrNoDesen)
         {
+            int donemYil = (await _donemStore.GetWhere(x => x.Durum == true)).FirstOrDefault().Yil;
             long sonOgrNo = await _ogrenciStore.GetLastOgrNo((int)ogrenciDto.FakulteId, (int)ogrenciDto.BolumId);
-            if (sonOgrNo != 0)
+
+            string[] diziDesen = ogrNoDesen.Split(",");
+            string virgulsuzDesen = ogrNoDesen.Replace(",", "");
+            //yyyy
+            int ogrYilFormatCount = virgulsuzDesen.Count(x => x == 'y');
+            string yilFormat = "";
+            for (int i = 0; i < ogrYilFormatCount; i++)
+            {
+                yilFormat += "y";
+            }
+            string ogrYil = donemYil.ToString().Substring(donemYil.ToString().Length - ogrYilFormatCount);// DateTime.Now.ToString(yilFormat);
+
+
+
+            if (sonOgrNo != 0 && (ogrYil == sonOgrNo.ToString().Substring(0, ogrYilFormatCount)))
             {
                 return sonOgrNo + 1;
             }
             else
             {
-                string[] diziDesen = ogrNoDesen.Split(",");
-                string virgulsuzDesen = ogrNoDesen.Replace(",", "");
-
-
-                //yyyy
-                int ogrYilFormat = virgulsuzDesen.Count(x => x == 'y');
-                string yilFormat = "";
-                for (int i = 0; i < ogrYilFormat; i++)
-                {
-                    yilFormat += "y";
-                }
-                string ogrYil = DateTime.Now.ToString(yilFormat);
 
                 //fff
                 int orgFakCount = virgulsuzDesen.Count(x => x == 'f');
@@ -656,7 +662,7 @@ namespace UniLife.Server.Managers
                 var bolum = await _bolumStore.GetById((int)ogrenciDto.BolumId);
                 string orgBolKod = bolum.Kod.PadLeft(orgBolCount, '0');
 
-                long generatedOgrNo = Convert.ToInt64(ogrYil + orgFakKod + orgBolKod + "1");
+                long generatedOgrNo = Convert.ToInt64(ogrYil + orgFakKod + orgBolKod + "001");
 
                 return generatedOgrNo;
             }

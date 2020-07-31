@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq.Expressions;
 
 namespace UniLife.Shared.DataInterfaces
 {
@@ -21,5 +22,6 @@ namespace UniLife.Shared.DataInterfaces
         Task<T> Update(TDto tDto);
 
         Task DeleteById(int id);
+        Task<IEnumerable<TDto>> GetWhere(Expression<Func<T, bool>> predicate);
     }
 }
