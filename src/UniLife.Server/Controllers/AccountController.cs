@@ -10,6 +10,8 @@ using static Microsoft.AspNetCore.Http.StatusCodes;
 using UniLife.Shared.Dto.Definitions;
 using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
+using IdentityServer4.Extensions;
+using Microsoft.Extensions.Logging;
 
 namespace UniLife.Server.Controllers
 {
@@ -21,11 +23,13 @@ namespace UniLife.Server.Controllers
         public IConfiguration Configuration { get; }
 
         private readonly ApiResponse _invalidUserModel;
+        private readonly ILogger<AccountController> _logger;
 
-        public AccountController(IAccountManager accountManager, IConfiguration configuration)
+        public AccountController(IAccountManager accountManager, IConfiguration configuration, ILogger<AccountController> logger)
         {
             Configuration = configuration;
             _accountManager = accountManager;
+            _logger = logger;
             _invalidUserModel = new ApiResponse(Status400BadRequest, "User Model is Invalid"); // Could we inject this? As some form of 'Errors which has constant values'?
         }
 
@@ -59,7 +63,30 @@ namespace UniLife.Server.Controllers
         [HttpPost("ResetPassword")]
         [AllowAnonymous]
         public async Task<ApiResponse> ResetPassword(ResetPasswordDto parameters)
-        =>  ModelState.IsValid ? await _accountManager.ResetPassword(parameters) : _invalidUserModel;
+        {
+            if (ModelState.IsValid)
+            {
+                if (User.IsInRole("Administrator"))
+                {
+                    return await _accountManager.ResetPassword(parameters);
+                }
+                else if(User.GetSubjectId() == parameters.UserId)
+                {
+                    _logger.LogError($"{User.GetSubjectId()} Kullanıcısı, {parameters.UserId} id li kullanıcının şifresini değiştirdi. Şifre!!!.");
+                    return await _accountManager.ResetPassword(parameters);
+                }
+                else
+                {
+                    _logger.LogError($"{User.GetSubjectId()} Kullanıcısı, {parameters.UserId} id li kullanıcının şifresini değiştirmey çalıştı. Dikkat!!!.");
+                    return new ApiResponse(Status401Unauthorized, "Başka kullanıcıların şifresini değiştirme yetkiniz yok. Bu işlem adınıza loglanmıştır!");
+                }
+                
+            }
+            else
+            {
+                return _invalidUserModel;
+            }
+        }
 
         // POST: api/Account/Logout
         [HttpPost("Logout")]

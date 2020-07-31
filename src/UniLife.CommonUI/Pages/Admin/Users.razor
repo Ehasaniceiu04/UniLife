@@ -1,6 +1,6 @@
 ﻿@page "/admin/users"
 @using UniLife.Shared.Dto.Account
-@attribute [Authorize]
+@attribute [Authorize(Roles = "Administrator,Personel")]
 @inject HttpClient Http
 @inject IAuthorizationService AuthorizationService
 @inject AuthenticationStateProvider authStateProvider
@@ -38,7 +38,8 @@ else
                             <MatIconButton Icon="edit" Disabled="true"></MatIconButton>
                         </NotAuthorized>
                     </AuthorizeView>
-                    <MatIconButton Icon="rotate_right" OnClick="@(() => OpenResetPasswordDialog(UserRow.UserName, UserRow.UserId))" Disabled="@(UserRow.UserId != userProfile.UserId)"></MatIconButton>
+                    @*Disabled="@(UserRow.UserId != userProfile.UserId)"*@
+                    <MatIconButton Icon="rotate_right" OnClick="@(() => OpenResetPasswordDialog(UserRow.UserName, UserRow.UserId))"></MatIconButton>
                     <AuthorizeView Policy="@Policies.IsAdmin" Context="AuthorizeContext">
                         <Authorized>
                             <MatIconButton Icon="delete" OnClick="@(() => OpenDeleteDialog(UserRow.UserId))"></MatIconButton>
@@ -217,13 +218,20 @@ else
         editDialogOpen = true;
     }
 
-    public void OpenResetPasswordDialog(string userName, Guid userId)
+    public void OpenResetPasswordDialog(/*UserInfoDto userInfo,*/ string userName, Guid userId)
     {
+        //if (userInfo.UserId == userId)
+        //{
         // reusing the registerParameters and User objects
         registerParameters = new RegisterDto();  // reset object
         registerParameters.UserName = userName;
         user.UserId = userId;
         resetPasswordDialogOpen = true;
+        //}
+        //else
+        //{
+        //    matToaster.Add("Bu işlemi yapmaya yetkiniz bulunmamaktadır!", MatToastType.Danger, "Dikkat!!!");
+        //}
     }
 
     public void OpenDeleteDialog(Guid userId)
