@@ -2,11 +2,12 @@
 @using UniLife.Shared.Dto.Definitions
 @inject IMatToaster matToaster
 @inject AppState appState
+@using UniLife.CommonUI.Pages.Akademisyen.AkaSinavNotlarTab
 
 
 @if (ogrenciDerslerDtos == null)
 {
-    
+
     <LoadingBackground ShowLogoBox="true">
         <label>Dersler Yükleniyor...</label>
     </LoadingBackground>
@@ -14,28 +15,28 @@
 else
 {
     <SfGrid ID="grdDersler" @ref="grdDersler" DataSource="@ogrenciDerslerDtos" Toolbar="@(new List<string>() {"ExcelExport", "CsvExport", "PdfExport" })" AllowPaging="true">
-        <GridEvents TValue="OgrenciDerslerDto" CommandClicked="CommandClickHandler" ></GridEvents>
+        <GridEvents TValue="OgrenciDerslerDto" CommandClicked="CommandClickHandler"></GridEvents>
         @*<GridTemplates>
-            <DetailTemplate>
-                @{
-                    var ogrenciDerslerInfo = (context as OgrenciDerslerDto);
-                    <SfGrid DataSource="sinavKayitDtos" TValue="KeyValueDto">
-                        <GridColumns>
-                            <GridColumn Field=@nameof(KeyValueDto.Ad) HeaderText="Sinav Ad" Width="110"></GridColumn>
-                            <GridColumn Field=@nameof(KeyValueDto.DoubleValue) HeaderText="Öğrenci Not" Width="110"></GridColumn>
-                        </GridColumns>
-                    </SfGrid>
-                    
-                    <SfGrid TValue="SinavKayitDto">
-                        <SfDataManager Url="@($"odata/sinavkayits?$expand=sinav($select=Ad;$filter=dersacilanId eq {ogrenciDerslerInfo.DersAcilanId})&$select=OgrNot&$filter=OgrenciId eq {ogrenciDerslerInfo.OgrenciId}")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
-                        <GridColumns>
-                            <GridColumn Field="Sinav.Ad" HeaderText="Sinav Ad" Width="110"></GridColumn>
-                            <GridColumn Field=@nameof(SinavKayitDto.OgrNot) HeaderText="Öğrenci Not" Width="110"></GridColumn>
-                        </GridColumns>
-                    </SfGrid>
-                }
-            </DetailTemplate>
-        </GridTemplates>*@
+                <DetailTemplate>
+                    @{
+                        var ogrenciDerslerInfo = (context as OgrenciDerslerDto);
+                        <SfGrid DataSource="sinavKayitDtos" TValue="KeyValueDto">
+                            <GridColumns>
+                                <GridColumn Field=@nameof(KeyValueDto.Ad) HeaderText="Sinav Ad" Width="110"></GridColumn>
+                                <GridColumn Field=@nameof(KeyValueDto.DoubleValue) HeaderText="Öğrenci Not" Width="110"></GridColumn>
+                            </GridColumns>
+                        </SfGrid>
+
+                        <SfGrid TValue="SinavKayitDto">
+                            <SfDataManager Url="@($"odata/sinavkayits?$expand=sinav($select=Ad;$filter=dersacilanId eq {ogrenciDerslerInfo.DersAcilanId})&$select=OgrNot&$filter=OgrenciId eq {ogrenciDerslerInfo.OgrenciId}")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+                            <GridColumns>
+                                <GridColumn Field="Sinav.Ad" HeaderText="Sinav Ad" Width="110"></GridColumn>
+                                <GridColumn Field=@nameof(SinavKayitDto.OgrNot) HeaderText="Öğrenci Not" Width="110"></GridColumn>
+                            </GridColumns>
+                        </SfGrid>
+                    }
+                </DetailTemplate>
+            </GridTemplates>*@
         <GridColumns>
             <GridColumn Visible="false" Field=@nameof(OgrenciDerslerDto.DersAcilanId) HeaderText="DersAcilanId" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
             <GridColumn Field=@nameof(OgrenciDerslerDto.DersKod) HeaderText="DersKod"></GridColumn>
@@ -55,6 +56,15 @@ else
 
 }
 
+@if (ShowTumSinif)
+{
+    <Dialog Baslik="Dersi Alan Tüm Sınıf öğrencilerinin Bilgileri" @bind-isDialogOpen="@ShowTumSinif">
+        <AkaOgrSnvNots _dersAcilanDto="_dersAcilanDto"></AkaOgrSnvNots>
+    </Dialog>
+
+    
+}
+
 
 
 @code{
@@ -64,6 +74,10 @@ else
     List<OgrenciDerslerDto> ogrenciDerslerDtos;
 
     List<KeyValueDto> sinavKayitDtos;
+
+    DersAcilanDto _dersAcilanDto;
+
+    bool ShowTumSinif;
 
     protected override async Task OnInitializedAsync()
     {
@@ -88,11 +102,14 @@ else
     }
 
 
-    public void CommandClickHandler(CommandClickEventArgs<OgrenciDerslerDto> args)
+    public async Task CommandClickHandler(CommandClickEventArgs<OgrenciDerslerDto> args)
     {
         if (args.CommandColumn.Title == "Öğrenci Dersleri")
         {
-            //SinavToNotlar.InvokeAsync(args.RowData);
+            ApiResponseDto<DersAcilanDto> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<DersAcilanDto>>("api/dersAcilan/" + args.RowData.DersAcilanId);
+
+            _dersAcilanDto = apiResponse.Result;
+            ShowTumSinif = true;
         }
     }
 
@@ -108,5 +125,13 @@ else
     .e-DoubleArrowRight:before {
         content: '\e7bb';
         color: #e83e8c;
+    }
+    .mdc-dialog .mdc-dialog__container {
+        width: 100%;
+    }
+
+    .mdc-dialog .mdc-dialog__surface {
+        max-width: none;
+        width: 70%;
     }
 </style>

@@ -1,4 +1,6 @@
-﻿@inject HttpClient Http;
+﻿@*@page "/DersSinavOgrNotlar"*@
+
+@inject HttpClient Http;
 @inject IMatToaster matToaster
 @using UniLife.Shared.Dto.Definitions
 <div class="col-lg-12 control-section">
@@ -54,18 +56,17 @@
         </div>
     </div>
 </div>
-    @code{
-        [Parameter]
-        public int _dersAcilanId { get; set; }
+@code{
 
-        [Parameter]
-        public DersAcilanDto _dersAcilanDto { get; set; }
 
-        List<OgrenciDersKayitDto> ogrenciDersKayitDtos;
+    [Parameter]
+    public DersAcilanDto _dersAcilanDto { get; set; }
 
-        List<SinavSinavKayitDto> sinavSinavKayitDtos;
+    List<OgrenciDersKayitDto> ogrenciDersKayitDtos;
 
-public string SelectedOgr { get; set; }
+    List<SinavSinavKayitDto> sinavSinavKayitDtos;
+
+    public string SelectedOgr { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -125,15 +126,15 @@ public string SelectedOgr { get; set; }
                 matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
         }
     }
+}
+
+
+<style>
+    .e-statustext,
+    .e-mastertext {
+        font-size: 15px;
+        font-family: Roboto;
+        opacity: 0.87;
+        padding: 1em;
     }
-
-
-    <style>
-        .e-statustext,
-        .e-mastertext {
-            font-size: 15px;
-            font-family: Roboto;
-            opacity: 0.87;
-            padding: 1em;
-        }
-    </style>
+</style>

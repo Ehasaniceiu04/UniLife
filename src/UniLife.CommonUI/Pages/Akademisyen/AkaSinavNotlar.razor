@@ -7,7 +7,7 @@
     seçilen sınavın öğrencilerini açacak notlar girilecek.*@
 
 <div class="control-section e-tab-section">
-    <SfTab @ref="SinavNotTab" LoadOn="ContentLoad.Demand">
+    <SfTab @ref="SinavNotTab" LoadOn="ContentLoad.Dynamic">
         @*Selected="OnTabSelected" Selecting="OnTabSelecting"*@
         <TabEvents Created="TabCreate" Selecting="OnTabSelecting"></TabEvents>
         <TabItems>
