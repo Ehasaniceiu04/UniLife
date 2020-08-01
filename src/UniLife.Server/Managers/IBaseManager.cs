@@ -18,5 +18,8 @@ namespace UniLife.Server.Managers
         Task<ApiResponse> Create(TDto tDto);
         Task<ApiResponse> Update(TDto tDto);
         Task<ApiResponse> Delete(int id);
+
+        Task<ApiResponse> GetWhere(System.Linq.Expressions.Expression<Func<T, bool>> predicate);
+        Task<ApiResponse> First(System.Linq.Expressions.Expression<Func<T, bool>> predicate);
     }
 }

@@ -1,0 +1,87 @@
+﻿@inject HttpClient Http;
+@using Syncfusion.Blazor.Buttons
+@inject Microsoft.AspNetCore.Components.NavigationManager UriHelper
+@inject IMatToaster matToaster
+@using UniLife.Shared.Dto.Definitions
+@using Syncfusion.Blazor.Inputs
+
+<div class="row pb-2" style="margin-right: unset;margin-left: unset;">
+    <div class="col-sm-12 col-md-6">
+        <div class="form-group row">
+            <label for="GelUniv" class="col-sm-2 col-form-label-sm">Geldiği Üniversite</label>
+            <div class="col-sm-10">
+                @*<SfTextBox ID="OsymTip" @bind-Value="@(_OgrenciDigerDto.OsymTip)" Multiline="true"></SfTextBox>*@
+                <SfTextBox ID="GelUniv" @bind-Value="@(_OgrenciDigerDto.GelUniv)"></SfTextBox>
+            </div>
+            <label for="GelBolum" class="col-sm-2 col-form-label-sm">Geldiği Bölüm</label>
+            <div class="col-sm-10">
+                <SfTextBox ID="GelBolum" @bind-Value="@(_OgrenciDigerDto.GelBolum)"></SfTextBox>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-sm-12 col-md-6">
+        <div class="form-group row">
+            <label for="GelBirim" class="col-sm-2 col-form-label-sm">Geldiği Birim</label>
+            <div class="col-sm-10">
+                <SfTextBox ID="GelBirim" @bind-Value="@(_OgrenciDigerDto.GelBirim)"></SfTextBox>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-3">
+                <SfButton OnClick="@(()=>Kaydet("PostSaveGecis"))" CssClass="e-success form-control">Kaydet</SfButton>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@code{
+
+
+    [Parameter]
+    public OgrenciDto _OgrenciDto { get; set; } = new OgrenciDto();
+    public OgrenciDigerDto _OgrenciDigerDto { get; set; } = new OgrenciDigerDto();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            ApiResponseDto<OgrenciDigerDto> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<OgrenciDigerDto>>("api/OgrenciDiger/GetOgrDigerByOgrId/" + _OgrenciDto.Id);
+
+
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                _OgrenciDigerDto = apiResponse.Result;
+            }
+            else
+            {
+
+            }
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
+        }
+    }
+
+    async Task Kaydet(string PostType)
+    {
+        try
+        {
+            _OgrenciDigerDto.OgrenciId = _OgrenciDto.Id;
+            ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>($"api/ogrenciDiger/{PostType}/", _OgrenciDigerDto);
+
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+            }
+            else
+                matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
+        }
+    }
+}

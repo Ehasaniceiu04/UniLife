@@ -39,7 +39,7 @@ namespace UniLife.Storage.Stores
             var t = await _db.Context.Set<T>().SingleOrDefaultAsync(t => t.Id == id);
 
             if (t == null)
-                throw new InvalidDataException($"Unable to find T with ID: {id}");
+                throw new InvalidDataException($"Kayıt bulunamamıştır. ID: {id}");
 
             return _autoMapper.Map<TDto>(t);
         }
@@ -83,6 +83,12 @@ namespace UniLife.Storage.Stores
         {
             var result = await _db.Context.Set<T>().Where(predicate).ToListAsync();
             return _autoMapper.Map<IEnumerable<TDto>>(result);
+        }
+
+        public async Task<TDto> First(Expression<Func<T, bool>> predicate)
+        {
+            var result = await _db.Context.Set<T>().Where(predicate).FirstOrDefaultAsync();
+            return _autoMapper.Map<TDto>(result);
         }
     }
 }

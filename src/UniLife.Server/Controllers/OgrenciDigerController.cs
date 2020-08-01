@@ -56,5 +56,52 @@ namespace UniLife.Server.Controllers
         [Authorize(Roles = "Administrator,Personel")]
         public async Task<ApiResponse> Delete(int id)
             => await _ogrenciDigerManager.Delete(id);
+
+        // POST: api/OgrenciDiger
+        [HttpPost]
+        [Authorize(Roles = "Administrator,Personel")]
+        [Route("PostSaveGecis")]
+        public async Task<ApiResponse> PostSaveGecis([FromBody] OgrenciDigerDto ogrenciDigerDto)
+            => ModelState.IsValid ?
+                await _ogrenciDigerManager.PostSaveGecis(ogrenciDigerDto) :
+                new ApiResponse(Status400BadRequest, "OgrenciDiger Model is Invalid");
+
+        [HttpPost]
+        [Authorize(Roles = "Administrator,Personel")]
+        [Route("PostSaveKayitDond")]
+        public async Task<ApiResponse> PostSaveKayitDond([FromBody] OgrenciDigerDto ogrenciDigerDto)
+            => ModelState.IsValid ?
+                await _ogrenciDigerManager.PostSaveKayitDond(ogrenciDigerDto) :
+                new ApiResponse(Status400BadRequest, "OgrenciDiger Model is Invalid");
+        [HttpPost]
+        [Authorize(Roles = "Administrator,Personel")]
+        [Route("PostSaveKayitCeza")]
+        public async Task<ApiResponse> PostSaveKayitCeza([FromBody] OgrenciDigerDto ogrenciDigerDto)
+            => ModelState.IsValid ?
+                await _ogrenciDigerManager.PostSaveKayitCeza(ogrenciDigerDto) :
+                new ApiResponse(Status400BadRequest, "OgrenciDiger Model is Invalid");
+        [HttpPost]
+        [Authorize(Roles = "Administrator,Personel")]
+        [Route("PostSaveKayitStaj")]
+        public async Task<ApiResponse> PostSaveKayitStaj([FromBody] OgrenciDigerDto ogrenciDigerDto)
+            => ModelState.IsValid ?
+                await _ogrenciDigerManager.PostSaveKayitStaj(ogrenciDigerDto) :
+                new ApiResponse(Status400BadRequest, "OgrenciDiger Model is Invalid");
+        [HttpPost]
+        [Authorize(Roles = "Administrator,Personel")]
+        [Route("PostSaveKayitTez")]
+        public async Task<ApiResponse> PostSaveKayitTez([FromBody] OgrenciDigerDto ogrenciDigerDto)
+            => ModelState.IsValid ?
+                await _ogrenciDigerManager.PostSaveKayitTez(ogrenciDigerDto) :
+                new ApiResponse(Status400BadRequest, "OgrenciDiger Model is Invalid");
+
+        // GET: api/OgrenciDiger
+        [HttpGet]
+        [Authorize(Roles = "Administrator,Personel")]
+        [Route("GetOgrDigerByOgrId/{ogrId}")]
+        public async Task<ApiResponse> GetOgrDigerByOgrId(int ogrId)
+        {
+            return await _ogrenciDigerManager.First(x => x.OgrenciId == ogrId);
+        }
     }
 }

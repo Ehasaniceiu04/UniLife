@@ -34,6 +34,6 @@ namespace UniLife.Shared.Dto.Definitions
 
         //Tez
         public string TezKonu { get; set; }
-        public string TezTarih { get; set; }
+        public DateTime? TezTarih { get; set; }
     }
 }

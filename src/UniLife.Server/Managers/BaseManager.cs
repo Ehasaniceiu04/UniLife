@@ -27,7 +27,8 @@ namespace UniLife.Server.Managers
 
         public async Task<ApiResponse> Get(int id)
         {
-            return new ApiResponse(Status200OK, "Retrieved Dto", await _baseStore.GetById(id));
+                return new ApiResponse(Status200OK, "Retrieved Dto", await _baseStore.GetById(id));
+            //return new ApiResponse(Status200OK, "Retrieved Dto", await _baseStore.GetById(id));
         }
 
         public async Task<ApiResponse> Create(TDto tDto)
@@ -45,6 +46,16 @@ namespace UniLife.Server.Managers
         {
             await _baseStore.DeleteById(id);
             return new ApiResponse(Status200OK, "Soft Delete Dto");
+        }
+
+        public async Task<ApiResponse> GetWhere(System.Linq.Expressions.Expression<Func<T, bool>> predicate)
+        {
+            return new ApiResponse(Status200OK, "Retrieved Dtos", await _baseStore.GetWhere(predicate));
+        }
+
+        public async Task<ApiResponse> First(System.Linq.Expressions.Expression<Func<T, bool>> predicate)
+        {
+            return new ApiResponse(Status200OK, "Retrieved Dtos", await _baseStore.First(predicate));
         }
 
     }

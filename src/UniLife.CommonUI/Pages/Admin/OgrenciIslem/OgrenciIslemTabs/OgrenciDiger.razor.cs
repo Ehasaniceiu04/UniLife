@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using UniLife.Shared.Dto.Definitions;
 using Syncfusion.Blazor.Navigations;
+using UniLife.Shared.Dto;
+using System.Net.Http.Json;
+using MatBlazor;
+using UniLife.CommonUI.Extensions;
 
 namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs
 {
@@ -19,9 +23,12 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs
         [Parameter]
         public OgrenciDto _OgrenciDto { get; set; } = new OgrenciDto();
 
-        SfTab Tab;
-        int selectedItem;
+        public OgrenciDigerDto _OgrenciDigerDto { get; set; } = new OgrenciDigerDto();
 
+        public string Visible { get; set; } = "visible";//"hidden";
+        public double[] CellSpacing = { 5, 5 };
+        public int Columns = 2;
+        public double AspectRatio = 2;//100 / 85;
         public void OnTabSelecting(SelectingEventArgs args)
         {
             if (args.IsSwiped)
@@ -32,25 +39,44 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs
 
         protected override async Task OnInitializedAsync()
         {
-            //try
-            //{
-            //    ApiResponseDto<List<OgrenciNotlarDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciNotlarDto>>>("api/sinavKayit/GetOgrenciNotlar/" + appState.OgrenciState.Id);
+            try
+            {
+                ApiResponseDto<OgrenciDigerDto> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<OgrenciDigerDto>>("api/OgrenciDiger/GetOgrDigerByOgrId/" + _OgrenciDto.Id);
 
-            //    if (apiResponse.IsSuccessStatusCode)
-            //    {
-            //        matToaster.Add($"{appState.OgrenciState.Ad} 'nin not bilgileri getirildi.", MatToastType.Success);
-            //        ogrenciNotlarDtos = apiResponse.Result;
-            //    }
-            //    else
-            //    {
-            //        ogrenciNotlarDtos = new List<OgrenciNotlarDto>();
-            //        matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
-            //}
+
+                if (apiResponse.IsSuccessStatusCode)
+                {
+                    _OgrenciDigerDto = apiResponse.Result?? new OgrenciDigerDto();
+                }
+                else
+                {
+
+                }
+            }
+            catch (Exception ex)
+            {
+                matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
+            }
+        }
+
+        async Task Kaydet(string PostType)
+        {
+            try
+            {
+                _OgrenciDigerDto.OgrenciId = _OgrenciDto.Id;
+                ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>($"api/ogrenciDiger/{PostType}", _OgrenciDigerDto);
+
+                if (apiResponse.IsSuccessStatusCode)
+                {
+                    matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+                }
+                else
+                    matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
+            }
+            catch (Exception ex)
+            {
+                matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
+            }
         }
     }
 }

@@ -2,10 +2,10 @@
 @using UniLife.Shared.DataModels
 @using Syncfusion.Blazor.DropDowns;
 @using Syncfusion.Blazor.Inputs
-@using Syncfusion.Blazor.Buttons
 @inject Microsoft.AspNetCore.Components.NavigationManager UriHelper
-@using Syncfusion.Blazor.Navigations
-
+@using Syncfusion.Blazor.Layouts
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Calendars
 
 
 <div class="card">
@@ -49,69 +49,188 @@
         </table>
     </div>
 </div>
+<br />
+<div class="dashboardParent" style="visibility: @Visible;">
+    <SfDashboardLayout CellSpacing="@CellSpacing" Columns="@Columns" CellAspectRatio="@AspectRatio">
+        <DashboardLayoutPanels>
+            <DashboardLayoutPanel Id="1" Row="0" Col="0" SizeX="1" SizeY="1">
+                <HeaderTemplate><div style="text-align: center;"><b>Geçiş Bilgileri</b></div></HeaderTemplate>
+                <ContentTemplate>
+                    <div class="row pb-2" style="margin-right: unset;margin-left: unset;">
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group row">
+                                <label for="GelUniv" class="col-sm-2 col-form-label-sm">Geldiği Üniversite</label>
+                                <div class="col-sm-10">
+                                    @*<SfTextBox ID="OsymTip" @bind-Value="@(_OgrenciDigerDto.OsymTip)" Multiline="true"></SfTextBox>*@
+                                    <SfTextBox ID="GelUniv" @bind-Value="@(_OgrenciDigerDto.GelUniv)"></SfTextBox>
+                                </div>
+                                <label for="GelBolum" class="col-sm-2 col-form-label-sm">Geldiği Bölüm</label>
+                                <div class="col-sm-10">
+                                    <SfTextBox ID="GelBolum" @bind-Value="@(_OgrenciDigerDto.GelBolum)"></SfTextBox>
+                                </div>
+                            </div>
 
-<div class="card">
-    <SfTab @ref="Tab" HeaderPlacement="HeaderPosition.Left" SelectedItem="@selectedItem" LoadOn="ContentLoad.Demand">
-        <TabEvents Selecting="OnTabSelecting"></TabEvents>
-        <TabItems>
-            <TabItem>
-                <ChildContent>
-                    <TabHeader Text="Geçiş Bilgileri"></TabHeader>
-                </ChildContent>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group row">
+                                <label for="GelBirim" class="col-sm-2 col-form-label-sm">Geldiği Birim</label>
+                                <div class="col-sm-10">
+                                    <SfTextBox ID="GelBirim" @bind-Value="@(_OgrenciDigerDto.GelBirim)"></SfTextBox>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <SfButton OnClick="@(()=>Kaydet("PostSaveGecis"))" CssClass="e-success form-control">Kaydet</SfButton>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </ContentTemplate>
+            </DashboardLayoutPanel>
+            <DashboardLayoutPanel Id="2" Row="0" Col="1" SizeX="1" SizeY="1">
+                <HeaderTemplate><div><b>Kayit Dondurma</b></div></HeaderTemplate>
+                <ContentTemplate>
+                    <div class="row pb-2" style="margin-right: unset;margin-left: unset;">
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group row">
+                                <label for="DondTarih" class="col-sm-2 col-form-label-sm">Dondurma Tarihi</label>
+                                <div class="col-sm-10">
+                                    @*<SfTextBox ID="OsymTip" @bind-Value="@(_OgrenciDigerDto.OsymTip)" Multiline="true"></SfTextBox>*@
+                                    <SfDatePicker ID="DondTarih" @bind-Value="@_OgrenciDigerDto.DondTarih" TValue="DateTime?"></SfDatePicker>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group row">
+                                <div class="col-sm-10">
+                                    <SfCheckBox ID="IsDond" Label="Dondu mu?" CssClass="col-sm-1" @bind-Checked="@_OgrenciDigerDto.IsDond"></SfCheckBox>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <SfButton OnClick="@(()=>Kaydet("PostSaveKayitDond"))" CssClass="e-success form-control">Kaydet</SfButton>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </ContentTemplate>
+            </DashboardLayoutPanel>
+            <DashboardLayoutPanel Id="3" Row="1" Col="0" SizeX="1" SizeY="1">
+                <HeaderTemplate><div><b>Ceza İşlemleri</b></div></HeaderTemplate>
+                <ContentTemplate>
+                    <div class="row pb-2" style="margin-right: unset;margin-left: unset;">
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group row">
+                                <label for="CezaTarih" class="col-sm-2 col-form-label-sm">Ceza Tarihi</label>
+                                <div class="col-sm-10">
+                                    @*<SfTextBox ID="OsymTip" @bind-Value="@(_OgrenciDigerDto.OsymTip)" Multiline="true"></SfTextBox>*@
+                                    <SfDatePicker ID="CezaTarih" @bind-Value="@_OgrenciDigerDto.CezaTarih" TValue="DateTime?"></SfDatePicker>
+                                </div>
+                                <label for="CezaAd" class="col-sm-2 col-form-label-sm">Ceza Adı</label>
+                                <div class="col-sm-10">
+                                    <SfTextBox ID="CezaAd" @bind-Value="@(_OgrenciDigerDto.CezaAd)"></SfTextBox>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group row">
+                                <label for="CezaDesc" class="col-sm-2 col-form-label-sm">Ceza Açıklaması</label>
+                                <div class="col-sm-10">
+                                    <SfTextBox ID="CezaDesc" @bind-Value="@(_OgrenciDigerDto.CezaDesc)" Multiline="true"></SfTextBox>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <SfButton OnClick="@(()=>Kaydet("PostSaveKayitCeza"))" CssClass="e-success form-control">Kaydet</SfButton>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </ContentTemplate>
+            </DashboardLayoutPanel>
+            <DashboardLayoutPanel Id="4" Row="2" Col="0" SizeX="1" SizeY="1">
+                <HeaderTemplate><div><b>Staj İşlemleri</b></div></HeaderTemplate>
+                <ContentTemplate>
+                    <div class="row pb-2" style="margin-right: unset;margin-left: unset;">
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group row">
+                                <label for="StajTarihBas" class="col-sm-2 col-form-label-sm">Staj Başlangıç Tarih</label>
+                                <div class="col-sm-10">
+                                    @*<SfTextBox ID="OsymTip" @bind-Value="@(_OgrenciDigerDto.OsymTip)" Multiline="true"></SfTextBox>*@
+                                    <SfDatePicker ID="StajTarihBas" @bind-Value="@_OgrenciDigerDto.StajTarihBas" TValue="DateTime?"></SfDatePicker>
+                                </div>
+                                <label for="StajTarihSon" class="col-sm-2 col-form-label-sm">Staj Bitiş Tarih</label>
+                                <div class="col-sm-10">
+                                    @*<SfTextBox ID="OsymTip" @bind-Value="@(_OgrenciDigerDto.OsymTip)" Multiline="true"></SfTextBox>*@
+                                    <SfDatePicker ID="StajTarihSon" @bind-Value="@_OgrenciDigerDto.StajTarihSon" TValue="DateTime?"></SfDatePicker>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group row">
+                                <label for="StajSirket" class="col-sm-2 col-form-label-sm">Staj Şirket</label>
+                                <div class="col-sm-10">
+                                    <SfTextBox ID="StajSirket" @bind-Value="@(_OgrenciDigerDto.StajSirket)" Multiline="true"></SfTextBox>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <SfButton OnClick="@(()=>Kaydet("PostSaveKayitStaj"))" CssClass="e-success form-control">Kaydet</SfButton>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </ContentTemplate>
+            </DashboardLayoutPanel>
+            <DashboardLayoutPanel Id="5" Row="2" Col="1" SizeX="1" SizeY="1">
+                <HeaderTemplate><div><b>Hazırlık İşlemleri</b></div></HeaderTemplate>
                 <ContentTemplate>
 
                 </ContentTemplate>
-            </TabItem>
-            <TabItem>
-                <ChildContent>
-                    <TabHeader Text="Kayıt Dondurma"></TabHeader>
-                </ChildContent>
+            </DashboardLayoutPanel>
+            <DashboardLayoutPanel Id="6" Row="2" Col="0" SizeX="1" SizeY="1">
+                <HeaderTemplate><div>Tez İşlemleri</div></HeaderTemplate>
+                <ContentTemplate>
+                    <div class="row pb-2" style="margin-right: unset;margin-left: unset;">
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group row">
+                                <label for="TezTarih" class="col-sm-2 col-form-label-sm">Tez Tarih</label>
+                                <div class="col-sm-10">
+                                    @*<SfTextBox ID="OsymTip" @bind-Value="@(_OgrenciDigerDto.OsymTip)" Multiline="true"></SfTextBox>*@
+                                    <SfDatePicker ID="TezTarih" @bind-Value="@_OgrenciDigerDto.TezTarih" TValue="DateTime?"></SfDatePicker>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group row">
+                                <label for="TezKonu" class="col-sm-2 col-form-label-sm">Tez Konu</label>
+                                <div class="col-sm-10">
+                                    <SfTextBox ID="TezKonu" @bind-Value="@(_OgrenciDigerDto.TezKonu)" Multiline="true"></SfTextBox>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <SfButton OnClick="@(()=>Kaydet("PostSaveKayitTez"))" CssClass="e-success form-control">Kaydet</SfButton>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </ContentTemplate>
+            </DashboardLayoutPanel>
+            <DashboardLayoutPanel Id="7" Row="2" Col="1" SizeX="1" SizeY="1">
+                <HeaderTemplate><div><b>Burs İşlemleri</b></div></HeaderTemplate>
                 <ContentTemplate>
 
                 </ContentTemplate>
-            </TabItem>
-            <TabItem>
-                <ChildContent>
-                    <TabHeader Text="Ceza İşlemleri"></TabHeader>
-                </ChildContent>
-                <ContentTemplate>
+            </DashboardLayoutPanel>
 
-                </ContentTemplate>
-            </TabItem>
-            <TabItem>
-                <ChildContent>
-                    <TabHeader Text="Staj İşlemleri"></TabHeader>
-                </ChildContent>
-                <ContentTemplate>
-
-                </ContentTemplate>
-            </TabItem>
-            <TabItem>
-                <ChildContent>
-                    <TabHeader Text="Hazırlık İşlemleri"></TabHeader>
-                </ChildContent>
-                <ContentTemplate>
-
-                </ContentTemplate>
-            </TabItem>
-            <TabItem>
-                <ChildContent>
-                    <TabHeader Text="Tez İşlemleri"></TabHeader>
-                </ChildContent>
-                <ContentTemplate>
-
-                </ContentTemplate>
-            </TabItem>
-            <TabItem>
-                <ChildContent>
-                    <TabHeader Text="Burs Bilgileri"></TabHeader>
-                </ChildContent>
-                <ContentTemplate>
-
-                </ContentTemplate>
-            </TabItem>
-        </TabItems>
-    </SfTab>
+        </DashboardLayoutPanels>
+    </SfDashboardLayout>
 </div>
 
 <style type="text/css" class="cssStyles">
@@ -129,5 +248,13 @@
         height: 100px;
         border-radius: 50px;
         box-shadow: inset 0 0 1px #e0e0e0, inset 0 0 14px rgba(0,0,0,0.2);
+    }
+
+    .e-tab.e-vertical-tab .e-content {
+        padding-top: 10px;
+    }
+
+    .e-dashboardlayout.e-control.e-responsive {
+        z-index: 1;
     }
 </style>
