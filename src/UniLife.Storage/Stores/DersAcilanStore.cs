@@ -507,6 +507,7 @@ namespace UniLife.Storage.Stores
         {
             var dersSonucs = await (from dk in _db.DersKayits.Where(x => x.OgrenciId == ogrenciId)
                                     join da in _db.DersAcilans on dk.DersAcilanId equals da.Id
+                                    join d in _db.Donems on da.DonemId equals d.Id
                                     select new OgrenciDerslerDto
                                     {
                                         OgrenciId = dk.OgrenciId,
@@ -517,7 +518,12 @@ namespace UniLife.Storage.Stores
                                         SonucDurum = ((DersSonucDurum)dk.SonucDurum).ToString(),
                                         Ort = dk.Ort,
                                         Not = dk.Not,
-                                        Durumu = ((DersSonuc)dk.Sonuc).ToString()
+                                        Durumu = ((DersSonuc)dk.Sonuc).ToString(),
+                                        Sinif = da.Sinif,
+                                        Donem = d.Ad,
+                                        IsZorunlu = da.Zorunlu,
+                                        Kredi = da.Kredi,
+                                        Akts = da.Akts
                                     }).ToListAsync();
 
             var sinavSonucs = await (from sk in _db.SinavKayits.Where(x => x.OgrenciId == ogrenciId)

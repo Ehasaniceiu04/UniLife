@@ -73,6 +73,22 @@
                     <OgrenciOsym _OgrenciDto="_OgrenciDto"></OgrenciOsym>
                 </ContentTemplate>
             </TabItem>
+            <TabItem>
+                <ChildContent>
+                    <TabHeader Text="Harç Bilgileri ?"></TabHeader>
+                </ChildContent>
+                <ContentTemplate>
+                    <OgrenciOsym _OgrenciDto="_OgrenciDto"></OgrenciOsym>
+                </ContentTemplate>
+            </TabItem>
+            <TabItem>
+                <ChildContent>
+                    <TabHeader Text="Diğer Bilgiler" IconCss="e-icons e-Menu" IconPosition="right"></TabHeader>
+                </ChildContent>
+                <ContentTemplate>
+                    <OgrenciDiger _OgrenciDto="_OgrenciDto"></OgrenciDiger>
+                </ContentTemplate>
+            </TabItem>
         </TabItems>
     </SfTab>
 </div>
@@ -157,5 +173,13 @@
 
     .e-tab .e-tab-header:not(.e-vertical) .e-toolbar-item.e-active {
         border-bottom: 1px solid #69e0f0;
+    }
+    .e-DoubleArrowRight:before {
+        content: '\e7bb';
+        color: #e83e8c;
+    }
+    .e-Menu:before {
+        content: '\e7cd';
+        color: #e83e8c;
     }
 </style>

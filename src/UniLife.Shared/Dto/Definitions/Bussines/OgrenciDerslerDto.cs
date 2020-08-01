@@ -19,6 +19,11 @@ namespace UniLife.Shared.Dto.Definitions
         public string Not { get; set; }
         public string Durumu { get; set; }
         public string SinavNotlari { get; set; }
+        public int Sinif { get; set; }
+        public string Donem { get; set; }
+        public bool IsZorunlu { get; set; }
+        public double Kredi { get; set; }
+        public int Akts { get; set; }
 
     }
 }

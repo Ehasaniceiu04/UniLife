@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using UniLife.Storage;
@@ -9,9 +10,10 @@ using UniLife.Storage;
 namespace UniLife.Storage.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200801015754_ogrencidiger")]
+    partial class ogrencidiger
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1713,81 +1715,6 @@ namespace UniLife.Storage.Migrations
                     b.ToTable("Ogrencis");
                 });
 
-            modelBuilder.Entity("UniLife.Shared.DataModels.OgrenciDiger", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("CezaAd")
-                        .HasColumnType("text");
-
-                    b.Property<string>("CezaDesc")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("CezaTarih")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp without time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.Property<DateTime?>("DondTarih")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("GelBirim")
-                        .HasColumnType("text");
-
-                    b.Property<string>("GelBolum")
-                        .HasColumnType("text");
-
-                    b.Property<string>("GelUniv")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("IsDond")
-                        .HasColumnType("boolean");
-
-                    b.Property<Guid>("ModifiedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("ModifiedOn")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp without time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.Property<int>("OgrenciId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("StajSirket")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("StajTarihBas")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime?>("StajTarihSon")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("TezKonu")
-                        .HasColumnType("text");
-
-                    b.Property<string>("TezTarih")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OgrenciId");
-
-                    b.ToTable("OgrenciDigers");
-                });
-
             modelBuilder.Entity("UniLife.Shared.DataModels.OgrenimDurum", b =>
                 {
                     b.Property<int>("Id")
@@ -2852,15 +2779,6 @@ namespace UniLife.Storage.Migrations
                     b.HasOne("UniLife.Shared.DataModels.Program", "Program")
                         .WithMany("Ogrencis")
                         .HasForeignKey("ProgramId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("UniLife.Shared.DataModels.OgrenciDiger", b =>
-                {
-                    b.HasOne("UniLife.Shared.DataModels.Ogrenci", "Ogrenci")
-                        .WithMany()
-                        .HasForeignKey("OgrenciId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

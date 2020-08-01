@@ -14,8 +14,11 @@
 }
 else
 {
-    <SfGrid ID="grdDersler" @ref="grdDersler" DataSource="@ogrenciDerslerDtos" Toolbar="@(new List<string>() {"ExcelExport", "CsvExport", "PdfExport" })" AllowPaging="true">
-        <GridEvents TValue="OgrenciDerslerDto" CommandClicked="CommandClickHandler"></GridEvents>
+
+
+    <SfGrid ID="grdDersler" @ref="grdDersler" DataSource="@ogrenciDerslerDtos" AllowGrouping="true" Toolbar="@(new List<string>() {"ExcelExport", "CsvExport", "PdfExport" })">
+        <GridEvents TValue="OgrenciDerslerDto" QueryCellInfo="QueryCellInfoHandler" CommandClicked="CommandClickHandler"></GridEvents>
+        <GridGroupSettings ShowDropArea="false" Columns="@Initial"></GridGroupSettings>
         @*<GridTemplates>
                 <DetailTemplate>
                     @{
@@ -37,21 +40,41 @@ else
                     }
                 </DetailTemplate>
             </GridTemplates>*@
-        <GridColumns>
-            <GridColumn Visible="false" Field=@nameof(OgrenciDerslerDto.DersAcilanId) HeaderText="DersAcilanId" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
-            <GridColumn Field=@nameof(OgrenciDerslerDto.DersKod) HeaderText="DersKod"></GridColumn>
-            <GridColumn Field=@nameof(OgrenciDerslerDto.DersAd) HeaderText="DersAd"></GridColumn>
-            <GridColumn Field=@nameof(OgrenciDerslerDto.SonucDurum) HeaderText="S.Durum"></GridColumn>
-            <GridColumn Field=@nameof(OgrenciDerslerDto.SinavNotlari) HeaderText="Sinav Notlar"></GridColumn>
-            <GridColumn Field=@nameof(OgrenciDerslerDto.Ort) HeaderText="Ort"></GridColumn>
-            <GridColumn Field=@nameof(OgrenciDerslerDto.Not) HeaderText="Not"></GridColumn>
-            <GridColumn Field=@nameof(OgrenciDerslerDto.Durumu) HeaderText="Durumu"></GridColumn>
-            <GridColumn>
-                <GridCommandColumns>
-                    <GridCommandColumn Type="CommandButtonType.None" Title="Öğrenci Dersleri" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
-                </GridCommandColumns>
-            </GridColumn>
-        </GridColumns>
+    <GridColumns>
+        <GridColumn Visible="false" Field=@nameof(OgrenciDerslerDto.DersAcilanId) HeaderText="DersAcilanId" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDerslerDto.DersKod) HeaderText="DersKod"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDerslerDto.DersAd) HeaderText="DersAd"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDerslerDto.SonucDurum) HeaderText="S.Durum"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDerslerDto.SinavNotlari) HeaderText="Sinav Notlar"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDerslerDto.Ort) HeaderText="Ort"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDerslerDto.Not) HeaderText="Not"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDerslerDto.Durumu) HeaderText="Durumu"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDerslerDto.Sinif) HeaderText="Sinif"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDerslerDto.Donem) HeaderText="Donem"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDerslerDto.IsZorunlu) DisplayAsCheckBox="true" HeaderText="Z"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDerslerDto.Kredi) HeaderText="Krd"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDerslerDto.Akts) HeaderText="Akts"></GridColumn>
+        <GridColumn>
+            <GridCommandColumns>
+                <GridCommandColumn Type="CommandButtonType.None" Title="Öğrenci Dersleri" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
+            </GridCommandColumns>
+        </GridColumn>
+    </GridColumns>
+        <GridGroupSettings Columns=@Template>
+            <CaptionTemplate>
+                @{
+                    var sinifContext = (context as CaptionTemplateContext);
+                    if (sinifContext.Field == "Sinif")
+                    {
+                        <div><b>@sinifContext.Field : @sinifContext.Key</b></div>
+                    }
+                    else
+                    {
+                        <div><b>@sinifContext.Key</b></div>
+                    }
+                }
+            </CaptionTemplate>
+        </GridGroupSettings>
     </SfGrid>
 
 }
@@ -62,12 +85,17 @@ else
         <AkaOgrSnvNots _dersAcilanDto="_dersAcilanDto"></AkaOgrSnvNots>
     </Dialog>
 
-    
+
 }
 
 
 
 @code{
+
+    string[] Initial = (new string[] { "Sinif", "Donem" });
+
+    string[] Template = (new string[] { "Sinif", "Donem" });
+    string[] Hide = (new string[] { "Sinif", "Donem" });
 
     SfGrid<OgrenciDerslerDto> grdDersler;
 
@@ -119,6 +147,13 @@ else
     //    sinavKayitDtos = apiResponse.Result;
 
     //}
+
+    public void QueryCellInfoHandler(QueryCellInfoEventArgs<OgrenciDerslerDto> args)
+    {
+        //# aeffc0
+        args.Cell.AddStyle(new string[] { "background-color:#eac1c1" });
+
+    }
 }
 
 <style type="text/css" class="cssStyles">
@@ -126,6 +161,7 @@ else
         content: '\e7bb';
         color: #e83e8c;
     }
+
     .mdc-dialog .mdc-dialog__container {
         width: 100%;
     }
@@ -133,5 +169,13 @@ else
     .mdc-dialog .mdc-dialog__surface {
         max-width: none;
         width: 70%;
+    }
+
+    .e-statustext,
+    .e-mastertext {
+        font-size: 15px;
+        font-family: Roboto;
+        opacity: 0.87;
+        padding: 1em;
     }
 </style>

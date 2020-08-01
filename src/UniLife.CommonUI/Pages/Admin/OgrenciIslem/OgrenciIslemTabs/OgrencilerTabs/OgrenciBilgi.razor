@@ -6,40 +6,10 @@
 @using Syncfusion.Blazor.Inputs
 @using Syncfusion.Blazor.Buttons
 @inject IJSRuntime JsRuntime
-<!--<div style="float:left;padding:45px;padding-top:70px"><img class="photo" src="@($"http://localhost:53414/_content/UniLife.CommonUI/images/ogrenci/{_OgrenciDto.ApplicationUserId.ToString()}.png")" alt="@_OgrenciDto.Id" /></div>
-<div style="padding-top:42px">
-    <span style="font-size: x-large;font-weight: bold;">@_OgrenciDto.Ad @_OgrenciDto.Soyad </span><br />
-    <h5 style="font-weight:400 !important;">@_OgrenciDto.ProgramAdi</h5><br />
-    <span class="title">Fakulte:</span> <span class="content">@_OgrenciDto.FakulteAdi</span><br />
-    <span class="title">OgrNo:</span> <span class="content">@_OgrenciDto.OgrNo</span><br />
-    <span class="title">Bolum:</span> <span class="content">@_OgrenciDto.BolumAdi</span><br />
-    <span id="mufredat" class="title">Müfredat:</span> <span class="content">@_OgrenciDto.MufredatAdi</span><br />
-    <span class="title">Mail:</span> <span class="content ">@_OgrenciDto.Email</span>
-</div>
-<div style="padding-top:42px">
-    <div class="form-group row">-->
-@*<label for="Ad" class="col-sm-2 col-form-label-sm">Belge:</label>*@
-<!--<div class="col-sm-8">
-        <SfDropDownList TValue="string" CssClass="form-control-sm" Placeholder="Belge seçimi..." TItem="TextKeyval" @bind-Value="@selectedBelgeTip" DataSource="@BelgeTip">
-            <DropDownListFieldSettings Text="Ad" Value="Kod"></DropDownListFieldSettings>
-        </SfDropDownList>
-    </div>
-    <div class="col-sm-2">
-        <SfButton OnClick="FetchBelge" CssClass="e-success form-control-sm">Yazdır</SfButton>
-    </div>
-</div>
-<div class="form-group row">-->
-@*<label for="Ad" class="col-sm-2 col-form-label-sm">Öğrenci Bilgi:</label>*@
-<!--<div class="col-sm-12">
-            <SfTextBox Placeholder="Bilgi Notu" CssClass="form-control-sm" Enabled="false" Readonly="false" FloatLabelType="@FloatLabelType.Auto" Multiline="true"></SfTextBox>
-        </div>
-    </div>
 
-</div>-->
-@*style="margin-left: 0px;margin-right: 0px;"*@
 <div class="row" style="margin-left: 0px;margin-right: 0px;">
     <div class="col-sm-2">
-        <div style="float:left;padding:45px;padding-top:70px"><img class="photo" src="@($"http://localhost:53414/_content/UniLife.CommonUI/images/ogrenci/{_OgrenciDto.ApplicationUserId.ToString()}.png")" alt="@_OgrenciDto.Id" /></div>
+        <div style="float:left;padding:45px;padding-top:70px"><img class="photo" src="@($"/_content/UniLife.CommonUI/images/ogrenci/{_OgrenciDto.ApplicationUserId.ToString()}.png")" alt="@_OgrenciDto.Id" /></div>
     </div>
     <div class="col-sm-4">
             <div style="padding-top:42px">

@@ -46,6 +46,7 @@ namespace UniLife.Storage
         public DbSet<Nufus> Nufuss { get; set; }
         public DbSet<Askerlik> Askerliks { get; set; }
         public DbSet<Osym> Osyms { get; set; }
+        public DbSet<OgrenciDiger> OgrenciDigers { get; set; }
 
         //TODO Bunu böyle bırakacakmıyız.
         public Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade Database { get; set; }
