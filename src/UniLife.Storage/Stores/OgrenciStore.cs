@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Threading;
+using System;
 
 namespace UniLife.Storage.Stores
 {
@@ -22,6 +23,14 @@ namespace UniLife.Storage.Stores
             _autoMapper = autoMapper;
         }
 
+        public async Task<OgrenciDto> GetOgrenciState(Guid userId)
+        {
+            var ogrQuery = from o in _db.Ogrencis
+                           where o.ApplicationUserId == userId
+                           select o;
+
+            return _autoMapper.Map<OgrenciDto>(await ogrQuery.FirstOrDefaultAsync());
+        }
         public async Task<List<OgrenciDto>> GetOgrenciQuery(OgrenciDto ogrenci)
         {
             List<OgrenciDto> result = _autoMapper.Map<List<OgrenciDto>>(await _db.Ogrencis.AsQueryable().WhereIf(!string.IsNullOrEmpty(ogrenci.Soyad), x => x.Soyad.StartsWith(ogrenci.Soyad)).ToListAsync());

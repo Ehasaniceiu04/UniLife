@@ -26,12 +26,16 @@
                     </MatNavItem>
                 </MatNavSubMenuHeader>
                 <MatNavSubMenuList>
+                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/Ders_Programi").AbsoluteUri">
+                        <MatIcon>business</MatIcon> <span class="miniHover">Ders Programı</span>
+                    </MatNavItem>
                     <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/akaTakvim").AbsoluteUri">
                         <MatIcon>business</MatIcon> <span class="miniHover">Akademik Takvim</span>
                     </MatNavItem>
                     <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/alDers").AbsoluteUri">
                         <MatIcon>screen_share</MatIcon> <span class="miniHover">Alınan Dersler</span>
                     </MatNavItem>
+                    
                 </MatNavSubMenuList>
             </MatNavSubMenu>
         </Authorized>

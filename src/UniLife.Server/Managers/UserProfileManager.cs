@@ -14,13 +14,17 @@ namespace UniLife.Server.Managers
     {
         private readonly IUserProfileStore _userProfileStore;
         private readonly IAkademisyenStore _akademisyenStore;
+        private readonly IOgrenciStore _ogrenciStore;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public UserProfileManager(IUserProfileStore userProfileStore, IHttpContextAccessor httpContextAccessor, IAkademisyenStore akademisyenStore)
+        public UserProfileManager(IUserProfileStore userProfileStore, IHttpContextAccessor httpContextAccessor,
+            IAkademisyenStore akademisyenStore,
+            IOgrenciStore ogrenciStore)
         {
             _userProfileStore = userProfileStore;
             _httpContextAccessor = httpContextAccessor;
             _akademisyenStore = akademisyenStore;
+            _ogrenciStore = ogrenciStore;
         }
 
         public async Task<string> GetLastPageVisited(string userName)
@@ -57,6 +61,15 @@ namespace UniLife.Server.Managers
 
             return new ApiResponse(Status200OK, "Retrieved Akademisyen state", akademisyen);
         }
-        
+
+        public async Task<ApiResponse> GetOgrenciState()
+        {
+            var userId = new Guid(_httpContextAccessor.HttpContext.User.FindFirst(JwtClaimTypes.Subject).Value);
+
+            var ogrenci = await _ogrenciStore.GetOgrenciState(userId);
+
+            return new ApiResponse(Status200OK, "Retrieved Ogrenci state", ogrenci);
+        }
+
     }
 }

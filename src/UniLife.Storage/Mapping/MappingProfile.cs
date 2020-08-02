@@ -17,12 +17,12 @@ namespace UniLife.Storage.Mapping
         /// </summary>
         public MappingProfile()
         {
-            
-            CreateMap<Todo, TodoDto>().ReverseMap();           
+
+            CreateMap<Todo, TodoDto>().ReverseMap();
             CreateMap<UserProfile, UserProfileDto>().ReverseMap();
             CreateMap<ApiLogItem, ApiLogItemDto>().ReverseMap();
             CreateMap<Message, MessageDto>().ReverseMap();
-            
+
             CreateMap<ApplicationUser, ApplicationUserDto>().ReverseMap();
 
             CreateMap<Universite, UniversiteDto>().ReverseMap();
@@ -39,10 +39,10 @@ namespace UniLife.Storage.Mapping
                 .ForMember(c => c.Akademisyen, o => o.Ignore());
             CreateMap<DersKayit, DersKayitDto>().ReverseMap();
             CreateMap<Mufredat, MufredatDto>().ReverseMap();
-            CreateMap<OgrenimTur, OgrenimTurDto > ().ReverseMap();
+            CreateMap<OgrenimTur, OgrenimTurDto>().ReverseMap();
             CreateMap<OgrenimDurum, OgrenimDurumDto>().ReverseMap();
             CreateMap<FakulteTur, FakulteTurDto>().ReverseMap();
-            CreateMap<Donem , DonemDto>().ReverseMap();
+            CreateMap<Donem, DonemDto>().ReverseMap();
             CreateMap<DonemTip, DonemTipDto>().ReverseMap();
             CreateMap<Ogrenci, OgrenciDto>().ReverseMap();
             CreateMap<Akademisyen, AkademisyenDto>().ReverseMap();
@@ -54,7 +54,10 @@ namespace UniLife.Storage.Mapping
             CreateMap<SinavKayit, SinavKayitDto>().ReverseMap();
             CreateMap<Bina, BinaDto>().ReverseMap();
             CreateMap<Derslik, DerslikDto>().ReverseMap();
+            //.ForMember(c => c.DerslikRezervs, o => o.Ignore());
             CreateMap<DerslikRezerv, DerslikRezervDto>().ReverseMap();
+                //.ForMember(c => c.ResourceData, o => o.Ignore())
+                //.ForMember(c => c.DerslikId, o => o.Ignore());
             CreateMap<YabanciBasvuru, YabanciBasvuruDto>().ReverseMap();
             CreateMap<Nufus, NufusDto>().ReverseMap();
             CreateMap<Osym, OsymDto>().ReverseMap();

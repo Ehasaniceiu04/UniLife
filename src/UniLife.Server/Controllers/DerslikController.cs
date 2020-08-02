@@ -62,5 +62,16 @@ namespace UniLife.Server.Controllers
         [Authorize(Permissions.Derslik.Delete)]
         public async Task<ApiResponse> Delete(int id)
             => await _derslikManager.Delete(id);
+
+
+
+        [HttpGet]
+        [Route("GetDersliksAndDerslikRezsByMufredatId/{mufredatId}")]
+        [Authorize(Permissions.Derslik.Read)]
+        public async Task<ApiResponse> GetDersliksAndDerslikRezsByMufredatId(int mufredatId)
+            => ModelState.IsValid ?
+                await _derslikManager.GetDersliksAndDerslikRezsByMufredatId(mufredatId) :
+                new ApiResponse(Status400BadRequest, "Derslik Model is Invalid");
+        
     }
 }

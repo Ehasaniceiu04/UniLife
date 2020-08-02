@@ -10,5 +10,6 @@ namespace UniLife.Server.Managers
         Task<ApiResponse> Upsert(UserProfileDto userProfile);
         Task<string> GetLastPageVisited(string userName);
         Task<ApiResponse> GetAkademisyenState();
+        Task<ApiResponse> GetOgrenciState();
     }
 }

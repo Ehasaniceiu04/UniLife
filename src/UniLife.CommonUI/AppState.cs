@@ -112,6 +112,23 @@ namespace UniLife.CommonUI
             return new AkademisyenDto();
         }
 
+        public async Task<OgrenciDto> GetOgrenciState()
+        {
+            if (OgrenciState != null && OgrenciState.Id != 0)
+            {
+                return OgrenciState;
+            }
+
+            ApiResponseDto apiResponse = await _userProfileApi.GetOgrenciState();
+
+            if (apiResponse.StatusCode == Status200OK)
+            {
+                OgrenciState = JsonConvert.DeserializeObject<OgrenciDto>(apiResponse.Result.ToString());
+                return OgrenciState;
+            }
+            return new OgrenciDto();
+        }
+
         //public async Task<Settings> GetAppSettings()
         //{
         //    if (AppSettings != null)

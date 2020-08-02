@@ -16,6 +16,7 @@ namespace UniLife.CommonUI.Services.Contracts
         //Task<ApiResponseDto> GetOgrenci();
         
         Task<ApiResponseDto> GetAkademisyenState();
-        
+        Task<ApiResponseDto> GetOgrenciState();
+
     }
 }

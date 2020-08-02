@@ -36,6 +36,11 @@ namespace UniLife.Server.Controllers
         [HttpGet("GetAkademisyenState")]
         public async Task<ApiResponse> GetAkademisyenState()
             => await _userProfileManager.GetAkademisyenState();
-        
+
+        // GET: api/UserProfile/GetOgrenciState
+        [HttpGet("GetOgrenciState")]
+        public async Task<ApiResponse> GetOgrenciState()
+            => await _userProfileManager.GetOgrenciState();
+
     }
 }

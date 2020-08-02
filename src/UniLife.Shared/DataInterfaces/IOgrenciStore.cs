@@ -2,6 +2,7 @@
 using UniLife.Shared.Dto.Definitions;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System;
 
 namespace UniLife.Shared.DataInterfaces
 {
@@ -16,5 +17,6 @@ namespace UniLife.Shared.DataInterfaces
         Task OgrencisSinifAtlat(ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds);
 
         Task<long> GetLastOgrNo(int fakId,int BolId);
+        Task<OgrenciDto> GetOgrenciState(Guid userId);
     }
 }
