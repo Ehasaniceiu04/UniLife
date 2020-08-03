@@ -129,6 +129,24 @@ namespace UniLife.CommonUI
             return new OgrenciDto();
         }
 
+        public async Task<DonemDto> GetDonemState()
+        {
+            if (DonemState != null && DonemState.Id != 0)
+            {
+                return DonemState;
+            }
+
+            ApiResponseDto apiResponse = await _userProfileApi.GetDonemState();
+
+            if (apiResponse.StatusCode == Status200OK)
+            {
+                DonemState = JsonConvert.DeserializeObject<DonemDto>(apiResponse.Result.ToString());
+                return DonemState;
+            }
+            return new DonemDto();
+        }
+
+
         //public async Task<Settings> GetAppSettings()
         //{
         //    if (AppSettings != null)

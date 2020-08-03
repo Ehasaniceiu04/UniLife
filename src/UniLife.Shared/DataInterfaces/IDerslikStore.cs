@@ -7,6 +7,6 @@ namespace UniLife.Shared.DataInterfaces
 {
     public interface IDerslikStore : IBaseStore<Derslik, DerslikDto>
     {
-        Task<DersliksAndDerslikRezervsDto> GetDersliksAndDerslikRezsByMufredatId(int mufredatId);
+        Task<DersliksAndDerslikRezervsDto> GetDersliksAndDerslikRezsByMufredatId(int mufredatId, int ogrenciId);
     }
 }

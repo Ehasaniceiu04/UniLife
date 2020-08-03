@@ -45,13 +45,13 @@ namespace UniLife.CommonUI.Pages.Ogrenci
                 matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
             }
 
-            await ReadDersliksAndDerslikRezByMufredatId((int)ogrenciDto.MufredatId);
+            await ReadDersliksAndDerslikRezByMufredatId((int)ogrenciDto.MufredatId,ogrenciDto.Id);
             isProgramOpen = true;
         }
 
-        async Task ReadDersliksAndDerslikRezByMufredatId(int mufredatId)
+        async Task ReadDersliksAndDerslikRezByMufredatId(int mufredatId, int ogrenciId)
         {
-            ApiResponseDto<DersliksAndDerslikRezervsDto> apiResponse =await Http.GetFromJsonAsync<ApiResponseDto<DersliksAndDerslikRezervsDto>>("api/derslik/GetDersliksAndDerslikRezsByMufredatId/" + mufredatId);
+            ApiResponseDto<DersliksAndDerslikRezervsDto> apiResponse =await Http.GetFromJsonAsync<ApiResponseDto<DersliksAndDerslikRezervsDto>>($"api/derslik/GetDersliksAndDerslikRezsByMufredatId/{mufredatId}/{ogrenciId}");
             derslikRezervDtos = apiResponse.Result.DerslikRezervs;
             derslikDtos = apiResponse.Result.Dersliks;
             //OData<DerslikDto> apiResponse = await Http.GetFromJsonAsync<OData<DerslikDto>>($"odata/dersliks?$filter=BinaId eq {binaId}");

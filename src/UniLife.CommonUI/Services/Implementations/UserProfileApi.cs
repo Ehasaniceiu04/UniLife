@@ -36,5 +36,10 @@ namespace UniLife.CommonUI.Services.Implementations
         {
             return await _httpClient.GetJsonAsyncExtension<ApiResponseDto>("api/UserProfile/GetOgrenciState");
         }
+
+        public async Task<ApiResponseDto> GetDonemState()
+        {
+            return await _httpClient.GetJsonAsyncExtension<ApiResponseDto>("api/UserProfile/GetDonemState");
+        }
     }
 }

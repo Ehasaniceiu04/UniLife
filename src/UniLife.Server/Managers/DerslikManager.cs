@@ -15,9 +15,9 @@ namespace UniLife.Server.Managers
             _derslikStore = derslikStore;
         }
 
-        public async Task<ApiResponse> GetDersliksAndDerslikRezsByMufredatId(int mufredatId)
+        public async Task<ApiResponse> GetDersliksAndDerslikRezsByMufredatId(int mufredatId, int ogrenciId)
         {
-            var dersliks = await _derslikStore.GetDersliksAndDerslikRezsByMufredatId(mufredatId);
+            var dersliks = await _derslikStore.GetDersliksAndDerslikRezsByMufredatId(mufredatId, ogrenciId);
             return new ApiResponse(Status200OK, "GetDersliksAndDerslikRezsByMufredatId fetched", dersliks);
         }
     }

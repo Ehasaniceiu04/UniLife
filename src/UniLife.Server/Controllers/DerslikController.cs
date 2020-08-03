@@ -66,11 +66,11 @@ namespace UniLife.Server.Controllers
 
 
         [HttpGet]
-        [Route("GetDersliksAndDerslikRezsByMufredatId/{mufredatId}")]
+        [Route("GetDersliksAndDerslikRezsByMufredatId/{mufredatId}/{ogrenciId}")]
         [Authorize(Permissions.Derslik.Read)]
-        public async Task<ApiResponse> GetDersliksAndDerslikRezsByMufredatId(int mufredatId)
+        public async Task<ApiResponse> GetDersliksAndDerslikRezsByMufredatId(int mufredatId,int ogrenciId)
             => ModelState.IsValid ?
-                await _derslikManager.GetDersliksAndDerslikRezsByMufredatId(mufredatId) :
+                await _derslikManager.GetDersliksAndDerslikRezsByMufredatId(mufredatId, ogrenciId) :
                 new ApiResponse(Status400BadRequest, "Derslik Model is Invalid");
         
     }

@@ -19,41 +19,46 @@ else
     <SfGrid ID="grdDersler" @ref="grdDersler" DataSource="@ogrenciDerslerDtos" AllowGrouping="true" Toolbar="@(new List<string>() {"ExcelExport", "CsvExport", "PdfExport" })">
         <GridEvents TValue="OgrenciDerslerDto" QueryCellInfo="QueryCellInfoHandler" CommandClicked="CommandClickHandler"></GridEvents>
         <GridGroupSettings ShowDropArea="false" Columns="@Initial"></GridGroupSettings>
-        @*<GridTemplates>
-                <DetailTemplate>
-                    @{
-                        var ogrenciDerslerInfo = (context as OgrenciDerslerDto);
-                        <SfGrid DataSource="sinavKayitDtos" TValue="KeyValueDto">
-                            <GridColumns>
-                                <GridColumn Field=@nameof(KeyValueDto.Ad) HeaderText="Sinav Ad" Width="110"></GridColumn>
-                                <GridColumn Field=@nameof(KeyValueDto.DoubleValue) HeaderText="Öğrenci Not" Width="110"></GridColumn>
-                            </GridColumns>
-                        </SfGrid>
-
-                        <SfGrid TValue="SinavKayitDto">
-                            <SfDataManager Url="@($"odata/sinavkayits?$expand=sinav($select=Ad;$filter=dersacilanId eq {ogrenciDerslerInfo.DersAcilanId})&$select=OgrNot&$filter=OgrenciId eq {ogrenciDerslerInfo.OgrenciId}")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
-                            <GridColumns>
-                                <GridColumn Field="Sinav.Ad" HeaderText="Sinav Ad" Width="110"></GridColumn>
-                                <GridColumn Field=@nameof(SinavKayitDto.OgrNot) HeaderText="Öğrenci Not" Width="110"></GridColumn>
-                            </GridColumns>
-                        </SfGrid>
-                    }
-                </DetailTemplate>
-            </GridTemplates>*@
+        @*<GridAggregates>
+            <GridAggregate>
+                <GridAggregateColumns>
+                    <GridAggregateColumn Field=@nameof(DersAcilanDto.Akts) Type="AggregateType.Sum" Format="N2">
+                        <FooterTemplate>
+                            @{
+                                var aggregate = (context as AggregateTemplateContext);
+                                <div>
+                                    <p>Toplam: @aggregate.Sum</p>
+                                </div>
+                            }
+                        </FooterTemplate>
+                    </GridAggregateColumn>
+                    <GridAggregateColumn Field=@nameof(DersAcilanDto.Kredi) Type="AggregateType.Sum" Format="N2">
+                        <FooterTemplate>
+                            @{
+                                var aggregate = (context as AggregateTemplateContext);
+                                <div>
+                                    <p>Toplam: @aggregate.Sum</p>
+                                </div>
+                            }
+                        </FooterTemplate>
+                    </GridAggregateColumn>
+                </GridAggregateColumns>
+            </GridAggregate>
+        </GridAggregates>*@
     <GridColumns>
         <GridColumn Visible="false" Field=@nameof(OgrenciDerslerDto.DersAcilanId) HeaderText="DersAcilanId" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
         <GridColumn Field=@nameof(OgrenciDerslerDto.DersKod) HeaderText="DersKod"></GridColumn>
         <GridColumn Field=@nameof(OgrenciDerslerDto.DersAd) HeaderText="DersAd"></GridColumn>
         <GridColumn Field=@nameof(OgrenciDerslerDto.SonucDurum) HeaderText="S.Durum"></GridColumn>
         <GridColumn Field=@nameof(OgrenciDerslerDto.SinavNotlari) HeaderText="Sinav Notlar"></GridColumn>
-        <GridColumn Field=@nameof(OgrenciDerslerDto.Ort) HeaderText="Ort"></GridColumn>
-        <GridColumn Field=@nameof(OgrenciDerslerDto.Not) HeaderText="Not"></GridColumn>
+        <GridColumn AutoFit="true" Field=@nameof(OgrenciDerslerDto.Ort) HeaderText="Ort"></GridColumn>
+        <GridColumn AutoFit="true" Field=@nameof(OgrenciDerslerDto.Not) HeaderText="Not"></GridColumn>
         <GridColumn Field=@nameof(OgrenciDerslerDto.Durumu) HeaderText="Durumu"></GridColumn>
         <GridColumn Field=@nameof(OgrenciDerslerDto.Sinif) HeaderText="Sinif"></GridColumn>
         <GridColumn Field=@nameof(OgrenciDerslerDto.Donem) HeaderText="Donem"></GridColumn>
-        <GridColumn Field=@nameof(OgrenciDerslerDto.IsZorunlu) DisplayAsCheckBox="true" HeaderText="Z"></GridColumn>
-        <GridColumn Field=@nameof(OgrenciDerslerDto.Kredi) HeaderText="Krd"></GridColumn>
-        <GridColumn Field=@nameof(OgrenciDerslerDto.Akts) HeaderText="Akts"></GridColumn>
+        <GridColumn AutoFit="true" Field=@nameof(OgrenciDerslerDto.IsZorunlu) DisplayAsCheckBox="true" HeaderText="Z"></GridColumn>
+        <GridColumn AutoFit="true" Field=@nameof(OgrenciDerslerDto.Kredi) HeaderText="Krd"></GridColumn>
+        <GridColumn AutoFit="true" Field=@nameof(OgrenciDerslerDto.Akts) HeaderText="Akts"></GridColumn>
         <GridColumn>
             <GridCommandColumns>
                 <GridCommandColumn Type="CommandButtonType.None" Title="Öğrenci Dersleri" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
@@ -159,7 +164,7 @@ else
 <style type="text/css" class="cssStyles">
     .e-DoubleArrowRight:before {
         content: '\e7bb';
-        color: #e83e8c;
+        color: #3ec9e8;
     }
 
     .mdc-dialog .mdc-dialog__container {

@@ -69,7 +69,7 @@ else
             <GridColumn Field=@nameof(OgrenciDto.OgrNo) HeaderText="Öğrenci No"></GridColumn>
             <GridColumn>
                 <GridCommandColumns>
-                    <GridCommandColumn Type="CommandButtonType.None" Title="Akademik Bilgiler" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
+                    <GridCommandColumn Type="CommandButtonType.None" Title="Akademik Bilgiler" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" , Content="Öğr. Detay" })"></GridCommandColumn>
                 </GridCommandColumns>
             </GridColumn>
         </GridColumns>
@@ -159,6 +159,8 @@ else
         }
     }
 
+    
+
 
     async Task AddNew()
     {
@@ -233,6 +235,9 @@ else
 
     .e-DoubleArrowRight:before {
         content: '\e7bb';
-        color: #e83e8c;
+        color: #3ec9e8 !important;
     }
+    .e-grid td.e-active {
+        background-color: #a2fdff;
+    } 
 </style>

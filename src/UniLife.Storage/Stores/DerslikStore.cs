@@ -19,9 +19,14 @@ namespace UniLife.Storage.Stores
             _autoMapper = autoMapper;
         }
 
-        public async Task<DersliksAndDerslikRezervsDto> GetDersliksAndDerslikRezsByMufredatId(int mufredatId)
+        public async Task<DersliksAndDerslikRezervsDto> GetDersliksAndDerslikRezsByMufredatId(int mufredatId ,int ogrenciId)
         {
-            var mufredatAcilanDersler = await _db.DersAcilans.Where(x => x.MufredatId == mufredatId).Select(x => x.Id).ToListAsync();
+            var mufredatAcilanDersler = await (from da in _db.DersAcilans.Where(x => x.MufredatId == mufredatId)
+                                               join dk in _db.DersKayits.Where(x => x.OgrenciId == ogrenciId) on da.Id equals dk.DersAcilanId
+                                               select da)
+                                               .Select(x => x.Id).ToListAsync();
+
+            //
 
             var derslikRezervs = await (from dr in _db.DerslikRezervs.Where(x => mufredatAcilanDersler.Contains(x.DersAcilanId))
                                                                  select dr).ToListAsync();
