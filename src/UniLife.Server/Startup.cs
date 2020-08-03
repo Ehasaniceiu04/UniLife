@@ -436,6 +436,11 @@ namespace UniLife.Server
             services.AddTransient<INufusManager, NufusManager>();
             services.AddTransient<IAskerlikManager, AskerlikManager>();
             services.AddTransient<IOsymManager, OsymManager>();
+            services.AddTransient<IOgrCezaManager, OgrCezaManager>();
+            services.AddTransient<IOgrDondurManager, OgrDondurManager>();
+            services.AddTransient<IOgrGecisManager, OgrGecisManager>();
+            services.AddTransient<IOgrStajManager, OgrStajManager>();
+            services.AddTransient<IOgrTezManager, OgrTezManager>();
             services.AddTransient<IOgrenciDigerManager, OgrenciDigerManager>();
             services.AddTransient<IUserProfileManager, UserProfileManager>();
             services.AddTransient<IYabanciBasvuruManager, YabanciBasvuruManager>();

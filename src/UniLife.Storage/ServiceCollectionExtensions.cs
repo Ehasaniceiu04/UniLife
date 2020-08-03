@@ -53,7 +53,13 @@ namespace UniLife.Storage
             services.AddTransient<IAskerlikStore, AskerlikStore>();
             services.AddTransient<IOsymStore, OsymStore>();
             services.AddTransient<IOgrenciDigerStore, OgrenciDigerStore>();
-            
+
+            services.AddTransient<IOgrenciDigerStore, OgrenciDigerStore>();
+            services.AddTransient<IOgrCezaStore, OgrCezaStore>();
+            services.AddTransient<IOgrDondurStore, OgrDondurStore>();
+            services.AddTransient<IOgrGecisStore, OgrGecisStore>();
+            services.AddTransient<IOgrStajStore, OgrStajStore>();
+            services.AddTransient<IOgrTezStore, OgrTezStore>();
 
             //services.AddTransient<ITenantStore, TenantStore>();
             services.AddTransient<IApiLogStore, ApiLogStore>();

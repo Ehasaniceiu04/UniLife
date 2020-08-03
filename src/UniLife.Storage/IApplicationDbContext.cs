@@ -47,6 +47,11 @@ namespace UniLife.Storage
         public DbSet<Askerlik> Askerliks { get; set; }
         public DbSet<Osym> Osyms { get; set; }
         public DbSet<OgrenciDiger> OgrenciDigers { get; set; }
+        public DbSet<OgrCeza> OgrCezas { get; set; }
+        public DbSet<OgrDondur> OgrDondurs { get; set; }
+        public DbSet<OgrGecis> OgrGeciss { get; set; }
+        public DbSet<OgrStaj> OgrStajs { get; set; }
+        public DbSet<OgrTez> OgrTezs { get; set; }
 
         //TODO Bunu böyle bırakacakmıyız.
         public Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade Database { get; set; }
