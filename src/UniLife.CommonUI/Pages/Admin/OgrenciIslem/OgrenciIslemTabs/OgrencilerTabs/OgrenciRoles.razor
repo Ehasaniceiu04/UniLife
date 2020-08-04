@@ -1,4 +1,5 @@
 ﻿@using UniLife.Shared.Dto.Definitions
+@using UniLife.Shared.Dto.Account
 @inject HttpClient Http
 @inject IMatToaster matToaster
 @using Syncfusion.Blazor.SplitButtons
@@ -13,7 +14,36 @@
     <ProgressButtonSpinSettings Position="SpinPosition.Center"></ProgressButtonSpinSettings>
 </SfProgressButton>
 
+<MatIconButton Icon="rotate_right" OnClick="@(() => OpenResetPasswordDialog(_OgrenciDto.Ad +" "+ _OgrenciDto.Soyad, _OgrenciDto.ApplicationUserId))"></MatIconButton>
+
+
+<MatDialog @bind-IsOpen="@resetPasswordDialogOpen">
+    <MatDialogTitle>Belirtilen kullanıcı için elle şifre değiştiriliyor: @registerParameters.UserName</MatDialogTitle>
+    <MatDialogContent>
+        <EditForm Model="@registerParameters" OnValidSubmit="@ResetUserPasswordAsync">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <fieldset>
+                <div class="form-group">
+                    <MatTextField @bind-Value="@registerParameters.Password" Label="Şifre" Icon="lock_outline" IconTrailing="true" FullWidth="true" Required="true" Type="password"></MatTextField>
+                </div>
+                <div class="form-group">
+                    <MatTextField @bind-Value="@registerParameters.PasswordConfirm" Label="Şifre onay" Icon="lock_outline" IconTrailing="true" FullWidth="true" Required="true" Type="password"></MatTextField>
+                </div>
+            </fieldset>
+        </EditForm>
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="@(e => { resetPasswordDialogOpen = false; })">Cancel</MatButton>
+        <MatButton OnClick="@ResetUserPasswordAsync">Reset User Password</MatButton>
+    </MatDialogActions>
+</MatDialog>
+
 @code{
+
+    bool resetPasswordDialogOpen = false;
+
+
     [Parameter]
     public OgrenciDto _OgrenciDto { get; set; }
 
@@ -107,6 +137,50 @@
         finally
         {
             //_OgrenciDto.ClearState();
+        }
+    }
+
+    public UserInfoDto user { get; set; } = new UserInfoDto(); // Holds user being actively modified or created
+    RegisterDto registerParameters { get; set; } = new RegisterDto();
+    public void OpenResetPasswordDialog(/*UserInfoDto userInfo,*/ string userName, Guid userId)
+    {
+        //if (userInfo.UserId == userId)
+        //{
+        // reusing the registerParameters and User objects
+        registerParameters = new RegisterDto();  // reset object
+        registerParameters.UserName = userName;
+        user.UserId = userId;
+        resetPasswordDialogOpen = true;
+        //}
+        //else
+        //{
+        //    matToaster.Add("Bu işlemi yapmaya yetkiniz bulunmamaktadır!", MatToastType.Danger, "Dikkat!!!");
+        //}
+    }
+
+    public async Task ResetUserPasswordAsync()
+    {
+        try
+        {
+            if (registerParameters.Password != registerParameters.PasswordConfirm)
+            {
+                matToaster.Add("Passwords Must Match", MatToastType.Warning);
+            }
+            else
+            {
+                var apiResponse = await Http.PostJsonAsync<ApiResponseDto>($"api/Account/AdminUserPasswordReset/{user.UserId}", registerParameters.Password);
+
+                if (apiResponse.IsSuccessStatusCode)
+                    matToaster.Add("Password Reset", MatToastType.Success, apiResponse.Message);
+                else
+                    matToaster.Add(apiResponse.Message, MatToastType.Danger);
+
+                resetPasswordDialogOpen = false;
+            }
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Password Reset Error");
         }
     }
 }
