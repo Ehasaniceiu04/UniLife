@@ -6,16 +6,45 @@
 
 <SfGrid ID="grdDersler" @ref="grdDersler" TValue="DersAcilanDto" Toolbar="@(new List<string>() {"ExcelExport", "CsvExport", "PdfExport" })" AllowPaging="true">
     <SfDataManager Url="@(gridOdata)" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
-    <GridEvents TValue="DersAcilanDto" CommandClicked="CommandClickHandler"></GridEvents>
+    @*<GridEvents TValue="DersAcilanDto" CommandClicked="CommandClickHandler"></GridEvents>*@
+    <GridTemplates>
+        <DetailTemplate>
+            @{
+                var dersAcilanInfo = (context as DersAcilanDto);
+
+                gridSinavOdata = $"odata/sinavs?$filter=DersAcilanId eq {dersAcilanInfo.Id}&$expand=SinavTip,SinavTur";
+            }
+            <div style="padding:20px">
+                <SfGrid ID="grdSinavlar" @ref="grdSinavlar" TValue="SinavDto">
+                    <SfDataManager Url="@(gridSinavOdata)" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+                    <GridEvents TValue="SinavDto" CommandClicked="CommandClickHandlerSinav"></GridEvents>
+                    <GridColumns>
+                        <GridColumn Visible="false" Field=@nameof(SinavDto.Id) HeaderText="Id" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+                        <GridColumn Field=@nameof(SinavDto.Ad) HeaderText="Sinav"></GridColumn>
+                        <GridColumn Field="SinavTip.Ad" HeaderText="Sınav Tip"></GridColumn>
+                        <GridColumn Field="SinavTur.Ad" HeaderText="Sınav Tür"></GridColumn>
+                        <GridColumn Field=@nameof(SinavDto.EtkiOran) HeaderText="EtkiOran"></GridColumn>
+                        <GridColumn Field=@nameof(SinavDto.Tarih) HeaderText="Tarih"></GridColumn>
+                        <GridColumn>
+                            <GridCommandColumns>
+                                <GridCommandColumn Type="CommandButtonType.None" Title="Sınava Git" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
+                            </GridCommandColumns>
+                        </GridColumn>
+                    </GridColumns>
+                </SfGrid>
+            </div>
+        </DetailTemplate>
+    </GridTemplates>
+
     <GridColumns>
         <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="DersAcilanId" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
         <GridColumn Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kod"></GridColumn>
         <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Ad"></GridColumn>
-        <GridColumn>
+        @*<GridColumn>
             <GridCommandColumns>
                 <GridCommandColumn Type="CommandButtonType.None" Title="Ders Sınavları" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
             </GridCommandColumns>
-        </GridColumn>
+        </GridColumn>*@
     </GridColumns>
 </SfGrid>
 
@@ -23,6 +52,7 @@
 @code{
 
     SfGrid<DersAcilanDto> grdDersler;
+    SfGrid<SinavDto> grdSinavlar;
 
     List<AkademisyenDersDto> akademisyenDersDtos;
 
@@ -32,6 +62,7 @@
     public int SpesificDersAcilan { get; set; } = 0;
 
     string gridOdata;
+    string gridSinavOdata;
 
     protected override async Task OnInitializedAsync()
     {
@@ -70,16 +101,29 @@
         }
     }
 
-    [Parameter]
-    public EventCallback<DersAcilanDto> DerslerToOgrNotlar { get; set; }
+    //[Parameter]
+    //public EventCallback<DersAcilanDto> DerslerToOgrNotlar { get; set; }
 
-    public void CommandClickHandler(CommandClickEventArgs<DersAcilanDto> args)
+    //public void CommandClickHandler(CommandClickEventArgs<DersAcilanDto> args)
+    //{
+    //    if (args.CommandColumn.Title == "Ders Sınavları")
+    //    {
+    //        DerslerToOgrNotlar.InvokeAsync(args.RowData);
+    //    }
+    //}
+
+    [Parameter]
+    public EventCallback<SinavDto> SinavToNotlar { get; set; }
+
+    public void CommandClickHandlerSinav(CommandClickEventArgs<SinavDto> args)
     {
-        if (args.CommandColumn.Title == "Ders Sınavları")
+        if (args.CommandColumn.Title == "Sınava Git")
         {
-            DerslerToOgrNotlar.InvokeAsync(args.RowData);
+            SinavToNotlar.InvokeAsync(args.RowData);
         }
     }
+
+
 }
 
 <style type="text/css" class="cssStyles">

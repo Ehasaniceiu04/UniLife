@@ -16,7 +16,7 @@
                     <TabHeader Text="Dersler"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
-                    <AkaDersler SpesificDersAcilan="SpesificDersAcilan" DerslerToOgrNotlar="DerslerToOgrNotlar"></AkaDersler>
+                    <AkaDersler SpesificDersAcilan="SpesificDersAcilan" SinavToNotlar="SinavToNotlar"></AkaDersler>
                 </ContentTemplate>
             </TabItem>
             <TabItem>
@@ -24,7 +24,8 @@
                     <TabHeader Text="Öğrenci Notları"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
-                    <AkaOgrSnvNots _dersAcilanDto="_dersAcilanDto"></AkaOgrSnvNots>
+                    @*<AkaOgrSnvNots _dersAcilanDto="_dersAcilanDto"></AkaOgrSnvNots>*@
+                    <AkaNotlar _SinavDto="_SinavDto"></AkaNotlar>
                 </ContentTemplate>
             </TabItem>
             @*<TabItem>
@@ -51,10 +52,12 @@
 
     SfTab DersNotTab;
 
-        [Parameter]
+    [Parameter]
     public int SpesificDersAcilan { get; set; }
 
-    AkademisyenSinavDto _AkademisyenSinavDto;
+    //AkademisyenSinavDto _AkademisyenSinavDto;
+
+    SinavDto _SinavDto;
 
     //int _dersAcilanId;
     DersAcilanDto _dersAcilanDto;
@@ -82,11 +85,18 @@
     //    TabDegis(1);
     //}
 
-    public void DerslerToOgrNotlar(DersAcilanDto dersAcilanDto)
+    //public void DerslerToOgrNotlar(DersAcilanDto dersAcilanDto)
+    //{
+    //    _dersAcilanDto = dersAcilanDto;
+    //    TabDegis(1);
+    //}
+
+    public void SinavToNotlar(SinavDto sinavDto)
     {
-        _dersAcilanDto = dersAcilanDto;
+        _SinavDto = sinavDto;
         TabDegis(1);
     }
+
 
 
 

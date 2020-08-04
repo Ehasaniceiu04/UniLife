@@ -27,15 +27,18 @@
 
 
 
+    //[Parameter]
+    //public AkademisyenSinavDto _AkademisyenSinavDto { get; set; }
+    
     [Parameter]
-    public AkademisyenSinavDto _AkademisyenSinavDto { get; set; }
+    public SinavDto _SinavDto { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
 
-            ApiResponseDto<List<SinavOgrNotlarDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<SinavOgrNotlarDto>>>("api/sinavkayit/GetSinavKayitOgrenciNotlar/" + _AkademisyenSinavDto.SinavId);
+            ApiResponseDto<List<SinavOgrNotlarDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<SinavOgrNotlarDto>>>("api/sinavkayit/GetSinavKayitOgrenciNotlar/" + _SinavDto.Id);
 
 
 
