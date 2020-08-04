@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace UniLife.Shared.Dto.Definitions
 {
@@ -8,7 +9,8 @@ namespace UniLife.Shared.Dto.Definitions
     {
         public int OgrenciId { get; set; }
 
-        public virtual OgrenciDto Ogrenci { get; set; }
+        
+        //public virtual OgrenciDto Ogrenci { get; set; }
 
         //Ceza İşlem
         public DateTime? CezaTarih { get; set; }

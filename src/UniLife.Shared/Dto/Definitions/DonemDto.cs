@@ -7,7 +7,7 @@ namespace UniLife.Shared.Dto.Definitions
     public class DonemDto : EntityDto<int>
     {
         public int DonemTipId { get; set; }
-        public DonemTipDto DonemTip { get; set; }
+        public virtual DonemTipDto DonemTip { get; set; }
         public int Yil { get; set; }
         public string Ad { get; set; }
         public string KisaAd { get; set; }

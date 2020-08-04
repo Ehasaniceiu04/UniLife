@@ -16,7 +16,7 @@
                     <col width="45%">
                     <col width="30%">
                 </colgroup>
-                <tbody>
+                <tbody style="font-size: 13px;">
                     <tr>
                         <td rowspan="4" style="text-align: center;">
                             <img class="photo" src="@UriHelper.ToAbsoluteUri($"/_content/UniLife.CommonUI/images/ogrenci/{_OgrenciDto.ApplicationUserId.ToString()}.png")" alt="@_OgrenciDto.Id" />
@@ -60,7 +60,7 @@
 
 }
 
-<div class="control-section e-tab-section">
+<div class="control-section e-tab-section" style="padding-top: 10px;">
     <SfTab @ref="Tab" LoadOn="ContentLoad.Dynamic">
         @*Selected="OnTabSelected" Selecting="OnTabSelecting"*@
         <TabEvents Selected="OnTabSelected" Created="TabCreate" Selecting="OnTabSelecting"></TabEvents>

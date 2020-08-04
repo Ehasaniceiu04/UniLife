@@ -1,0 +1,330 @@
+﻿@using UniLife.Shared.Dto.Definitions
+@using UniLife.Shared.DataModels
+@using Syncfusion.Blazor.DropDowns;
+@using Syncfusion.Blazor.Inputs
+@inject Microsoft.AspNetCore.Components.NavigationManager UriHelper
+@using Syncfusion.Blazor.Layouts
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Calendars
+
+
+@*<div class="card">
+    <div class="table-responsive">
+        <table class="table">
+            <colgroup>
+                <col width="25%">
+                <col width="45%">
+                <col width="30%">
+            </colgroup>
+            <tbody>
+                <tr>
+                    <td rowspan="4" style="text-align: center;">
+                        <img class="photo" src="@UriHelper.ToAbsoluteUri($"/_content/UniLife.CommonUI/images/ogrenci/{_OgrenciDto.ApplicationUserId.ToString()}.png")" alt="@_OgrenciDto.Id" />
+                    </td>
+                    <td>
+                        <span style="font-weight: 500;">Ad Soyad: </span> @_OgrenciDto.Ad @_OgrenciDto.Soyad
+                    </td>
+                    <td>
+                        <span style="font-weight: 500;">Gereken Toplam Ücret: </span> @_OgrenciDto.GerekenTopUcret
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span style="font-weight: 500;">Kayıt Tarih: </span> @(_OgrenciDto.KayitTarih==null?"":_OgrenciDto.KayitTarih.Value.ToShortDateString())
+                    </td>
+                    <td>
+                        <span style="font-weight: 500;">Ödenen Toplam Ücret: </span> @_OgrenciDto.OdenenTopUcret
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span style="font-weight: 500;">Bağlı Müfredat: </span> @_OgrenciDto.MufredatAdi
+                    </td>
+                    <td>
+                        <span style="font-weight: 500;">Genel Bakiye: </span> @_OgrenciDto.GenelBakiye
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+<br />*@
+
+<div class="dashboardParent" style="visibility: @Visible;">
+    <SfDashboardLayout CellSpacing="@CellSpacing" Columns="@Columns" CellAspectRatio="@AspectRatio">
+        <DashboardLayoutPanels>
+            <DashboardLayoutPanel Id="1" Row="0" Col="0" SizeX="1" SizeY="1">
+                <HeaderTemplate><div style="text-align: center;"><b>Geçiş Bilgileri</b></div></HeaderTemplate>
+                <ContentTemplate>
+                    <div class="row pb-2" style="margin-right: unset;margin-left: unset;">
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group row">
+                                <label for="GelUniv" class="col-sm-2 col-form-label-sm">Geldiği Üniversite</label>
+                                <div class="col-sm-10">
+                                    @*<SfTextBox ID="OsymTip" @bind-Value="@(_OgrenciDigerDto.OsymTip)" Multiline="true"></SfTextBox>*@
+                                    <SfTextBox ID="GelUniv" @bind-Value="@(_OgrenciDigerDto.GelUniv)"></SfTextBox>
+                                </div>
+                                <label for="GelBolum" class="col-sm-2 col-form-label-sm">Geldiği Bölüm</label>
+                                <div class="col-sm-10">
+                                    <SfTextBox ID="GelBolum" @bind-Value="@(_OgrenciDigerDto.GelBolum)"></SfTextBox>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group row">
+                                <label for="GelBirim" class="col-sm-2 col-form-label-sm">Geldiği Birim</label>
+                                <div class="col-sm-10">
+                                    <SfTextBox ID="GelBirim" @bind-Value="@(_OgrenciDigerDto.GelBirim)"></SfTextBox>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <SfButton OnClick="@(()=>Kaydet("PostSaveGecis"))" CssClass="e-success form-control">Kaydet</SfButton>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </ContentTemplate>
+            </DashboardLayoutPanel>
+            <DashboardLayoutPanel Id="2" Row="0" Col="1" SizeX="1" SizeY="1">
+                <HeaderTemplate><div><b>Kayit Dondurma</b></div></HeaderTemplate>
+                <ContentTemplate>
+                    <div class="row pb-2" style="margin-right: unset;margin-left: unset;">
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group row">
+                                <label for="DondTarih" class="col-sm-2 col-form-label-sm">Dondurma Tarihi</label>
+                                <div class="col-sm-10">
+                                    @*<SfTextBox ID="OsymTip" @bind-Value="@(_OgrenciDigerDto.OsymTip)" Multiline="true"></SfTextBox>*@
+                                    <SfDatePicker ID="DondTarih" @bind-Value="@_OgrenciDigerDto.DondTarih" TValue="DateTime?"></SfDatePicker>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group row">
+                                <div class="col-sm-10">
+                                    <SfCheckBox ID="IsDond" Label="Dondu mu?" CssClass="col-sm-1" @bind-Checked="@_OgrenciDigerDto.IsDond"></SfCheckBox>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <SfButton OnClick="@(()=>Kaydet("PostSaveKayitDond"))" CssClass="e-success form-control">Kaydet</SfButton>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </ContentTemplate>
+            </DashboardLayoutPanel>
+            <DashboardLayoutPanel Id="3" Row="1" Col="0" SizeX="1" SizeY="1">
+                <HeaderTemplate><div><b>Ceza İşlemleri</b></div></HeaderTemplate>
+                <ContentTemplate>
+                    <div class="row pb-2" style="margin-right: unset;margin-left: unset;">
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group row">
+                                <label for="CezaTarih" class="col-sm-2 col-form-label-sm">Ceza Tarihi</label>
+                                <div class="col-sm-10">
+                                    @*<SfTextBox ID="OsymTip" @bind-Value="@(_OgrenciDigerDto.OsymTip)" Multiline="true"></SfTextBox>*@
+                                    <SfDatePicker ID="CezaTarih" @bind-Value="@_OgrenciDigerDto.CezaTarih" TValue="DateTime?"></SfDatePicker>
+                                </div>
+                                <label for="CezaAd" class="col-sm-2 col-form-label-sm">Ceza Adı</label>
+                                <div class="col-sm-10">
+                                    <SfTextBox ID="CezaAd" @bind-Value="@(_OgrenciDigerDto.CezaAd)"></SfTextBox>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group row">
+                                <label for="CezaDesc" class="col-sm-2 col-form-label-sm">Ceza Açıklaması</label>
+                                <div class="col-sm-10">
+                                    <SfTextBox ID="CezaDesc" @bind-Value="@(_OgrenciDigerDto.CezaDesc)" Multiline="true"></SfTextBox>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <SfButton OnClick="@(()=>Kaydet("PostSaveKayitCeza"))" CssClass="e-success form-control">Kaydet</SfButton>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </ContentTemplate>
+            </DashboardLayoutPanel>
+            <DashboardLayoutPanel Id="4" Row="2" Col="0" SizeX="1" SizeY="1">
+                <HeaderTemplate><div><b>Staj İşlemleri</b></div></HeaderTemplate>
+                <ContentTemplate>
+                    <div class="row pb-2" style="margin-right: unset;margin-left: unset;">
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group row">
+                                <label for="StajTarihBas" class="col-sm-2 col-form-label-sm">Staj Başlangıç Tarih</label>
+                                <div class="col-sm-10">
+                                    @*<SfTextBox ID="OsymTip" @bind-Value="@(_OgrenciDigerDto.OsymTip)" Multiline="true"></SfTextBox>*@
+                                    <SfDatePicker ID="StajTarihBas" @bind-Value="@_OgrenciDigerDto.StajTarihBas" TValue="DateTime?"></SfDatePicker>
+                                </div>
+                                <label for="StajTarihSon" class="col-sm-2 col-form-label-sm">Staj Bitiş Tarih</label>
+                                <div class="col-sm-10">
+                                    @*<SfTextBox ID="OsymTip" @bind-Value="@(_OgrenciDigerDto.OsymTip)" Multiline="true"></SfTextBox>*@
+                                    <SfDatePicker ID="StajTarihSon" @bind-Value="@_OgrenciDigerDto.StajTarihSon" TValue="DateTime?"></SfDatePicker>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group row">
+                                <label for="StajSirket" class="col-sm-2 col-form-label-sm">Staj Şirket</label>
+                                <div class="col-sm-10">
+                                    <SfTextBox ID="StajSirket" @bind-Value="@(_OgrenciDigerDto.StajSirket)" Multiline="true"></SfTextBox>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <SfButton OnClick="@(()=>Kaydet("PostSaveKayitStaj"))" CssClass="e-success form-control">Kaydet</SfButton>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </ContentTemplate>
+            </DashboardLayoutPanel>
+            <DashboardLayoutPanel Id="5" Row="2" Col="1" SizeX="1" SizeY="1">
+                <HeaderTemplate><div><b>Hazırlık İşlemleri</b></div></HeaderTemplate>
+                <ContentTemplate>
+
+                </ContentTemplate>
+            </DashboardLayoutPanel>
+            <DashboardLayoutPanel Id="6" Row="2" Col="0" SizeX="1" SizeY="1">
+                <HeaderTemplate><div>Tez İşlemleri</div></HeaderTemplate>
+                <ContentTemplate>
+                    <div class="row pb-2" style="margin-right: unset;margin-left: unset;">
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group row">
+                                <label for="TezTarih" class="col-sm-2 col-form-label-sm">Tez Tarih</label>
+                                <div class="col-sm-10">
+                                    @*<SfTextBox ID="OsymTip" @bind-Value="@(_OgrenciDigerDto.OsymTip)" Multiline="true"></SfTextBox>*@
+                                    <SfDatePicker ID="TezTarih" @bind-Value="@_OgrenciDigerDto.TezTarih" TValue="DateTime?"></SfDatePicker>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group row">
+                                <label for="TezKonu" class="col-sm-2 col-form-label-sm">Tez Konu</label>
+                                <div class="col-sm-10">
+                                    <SfTextBox ID="TezKonu" @bind-Value="@(_OgrenciDigerDto.TezKonu)" Multiline="true"></SfTextBox>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <SfButton OnClick="@(()=>Kaydet("PostSaveKayitTez"))" CssClass="e-success form-control">Kaydet</SfButton>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </ContentTemplate>
+            </DashboardLayoutPanel>
+            <DashboardLayoutPanel Id="7" Row="2" Col="1" SizeX="1" SizeY="1">
+                <HeaderTemplate><div><b>Burs İşlemleri</b></div></HeaderTemplate>
+                <ContentTemplate>
+
+                </ContentTemplate>
+            </DashboardLayoutPanel>
+
+        </DashboardLayoutPanels>
+    </SfDashboardLayout>
+</div>
+
+<style type="text/css" class="cssStyles">
+    /*.detailtable td {
+        font-size: 13px;
+        padding: 4px;
+        max-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .photo {
+        width: 100px;
+        height: 100px;
+        border-radius: 50px;
+        box-shadow: inset 0 0 1px #e0e0e0, inset 0 0 14px rgba(0,0,0,0.2);
+    }
+
+    .e-tab.e-vertical-tab .e-content {
+        padding-top: 10px;
+    }*/
+
+    .e-dashboardlayout.e-control.e-responsive {
+        z-index: 1;
+    }
+</style>
+
+
+
+public partial class OgrenciDiger : ComponentBase
+    {
+        [Inject]
+        public System.Net.Http.HttpClient Http { get; set; }
+        [Inject]
+        public MatBlazor.IMatToaster matToaster { get; set; }
+
+        [Parameter]
+        public OgrenciDto _OgrenciDto { get; set; } = new OgrenciDto();
+
+        public OgrenciDigerDto _OgrenciDigerDto { get; set; } = new OgrenciDigerDto();
+
+        public string Visible { get; set; } = "visible";//"hidden";
+        public double[] CellSpacing = { 5, 5 };
+        public int Columns = 2;
+        public double AspectRatio = 2;//100 / 85;
+        public void OnTabSelecting(SelectingEventArgs args)
+        {
+            if (args.IsSwiped)
+            {
+                args.Cancel = true;
+            }
+        }
+
+        protected override async Task OnInitializedAsync()
+        {
+            try
+            {
+                ApiResponseDto<OgrenciDigerDto> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<OgrenciDigerDto>>("api/OgrenciDiger/GetOgrDigerByOgrId/" + _OgrenciDto.Id);
+
+
+                if (apiResponse.IsSuccessStatusCode)
+                {
+                    _OgrenciDigerDto = apiResponse.Result?? new OgrenciDigerDto();
+                }
+                else
+                {
+
+                }
+            }
+            catch (Exception ex)
+            {
+                matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
+            }
+        }
+
+        async Task Kaydet(string PostType)
+        {
+            try
+            {
+                _OgrenciDigerDto.OgrenciId = _OgrenciDto.Id;
+                ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>($"api/ogrenciDiger/{PostType}", _OgrenciDigerDto);
+
+                if (apiResponse.IsSuccessStatusCode)
+                {
+                    matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+                }
+                else
+                    matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
+            }
+            catch (Exception ex)
+            {
+                matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
+            }
+        }
+    }

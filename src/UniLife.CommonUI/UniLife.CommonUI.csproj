@@ -80,4 +80,8 @@
     <None Include="wwwroot\images\triangles.svg" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\ogrenci\" />
+  </ItemGroup>
+
 </Project>
