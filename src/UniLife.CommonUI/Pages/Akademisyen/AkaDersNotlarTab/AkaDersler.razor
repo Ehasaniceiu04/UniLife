@@ -4,26 +4,8 @@
 @inject AppState appState
 @using Syncfusion.Blazor.Data
 
-@*<SfGrid ID="grdDersler" @ref="grdDersler" DataSource="@akademisyenDersDtos" Toolbar="@(new List<string>() {"ExcelExport", "CsvExport", "PdfExport" })" AllowPaging="true">
-        <GridEvents TValue="AkademisyenDersDto" CommandClicked="CommandClickHandler"></GridEvents>
-        <GridColumns>
-            <GridColumn Visible="false" Field=@nameof(AkademisyenDersDto.DersAcilanId) HeaderText="DersAcilanId" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
-            <GridColumn Field=@nameof(AkademisyenDersDto.DersKod) HeaderText="DersKod"></GridColumn>
-            <GridColumn Field=@nameof(AkademisyenDersDto.DersAd) HeaderText="DersAd"></GridColumn>
-            <GridColumn Field=@nameof(AkademisyenDersDto.SonucDurum) HeaderText="S.Durum"></GridColumn>
-            <GridColumn Field=@nameof(AkademisyenDersDto.SinavNotlari) HeaderText="Sinav Notlar"></GridColumn>
-            <GridColumn Field=@nameof(AkademisyenDersDto.Ort) HeaderText="Ort"></GridColumn>
-            <GridColumn Field=@nameof(AkademisyenDersDto.Not) HeaderText="Not"></GridColumn>
-            <GridColumn Field=@nameof(AkademisyenDersDto.Durumu) HeaderText="Durumu"></GridColumn>
-            <GridColumn>
-                <GridCommandColumns>
-                    <GridCommandColumn Type="CommandButtonType.None" Title="Öğrenci Dersleri" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
-                </GridCommandColumns>
-            </GridColumn>
-        </GridColumns>
-    </SfGrid>*@
 <SfGrid ID="grdDersler" @ref="grdDersler" TValue="DersAcilanDto" Toolbar="@(new List<string>() {"ExcelExport", "CsvExport", "PdfExport" })" AllowPaging="true">
-    <SfDataManager Url="@($"odata/dersacilans?$expand=akademisyen($select=Ad,Id)&$select=Ad,Id,Kod&$filter=akademisyen/Id eq {akademisyenDto.Id}")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+    <SfDataManager Url="@(gridOdata)" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
     <GridEvents TValue="DersAcilanDto" CommandClicked="CommandClickHandler"></GridEvents>
     <GridColumns>
         <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="DersAcilanId" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
@@ -46,13 +28,28 @@
 
     AkademisyenDto akademisyenDto = new AkademisyenDto();
 
+    [Parameter]
+    public int SpesificDersAcilan { get; set; } = 0;
+
+    string gridOdata;
 
     protected override async Task OnInitializedAsync()
     {
 
         try
         {
-            akademisyenDto = await appState.GetAkademisyenState();
+            if (SpesificDersAcilan == 0)
+            {
+                akademisyenDto = await appState.GetAkademisyenState();
+                gridOdata = $"odata/dersacilans?$expand=akademisyen($select=Ad,Id)&$select=Ad,Id,Kod&$filter=akademisyen/Id eq {akademisyenDto.Id}";
+            }
+            else
+            {
+                gridOdata = $"odata/dersacilans?$filter=Id eq {SpesificDersAcilan}";
+            }
+
+
+
 
             //ApiResponseDto<List<AkademisyenDersDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<AkademisyenDersDto>>>("api/sinav/GetDersAcilanByAkademisyenId/" + akademisyenDto.Id);
 

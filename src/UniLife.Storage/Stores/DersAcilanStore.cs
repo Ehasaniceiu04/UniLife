@@ -523,7 +523,8 @@ namespace UniLife.Storage.Stores
                                         Donem = d.Ad,
                                         IsZorunlu = da.Zorunlu,
                                         Kredi = da.Kredi,
-                                        Akts = da.Akts
+                                        Akts = da.Akts,
+                                        AkademisyenId = da.AkademisyenId
                                     }).ToListAsync();
 
             var sinavSonucs = await (from sk in _db.SinavKayits.Where(x => x.OgrenciId == ogrenciId)

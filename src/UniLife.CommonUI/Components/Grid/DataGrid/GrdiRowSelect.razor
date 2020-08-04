@@ -2,14 +2,15 @@
 @using Syncfusion.Blazor.Grids
 @using Syncfusion.Blazor.Charts
 @using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.Inputs
 @using Syncfusion.Blazor.Navigations
 @inject Microsoft.AspNetCore.Components.NavigationManager UriHelper
 @using GridData
-@*@inherits SampleBaseComponent;*@
+@inherits SampleBaseComponent;
 <div class="col-lg-12 control-section">
     <div class="content-wrapper">
         <div class="row">
-            <SfGrid ID="OgrGrid" @ref="OgrGrid" AllowSorting="true" AllowFiltering="true" AllowPaging="true" DataSource="@GridData">
+            <SfGrid DataSource="@GridData">
                 <GridTemplates>
                     <DetailTemplate>
                         @{
@@ -24,6 +25,7 @@
                                             <TabHeader Text="Details"></TabHeader>
                                         </ChildContent>
                                         <ContentTemplate>
+                                            <SfTextBox ID="Adres" @bind-Value="@employee.FirstName"></SfTextBox>
                                             <div style="display:inline-flex">
                                                 <div style="float:left;padding:45px;padding-top:70px"><img class="photo" src="@UriHelper.ToAbsoluteUri($"https://blazor.syncfusion.com/demos/images/Grid/{employee.EmployeeID}.png")" alt="@employee.EmployeeID" /></div>
                                                 <div style="padding-top:42px">
@@ -91,18 +93,13 @@
 @code{
     public List<Employee> GridData { get; set; }
     public List<EmployeeOrders> OrderData { get; set; }
-    //protected override void OnInitialized()
-    //{
-
-    //}
-
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         GridData = Employee.GetAllRecords();
         OrderData = EmployeeOrders.GetAllRecords();
     }
 
-    public SfGrid<Employee> OgrGrid;
+    string asd = "asdasd";
 }
 <style type="text/css" class="cssStyles">
     .photo {

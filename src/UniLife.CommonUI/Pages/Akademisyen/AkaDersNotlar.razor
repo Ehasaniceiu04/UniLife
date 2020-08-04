@@ -1,13 +1,13 @@
-﻿@page "/akademisyen/SinavNot"
+﻿@page "/akademisyen/DersNot/{SpesificDersAcilan:int}"
 @using Syncfusion.Blazor.Navigations
-@using UniLife.CommonUI.Pages.Akademisyen.AkaSinavNotlarTab
+@using UniLife.CommonUI.Pages.Akademisyen.AkaDersNotlarTab
 @using UniLife.Shared.Dto.Definitions
 
 @*sınavları listeleyecez
     seçilen sınavın öğrencilerini açacak notlar girilecek.*@
 
 <div class="control-section e-tab-section">
-    <SfTab @ref="SinavNotTab" LoadOn="ContentLoad.Dynamic">
+    <SfTab @ref="DersNotTab" LoadOn="ContentLoad.Dynamic">
         @*Selected="OnTabSelected" Selecting="OnTabSelecting"*@
         <TabEvents Created="TabCreate" Selecting="OnTabSelecting"></TabEvents>
         <TabItems>
@@ -16,7 +16,7 @@
                     <TabHeader Text="Dersler"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
-                    <AkaDersler DerslerToOgrNotlar="DerslerToOgrNotlar"></AkaDersler>
+                    <AkaDersler SpesificDersAcilan="SpesificDersAcilan" DerslerToOgrNotlar="DerslerToOgrNotlar"></AkaDersler>
                 </ContentTemplate>
             </TabItem>
             <TabItem>
@@ -49,8 +49,10 @@
 
 @code{
 
-    SfTab SinavNotTab;
+    SfTab DersNotTab;
 
+        [Parameter]
+    public int SpesificDersAcilan { get; set; }
 
     AkademisyenSinavDto _AkademisyenSinavDto;
 
@@ -59,8 +61,8 @@
 
     public void TabCreate()
     {
-        SinavNotTab.EnableTab(0, true);
-        SinavNotTab.EnableTab(1, false);
+        DersNotTab.EnableTab(0, true);
+        DersNotTab.EnableTab(1, false);
     }
     public void OnTabSelecting(SelectingEventArgs args)
     {
@@ -70,7 +72,7 @@
         }
         if (args.SelectedIndex == 0)
         {
-            SinavNotTab.EnableTab(1, false);
+            DersNotTab.EnableTab(1, false);
         }
     }
 
@@ -90,8 +92,8 @@
 
     public void TabDegis(int tabIndex)
     {
-        SinavNotTab.EnableTab(0, true);
-        SinavNotTab.EnableTab(1, tabIndex > 0);
-        SinavNotTab.Select(tabIndex);
+        DersNotTab.EnableTab(0, true);
+        DersNotTab.EnableTab(1, tabIndex > 0);
+        DersNotTab.Select(tabIndex);
     }
 }

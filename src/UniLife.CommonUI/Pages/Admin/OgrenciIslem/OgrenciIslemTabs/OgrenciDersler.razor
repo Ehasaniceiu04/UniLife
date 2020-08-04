@@ -2,7 +2,8 @@
 @using UniLife.Shared.Dto.Definitions
 @inject IMatToaster matToaster
 @inject AppState appState
-@using UniLife.CommonUI.Pages.Akademisyen.AkaSinavNotlarTab
+@using UniLife.CommonUI.Pages.Akademisyen.AkaDersNotlarTab
+@inject NavigationManager navigationManager
 
 
 @if (ogrenciDerslerDtos == null)
@@ -20,51 +21,52 @@ else
         <GridEvents TValue="OgrenciDerslerDto" QueryCellInfo="QueryCellInfoHandler" CommandClicked="CommandClickHandler"></GridEvents>
         <GridGroupSettings ShowDropArea="false" Columns="@Initial"></GridGroupSettings>
         @*<GridAggregates>
-            <GridAggregate>
-                <GridAggregateColumns>
-                    <GridAggregateColumn Field=@nameof(DersAcilanDto.Akts) Type="AggregateType.Sum" Format="N2">
-                        <FooterTemplate>
-                            @{
-                                var aggregate = (context as AggregateTemplateContext);
-                                <div>
-                                    <p>Toplam: @aggregate.Sum</p>
-                                </div>
-                            }
-                        </FooterTemplate>
-                    </GridAggregateColumn>
-                    <GridAggregateColumn Field=@nameof(DersAcilanDto.Kredi) Type="AggregateType.Sum" Format="N2">
-                        <FooterTemplate>
-                            @{
-                                var aggregate = (context as AggregateTemplateContext);
-                                <div>
-                                    <p>Toplam: @aggregate.Sum</p>
-                                </div>
-                            }
-                        </FooterTemplate>
-                    </GridAggregateColumn>
-                </GridAggregateColumns>
-            </GridAggregate>
-        </GridAggregates>*@
-    <GridColumns>
-        <GridColumn Visible="false" Field=@nameof(OgrenciDerslerDto.DersAcilanId) HeaderText="DersAcilanId" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
-        <GridColumn Field=@nameof(OgrenciDerslerDto.DersKod) HeaderText="DersKod"></GridColumn>
-        <GridColumn Field=@nameof(OgrenciDerslerDto.DersAd) HeaderText="DersAd"></GridColumn>
-        <GridColumn Field=@nameof(OgrenciDerslerDto.SonucDurum) HeaderText="S.Durum"></GridColumn>
-        <GridColumn Field=@nameof(OgrenciDerslerDto.SinavNotlari) HeaderText="Sinav Notlar"></GridColumn>
-        <GridColumn AutoFit="true" Field=@nameof(OgrenciDerslerDto.Ort) HeaderText="Ort"></GridColumn>
-        <GridColumn AutoFit="true" Field=@nameof(OgrenciDerslerDto.Not) HeaderText="Not"></GridColumn>
-        <GridColumn Field=@nameof(OgrenciDerslerDto.Durumu) HeaderText="Durumu"></GridColumn>
-        <GridColumn Field=@nameof(OgrenciDerslerDto.Sinif) HeaderText="Sinif"></GridColumn>
-        <GridColumn Field=@nameof(OgrenciDerslerDto.Donem) HeaderText="Donem"></GridColumn>
-        <GridColumn AutoFit="true" Field=@nameof(OgrenciDerslerDto.IsZorunlu) DisplayAsCheckBox="true" HeaderText="Z"></GridColumn>
-        <GridColumn AutoFit="true" Field=@nameof(OgrenciDerslerDto.Kredi) HeaderText="Krd"></GridColumn>
-        <GridColumn AutoFit="true" Field=@nameof(OgrenciDerslerDto.Akts) HeaderText="Akts"></GridColumn>
-        <GridColumn>
-            <GridCommandColumns>
-                <GridCommandColumn Type="CommandButtonType.None" Title="Öğrenci Dersleri" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
-            </GridCommandColumns>
-        </GridColumn>
-    </GridColumns>
+                <GridAggregate>
+                    <GridAggregateColumns>
+                        <GridAggregateColumn Field=@nameof(DersAcilanDto.Akts) Type="AggregateType.Sum" Format="N2">
+                            <FooterTemplate>
+                                @{
+                                    var aggregate = (context as AggregateTemplateContext);
+                                    <div>
+                                        <p>Toplam: @aggregate.Sum</p>
+                                    </div>
+                                }
+                            </FooterTemplate>
+                        </GridAggregateColumn>
+                        <GridAggregateColumn Field=@nameof(DersAcilanDto.Kredi) Type="AggregateType.Sum" Format="N2">
+                            <FooterTemplate>
+                                @{
+                                    var aggregate = (context as AggregateTemplateContext);
+                                    <div>
+                                        <p>Toplam: @aggregate.Sum</p>
+                                    </div>
+                                }
+                            </FooterTemplate>
+                        </GridAggregateColumn>
+                    </GridAggregateColumns>
+                </GridAggregate>
+            </GridAggregates>*@
+        <GridColumns>
+            <GridColumn Visible="false" Field=@nameof(OgrenciDerslerDto.DersAcilanId) HeaderText="DersAcilanId" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(OgrenciDerslerDto.AkademisyenId) HeaderText="AkademisyenId"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciDerslerDto.DersKod) HeaderText="DersKod"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciDerslerDto.DersAd) HeaderText="DersAd"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciDerslerDto.SonucDurum) HeaderText="S.Durum"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciDerslerDto.SinavNotlari) HeaderText="Sinav Notlar"></GridColumn>
+            <GridColumn AutoFit="true" Field=@nameof(OgrenciDerslerDto.Ort) HeaderText="Ort"></GridColumn>
+            <GridColumn AutoFit="true" Field=@nameof(OgrenciDerslerDto.Not) HeaderText="Not"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciDerslerDto.Durumu) HeaderText="Durumu"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciDerslerDto.Sinif) HeaderText="Sinif"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciDerslerDto.Donem) HeaderText="Donem"></GridColumn>
+            <GridColumn AutoFit="true" Field=@nameof(OgrenciDerslerDto.IsZorunlu) DisplayAsCheckBox="true" HeaderText="Z"></GridColumn>
+            <GridColumn AutoFit="true" Field=@nameof(OgrenciDerslerDto.Kredi) HeaderText="Krd"></GridColumn>
+            <GridColumn AutoFit="true" Field=@nameof(OgrenciDerslerDto.Akts) HeaderText="Akts"></GridColumn>
+            <GridColumn>
+                <GridCommandColumns>
+                    <GridCommandColumn Type="CommandButtonType.None" Title="Öğrenci Dersleri" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
+                </GridCommandColumns>
+            </GridColumn>
+        </GridColumns>
         <GridGroupSettings Columns=@Template>
             <CaptionTemplate>
                 @{
@@ -93,9 +95,15 @@ else
 
 }
 
+<Dialog Baslik="Uyarı" @bind-isDialogOpen="@akaDialog">
+    <p>@dialogText</p>
+</Dialog>
+
 
 
 @code{
+    bool akaDialog;
+    string dialogText;
 
     string[] Initial = (new string[] { "Sinif", "Donem" });
 
@@ -139,10 +147,20 @@ else
     {
         if (args.CommandColumn.Title == "Öğrenci Dersleri")
         {
-            ApiResponseDto<DersAcilanDto> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<DersAcilanDto>>("api/dersAcilan/" + args.RowData.DersAcilanId);
+            //if (!args.RowData.AkademisyenId.HasValue)
+            //{
+            //    dialogText = "Derse bağlı bir akademisyen mevcut değil.";
+            //    akaDialog = true;
+            //}
+            //else
+            //{
+            navigationManager.NavigateTo($"/akademisyen/DersNot/{args.RowData.DersAcilanId}");
+            //}
 
-            _dersAcilanDto = apiResponse.Result;
-            ShowTumSinif = true;
+            //ApiResponseDto<DersAcilanDto> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<DersAcilanDto>>("api/dersAcilan/" + args.RowData.DersAcilanId);
+
+            //_dersAcilanDto = apiResponse.Result;
+            //ShowTumSinif = true;
         }
     }
 
