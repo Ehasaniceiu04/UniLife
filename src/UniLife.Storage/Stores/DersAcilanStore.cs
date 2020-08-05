@@ -517,8 +517,8 @@ namespace UniLife.Storage.Stores
                                         DersAd = da.Ad,
                                         SonucDurum = ((DersSonucDurum)dk.SonucDurum).ToString(),
                                         Ort = dk.Ort,
-                                        Not = dk.Not,
-                                        Carpan = dk.Ort,//Todo Buraya çarpan değerini çekecez.
+                                        HarfNot = dk.HarfNot,
+                                        Carpan = dk.Carpan,
                                         Durumu = ((DersSonuc)dk.Sonuc).ToString(),
                                         Sinif = da.Sinif,
                                         Donem = d.Ad,

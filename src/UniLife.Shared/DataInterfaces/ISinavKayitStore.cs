@@ -22,6 +22,6 @@ namespace UniLife.Shared.DataInterfaces
         Task<List<KeyValueDto>> GetOgrenciSinavsByDers(int ogrenciId, int dersAcilanId);
         Task<List<SinavSinavKayitDto>> GetSinavKayitsByOgrenciDers(int ogrenciId, int dersAcilanId);
         Task UpdateSinavKayit(int sinavkayitId, double orgNot);
-        Task<SinavKayit> PutOgrenciSinavKayitNot(OgrenciNotlarDto ogrenciNotlarDto);
+        Task<bool> PutOgrenciSinavKayitNot(OgrenciNotlarDto ogrenciNotlarDto);
     }
 }

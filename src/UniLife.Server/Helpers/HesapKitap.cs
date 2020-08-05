@@ -15,6 +15,14 @@ namespace UniLife.Server.Helpers
         public HesapKitap(IConfiguration configuration)
         {
             _configuration = configuration;
+
+            //var configurationBuilder = new ConfigurationBuilder();
+            //var path = Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json");
+            //configurationBuilder.AddJsonFile(path, false);
+
+            //var root = configurationBuilder.Build();
+            //_connectionString = root.GetSection("ConnectionString").GetSection("DataConnection").Value;
+            //var appSetting = root.GetSection("ApplicationSettings");
         }
         public DersNotHarfDto OrtalamaHarflendir(int ortalama)
         {
@@ -32,5 +40,11 @@ namespace UniLife.Server.Helpers
 
             throw new Exception($"Dikkat! Bu ortalamaya harf kodu bulunamadı:{ortalama}");
         }
+
+        //public readonly string _connectionString = string.Empty;
+        //public string ConnectionString
+        //{
+        //    get => _connectionString;
+        //}
     }
 }

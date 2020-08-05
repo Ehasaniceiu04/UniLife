@@ -47,6 +47,7 @@
 
   <ItemGroup>
     <Compile Remove="Controllers\OData\SinavKayitsController.cs" />
+    <Compile Remove="Helpers\HesapKitap.cs" />
   </ItemGroup>
 
   <ItemGroup>

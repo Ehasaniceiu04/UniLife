@@ -18,7 +18,7 @@ namespace UniLife.Shared.Dto.Definitions
         public int? DersYerineSecilenId { get; set; } //zorunluysa hem DersAcilanId a hem buraya, seçmeliyse burada seçilen DersAcilanId a yerine seçilen.
         public string DersYerineSecilenAd { get; set; }
         public double Ort { get; set; }
-        public string Not { get; set; }
+        public double Carpan { get; set; }
         public int SonucDurum { get; set; } // UniLife.Shared.Dto.DersSonucDurum enumu
         public int Sonuc { get; set; }
         public int HBN { get; set; }

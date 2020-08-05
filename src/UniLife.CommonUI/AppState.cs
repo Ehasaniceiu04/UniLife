@@ -155,7 +155,7 @@ namespace UniLife.CommonUI
         //    }
         //    HttpClient Http=new HttpClient();
         //    ApiResponseDto apiResponse = await _userProfileApi.GetAkademisyenState();
-        Settings settings = await Http.GetJsonAsyncExtension<Settings>("settings.json");
+        //Settings settings = await Http.GetJsonAsyncExtension<Settings>("settings.json");
         //    //        appState.AppSettings = settings;
 
         //    if (apiResponse.StatusCode == Status200OK)

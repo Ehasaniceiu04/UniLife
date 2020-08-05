@@ -16,7 +16,7 @@ namespace UniLife.Shared.Dto.Definitions
         public string DersAd { get; set; }
         public string SonucDurum { get; set; }
         public double Ort { get; set; }
-        public string Not { get; set; }
+        public string HarfNot { get; set; }
         public string Durumu { get; set; }
         public string SinavNotlari { get; set; }
         public int Sinif { get; set; }
