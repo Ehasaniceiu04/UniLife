@@ -12,5 +12,6 @@ namespace UniLife.Shared.DataModels
         public virtual Ogrenci Ogrenci { get; set; }
 
         public double OgrNot { get; set; }
+        public long? MazeretiSinavKayitId { get; set; } // mazereti var olan finalin bütü var demektir. final kale alınmaz. Vizeninde aynı şekilde.
     }
 }

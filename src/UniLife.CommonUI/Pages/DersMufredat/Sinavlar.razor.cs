@@ -1,6 +1,7 @@
 ﻿using MatBlazor;
 using Microsoft.AspNetCore.Components;
 using Syncfusion.Blazor.DropDowns;
+using Syncfusion.Blazor.Navigations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +40,9 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         List<SinavTipDto> sinavTipDtos = new List<SinavTipDto>();
         List<SinavTurDto> sinavTurDtos = new List<SinavTurDto>();
 
+        List<SinavDto> mazeretSinavDtos = new List<SinavDto>();
+
+
         List<SinifDto> sinifDtos = new List<SinifDto>
 {
             new SinifDto() { Ad = "0", Id = 0 },
@@ -72,7 +76,9 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         bool ogrenciSecDialogOpen;
         //List<OgrenciDto> SecmeliOgrenciDtos = new List<OgrenciDto>();
         Syncfusion.Blazor.Grids.SfGrid<OgrenciDto> SecmeliOgrenciGrid;
-
+        
+        string dialogUyariText;
+        bool isUyariOpen;
         //protected override void OnInitialized()
         //{
 
@@ -282,7 +288,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         public async Task RowSelectedHandlerSinav(Syncfusion.Blazor.Grids.RowSelectEventArgs<SinavDto> args)
         {
             selectedSinavId = args.Data.Id;
-            if (selectedSinavId !=0)
+            if (selectedSinavId != 0)
             {
                 ApiResponseDto<List<OgrenciDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDto>>>($"api/Ogrenci/GetOgrenciListBySinavId/{args.Data.Id}").Result;
                 if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
@@ -295,7 +301,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                     matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Sınava tabi öğrenicler getirilirken hata oluştu.");
                 }
             }
-            
+
         }
 
         public async Task RowSelectedHandler(Syncfusion.Blazor.Grids.RowSelectEventArgs<DersAcilanDto> args)
@@ -328,7 +334,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
                 GetSinavsByDersAcilanId(args.RowData);
             }
-            
+
         }
 
 
@@ -557,6 +563,55 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 matToaster.Add(ex.Message, MatToastType.Danger, "Sinav Save Failed");
             }
         }
+
+
+        private List<Object> Toolbaritems = new List<Object>() { "Add", "Edit", "Delete", "ColumnChooser", new ItemModel() { Text = "Mazeret Sınavı", TooltipText = "Seçilenm Sınavın Mazereti", PrefixIcon = "e-click", Id = "Mazeret" } };
+        public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+        {
+            if (args.Item.Id == "Mazeret")
+            {
+                if (selectedSinavId != 0)
+                {
+                    var mazeret = SinavDtos.FirstOrDefault(x => x.Id == selectedSinavId);
+                    mazeret.Id = 0;
+                    mazeret.MazeretiSinavId = selectedSinavId;
+                    ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/sinav", mazeret);
+                }
+                else
+                {
+                    dialogUyariText = "Evvela bir ara sınav seçiniz.";
+                    isUyariOpen = true;
+                }
+            }
+        }
+        
+        public async Task TopluButOlustur()
+        {
+            List<DersAcilanDto> seciliDersler = await DersAcGrid.GetSelectedRecords();
+            // Büt sınavlarını oluştur finalin aynı sadece bir modalda bir tarhi girdirt.
+            // Final sınavı id sini bu büte mazeret ID olarka gir.
+        }
+
+        //bool isMazeret;
+        
+        //public async Task SinavTurChange(ChangeEventArgs<int> args)
+        //{
+        //    if (args.Value == (int)SinavTurEnum.Mazeret_Sinav)
+        //    {
+        //        if (SelectedDersAcilans.Count>1)
+        //        {
+        //            isUyariOpen = true;
+        //            dialogUyariText = "Birden fazla ders seçimi mevcut. Mazeret sınavları teker teker oluşturulabilir.";
+        //        }
+
+
+        //        isMazeret = true;
+
+        //        OData<SinavDto> apiResponse = await Http.GetFromJsonAsync<OData<SinavDto>>($"odata/Sinavs?$select=Id,Ad&$filter=DersAcilanId eq {}");
+        //    }
+        //}
+
+        //List<SinavKayitDto> mazeretSinavKayitDtos;
 
     }
 }

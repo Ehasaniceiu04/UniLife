@@ -27,6 +27,7 @@ namespace UniLife.Shared.Dto.Definitions
         public string KisaAd { get; set; }
 
         public int OgrCount { get; set; }
+        public int? MazeretiSinavId { get; set; } //Bu sadece bazı öğrenciler için gerçekleşiyor.
 
         public virtual IEnumerable<int> DersAcilanIds{ get; set; }
     }

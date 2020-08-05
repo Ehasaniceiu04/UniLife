@@ -8,6 +8,7 @@
     <GridEvents TValue="OgrenciNotlarDto" OnActionComplete="ActionCompletedHandler"></GridEvents>
     <GridColumns>
         <GridColumn Visible="false" Field=@nameof(OgrenciNotlarDto.SinavId) HeaderText="Sinav Id" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+        <GridColumn Visible="false" Field=@nameof(OgrenciNotlarDto.DersId) AllowEditing="false"></GridColumn>
         <GridColumn Field=@nameof(OgrenciNotlarDto.SinavTip) HeaderText="Sinav Tip" AllowEditing="false"></GridColumn>
         <GridColumn Field=@nameof(OgrenciNotlarDto.DersAd) HeaderText="Ders Ad" AllowEditing="false"></GridColumn>
         <GridColumn Visible="false" Field=@nameof(OgrenciNotlarDto.OgrenciId) AllowEditing="false" HeaderText="Ogrenci Id"></GridColumn>
@@ -53,16 +54,16 @@
         {
             if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
             {
-                SinavKayitDto sinavKayitDto = new SinavKayitDto
-                {
-                    Id = args.Data.SinavKayitId,
-                    OgrenciId = args.Data.OgrenciId,
-                    OgrNot = args.Data.OgrNot,
-                    SinavId = args.Data.SinavId
-                };
+                //SinavKayitDto sinavKayitDto = new SinavKayitDto
+                //{
+                //    Id = args.Data.SinavKayitId,
+                //    OgrenciId = args.Data.OgrenciId,
+                //    OgrNot = args.Data.OgrNot,
+                //    SinavId = args.Data.SinavId
+                //};
 
 
-                ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>("api/sinavKayit", sinavKayitDto);
+                ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>("api/sinavKayit/PutOgrenciSinavKayitNot", args.RowData);
                 if (apiResponse.IsSuccessStatusCode)
                 {
                     matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");

@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using UniLife.Shared.Dto.Definitions;
+using System.Security.Cryptography.X509Certificates;
 
 namespace UniLife.Storage.Stores
 {
@@ -86,6 +87,7 @@ namespace UniLife.Storage.Stores
                                     SinavTip = st.Ad,
                                     DersKisaAd = da.KisaAd,
                                     DersAd = da.Ad,
+                                    DersId = da.Id,
                                     OgrenciId = sk.OgrenciId,
                                     OgrNot = sk.OgrNot,
                                     Donem =d.Ad,
@@ -155,6 +157,46 @@ namespace UniLife.Storage.Stores
             sk.OgrNot = orgNot;
             _db.SinavKayits.Update(sk);
             await _db.SaveChangesAsync(CancellationToken.None);
+        }
+
+        public async Task<SinavKayit> PutOgrenciSinavKayitNot(OgrenciNotlarDto ogrenciNotlarDto)
+        {
+            var existSinavKayit = await _db.SinavKayits.FirstOrDefaultAsync(x => x.Id == ogrenciNotlarDto.SinavKayitId);
+
+            existSinavKayit.OgrNot = ogrenciNotlarDto.OgrNot;
+
+            _db.SinavKayits.Update(existSinavKayit);
+
+            var dersSinavList = await (from da in _db.DersAcilans.Where(x => x.Id == ogrenciNotlarDto.DersId)
+                                join dk in _db.DersKayits.Where(x => x.OgrenciId == ogrenciNotlarDto.OgrenciId) on da.Id equals dk.DersAcilanId
+                                join s in _db.Sinavs on da.Id equals s.DersAcilanId
+                                join sk in _db.SinavKayits.Where(x => x.OgrenciId == ogrenciNotlarDto.OgrenciId) on s.Id equals sk.SinavId
+                                select new DersNotHesaplamaDto
+                                {
+                                    DersAcilanId = da.Id,
+                                    DersKayitId = dk.Id,
+                                    OgrNot = sk.OgrNot,
+                                    SEtkiOran = s.EtkiOran,
+                                    MazeretiSinavId = s.MazeretiSinavId,
+                                    MazeretiSinavKayitId = sk.MazeretiSinavKayitId
+                                }).ToListAsync();
+
+            double Ortlama=0;
+            string HarfNot;
+
+            foreach (var dersSinavi in dersSinavList)
+            {
+                if (dersSinavList.Any(x => x.MazeretiSinavKayitId == dersSinavi.MazeretiSinavKayitId))
+                {
+
+                }
+                else
+                {
+                    Ortlama += dersSinavi.OgrNot * (dersSinavi.SEtkiOran / 100);
+                }
+            }
+
+            return null;
         }
     }
 }

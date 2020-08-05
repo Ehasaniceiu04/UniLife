@@ -518,6 +518,7 @@ namespace UniLife.Storage.Stores
                                         SonucDurum = ((DersSonucDurum)dk.SonucDurum).ToString(),
                                         Ort = dk.Ort,
                                         Not = dk.Not,
+                                        Carpan = dk.Ort,//Todo Buraya çarpan değerini çekecez.
                                         Durumu = ((DersSonuc)dk.Sonuc).ToString(),
                                         Sinif = da.Sinif,
                                         Donem = d.Ad,
@@ -529,17 +530,38 @@ namespace UniLife.Storage.Stores
 
             var sinavSonucs = await (from sk in _db.SinavKayits.Where(x => x.OgrenciId == ogrenciId)
                                      join s in _db.Sinavs on sk.SinavId equals s.Id
-                                     select new KeyValueDto
+                                     select new DersNotHesaplamaDto
                                      {
                                          Id = s.Id,
-                                         IntValue = s.DersAcilanId,
-                                         Ad = s.Ad,
-                                         DoubleValue = sk.OgrNot
+                                         DersAcilanId = s.DersAcilanId,
+                                         SinavAd = s.Ad,
+                                         OgrNot = sk.OgrNot,
+                                         SEtkiOran = s.EtkiOran,
+                                         MazeretiSinavKayitId = sk.MazeretiSinavKayitId,
+                                         MazeretiSinavId = s.MazeretiSinavId
                                      }).ToListAsync();
 
             foreach (var item in dersSonucs)
             {
-                item.SinavNotlari = String.Join(" ", sinavSonucs.Where(x => x.IntValue == item.DersAcilanId).Select(x => x.Ad + ":" + x.DoubleValue)); 
+                var dersOgrencisSinavs = sinavSonucs.Where(x => x.DersAcilanId == item.DersAcilanId);
+
+                item.SinavNotlari = String.Join(" ", dersOgrencisSinavs.Select(x => x.SinavAd + ":" + x.OgrNot));
+
+                //foreach (var sinavSonuc in dersOgrencisSinavs)
+                //{
+                //    //if (dersOgrencisSinavs.Any(x => x.MazeretiSinavKayitId == sinavSonuc.MazeretiSinavKayitId))
+                //    // Yani: Bu sinav Kayidinin ID'si başka bir sınav kayıdında MazeretiSinavKayitId olarak kayıtlımı?
+                //    if (dersOgrencisSinavs.Any(x => x.MazeretiSinavId == sinavSonuc.MazeretiSinavId))
+                //    {
+
+                //    }
+                //    else
+                //    {
+                //        item.Ort += sinavSonuc.OgrNot * (sinavSonuc.SEtkiOran / 100);
+                //    }
+
+                //}
+
             }
 
             return _autoMapper.Map<List<OgrenciDerslerDto>>(dersSonucs);

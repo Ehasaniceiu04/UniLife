@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using UniLife.Storage;
@@ -9,9 +10,10 @@ using UniLife.Storage;
 namespace UniLife.Storage.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200804203455_sınavkayıtmazeret2")]
+    partial class sınavkayıtmazeret2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2369,9 +2371,6 @@ namespace UniLife.Storage.Migrations
                     b.Property<string>("KisaAd")
                         .HasColumnType("text");
 
-                    b.Property<int?>("MazeretiSinavId")
-                        .HasColumnType("integer");
-
                     b.Property<Guid>("ModifiedBy")
                         .HasColumnType("uuid");
 
@@ -2424,7 +2423,7 @@ namespace UniLife.Storage.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
-                    b.Property<long?>("MazeretiSinavKayitId")
+                    b.Property<long>("MazeretiSinavKayitId")
                         .HasColumnType("bigint");
 
                     b.Property<Guid>("ModifiedBy")

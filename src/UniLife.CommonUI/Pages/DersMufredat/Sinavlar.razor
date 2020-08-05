@@ -85,6 +85,7 @@
                                 </GridColumn>
                             </GridColumns>
                         </SfGrid>
+                        <SfButton OnClick="TopluButOlustur" CssClass="e-success">Seçilen Derslerin Bütlerini Oluştur.</SfButton>
                     </div>
                 </div>
             </div>
@@ -113,14 +114,13 @@
                 <div class="col-12">
                     <div class="form-row">
                         @*açılan ders grid OnRecordClick="OnSinavRecordClickHandler" *@
-                        <SfGrid ID="SinavGrid" @ref="SinavGrid" DataSource="@SinavDtos" Toolbar="@(new List<string>() { "Add", "Edit", "Delete","ColumnChooser" })" RowHeight="20" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
-                            <GridEvents RowSelected="RowSelectedHandlerSinav" OnActionComplete="ActionCompletedHandler" TValue="SinavDto"></GridEvents>
+                        <SfGrid ID="SinavGrid" @ref="SinavGrid" DataSource="@SinavDtos" Toolbar="@(Toolbaritems)" RowHeight="20" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
+                            <GridEvents RowSelected="RowSelectedHandlerSinav" OnActionComplete="ActionCompletedHandler" OnToolbarClick="ToolbarClickHandler" TValue="SinavDto"></GridEvents>
                             <GridSelectionSettings></GridSelectionSettings>
                             <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
                                 <Template>
                                     @{
                                         SinavDto sinavInfo = (context as SinavDto);
-
                                     }
                                     <div class="col-md-10 offset-md-1">
                                         <div class="form-row mt-4">
@@ -130,16 +130,27 @@
                                                     <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
                                                 </SfDropDownList>
                                             </div>
-                                            <div class="col-sm-3 pb-3">
+                                            <div class="col-sm-6 pb-3">
                                                 <label for="SablonAd">SablonAd</label>
                                                 <SfTextBox ID="SablonAd" Placeholder="SablonAd" CssClass="form-control" @bind-Value="@(sinavInfo.SablonAd)"></SfTextBox>
                                             </div>
                                             <div class="col-sm-6 pb-3">
                                                 <label for="SinavTurId">Sinav Tur</label>
-                                                <SfDropDownList ID="SinavTurId" CssClass="form-control" @bind-Value="@(sinavInfo.SinavTurId)" TValue="int" TItem="SinavTurDto" Index="0" DataSource="@sinavTurDtos">
+                                                <SfDropDownList Enabled="false" ID="SinavTurId" CssClass="form-control" @bind-Value="@(sinavInfo.SinavTurId)" TValue="int" TItem="SinavTurDto" Index="0" DataSource="@sinavTurDtos">
                                                     <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
+                                                    @*<DropDownListEvents TValue="int" ValueChange="SinavTurChange"></DropDownListEvents>*@
                                                 </SfDropDownList>
                                             </div>
+                                            @*@if (isMazeret)
+                                            {
+                                                <div class="col-sm-6 pb-3">
+                                                    <label for="mazeretSinavId">Mazeret Olunan</label>
+                                                    <SfDropDownList ID="MazeretiSinavKayitId" CssClass="form-control" @bind-Value="@(sinavInfo.MazeretiSinavId)" TValue="int?" TItem="SinavDto" Index="0" DataSource="@mazeretSinavDtos">
+                                                        <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
+                                                        <DropDownListEvents TValue="int?" ValueChange="SinavTurChange"></DropDownListEvents>
+                                                    </SfDropDownList>
+                                                </div>
+                                            }*@
                                             <div class="col-sm-6 pb-3">
                                                 <label for="EtkiOran">EtkiOran (%)</label>
                                                 <SfNumericTextBox ID="EtkiOran" Min="0" Max="100" @bind-Value="@(sinavInfo.EtkiOran)" TValue="int?" Format=n0></SfNumericTextBox>
@@ -239,6 +250,10 @@
             </GridColumns>
         </SfGrid>
     </div>
+</Dialog>
+
+<Dialog Baslik="Uyarı!" @bind-isDialogOpen="@isUyariOpen">
+    <p>@dialogUyariText</p>
 </Dialog>
 
 

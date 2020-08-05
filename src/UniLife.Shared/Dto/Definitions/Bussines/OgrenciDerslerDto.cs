@@ -25,6 +25,7 @@ namespace UniLife.Shared.Dto.Definitions
         public double Kredi { get; set; }
         public int Akts { get; set; }
         public int? AkademisyenId { get; set; }
+        public double Carpan { get; set; }
 
     }
 }

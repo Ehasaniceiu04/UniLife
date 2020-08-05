@@ -22,6 +22,18 @@ namespace UniLife.Shared.Dto
         Kaldı = 0,
         Geçti = 1
     }
+    public enum SinavTurEnum
+    {
+        Yeni_Sinav = 0,
+        Mazeret_Sinav = 1
+    }
+    public enum SinavTipEnum
+    {
+        Ara_Sinav = 0,
+        Final = 1
+    }
+
+
 
     //public enum DersSonucDurum
     //{

@@ -9,5 +9,6 @@ namespace UniLife.Shared.Dto.Definitions
         public int SinavId { get; set; }
         public int OgrenciId { get; set; }
         public double OgrNot { get; set; }
+        public long? MazeretiSinavKayitId { get; set; } // mazereti var olan finalin bütü var demektir final kale alınmaz. Vizeninde aynı şekilde.
     }
 }

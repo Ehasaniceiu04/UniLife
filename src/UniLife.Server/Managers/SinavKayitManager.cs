@@ -71,5 +71,10 @@ namespace UniLife.Server.Managers
             await _sinavKayitStore.UpdateSinavKayit(sinavkayitId, orgNot);
             return new ApiResponse(Status200OK, "Sinav kayıdı güncellendi");
         }
+
+        public async Task<ApiResponse> PutOgrenciSinavKayitNot(OgrenciNotlarDto ogrenciNotlarDto)
+        {
+            return new ApiResponse(Status200OK, "Updated SinavKayitDto", await _sinavKayitStore.PutOgrenciSinavKayitNot(ogrenciNotlarDto));
+        }
     }
 }

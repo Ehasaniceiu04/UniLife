@@ -53,7 +53,9 @@ else
                                     <TabHeader Text="Roller"></TabHeader>
                                 </ChildContent>
                                 <ContentTemplate>
-                                    <OgrenciRoles _OgrenciDto="ogrenciInfo"></OgrenciRoles>
+                                    <div @onkeydown:stopPropagation="true">
+                                        <OgrenciRoles _OgrenciDto="ogrenciInfo"></OgrenciRoles>
+                                    </div>
                                 </ContentTemplate>
                             </TabItem>
                         </TabItems>

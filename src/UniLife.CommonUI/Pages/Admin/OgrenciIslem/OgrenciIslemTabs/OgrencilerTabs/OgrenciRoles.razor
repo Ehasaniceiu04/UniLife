@@ -26,8 +26,8 @@
             <ValidationSummary />
             <fieldset>
                 <div class="form-group">
-                    <SfTextBox @bind-Value="@registerParameters.Password" CssClass="e-icons e-input-eye" FloatLabelType="Syncfusion.Blazor.Inputs.FloatLabelType.Auto" Placeholder="Şifre" Type="InputType.Password"></SfTextBox>
-                    @*<MatTextField @bind-Value="@registerParameters.Password" Label="Şifre" Icon="lock_outline" IconTrailing="true" FullWidth="true" Required="true" Type="password"></MatTextField>*@
+                    @*<SfTextBox @bind-Value="@registerParameters.Password" CssClass="e-icons e-input-eye" FloatLabelType="Syncfusion.Blazor.Inputs.FloatLabelType.Auto" Placeholder="Şifre" Type="InputType.Password"></SfTextBox>*@
+                    <MatTextField @bind-Value="@registerParameters.Password" Label="Şifre" Icon="lock_outline" IconTrailing="true" FullWidth="true" Required="true" Type="password"></MatTextField>
                 </div>
                 <div class="form-group">
                     <MatTextField @bind-Value="@registerParameters.PasswordConfirm" Label="Şifre onay" Icon="lock_outline" IconTrailing="true" FullWidth="true" Required="true" Type="password"></MatTextField>

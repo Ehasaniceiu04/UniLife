@@ -20,32 +20,38 @@ else
     <SfGrid ID="grdDersler" @ref="grdDersler" DataSource="@ogrenciDerslerDtos" AllowGrouping="true" Toolbar="@(new List<string>() {"ExcelExport", "CsvExport", "PdfExport" })">
         <GridEvents TValue="OgrenciDerslerDto" QueryCellInfo="QueryCellInfoHandler" CommandClicked="CommandClickHandler"></GridEvents>
         <GridGroupSettings ShowDropArea="false" Columns="@Initial"></GridGroupSettings>
-        @*<GridAggregates>
+        <GridAggregates>
                 <GridAggregate>
                     <GridAggregateColumns>
                         <GridAggregateColumn Field=@nameof(DersAcilanDto.Akts) Type="AggregateType.Sum" Format="N2">
-                            <FooterTemplate>
+                            <GroupFooterTemplate>
                                 @{
                                     var aggregate = (context as AggregateTemplateContext);
-                                    <div>
-                                        <p>Toplam: @aggregate.Sum</p>
-                                    </div>
+                                    if (aggregate.Field == "Donem")
+                                    {
+                                        <div>
+                                            <p>Dönem Ort: @aggregate.Sum</p>
+                                        </div>
+                                    }
                                 }
-                            </FooterTemplate>
+                            </GroupFooterTemplate>
                         </GridAggregateColumn>
                         <GridAggregateColumn Field=@nameof(DersAcilanDto.Kredi) Type="AggregateType.Sum" Format="N2">
-                            <FooterTemplate>
+                            <GroupFooterTemplate>
                                 @{
                                     var aggregate = (context as AggregateTemplateContext);
-                                    <div>
-                                        <p>Toplam: @aggregate.Sum</p>
-                                    </div>
+                                    if (aggregate.Field == "Donem")
+                                    {
+                                        <div>
+                                            <p>Toplam: @aggregate.Sum</p>
+                                        </div>
+                                    }
                                 }
-                            </FooterTemplate>
+                            </GroupFooterTemplate>
                         </GridAggregateColumn>
                     </GridAggregateColumns>
                 </GridAggregate>
-            </GridAggregates>*@
+            </GridAggregates>
         <GridColumns>
             <GridColumn Visible="false" Field=@nameof(OgrenciDerslerDto.DersAcilanId) HeaderText="DersAcilanId" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
             <GridColumn Visible="false" Field=@nameof(OgrenciDerslerDto.AkademisyenId) HeaderText="AkademisyenId"></GridColumn>

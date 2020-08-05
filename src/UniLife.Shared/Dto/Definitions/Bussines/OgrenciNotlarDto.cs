@@ -13,6 +13,7 @@ namespace UniLife.Shared.Dto.Definitions
         public string SinavTip { get; set; }
         public string DersKisaAd { get; set; }
         public string DersAd { get; set; }
+        public int DersId { get; set; }
         public int OgrenciId { get; set; }
         public double OgrNot { get; set; }
 
