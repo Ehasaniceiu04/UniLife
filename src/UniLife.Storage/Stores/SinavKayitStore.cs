@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using UniLife.Shared.Dto.Definitions;
 using System.Security.Cryptography.X509Certificates;
 using UniLife.Shared.Helpers;
+using System;
+using UniLife.Shared;
 
 namespace UniLife.Storage.Stores
 {
@@ -162,55 +164,67 @@ namespace UniLife.Storage.Stores
 
         public async Task<bool> PutOgrenciSinavKayitNot(OgrenciNotlarDto ogrenciNotlarDto)
         {
-            var existSinavKayit = await _db.SinavKayits.FirstOrDefaultAsync(x => x.Id == ogrenciNotlarDto.SinavKayitId);
-
-            existSinavKayit.OgrNot = ogrenciNotlarDto.OgrNot;
-
-            _db.SinavKayits.Update(existSinavKayit);
-
-            var dersSinavList = await (from da in _db.DersAcilans.Where(x => x.Id == ogrenciNotlarDto.DersId)
-                                       join dk in _db.DersKayits.Where(x => x.OgrenciId == ogrenciNotlarDto.OgrenciId) on da.Id equals dk.DersAcilanId
-                                       join s in _db.Sinavs on da.Id equals s.DersAcilanId
-                                       join sk in _db.SinavKayits.Where(x => x.OgrenciId == ogrenciNotlarDto.OgrenciId) on s.Id equals sk.SinavId
-                                       select new DersNotHesaplamaDto
-                                       {
-                                           DersAcilanId = da.Id,
-                                           DersKayitId = dk.Id,
-                                           OgrNot = sk.OgrNot,
-                                           SEtkiOran = s.EtkiOran,
-                                           MazeretiSinavId = s.MazeretiSinavId,
-                                           MazeretiSinavKayitId = sk.MazeretiSinavKayitId
-                                       }).ToListAsync();
-
-            double Ortlama = 0;
-
-
-            foreach (var dersSinavi in dersSinavList)
+            using (var context = _db.Context.Database.BeginTransaction())
             {
-                if (dersSinavList.Any(x => x.MazeretiSinavKayitId == dersSinavi.MazeretiSinavKayitId && x.MazeretiSinavKayitId.HasValue))
-                {
+                var existSinavKayit = await _db.SinavKayits.FirstOrDefaultAsync(x => x.Id == ogrenciNotlarDto.SinavKayitId);
 
+                existSinavKayit.OgrNot = ogrenciNotlarDto.OgrNot;
+
+                _db.SinavKayits.Update(existSinavKayit);
+
+                await _db.SaveChangesAsync(CancellationToken.None);
+
+                var dersSinavList = await (from da in _db.DersAcilans.Where(x => x.Id == ogrenciNotlarDto.DersId)
+                                           join dk in _db.DersKayits.Where(x => x.OgrenciId == ogrenciNotlarDto.OgrenciId) on da.Id equals dk.DersAcilanId
+                                           join s in _db.Sinavs on da.Id equals s.DersAcilanId
+                                           join sk in _db.SinavKayits.Where(x => x.OgrenciId == ogrenciNotlarDto.OgrenciId) on s.Id equals sk.SinavId
+                                           select new DersNotHesaplamaDto
+                                           {
+                                               DersAcilanId = da.Id,
+                                               DersKayitId = dk.Id,
+                                               OgrNot = sk.OgrNot,
+                                               SEtkiOran = s.EtkiOran,
+                                               MazeretiSinavId = s.MazeretiSinavId,
+                                               MazeretiSinavKayitId = sk.MazeretiSinavKayitId
+                                           }).ToListAsync();
+
+                double Ortlama = 0;
+
+
+                foreach (var dersSinavi in dersSinavList)
+                {
+                    if (dersSinavList.Any(x => x.MazeretiSinavKayitId == dersSinavi.MazeretiSinavKayitId && x.MazeretiSinavKayitId.HasValue))
+                    {
+
+                    }
+                    else
+                    {
+                        Ortlama += dersSinavi.OgrNot * (dersSinavi.SEtkiOran / 100);
+                    }
+                }
+                HesapKitap hesapKitap = new HesapKitap();
+
+                DersNotHarfDto dersNotHarfDto = hesapKitap.OrtalamaHarflendir(Ortlama);
+
+
+                var dersKayitExist = await _db.DersKayits.FirstOrDefaultAsync(x => x.DersAcilanId == ogrenciNotlarDto.DersId && x.OgrenciId == ogrenciNotlarDto.OgrenciId);
+                dersKayitExist.HarfNot = dersNotHarfDto.harf;
+                dersKayitExist.Carpan = dersNotHarfDto.carpan;
+                dersKayitExist.Ort = Ortlama;
+                _db.DersKayits.Update(dersKayitExist);
+
+                
+                if (await _db.SaveChangesAsync(CancellationToken.None) > 0)
+                {
+                    context.Commit();
+                    return true;
                 }
                 else
-                {
-                    Ortlama += dersSinavi.OgrNot * (dersSinavi.SEtkiOran / 100);
-                }
+                    throw new DomainException($"Dikkat! Not ve ortlama değişikliği gerçekleştirilemedi ogrenci:{ogrenciNotlarDto.OgrenciId} ders:{ogrenciNotlarDto.SinavId}");
+
             }
-            HesapKitap hesapKitap = new HesapKitap();
 
-            DersNotHarfDto dersNotHarfDto = hesapKitap.OrtalamaHarflendir(Ortlama);
-
-
-            var dersKayitExist = await _db.DersKayits.FirstOrDefaultAsync(x => x.DersAcilanId == ogrenciNotlarDto.DersId && x.OgrenciId == ogrenciNotlarDto.OgrenciId);
-            dersKayitExist.HarfNot = dersNotHarfDto.harf;
-            dersKayitExist.Carpan = dersNotHarfDto.carpan;
-            dersKayitExist.Ort = Ortlama;
-            _db.DersKayits.Update(dersKayitExist);
-
-            if (await _db.SaveChangesAsync(CancellationToken.None) > 0)
-                return true;
-            else
-                return false;
+               
 
         }
     }

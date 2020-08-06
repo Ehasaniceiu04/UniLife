@@ -30,7 +30,7 @@ namespace UniLife.Shared.Helpers
 
             foreach (var item in harflendirmeList)
             {
-                if (item.az <= ortalama && item.cok >= ortalama)
+                if (item.az <= Math.Floor(ortalama) && item.cok >= Math.Floor(ortalama))
                 {
                     item.ort = ortalama;
                     return item;

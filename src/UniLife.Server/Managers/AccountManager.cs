@@ -551,7 +551,7 @@ namespace UniLife.Server.Managers
 
 
                 //Role - Here we tie the new user to the "User" role
-                await _userManager.AddToRoleAsync(user, "User");
+                await _userManager.AddToRoleAsync(user, "Ogrenci");
 
 
 
@@ -606,7 +606,7 @@ namespace UniLife.Server.Managers
                     Soyad = user.LastName,
                     TCKN = user.TCKN,
                     //ExposedClaims = user.Claims.ToDictionary(c => c.Type, c => c.Value),
-                    Roles = new List<string> { "User" }
+                    Roles = new List<string> { "Ogrenci" }
                 };
 
                 return new ApiResponse(Status200OK, "Yeni öğrenci kullanıcı oluşturuldu", ogrenciDto1);
@@ -721,7 +721,7 @@ namespace UniLife.Server.Managers
 
 
                 //Role - Here we tie the new user to the "User" role
-                await _userManager.AddToRoleAsync(user, "User");
+                await _userManager.AddToRoleAsync(user, "Akademisyen");
 
 
 
@@ -776,7 +776,7 @@ namespace UniLife.Server.Managers
                     Soyad = user.LastName,
                     TCKN = user.TCKN,
                     //ExposedClaims = user.Claims.ToDictionary(c => c.Type, c => c.Value),
-                    Roles = new List<string> { "User" }
+                    Roles = new List<string> { "Akademisyen" }
                 };
 
                 return new ApiResponse(Status200OK, "Yeni akademisyen kullanıcı oluşturuldu", akademisyenDto1);
@@ -841,7 +841,7 @@ namespace UniLife.Server.Managers
 
 
                 //Role - Here we tie the new user to the "User" role
-                await _userManager.AddToRoleAsync(user, "User");
+                await _userManager.AddToRoleAsync(user, "Personel");
 
 
 
@@ -896,7 +896,7 @@ namespace UniLife.Server.Managers
                     Soyad = user.LastName,
                     TCKN = user.TCKN,
                     //ExposedClaims = user.Claims.ToDictionary(c => c.Type, c => c.Value),
-                    Roles = new List<string> { "User" }
+                    Roles = new List<string> { "Personel" }
                 };
 
                 return new ApiResponse(Status200OK, "Yeni personel kullanıcı oluşturuldu", personelDto1);

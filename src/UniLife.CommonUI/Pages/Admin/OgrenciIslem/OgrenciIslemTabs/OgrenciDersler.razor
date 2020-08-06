@@ -30,25 +30,26 @@ else
                                     if (aggregate.Field == "Donem")
                                     {
                                         <div>
-                                            <p>Dönem Ort: @aggregate.Sum</p>
-                                        </div>
-                                    }
-                                }
-                            </GroupFooterTemplate>
-                        </GridAggregateColumn>
-                        <GridAggregateColumn Field=@nameof(DersAcilanDto.Kredi) Type="AggregateType.Sum" Format="N2">
-                            <GroupFooterTemplate>
-                                @{
-                                    var aggregate = (context as AggregateTemplateContext);
-                                    if (aggregate.Field == "Donem")
-                                    {
-                                        <div>
                                             <p>Toplam: @aggregate.Sum</p>
                                         </div>
                                     }
                                 }
+                                @*<Syncfusion.Blazor.Inputs.SfTextBox Placeholder="asdasd"></Syncfusion.Blazor.Inputs.SfTextBox>*@
                             </GroupFooterTemplate>
                         </GridAggregateColumn>
+                        @*<GridAggregateColumn Field=@nameof(DersAcilanDto.Kredi) Type="AggregateType.Sum" Format="N2">
+            <GroupFooterTemplate>
+                @{
+                    var aggregate = (context as AggregateTemplateContext);
+                    if (aggregate.Field == "Donem")
+                    {
+                        <div>
+                            <p>Toplam: @aggregate.Sum</p>
+                        </div>
+                    }
+                }
+            </GroupFooterTemplate>
+        </GridAggregateColumn>*@
                     </GridAggregateColumns>
                 </GridAggregate>
             </GridAggregates>
@@ -64,9 +65,10 @@ else
             <GridColumn Field=@nameof(OgrenciDerslerDto.Durumu) HeaderText="Durumu"></GridColumn>
             <GridColumn Field=@nameof(OgrenciDerslerDto.Sinif) HeaderText="Sinif"></GridColumn>
             <GridColumn Field=@nameof(OgrenciDerslerDto.Donem) HeaderText="Donem"></GridColumn>
+            <GridColumn  Field=@nameof(OgrenciDerslerDto.Carpan) HeaderText="Carpan"></GridColumn>
             <GridColumn AutoFit="true" Field=@nameof(OgrenciDerslerDto.IsZorunlu) DisplayAsCheckBox="true" HeaderText="Z"></GridColumn>
             <GridColumn AutoFit="true" Field=@nameof(OgrenciDerslerDto.Kredi) HeaderText="Krd"></GridColumn>
-            <GridColumn AutoFit="true" Field=@nameof(OgrenciDerslerDto.Akts) HeaderText="Akts"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciDerslerDto.Akts) HeaderText="Akts"></GridColumn>
             <GridColumn>
                 <GridCommandColumns>
                     <GridCommandColumn Type="CommandButtonType.None" Title="Öğrenci Dersleri" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>

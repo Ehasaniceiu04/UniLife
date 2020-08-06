@@ -3,9 +3,10 @@
 @inject IMatToaster matToaster
 @inject AppState appState
 
-<SfGrid ID="OgrNotlar" @ref="OgrNotlar" DataSource="@ogrenciNotlarDtos" Toolbar="@(new List<string>() {"Edit", "Update", "Cancel" })" AllowPaging="true">
+<SfGrid ID="OgrNotlar" @ref="OgrNotlar" AllowGrouping="true" DataSource="@ogrenciNotlarDtos" Toolbar="@(new List<string>() {"Edit", "Update", "Cancel" })" AllowPaging="true">
     <GridEditSettings AllowEditing="true"></GridEditSettings>
-    <GridEvents TValue="OgrenciNotlarDto" OnActionComplete="ActionCompletedHandler"></GridEvents>
+    <GridEvents TValue="OgrenciNotlarDto" QueryCellInfo="QueryCellInfoHandler" OnActionComplete="ActionCompletedHandler"></GridEvents>
+    <GridGroupSettings ShowDropArea="false" Columns="@Initial"></GridGroupSettings>
     <GridColumns>
         <GridColumn Visible="false" Field=@nameof(OgrenciNotlarDto.SinavId) HeaderText="Sinav Id" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
         <GridColumn Visible="false" Field=@nameof(OgrenciNotlarDto.DersId) AllowEditing="false"></GridColumn>
@@ -23,6 +24,7 @@
     SfGrid<OgrenciNotlarDto> OgrNotlar;
 
     List<OgrenciNotlarDto> ogrenciNotlarDtos;
+    string[] Initial = (new string[] { "Sinif", "Donem" });
 
     protected override async Task OnInitializedAsync()
     {
@@ -69,13 +71,28 @@
                     matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
                 }
                 else
+                {
+                    args.Cancel = true;
+                    //TODO : Burada giridi refresh etmemiz lazım.
                     matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
+                }
+
             }
         }
         catch (Exception ex)
         {
+            //TODO : Burada giridi refresh etmemiz lazım.
+            args.Cancel = true;
+            OgrNotlar.Refresh();
             matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
         }
+
+    }
+
+    public void QueryCellInfoHandler(QueryCellInfoEventArgs<OgrenciNotlarDto> args)
+    {
+        //# aeffc0
+        args.Cell.AddStyle(new string[] { "background-color:#e8f5bc" });
 
     }
 

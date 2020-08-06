@@ -11,7 +11,7 @@ namespace UniLife.Shared.Dto.Definitions
         public string harf { get; set; }
         public int az { get; set; }
         public int cok { get; set; }
-        public int carpan{ get; set; }
+        public double carpan{ get; set; }
         public double ort { get; set; }
     }
 }
