@@ -5,7 +5,7 @@
 
 <SfGrid ID="OgrNotlar" @ref="OgrNotlar" AllowGrouping="true" DataSource="@ogrenciNotlarDtos" Toolbar="@(new List<string>() {"Edit", "Update", "Cancel" })" AllowPaging="true">
     <GridEditSettings AllowEditing="true"></GridEditSettings>
-    <GridEvents TValue="OgrenciNotlarDto" QueryCellInfo="QueryCellInfoHandler" OnActionComplete="ActionCompletedHandler"></GridEvents>
+    <GridEvents TValue="OgrenciNotlarDto" QueryCellInfo="QueryCellInfoHandler" OnActionBegin="OnActionBeginHandler" OnActionComplete="ActionCompletedHandler"></GridEvents>
     <GridGroupSettings ShowDropArea="false" Columns="@Initial"></GridGroupSettings>
     <GridColumns>
         <GridColumn Visible="false" Field=@nameof(OgrenciNotlarDto.SinavId) HeaderText="Sinav Id" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
@@ -49,6 +49,24 @@
         }
     }
 
+    OgrenciNotlarDto ogrenciNotlarDtoOnceki = new OgrenciNotlarDto();
+
+    public async Task OnActionBeginHandler(ActionEventArgs<OgrenciNotlarDto> args)
+    {
+        try
+        {
+            if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+            {
+                ogrenciNotlarDtoOnceki = args.PreviousData.DeepClone();
+            }
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
     public async Task ActionCompletedHandler(ActionEventArgs<OgrenciNotlarDto> args)
     {
 
@@ -72,8 +90,9 @@
                 }
                 else
                 {
-                    args.Cancel = true;
-                    //TODO : Burada giridi refresh etmemiz lazım.
+                    var zxc = ogrenciNotlarDtos.FirstOrDefault(x => x.SinavId == args.RowData.SinavId);
+                    zxc.OgrNot = ogrenciNotlarDtoOnceki.OgrNot;
+                    OgrNotlar.Refresh();
                     matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
                 }
 
@@ -81,8 +100,8 @@
         }
         catch (Exception ex)
         {
-            //TODO : Burada giridi refresh etmemiz lazım.
-            args.Cancel = true;
+            var zxc= ogrenciNotlarDtos.FirstOrDefault(x => x.SinavId == args.RowData.SinavId);
+            zxc.OgrNot = ogrenciNotlarDtoOnceki.OgrNot ;
             OgrNotlar.Refresh();
             matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
         }
