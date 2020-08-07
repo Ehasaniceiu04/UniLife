@@ -1,0 +1,187 @@
+﻿@inject HttpClient Http;
+@using UniLife.Shared.Dto.Definitions
+@inject IMatToaster matToaster
+@inject AppState appState
+@using UniLife.CommonUI.Pages.Akademisyen.AkaDersNotlarTab
+@inject NavigationManager navigationManager
+
+
+@if (ogrenciDerslerDtos == null)
+{
+
+    <LoadingBackground ShowLogoBox="true">
+        <label>Dönem Dersleri Yükleniyor...</label>
+    </LoadingBackground>
+}
+else
+{
+
+
+    <SfGrid ID="grdDersler" @ref="grdDersler" DataSource="@ogrenciDerslerDtos" AllowGrouping="true" Toolbar="@(new List<string>() {"ExcelExport", "CsvExport", "PdfExport" })">
+        <GridEvents TValue="OgrenciDerslerDto" QueryCellInfo="QueryCellInfoHandler"></GridEvents>
+        <GridGroupSettings ShowDropArea="false" Columns="@Initial"></GridGroupSettings>
+        <GridAggregates>
+                <GridAggregate>
+                    <GridAggregateColumns>
+                        <GridAggregateColumn Field=@nameof(DersAcilanDto.Akts) Type="AggregateType.Sum" Format="N2">
+                            <GroupFooterTemplate>
+                                @{
+                                    var aggregate = (context as AggregateTemplateContext);
+                                    if (aggregate.Field == "Donem")
+                                    {
+                                        <div>
+                                            <p>Toplam: @aggregate.Sum</p>
+                                        </div>
+                                    }
+                                }
+                            </GroupFooterTemplate>
+                        </GridAggregateColumn>
+                    </GridAggregateColumns>
+                </GridAggregate>
+            </GridAggregates>
+        <GridColumns>
+            <GridColumn Visible="false" Field=@nameof(OgrenciDerslerDto.DersAcilanId) HeaderText="DersAcilanId" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(OgrenciDerslerDto.AkademisyenId) HeaderText="AkademisyenId"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciDerslerDto.DersKod) HeaderText="DersKod"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciDerslerDto.DersAd) HeaderText="DersAd"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciDerslerDto.SonucDurum) HeaderText="S.Durum"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciDerslerDto.SinavNotlari) HeaderText="Sinav Notlar"></GridColumn>
+            <GridColumn AutoFit="true" Field=@nameof(OgrenciDerslerDto.Ort) HeaderText="Ort"></GridColumn>
+            <GridColumn AutoFit="true" Field=@nameof(OgrenciDerslerDto.HarfNot) HeaderText="HarfNot"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciDerslerDto.Durumu) HeaderText="Durumu"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciDerslerDto.Sinif) HeaderText="Sinif"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciDerslerDto.Donem) HeaderText="Donem"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciDerslerDto.Carpan) HeaderText="Carpan"></GridColumn>
+            <GridColumn AutoFit="true" Field=@nameof(OgrenciDerslerDto.IsZorunlu) DisplayAsCheckBox="true" HeaderText="Z"></GridColumn>
+            <GridColumn AutoFit="true" Field=@nameof(OgrenciDerslerDto.Kredi) HeaderText="Krd"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciDerslerDto.Akts) HeaderText="Akts"></GridColumn>
+        </GridColumns>
+        <GridGroupSettings Columns=@Template>
+            <CaptionTemplate>
+                @{
+                    var sinifContext = (context as CaptionTemplateContext);
+                    if (sinifContext.Field == "Sinif")
+                    {
+                        <div><b>@sinifContext.Field : @sinifContext.Key</b></div>
+                    }
+                    else
+                    {
+                        <div><b>@sinifContext.Key</b></div>
+                    }
+                }
+            </CaptionTemplate>
+        </GridGroupSettings>
+    </SfGrid>
+
+}
+
+@if (ShowTumSinif)
+{
+    <Dialog Baslik="Dersi Alan Tüm Sınıf öğrencilerinin Bilgileri" @bind-isDialogOpen="@ShowTumSinif">
+        <AkaOgrSnvNots _dersAcilanDto="_dersAcilanDto"></AkaOgrSnvNots>
+    </Dialog>
+
+
+}
+
+<Dialog Baslik="Uyarı" @bind-isDialogOpen="@akaDialog">
+    <p>@dialogText</p>
+</Dialog>
+
+
+
+@code{
+    bool akaDialog;
+    string dialogText;
+
+    string[] Initial = (new string[] { "Donem" });
+
+    string[] Template = (new string[] { "Donem" });
+    string[] Hide = (new string[] { "Donem" });
+
+    SfGrid<OgrenciDerslerDto> grdDersler;
+
+    List<OgrenciDerslerDto> ogrenciDerslerDtos;
+
+    List<KeyValueDto> sinavKayitDtos;
+
+    DersAcilanDto _dersAcilanDto;
+
+    bool ShowTumSinif;
+
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    try
+    //    {
+    //        ApiResponseDto<List<OgrenciDerslerDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDerslerDto>>>("api/dersAcilan/GetDersSonucByOgrenciId/" + appState.OgrenciState.Id);
+
+    //        if (apiResponse.IsSuccessStatusCode)
+    //        {
+    //            matToaster.Add($"Öğrenci ders bilgileri getirildi.", MatToastType.Success);
+    //            ogrenciDerslerDtos = apiResponse.Result;
+    //        }
+    //        else
+    //        {
+    //            matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
+    //        }
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
+    //    }
+    //}
+
+    protected override void OnInitialized()
+    {
+        try
+        {
+            ApiResponseDto<List<OgrenciDerslerDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDerslerDto>>>("api/dersAcilan/GetDersSonucByOgrenciId/" + appState.OgrenciState.Id).Result;
+
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                matToaster.Add($"Öğrenci ders bilgileri getirildi.", MatToastType.Success);
+                ogrenciDerslerDtos = apiResponse.Result;
+            }
+            else
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
+            }
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
+        }
+    }
+
+
+    public void QueryCellInfoHandler(QueryCellInfoEventArgs<OgrenciDerslerDto> args)
+    {
+        //# aeffc0
+        args.Cell.AddStyle(new string[] { "background-color:#e8f5bc" });
+
+    }
+}
+
+<style type="text/css" class="cssStyles">
+    .e-DoubleArrowRight:before {
+        content: '\e7bb';
+        color: #3ec9e8;
+    }
+
+    .mdc-dialog .mdc-dialog__container {
+        width: 100%;
+    }
+
+    .mdc-dialog .mdc-dialog__surface {
+        max-width: none;
+        width: 70%;
+    }
+
+    .e-statustext,
+    .e-mastertext {
+        font-size: 15px;
+        font-family: Roboto;
+        opacity: 0.87;
+        padding: 1em;
+    }
+</style>

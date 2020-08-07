@@ -1,4 +1,5 @@
-﻿@page "/akademisyen/DersNot/{SpesificDersAcilan:int}"
+﻿@page  "/akademisyen/DersNot"
+@page "/akademisyen/DersNot/{SpesificDersAcilan:int}"
 @using Syncfusion.Blazor.Navigations
 @using UniLife.CommonUI.Pages.Akademisyen.AkaDersNotlarTab
 @using UniLife.Shared.Dto.Definitions
@@ -29,21 +30,21 @@
                 </ContentTemplate>
             </TabItem>
             @*<TabItem>
-                <ChildContent>
-                    <TabHeader Text="Sinavlar"></TabHeader>
-                </ChildContent>
-                <ContentTemplate>
-                    <AkaSinavlar SinavToNotlar="SinavToNotlar"></AkaSinavlar>
-                </ContentTemplate>
-            </TabItem>
-            <TabItem>
-                <ChildContent>
-                    <TabHeader Text="Notlar"></TabHeader>
-                </ChildContent>
-                <ContentTemplate>
-                    <AkaNotlar _AkademisyenSinavDto="_AkademisyenSinavDto"></AkaNotlar>
-                </ContentTemplate>
-            </TabItem>*@
+                    <ChildContent>
+                        <TabHeader Text="Sinavlar"></TabHeader>
+                    </ChildContent>
+                    <ContentTemplate>
+                        <AkaSinavlar SinavToNotlar="SinavToNotlar"></AkaSinavlar>
+                    </ContentTemplate>
+                </TabItem>
+                <TabItem>
+                    <ChildContent>
+                        <TabHeader Text="Notlar"></TabHeader>
+                    </ChildContent>
+                    <ContentTemplate>
+                        <AkaNotlar _AkademisyenSinavDto="_AkademisyenSinavDto"></AkaNotlar>
+                    </ContentTemplate>
+                </TabItem>*@
         </TabItems>
     </SfTab>
 </div>
@@ -53,7 +54,7 @@
     SfTab DersNotTab;
 
     [Parameter]
-    public int SpesificDersAcilan { get; set; }
+    public int SpesificDersAcilan { get; set; } = 0;
 
     //AkademisyenSinavDto _AkademisyenSinavDto;
 

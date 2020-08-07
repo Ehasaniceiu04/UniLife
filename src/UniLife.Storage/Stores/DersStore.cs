@@ -117,7 +117,7 @@ namespace UniLife.Storage.Stores
                 BolumId = ders.BolumId,
                 DersId = ders.Id,
                 KisaAd = ders.KisaAd,
-                Kod = ders.Kod + "-" + ders.Id,
+                Kod = ders.Kod,
                 Kredi = ders.Kredi,
                 LabSaat = ders.LabSaat,
                 MufredatId = ders.MufredatId,

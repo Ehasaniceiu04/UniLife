@@ -179,7 +179,7 @@ namespace UniLife.Storage.Stores
                     BolumId = i.BolumId,
                     DersId = i.Id,
                     KisaAd = i.KisaAd,
-                    Kod = i.Kod + "-" + i.Id,
+                    Kod = i.Kod,
                     Kredi = i.Kredi,
                     LabSaat = i.LabSaat,
                     MufredatId = i.MufredatId,

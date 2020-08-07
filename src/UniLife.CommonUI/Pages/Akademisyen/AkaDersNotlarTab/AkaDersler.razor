@@ -3,82 +3,121 @@
 @inject IMatToaster matToaster
 @inject AppState appState
 @using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Navigations
 
-<SfGrid ID="grdDersler" @ref="grdDersler" TValue="DersAcilanDto" Toolbar="@(new List<string>() {"ExcelExport", "CsvExport", "PdfExport" })" AllowPaging="true">
-    <SfDataManager Url="@(gridOdata)" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
-    @*<GridEvents TValue="DersAcilanDto" CommandClicked="CommandClickHandler"></GridEvents>*@
-    <GridTemplates>
-        <DetailTemplate>
-            @{
-                var dersAcilanInfo = (context as DersAcilanDto);
+@if (donemDtos == null)
+{
+    <LoadingBackground ShowLogoBox="true">
+        <label>Dersler Yükleniyor...</label>
+    </LoadingBackground>
+}
+else
+{
+    <SfDropDownList ID="DropDonem" @ref="DropDonem" ShowClearButton="true" TItem="DonemDto" Index="0" CssClass="form-control-sm"
+                    TValue="int?"
+                    DataSource="@(donemDtos)" @bind-Value="@(selectedDonemId)">
+        <DropDownListEvents TValue="int?" ValueChange="DonemChange"></DropDownListEvents>
+        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+    </SfDropDownList>
 
-                gridSinavOdata = $"odata/sinavs?$filter=DersAcilanId eq {dersAcilanInfo.Id}&$expand=SinavTip,SinavTur";
-            }
-            <div style="padding:20px">
-                <SfGrid ID="grdSinavlar" @ref="grdSinavlar" TValue="SinavDto">
-                    <SfDataManager Url="@(gridSinavOdata)" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
-                    <GridEvents TValue="SinavDto" CommandClicked="CommandClickHandlerSinav"></GridEvents>
-                    <GridColumns>
-                        <GridColumn Visible="false" Field=@nameof(SinavDto.Id) HeaderText="Id" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
-                        <GridColumn Field=@nameof(SinavDto.Ad) HeaderText="Sinav"></GridColumn>
-                        <GridColumn Field="SinavTip.Ad" HeaderText="Sınav Tip"></GridColumn>
-                        <GridColumn Field="SinavTur.Ad" HeaderText="Sınav Tür"></GridColumn>
-                        <GridColumn Field=@nameof(SinavDto.EtkiOran) HeaderText="EtkiOran"></GridColumn>
-                        <GridColumn Field=@nameof(SinavDto.Tarih) HeaderText="Tarih"></GridColumn>
-                        <GridColumn>
-                            <GridCommandColumns>
-                                <GridCommandColumn Type="CommandButtonType.None" Title="Sınava Git" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
-                            </GridCommandColumns>
-                        </GridColumn>
-                    </GridColumns>
-                </SfGrid>
-            </div>
-        </DetailTemplate>
-    </GridTemplates>
+    <SfGrid ID="grdDersler" @ref="grdDersler" TValue="DersAcilanDto"  Toolbar="@(new List<string>() {"ExcelExport", "CsvExport", "PdfExport","Derse Yoklama","Kayıtlı Öğrenciler" })" AllowPaging="true">
+        <SfDataManager Url="@(gridOdata)" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+        <GridEvents TValue="DersAcilanDto" OnToolbarClick="ToolbarClickHandler"></GridEvents>
+        @*<GridGroupSettings Columns="@Initial"></GridGroupSettings>*@
+        <GridTemplates>
+            <DetailTemplate>
+                @{
+                    var dersAcilanInfo = (context as DersAcilanDto);
 
-    <GridColumns>
-        <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="DersAcilanId" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
-        <GridColumn Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kod"></GridColumn>
-        <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Ad"></GridColumn>
-        @*<GridColumn>
-            <GridCommandColumns>
-                <GridCommandColumn Type="CommandButtonType.None" Title="Ders Sınavları" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
-            </GridCommandColumns>
-        </GridColumn>*@
-    </GridColumns>
-</SfGrid>
+                    //string gridSinavOdata = $"odata/sinavs?$filter=DersAcilanId eq {dersAcilanInfo.Id}&$expand=SinavTip,SinavTur";
+                }
+                <div style="padding:20px">
+                    <SfGrid ID="grdSinavlar" @ref="grdSinavlar" TValue="SinavDto">
+                        <SfDataManager Url="@($"odata/sinavs?$filter=DersAcilanId eq {dersAcilanInfo.Id}&$expand=SinavTip,SinavTur")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+                        <GridEvents TValue="SinavDto" CommandClicked="CommandClickHandlerSinav"></GridEvents>
+                        <GridColumns>
+                            <GridColumn Visible="false" Field=@nameof(SinavDto.Id) HeaderText="Id" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+                            <GridColumn Field=@nameof(SinavDto.Ad) HeaderText="Sinav"></GridColumn>
+                            <GridColumn Field="SinavTip.Ad" HeaderText="Sınav Tip"></GridColumn>
+                            <GridColumn Field="SinavTur.Ad" HeaderText="Sınav Tür"></GridColumn>
+                            <GridColumn Field=@nameof(SinavDto.EtkiOran) HeaderText="EtkiOran"></GridColumn>
+                            <GridColumn Field=@nameof(SinavDto.Tarih) HeaderText="Tarih"></GridColumn>
+                            <GridColumn>
+                                <GridCommandColumns>
+                                    <GridCommandColumn Type="CommandButtonType.None" Title="Sınava Git" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
+                                </GridCommandColumns>
+                            </GridColumn>
+                        </GridColumns>
+                    </SfGrid>
+                </div>
+            </DetailTemplate>
+        </GridTemplates>
+
+        <GridColumns>
+            <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="DersAcilanId" AllowEditing="false" IsPrimaryKey="true"></GridColumn>
+            <GridColumn Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kod"></GridColumn>
+            <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Ad"></GridColumn>
+            <GridColumn Field="Donem.Ad" HeaderText="Donem"></GridColumn>
+            @*<GridColumn>
+                    <GridCommandColumns>
+                        <GridCommandColumn Type="CommandButtonType.None" Title="Ders Sınavları" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
+                    </GridCommandColumns>
+                </GridColumn>*@
+        </GridColumns>
+        @*<GridGroupSettings Columns=@Template>
+            <CaptionTemplate>
+                @{
+                    var donemContext = (context as CaptionTemplateContext);
+                    <div><b>@donemContext.Key</b></div>
+                }
+
+            </CaptionTemplate>
+        </GridGroupSettings>*@
+    </SfGrid>
+
+}
 
 
 @code{
 
+    SfDropDownList<int?, DonemDto> DropDonem;
+    int? selectedDonemId;
+
+    //string[] Initial = (new string[] { "Donem.Ad" });
+    //string[] Template = (new string[] { "Donem.Ad" });
+
     SfGrid<DersAcilanDto> grdDersler;
     SfGrid<SinavDto> grdSinavlar;
 
-    List<AkademisyenDersDto> akademisyenDersDtos;
+    //List<AkademisyenDersDto> akademisyenDersDtos;
 
     AkademisyenDto akademisyenDto = new AkademisyenDto();
 
     [Parameter]
-    public int SpesificDersAcilan { get; set; } = 0;
+    public int SpesificDersAcilan { get; set; }
 
     string gridOdata;
-    string gridSinavOdata;
+
+    List<DonemDto> donemDtos = new List<DonemDto>();
+
 
     protected override async Task OnInitializedAsync()
     {
-
         try
         {
+            ApiResponseDto<List<DonemDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<DonemDto>>>("api/donem");
+            donemDtos = apiResponse.Result;
+
             if (SpesificDersAcilan == 0)
             {
                 akademisyenDto = await appState.GetAkademisyenState();
-                gridOdata = $"odata/dersacilans?$expand=akademisyen($select=Ad,Id)&$select=Ad,Id,Kod&$filter=akademisyen/Id eq {akademisyenDto.Id}";
+                gridOdata = $"odata/dersacilans?$expand=akademisyen($select=Ad,Id),donem($select=Ad,Id)&$select=Ad,Id,Kod&$filter=akademisyen/Id eq {akademisyenDto.Id} and donem/Id eq {selectedDonemId}";
             }
             else
             {
                 gridOdata = $"odata/dersacilans?$filter=Id eq {SpesificDersAcilan}";
             }
-
 
 
 
@@ -123,6 +162,27 @@
         }
     }
 
+
+    void DonemChange()
+    {
+        gridOdata = $"odata/dersacilans?$expand=akademisyen($select=Ad,Id),donem($select=Ad,Id)&$select=Ad,Id,Kod&$filter=akademisyen/Id eq {akademisyenDto.Id} and donem/Id eq {selectedDonemId}";
+        grdDersler.Refresh();
+    }
+
+    private List<Object> Toolbaritems = new List<Object>() { "ExcelExport", "CsvExport", "PdfExport"
+                                                            , new ItemModel() { Text = "Derse Yoklama", TooltipText = "Derse Yoklama", PrefixIcon = "e-click", Id = "Yokalama" }
+                                                            , new ItemModel() { Text = "Kayıtlı Öğrenciler", TooltipText = "Kayıtlı Öğrenciler", PrefixIcon = "e-click", Id = "Kayitlilar" }};
+    public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+    {
+        if (args.Item.Id == "Yokalama")
+        {
+
+        }
+        else if (args.Item.Id == "Kayitlilar")
+        {
+
+        }        
+    }
 
 }
 

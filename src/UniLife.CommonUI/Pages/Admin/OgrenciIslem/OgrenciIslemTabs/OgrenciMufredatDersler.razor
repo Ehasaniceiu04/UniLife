@@ -10,7 +10,7 @@
 {
 
     <LoadingBackground ShowLogoBox="true">
-        <label>Dersler Yükleniyor...</label>
+        <label>Müfredat Dersleri Yükleniyor...</label>
     </LoadingBackground>
 }
 else
@@ -20,39 +20,25 @@ else
     <SfGrid ID="grdDersler" @ref="grdDersler" DataSource="@ogrenciDerslerDtos" AllowGrouping="true" Toolbar="@(new List<string>() {"ExcelExport", "CsvExport", "PdfExport" })">
         <GridEvents TValue="OgrenciDerslerDto" QueryCellInfo="QueryCellInfoHandler" CommandClicked="CommandClickHandler"></GridEvents>
         <GridGroupSettings ShowDropArea="false" Columns="@Initial"></GridGroupSettings>
-        <GridAggregates>
-                <GridAggregate>
-                    <GridAggregateColumns>
-                        <GridAggregateColumn Field=@nameof(DersAcilanDto.Akts) Type="AggregateType.Sum" Format="N2">
-                            <GroupFooterTemplate>
-                                @{
-                                    var aggregate = (context as AggregateTemplateContext);
-                                    if (aggregate.Field == "Donem")
-                                    {
-                                        <div>
-                                            <p>Toplam: @aggregate.Sum</p>
-                                        </div>
-                                    }
+        @*<GridAggregates>
+            <GridAggregate>
+                <GridAggregateColumns>
+                    <GridAggregateColumn Field=@nameof(DersAcilanDto.Akts) Type="AggregateType.Sum" Format="N2">
+                        <GroupFooterTemplate>
+                            @{
+                                var aggregate = (context as AggregateTemplateContext);
+                                if (aggregate.Field == "Donem")
+                                {
+                                    <div>
+                                        <p>Toplam: @aggregate.Sum</p>
+                                    </div>
                                 }
-                                @*<Syncfusion.Blazor.Inputs.SfTextBox Placeholder="asdasd"></Syncfusion.Blazor.Inputs.SfTextBox>*@
-                            </GroupFooterTemplate>
-                        </GridAggregateColumn>
-                        @*<GridAggregateColumn Field=@nameof(DersAcilanDto.Kredi) Type="AggregateType.Sum" Format="N2">
-            <GroupFooterTemplate>
-                @{
-                    var aggregate = (context as AggregateTemplateContext);
-                    if (aggregate.Field == "Donem")
-                    {
-                        <div>
-                            <p>Toplam: @aggregate.Sum</p>
-                        </div>
-                    }
-                }
-            </GroupFooterTemplate>
-        </GridAggregateColumn>*@
-                    </GridAggregateColumns>
-                </GridAggregate>
-            </GridAggregates>
+                            }
+                        </GroupFooterTemplate>
+                    </GridAggregateColumn>
+                </GridAggregateColumns>
+            </GridAggregate>
+        </GridAggregates>*@
         <GridColumns>
             <GridColumn Visible="false" Field=@nameof(OgrenciDerslerDto.DersAcilanId) HeaderText="DersAcilanId" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
             <GridColumn Visible="false" Field=@nameof(OgrenciDerslerDto.AkademisyenId) HeaderText="AkademisyenId"></GridColumn>
@@ -65,7 +51,7 @@ else
             <GridColumn Field=@nameof(OgrenciDerslerDto.Durumu) HeaderText="Durumu"></GridColumn>
             <GridColumn Field=@nameof(OgrenciDerslerDto.Sinif) HeaderText="Sinif"></GridColumn>
             <GridColumn Field=@nameof(OgrenciDerslerDto.Donem) HeaderText="Donem"></GridColumn>
-            <GridColumn  Field=@nameof(OgrenciDerslerDto.Carpan) HeaderText="Carpan"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciDerslerDto.Carpan) HeaderText="Carpan"></GridColumn>
             <GridColumn AutoFit="true" Field=@nameof(OgrenciDerslerDto.IsZorunlu) DisplayAsCheckBox="true" HeaderText="Z"></GridColumn>
             <GridColumn AutoFit="true" Field=@nameof(OgrenciDerslerDto.Kredi) HeaderText="Krd"></GridColumn>
             <GridColumn Field=@nameof(OgrenciDerslerDto.Akts) HeaderText="Akts"></GridColumn>
@@ -128,11 +114,33 @@ else
 
     bool ShowTumSinif;
 
-    protected override async Task OnInitializedAsync()
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    try
+    //    {
+    //        ApiResponseDto<List<OgrenciDerslerDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDerslerDto>>>("api/dersAcilan/GetDersSonucByOgrenciId/" + appState.OgrenciState.Id);
+
+    //        if (apiResponse.IsSuccessStatusCode)
+    //        {
+    //            matToaster.Add($"Öğrenci ders bilgileri getirildi.", MatToastType.Success);
+    //            ogrenciDerslerDtos = apiResponse.Result;
+    //        }
+    //        else
+    //        {
+    //            matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
+    //        }
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
+    //    }
+    //}
+
+    protected override void OnInitialized()
     {
         try
         {
-            ApiResponseDto<List<OgrenciDerslerDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDerslerDto>>>("api/dersAcilan/GetDersSonucByOgrenciId/" + appState.OgrenciState.Id);
+            ApiResponseDto<List<OgrenciDerslerDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDerslerDto>>>("api/dersAcilan/GetDersSonucByOgrenciId/" + appState.OgrenciState.Id).Result;
 
             if (apiResponse.IsSuccessStatusCode)
             {
