@@ -71,6 +71,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         public List<DersAcilanDto> SelectedDersAcilans { get; set; } = new List<DersAcilanDto>();
 
         public int selectedSinavId { get; set; }
+        public SinavDto SelectedSinav { get; set; }
 
 
         bool ogrenciSecDialogOpen;
@@ -84,6 +85,9 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         //}
 
+        string mazeretConfirmDialogTitle;
+        bool isMazeretConfirmDialogOpen;
+        DateTime mazeretTarihi;
         protected async override Task OnInitializedAsync()
         {
             await ReadFakultes();
@@ -287,6 +291,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         public async Task RowSelectedHandlerSinav(Syncfusion.Blazor.Grids.RowSelectEventArgs<SinavDto> args)
         {
+            SelectedSinav = args.Data;
             selectedSinavId = args.Data.Id;
             if (selectedSinavId != 0)
             {
@@ -572,10 +577,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             {
                 if (selectedSinavId != 0)
                 {
-                    var mazeret = SinavDtos.FirstOrDefault(x => x.Id == selectedSinavId);
-                    mazeret.Id = 0;
-                    mazeret.MazeretiSinavId = selectedSinavId;
-                    ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/sinav", mazeret);
+                    isMazeretConfirmDialogOpen = true;
                 }
                 else
                 {
@@ -583,6 +585,22 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                     isUyariOpen = true;
                 }
             }
+        }
+
+        public async Task MazeretSinavOlustur()
+        {
+            var mazeret = SinavDtos.FirstOrDefault(x => x.Id == selectedSinavId);
+            mazeret.Id = 0;
+            mazeret.MazeretiSinavId = selectedSinavId;
+            mazeret.Tarih = mazeretTarihi;
+            mazeret.SinavTurId = (int)SinavTurEnum.Mazeret_Sinav;
+            mazeret.SablonAd = $"{SelectedSinav.SablonAd} Mazeret";
+            mazeret.KisaAd = $"{SelectedSinav.KisaAd} Mazeret";
+            ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/sinav", mazeret);
+            isMazeretConfirmDialogOpen = false;
+
+            GetSinavsByDersAcilanId(DersAcDtos.FirstOrDefault(x => x.Id == mazeret.DersAcilanId));
+            SinavGrid.Refresh();
         }
         
         public async Task TopluButOlustur()

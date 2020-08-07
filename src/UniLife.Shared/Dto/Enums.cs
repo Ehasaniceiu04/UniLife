@@ -24,13 +24,13 @@ namespace UniLife.Shared.Dto
     }
     public enum SinavTurEnum
     {
-        Yeni_Sinav = 0,
-        Mazeret_Sinav = 1
+        Yeni_Sinav = 1,
+        Mazeret_Sinav = 2
     }
     public enum SinavTipEnum
     {
-        Ara_Sinav = 0,
-        Final = 1
+        Ara_Sinav = 1,
+        Final = 2
     }
 
 

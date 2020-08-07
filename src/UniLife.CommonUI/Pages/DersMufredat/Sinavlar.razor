@@ -142,15 +142,15 @@
                                                 </SfDropDownList>
                                             </div>
                                             @*@if (isMazeret)
-                                            {
-                                                <div class="col-sm-6 pb-3">
-                                                    <label for="mazeretSinavId">Mazeret Olunan</label>
-                                                    <SfDropDownList ID="MazeretiSinavKayitId" CssClass="form-control" @bind-Value="@(sinavInfo.MazeretiSinavId)" TValue="int?" TItem="SinavDto" Index="0" DataSource="@mazeretSinavDtos">
-                                                        <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
-                                                        <DropDownListEvents TValue="int?" ValueChange="SinavTurChange"></DropDownListEvents>
-                                                    </SfDropDownList>
-                                                </div>
-                                            }*@
+                                                {
+                                                    <div class="col-sm-6 pb-3">
+                                                        <label for="mazeretSinavId">Mazeret Olunan</label>
+                                                        <SfDropDownList ID="MazeretiSinavKayitId" CssClass="form-control" @bind-Value="@(sinavInfo.MazeretiSinavId)" TValue="int?" TItem="SinavDto" Index="0" DataSource="@mazeretSinavDtos">
+                                                            <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
+                                                            <DropDownListEvents TValue="int?" ValueChange="SinavTurChange"></DropDownListEvents>
+                                                        </SfDropDownList>
+                                                    </div>
+                                                }*@
                                             <div class="col-sm-6 pb-3">
                                                 <label for="EtkiOran">EtkiOran (%)</label>
                                                 <SfNumericTextBox ID="EtkiOran" Min="0" Max="100" @bind-Value="@(sinavInfo.EtkiOran)" TValue="int?" Format=n0></SfNumericTextBox>
@@ -237,10 +237,10 @@
             <SfDataManager Url="http://localhost:53414/odata/ogrencis" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
             <GridEvents TValue="OgrenciDto" CommandClicked="CommandClickHandlerSecmeliOgr"></GridEvents>
             <GridColumns>
-                <GridColumn Visible="false" Field=@nameof(OgrenciDto.Id) HeaderText="Ogrenci ID" IsPrimaryKey="true" TextAlign="TextAlign.Right" ></GridColumn>
-                <GridColumn Field=@nameof(OgrenciDto.Ad) HeaderText="Ad" ></GridColumn>
-                <GridColumn Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad" ></GridColumn>
-                <GridColumn Field=@nameof(OgrenciDto.TCKN) HeaderText="TCKN" ></GridColumn>
+                <GridColumn Visible="false" Field=@nameof(OgrenciDto.Id) HeaderText="Ogrenci ID" IsPrimaryKey="true" TextAlign="TextAlign.Right"></GridColumn>
+                <GridColumn Field=@nameof(OgrenciDto.Ad) HeaderText="Ad"></GridColumn>
+                <GridColumn Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad"></GridColumn>
+                <GridColumn Field=@nameof(OgrenciDto.TCKN) HeaderText="TCKN"></GridColumn>
                 <GridColumn Field=@nameof(OgrenciDto.OgrNo) HeaderText="Öğrenci No"></GridColumn>
                 <GridColumn>
                     <GridCommandColumns>
@@ -255,6 +255,20 @@
 <Dialog Baslik="Uyarı!" @bind-isDialogOpen="@isUyariOpen">
     <p>@dialogUyariText</p>
 </Dialog>
+
+
+<MatDialog @bind-IsOpen="@isMazeretConfirmDialogOpen" Style="z-index:100">
+    <MatDialogTitle><MatIcon Icon="warning"></MatIcon>@mazeretConfirmDialogTitle</MatDialogTitle>
+    <MatDialogContent>
+        Mazeret sınavi açmak üzeresiniz.
+        <SfDatePicker ID="mazeretTarihi" @bind-Value="@mazeretTarihi" Placeholder="Mazeret Tarihini Giriniz..."></SfDatePicker>
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="@(e => { isMazeretConfirmDialogOpen = false; })">İptal</MatButton>
+        <MatButton OnClick="@MazeretSinavOlustur">Oluştur</MatButton>
+    </MatDialogActions>
+</MatDialog>
+
 
 
 <style type="text/css" class="cssStyles">
@@ -279,6 +293,7 @@
         content: '\e7bb';
         color: #3ec9e8;
     }
+
     .e-Circle_Add:before {
         content: '\e755';
         color: #31ba13;
