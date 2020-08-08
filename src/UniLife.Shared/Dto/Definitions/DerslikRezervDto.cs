@@ -64,6 +64,7 @@ namespace UniLife.Shared.Dto.Definitions
 
         public int DersAcilanId { get; set; }
         public virtual DersAcilanDto DersAcilan{ get; set; }
+        public bool IsSinav { get; set; }
         public string DerslikAd { get; set; }   
         public int DerslikId { get; set; }
         public DerslikDto ResourceData { get; set; } // foreign key olarka aslı modelde farklı.

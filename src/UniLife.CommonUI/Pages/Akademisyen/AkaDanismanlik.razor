@@ -6,33 +6,60 @@
 @using Syncfusion.Blazor.Navigations
 @using Syncfusion.Blazor.Data
 
+<div class="control-section e-tab-section">
+    <SfTab @ref="DanismanTab" LoadOn="ContentLoad.Dynamic">
+        @*Selected="OnTabSelected" Selecting="OnTabSelecting"*@
+        <TabEvents Created="TabCreate" Selecting="OnTabSelecting"></TabEvents>
+        <TabItems>
+            <TabItem>
+                <ChildContent>
+                    <TabHeader Text="Dersler"></TabHeader>
+                </ChildContent>
+                <ContentTemplate>
 
-@*http://localhost:53414/odata/ogrencis/GetForDanisman*@
+                    <SfGrid ID="grdOgr" @ref="grdOgr" TValue="OgrenciDto" Toolbar="@(Toolbaritems)" AllowPaging="true">
+                        <SfDataManager Url="odata/ogrencis/GetForDanisman" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+                        <GridEvents TValue="OgrenciDto" OnToolbarClick="ToolbarClickHandler" CommandClicked="CommandClickHandler"></GridEvents>
+                        <GridColumns>
+                            <GridColumn Visible="false" Field=@nameof(OgrenciDto.Id) HeaderText="Id" AllowEditing="false" IsPrimaryKey="true"></GridColumn>
+                            <GridColumn Field=@nameof(OgrenciDto.Ad) HeaderText="Ad"></GridColumn>
+                            <GridColumn Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad"></GridColumn>
+                            <GridColumn Field=@nameof(OgrenciDto.OgrNo) HeaderText="OgrNo"></GridColumn>
+                            <GridColumn>
+                                <GridCommandColumns>
+                                    <GridCommandColumn Type="CommandButtonType.None" Title="Ders Kayıt Onayı" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
+                                </GridCommandColumns>
+                            </GridColumn>
+                        </GridColumns>
+                    </SfGrid>
 
-<SfGrid ID="grdOgr" @ref="grdOgr" TValue="OgrenciDto" Toolbar="@(Toolbaritems)" AllowPaging="true">
-    <SfDataManager Url="odata/ogrencis/GetForDanisman" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
-    <GridEvents TValue="OgrenciDto" OnToolbarClick="ToolbarClickHandler"></GridEvents>
-    <GridColumns>
-        <GridColumn Visible="false" Field=@nameof(OgrenciDto.Id) HeaderText="Id" AllowEditing="false" IsPrimaryKey="true"></GridColumn>
-        <GridColumn Field=@nameof(OgrenciDto.Ad) HeaderText="Ad"></GridColumn>
-        <GridColumn Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad"></GridColumn>
-        <GridColumn Field=@nameof(OgrenciDto.OgrNo) HeaderText="OgrNo"></GridColumn>
-        @*<GridColumn>
-                <GridCommandColumns>
-                    <GridCommandColumn Type="CommandButtonType.None" Title="Ders Sınavları" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
-                </GridCommandColumns>
-            </GridColumn>*@
-    </GridColumns>
-</SfGrid>
+                </ContentTemplate>
+            </TabItem>
+            <TabItem>
+                <ChildContent>
+                    <TabHeader Text="Öğrenci Ders Onay"></TabHeader>
+                </ChildContent>
+                <ContentTemplate>
+                    TODO: Ders Onay ekranı nasıl yapılsın. Full mu küçük mü?
+                </ContentTemplate>
+            </TabItem>
+           
+        </TabItems>
+    </SfTab>
+</div>
 
 @code{
+
+    SfTab DanismanTab;
+
+
     SfGrid<OgrenciDto> grdOgr;
 
     //string gridOdata = "odata/ogrencis/GetForDanisman";
 
-    private List<Object> Toolbaritems = new List<Object>() { "ExcelExport", "CsvExport", "PdfExport"
-                                                            , new ItemModel() { Text = "Derse Yoklama", TooltipText = "Derse Yoklama", PrefixIcon = "e-click", Id = "Yokalama" }
-                                                            , new ItemModel() { Text = "Kayıtlı Öğrenciler", TooltipText = "Kayıtlı Öğrenciler", PrefixIcon = "e-click", Id = "Kayitlilar" }};
+    private List<Object> Toolbaritems = new List<Object>() { "ExcelExport", "CsvExport", "PdfExport" };
+    //, new ItemModel() { Text = "Derse Yoklama", TooltipText = "Derse Yoklama", PrefixIcon = "e-click", Id = "Yokalama" }
+    //, new ItemModel() { Text = "Kayıtlı Öğrenciler", TooltipText = "Kayıtlı Öğrenciler", PrefixIcon = "e-click", Id = "Kayitlilar" }};
 
     public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
     {
@@ -45,4 +72,42 @@
 
         }
     }
+
+    public void CommandClickHandler(CommandClickEventArgs<OgrenciDto> args)
+    {
+        if (args.CommandColumn.Title == "Ders Kayıt Onayı")
+        {
+            DanismanTab.EnableTab(1, true);
+            DanismanTab.Select(1);
+
+            //_OgrenciDto = args.RowData;
+            //appState.OgrenciState = _OgrenciDto;
+            //OgrenciToAkademik.InvokeAsync(_OgrenciDto);
+
+        }
+    }
+
+    public void TabCreate()
+    {
+        DanismanTab.EnableTab(0, true);
+        DanismanTab.EnableTab(1, false);
+    }
+    public void OnTabSelecting(SelectingEventArgs args)
+    {
+        if (args.IsSwiped)
+        {
+            args.Cancel = true;
+        }
+        if (args.SelectedIndex == 0)
+        {
+            DanismanTab.EnableTab(1, false);
+        }
+    }
 }
+
+<style>
+    .e-DoubleArrowRight:before {
+        content: '\e7bb';
+        color: #3ec9e8 !important;
+    }
+</style>
