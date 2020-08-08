@@ -43,7 +43,6 @@
 
   <ItemGroup>
     <Content Remove="Components\Grid\DataGrid\Scheduler.razor" />
-    <Content Remove="Pages\Akademisyen\AkaProgram.razor" />
     <Content Remove="Pages\Dashboard2.razor" />
   </ItemGroup>
 
@@ -71,12 +70,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <_ContentIncludedByDefault Remove="Pages\Akademisyen\AkaProgram.razor" />
     <_ContentIncludedByDefault Remove="Pages\Dashboard2.razor" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Pages\Akademisyen\AkaProgram.razor" />
     <None Include="Pages\Dashboard2.razor" />
     <None Include="wwwroot\images\blazorboilerplate-dark.svg" />
     <None Include="wwwroot\images\blazorboilerplate.svg" />
@@ -85,14 +82,6 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\images\ogrenci\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Watch Remove="Pages\Akademisyen\AkaProgram.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Pages\Akademisyen\AkaProgram.razor" />
   </ItemGroup>
 
 </Project>

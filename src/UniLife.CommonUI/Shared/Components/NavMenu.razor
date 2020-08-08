@@ -53,9 +53,9 @@
                 </MatNavSubMenuHeader>
                 <MatNavSubMenuList>
                     @if (user == null ? false : (user.HasClaim("permission", Permissions.DersKayit.Read) &&
-                   user.HasClaim("permission", Permissions.DersKayit.Create) &&
-                   user.HasClaim("permission", Permissions.DersKayit.Update) &&
-                   user.HasClaim("permission", Permissions.DersKayit.Delete)))
+               user.HasClaim("permission", Permissions.DersKayit.Create) &&
+               user.HasClaim("permission", Permissions.DersKayit.Update) &&
+               user.HasClaim("permission", Permissions.DersKayit.Delete)))
                     {
                         <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/dersKayit").AbsoluteUri">
                             <MatIcon>business</MatIcon> <span class="miniHover">Ders Kayıt</span>
@@ -326,12 +326,22 @@
 
     @*Akademisyen*@
     <AuthorizeView Roles="Akademisyen" Context="AuthorizeContext">
-            <Authorized>
-                <MatNavItem Href="@navigationManager.ToAbsoluteUri("akademisyen/Ders_Program").AbsoluteUri">
-                    <MatIcon>stars</MatIcon> <span class="miniHover">Akademik Takvim</span>
-                </MatNavItem>
-            </Authorized>
-        </AuthorizeView>
+        <Authorized>
+            <MatNavItem Href="@navigationManager.ToAbsoluteUri("akademisyen/akaTakvim").AbsoluteUri">
+                <MatIcon>stars</MatIcon> <span class="miniHover">Akademik Takvim</span>
+            </MatNavItem>
+        </Authorized>
+    </AuthorizeView>
+    @*Akademisyen*@
+    <AuthorizeView Roles="Akademisyen" Context="AuthorizeContext">
+        <Authorized>
+            <MatNavItem Href="@navigationManager.ToAbsoluteUri("akademisyen/Danismanlik").AbsoluteUri">
+                <MatIcon>stars</MatIcon> <span class="miniHover">Danışmanlık</span>
+            </MatNavItem>
+        </Authorized>
+    </AuthorizeView>
+
+
 
     @*<AuthorizeView Policy="@Policies.IsUser" Context="AuthorizeContext">
             <Authorized>

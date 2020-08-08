@@ -642,7 +642,10 @@ namespace UniLife.Server
             //FunctionConfiguration getOgrdersOptional = objOgrenci.EntityType.Collection.Function("GetOgrenciDers");
             //getOgrdersOptional.Parameter<bool>("TopKredi").Optional();
             //getOgrdersOptional.ReturnsCollectionFromEntitySet<UniLife.Shared.Dto.Definitions.OgrenciDersRaporDto>("Ogrencis");
-            
+
+            FunctionConfiguration getOgrdersOptional = objOgrenci.EntityType.Collection.Function("GetForDanisman");
+            getOgrdersOptional.ReturnsCollectionFromEntitySet<Ogrenci>("Ogrencis");
+
             builder.EntitySet<UniLife.Shared.Dto.Definitions.OgrenciDersRaporDto>("OgrenciDersRapors");
             builder.EntitySet<Bolum>("Bolums");
             builder.EntitySet<DersAcilan>("DersAcilans");

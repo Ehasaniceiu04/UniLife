@@ -1,2 +1,48 @@
-﻿@page "/danismanlik"
-<p> Akademisyenin danışmanlık yaptığı öğrenciler ve onay istenecek.</p>
+﻿@page "/akademisyen/Danismanlik"
+
+@inject HttpClient Http;
+@inject IMatToaster matToaster
+@using UniLife.Shared.Dto.Definitions
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Data
+
+
+@*http://localhost:53414/odata/ogrencis/GetForDanisman*@
+
+<SfGrid ID="grdOgr" @ref="grdOgr" TValue="OgrenciDto" Toolbar="@(Toolbaritems)" AllowPaging="true">
+    <SfDataManager Url="odata/ogrencis/GetForDanisman" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+    <GridEvents TValue="OgrenciDto" OnToolbarClick="ToolbarClickHandler"></GridEvents>
+    <GridColumns>
+        <GridColumn Visible="false" Field=@nameof(OgrenciDto.Id) HeaderText="Id" AllowEditing="false" IsPrimaryKey="true"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.Ad) HeaderText="Ad"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.OgrNo) HeaderText="OgrNo"></GridColumn>
+        @*<GridColumn>
+                <GridCommandColumns>
+                    <GridCommandColumn Type="CommandButtonType.None" Title="Ders Sınavları" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
+                </GridCommandColumns>
+            </GridColumn>*@
+    </GridColumns>
+</SfGrid>
+
+@code{
+    SfGrid<OgrenciDto> grdOgr;
+
+    //string gridOdata = "odata/ogrencis/GetForDanisman";
+
+    private List<Object> Toolbaritems = new List<Object>() { "ExcelExport", "CsvExport", "PdfExport"
+                                                            , new ItemModel() { Text = "Derse Yoklama", TooltipText = "Derse Yoklama", PrefixIcon = "e-click", Id = "Yokalama" }
+                                                            , new ItemModel() { Text = "Kayıtlı Öğrenciler", TooltipText = "Kayıtlı Öğrenciler", PrefixIcon = "e-click", Id = "Kayitlilar" }};
+
+    public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+    {
+        if (args.Item.Id == "Yokalama")
+        {
+
+        }
+        else if (args.Item.Id == "Kayitlilar")
+        {
+
+        }
+    }
+}

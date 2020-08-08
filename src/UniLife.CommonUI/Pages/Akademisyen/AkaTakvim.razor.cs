@@ -1,5 +1,4 @@
-﻿
-using MatBlazor;
+﻿using MatBlazor;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
@@ -10,7 +9,7 @@ using UniLife.Shared.Dto.Definitions;
 
 namespace UniLife.CommonUI.Pages.Akademisyen
 {
-    public partial class AkaProgram : ComponentBase
+    public partial class AkaTakvim : ComponentBase
     {
         [Inject]
         public System.Net.Http.HttpClient Http { get; set; }
