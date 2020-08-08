@@ -8,5 +8,6 @@ namespace UniLife.Server.Managers
     public interface IDerslikManager : IBaseManager<Derslik, DerslikDto>
     {
         Task<ApiResponse> GetDersliksAndDerslikRezsByMufredatId(int mufredatId, int ogrenciId);
+        Task<ApiResponse> GetDersliksAndDerslikRezsByAkaId(int akaId);
     }
 }

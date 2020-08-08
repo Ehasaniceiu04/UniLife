@@ -1,4 +1,5 @@
-﻿using MatBlazor;
+﻿
+using MatBlazor;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
@@ -7,9 +8,9 @@ using System.Threading.Tasks;
 using UniLife.Shared.Dto;
 using UniLife.Shared.Dto.Definitions;
 
-namespace UniLife.CommonUI.Pages.Ogrenci
+namespace UniLife.CommonUI.Pages.Akademisyen
 {
-    public partial class OgrenciProgram : ComponentBase
+    public partial class AkaProgram : ComponentBase
     {
         [Inject]
         public System.Net.Http.HttpClient Http { get; set; }
@@ -23,17 +24,17 @@ namespace UniLife.CommonUI.Pages.Ogrenci
         List<DerslikDto> derslikDtos { get; set; } = new List<DerslikDto>();
         List<DerslikRezervDto> derslikRezervDtos { get; set; } = new List<DerslikRezervDto>();
 
-        OgrenciDto ogrenciDto;// = new OgrenciDto();
+        AkademisyenDto akademisyenDto;// = new AkademisyenDto();
         bool isProgramOpen;
 
         protected async override Task OnInitializedAsync()
         {
             try
             {
-                ogrenciDto = await appState.GetOgrenciState();
-                if (ogrenciDto == null)
+                akademisyenDto = await appState.GetAkademisyenState();
+                if (akademisyenDto == null)
                 {
-                    matToaster.Add("Öğrenci bilgisi alınamadı", MatToastType.Danger, "Hata oluştu!");
+                    matToaster.Add("Akademisyen bilgisi alınamadı", MatToastType.Danger, "Hata oluştu!");
                 }
             }
             catch (Exception ex)
@@ -41,13 +42,13 @@ namespace UniLife.CommonUI.Pages.Ogrenci
                 matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
             }
 
-            await ReadDersliksAndDerslikRezByMufredatId((int)ogrenciDto.MufredatId,ogrenciDto.Id);
+            await GetDersliksAndDerslikRezsByAkaId((int)akademisyenDto.Id);
             isProgramOpen = true;
         }
 
-        async Task ReadDersliksAndDerslikRezByMufredatId(int mufredatId, int ogrenciId)
+        async Task GetDersliksAndDerslikRezsByAkaId(int akaId)
         {
-            ApiResponseDto<DersliksAndDerslikRezervsDto> apiResponse =await Http.GetFromJsonAsync<ApiResponseDto<DersliksAndDerslikRezervsDto>>($"api/derslik/GetDersliksAndDerslikRezsByMufredatId/{mufredatId}/{ogrenciId}");
+            ApiResponseDto<DersliksAndDerslikRezervsDto> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<DersliksAndDerslikRezervsDto>>($"api/derslik/GetDersliksAndDerslikRezsByAkaId/{akaId}");
             derslikRezervDtos = apiResponse.Result.DerslikRezervs;
             derslikDtos = apiResponse.Result.Dersliks;
             //OData<DerslikDto> apiResponse = await Http.GetFromJsonAsync<OData<DerslikDto>>($"odata/dersliks?$filter=BinaId eq {binaId}");

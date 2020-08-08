@@ -21,7 +21,7 @@ else
         <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
     </SfDropDownList>
 
-    <SfGrid ID="grdDersler" @ref="grdDersler" TValue="DersAcilanDto"  Toolbar="@(new List<string>() {"ExcelExport", "CsvExport", "PdfExport","Derse Yoklama","Kayıtlı Öğrenciler" })" AllowPaging="true">
+    <SfGrid ID="grdDersler" @ref="grdDersler" TValue="DersAcilanDto"  Toolbar="@(Toolbaritems)" AllowPaging="true">
         <SfDataManager Url="@(gridOdata)" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
         <GridEvents TValue="DersAcilanDto" OnToolbarClick="ToolbarClickHandler"></GridEvents>
         @*<GridGroupSettings Columns="@Initial"></GridGroupSettings>*@

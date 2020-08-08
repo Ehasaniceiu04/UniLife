@@ -72,6 +72,18 @@ namespace UniLife.Server.Controllers
             => ModelState.IsValid ?
                 await _derslikManager.GetDersliksAndDerslikRezsByMufredatId(mufredatId, ogrenciId) :
                 new ApiResponse(Status400BadRequest, "Derslik Model is Invalid");
+
+        [HttpGet]
+        [Route("GetDersliksAndDerslikRezsByAkaId/{akaId}")]
+        [Authorize(Permissions.Derslik.Read)]
+        [Authorize(Roles = "Administrator,Personel,Akademisyen")]
+        public async Task<ApiResponse> GetDersliksAndDerslikRezsByAkaId(int akaId)
+            => ModelState.IsValid ?
+                await _derslikManager.GetDersliksAndDerslikRezsByAkaId(akaId) :
+                new ApiResponse(Status400BadRequest, "Derslik Model is Invalid");
+
         
+
+
     }
 }
