@@ -14,5 +14,9 @@ namespace UniLife.Shared.Dto.Definitions
         public double OgrNot { get; set; }
         public string OgrenciAd { get; set; }
         public long OgrenciNo { get; set; }
+
+        public string DersKisaAd { get; set; }
+        public string DersAd { get; set; }
+        public int DersId { get; set; }
     }
 }

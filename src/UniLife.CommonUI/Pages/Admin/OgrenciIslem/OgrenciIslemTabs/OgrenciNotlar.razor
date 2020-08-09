@@ -74,15 +74,6 @@
         {
             if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
             {
-                //SinavKayitDto sinavKayitDto = new SinavKayitDto
-                //{
-                //    Id = args.Data.SinavKayitId,
-                //    OgrenciId = args.Data.OgrenciId,
-                //    OgrNot = args.Data.OgrNot,
-                //    SinavId = args.Data.SinavId
-                //};
-
-
                 ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>("api/sinavKayit/PutOgrenciSinavKayitNot", args.RowData);
                 if (apiResponse.IsSuccessStatusCode)
                 {

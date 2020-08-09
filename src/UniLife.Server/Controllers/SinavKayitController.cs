@@ -111,7 +111,14 @@ namespace UniLife.Server.Controllers
             => ModelState.IsValid ?
                 await _sinavKayitManager.PutOgrenciSinavKayitNot(ogrenciNotlarDto) :
                 new ApiResponse(Status400BadRequest, "SinavKayit Model is Invalid");
-        
+
+        [HttpPut]
+        [Authorize(Permissions.SinavKayit.Update)]
+        [Route("PutAkaOgrenciSinavKayitNot")]
+        public async Task<ApiResponse> PutAkaOgrenciSinavKayitNot([FromBody] SinavOgrNotlarDto sinavOgrNotlarDto)
+            => ModelState.IsValid ?
+                await _sinavKayitManager.PutAkaOgrenciSinavKayitNot(sinavOgrNotlarDto) :
+                new ApiResponse(Status400BadRequest, "SinavKayit Model is Invalid");
 
     }
 }

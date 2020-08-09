@@ -5,15 +5,15 @@
 
 
 <SfGrid ID="grdNotlar" @ref="grdNotlar" DataSource="@sinavOgrNotlarDtos" Toolbar="@(new List<string>() {"Edit", "Update", "Cancel", "ExcelExport", "CsvExport", "PdfExport" })" AllowPaging="true">
-    <GridEvents TValue="SinavOgrNotlarDto" OnActionComplete="ActionCompletedHandler"></GridEvents>
+    <GridEvents TValue="SinavOgrNotlarDto" OnActionBegin="OnActionBeginHandler" OnActionComplete="ActionCompletedHandler"></GridEvents>
     <GridEditSettings AllowEditing="true"></GridEditSettings>
     <GridColumns>
-        <GridColumn Visible="false" Field=@nameof(SinavOgrNotlarDto.SinavKayitId) HeaderText="Sinav Id" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
-        <GridColumn Visible="false" Field=@nameof(SinavOgrNotlarDto.SinavId) HeaderText="SinavId"></GridColumn>
-        <GridColumn Visible="false" Field=@nameof(SinavOgrNotlarDto.OgrenciId) HeaderText="OgrenciId"></GridColumn>
+        <GridColumn AllowEditing="false" Visible="false" Field=@nameof(SinavOgrNotlarDto.SinavKayitId) HeaderText="Sinav Id" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+        <GridColumn AllowEditing="false" Visible="false" Field=@nameof(SinavOgrNotlarDto.SinavId) HeaderText="SinavId"></GridColumn>
+        <GridColumn AllowEditing="false" Visible="false" Field=@nameof(SinavOgrNotlarDto.OgrenciId) HeaderText="OgrenciId"></GridColumn>
         <GridColumn AllowEditing="false" Field=@nameof(SinavOgrNotlarDto.OgrenciAd) HeaderText="Öğrenci"></GridColumn>
         <GridColumn AllowEditing="false" Field=@nameof(SinavOgrNotlarDto.OgrenciNo) HeaderText="No"></GridColumn>
-        <GridColumn Field=@nameof(SinavOgrNotlarDto.OgrNot) HeaderText="Notu"></GridColumn>
+        <GridColumn Field=@nameof(SinavOgrNotlarDto.OgrNot) HeaderText="Notu" ValidationRules="@(new ValidationRules{ Required=true, Number=true,Max=100,Min=0})" ></GridColumn>
     </GridColumns>
 </SfGrid>
 
@@ -29,7 +29,7 @@
 
     //[Parameter]
     //public AkademisyenSinavDto _AkademisyenSinavDto { get; set; }
-    
+
     [Parameter]
     public SinavDto _SinavDto { get; set; }
 
@@ -58,26 +58,51 @@
     }
 
 
+    SinavOgrNotlarDto sinavOgrNotlarDtoOnceki = new SinavOgrNotlarDto();
+
+    public async Task OnActionBeginHandler(ActionEventArgs<SinavOgrNotlarDto> args)
+    {
+        try
+        {
+            if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+            {
+                sinavOgrNotlarDtoOnceki = args.PreviousData.DeepClone();
+            }
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
     public async void ActionCompletedHandler(ActionEventArgs<SinavOgrNotlarDto> args)
     {
-        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+        try
         {
-            SinavKayitDto sinavKayitDto = new SinavKayitDto
+            if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
             {
-                Id = args.Data.SinavKayitId,
-                OgrenciId = args.Data.OgrenciId,
-                OgrNot = args.Data.OgrNot,
-                SinavId = args.Data.SinavId
-            };
+                args.RowData.DersId = _SinavDto.DersAcilanId;
+                ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>("api/sinavKayit/PutAkaOgrenciSinavKayitNot", args.RowData);
+                if (apiResponse.IsSuccessStatusCode)
+                {
+                    matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+                }
+                else
+                {
+                    var zxc = sinavOgrNotlarDtos.FirstOrDefault(x => x.SinavId == args.RowData.SinavId);
+                    zxc.OgrNot = sinavOgrNotlarDtoOnceki.OgrNot;
+                    grdNotlar.Refresh();
+                    matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
+                }
 
-
-            ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>("api/sinavKayit", sinavKayitDto);
-            if (apiResponse.IsSuccessStatusCode)
-            {
-                matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
             }
-            else
-                matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
+        }
+        catch (Exception ex)
+        {
+            var zxc = sinavOgrNotlarDtos.FirstOrDefault(x => x.SinavId == args.RowData.SinavId);
+            zxc.OgrNot = sinavOgrNotlarDtoOnceki.OgrNot;
+            grdNotlar.Refresh();
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
         }
     }
 }

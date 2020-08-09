@@ -84,5 +84,20 @@ namespace UniLife.Server.Managers
             }
             
         }
+
+        public async Task<ApiResponse> PutAkaOgrenciSinavKayitNot(SinavOgrNotlarDto sinavOgrNotlarDto)
+        {
+            try
+            {
+                return new ApiResponse(Status200OK, "Updated SinavKayitDto", await _sinavKayitStore.PutAkaOgrenciSinavKayitNot(sinavOgrNotlarDto));
+            }
+            catch (Shared.DomainException ex)
+            {
+                return new ApiResponse(Status400BadRequest, ex.Description);
+            }
+
+        }
+
+        
     }
 }

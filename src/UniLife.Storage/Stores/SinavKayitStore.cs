@@ -223,9 +223,69 @@ namespace UniLife.Storage.Stores
                     throw new DomainException($"Dikkat! Not ve ortlama değişikliği gerçekleştirilemedi ogrenci:{ogrenciNotlarDto.OgrenciId} ders:{ogrenciNotlarDto.SinavId}");
 
             }
+        }
 
-               
+        public async Task<bool> PutAkaOgrenciSinavKayitNot(SinavOgrNotlarDto sinavOgrNotlarDto)
+        {
+            using (var context = _db.Context.Database.BeginTransaction())
+            {
+                var existSinavKayit = await _db.SinavKayits.FirstOrDefaultAsync(x => x.Id == sinavOgrNotlarDto.SinavKayitId);
 
+                existSinavKayit.OgrNot = sinavOgrNotlarDto.OgrNot;
+
+                _db.SinavKayits.Update(existSinavKayit);
+
+                await _db.SaveChangesAsync(CancellationToken.None);
+
+                var dersSinavList = await (from da in _db.DersAcilans.Where(x => x.Id == sinavOgrNotlarDto.DersId)
+                                           join dk in _db.DersKayits.Where(x => x.OgrenciId == sinavOgrNotlarDto.OgrenciId) on da.Id equals dk.DersAcilanId
+                                           join s in _db.Sinavs on da.Id equals s.DersAcilanId
+                                           join sk in _db.SinavKayits.Where(x => x.OgrenciId == sinavOgrNotlarDto.OgrenciId) on s.Id equals sk.SinavId
+                                           select new DersNotHesaplamaDto
+                                           {
+                                               DersAcilanId = da.Id,
+                                               DersKayitId = dk.Id,
+                                               OgrNot = sk.OgrNot,
+                                               SEtkiOran = s.EtkiOran,
+                                               MazeretiSinavId = s.MazeretiSinavId,
+                                               MazeretiSinavKayitId = sk.MazeretiSinavKayitId
+                                           }).ToListAsync();
+
+                double Ortlama = 0;
+
+
+                foreach (var dersSinavi in dersSinavList)
+                {
+                    if (dersSinavList.Any(x => x.MazeretiSinavKayitId == dersSinavi.MazeretiSinavKayitId && x.MazeretiSinavKayitId.HasValue))
+                    {
+
+                    }
+                    else
+                    {
+                        Ortlama += dersSinavi.OgrNot * (dersSinavi.SEtkiOran / 100);
+                    }
+                }
+                HesapKitap hesapKitap = new HesapKitap();
+
+                DersNotHarfDto dersNotHarfDto = hesapKitap.OrtalamaHarflendir(Ortlama);
+
+
+                var dersKayitExist = await _db.DersKayits.FirstOrDefaultAsync(x => x.DersAcilanId == sinavOgrNotlarDto.DersId && x.OgrenciId == sinavOgrNotlarDto.OgrenciId);
+                dersKayitExist.HarfNot = dersNotHarfDto.harf;
+                dersKayitExist.Carpan = dersNotHarfDto.carpan;
+                dersKayitExist.Ort = Ortlama;
+                _db.DersKayits.Update(dersKayitExist);
+
+
+                if (await _db.SaveChangesAsync(CancellationToken.None) > 0)
+                {
+                    context.Commit();
+                    return true;
+                }
+                else
+                    throw new DomainException($"Dikkat! Not ve ortlama değişikliği gerçekleştirilemedi ogrenci:{sinavOgrNotlarDto.OgrenciId} ders:{sinavOgrNotlarDto.SinavId}");
+
+            }
         }
     }
 }

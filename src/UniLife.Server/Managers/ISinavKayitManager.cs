@@ -18,5 +18,7 @@ namespace UniLife.Server.Managers
         Task<ApiResponse> GetSinavKayitsByOgrenciDers(int ogrenciId, int dersAcilanId);
         Task<ApiResponse> UpdateSinavKayit(int sinavkayitId, double orgNot);
         Task<ApiResponse> PutOgrenciSinavKayitNot(OgrenciNotlarDto ogrenciNotlarDto);
+        Task<ApiResponse> PutAkaOgrenciSinavKayitNot(SinavOgrNotlarDto sinavOgrNotlarDto);
+        
     }
 }
