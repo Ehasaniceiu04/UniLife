@@ -1,4 +1,6 @@
-﻿@using Syncfusion.Blazor.DropDowns
+﻿@page "/akademisyen/bilgi"
+
+@using Syncfusion.Blazor.DropDowns
 @using Syncfusion.Blazor.Inputs
 @using Syncfusion.Blazor.Buttons
 @using UniLife.Shared.Dto.Definitions
@@ -7,79 +9,105 @@
 @using Syncfusion.Blazor.SplitButtons
 @inject AuthenticationStateProvider authStateProvider
 @using Syncfusion.Blazor.Calendars
+@using System.IO;
 
 
 
 
-<ControlSection>
-    <div class="row info-panel">
-        <div class="col-sm-12 col-md-12">
-            @*<div class="row">
-                    <div class="col-sm-12 text-center">
-                        <p>Akademik Bilgiler</p>
-                    </div>
-                </div>*@
-            <div class="server-action-menu">
-                @*Model=@_AkademisyenDto OnValidSubmit="Kaydet"*@
-                <EditForm EditContext="@EC">
-                    <DataAnnotationsValidator />
-                    <ValidationSummary />
-                    <div class="row">
-                        <div class="col-sm-12 col-md-6">
-                            <div class="form-row form-group form-inline ">
-                                <label class="col-sm-2" for="OgrtNo">Akademisyen NO:</label>
-                                <SfTextBox @bind-Value="@_AkademisyenDto.OgrtNo" ID="OgrtNo" CssClass="col-sm-4"></SfTextBox>
-                                <label class="col-sm-2" for="DosNo">Dosya NO:</label>
-                                <SfTextBox ID="DosNo" CssClass="col-sm-2"></SfTextBox>
-                                <SfCheckBox Label="Durum" CssClass="col-sm-1" @bind-Checked="@_AkademisyenDto.Durum"></SfCheckBox>
-                                <label class="col-sm-2" for="TCKN">TCKN:</label>
-                                <SfTextBox @bind-Value="@_AkademisyenDto.TCKN" ID="TCKN" CssClass="col-sm-4"></SfTextBox>
-                                <label class="col-sm-2" for="Seri">Kimlik Seri:</label>
-                                <SfTextBox ID="Seri" CssClass="col-sm-4"></SfTextBox>
-                                <label class="col-sm-2" for="Adi">Adı:</label>
-                                <SfTextBox @bind-Value="@_AkademisyenDto.Ad" ID="Adı" CssClass="col-sm-4"></SfTextBox>
-                                <label class="col-sm-2" for="Soyadi">Soyadı:</label>
-                                <SfTextBox @bind-Value="@_AkademisyenDto.Soyad" ID="Soyadi" CssClass="col-sm-4"></SfTextBox>
-                                <label class="col-sm-2" for="Email">Email:</label>
-                                <SfTextBox @bind-Value="@_AkademisyenDto.Email" ID="Email" CssClass="col-sm-10"></SfTextBox>
-
-                            </div>
-
-                        </div>
-                        <div class="col-sm-12 col-md-6">
-                            <div class="form-row form-group form-inline ">
-                                
-                                <label class="col-sm-2" for="KayTarih">Kayıt Tarihi:</label>
-                                <SfDatePicker ID="KayTarih" TValue="DateTime?" @bind-Value="@_AkademisyenDto.KayitTarih" CssClass="col-sm-4 pb-1" Placeholder="Kayıt Tarihi"></SfDatePicker>
-                                
-                                <label class="col-sm-2" for="AyrTarih">Ayrılma Tarihi:</label>
-                                <SfDatePicker ID="AyrTarih" TValue="DateTime?" @bind-Value="@_AkademisyenDto.AyrilTarih" CssClass="col-sm-4 pb-1" Placeholder="Ayrılma Tarihi"></SfDatePicker>
-
-                                
-                            </div>
-
-                        </div>
-                    </div>
-
-                </EditForm>
+<div class="row info-panel">
+    @*<div class="row">
+            <div class="col-sm-12 text-center">
+                <p>Akademik Bilgiler</p>
             </div>
+        </div>*@
 
-            <div class="row">
-                <div class="col-6 text-left">
-                    <SfProgressButton Content="< Farklı Akademisyen Seç" OnClick="GoBackAkademisyen" CssClass="center-block e-primary">
-                        <ProgressButtonSpinSettings Position="SpinPosition.Left"></ProgressButtonSpinSettings>
-                    </SfProgressButton>
+    @*Model=@_AkademisyenDto OnValidSubmit="Kaydet"*@
+    <EditForm EditContext="@EC">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="row">
+            <div class="col-sm-12 col-md-7">
+                <div class="server-action-menu">
+                    <div class="form-row form-group form-inline ">
+                        <label class="col-sm-2" for="OgrtNo">Akademisyen NO:</label>
+                        <SfTextBox @bind-Value="@_AkademisyenDto.OgrtNo" ID="OgrtNo" CssClass="col-sm-4"></SfTextBox>
+                        <label class="col-sm-2" for="DosNo">Dosya NO:</label>
+                        <SfTextBox ID="DosNo" CssClass="col-sm-2"></SfTextBox>
+                        <SfCheckBox Label="Durum" CssClass="col-sm-1" @bind-Checked="@_AkademisyenDto.Durum"></SfCheckBox>
+                        <label class="col-sm-2" for="TCKN">TCKN:</label>
+                        <SfTextBox @bind-Value="@_AkademisyenDto.TCKN" ID="TCKN" CssClass="col-sm-4"></SfTextBox>
+                        <label class="col-sm-2" for="Seri">Kimlik Seri:</label>
+                        <SfTextBox ID="Seri" CssClass="col-sm-4"></SfTextBox>
+                        <label class="col-sm-2" for="Adi">Adı:</label>
+                        <SfTextBox @bind-Value="@_AkademisyenDto.Ad" ID="Adı" CssClass="col-sm-4"></SfTextBox>
+                        <label class="col-sm-2" for="Soyadi">Soyadı:</label>
+                        <SfTextBox @bind-Value="@_AkademisyenDto.Soyad" ID="Soyadi" CssClass="col-sm-4"></SfTextBox>
+                        <label class="col-sm-2" for="Email">Email:</label>
+                        <SfTextBox @bind-Value="@_AkademisyenDto.Email" ID="Email" CssClass="col-sm-10"></SfTextBox>
+                        <label class="col-sm-2" for="Soyadi">Telefon:</label>
+                        <SfTextBox @bind-Value="@_AkademisyenDto.Telefon" ID="Telefon" CssClass="col-sm-4"></SfTextBox>
+                        <label class="col-sm-2" for="Soyadi">Telefon2:</label>
+                        <SfTextBox @bind-Value="@_AkademisyenDto.Telefon2" ID="Telefon2" CssClass="col-sm-4"></SfTextBox>
+                        <label class="col-sm-2" for="Email">Diller:</label>
+                        <SfTextBox @bind-Value="@_AkademisyenDto.Diller" ID="Diller" CssClass="col-sm-10" Multiline="true"></SfTextBox>
+
+                    </div>
                 </div>
-                <div class="col-6 text-right">
-                    <SfProgressButton Content="Kaydet >" OnClick="SubmitHandler" CssClass="center-block e-primary">
-                        <ProgressButtonSpinSettings Position="SpinPosition.Right"></ProgressButtonSpinSettings>
-                    </SfProgressButton>
-                </div>
+
             </div>
+            <div class="col-sm-12 col-md-5">
+                <div class="server-action-menu">
+                    <div class="form-row form-group form-inline ">
+
+                        <label class="col-sm-2" for="KayTarih">Kayıt Tarihi:</label>
+                        <SfDatePicker ID="KayTarih" TValue="DateTime?" @bind-Value="@_AkademisyenDto.KayitTarih" CssClass="col-sm-4 pb-1" Placeholder="Kayıt Tarihi"></SfDatePicker>
+
+                        <label class="col-sm-2" for="AyrTarih">Ayrılma Tarihi:</label>
+                        <SfDatePicker ID="AyrTarih" TValue="DateTime?" @bind-Value="@_AkademisyenDto.AyrilTarih" CssClass="col-sm-4 pb-1" Placeholder="Ayrılma Tarihi"></SfDatePicker>
+                        <label class="col-sm-2" for="Email">Eğitim Bilgileri:</label>
+                        <SfTextBox @bind-Value="@_AkademisyenDto.EgitimBilg" ID="EgitimBilg" CssClass="col-sm-10" Multiline="true"></SfTextBox>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </EditForm>
+</div>
+    <div class="row">
+        <div class="col-sm-12 col-md-7">
 
         </div>
+        <div class="col-sm-12 col-md-5">
+            <div class="control_wrapper">
+                <div id="dropArea" style="height: auto; overflow: auto">
+                    <p>Resim Ekleyiniz. maks: 1.5 MB</p>
+
+                    <SfUploader ID="UploadFiles" AutoUpload="false" DropArea=".control-fluid" MinFileSize=1000 MaxFileSize=1500000 AllowedExtensions=".png,.jpeg,jpg">
+                        <UploaderEvents ValueChange="OnChangeUpload" OnRemove="onRemove"></UploaderEvents>
+                        <UploaderFiles>
+                            <UploaderUploadedFiles Name="@(_AkademisyenDto.ApplicationUserId.ToString())" Size=12000 Type="png"></UploaderUploadedFiles>
+                        </UploaderFiles>
+                    </SfUploader>
+                </div>
+            </div>
+        </div>
     </div>
-</ControlSection>
+    <div class="row">
+        <div class="col-6 text-left">
+            <SfProgressButton Content="< Farklı Akademisyen Seç" OnClick="GoBackAkademisyen" CssClass="center-block e-primary">
+                <ProgressButtonSpinSettings Position="SpinPosition.Left"></ProgressButtonSpinSettings>
+            </SfProgressButton>
+        </div>
+        <div class="col-6 text-right">
+            <SfProgressButton Content="Kaydet >" OnClick="SubmitHandler" CssClass="center-block e-primary">
+                <ProgressButtonSpinSettings Position="SpinPosition.Right"></ProgressButtonSpinSettings>
+            </SfProgressButton>
+        </div>
+    </div>
+
+
 
 
 
@@ -159,9 +187,48 @@
 
     }
 
+
+    private void onRemove(RemovingEventArgs args)
+    {
+        args.PostRawFile = false;
+
+
+        //BU gerçekten siliyor.
+        //foreach (var removeFile in args.FilesData)
+        //{
+        //    var rootPath = @"../UniLife.CommonUI/wwwroot/images/ogrenci/";
+        //    if (File.Exists(Path.Combine(rootPath, removeFile.Name)))
+        //    {
+        //        File.Delete(Path.Combine(rootPath, removeFile.Name));
+        //    }
+        //}
+    }
+
+    //Eski upladın metodu
+    private void OnChangeUpload(UploadChangeEventArgs args)
+    {
+        foreach (var file in args.Files)
+        {
+            //var path = @"path" + file.FileInfo.Name;
+
+            var path = @"../UniLife.CommonUI/wwwroot/images/ogrenci/" + _AkademisyenDto.ApplicationUserId.ToString() + "." + file.FileInfo.Type;
+
+            FileStream filestream = new FileStream(path, FileMode.Create, FileAccess.Write);
+            file.Stream.WriteTo(filestream);
+            filestream.Close();
+            file.Stream.Close();
+        }
+    }
+
 }
 
 <style>
+
+    .control_wrapper {
+        width: 350px;
+        margin: 0 auto;
+    }
+
     textarea.e-input,
     .e-float-input textarea,
     .e-float-input.e-control-wrapper textarea,

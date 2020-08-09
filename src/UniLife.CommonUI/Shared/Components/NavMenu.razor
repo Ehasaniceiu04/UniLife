@@ -365,20 +365,12 @@
     @*Akademisyen*@
     <AuthorizeView Roles="Akademisyen" Context="AuthorizeContext">
         <Authorized>
-            <MatNavItem Href="@navigationManager.ToAbsoluteUri("").AbsoluteUri">
+            <MatNavItem Href="@navigationManager.ToAbsoluteUri("akademisyen/bilgi").AbsoluteUri">
                 <MatIcon>stars</MatIcon> <span class="miniHover">Akademik Bilgiler</span>
             </MatNavItem>
         </Authorized>
     </AuthorizeView>
 
-    @*Akademisyen*@
-    <AuthorizeView Roles="Akademisyen" Context="AuthorizeContext">
-        <Authorized>
-            <MatNavItem Href="@navigationManager.ToAbsoluteUri("").AbsoluteUri">
-                <MatIcon>stars</MatIcon> <span class="miniHover">Kişisel Bilgiler</span>
-            </MatNavItem>
-        </Authorized>
-    </AuthorizeView>
 
 
 

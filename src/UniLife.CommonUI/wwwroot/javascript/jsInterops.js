@@ -3,7 +3,7 @@
         document.cookie = cookie;
     },
     removeCookie: function (cookieName) {
-        window.location = "/"; // TO REFRESH THE PAGE
+        window.location = " "; // TO REFRESH THE PAGE
 
         console.log(cookieName + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;');
         console.log(document.cookie);
