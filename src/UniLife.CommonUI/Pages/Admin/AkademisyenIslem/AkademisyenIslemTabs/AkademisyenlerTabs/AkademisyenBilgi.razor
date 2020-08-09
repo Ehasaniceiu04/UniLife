@@ -25,6 +25,7 @@
     {
         try
         {
+
             ApiResponseDto<AkademisyenDto> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<AkademisyenDto>>("api/akademisyen/" + _AkademisyenDto.Id);
 
             if (apiResponse.StatusCode == Status200OK)
