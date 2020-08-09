@@ -2,6 +2,7 @@
 @using Syncfusion.Blazor.Navigations
 @using UniLife.CommonUI.Pages.Admin.AkademisyenIslem.AkademisyenIslemTabs
 @using UniLife.Shared.Dto.Definitions
+@using UniLife.CommonUI.Pages.Akademisyen.AkaDersNotlarTab
 @attribute [Authorize(Policy = Policies.IsAdmin)]
 
 <div class="control-section e-tab-section">
@@ -24,6 +25,22 @@
                     <AkademisyenDuzenle BilgilerToAkademisyen="TabDegis" _AkademisyenDto="_AkademisyenDto"></AkademisyenDuzenle>
                 </ContentTemplate>
             </TabItem>
+            <TabItem>
+                <ChildContent>
+                    <TabHeader Text="Verilen Dersler"></TabHeader>
+                </ChildContent>
+                <ContentTemplate>
+                    <AkaDersler SpesificDersAcilan="SpesificDersAcilan" SinavToNotlar="SinavToNotlar" _AkademisyenDto="_AkademisyenDto"></AkaDersler>
+                </ContentTemplate>
+            </TabItem>
+            <TabItem>
+                <ChildContent>
+                    <TabHeader Text="Sınav Öğrenci Notları"></TabHeader>
+                </ChildContent>
+                <ContentTemplate>
+                    <AkaNotlar _SinavDto="_SinavDto"></AkaNotlar>
+                </ContentTemplate>
+            </TabItem>
         </TabItems>
     </SfTab>
 </div>
@@ -36,10 +53,23 @@
     SfTab Tab;
     public AkademisyenDto _AkademisyenDto { get; set; } = new AkademisyenDto();
 
+    SinavDto _SinavDto;
+    public void SinavToNotlar(SinavDto sinavDto)
+    {
+        _SinavDto = sinavDto;
+        TabDegis(3);
+        Tab.HideTab(3, false);
+    }
+    [Parameter]
+    public int SpesificDersAcilan { get; set; } = 0;
+
+
     public void TabDegis(int tabIndex)
     {
         Tab.EnableTab(0, true);
         Tab.EnableTab(1, tabIndex > 0);
+        Tab.EnableTab(2, tabIndex > 0);
+        Tab.EnableTab(3, tabIndex > 0);
         Tab.Select(tabIndex);
     }
 
@@ -53,6 +83,8 @@
     {
         Tab.EnableTab(0, true);
         Tab.EnableTab(1, false);
+        Tab.EnableTab(2, false);
+        Tab.HideTab(3, true);
     }
 
     public async void onDonemChange()

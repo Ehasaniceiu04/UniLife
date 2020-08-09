@@ -101,6 +101,8 @@ else
 
     List<DonemDto> donemDtos = new List<DonemDto>();
 
+    [Parameter]
+    public AkademisyenDto _AkademisyenDto { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -111,7 +113,15 @@ else
 
             if (SpesificDersAcilan == 0)
             {
-                akademisyenDto = await appState.GetAkademisyenState();
+                if (_AkademisyenDto == null)
+                {
+                    akademisyenDto = await appState.GetAkademisyenState();
+                }
+                else
+                {
+                    akademisyenDto = _AkademisyenDto;
+                }
+
                 gridOdata = $"odata/dersacilans?$expand=akademisyen($select=Ad,Id),donem($select=Ad,Id)&$select=Ad,Id,Kod&$filter=akademisyen/Id eq {akademisyenDto.Id} and donem/Id eq {selectedDonemId}";
             }
             else
@@ -181,7 +191,7 @@ else
         else if (args.Item.Id == "Kayitlilar")
         {
 
-        }        
+        }
     }
 
 }
