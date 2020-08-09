@@ -66,20 +66,20 @@ namespace UniLife.Server.Controllers
 
 
         [HttpGet]
-        [Route("GetDersliksAndDerslikRezsByMufredatId/{mufredatId}/{ogrenciId}")]
+        [Route("GetDersliksAndDerslikRezsByMufredatId/{mufredatId}/{ogrenciId}/{isSinav?}")]
         [Authorize(Permissions.Derslik.Read)]
-        public async Task<ApiResponse> GetDersliksAndDerslikRezsByMufredatId(int mufredatId,int ogrenciId)
+        public async Task<ApiResponse> GetDersliksAndDerslikRezsByMufredatId(int mufredatId,int ogrenciId, bool isSinav)
             => ModelState.IsValid ?
-                await _derslikManager.GetDersliksAndDerslikRezsByMufredatId(mufredatId, ogrenciId) :
+                await _derslikManager.GetDersliksAndDerslikRezsByMufredatId(mufredatId, ogrenciId, isSinav) :
                 new ApiResponse(Status400BadRequest, "Derslik Model is Invalid");
 
         [HttpGet]
-        [Route("GetDersliksAndDerslikRezsByAkaId/{akaId}")]
+        [Route("GetDersliksAndDerslikRezsByAkaId/{akaId}/{isSinav?}")]
         [Authorize(Permissions.Derslik.Read)]
         [Authorize(Roles = "Administrator,Personel,Akademisyen")]
-        public async Task<ApiResponse> GetDersliksAndDerslikRezsByAkaId(int akaId)
+        public async Task<ApiResponse> GetDersliksAndDerslikRezsByAkaId(int akaId, bool isSinav)
             => ModelState.IsValid ?
-                await _derslikManager.GetDersliksAndDerslikRezsByAkaId(akaId) :
+                await _derslikManager.GetDersliksAndDerslikRezsByAkaId(akaId, isSinav) :
                 new ApiResponse(Status400BadRequest, "Derslik Model is Invalid");
 
         

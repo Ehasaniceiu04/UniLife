@@ -69,9 +69,9 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         Syncfusion.Blazor.Schedule.SfSchedule<DerslikRezervDto> DersProgramSche;
 
         bool isDersPrgDialogOpen;
-        string dialogBaslik="Seçilen dersin programı";
+        string dialogBaslik = "Seçilen dersin programı";
 
-        
+
         Syncfusion.Blazor.Grids.SfGrid<DerslikRezervDto> SecDrsProgramGrid;
 
         List<DerslikRezervDto> SecDrsPrgDtos = new List<DerslikRezervDto>();
@@ -90,7 +90,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         //}
 
 
-
+        bool isSinav;
 
         protected async override Task OnInitializedAsync()
         {
@@ -118,7 +118,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 odataQuery += "DerslikId eq " + item + " or ";
             }
 
-            odataQuery=odataQuery.TrimEnd('o','r',' ');
+            odataQuery = odataQuery.TrimEnd('o', 'r', ' ');
 
             OData<DerslikRezervDto> apiResponse = await Http.GetFromJsonAsync<OData<DerslikRezervDto>>(odataQuery);
             derslikRezervDtos = apiResponse.Value;
@@ -176,7 +176,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Binalar getirilirken hata oluştu!");
             }
         }
-        
+
 
         private void FakulteToBolum(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
         {
@@ -255,6 +255,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         async Task Refresh()
         {
             //await GetDersAcilansByFilters();
+            SelectedDersAcilanGridRow = null;
 
             ApiResponseDto<List<ResDersAcilansByLongFilters>> apiResponse = await Http.PostJsonAsync<ApiResponseDto<List<ResDersAcilansByLongFilters>>>("api/DersAcilan/DersAcilansByLongFilters", _dersAcilanDto);
             if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
@@ -273,9 +274,16 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         {
             if (args.Data.DersAcilanId == 0 && SelectedDersAcilanGridRow == null)
             {
-                    args.Cancel = true;
-                    dialogUyariText = "Ders programı oluşturmadan önce yukarıdan bir ders seçmelisiniz";
-                    isUyariOpen = true;
+                args.Cancel = true;
+                if (isSinav)
+                {
+                    dialogUyariText = "Sinav programı oluşturmadan önce yukarıdan bir ders seçmelisiniz.";
+                }
+                else
+                {
+                    dialogUyariText = "Ders programı oluşturmadan önce yukarıdan bir ders seçmelisiniz.";
+                }
+                isUyariOpen = true;
             }
             if (args.Type == PopupType.QuickInfo)
             {
@@ -315,7 +323,12 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                     args.AddedRecords[0].Subject = SelectedDersAcilanGridRow.DersAd + "-" + args.AddedRecords[0].Subject;
 
                 }
+                if (isSinav)
+                {
+                    args.AddedRecords[0].Subject += " Sınav";
+                }
                 args.AddedRecords[0].DersAcilanId = SelectedDersAcilanGridRow.DersAcilanId;
+                args.AddedRecords[0].IsSinav = isSinav;
                 //args.AddedRecords[0].IsBlock = appState.AppSettings.NotAllowOneDerslikMultiReserv;
             }
         }
@@ -330,9 +343,10 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             if (args.RequestType == "eventCreated")
             {
                 args.AddedRecords[0].DersAcilanId = SelectedDersAcilanGridRow.DersAcilanId;
+                args.AddedRecords[0].IsSinav = isSinav;
                 //args.AddedRecords[0].IsBlock = appState.AppSettings.NotAllowOneDerslikMultiReserv;
                 //args.AddedRecords[0].Subject = SelectedDersAcilanGridRow.DersAd + "-" + args.AddedRecords[0].Subject;
-                ApiResponseDto<DerslikRezervDto> apiResponse =await Http.PostJsonAsync<ApiResponseDto<DerslikRezervDto>>("api/derslikrezerv", args.AddedRecords.FirstOrDefault());
+                ApiResponseDto<DerslikRezervDto> apiResponse = await Http.PostJsonAsync<ApiResponseDto<DerslikRezervDto>>("api/derslikrezerv", args.AddedRecords.FirstOrDefault());
                 if (apiResponse.StatusCode == StatusCodes.Status200OK)
                 {
                     matToaster.Add(apiResponse.Message, MatToastType.Success);
@@ -352,11 +366,11 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             else if (args.RequestType == "eventChanged")
             {
                 //args.ChangedRecords[0].DersAcilanId = 2;
-                ApiResponseDto apiResponse =await Http.PutJsonAsync<ApiResponseDto>("api/derslikrezerv", args.ChangedRecords.FirstOrDefault());
+                ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>("api/derslikrezerv", args.ChangedRecords.FirstOrDefault());
                 if (apiResponse.StatusCode == StatusCodes.Status200OK)
                 {
                     matToaster.Add(apiResponse.Message, MatToastType.Success);
-                    
+
                 }
                 else
                 {
@@ -367,7 +381,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             }
             else if (args.RequestType == "eventRemoved")
             {
-                var response =await Http.DeleteAsync("api/derslikrezerv/" + args.DeletedRecords.FirstOrDefault().Id);
+                var response = await Http.DeleteAsync("api/derslikrezerv/" + args.DeletedRecords.FirstOrDefault().Id);
                 if (response.StatusCode == (System.Net.HttpStatusCode)Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
                 {
                     matToaster.Add("Rezervasyon Silindi", MatToastType.Success);
@@ -390,7 +404,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
                 dialogBaslik = $"{args.RowData.DersAd} dersinin programı";
                 isDersPrgDialogOpen = true;
-                
+
                 //await DersAcGrid.ClearSelection();
                 //DersAcGrid.SelectedRowIndex = clickedRowIndex;
 
@@ -410,7 +424,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         public async Task BinaOnChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
         {
             await ReadDersliks((int)args.Value);
-            if (selectedDersliksByBina.Count >0)
+            if (selectedDersliksByBina.Count > 0)
             {
                 await ReadDerlikRezervs();
                 isBinaSelected = true;
@@ -421,9 +435,9 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 isBinaSelected = false;
                 bosBinaText = "Binada tanımlı derslik bulunmamaktadır.";
             }
-            
 
-            
+
+
             StateHasChanged();
         }
 

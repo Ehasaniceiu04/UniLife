@@ -20,7 +20,7 @@ namespace UniLife.Storage.Stores
             _autoMapper = autoMapper;
         }
 
-        public async Task<DersliksAndDerslikRezervsDto> GetDersliksAndDerslikRezsByMufredatId(int mufredatId, int ogrenciId)
+        public async Task<DersliksAndDerslikRezervsDto> GetDersliksAndDerslikRezsByMufredatId(int mufredatId, int ogrenciId,bool isSinav)
         {
             var mufredatAcilanDersler = await (from da in _db.DersAcilans.Where(x => x.MufredatId == mufredatId)
                                                join dk in _db.DersKayits.Where(x => x.OgrenciId == ogrenciId) on da.Id equals dk.DersAcilanId
@@ -29,7 +29,7 @@ namespace UniLife.Storage.Stores
 
             //
 
-            var derslikRezervs = await (from dr in _db.DerslikRezervs.Where(x => mufredatAcilanDersler.Contains(x.DersAcilanId))
+            var derslikRezervs = await (from dr in _db.DerslikRezervs.Where(x => mufredatAcilanDersler.Contains(x.DersAcilanId) && x.IsSinav == isSinav)
                                         select dr).ToListAsync();
 
             var dersliks = await (from d in _db.Dersliks.Where(x => derslikRezervs.Select(y => y.DerslikId).Contains(x.Id))
@@ -53,12 +53,12 @@ namespace UniLife.Storage.Stores
             //return await ogrenciDersliks.ToListAsync();
         }
 
-        public async Task<DersliksAndDerslikRezervsDto> GetDersliksAndDerslikRezsByAkaId(int akaId)
+        public async Task<DersliksAndDerslikRezervsDto> GetDersliksAndDerslikRezsByAkaId(int akaId, bool isSinav)
         {
             var derslikRezervs = await (from da in _db.DersAcilans
                                         join a in _db.Akademisyens on da.AkademisyenId equals a.Id
                                         join dr in _db.DerslikRezervs on da.Id equals dr.DersAcilanId
-                                        where a.Id == akaId
+                                        where a.Id == akaId && dr.IsSinav == isSinav
                                         select dr).ToListAsync();
 
             var dersliks = await (from d in _db.Dersliks.Where(x => derslikRezervs.Select(y => y.DerslikId).Contains(x.Id))

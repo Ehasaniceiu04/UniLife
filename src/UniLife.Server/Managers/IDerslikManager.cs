@@ -7,7 +7,7 @@ namespace UniLife.Server.Managers
 {
     public interface IDerslikManager : IBaseManager<Derslik, DerslikDto>
     {
-        Task<ApiResponse> GetDersliksAndDerslikRezsByMufredatId(int mufredatId, int ogrenciId);
-        Task<ApiResponse> GetDersliksAndDerslikRezsByAkaId(int akaId);
+        Task<ApiResponse> GetDersliksAndDerslikRezsByMufredatId(int mufredatId, int ogrenciId, bool isSinav);
+        Task<ApiResponse> GetDersliksAndDerslikRezsByAkaId(int akaId, bool isSinav);
     }
 }
