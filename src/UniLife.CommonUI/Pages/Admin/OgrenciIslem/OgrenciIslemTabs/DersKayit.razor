@@ -281,7 +281,7 @@
     {
         _OgrenciDto = appState.OgrenciState;
         GetDonems();
-        seciliDonemId = donemDtos.FirstOrDefault(x => x.Durum = true).Id.ToString();
+        seciliDonemId = donemDtos.FirstOrDefault(x => x.Durum == true).Id.ToString();
         //GetAcilanDerssByMufredat();
         SetOgrenciProgramSure();
         SetMufredatAd();
