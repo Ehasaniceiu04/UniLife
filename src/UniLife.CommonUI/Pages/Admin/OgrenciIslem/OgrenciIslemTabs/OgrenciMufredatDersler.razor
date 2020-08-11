@@ -1,4 +1,6 @@
-﻿@inject HttpClient Http;
+﻿@page "/ogrenci/Mufredat_Dersleri"
+
+@inject HttpClient Http;
 @using UniLife.Shared.Dto.Definitions
 @inject IMatToaster matToaster
 @inject AppState appState
@@ -21,24 +23,24 @@ else
         <GridEvents TValue="OgrenciDerslerDto" QueryCellInfo="QueryCellInfoHandler" CommandClicked="CommandClickHandler"></GridEvents>
         <GridGroupSettings ShowDropArea="false" Columns="@Initial"></GridGroupSettings>
         @*<GridAggregates>
-            <GridAggregate>
-                <GridAggregateColumns>
-                    <GridAggregateColumn Field=@nameof(DersAcilanDto.Akts) Type="AggregateType.Sum" Format="N2">
-                        <GroupFooterTemplate>
-                            @{
-                                var aggregate = (context as AggregateTemplateContext);
-                                if (aggregate.Field == "Donem")
-                                {
-                                    <div>
-                                        <p>Toplam: @aggregate.Sum</p>
-                                    </div>
+                <GridAggregate>
+                    <GridAggregateColumns>
+                        <GridAggregateColumn Field=@nameof(DersAcilanDto.Akts) Type="AggregateType.Sum" Format="N2">
+                            <GroupFooterTemplate>
+                                @{
+                                    var aggregate = (context as AggregateTemplateContext);
+                                    if (aggregate.Field == "Donem")
+                                    {
+                                        <div>
+                                            <p>Toplam: @aggregate.Sum</p>
+                                        </div>
+                                    }
                                 }
-                            }
-                        </GroupFooterTemplate>
-                    </GridAggregateColumn>
-                </GridAggregateColumns>
-            </GridAggregate>
-        </GridAggregates>*@
+                            </GroupFooterTemplate>
+                        </GridAggregateColumn>
+                    </GridAggregateColumns>
+                </GridAggregate>
+            </GridAggregates>*@
         <GridColumns>
             <GridColumn Visible="false" Field=@nameof(OgrenciDerslerDto.DersAcilanId) HeaderText="DersAcilanId" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
             <GridColumn Visible="false" Field=@nameof(OgrenciDerslerDto.AkademisyenId) HeaderText="AkademisyenId"></GridColumn>
@@ -55,11 +57,11 @@ else
             <GridColumn AutoFit="true" Field=@nameof(OgrenciDerslerDto.IsZorunlu) DisplayAsCheckBox="true" HeaderText="Z"></GridColumn>
             <GridColumn AutoFit="true" Field=@nameof(OgrenciDerslerDto.Kredi) HeaderText="Krd"></GridColumn>
             <GridColumn Field=@nameof(OgrenciDerslerDto.Akts) HeaderText="Akts"></GridColumn>
-            <GridColumn>
+            @*<GridColumn>
                 <GridCommandColumns>
                     <GridCommandColumn Type="CommandButtonType.None" Title="Öğrenci Dersleri" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
                 </GridCommandColumns>
-            </GridColumn>
+            </GridColumn>*@
         </GridColumns>
         <GridGroupSettings Columns=@Template>
             <CaptionTemplate>
@@ -114,33 +116,13 @@ else
 
     bool ShowTumSinif;
 
-    //protected override async Task OnInitializedAsync()
-    //{
-    //    try
-    //    {
-    //        ApiResponseDto<List<OgrenciDerslerDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDerslerDto>>>("api/dersAcilan/GetDersSonucByOgrenciId/" + appState.OgrenciState.Id);
-
-    //        if (apiResponse.IsSuccessStatusCode)
-    //        {
-    //            matToaster.Add($"Öğrenci ders bilgileri getirildi.", MatToastType.Success);
-    //            ogrenciDerslerDtos = apiResponse.Result;
-    //        }
-    //        else
-    //        {
-    //            matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
-    //        }
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
-    //    }
-    //}
-
-    protected override void OnInitialized()
+    public OgrenciDto _OgrenciDto { get; set; }
+    protected override async Task  OnInitializedAsync()
     {
         try
         {
-            ApiResponseDto<List<OgrenciDerslerDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDerslerDto>>>("api/dersAcilan/GetDersSonucByOgrenciId/" + appState.OgrenciState.Id).Result;
+            _OgrenciDto = await appState.GetOgrenciState();
+            ApiResponseDto<List<OgrenciDerslerDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDerslerDto>>>("api/dersAcilan/GetDersSonucByOgrenciId/" + _OgrenciDto.Id);
 
             if (apiResponse.IsSuccessStatusCode)
             {
@@ -159,24 +141,12 @@ else
     }
 
 
+
     public async Task CommandClickHandler(CommandClickEventArgs<OgrenciDerslerDto> args)
     {
         if (args.CommandColumn.Title == "Öğrenci Dersleri")
         {
-            //if (!args.RowData.AkademisyenId.HasValue)
-            //{
-            //    dialogText = "Derse bağlı bir akademisyen mevcut değil.";
-            //    akaDialog = true;
-            //}
-            //else
-            //{
-            navigationManager.NavigateTo($"/akademisyen/DersNot/{args.RowData.DersAcilanId}");
-            //}
-
-            //ApiResponseDto<DersAcilanDto> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<DersAcilanDto>>("api/dersAcilan/" + args.RowData.DersAcilanId);
-
-            //_dersAcilanDto = apiResponse.Result;
-            //ShowTumSinif = true;
+            //navigationManager.NavigateTo($"/akademisyen/DersNot/{args.RowData.DersAcilanId}");
         }
     }
 

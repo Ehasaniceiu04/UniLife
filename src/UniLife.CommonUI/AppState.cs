@@ -22,8 +22,11 @@ namespace UniLife.CommonUI
         public MufredatStateDto MufredatState { get; set; }
 
         public OgrenciDto OgrenciState { get; set; }
+        public OgrenciDto OgrenciTempState { get; set; }
         public AkademisyenDto AkademisyenState { get; set; }
+        public AkademisyenDto AkademisyenTempState { get; set; }
         public PersonelDto PersonelState { get; set; }
+        public PersonelDto PersonelTempState { get; set; }
 
         public Settings AppSettings { get; set; }
 
