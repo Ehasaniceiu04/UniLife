@@ -27,7 +27,7 @@
                             <GridColumn Field=@nameof(OgrenciDto.OgrNo) HeaderText="OgrNo"></GridColumn>
                             <GridColumn>
                                 <GridCommandColumns>
-                                    <GridCommandColumn Type="CommandButtonType.None" Title="Ders Kayıt Onayı" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
+                                    <GridCommandColumn Type="CommandButtonType.None"  Title="Ders Kayıt Onayı" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat",Content="Ders Onay " })"></GridCommandColumn>
                                 </GridCommandColumns>
                             </GridColumn>
                         </GridColumns>
@@ -77,6 +77,7 @@
     {
         if (args.CommandColumn.Title == "Ders Kayıt Onayı")
         {
+            DanismanTab.HideTab(1, false);
             DanismanTab.EnableTab(1, true);
             DanismanTab.Select(1);
 
@@ -91,6 +92,7 @@
     {
         DanismanTab.EnableTab(0, true);
         DanismanTab.EnableTab(1, false);
+        DanismanTab.HideTab(1, true);
     }
     public void OnTabSelecting(SelectingEventArgs args)
     {
@@ -101,6 +103,7 @@
         if (args.SelectedIndex == 0)
         {
             DanismanTab.EnableTab(1, false);
+            DanismanTab.HideTab(1, true);
         }
     }
 }
