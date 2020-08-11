@@ -114,6 +114,7 @@ namespace UniLife.Server.Controllers
             => ModelState.IsValid ?
                 await _dersKayitManager.GetOgrenciDersKayitsByDers(dersAcilanId) :
                 new ApiResponse(Status400BadRequest, "DersKayit Model is Invalid");
-        
+
+
     }
 }

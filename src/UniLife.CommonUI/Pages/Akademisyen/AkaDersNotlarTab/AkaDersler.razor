@@ -23,7 +23,7 @@ else
 
     <SfGrid ID="grdDersler" @ref="grdDersler" TValue="DersAcilanDto"  Toolbar="@(Toolbaritems)" AllowPaging="true">
         <SfDataManager Url="@(gridOdata)" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
-        <GridEvents TValue="DersAcilanDto" OnToolbarClick="ToolbarClickHandler"></GridEvents>
+        <GridEvents TValue="DersAcilanDto" OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectedHandler"></GridEvents>
         @*<GridGroupSettings Columns="@Initial"></GridGroupSettings>*@
         <GridTemplates>
             <DetailTemplate>
@@ -76,10 +76,40 @@ else
         </GridGroupSettings>*@
     </SfGrid>
 
+    @if (isYoklamaShow)
+	{
+<Dialog Baslik="Kayıtlı Öğrenciler" @bind-isDialogOpen="@isYoklamaShow">
+    @*<SfGrid ID="ogrGrid" @ref="ogrGrid" TValue="OgrenciDto" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowFiltering="true">
+        <SfDataManager Url="@(ogrGridOdata)" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+        <GridColumns>
+            <GridColumn Field="Ogrenci.Ad" HeaderText="Ad"></GridColumn>
+            <GridColumn Field="Ogrenci.Soyad" HeaderText="Soyad"></GridColumn>
+            <GridColumn Field="Ogrenci.TCKN" HeaderText="TCKN"></GridColumn>
+            <GridColumn Field="Ogrenci.OgrNo" HeaderText="Öğr No"></GridColumn>
+        </GridColumns>
+    </SfGrid>*@
+
+    <SfGrid ID="ogrGrid" @ref="ogrGrid" TValue="DersKayitDto" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowFiltering="true">
+        <SfDataManager Url="@($"odata/derskayits?$filter=DersAcilanId eq {seciliDers.Id}&$expand=Ogrenci($select=Ad,Id,Soyad,TCKN,OgrNo)&$select=Id")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+        <GridColumns>
+            <GridColumn Visible="false" Field="Ogrenci.Id" IsPrimaryKey="true" TextAlign="TextAlign.Right"></GridColumn>
+            <GridColumn Field="Ogrenci.Ad" HeaderText="Ad"></GridColumn>
+            <GridColumn Field="Ogrenci.Soyad" HeaderText="Soyad"></GridColumn>
+            <GridColumn Field="Ogrenci.TCKN" HeaderText="TCKN"></GridColumn>
+            <GridColumn Field="Ogrenci.OgrNo" HeaderText="Öğr No"></GridColumn>
+        </GridColumns>
+    </SfGrid>
+</Dialog>
+	}
+
 }
 
 
 @code{
+
+    bool isYoklamaShow;
+    SfGrid<DersKayitDto> ogrGrid;
+    string ogrGridOdata="";
 
     SfDropDownList<int?, DonemDto> DropDonem;
     int? selectedDonemId;
@@ -180,18 +210,25 @@ else
     }
 
     private List<Object> Toolbaritems = new List<Object>() { "ExcelExport", "CsvExport", "PdfExport"
-                                                            , new ItemModel() { Text = "Derse Yoklama", TooltipText = "Derse Yoklama", PrefixIcon = "e-click", Id = "Yokalama" }
+                                                            , new ItemModel() { Text = "Ders Yoklama", TooltipText = "Derse Yoklama", PrefixIcon = "e-click", Id = "Yokalama" }
                                                             , new ItemModel() { Text = "Kayıtlı Öğrenciler", TooltipText = "Kayıtlı Öğrenciler", PrefixIcon = "e-click", Id = "Kayitlilar" }};
     public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
     {
         if (args.Item.Id == "Yokalama")
         {
-
+            ogrGridOdata = $"odata/derskayits?$filter=DersAcilanId eq {seciliDers.Id}&$expand=Ogrenci($select=Ad,Id,Soyad,TCKN,OgrNo)&$select=Id";
+            isYoklamaShow = true;
         }
         else if (args.Item.Id == "Kayitlilar")
         {
 
         }
+    }
+
+    DersAcilanDto seciliDers;
+    public async Task RowSelectedHandler(Syncfusion.Blazor.Grids.RowSelectEventArgs<DersAcilanDto> args)
+    {
+        seciliDers = args.Data;
     }
 
 }

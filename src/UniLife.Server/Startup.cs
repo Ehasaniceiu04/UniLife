@@ -659,6 +659,7 @@ namespace UniLife.Server
             builder.EntitySet<Il>("Ils");
             builder.EntitySet<Nufus>("Nufuss");
             builder.EntitySet<Askerlik>("Askerliks");
+            builder.EntitySet<DersKayit>("DersKayits");
             //builder.EntitySet<SinavKayit>("SinavKayits");
             return builder.GetEdmModel();
         }
