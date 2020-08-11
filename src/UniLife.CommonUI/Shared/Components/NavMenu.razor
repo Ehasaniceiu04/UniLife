@@ -29,7 +29,7 @@
                     <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/Ders_Programi").AbsoluteUri">
                         <MatIcon>business</MatIcon> <span class="miniHover">Ders Programı</span>
                     </MatNavItem>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/Sinav_Programi").AbsoluteUri">
+                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/Sinav_Takvimi").AbsoluteUri">
                         <MatIcon>business</MatIcon> <span class="miniHover">Sinav Programı</span>
                     </MatNavItem>
                     <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/akaTakvim").AbsoluteUri">
@@ -330,7 +330,7 @@
     @*Akademisyen*@
     <AuthorizeView Roles="Akademisyen" Context="AuthorizeContext">
         <Authorized>
-            <MatNavItem Href="@navigationManager.ToAbsoluteUri("akademisyen/Ders_Takvim").AbsoluteUri">
+            <MatNavItem Href="@navigationManager.ToAbsoluteUri("akademisyen/Ders_Programı").AbsoluteUri">
                 <MatIcon>stars</MatIcon> <span class="miniHover">Ders Takvim</span>
             </MatNavItem>
         </Authorized>
@@ -338,7 +338,7 @@
     @*Akademisyen*@
     <AuthorizeView Roles="Akademisyen" Context="AuthorizeContext">
         <Authorized>
-            <MatNavItem Href="@navigationManager.ToAbsoluteUri("akademisyen/Sinav_Takvim").AbsoluteUri">
+            <MatNavItem Href="@navigationManager.ToAbsoluteUri("akademisyen/Sinav_Takvimi").AbsoluteUri">
                 <MatIcon>stars</MatIcon> <span class="miniHover">Sınav Takvim</span>
             </MatNavItem>
         </Authorized>
