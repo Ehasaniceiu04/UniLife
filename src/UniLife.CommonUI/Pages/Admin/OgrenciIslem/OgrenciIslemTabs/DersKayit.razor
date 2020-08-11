@@ -1,4 +1,8 @@
-﻿@using UniLife.Shared.Dto.Definitions
+﻿@*@page "/personel/derskayit"
+@page "/Akademisyen/derskayit"*@
+@page "/Ogrenci/derskayit"
+
+@using UniLife.Shared.Dto.Definitions
 @inject Microsoft.AspNetCore.Components.NavigationManager UriHelper
 @inject AppState appState
 @using Syncfusion.Blazor.Navigations
@@ -9,52 +13,52 @@
 
 @*<Divider />
 
-<div class="card">
-    <div class="table-responsive">
-        <table class="table" style="margin-bottom: 0px;">
-            <colgroup>
-                <col width="25%">
-                <col width="45%">
-                <col width="30%">
-            </colgroup>
-            <tbody>
-                <tr>
-                    <td rowspan="4" style="text-align: center;">
-                        <img class="photo" src="@UriHelper.ToAbsoluteUri($"/_content/UniLife.CommonUI/images/ogrenci/{_OgrenciDto.ApplicationUserId.ToString()}.png")" alt="@_OgrenciDto.Id" />
-                    </td>
-                    <td>
-                        <span style="font-weight: 500;">Ad Soyad: </span> @_OgrenciDto.Ad @_OgrenciDto.Soyad
-                    </td>
-                    <td>
-                        <span style="font-weight: 500;">Gereken Toplam Ücret: </span> @_OgrenciDto.GerekenTopUcret
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span style="font-weight: 500;">Kayıt Tarih: </span> @(_OgrenciDto.KayitTarih==null?"":_OgrenciDto.KayitTarih.Value.ToShortDateString())
-                    </td>
-                    <td>
-                        <span style="font-weight: 500;">Ödenen Toplam Ücret: </span> @_OgrenciDto.OdenenTopUcret
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span style="font-weight: 500;">Bağlı Müfredat: </span> @_OgrenciDto.MufredatAdi
-                    </td>
-                    <td>
-                        <span style="font-weight: 500;">Genel Bakiye: </span> @_OgrenciDto.GenelBakiye
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="card">
+        <div class="table-responsive">
+            <table class="table" style="margin-bottom: 0px;">
+                <colgroup>
+                    <col width="25%">
+                    <col width="45%">
+                    <col width="30%">
+                </colgroup>
+                <tbody>
+                    <tr>
+                        <td rowspan="4" style="text-align: center;">
+                            <img class="photo" src="@UriHelper.ToAbsoluteUri($"/_content/UniLife.CommonUI/images/ogrenci/{_OgrenciDto.ApplicationUserId.ToString()}.png")" alt="@_OgrenciDto.Id" />
+                        </td>
+                        <td>
+                            <span style="font-weight: 500;">Ad Soyad: </span> @_OgrenciDto.Ad @_OgrenciDto.Soyad
+                        </td>
+                        <td>
+                            <span style="font-weight: 500;">Gereken Toplam Ücret: </span> @_OgrenciDto.GerekenTopUcret
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span style="font-weight: 500;">Kayıt Tarih: </span> @(_OgrenciDto.KayitTarih==null?"":_OgrenciDto.KayitTarih.Value.ToShortDateString())
+                        </td>
+                        <td>
+                            <span style="font-weight: 500;">Ödenen Toplam Ücret: </span> @_OgrenciDto.OdenenTopUcret
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span style="font-weight: 500;">Bağlı Müfredat: </span> @_OgrenciDto.MufredatAdi
+                        </td>
+                        <td>
+                            <span style="font-weight: 500;">Genel Bakiye: </span> @_OgrenciDto.GenelBakiye
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 
 
 
 
 
-<b class="hr anim" style="padding-top: 10px;padding-bottom: 10px;"></b>*@
+    <b class="hr anim" style="padding-top: 10px;padding-bottom: 10px;"></b>*@
 
 <div class="row">
     <div class="col-sm-12 text-center">
@@ -394,6 +398,7 @@
         border-radius: 50px;
         box-shadow: inset 0 0 1px #e0e0e0, inset 0 0 14px rgba(0,0,0,0.2);
     }
+
     .table td, .table th {
         padding-top: 10px;
         padding-bottom: 0px;

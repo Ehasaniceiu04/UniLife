@@ -5,6 +5,8 @@
 @using UniLife.Shared.Dto.Definitions
 @using Syncfusion.Blazor.Navigations
 @using Syncfusion.Blazor.Data
+@using UniLife.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs
+@inject AppState appState
 
 <div class="control-section e-tab-section">
     <SfTab @ref="DanismanTab" LoadOn="ContentLoad.Dynamic">
@@ -27,7 +29,7 @@
                             <GridColumn Field=@nameof(OgrenciDto.OgrNo) HeaderText="OgrNo"></GridColumn>
                             <GridColumn>
                                 <GridCommandColumns>
-                                    <GridCommandColumn Type="CommandButtonType.None"  Title="Ders Kayıt Onayı" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat",Content="Ders Onay " })"></GridCommandColumn>
+                                    <GridCommandColumn Type="CommandButtonType.None" Title="Ders Kayıt Onayı" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat",Content="Ders Onay " })"></GridCommandColumn>
                                 </GridCommandColumns>
                             </GridColumn>
                         </GridColumns>
@@ -40,15 +42,18 @@
                     <TabHeader Text="Öğrenci Ders Onay"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
-                    TODO: Ders Onay ekranı nasıl yapılsın. Full mu küçük mü?
+                    @*TODO: Ders Onay ekranı nasıl yapılsın. Full mu küçük mü?*@
+                    <DersKayit _OgrenciDto="_OgrenciDto"></DersKayit>
                 </ContentTemplate>
             </TabItem>
-           
+
         </TabItems>
     </SfTab>
 </div>
 
 @code{
+
+    public OgrenciDto _OgrenciDto { get; set; } = new OgrenciDto();
 
     SfTab DanismanTab;
 
@@ -77,6 +82,9 @@
     {
         if (args.CommandColumn.Title == "Ders Kayıt Onayı")
         {
+            //_OgrenciDto = args.RowData;
+            appState.OgrenciState = args.RowData;
+
             DanismanTab.HideTab(1, false);
             DanismanTab.EnableTab(1, true);
             DanismanTab.Select(1);
