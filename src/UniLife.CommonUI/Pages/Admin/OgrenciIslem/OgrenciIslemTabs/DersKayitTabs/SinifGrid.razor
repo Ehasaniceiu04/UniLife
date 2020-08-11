@@ -21,40 +21,51 @@
         <div class="row">
 
             <div class="col-sm-12 col-md-12">
-                <SfGrid ID="DersAcilanGrid" @ref="DersAcilanGrid" DataSource="@DersAcilanDtos" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
-                    @*<GridEvents OnActionComplete="ActionCompletedHandler" TValue="ProgramDto"></GridEvents>*@
-                    <GridEvents TValue="DersAcilanDto" CommandClicked="CommandClickHandler"></GridEvents>
-                    <GridColumns>
-                        <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
-                        <GridColumn HeaderText="Kayıt" Width="70">
-                            <GridCommandColumns>
-                                <GridCommandColumn Type="CommandButtonType.None" Title="Kayıt Ol" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowDown", CssClass="e-flat" })"></GridCommandColumn>
-                                @*<GridCommandColumn Type="CommandButtonType.None" Title="Seçmeli Al" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-StrokeColor", CssClass="e-flat" })"></GridCommandColumn>*@
-                            </GridCommandColumns>
-                        </GridColumn>
-                        <GridColumn HeaderText="Seçmeli" TextAlign="TextAlign.Center" Width="120">
-                            <Template>
-                                @{
-                                    var dersacilan = (context as DersAcilanDto);
-                                    if (dersacilan.Zorunlu == false)
-                                    {
-                                        <SfButton IconCss="e-icons e-StrokeColor" OnClick="@(()=>CommandClickSecmeliAl(dersacilan))"></SfButton>
-                                    }
-                                    @*<SfButton Disabled="@(dersacilan.Zorunlu == true)">Refresh</SfButton>*@
-                                }
-                            </Template>
-                        </GridColumn>
+                @if (DersAcilanDtos == null)
+                {
 
-                        <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kodu"></GridColumn>
-                        <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Adı"></GridColumn>
-                        <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Zorunlu) HeaderText="Z/S" DisplayAsCheckBox="true"></GridColumn>
-                        <GridColumn Field=@nameof(DersAcilanDto.Kredi) HeaderText="Krd"></GridColumn>
-                        <GridColumn Field=@nameof(DersAcilanDto.Akts) HeaderText="Akts"></GridColumn>
-                        <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
-                        <GridColumn Field=@nameof(DersAcilanDto.ODTekrar) HeaderText="Önceki Dönemler Tekrar Durumu"></GridColumn>
-                        <GridColumn Field=@nameof(DersAcilanDto.ADKayit) HeaderText="Aktif Dönem Kayıt Durumu"></GridColumn>
-                    </GridColumns>
-                </SfGrid>
+                    <LoadingBackground ShowLogoBox="true">
+                        <label>Açılan Dersler Yükleniyor...</label>
+                    </LoadingBackground>
+                }
+                else
+                {
+                    <SfGrid ID="DersAcilanGrid" @ref="DersAcilanGrid" DataSource="@DersAcilanDtos" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
+                        @*<GridEvents OnActionComplete="ActionCompletedHandler" TValue="ProgramDto"></GridEvents>*@
+                        <GridEvents TValue="DersAcilanDto" CommandClicked="CommandClickHandler"></GridEvents>
+                        <GridColumns>
+                            <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+                            <GridColumn HeaderText="Kayıt" Width="70">
+                                <GridCommandColumns>
+                                    <GridCommandColumn Type="CommandButtonType.None" Title="Kayıt Ol" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowDown", CssClass="e-flat" })"></GridCommandColumn>
+                                    @*<GridCommandColumn Type="CommandButtonType.None" Title="Seçmeli Al" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-StrokeColor", CssClass="e-flat" })"></GridCommandColumn>*@
+                                </GridCommandColumns>
+                            </GridColumn>
+                            <GridColumn HeaderText="Seçmeli" TextAlign="TextAlign.Center" Width="120">
+                                <Template>
+                                    @{
+                                        var dersacilan = (context as DersAcilanDto);
+                                        if (dersacilan.Zorunlu == false)
+                                        {
+                                            <SfButton IconCss="e-icons e-StrokeColor" OnClick="@(()=>CommandClickSecmeliAl(dersacilan))"></SfButton>
+                                        }
+                                        @*<SfButton Disabled="@(dersacilan.Zorunlu == true)">Refresh</SfButton>*@
+                                    }
+                                </Template>
+                            </GridColumn>
+
+                            <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kodu"></GridColumn>
+                            <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Adı"></GridColumn>
+                            <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Zorunlu) HeaderText="Z/S" DisplayAsCheckBox="true"></GridColumn>
+                            <GridColumn Field=@nameof(DersAcilanDto.Kredi) HeaderText="Krd"></GridColumn>
+                            <GridColumn Field=@nameof(DersAcilanDto.Akts) HeaderText="Akts"></GridColumn>
+                            <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
+                            <GridColumn Field=@nameof(DersAcilanDto.ODTekrar) HeaderText="Önceki Dönemler Tekrar Durumu"></GridColumn>
+                            <GridColumn Field=@nameof(DersAcilanDto.ADKayit) HeaderText="Aktif Dönem Kayıt Durumu"></GridColumn>
+                        </GridColumns>
+                    </SfGrid>
+                }
+
             </div>
 
         </div>
@@ -71,53 +82,64 @@
         </div>
         <div class="row">
             <div class="col-sm-12 col-md-12">
-                <SfGrid ID="DersKayitGrid" @ref="DersKayitGrid" DataSource="@DersKayitDtos" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
-                    <GridEvents TValue="DersAcilanDto" QueryCellInfo="QueryCellInfoHandler" CommandClicked="CommandClickHandlerKayit"></GridEvents>
-                    <GridAggregates>
-                        <GridAggregate>
-                            <GridAggregateColumns>
-                                <GridAggregateColumn Field=@nameof(DersAcilanDto.Akts) Type="AggregateType.Sum" Format="N2">
-                                    <FooterTemplate>
-                                        @{
-                                            var aggregate = (context as AggregateTemplateContext);
-                                            <div>
-                                                <p>Toplam: @aggregate.Sum</p>
-                                            </div>
-                                        }
-                                    </FooterTemplate>
-                                </GridAggregateColumn>
-                                <GridAggregateColumn Field=@nameof(DersAcilanDto.Kredi) Type="AggregateType.Sum" Format="N2">
-                                    <FooterTemplate>
-                                        @{
-                                            var aggregate = (context as AggregateTemplateContext);
-                                            <div>
-                                                <p>Toplam: @aggregate.Sum</p>
-                                            </div>
-                                        }
-                                    </FooterTemplate>
-                                </GridAggregateColumn>
-                            </GridAggregateColumns>
-                        </GridAggregate>
-                    </GridAggregates>
+                @if (DersKayitDtos == null)
+                {
 
-                    <GridColumns>
-                        <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
-                        <GridColumn Width="50">
-                            <GridCommandColumns>
-                                <GridCommandColumn Type="CommandButtonType.None" Title="Kayıt Kaldır" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowUP", CssClass="e-flat" })"></GridCommandColumn>
-                            </GridCommandColumns>
-                        </GridColumn>
-                        <GridColumn Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kodu"></GridColumn>
-                        <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Adı"></GridColumn>
-                        <GridColumn Field=@nameof(DersAcilanDto.YerineSecilenAd) HeaderText="Yerine Ders"></GridColumn>
-                        <GridColumn Visible="false" Field=@nameof(DersAcilanDto.YerineSecilenId) HeaderText="Yerine id"></GridColumn>
-                        <GridColumn Field=@nameof(DersAcilanDto.Zorunlu) DisplayAsCheckBox="true" HeaderText="Z/S"></GridColumn>
-                        <GridColumn Field=@nameof(DersAcilanDto.Kredi) Format="N2" HeaderText="Krd"></GridColumn>
-                        <GridColumn Field=@nameof(DersAcilanDto.Akts) Format="N2" HeaderText="Akts"></GridColumn>
-                        <GridColumn Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
+                    <LoadingBackground ShowLogoBox="true">
+                        <label>Kayıtlı Dersler Yükleniyor...</label>
+                    </LoadingBackground>
+                }
+                else
+                {
 
-                    </GridColumns>
-                </SfGrid>
+                    <SfGrid ID="DersKayitGrid" @ref="DersKayitGrid" DataSource="@DersKayitDtos" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
+                        <GridEvents TValue="DersAcilanDto" QueryCellInfo="QueryCellInfoHandler" CommandClicked="CommandClickHandlerKayit"></GridEvents>
+                        <GridAggregates>
+                            <GridAggregate>
+                                <GridAggregateColumns>
+                                    <GridAggregateColumn Field=@nameof(DersAcilanDto.Akts) Type="AggregateType.Sum" Format="N2">
+                                        <FooterTemplate>
+                                            @{
+                                                var aggregate = (context as AggregateTemplateContext);
+                                                <div>
+                                                    <p>Toplam: @aggregate.Sum</p>
+                                                </div>
+                                            }
+                                        </FooterTemplate>
+                                    </GridAggregateColumn>
+                                    <GridAggregateColumn Field=@nameof(DersAcilanDto.Kredi) Type="AggregateType.Sum" Format="N2">
+                                        <FooterTemplate>
+                                            @{
+                                                var aggregate = (context as AggregateTemplateContext);
+                                                <div>
+                                                    <p>Toplam: @aggregate.Sum</p>
+                                                </div>
+                                            }
+                                        </FooterTemplate>
+                                    </GridAggregateColumn>
+                                </GridAggregateColumns>
+                            </GridAggregate>
+                        </GridAggregates>
+
+                        <GridColumns>
+                            <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+                            <GridColumn Width="50">
+                                <GridCommandColumns>
+                                    <GridCommandColumn Type="CommandButtonType.None" Title="Kayıt Kaldır" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowUP", CssClass="e-flat" })"></GridCommandColumn>
+                                </GridCommandColumns>
+                            </GridColumn>
+                            <GridColumn Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kodu"></GridColumn>
+                            <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Adı"></GridColumn>
+                            <GridColumn Field=@nameof(DersAcilanDto.YerineSecilenAd) HeaderText="Yerine Ders"></GridColumn>
+                            <GridColumn Visible="false" Field=@nameof(DersAcilanDto.YerineSecilenId) HeaderText="Yerine id"></GridColumn>
+                            <GridColumn Field=@nameof(DersAcilanDto.Zorunlu) DisplayAsCheckBox="true" HeaderText="Z/S"></GridColumn>
+                            <GridColumn Field=@nameof(DersAcilanDto.Kredi) Format="N2" HeaderText="Krd"></GridColumn>
+                            <GridColumn Field=@nameof(DersAcilanDto.Akts) Format="N2" HeaderText="Akts"></GridColumn>
+                            <GridColumn Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
+
+                        </GridColumns>
+                    </SfGrid>
+                }
             </div>
         </div>
     </div>
@@ -439,6 +461,7 @@
         max-width: none;
         width: 70%;
     }
+
     .row {
         margin-right: unset;
         margin-left: unset;

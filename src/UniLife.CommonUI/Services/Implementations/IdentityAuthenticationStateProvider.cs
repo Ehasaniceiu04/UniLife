@@ -65,6 +65,10 @@ namespace UniLife.CommonUI.States
         public async Task<ApiResponseDto> Logout()
         {
             _appState.UserProfile = null;
+            _appState.PersonelState = null;
+            _appState.OgrenciState = null;
+            _appState.AkademisyenState = null;
+            _appState.MufredatState = null;
             ApiResponseDto apiResponse = await _authorizeApi.Logout();
             NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
             return apiResponse;

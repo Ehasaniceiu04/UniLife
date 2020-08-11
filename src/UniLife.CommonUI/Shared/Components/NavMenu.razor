@@ -112,7 +112,11 @@
                     </MatNavItem>
                 </MatNavSubMenuHeader>
                 <MatNavSubMenuList>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("Gelen mesajlar").AbsoluteUri">
+                    
+                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/Bilgi").AbsoluteUri">
+                        <MatIcon>business</MatIcon> <span class="miniHover">Özlük Bilgi</span>
+                    </MatNavItem>
+                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/mesaj").AbsoluteUri">
                         <MatIcon>business</MatIcon> <span class="miniHover">Gelen Mesajlar</span>
                     </MatNavItem>
                     <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/belgetalep").AbsoluteUri">

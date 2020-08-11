@@ -1,4 +1,6 @@
-﻿@using Syncfusion.Blazor.DropDowns
+﻿@page "/ogrenci/Bilgi"
+
+@using Syncfusion.Blazor.DropDowns
 @using Syncfusion.Blazor.Inputs
 @using Syncfusion.Blazor.Buttons
 @using UniLife.Shared.Dto.Definitions
@@ -12,208 +14,232 @@
 @inject IJSRuntime JSRuntime;
 
 
-<div class="card">
-    <div class="row info-panel">
-        <div class="col-sm-12 col-md-12">
-            @*<div class="row">
-                    <div class="col-sm-12 text-center">
-                        <p>Akademik Bilgiler</p>
-                    </div>
-                </div>*@
+@if (_OgrenciDto.Id == 0)
+{
 
-            @*Model=@_OgrenciDto OnValidSubmit="Kaydet"*@
-            <EditForm EditContext="@EC">
-                <DataAnnotationsValidator />
-                <ValidationSummary />
-                <div class="row">
-                    <div class="col-sm-12 col-md-6">
-                        <div class="server-action-menu">
-                            <div class="form-row form-group form-inline ">
-                                <label class="col-sm-2" for="OgrNo">Öğrenci NO:</label>
-                                <SfNumericTextBox @bind-Value="@_OgrenciDto.OgrNo" Enabled="false" ID="OgrNo" CssClass="col-sm-4"></SfNumericTextBox>
-                                <label class="col-sm-2" for="DosNo">Dosya NO:</label>
-                                <SfTextBox ID="DosNo" CssClass="col-sm-2"></SfTextBox>
-                                <SfCheckBox Label="Durum" CssClass="col-sm-1" @bind-Checked="@_OgrenciDto.Durum"></SfCheckBox>
-                                <label class="col-sm-2" for="TCKN">TCKN:</label>
-                                <SfTextBox @bind-Value="@_OgrenciDto.TCKN" ID="TCKN" CssClass="col-sm-4"></SfTextBox>
-                                <label class="col-sm-2" for="Seri">Kimlik Seri:</label>
-                                <SfTextBox ID="Seri" CssClass="col-sm-4"></SfTextBox>
-                                <label class="col-sm-2" for="Adi">Adı:</label>
-                                <SfTextBox @bind-Value="@_OgrenciDto.Ad" ID="Adı" CssClass="col-sm-4"></SfTextBox>
-                                <label class="col-sm-2" for="Soyadi">Soyadı:</label>
-                                <SfTextBox @bind-Value="@_OgrenciDto.Soyad" ID="Soyadi" CssClass="col-sm-4"></SfTextBox>
-                                <label class="col-sm-2" for="Email">Email:</label>
-                                <SfTextBox @bind-Value="@_OgrenciDto.Email" ID="Email" CssClass="col-sm-10"></SfTextBox>
-                                <label class="col-sm-2" for="DropFakulte">Fakulte:</label>
-                                <SfDropDownList ID="DropFakulte" @ref="DropFakulte" TItem="FakulteDto" CssClass="col-sm-10 pb-1"
-                                                TValue="int?" PopupHeight="230px" Placeholder="Fakülte Seçiniz"
-                                                @bind-Value="@_OgrenciDto.FakulteId" DataSource="@fakulteDtos">
-                                    <DropDownListEvents TValue="int?" ValueChange="FakulteToBolum"></DropDownListEvents>
-                                    <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                                </SfDropDownList>
-                                <label class="col-sm-2" for="DropBolum">Bolum:</label>
-                                <SfDropDownList ID="DropBolum" @ref="DropBolum" TItem="BolumDto" CssClass="col-sm-10 pb-1"
-                                                TValue="int?" PopupHeight="230px" Placeholder="Bölüm Seçiniz"
-                                                @bind-Value="@_OgrenciDto.BolumId" DataSource="@bolumDtos">
-                                    <DropDownListEvents TValue="int?" ValueChange="BolumToProgram"></DropDownListEvents>
-                                    <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                                </SfDropDownList>
-                                <label class="col-sm-2" for="DropProgram">Program:</label>
-                                <SfDropDownList ID="DropProgram" @ref="DropProgram" TItem="ProgramDto" CssClass="col-sm-10 pb-1"
-                                                TValue="int?" PopupHeight="230px" Placeholder="Program Seçiniz"
-                                                @bind-Value="@_OgrenciDto.ProgramId" DataSource="@programDtos">
-                                    <DropDownListEvents TValue="int?" ValueChange="ProgramToMufredat"></DropDownListEvents>
-                                    <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                                </SfDropDownList>
-                                <label class="col-sm-2" for="DropMufredat">Mufredat:</label>
-                                <SfDropDownList ID="DropMufredat" @ref="DropMufredat" TItem="MufredatDto" CssClass="col-sm-10 pb-1"
-                                                TValue="int?" PopupHeight="230px" Placeholder="Müfredat Seçiniz"
-                                                @bind-Value="@_OgrenciDto.MufredatId" DataSource="@mufredatDtos">
-                                    <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                                </SfDropDownList>
-                                <label class="col-sm-2" for="DropSinif">Sınıf:</label>
-                                <SfDropDownList ID="DropSinif" @ref="DropSinif" TItem="SinifDto" CssClass="col-sm-10 pb-1"
-                                                TValue="int?" PopupHeight="230px" Placeholder="Sınıf Seçiniz"
-                                                @bind-Value="@_OgrenciDto.Sinif" DataSource="@sinifDtos">
-                                    <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                                </SfDropDownList>
-                                <label class="col-sm-2" for="ilDonem">ilave Dönem:</label>
-                                <SfTextBox ID="ilDonem" Placeholder="ilave Dönem" CssClass="col-sm-3"></SfTextBox>
+    <LoadingBackground ShowLogoBox="true">
+        <label>Bilgiler Yükleniyor...</label>
+    </LoadingBackground>
+}
+else
+{
+    <div class="card">
+        <div class="row info-panel">
+            <div class="col-sm-12 col-md-12">
+                @*<div class="row">
+                        <div class="col-sm-12 text-center">
+                            <p>Akademik Bilgiler</p>
+                        </div>
+                    </div>*@
+
+                @*Model=@_OgrenciDto OnValidSubmit="Kaydet"*@
+                <EditForm EditContext="@EC">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            <div class="server-action-menu">
+                                <div class="form-row form-group form-inline ">
+                                    <label class="col-sm-2" for="OgrNo">Öğrenci NO:</label>
+                                    <SfNumericTextBox @bind-Value="@_OgrenciDto.OgrNo" Enabled="false" ID="OgrNo" CssClass="col-sm-4"></SfNumericTextBox>
+                                    <label class="col-sm-2" for="DosNo">Dosya NO:</label>
+                                    <SfTextBox ID="DosNo" Enabled="isPersonel" CssClass="col-sm-2"></SfTextBox>
+                                    <SfCheckBox Enabled="isPersonel" Label="Durum" CssClass="col-sm-1" @bind-Checked="@_OgrenciDto.Durum"></SfCheckBox>
+                                    <label class="col-sm-2" for="TCKN">TCKN:</label>
+                                    <SfTextBox Enabled="isPersonel" @bind-Value="@_OgrenciDto.TCKN" ID="TCKN" CssClass="col-sm-4"></SfTextBox>
+                                    <label class="col-sm-2" for="Seri">Kimlik Seri:</label>
+                                    <SfTextBox Enabled="isPersonel" ID="Seri" CssClass="col-sm-4"></SfTextBox>
+                                    <label class="col-sm-2" for="Adi">Adı:</label>
+                                    <SfTextBox Enabled="isPersonel" @bind-Value="@_OgrenciDto.Ad" ID="Adı" CssClass="col-sm-4"></SfTextBox>
+                                    <label class="col-sm-2" for="Soyadi">Soyadı:</label>
+                                    <SfTextBox Enabled="isPersonel" @bind-Value="@_OgrenciDto.Soyad" ID="Soyadi" CssClass="col-sm-4"></SfTextBox>
+                                    <label class="col-sm-2" for="Email">Email:</label>
+                                    <SfTextBox Enabled="isPersonel" @bind-Value="@_OgrenciDto.Email" ID="Email" CssClass="col-sm-10"></SfTextBox>
+                                    <label class="col-sm-2" for="DropFakulte">Fakulte:</label>
+                                    <SfDropDownList Enabled="isPersonel" ID="DropFakulte" @ref="DropFakulte" TItem="FakulteDto" CssClass="col-sm-10 pb-1"
+                                                    TValue="int?" PopupHeight="230px" Placeholder="Fakülte Seçiniz"
+                                                    @bind-Value="@_OgrenciDto.FakulteId" DataSource="@fakulteDtos">
+                                        <DropDownListEvents TValue="int?" ValueChange="FakulteToBolum"></DropDownListEvents>
+                                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                                    </SfDropDownList>
+                                    <label class="col-sm-2" for="DropBolum">Bolum:</label>
+                                    <SfDropDownList Enabled="isPersonel" ID="DropBolum" @ref="DropBolum" TItem="BolumDto" CssClass="col-sm-10 pb-1"
+                                                    TValue="int?" PopupHeight="230px" Placeholder="Bölüm Seçiniz"
+                                                    @bind-Value="@_OgrenciDto.BolumId" DataSource="@bolumDtos">
+                                        <DropDownListEvents TValue="int?" ValueChange="BolumToProgram"></DropDownListEvents>
+                                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                                    </SfDropDownList>
+                                    <label class="col-sm-2" for="DropProgram">Program:</label>
+                                    <SfDropDownList Enabled="isPersonel" ID="DropProgram" @ref="DropProgram" TItem="ProgramDto" CssClass="col-sm-10 pb-1"
+                                                    TValue="int?" PopupHeight="230px" Placeholder="Program Seçiniz"
+                                                    @bind-Value="@_OgrenciDto.ProgramId" DataSource="@programDtos">
+                                        <DropDownListEvents TValue="int?" ValueChange="ProgramToMufredat"></DropDownListEvents>
+                                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                                    </SfDropDownList>
+                                    <label class="col-sm-2" for="DropMufredat">Mufredat:</label>
+                                    <SfDropDownList Enabled="isPersonel" ID="DropMufredat" @ref="DropMufredat" TItem="MufredatDto" CssClass="col-sm-10 pb-1"
+                                                    TValue="int?" PopupHeight="230px" Placeholder="Müfredat Seçiniz"
+                                                    @bind-Value="@_OgrenciDto.MufredatId" DataSource="@mufredatDtos">
+                                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                                    </SfDropDownList>
+                                    <label class="col-sm-2" for="DropSinif">Sınıf:</label>
+                                    <SfDropDownList Enabled="isPersonel" ID="DropSinif" @ref="DropSinif" TItem="SinifDto" CssClass="col-sm-10 pb-1"
+                                                    TValue="int?" PopupHeight="230px" Placeholder="Sınıf Seçiniz"
+                                                    @bind-Value="@_OgrenciDto.Sinif" DataSource="@sinifDtos">
+                                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                                    </SfDropDownList>
+                                    <label class="col-sm-2" for="ilDonem">ilave Dönem:</label>
+                                    <SfTextBox Enabled="isPersonel" ID="ilDonem" Placeholder="ilave Dönem" CssClass="col-sm-3"></SfTextBox>
+
+                                </div>
 
                             </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="server-action-menu">
+                                <div class="form-row form-group form-inline ">
+                                    <label class="col-sm-2" for="DropKayitNeden">Kayıt Neden:</label>
+                                    <SfDropDownList Enabled="isPersonel" ID="DropKayitNeden" @ref="DropKayitNeden" TItem="KayitNedenDto" CssClass="col-sm-4 pb-1"
+                                                    TValue="int?" PopupHeight="230px" Placeholder="Kayıt Neden"
+                                                    @bind-Value="@_OgrenciDto.KayitNedenId" DataSource="@kayitNedenDtos">
+                                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                                    </SfDropDownList>
+                                    <label class="col-sm-2" for="KayTarih">Kayıt Tarihi:</label>
+                                    <SfDatePicker Enabled="isPersonel" ID="KayTarih" TValue="DateTime?" @bind-Value="@_OgrenciDto.KayitTarih" CssClass="col-sm-4 pb-1" Placeholder="Kayıt Tarihi"></SfDatePicker>
+                                    <label class="col-sm-2" for="ogrDurum">Öğrenim Durum:</label>
+                                    <SfDropDownList ID="DropOgrenimDurum" @ref="DropOgrenimDurum" TItem="OgrenimDurumDto" CssClass="col-sm-4 pb-1"
+                                                    TValue="int?" PopupHeight="230px" Placeholder="Bölüm"
+                                                    @bind-Value="@_OgrenciDto.OgrenimDurumId" DataSource="@ogrenimDurumDtos">
+                                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                                    </SfDropDownList>
+                                    <label class="col-sm-2" for="AyrTarih">Ayrılma Tarihi:</label>
+                                    <SfDatePicker Enabled="isPersonel" ID="AyrTarih" TValue="DateTime?" @bind-Value="@_OgrenciDto.AyrilTarih" CssClass="col-sm-4 pb-1" Placeholder="Ayrılma Tarihi"></SfDatePicker>
+
+                                    <label class="col-sm-2" for="ogrentip">Öğrenim Türü:</label>
+                                    <SfDropDownList Enabled="isPersonel" ID="DropOgrenimTur" @ref="DropOgrenimTur" TItem="OgrenimTurDto" CssClass="col-sm-4 pb-1"
+                                                    TValue="int?" PopupHeight="230px" Placeholder="Bölüm"
+                                                    @bind-Value="@_OgrenciDto.OgrenimTurId" DataSource="@ogrenimTurDtos">
+                                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                                    </SfDropDownList>
+                                    <label class="col-sm-2" for="notsis">Not Sistemi:</label>
+                                    <SfDropDownList Enabled="isPersonel" ID="notsis" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
+                                        <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
+                                        <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
+                                    </SfDropDownList>
+                                    <label class="col-sm-2" for="ogrtip">Öğrenci Tipi:</label>
+                                    <SfDropDownList Enabled="isPersonel" ID="ogrtip" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
+                                        <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
+                                        <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
+                                    </SfDropDownList>
+                                    <label class="col-sm-2" for="orthestip">Ort. Hesap Tip:</label>
+                                    <SfDropDownList Enabled="isPersonel" ID="orthestip" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
+                                        <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
+                                        <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
+                                    </SfDropDownList>
+                                    <label class="col-sm-2" for="derskayislemtur">Ders Kayıt İşlem Türü:</label>
+                                    <SfDropDownList Enabled="isPersonel" ID="derskayislemtur" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
+                                        <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
+                                        <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
+                                    </SfDropDownList>
+                                    <label class="col-sm-2" for="anaProNeden">Ana Program Okuma Nedeni:</label>
+                                    <SfDropDownList Enabled="isPersonel" ID="anaProNeden" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
+                                        <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
+                                        <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
+                                    </SfDropDownList>
+                                    <label class="col-sm-2" for="danis">Danışmanı:</label>
+                                    @if (isPersonel)
+                                    {
+                                        <SfButton ID="danis" IconCss="e-icons e-Resource" EnableRtl="true" OnClick="AkademisyenAta" CssClass="e-flat col-sm-4" IsPrimary="true">@(string.IsNullOrWhiteSpace(danismanAd) ?"Ekle": danismanAd)</SfButton>
+                                    }
+                                    else
+                                    {
+                                        <SfButton ID="danis" IconCss="e-icons e-Resource" EnableHtmlSanitizer="false" EnableRtl="true" CssClass="e-flat col-sm-4" IsPrimary="true">@(string.IsNullOrWhiteSpace(danismanAd) ?"Ekle": danismanAd)</SfButton>
+                                    }
+
+                                    <label class="col-sm-2" for="digDanisman">Diğer Danışman:</label>
+                                    <SfTextBox Enabled="isPersonel" ID="digDanisman" CssClass="col-sm-4"></SfTextBox>
+                                    <label class="col-sm-2" for="capYan">Çap Yandal Durum:</label>
+                                    <SfDropDownList Enabled="isPersonel" ID="capYan" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
+                                        <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
+                                        <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
+                                    </SfDropDownList>
+                                </div>
+                                <div class="form-row">
+                                    <SfTextBox Enabled="@(isPersonel)" Placeholder="Bilgi Notu" @bind-Value="@_OgrenciDto.BilgNotu" CssClass="col-sm-12" Readonly="false" FloatLabelType="@FloatLabelType.Auto" Multiline="true"></SfTextBox>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                </EditForm>
+
+
+
+                @if (isPersonel)
+                {
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            <div class="control_wrapper">
+                                <div id="dropArea" style="height: auto; overflow: auto">
+                                    <p>Resim Ekleyiniz. maks: 1.5 MB</p>
+
+                                    <SfUploader ID="UploadFiles" AutoUpload="false" DropArea=".control-fluid" MinFileSize=1000 MaxFileSize=1500000 AllowedExtensions=".png,.jpeg,jpg">
+                                        <UploaderEvents ValueChange="OnChangeUpload" OnRemove="onRemove"></UploaderEvents>
+                                        @*<UploaderAsyncSettings SaveUrl="http://localhost:53414/services/api/uploadbox/Save" RemoveUrl="https://aspnetmvc.syncfusion.com/services/api/uploadbox/Remove"></UploaderAsyncSettings>*@
+                                        <UploaderFiles>
+                                            <UploaderUploadedFiles Name="@(_OgrenciDto.ApplicationUserId.ToString())" Size=12000 Type="png"></UploaderUploadedFiles>
+                                        </UploaderFiles>
+                                    </SfUploader>
+
+                                    @*<SfUploader @ref="uploderObj" ID="UploadFiles" MinFileSize=1000 MaxFileSize=1500000 AllowedExtensions=".png,.jpeg,jpg">
+                                            <UploaderEvents ValueChange="onChange" OnRemove="onRemove"></UploaderEvents>
+                                            <UploaderTemplates>
+                                                <Template>
+                                                    <span class="wrapper">
+                                                        <img class="upload-image" alt="Image"
+                                                             src="@(files.Count >0 ? files.Where(item=>item.Name == context.Name)?.FirstOrDefault()?.Path : string.Empty)">
+                                                    </span>
+                                                    <div class="name file-name" title="@(context.Name)">@(context.Name)</div>
+                                                    <div class="file-size">@(context.Size)</div>
+                                                    <span class="e-icons e-file-remove-btn remove" id="removeIcon" title="Remove"></span>
+                                                    <span class="e-upload-icon e-icons e-file-remove-btn" title="Upload" id="iconUpload"></span>
+                                                </Template>
+                                            </UploaderTemplates>
+                                            <UploaderFiles>
+                                                <UploaderUploadedFiles Name="@(_OgrenciDto.ApplicationUserId.ToString())" Size=12000 Type="png"></UploaderUploadedFiles>
+                                            </UploaderFiles>
+                                        </SfUploader>*@
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
 
                         </div>
                     </div>
-                    <div class="col-sm-12 col-md-6">
-                        <div class="server-action-menu">
-                            <div class="form-row form-group form-inline ">
-                                <label class="col-sm-2" for="DropKayitNeden">Kayıt Neden:</label>
-                                <SfDropDownList ID="DropKayitNeden" @ref="DropKayitNeden" TItem="KayitNedenDto" CssClass="col-sm-4 pb-1"
-                                                TValue="int?" PopupHeight="230px" Placeholder="Kayıt Neden"
-                                                @bind-Value="@_OgrenciDto.KayitNedenId" DataSource="@kayitNedenDtos">
-                                    <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                                </SfDropDownList>
-                                <label class="col-sm-2" for="KayTarih">Kayıt Tarihi:</label>
-                                <SfDatePicker ID="KayTarih" TValue="DateTime?" @bind-Value="@_OgrenciDto.KayitTarih" CssClass="col-sm-4 pb-1" Placeholder="Kayıt Tarihi"></SfDatePicker>
-                                <label class="col-sm-2" for="ogrDurum">Öğrenim Durum:</label>
-                                <SfDropDownList ID="DropOgrenimDurum" @ref="DropOgrenimDurum" TItem="OgrenimDurumDto" CssClass="col-sm-4 pb-1"
-                                                TValue="int?" PopupHeight="230px" Placeholder="Bölüm"
-                                                @bind-Value="@_OgrenciDto.OgrenimDurumId" DataSource="@ogrenimDurumDtos">
-                                    <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                                </SfDropDownList>
-                                <label class="col-sm-2" for="AyrTarih">Ayrılma Tarihi:</label>
-                                <SfDatePicker ID="AyrTarih" TValue="DateTime?" @bind-Value="@_OgrenciDto.AyrilTarih" CssClass="col-sm-4 pb-1" Placeholder="Ayrılma Tarihi"></SfDatePicker>
-
-                                <label class="col-sm-2" for="ogrentip">Öğrenim Türü:</label>
-                                <SfDropDownList ID="DropOgrenimTur" @ref="DropOgrenimTur" TItem="OgrenimTurDto" CssClass="col-sm-4 pb-1"
-                                                TValue="int?" PopupHeight="230px" Placeholder="Bölüm"
-                                                @bind-Value="@_OgrenciDto.OgrenimTurId" DataSource="@ogrenimTurDtos">
-                                    <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                                </SfDropDownList>
-                                <label class="col-sm-2" for="notsis">Not Sistemi:</label>
-                                <SfDropDownList ID="notsis" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
-                                    <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
-                                    <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
-                                </SfDropDownList>
-                                <label class="col-sm-2" for="ogrtip">Öğrenci Tipi:</label>
-                                <SfDropDownList ID="ogrtip" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
-                                    <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
-                                    <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
-                                </SfDropDownList>
-                                <label class="col-sm-2" for="orthestip">Ort. Hesap Tip:</label>
-                                <SfDropDownList ID="orthestip" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
-                                    <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
-                                    <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
-                                </SfDropDownList>
-                                <label class="col-sm-2" for="derskayislemtur">Ders Kayıt İşlem Türü:</label>
-                                <SfDropDownList ID="derskayislemtur" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
-                                    <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
-                                    <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
-                                </SfDropDownList>
-                                <label class="col-sm-2" for="anaProNeden">Ana Program Okuma Nedeni:</label>
-                                <SfDropDownList ID="anaProNeden" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
-                                    <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
-                                    <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
-                                </SfDropDownList>
-                                <label class="col-sm-2" for="danis">Danışmanı:</label>
-                                <SfButton ID="danis" IconCss="e-icons e-Resource" EnableRtl="true" OnClick="AkademisyenAta" CssClass="e-flat col-sm-4" IsPrimary="true">@(string.IsNullOrWhiteSpace(danismanAd) ?"Ekle": danismanAd)</SfButton>
-                                <label class="col-sm-2" for="digDanisman">Diğer Danışman:</label>
-                                <SfTextBox ID="digDanisman" CssClass="col-sm-4"></SfTextBox>
-                                <label class="col-sm-2" for="capYan">Çap Yandal Durum:</label>
-                                <SfDropDownList ID="capYan" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
-                                    <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
-                                    <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
-                                </SfDropDownList>
-                            </div>
-                            <div class="form-row">
-                                <SfTextBox Placeholder="Bilgi Notu" @bind-Value="@_OgrenciDto.BilgNotu" CssClass="col-sm-12" Enabled="true" Readonly="false" FloatLabelType="@FloatLabelType.Auto" Multiline="true"></SfTextBox>
-                            </div>
-
-
+                    <div class="row">
+                        <div class="col-6 text-left">
+                            <SfProgressButton Content="< Farklı Öğrenci Seç" OnClick="GoBackOgrenci" CssClass="center-block e-primary">
+                                <ProgressButtonSpinSettings Position="SpinPosition.Left"></ProgressButtonSpinSettings>
+                            </SfProgressButton>
+                        </div>
+                        <div class="col-6 text-right">
+                            <SfProgressButton Content="Kaydet >" OnClick="SubmitHandler" CssClass="center-block e-primary">
+                                <ProgressButtonSpinSettings Position="SpinPosition.Right"></ProgressButtonSpinSettings>
+                            </SfProgressButton>
                         </div>
                     </div>
-                </div>
 
-            </EditForm>
-            <div class="row">
-                <div class="col-sm-12 col-md-6">
-                    <div class="control_wrapper">
-                        <div id="dropArea" style="height: auto; overflow: auto">
-                            <p>Resim Ekleyiniz. maks: 1.5 MB</p>
+                }
 
-                            <SfUploader ID="UploadFiles" AutoUpload="false" DropArea=".control-fluid" MinFileSize=1000 MaxFileSize=1500000 AllowedExtensions=".png,.jpeg,jpg">
-                                <UploaderEvents ValueChange="OnChangeUpload" OnRemove="onRemove"></UploaderEvents>
-                                @*<UploaderAsyncSettings SaveUrl="http://localhost:53414/services/api/uploadbox/Save" RemoveUrl="https://aspnetmvc.syncfusion.com/services/api/uploadbox/Remove"></UploaderAsyncSettings>*@
-                                <UploaderFiles>
-                                    <UploaderUploadedFiles Name="@(_OgrenciDto.ApplicationUserId.ToString())" Size=12000 Type="png"></UploaderUploadedFiles>
-                                </UploaderFiles>
-                            </SfUploader>
 
-                            @*<SfUploader @ref="uploderObj" ID="UploadFiles" MinFileSize=1000 MaxFileSize=1500000 AllowedExtensions=".png,.jpeg,jpg">
-                    <UploaderEvents ValueChange="onChange" OnRemove="onRemove"></UploaderEvents>
-                    <UploaderTemplates>
-                        <Template>
-                            <span class="wrapper">
-                                <img class="upload-image" alt="Image"
-                                     src="@(files.Count >0 ? files.Where(item=>item.Name == context.Name)?.FirstOrDefault()?.Path : string.Empty)">
-                            </span>
-                            <div class="name file-name" title="@(context.Name)">@(context.Name)</div>
-                            <div class="file-size">@(context.Size)</div>
-                            <span class="e-icons e-file-remove-btn remove" id="removeIcon" title="Remove"></span>
-                            <span class="e-upload-icon e-icons e-file-remove-btn" title="Upload" id="iconUpload"></span>
-                        </Template>
-                    </UploaderTemplates>
-                    <UploaderFiles>
-                        <UploaderUploadedFiles Name="@(_OgrenciDto.ApplicationUserId.ToString())" Size=12000 Type="png"></UploaderUploadedFiles>
-                    </UploaderFiles>
-                </SfUploader>*@
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-12 col-md-6">
-                    
-                </div>
             </div>
-
-
-
-
-            <div class="row">
-                <div class="col-6 text-left">
-                    <SfProgressButton Content="< Farklı Öğrenci Seç" OnClick="GoBackOgrenci" CssClass="center-block e-primary">
-                        <ProgressButtonSpinSettings Position="SpinPosition.Left"></ProgressButtonSpinSettings>
-                    </SfProgressButton>
-                </div>
-                <div class="col-6 text-right">
-                    <SfProgressButton Content="Kaydet >" OnClick="SubmitHandler" CssClass="center-block e-primary">
-                        <ProgressButtonSpinSettings Position="SpinPosition.Right"></ProgressButtonSpinSettings>
-                    </SfProgressButton>
-                </div>
-            </div>
-
         </div>
     </div>
-</div>
+}
+
+
 
 @if (akaDialogOpen)
 {
@@ -284,7 +310,7 @@
     SfDropDownList<int?, OgrenimTurDto> DropOgrenimTur;
 
 
-
+    bool isPersonel;
 
 
 
@@ -331,12 +357,25 @@
 
     //}
 
-
     protected override void OnInitialized()
     {
+        EC = new EditContext(_OgrenciDto);
         danismanAd = "";
 
-        EC = new EditContext(_OgrenciDto);
+
+        if (_OgrenciDto.Id==0)
+        {
+            _OgrenciDto = appState.GetOgrenciState().Result;
+            isPersonel = false;
+        }
+        else
+        {
+            isPersonel = true;
+
+        }
+
+
+
 
         ReadFakultes().ConfigureAwait(true);
         ReadKayitNedens().ConfigureAwait(true);
@@ -963,177 +1002,177 @@
     }
 
     /*.control_wrapper {
-        max-width: 505px;
-        margin: auto;
-    }
-
-    #uploadicon {
-        cursor: pointer;
-        top: 5px;
-        left: 20px;
-        position: relative;
-    }
-
-    .e-upload {
-        border: none;
-        margin-top: 10px;
-        width: 100%;
-    }
-
-    #drop {
-        font-size: 14px;
-    }
-
-    .e-bigger #drop {
-        font-size: 15px;
-    }
-
-    #dropArea {
-        border: 1px dashed #c3c3cc;
-        position: relative;
-        text-align: center;
-        padding: 20px 0 10px;
-    }
-
-        #dropArea .e-upload .e-upload-files {
-            text-align: initial;
-            border-top: none;
+            max-width: 505px;
+            margin: auto;
         }
 
-        #dropArea .e-upload-files .e-file-delete-btn.e-icons,
-        #dropArea .e-upload-files .e-file-remove-btn.e-icons,
-        #dropArea .e-upload-files .e-file-abort-btn {
-            top: 120px;
-            background-color: white;
-            border-radius: 50%;
-            font-size: 12px;
-            left: 80px;
-        }
-
-        #dropArea .e-upload-files li .e-file-remove-btn.e-icons.e-upload-icon {
-            font-size: 14px;
+        #uploadicon {
+            cursor: pointer;
+            top: 5px;
             left: 20px;
+            position: relative;
         }
 
-        #dropArea .e-upload-files li:hover .e-icons {
-            visibility: visible;
+        .e-upload {
+            border: none;
+            margin-top: 10px;
+            width: 100%;
         }
 
-        #dropArea .e-upload-files li .e-icons {
-            visibility: hidden;
+        #drop {
+            font-size: 14px;
         }
 
-    @@font-face {
-        font-family: 'Uploader_Icon';
-        src: url(data:application/x-font-ttf;charset=utf-8;base64,AAEAAAAKAIAAAwAgT1MvMj1tSfIAAAEoAAAAVmNtYXDnEOdVAAABiAAAADZnbHlmoZcPvgAAAcgAAABAaGVhZBLQTSUAAADQAAAANmhoZWEINQQDAAAArAAAACRobXR4CAAAAAAAAYAAAAAIbG9jYQAgAAAAAAHAAAAABm1heHABDgAdAAABCAAAACBuYW1lQySinQAAAggAAAIxcG9zdLfl0usAAAQ8AAAAMgABAAAEAAAAAFwEAAAAAAAD2AABAAAAAAAAAAAAAAAAAAAAAgABAAAAAQAA2vKJUF8PPPUACwQAAAAAANftBBgAAAAA1+0EGAAAAAAD2AP4AAAACAACAAAAAAAAAAEAAAACABEAAgAAAAAAAgAAAAoACgAAAP8AAAAAAAAAAQQAAZAABQAAAokCzAAAAI8CiQLMAAAB6wAyAQgAAAIABQMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUGZFZABA5wDnAAQAAAAAXAQAAAAAAAABAAAAAAAABAAAAAQAAAAAAAACAAAAAwAAABQAAwABAAAAFAAEACIAAAAEAAQAAQAA5wD//wAA5wD//wAAAAEABAAAAAEAAAAAAAAAIAAAAAIAAAAAA9gD+AAHABAAADchESMVITUjEzM3ETMRFzMBKAOwPvzMPp1mtUC1Zv7FCAF6vb0BO7X+EAHwtQE7AAAAABIA3gABAAAAAAAAAAEAAAABAAAAAAABAAgAAQABAAAAAAACAAcACQABAAAAAAADAAgAEAABAAAAAAAEAAgAGAABAAAAAAAFAAsAIAABAAAAAAAGAAgAKwABAAAAAAAKACwAMwABAAAAAAALABIAXwADAAEECQAAAAIAcQADAAEECQABABAAcwADAAEECQACAA4AgwADAAEECQADABAAkQADAAEECQAEABAAoQADAAEECQAFABYAsQADAAEECQAGABAAxwADAAEECQAKAFgA1wADAAEECQALACQBLyBVcGxvYWRlclJlZ3VsYXJVcGxvYWRlclVwbG9hZGVyVmVyc2lvbiAxLjBVcGxvYWRlckZvbnQgZ2VuZXJhdGVkIHVzaW5nIFN5bmNmdXNpb24gTWV0cm8gU3R1ZGlvd3d3LnN5bmNmdXNpb24uY29tACAAVQBwAGwAbwBhAGQAZQByAFIAZQBnAHUAbABhAHIAVQBwAGwAbwBhAGQAZQByAFUAcABsAG8AYQBkAGUAcgBWAGUAcgBzAGkAbwBuACAAMQAuADAAVQBwAGwAbwBhAGQAZQByAEYAbwBuAHQAIABnAGUAbgBlAHIAYQB0AGUAZAAgAHUAcwBpAG4AZwAgAFMAeQBuAGMAZgB1AHMAaQBvAG4AIABNAGUAdAByAG8AIABTAHQAdQBkAGkAbwB3AHcAdwAuAHMAeQBuAGMAZgB1AHMAaQBvAG4ALgBjAG8AbQAAAAACAAAAAAAAAAoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIBAgEDAAhVcGxvYWRlcgAAAAA=) format('truetype');
-        font-weight: normal;
-        font-style: normal;
-    }
-
-    #dropArea .e-upload .e-upload-files .e-icons.e-upload-icon {
-        font-family: 'Uploader_Icon';
-        speak: none;
-        font-size: 16px;
-        left: 20px;
-        font-style: normal;
-        font-weight: normal;
-        font-variant: normal;
-        text-transform: none;
-        line-height: 1;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-    }
-
-        #dropArea .e-upload .e-upload-files .e-icons.e-upload-icon::before {
-            content: '\e700';
+        .e-bigger #drop {
+            font-size: 15px;
         }
 
-    #dropArea .e-upload .e-upload-files .e-icons:not(.e-uploaded):hover {
-        background-color: #e6e6e6;
-        border-color: #adadad;
-        color: #333;
-    }
+        #dropArea {
+            border: 1px dashed #c3c3cc;
+            position: relative;
+            text-align: center;
+            padding: 20px 0 10px;
+        }
 
-    #dropArea .e-upload .e-upload-files .e-upload-file-list {
-        border: 0;
-        display: inline-block;
-        width: 165px;
-    }
+            #dropArea .e-upload .e-upload-files {
+                text-align: initial;
+                border-top: none;
+            }
 
-    .upload-image {
-        width: 150px;
-        height: 150px;
-        display: inline-flex;
-        background-size: contain;
-        margin: 7px;
-        text-align: center;
-        line-height: 10;
-        border-radius: 5px;
-    }
+            #dropArea .e-upload-files .e-file-delete-btn.e-icons,
+            #dropArea .e-upload-files .e-file-remove-btn.e-icons,
+            #dropArea .e-upload-files .e-file-abort-btn {
+                top: 120px;
+                background-color: white;
+                border-radius: 50%;
+                font-size: 12px;
+                left: 80px;
+            }
 
-        .upload-image:after {
-            content: "";
-            position: absolute;
-            top: 6px;
-            left: 6px;
-            width: inherit;
-            height: inherit;
-            background: lightgray url('http://via.placeholder.com/300?text=Loading...') no-repeat center;
-            color: transparent;
+            #dropArea .e-upload-files li .e-file-remove-btn.e-icons.e-upload-icon {
+                font-size: 14px;
+                left: 20px;
+            }
+
+            #dropArea .e-upload-files li:hover .e-icons {
+                visibility: visible;
+            }
+
+            #dropArea .e-upload-files li .e-icons {
+                visibility: hidden;
+            }
+
+        @@font-face {
+            font-family: 'Uploader_Icon';
+            src: url(data:application/x-font-ttf;charset=utf-8;base64,AAEAAAAKAIAAAwAgT1MvMj1tSfIAAAEoAAAAVmNtYXDnEOdVAAABiAAAADZnbHlmoZcPvgAAAcgAAABAaGVhZBLQTSUAAADQAAAANmhoZWEINQQDAAAArAAAACRobXR4CAAAAAAAAYAAAAAIbG9jYQAgAAAAAAHAAAAABm1heHABDgAdAAABCAAAACBuYW1lQySinQAAAggAAAIxcG9zdLfl0usAAAQ8AAAAMgABAAAEAAAAAFwEAAAAAAAD2AABAAAAAAAAAAAAAAAAAAAAAgABAAAAAQAA2vKJUF8PPPUACwQAAAAAANftBBgAAAAA1+0EGAAAAAAD2AP4AAAACAACAAAAAAAAAAEAAAACABEAAgAAAAAAAgAAAAoACgAAAP8AAAAAAAAAAQQAAZAABQAAAokCzAAAAI8CiQLMAAAB6wAyAQgAAAIABQMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUGZFZABA5wDnAAQAAAAAXAQAAAAAAAABAAAAAAAABAAAAAQAAAAAAAACAAAAAwAAABQAAwABAAAAFAAEACIAAAAEAAQAAQAA5wD//wAA5wD//wAAAAEABAAAAAEAAAAAAAAAIAAAAAIAAAAAA9gD+AAHABAAADchESMVITUjEzM3ETMRFzMBKAOwPvzMPp1mtUC1Zv7FCAF6vb0BO7X+EAHwtQE7AAAAABIA3gABAAAAAAAAAAEAAAABAAAAAAABAAgAAQABAAAAAAACAAcACQABAAAAAAADAAgAEAABAAAAAAAEAAgAGAABAAAAAAAFAAsAIAABAAAAAAAGAAgAKwABAAAAAAAKACwAMwABAAAAAAALABIAXwADAAEECQAAAAIAcQADAAEECQABABAAcwADAAEECQACAA4AgwADAAEECQADABAAkQADAAEECQAEABAAoQADAAEECQAFABYAsQADAAEECQAGABAAxwADAAEECQAKAFgA1wADAAEECQALACQBLyBVcGxvYWRlclJlZ3VsYXJVcGxvYWRlclVwbG9hZGVyVmVyc2lvbiAxLjBVcGxvYWRlckZvbnQgZ2VuZXJhdGVkIHVzaW5nIFN5bmNmdXNpb24gTWV0cm8gU3R1ZGlvd3d3LnN5bmNmdXNpb24uY29tACAAVQBwAGwAbwBhAGQAZQByAFIAZQBnAHUAbABhAHIAVQBwAGwAbwBhAGQAZQByAFUAcABsAG8AYQBkAGUAcgBWAGUAcgBzAGkAbwBuACAAMQAuADAAVQBwAGwAbwBhAGQAZQByAEYAbwBuAHQAIABnAGUAbgBlAHIAYQB0AGUAZAAgAHUAcwBpAG4AZwAgAFMAeQBuAGMAZgB1AHMAaQBvAG4AIABNAGUAdAByAG8AIABTAHQAdQBkAGkAbwB3AHcAdwAuAHMAeQBuAGMAZgB1AHMAaQBvAG4ALgBjAG8AbQAAAAACAAAAAAAAAAoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIBAgEDAAhVcGxvYWRlcgAAAAA=) format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        #dropArea .e-upload .e-upload-files .e-icons.e-upload-icon {
+            font-family: 'Uploader_Icon';
+            speak: none;
+            font-size: 16px;
+            left: 20px;
+            font-style: normal;
+            font-weight: normal;
+            font-variant: normal;
+            text-transform: none;
+            line-height: 1;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+            #dropArea .e-upload .e-upload-files .e-icons.e-upload-icon::before {
+                content: '\e700';
+            }
+
+        #dropArea .e-upload .e-upload-files .e-icons:not(.e-uploaded):hover {
+            background-color: #e6e6e6;
+            border-color: #adadad;
+            color: #333;
+        }
+
+        #dropArea .e-upload .e-upload-files .e-upload-file-list {
+            border: 0;
+            display: inline-block;
+            width: 165px;
+        }
+
+        .upload-image {
+            width: 150px;
+            height: 150px;
+            display: inline-flex;
+            background-size: contain;
+            margin: 7px;
+            text-align: center;
+            line-height: 10;
             border-radius: 5px;
         }
 
-    div.file-name {
-        color: rgba(0, 0, 0, 0.87);
-        font-size: 14px;
-        padding: 3px 10px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        width: 90%;
-        white-space: nowrap;
-    }
+            .upload-image:after {
+                content: "";
+                position: absolute;
+                top: 6px;
+                left: 6px;
+                width: inherit;
+                height: inherit;
+                background: lightgray url('http://via.placeholder.com/300?text=Loading...') no-repeat center;
+                color: transparent;
+                border-radius: 5px;
+            }
 
-    div.file-size {
-        font-size: 13px;
-        padding: 3px 10px;
-        overflow: hidden;
-    }
-
-    .progressbar {
-        background: #ff4081;
-        border: none;
-        border-radius: 10px;
-        height: 4px;
-        margin-left: 7px;
-        width: 90%;
-        top: -60px;
-        position: relative;
-    }
-
-    #dropArea progress {
-        border: none;
-        background: #fff;
-    }
-
-    progress::-webkit-progress-bar {
-        border: none;
-        background-color: #ffffff;
-    }
-
-    .material progress::-moz-progress-bar {
-        border-radius: 2px;
-        background-color: #ff4081;
-    }
-
-    .material #dropArea span a {
-        color: #ff4081;
-    }
-
-    @@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-        #dropArea .e-upload .e-upload-files .e-file-remove-btn.e-icons, .e-bigger #dropArea .e-upload .e-upload-files .e-file-remove-btn.e-icons {
-            padding: 18px 25px 18px 12px;
+        div.file-name {
+            color: rgba(0, 0, 0, 0.87);
+            font-size: 14px;
+            padding: 3px 10px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 90%;
+            white-space: nowrap;
         }
-    }*/
+
+        div.file-size {
+            font-size: 13px;
+            padding: 3px 10px;
+            overflow: hidden;
+        }
+
+        .progressbar {
+            background: #ff4081;
+            border: none;
+            border-radius: 10px;
+            height: 4px;
+            margin-left: 7px;
+            width: 90%;
+            top: -60px;
+            position: relative;
+        }
+
+        #dropArea progress {
+            border: none;
+            background: #fff;
+        }
+
+        progress::-webkit-progress-bar {
+            border: none;
+            background-color: #ffffff;
+        }
+
+        .material progress::-moz-progress-bar {
+            border-radius: 2px;
+            background-color: #ff4081;
+        }
+
+        .material #dropArea span a {
+            color: #ff4081;
+        }
+
+        @@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+            #dropArea .e-upload .e-upload-files .e-file-remove-btn.e-icons, .e-bigger #dropArea .e-upload .e-upload-files .e-file-remove-btn.e-icons {
+                padding: 18px 25px 18px 12px;
+            }
+        }*/
     /*Fileupload end*/
 
 </style>
