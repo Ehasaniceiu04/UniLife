@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using UniLife.Storage;
@@ -9,9 +10,10 @@ using UniLife.Storage;
 namespace UniLife.Storage.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200812114750_akademiktakvim")]
+    partial class akademiktakvim
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -182,10 +184,10 @@ namespace UniLife.Storage.Migrations
                         .HasColumnType("character varying(600)")
                         .HasMaxLength(600);
 
-                    b.Property<DateTime?>("BasTarih")
+                    b.Property<DateTime>("BasTarih")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<DateTime?>("BitTarih")
+                    b.Property<DateTime>("BitTarih")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid>("CreatedBy")
@@ -199,14 +201,11 @@ namespace UniLife.Storage.Migrations
                     b.Property<int>("DonemId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("FakulteId")
+                    b.Property<int>("FakulteId")
                         .HasColumnType("integer");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
-
-                    b.Property<int>("Kod")
-                        .HasColumnType("integer");
 
                     b.Property<Guid>("ModifiedBy")
                         .HasColumnType("uuid");
@@ -2869,7 +2868,9 @@ namespace UniLife.Storage.Migrations
 
                     b.HasOne("UniLife.Shared.DataModels.Fakulte", "Fakulte")
                         .WithMany()
-                        .HasForeignKey("FakulteId");
+                        .HasForeignKey("FakulteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("UniLife.Shared.DataModels.Akademisyen", b =>

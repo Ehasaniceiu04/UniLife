@@ -11,5 +11,6 @@ namespace UniLife.Server.Managers
         Task<string> GetLastPageVisited(string userName);
         Task<ApiResponse> GetAkademisyenState();
         Task<ApiResponse> GetOgrenciState();
+        Task<ApiResponse> GetDonemState();
     }
 }

@@ -42,12 +42,12 @@ namespace UniLife.Server.Controllers
         public async Task<ApiResponse> GetOgrenciState()
             => await _userProfileManager.GetOgrenciState();
 
-        //// GET: api/UserProfile/GetDonemState
-        //[HttpGet("GetDonemState")]
-        //public async Task<ApiResponse> GetDonemState()
-        //    => await _userProfileManager.GetDonemState();
+        // GET: api/UserProfile/GetDonemState
+        [HttpGet("GetDonemState")]
+        public async Task<ApiResponse> GetDonemState()
+            => await _userProfileManager.GetDonemState();
 
-        
+
 
     }
 }

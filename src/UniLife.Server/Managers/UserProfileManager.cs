@@ -7,6 +7,7 @@ using System;
 using System.Threading.Tasks;
 using static Microsoft.AspNetCore.Http.StatusCodes;
 using UniLife.Shared.DataInterfaces;
+using System.Linq;
 
 namespace UniLife.Server.Managers
 {
@@ -15,16 +16,19 @@ namespace UniLife.Server.Managers
         private readonly IUserProfileStore _userProfileStore;
         private readonly IAkademisyenStore _akademisyenStore;
         private readonly IOgrenciStore _ogrenciStore;
+        private readonly IDonemStore _donemStore;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public UserProfileManager(IUserProfileStore userProfileStore, IHttpContextAccessor httpContextAccessor,
             IAkademisyenStore akademisyenStore,
-            IOgrenciStore ogrenciStore)
+            IOgrenciStore ogrenciStore,
+            IDonemStore donemStore)
         {
             _userProfileStore = userProfileStore;
             _httpContextAccessor = httpContextAccessor;
             _akademisyenStore = akademisyenStore;
             _ogrenciStore = ogrenciStore;
+            _donemStore = donemStore;
         }
 
         public async Task<string> GetLastPageVisited(string userName)
@@ -70,6 +74,15 @@ namespace UniLife.Server.Managers
 
             return new ApiResponse(Status200OK, "Retrieved Ogrenci state", ogrenci);
         }
+
+        public async Task<ApiResponse> GetDonemState()
+        {
+            var donem = await _donemStore.GetWhere(x=>x.Durum == true);
+
+            return new ApiResponse(Status200OK, "Retrieved Ogrenci state", donem.FirstOrDefault());
+        }
+
+        
 
     }
 }

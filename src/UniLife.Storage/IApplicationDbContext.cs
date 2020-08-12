@@ -52,6 +52,7 @@ namespace UniLife.Storage
         public DbSet<OgrGecis> OgrGeciss { get; set; }
         public DbSet<OgrStaj> OgrStajs { get; set; }
         public DbSet<OgrTez> OgrTezs { get; set; }
+        public DbSet<AkademikTakvim> AkademikTakvims { get; set; }
 
         //TODO Bunu böyle bırakacakmıyız.
         public Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade Database { get; set; }
