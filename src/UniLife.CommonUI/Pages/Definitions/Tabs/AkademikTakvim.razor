@@ -1,4 +1,5 @@
 ﻿@page "/akademikTakvim"
+@*@page "/akademikTakvim/{donemId:int}/{fakulteId:int}"*@
 
 @inject HttpClient Http;
 @using UniLife.Shared.Dto.Definitions
@@ -9,19 +10,25 @@
 @using Newtonsoft.Json
 @inject AppState appState
 
-<SfDropDownList ID="DropDonem" @ref="DropDonem" ShowClearButton="true" TItem="DonemDto"
-                TValue="int?" PopupHeight="230px" Placeholder="Dönem Seçiniz"
-                @bind-Value="@donemId" DataSource="@donemDtos.OrderByDescending(x=>x.Durum).ThenBy(x=>x.Yil)">
-    <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-    <DropDownListEvents TValue="int?" ValueChange="DonemChange"></DropDownListEvents>
-</SfDropDownList>
+<AuthorizeView Roles="Admin,Personel" Context="AuthorizeContext">
+    <Authorized>
+        <SfDropDownList ID="DropDonem" @ref="DropDonem" ShowClearButton="true" TItem="DonemDto"
+                        TValue="int?" PopupHeight="230px" Placeholder="Dönem Seçiniz"
+                        @bind-Value="@donemId" DataSource="@donemDtos.OrderByDescending(x=>x.Durum).ThenBy(x=>x.Yil)">
+            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+            <DropDownListEvents TValue="int?" ValueChange="DonemChange"></DropDownListEvents>
+        </SfDropDownList>
 
-<SfDropDownList ID="DropFakulte" @ref="DropFakulte" ShowClearButton="true" TItem="KeyValueDto" CssClass="col-sm-10"
-                TValue="int?" PopupHeight="230px" Placeholder="Fakülte Seçiniz"
-                @bind-Value="@fakulteId" DataSource="@fakulteDtos">
-    <DropDownListEvents TValue="int?" ValueChange="FakChange"></DropDownListEvents>
-    <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-</SfDropDownList>
+        <SfDropDownList ID="DropFakulte" @ref="DropFakulte" ShowClearButton="true" TItem="KeyValueDto" CssClass="col-sm-10"
+                        TValue="int?" PopupHeight="230px" Placeholder="Fakülte Seçiniz"
+                        @bind-Value="@fakulteId" DataSource="@fakulteDtos">
+            <DropDownListEvents TValue="int?" ValueChange="FakChange"></DropDownListEvents>
+            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+        </SfDropDownList>
+    </Authorized>
+</AuthorizeView>
+
+
 
 <Syncfusion.Blazor.Buttons.SfButton OnClick="Getir" CssClass="e-success col-sm-1">Yenile</Syncfusion.Blazor.Buttons.SfButton>
 
@@ -53,24 +60,32 @@ else
     </ControlSection>
 }
 
-@if (uyarıDialogOpen)
-{
-    <Dialog Baslik="Uyarı" @bind-isDialogOpen="@uyarıDialogOpen">
-        @foreach (var item in dialogTexts)
+<AuthorizeView Roles="Admin,Personel" Context="AuthorizeContext">
+    <Authorized>
+        @if (uyarıDialogOpen)
         {
-            <p>@item</p>
+            <Dialog Baslik="Uyarı" @bind-isDialogOpen="@uyarıDialogOpen">
+                @foreach (var item in dialogTexts)
+                {
+                    <p>@item</p>
+                }
+            </Dialog>
         }
-    </Dialog>
-}
 
-
+    </Authorized>
+</AuthorizeView>
 
 @code{
     bool uyarıDialogOpen;
     List<string> dialogTexts = new List<string>();
 
-    int? donemId;
-    int? fakulteId;
+    [Parameter]
+    public int? donemId { get; set; }
+    [Parameter]
+    public int? fakulteId { get; set; }
+    //int? donemId;
+    //int? fakulteId;
+
     SfDropDownList<int?, DonemDto> DropDonem;
     SfGrid<AkademikTakvimDto> AkademikTakvimGrid;
     SfDropDownList<int?, KeyValueDto> DropFakulte;
@@ -81,27 +96,37 @@ else
     List<KeyValueDto> fakulteDtos = new List<KeyValueDto>();
     List<DonemDto> donemDtos = new List<DonemDto>();
 
-    //protected override void OnInitialized()
+
+    [CascadingParameter]
+    Task<AuthenticationState> authenticationStateTask { get; set; }
+    ClaimsPrincipal user;
+    //protected override async Task OnParametersSetAsync()
     //{
-
-
 
     //}
 
     protected override async Task OnInitializedAsync()
     {
-        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/fakulte");
-        fakulteDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<KeyValueDto[]>(apiResponse.Result.ToString()).ToList<KeyValueDto>();
-        ApiResponseDto apiResponseDonem = await Http.GetFromJsonAsync<ApiResponseDto>("api/Donem");
-        donemDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<DonemDto[]>(apiResponseDonem.Result.ToString()).ToList<DonemDto>();
+        user = (await authenticationStateTask).User;
 
-
+        if (user.IsInRole(UserRoles.Personel.ToString()) || user.IsInRole(UserRoles.Administrator.ToString()))
+        {
+            ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/fakulte");
+            fakulteDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<KeyValueDto[]>(apiResponse.Result.ToString()).ToList<KeyValueDto>();
+            ApiResponseDto apiResponseDonem = await Http.GetFromJsonAsync<ApiResponseDto>("api/Donem");
+            donemDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<DonemDto[]>(apiResponseDonem.Result.ToString()).ToList<DonemDto>();
+        }
+        else if (user.IsInRole(UserRoles.Ogrenci.ToString()))
+        {
+            fakulteId = (await appState.GetOgrenciState()).FakulteId;
+            donemId = (await appState.GetDonemState()).Id;
+        }
     }
 
     async Task ReadAkademikTakvims()
     {
-        
-        ApiResponseDto apiResponse = Http.GetFromJsonAsync<ApiResponseDto>($"api/akademikTakvim/GetAkaTakByFakIdDonId/{donemId ?? donemDtos.FirstOrDefault(x => x.Durum == true).Id}/{fakulteId ?? fakulteDtos.FirstOrDefault().Id}").Result;
+
+        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>($"api/akademikTakvim/GetAkaTakByFakIdDonId/{fakulteId ?? fakulteDtos.FirstOrDefault().Id}/{donemId ?? donemDtos.FirstOrDefault(x => x.Durum == true).Id}");
 
         if (apiResponse.StatusCode == Status200OK)
         {

@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Components;
 @inject NavigationManager navigationManager
+@inject AppState appState
 
 <MatNavMenu Multi="true" Class="app-sidebar">
 
@@ -32,7 +33,7 @@
                     <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/Sinav_Takvimi").AbsoluteUri">
                         <MatIcon>business</MatIcon> <span class="miniHover">Sinav Programı</span>
                     </MatNavItem>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/akaTakvim").AbsoluteUri">
+                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("akademikTakvim").AbsoluteUri">
                         <MatIcon>business</MatIcon> <span class="miniHover">Akademik Takvim</span>
                     </MatNavItem>
                     <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/alDers").AbsoluteUri">
@@ -75,9 +76,9 @@
                 </MatNavSubMenuHeader>
                 <MatNavSubMenuList>
                     @if (user == null ? false : (user.HasClaim("permission", Permissions.DersKayit.Read) &&
-      user.HasClaim("permission", Permissions.DersKayit.Create) &&
-      user.HasClaim("permission", Permissions.DersKayit.Update) &&
-      user.HasClaim("permission", Permissions.DersKayit.Delete)))
+     user.HasClaim("permission", Permissions.DersKayit.Create) &&
+     user.HasClaim("permission", Permissions.DersKayit.Update) &&
+     user.HasClaim("permission", Permissions.DersKayit.Delete)))
                     {
                         <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/dersKayit").AbsoluteUri">
                             <MatIcon>business</MatIcon> <span class="miniHover">Ders Kayıt</span>
@@ -112,7 +113,7 @@
                     </MatNavItem>
                 </MatNavSubMenuHeader>
                 <MatNavSubMenuList>
-                    
+
                     <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/Bilgi").AbsoluteUri">
                         <MatIcon>business</MatIcon> <span class="miniHover">Özlük Bilgi</span>
                     </MatNavItem>
@@ -536,11 +537,24 @@
             IsLoggedIn = true;
         }
 
-        if (user.IsInRole("Administrator"))
+        if (user.IsInRole(UserRoles.Administrator.ToString()))
         {
             // Perform some action only available to users in the 'admin' role
             //Console.WriteLine("Administrator");
+            //appState.UserNavigationLoadRole = UserRoles.Administrator.ToString();
         }
+        //if (user.IsInRole(UserRoles.Personel.ToString()))
+        //{
+        //    appState.UserNavigationLoadRole = UserRoles.Personel.ToString();
+        //}
+        //if (user.IsInRole(UserRoles.Akademisyen.ToString()))
+        //{
+        //    appState.UserNavigationLoadRole = UserRoles.Akademisyen.ToString();
+        //}
+        //if (user.IsInRole(UserRoles.Ogrenci.ToString()))
+        //{
+        //    appState.UserNavigationLoadRole = UserRoles.Ogrenci.ToString();
+        //}
     }
 
     //protected override async Task OnInitializedAsync()

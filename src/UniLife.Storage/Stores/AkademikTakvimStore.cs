@@ -33,6 +33,14 @@ namespace UniLife.Storage.Stores
             {
                 spesFakResult = await _db.AkademikTakvims.Where(x => x.DonemId == donemId && x.FakulteId == null).ToListAsync();
             }
+            var zxc = await _db.AkademikTakvims.Where(x => x.DonemId == donemId && x.FakulteId == null).ToListAsync();
+
+            var dsfg = await _db.AkademikTakvims.Where(x => x.DonemId == donemId && x.FakulteId == fakulteId).ToListAsync();
+
+            var asd = from bir in _db.AkademikTakvims.Where(x => x.DonemId == donemId && x.FakulteId == null)
+                      join iki in _db.AkademikTakvims.Where(x => x.DonemId == donemId && x.FakulteId == fakulteId) on bir.Kod equals iki.Kod into ps
+                      from iki in ps.DefaultIfEmpty()
+                      select bir;
 
             var sonuc = from bir in _db.AkademikTakvims.Where(x => x.DonemId == donemId && x.FakulteId == null)
                         join iki in _db.AkademikTakvims.Where(x => x.DonemId == donemId && x.FakulteId == fakulteId) on bir.Kod equals iki.Kod into ps
@@ -45,7 +53,7 @@ namespace UniLife.Storage.Stores
                             BasTarih = (iki == null || iki.BasTarih == null) ? bir.BasTarih : iki.BasTarih,
                             BitTarih = (iki == null || iki.BitTarih == null) ? bir.BitTarih : iki.BitTarih,
                             DonemId = (iki == null || iki.DonemId == 0) ? bir.DonemId : iki.DonemId,
-                            FakulteId = (iki == null || iki.FakulteId == null) ? iki.FakulteId : bir.FakulteId
+                            FakulteId = (iki == null || iki.FakulteId == null) ? bir.FakulteId : iki.FakulteId
                         };
 
             return await sonuc.ToListAsync();
@@ -53,9 +61,9 @@ namespace UniLife.Storage.Stores
 
         public async Task<int> PostChangeAllFakultesTakvim(AkademikTakvimDto akademikTakvimDto)
         {
-             var withKodes= await _db.AkademikTakvims.Where(x => x.Kod == akademikTakvimDto.Kod 
+            var withKodes = await _db.AkademikTakvims.Where(x => x.Kod == akademikTakvimDto.Kod
                                                             && x.DonemId == akademikTakvimDto.DonemId
-                                                            /*&& x.FakulteId == null*/).ToListAsync();
+                                                           /*&& x.FakulteId == null*/).ToListAsync();
 
             //if (withKodes.Count>1)
             //{
@@ -63,7 +71,7 @@ namespace UniLife.Storage.Stores
             //}
 
             AkademikTakvim general = withKodes.FirstOrDefault(x => x.FakulteId == null);
-            List<AkademikTakvim> others  = withKodes.Where(x => x.FakulteId != null).ToList();
+            List<AkademikTakvim> others = withKodes.Where(x => x.FakulteId != null).ToList();
 
             general.BasTarih = akademikTakvimDto.BasTarih;
             general.BitTarih = akademikTakvimDto.BitTarih;

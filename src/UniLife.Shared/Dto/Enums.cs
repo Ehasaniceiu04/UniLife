@@ -33,6 +33,14 @@ namespace UniLife.Shared.Dto
         Final = 2
     }
 
+    public enum UserRoles
+    {
+        Administrator,
+        Personel,
+        Akademisyen,
+        Ogrenci
+    }
+
 
 
     //public enum DersSonucDurum

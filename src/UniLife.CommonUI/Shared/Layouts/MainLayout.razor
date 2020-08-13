@@ -1,186 +1,187 @@
 ﻿@inherits LayoutComponentBase
 @inject NavigationManager navigationManager
 @inject AppState appState
+@using UniLife.Shared.Dto
 
-@inject HttpClient Http;
+    @inject HttpClient Http;
 
-<MatDrawerContainer Style="width: 100vw; height: 100vh;" Class="@bbDrawerClass">
-    <MatDrawer @bind-Opened="@_navMenuOpened">
-        <header class="drawer-header">
-            <div class="drawer-logo">
-                <a class="miniHover" href="/">
-                    <img alt="Uni-Life" class="logo-img" src="_content/UniLife.CommonUI/images/blazorboilerplate-dark.svg" title="Uni-Life">
-                </a>
-            </div>
-            <UserProfile />
-        </header>
-        <NavMenu />
-        <footer class="drawer-footer">
-            <MatTooltip Tooltip="Help">
-                <MatButton Icon="help" RefBack="@context" Link="https://github.com/ahmetsekmen"><span class="miniHover">İletişim</span></MatButton>
-            </MatTooltip>
-        </footer>
-    </MatDrawer>
-    <MatDrawerContent>
-        <MatAppBarContainer>
-            <MatAppBar Fixed="true">
-                <MatAppBarRow>
-                    <MatAppBarSection>
-                        <MatAppBarTitle>
-
-                        </MatAppBarTitle>
-                        <div class="hidden-mdc-down">
-                            @*<nav>
-                                <ul>
-                                    <li>*@
-                            <MatTooltip Tooltip="Toggle Navigation">
-                                <MatIconButton Class="navToggle" Icon="menu" ToggleIcon="menu" OnClick="@((e) => NavToggle())" RefBack="@context"></MatIconButton>
-                            </MatTooltip>
-                            @*</li>
-                                <li>*@
-                            <MatTooltip Tooltip="Minify Navigation">
-                                <MatIconButton Class="navToggle" Icon="format_indent_decrease" ToggleIcon="format_indent_increase" OnClick="@((e) => NavMinify())" RefBack="@context"></MatIconButton>
-                            </MatTooltip>
-                            @*</li>
-                                <li>
-                                    <MatTooltip Tooltip="Lock Navigation" >
-                                        <MatIconButton Class="navToggle" Icon="lock" ToggleIcon="radio_button_unchecked" OnClick="@((e) => NavLock())" RefBack="@context"></MatIconButton>
-                                    </MatTooltip>
-                                    </li>*@
-                            @*</ul>
-                                </nav>*@
-                        </div>
-                    </MatAppBarSection>
-                    <MatAppBarSection Align="@MatAppBarSectionAlign.End">
-                        @*<MatTooltip Tooltip="Donate to Support">
-            <MatIconButton Link="https://www.paypal.me/" RefBack="@context"><i class="fa fa-cc-paypal"></i></MatIconButton>
-        </MatTooltip>
-        <MatTooltip Tooltip="Github Repository">
-            <MatIconButton Link="https://github.com/ahmetsekmen" RefBack="@context"><i class="fa fa-github" aria-hidden="true"></i></MatIconButton>
-        </MatTooltip>*@
-
-                        @*<CultureSwitcher_CSB></CultureSwitcher_CSB>*@  @*WASM*@
-                        <CultureSwitcher_SSB></CultureSwitcher_SSB>
-
-
-                        <Login></Login>
-                    </MatAppBarSection>
-                </MatAppBarRow>
-            </MatAppBar>
-            <MatAppBarContent>
-                <Breadcrumbs RootLinkTitle="Home"></Breadcrumbs>
-                <div id="main-page">
-                    <section class="container-fluid">
-                        @Body
-                    </section>
-                    <footer class="page-footer">
-                        <div class="flex-1">
-                            © 2020 <a href="/about">Uni-Life</a> Versiyon 1.0.5
-                        </div>
-                    </footer>
+    <MatDrawerContainer Style="width: 100vw; height: 100vh;" Class="@bbDrawerClass">
+        <MatDrawer @bind-Opened="@_navMenuOpened">
+            <header class="drawer-header">
+                <div class="drawer-logo">
+                    <a class="miniHover" href="/">
+                        <img alt="Uni-Life" class="logo-img" src="_content/UniLife.CommonUI/images/blazorboilerplate-dark.svg" title="Uni-Life">
+                    </a>
                 </div>
-            </MatAppBarContent>
-        </MatAppBarContainer>
-    </MatDrawerContent>
-</MatDrawerContainer>
+                <UserProfile />
+            </header>
+            <NavMenu />
+            <footer class="drawer-footer">
+                <MatTooltip Tooltip="Help">
+                    <MatButton Icon="help" RefBack="@context" Link="https://github.com/ahmetsekmen"><span class="miniHover">İletişim</span></MatButton>
+                </MatTooltip>
+            </footer>
+        </MatDrawer>
+        <MatDrawerContent>
+            <MatAppBarContainer>
+                <MatAppBar Fixed="true">
+                    <MatAppBarRow>
+                        <MatAppBarSection>
+                            <MatAppBarTitle>
 
-@code {
-    bool _navMenuOpened = true;
-    bool _navMinified = false;
-    public string bbDrawerClass = "";
+                            </MatAppBarTitle>
+                            <div class="hidden-mdc-down">
+                                @*<nav>
+                                    <ul>
+                                        <li>*@
+                                <MatTooltip Tooltip="Toggle Navigation">
+                                    <MatIconButton Class="navToggle" Icon="menu" ToggleIcon="menu" OnClick="@((e) => NavToggle())" RefBack="@context"></MatIconButton>
+                                </MatTooltip>
+                                @*</li>
+                                    <li>*@
+                                <MatTooltip Tooltip="Minify Navigation">
+                                    <MatIconButton Class="navToggle" Icon="format_indent_decrease" ToggleIcon="format_indent_increase" OnClick="@((e) => NavMinify())" RefBack="@context"></MatIconButton>
+                                </MatTooltip>
+                                @*</li>
+                                    <li>
+                                        <MatTooltip Tooltip="Lock Navigation" >
+                                            <MatIconButton Class="navToggle" Icon="lock" ToggleIcon="radio_button_unchecked" OnClick="@((e) => NavLock())" RefBack="@context"></MatIconButton>
+                                        </MatTooltip>
+                                        </li>*@
+                                @*</ul>
+                                    </nav>*@
+                            </div>
+                        </MatAppBarSection>
+                        <MatAppBarSection Align="@MatAppBarSectionAlign.End">
+                            @*<MatTooltip Tooltip="Donate to Support">
+                                    <MatIconButton Link="https://www.paypal.me/" RefBack="@context"><i class="fa fa-cc-paypal"></i></MatIconButton>
+                                </MatTooltip>
+                                <MatTooltip Tooltip="Github Repository">
+                                    <MatIconButton Link="https://github.com/ahmetsekmen" RefBack="@context"><i class="fa fa-github" aria-hidden="true"></i></MatIconButton>
+                                </MatTooltip>*@
+
+                            @*<CultureSwitcher_CSB></CultureSwitcher_CSB>*@  @*WASM*@
+                            <CultureSwitcher_SSB></CultureSwitcher_SSB>
 
 
-    private void CallLogin()
-    {
-        var returnUrl =
-              navigationManager.ToBaseRelativePath(navigationManager.Uri);
-        navigationManager.NavigateTo($"/account/Login/{returnUrl}", forceLoad: false);
-    }
-    [CascadingParameter]
-    Task<AuthenticationState> authenticationStateTask { get; set; }
+                            <Login></Login>
+                        </MatAppBarSection>
+                    </MatAppBarRow>
+                </MatAppBar>
+                <MatAppBarContent>
+                    <Breadcrumbs RootLinkTitle="Home"></Breadcrumbs>
+                    <div id="main-page">
+                        <section class="container-fluid">
+                            @Body
+                        </section>
+                        <footer class="page-footer">
+                            <div class="flex-1">
+                                © 2020 <a href="/about">Uni-Life</a> Versiyon 1.0.5
+                            </div>
+                        </footer>
+                    </div>
+                </MatAppBarContent>
+            </MatAppBarContainer>
+        </MatDrawerContent>
+    </MatDrawerContainer>
 
-    protected override async Task OnInitializedAsync()
-    {
-        // Uncomment to secure entire app  with no anonymous user access
-        //navigationManager.NavigateTo("/account/login");
+    @code {
+        bool _navMenuOpened = true;
+        bool _navMinified = false;
+        public string bbDrawerClass = "";
 
-        // Set Default landing page if you want for anonymous user.
-        // Authenticated users are redirected after successful login.
-        //navigationManager.NavigateTo("/");
 
-        var user = (await authenticationStateTask).User;
-
-        if (user.Identity.IsAuthenticated)
+        private void CallLogin()
         {
-            var profile = await appState.GetUserProfile();
-            _navMenuOpened = profile.IsNavOpen;
-            _navMinified = profile.IsNavMinified;
+            var returnUrl =
+                  navigationManager.ToBaseRelativePath(navigationManager.Uri);
+            navigationManager.NavigateTo($"/account/Login/{returnUrl}", forceLoad: false);
         }
-    }
+        [CascadingParameter]
+        Task<AuthenticationState> authenticationStateTask { get; set; }
 
-
-    //[Inject]
-    //protected IJSRuntime JsRuntime { get; set; }
-
-    //[Inject]
-    //SyncfusionBlazorService SyncfusionService { get; set; }
-    //protected override async Task OnAfterRenderAsync(bool firstRender)
-    //{
-    //    if (firstRender)
-    //    {
-    //        //var Locale = await Http.GetJsonAsyncExtension<object>("tr.json");
-    //        //this.JsRuntime.Sf().LoadLocaleData(Locale).SetCulture("tr");
-    //        //this.SyncfusionService.LoadLocaleData
-
-
-    //        //this.JsRuntime.Sf().LoadLocaleData("tr.json").SetCulture("tr");
-    //        Settings settings = await Http.GetJsonAsyncExtension<Settings>("settings.json");
-    //        appState.AppSettings = settings;
-    //    }
-    //}
-
-    void NavToggle()
-    {
-        _navMenuOpened = !_navMenuOpened;
-        if (_navMenuOpened)
+        protected override async Task OnInitializedAsync()
         {
-            bbDrawerClass = "full";
-        }
-        else
-        {
-            bbDrawerClass = "closed";
+            // Uncomment to secure entire app  with no anonymous user access
+            //navigationManager.NavigateTo("/account/login");
+
+            // Set Default landing page if you want for anonymous user.
+            // Authenticated users are redirected after successful login.
+            //navigationManager.NavigateTo("/");
+
+            var user = (await authenticationStateTask).User;
+
+            if (user.Identity.IsAuthenticated)
+            {
+                var profile = await appState.GetUserProfile();
+                _navMenuOpened = profile.IsNavOpen;
+                _navMinified = profile.IsNavMinified;
+            }
         }
 
-        this.StateHasChanged();
-    }
 
-    void NavLock()
-    {
-        //Todo Lock Nav
-    }
+        //[Inject]
+        //protected IJSRuntime JsRuntime { get; set; }
 
-    void NavMinify()
-    {
-        _navMinified = !_navMinified;
+        //[Inject]
+        //SyncfusionBlazorService SyncfusionService { get; set; }
+        //protected override async Task OnAfterRenderAsync(bool firstRender)
+        //{
+        //    if (firstRender)
+        //    {
+        //        //var Locale = await Http.GetJsonAsyncExtension<object>("tr.json");
+        //        //this.JsRuntime.Sf().LoadLocaleData(Locale).SetCulture("tr");
+        //        //this.SyncfusionService.LoadLocaleData
 
-        if (!_navMenuOpened)
+
+        //        //this.JsRuntime.Sf().LoadLocaleData("tr.json").SetCulture("tr");
+        //        Settings settings = await Http.GetJsonAsyncExtension<Settings>("settings.json");
+        //        appState.AppSettings = settings;
+        //    }
+        //}
+
+        void NavToggle()
         {
-            _navMinified = true;
+            _navMenuOpened = !_navMenuOpened;
+            if (_navMenuOpened)
+            {
+                bbDrawerClass = "full";
+            }
+            else
+            {
+                bbDrawerClass = "closed";
+            }
+
+            this.StateHasChanged();
         }
 
-        if (_navMinified)
+        void NavLock()
         {
-            bbDrawerClass = "mini";
+            //Todo Lock Nav
+        }
+
+        void NavMinify()
+        {
+            _navMinified = !_navMinified;
+
+            if (!_navMenuOpened)
+            {
+                _navMinified = true;
+            }
+
+            if (_navMinified)
+            {
+                bbDrawerClass = "mini";
+                _navMenuOpened = true;
+            }
+            else if (_navMenuOpened)
+            {
+                bbDrawerClass = "full";
+            }
+
             _navMenuOpened = true;
-        }
-        else if (_navMenuOpened)
-        {
-            bbDrawerClass = "full";
+            this.StateHasChanged();
         }
 
-        _navMenuOpened = true;
-        this.StateHasChanged();
+
     }
-
-
-}

@@ -34,6 +34,7 @@ namespace UniLife.CommonUI
 
         public int DersKayitDonemIdState { get; set; }
 
+
         public AppState(IUserProfileApi userProfileApi)
         {
             _userProfileApi = userProfileApi;
