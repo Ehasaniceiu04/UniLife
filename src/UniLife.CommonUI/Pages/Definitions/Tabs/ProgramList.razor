@@ -4,25 +4,132 @@
 @using Syncfusion.Blazor.DropDowns
 @using System.Net
 @using Newtonsoft.Json
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Buttons
 
-    <ControlSection>
-        <SfGrid @ref="ProgramGrid" DataSource="@programDtos" Toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Update", "Cancel" })" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
-            <GridEvents OnActionComplete="ActionCompletedHandler" TValue="ProgramDto"></GridEvents>
-            <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
-            <GridColumns>
-                <GridColumn Visible="false" Field=@nameof(ProgramDto.Id) HeaderText="Program ID" AllowAdding="false" AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
-                <GridColumn Field=@nameof(ProgramDto.Ad) HeaderText="Program İsim" ValidationRules="@(new ValidationRules{ Required=true})" Width="170"></GridColumn>
-                <GridColumn Field=@nameof(ProgramDto.FakulteId) HeaderText="Fakülte" EditType="EditType.DropDownEdit" ForeignKeyValue="Ad" ForeignKeyField="Id" Width="150" DataSource="@fakulteDtos"></GridColumn>
-                <GridColumn Field=@nameof(ProgramDto.BolumId) HeaderText="Bölüm" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@bolumDtos" Width="150"></GridColumn>
-                <GridColumn Field=@nameof(ProgramDto.NormalSure) HeaderText="Normal Süre" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
+<ControlSection>
+    <SfGrid @ref="ProgramGrid" Height="400px" DataSource="@programDtos" Toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Update", "Cancel" })" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
+        <GridEvents OnActionComplete="ActionCompletedHandler" TValue="ProgramDto"></GridEvents>
+        @*<GridGroupSettings ShowDropArea="false" Columns="@Initial"></GridGroupSettings>*@
+        <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.CheckBox"></GridFilterSettings>
+        <GridEditSettings Dialog="DialogParams" ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
+            <Template>
+                @{
+                    ProgramDto programInfo = (context as ProgramDto);
+                }
+                <div class="row">
 
-            </GridColumns>
-        </SfGrid>
-    </ControlSection>
-            
+                    <div class="col-md-4">
+                        <div class="form-row mt-2">
+                            <div class="col-12 pb-2">
+                                <div class="form-row">
+
+                                    <label class="col-md-2 col-form-label" for="Ad">Ad</label>
+                                    <SfTextBox ID="Ad" CssClass="form-control col-sm-10 pb-1" @bind-Value="@(programInfo.Ad)"></SfTextBox>
+                                    <label class="col-md-2 col-form-label" for="KisaAd">KisaAd</label>
+                                    <SfTextBox ID="KisaAd" CssClass="form-control col-sm-10 pb-1" @bind-Value="@(programInfo.KisaAd)"></SfTextBox>
+                                    <label class="col-md-2 col-form-label" for="AdEn">AdEn</label>
+                                    <SfTextBox ID="AdEn" CssClass="form-control col-sm-10 pb-1" @bind-Value="@(programInfo.AdEn)"></SfTextBox>
+                                    <label class="col-md-2 col-form-label" for="KisaAdEn">KisaAdEn</label>
+                                    <SfTextBox ID="KisaAdEn" CssClass="form-control col-sm-10 pb-1" @bind-Value="@(programInfo.KisaAdEn)"></SfTextBox>
+                                    <label class="col-md-2 col-form-label" for="Kod">Kod</label>
+                                    <SfNumericTextBox ID="Kod" CssClass="form-control col-sm-10" @bind-Value="@(programInfo.Kod)"></SfNumericTextBox>
+
+                                </div>
+                            </div>
+
+
+
+                            <div class="col-12 pb-2">
+                                <FakBolPrg ProgramHide="true"
+                                           @bind-BolumId=@(programInfo.BolumId)
+                                           @bind-FakulteId=@(programInfo.FakulteId)></FakBolPrg>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-row mt-2">
+                            <div class="col-12 pb-2">
+                                <div class="form-row">
+                                    <label class="col-md-2 col-form-label" for="AzamiSure">AzamiSure</label>
+                                    <SfNumericTextBox ID="AzamiSure" CssClass="form-control col-sm-10" @bind-Value="@(programInfo.AzamiSure)"></SfNumericTextBox>
+                                    <label class="col-md-2 col-form-label" for="NormalSure">NormalSure</label>
+                                    <SfNumericTextBox ID="NormalSure" CssClass="form-control col-sm-10" @bind-Value="@(programInfo.NormalSure)"></SfNumericTextBox>
+                                    <label class="col-md-2 col-form-label" for="OsymKod">OsymKod</label>
+                                    <SfTextBox ID="OsymKod" CssClass="form-control col-sm-10" @bind-Value="@(programInfo.OsymKod)"></SfTextBox>
+                                    <label class="col-md-2 col-form-label" for="OsymTur">OsymTur</label>
+                                    <SfTextBox ID="OsymTur" CssClass="form-control col-sm-10" @bind-Value="@(programInfo.OsymTur)"></SfTextBox>
+                                    <label class="col-md-2 col-form-label" for="YoksisBirimKod">YoksisBirimKod</label>
+                                    <SfNumericTextBox ID="YoksisBirimKod" CssClass="form-control col-sm-7" @bind-Value="@(programInfo.YoksisBirimKod)"></SfNumericTextBox>
+                                    <SfCheckBox Label="Yöksis Durum" CssClass="col-sm-2" @bind-Checked="@(programInfo.YoksisDurum)"></SfCheckBox>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-row mt-2">
+                            <div class="col-12 pb-2">
+                                <div class="form-row">
+                                    <label class="col-md-2 col-form-label" for="MezuniyetUnvan">MezuniyetUnvan</label>
+                                    <SfTextBox ID="MezuniyetUnvan" CssClass="form-control col-sm-10" @bind-Value="@(programInfo.MezuniyetUnvan)"></SfTextBox>
+                                    <label class="col-md-2 col-form-label" for="DiplomaAd">DiplomaAd</label>
+                                    <SfTextBox ID="DiplomaAd" CssClass="form-control col-sm-10" @bind-Value="@(programInfo.DiplomaAd)"></SfTextBox>
+                                    <label class="col-md-2 col-form-label" for="DiplomaAdEn">DiplomaAdEn</label>
+                                    <SfTextBox ID="DiplomaAdEn" CssClass="form-control col-sm-10" @bind-Value="@(programInfo.DiplomaAdEn)"></SfTextBox>
+                                    <label class="col-md-2 col-form-label" for="Dil">Dil</label>
+                                    <SfNumericTextBox ID="Dil" CssClass="form-control col-sm-10" @bind-Value="@(programInfo.Dil)"></SfNumericTextBox>
+                                    <label class="col-md-2 col-form-label" for="Yerleske">Yerleske</label>
+                                    <SfTextBox ID="Yerleske" CssClass="form-control col-sm-10" @bind-Value="@(programInfo.Yerleske)"></SfTextBox>
+                                    <SfCheckBox Label="Hazırlık" CssClass="col-sm-2" @bind-Checked="@(programInfo.IsHazirlik)"></SfCheckBox>
+                                    <SfCheckBox Label="Staj" CssClass="col-sm-2" @bind-Checked="@(programInfo.StajDurum)"></SfCheckBox>
+                                    <SfCheckBox Label="Durum" CssClass="col-sm-2" @bind-Checked="@(programInfo.Durum)"></SfCheckBox>
+                                    <SfCheckBox Label="Yillik" CssClass="col-sm-2" @bind-Checked="@(programInfo.Yillik)"></SfCheckBox>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </Template>
+        </GridEditSettings>
+        <GridColumns>
+            <GridColumn Visible="false" Field=@nameof(ProgramDto.Id) HeaderText="Program ID" AllowAdding="false" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+            <GridColumn Field=@nameof(ProgramDto.Ad) HeaderText="Program İsim" ValidationRules="@(new ValidationRules{ Required=true})" Width="170"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(ProgramDto.AdEn) HeaderText="İng Ad"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(ProgramDto.KisaAd) HeaderText="Kısa Ad"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(ProgramDto.KisaAdEn) HeaderText="İng. K.Ad"></GridColumn>
+            <GridColumn Field=@nameof(ProgramDto.Kod) HeaderText="Kod"></GridColumn>
+            <GridColumn Field=@nameof(ProgramDto.FakulteId) HeaderText="Fakülte" EditType="EditType.DropDownEdit" ForeignKeyValue="Ad" ForeignKeyField="Id" Width="150" DataSource="@fakulteDtos"></GridColumn>
+            <GridColumn Field=@nameof(ProgramDto.BolumId) HeaderText="Bölüm" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@bolumDtos" Width="150"></GridColumn>
+            <GridColumn Field=@nameof(ProgramDto.NormalSure) HeaderText="Normal Süre" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(ProgramDto.AzamiSure) HeaderText="AzamiSure"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(ProgramDto.OsymKod) HeaderText="ösym Kod"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(ProgramDto.OsymTur) HeaderText="ösym Tür TODO"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(ProgramDto.YoksisBirimKod) HeaderText="YoksisBirimKod"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(ProgramDto.MezuniyetUnvan) HeaderText="MezuniyetUnvan"></GridColumn>
+            @*Program turu , öğrenim turu atladım todo*@
+            <GridColumn Visible="false" Field=@nameof(ProgramDto.IsHazirlik) DisplayAsCheckBox="true" HeaderText="Hazırlık"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(ProgramDto.StajDurum) DisplayAsCheckBox="true" HeaderText="Staj"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(ProgramDto.Durum) DisplayAsCheckBox="true" HeaderText="Aktif"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(ProgramDto.DiplomaAd) HeaderText="DiplomaAd"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(ProgramDto.DiplomaAdEn) HeaderText="DiplomaAd İng."></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(ProgramDto.Dil) HeaderText="Dil"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(ProgramDto.Yillik) DisplayAsCheckBox="true" HeaderText="Yillik"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(ProgramDto.Yerleske) HeaderText="Yerleske"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(ProgramDto.YoksisDurum) DisplayAsCheckBox="true" HeaderText="YoksisDurum"></GridColumn>
+        </GridColumns>
+    </SfGrid>
+</ControlSection>
+
 
 
 @code{
+
+    string[] Initial = (new string[] { "FakulteId", "BolumId" });
+    private DialogSettings DialogParams = new DialogSettings { MinHeight = "400px", Width = "1300px" };
 
     SfGrid<ProgramDto> ProgramGrid;
 
@@ -164,6 +271,11 @@
         {
             matToaster.Add(ex.Message, MatToastType.Danger, "Universite Save Failed");
         }
+    }
+
+    public async Task ProgramSelected()
+    {
+
     }
 
 }

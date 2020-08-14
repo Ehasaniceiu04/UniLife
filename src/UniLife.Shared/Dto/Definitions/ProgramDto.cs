@@ -10,11 +10,12 @@ namespace UniLife.Shared.Dto.Definitions
         public string Ad { get; set; }
 
         public int? BolumId { get; set; }
-        public BolumDto Bolum { get; set; }
+        public virtual BolumDto Bolum { get; set; }
 
         public int Kod { get; set; }
         public string AdEn { get; set; }
         public string KisaAd { get; set; }
+        public string KisaAdEn { get; set; }
         public string OptKod { get; set; }
         public int AnaBolum { get; set; }
         public int ProgramTipId { get; set; }
@@ -22,7 +23,8 @@ namespace UniLife.Shared.Dto.Definitions
         public string Adres { get; set; }
         public string Iletisim { get; set; }
         public int? FakulteId { get; set; }
-        public bool IsHazırlık { get; set; }
+        public virtual FakulteDto Fakulte{ get; set; }
+        public bool IsHazirlik { get; set; }
         public int AzamiSure { get; set; }
         public int NormalSure { get; set; }
         public string OsymKod { get; set; }
@@ -40,8 +42,12 @@ namespace UniLife.Shared.Dto.Definitions
         public string BrnOgrOsymKod { get; set; }
         public string OsymKodCeyrekBurs { get; set; }
         public string DiplomaAdEn { get; set; }
-
-
+        public int YoksisBirimKod { get; set; }
+        public string MezuniyetUnvan { get; set; }
+        public bool Durum { get; set; } = true;
+        public bool Yillik { get; set; }
+        public string Yerleske{ get; set; }
+        public bool YoksisDurum { get; set; }
         public ICollection<MufredatDto> Mufredats { get; set; }
     }
 }

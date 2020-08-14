@@ -32,29 +32,30 @@
 
         @if (isGridVisible)
         {
-            <SfGrid Width="100%" Height="400px" Query="@totalQuery" TValue="OgrenciDto" ID="OgrencilerGrid" @ref="OgrencilerGrid" AllowExcelExport="true" AllowPdfExport="true" AllowPaging="true" AllowFiltering="true" Toolbar="@(new List<string>() {  "PdfExport","ExcelExport","ColumnChooser" })" ShowColumnChooser="true">
-                <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
-                <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
-                <GridEvents OnToolbarClick="ToolbarClickHandler" TValue="OgrenciDto"></GridEvents>
-                <GridColumns>
-                    <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
-                    <GridColumn AutoFit="true" Visible="false" Field=@nameof(OgrenciDto.Id) Type="ColumnType.Number" IsPrimaryKey="true" Width="50"></GridColumn>
-                    <GridColumn AutoFit="true" Field=@nameof(OgrenciDto.OgrNo) Type="ColumnType.String" HeaderText="OgrenciNo" Width="50"></GridColumn>
-                    <GridColumn AutoFit="true" Field=@nameof(OgrenciDto.Ad) HeaderText="Ad" Type="ColumnType.String" Width="50"></GridColumn>
-                    
-                    <GridColumn AutoFit="true" Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad" Type="ColumnType.String" Width="50"></GridColumn>
-                    
-                    <GridColumn AutoFit="true" Visible="false" Field=@nameof(OgrenciDto.TCKN) HeaderText="TCKN" Width="50"></GridColumn>
-                    <GridColumn AutoFit="true" Field=@nameof(Ogrenci.Sinif) HeaderText="Sinif" Width="50"></GridColumn>
-                    <GridColumn AutoFit="true" Field=@nameof(OgrenciDto.KayitTarih) Format="d" Type="ColumnType.Date" HeaderText="KayitTarih" Width="70"></GridColumn>
-                    <GridColumn Visible="false" AutoFit="true" Field=@nameof(OgrenciDto.AyrilTarih) Format="d" Type="ColumnType.Date" HeaderText="AyrilTarih"Width="70"></GridColumn>
-                    <GridColumn AutoFit="true" Field="Program.Ad" HeaderText="Program" Width="70"></GridColumn>
-                    <GridColumn Visible="@okKayitNeden" AutoFit="true" Field=KayitNeden.Ad HeaderText="Kayit Neden" Width="70"></GridColumn>
-                    <GridColumn Visible="@okOgrDurum" AutoFit="true" Field=OgrenimDurum.Ad HeaderText="Ogrenim Durum" Width="70"></GridColumn>
-                    <GridColumn Visible="false" Field=@nameof(OgrenciDto.EmailOutValid) HeaderText="Email"></GridColumn>
+    <SfGrid Width="100%" Height="400px" Query="@totalQuery" TValue="OgrenciDto" ID="OgrencilerGrid" @ref="OgrencilerGrid" AllowExcelExport="true" AllowPdfExport="true" AllowPaging="true" AllowFiltering="true" Toolbar="@(new List<string>() {  "PdfExport","ExcelExport","ColumnChooser" })" ShowColumnChooser="true">
+        <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+        <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
+        <GridEvents OnToolbarClick="ToolbarClickHandler" TValue="OgrenciDto"></GridEvents>
+        @*<GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.CheckBox"></GridFilterSettings>*@
+        <GridColumns>
+            <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
+            <GridColumn AutoFit="true" Visible="false" Field=@nameof(OgrenciDto.Id) Type="ColumnType.Number" IsPrimaryKey="true" Width="50"></GridColumn>
+            <GridColumn AutoFit="true" Field=@nameof(OgrenciDto.OgrNo) Type="ColumnType.String" HeaderText="OgrenciNo" Width="50"></GridColumn>
+            <GridColumn AutoFit="true" Field=@nameof(OgrenciDto.Ad) HeaderText="Ad" Type="ColumnType.String" Width="50"></GridColumn>
 
-                </GridColumns>
-            </SfGrid>
+            <GridColumn AutoFit="true" Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad" Type="ColumnType.String" Width="50"></GridColumn>
+
+            <GridColumn AutoFit="true" Visible="false" Field=@nameof(OgrenciDto.TCKN) HeaderText="TCKN" Width="50"></GridColumn>
+            <GridColumn AutoFit="true" Field=@nameof(Ogrenci.Sinif) HeaderText="Sinif" Width="50"></GridColumn>
+            <GridColumn AutoFit="true" Field=@nameof(OgrenciDto.KayitTarih) Format="d" Type="ColumnType.Date" HeaderText="KayitTarih" Width="70"></GridColumn>
+            <GridColumn Visible="false" AutoFit="true" Field=@nameof(OgrenciDto.AyrilTarih) Format="d" Type="ColumnType.Date" HeaderText="AyrilTarih" Width="70"></GridColumn>
+            <GridColumn AutoFit="true" Field="Program.Ad" HeaderText="Program" Width="70"></GridColumn>
+            <GridColumn Visible="@okKayitNeden" AutoFit="true" Field=KayitNeden.Ad HeaderText="Kayit Neden" Width="70"></GridColumn>
+            <GridColumn Visible="@okOgrDurum" AutoFit="true" Field=OgrenimDurum.Ad HeaderText="Ogrenim Durum" Width="70"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(OgrenciDto.EmailOutValid) HeaderText="Email"></GridColumn>
+
+        </GridColumns>
+    </SfGrid>
         }
 
     </ControlSection>

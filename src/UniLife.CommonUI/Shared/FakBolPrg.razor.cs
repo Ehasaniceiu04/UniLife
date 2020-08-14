@@ -74,8 +74,8 @@ namespace UniLife.CommonUI.Shared
         [Parameter]
         public EventCallback<int?> BolumIdChanged { get; set; }
 
-
-
+        [Parameter]
+        public bool ProgramHide { get; set; }
 
         protected async override Task OnInitializedAsync()
         {
