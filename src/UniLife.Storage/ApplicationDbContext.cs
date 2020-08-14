@@ -67,6 +67,7 @@ namespace UniLife.Storage
         public DbSet<OgrStaj> OgrStajs { get; set; }
         public DbSet<OgrTez> OgrTezs { get; set; }
         public DbSet<AkademikTakvim> AkademikTakvims{ get; set; }
+        public DbSet<OgrHarc> OgrHarcs{ get; set; }
 
 
         //TODO Bunu böyle bırakacakmıyız.

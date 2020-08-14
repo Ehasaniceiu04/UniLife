@@ -1,0 +1,243 @@
+﻿@page "/ogrenci/harc"
+
+@inject HttpClient Http;
+@using UniLife.Shared.Dto.Definitions
+@inject IMatToaster matToaster
+@using Syncfusion.Blazor.DropDowns
+@using System.Net
+@using Newtonsoft.Json
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Calendars
+@inject AppState appState
+
+@if (harcDtos == null)
+{
+    <LoadingBackground ShowLogoBox="true">
+        <label>Harç bilgileri yükleniyor.</label>
+    </LoadingBackground>
+}
+else
+{
+
+    <ControlSection>
+        <SfGrid @ref="HarcGrid" DataSource="@harcDtos" Toolbar="@(Toolbaritems)" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
+            <GridEvents OnActionComplete="ActionCompletedHandler" TValue="OgrHarcDto"></GridEvents>
+            <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
+                <Template>
+                    @{
+                        OgrHarcDto dAcilanContext = (context as OgrHarcDto);
+
+                        <div class="row">
+
+                            <div class="col-md-9">
+                                <div class="form-row mt-2">
+                                    <div class="col-12 pb-2">
+                                        <div class="form-row">
+                                            <label class="col-md-2 col-form-label" for="Tipi">Tipi</label>
+                                            <SfTextBox ID="Tipi" CssClass="form-control col-sm-3" @bind-Value="@(dAcilanContext.Tipi)"></SfTextBox>
+                                            <label class="col-md-2 col-form-label" for="Turu">Turu</label>
+                                            <SfTextBox ID="Turu" CssClass="form-control col-sm-3" @bind-Value="@(dAcilanContext.Turu)"></SfTextBox>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="col-12 pb-2">
+                                        <div class="form-row">
+                                            <label class="col-md-2 col-form-label" for="Tutar">Tutar</label>
+                                            <SfNumericTextBox ID="Tutar" CssClass="form-control col-sm-3" @bind-Value="@(dAcilanContext.Tutar)"></SfNumericTextBox>
+                                            <label class="col-md-2 col-form-label" for="IadeTutar">Iade Tutar</label>
+                                            <SfNumericTextBox ID="IadeTutar" CssClass="form-control col-sm-3" @bind-Value="@(dAcilanContext.IadeTutar)"></SfNumericTextBox>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-12 pb-2">
+                                        <div class="form-row">
+                                            <label class="col-md-2 col-form-label" for="dropDonem">Sınıf</label>
+                                            <SfDropDownList ID="dropDonem" @ref="dropDonem" Index="0" TItem="DonemDto" CssClass="col-sm-10 pb-1"
+                                                            TValue="int" PopupHeight="230px" Placeholder="Sınıf Seçiniz"
+                                                            @bind-Value="@dAcilanContext.DonemId" DataSource="@donemDtos">
+                                                <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                                            </SfDropDownList>
+                                            <label class="col-md-2 col-form-label" for="TahakkukTarih">TahakkukTarih</label>
+                                            <SfDateTimePicker ID="TahakkukTarih" TValue="DateTime?" @bind-Value="@(dAcilanContext.TahakkukTarih)" Placeholder="Lütfen bir tarih seçiniz."></SfDateTimePicker>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    }
+                </Template>
+            </GridEditSettings>
+            <GridColumns>
+                <GridColumn Visible="false" Field=@nameof(OgrHarcDto.Id) HeaderText="Id" AllowAdding="false" AllowEditing="false" IsPrimaryKey="true"></GridColumn>
+                <GridColumn Visible="false" Field=@nameof(OgrHarcDto.OgrenciId)></GridColumn>
+                <GridColumn Field=@nameof(OgrHarcDto.Tipi) HeaderText="Tipi"></GridColumn>
+                <GridColumn Field=@nameof(OgrHarcDto.Turu) HeaderText="Türü"></GridColumn>
+                <GridColumn Field=@nameof(OgrHarcDto.Tutar) HeaderText="Tutar"></GridColumn>
+                <GridColumn Field=@nameof(OgrHarcDto.IadeTutar) HeaderText="İade Tutar"></GridColumn>
+                <GridColumn Field=@nameof(OgrHarcDto.TahakkukTarih) HeaderText="Tahakkuk Tarihi"></GridColumn>
+                <GridColumn Field=@nameof(OgrHarcDto.DonemId) HeaderText="Donem" EditType="EditType.DropDownEdit" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@donemDtos" Width="150"></GridColumn>
+            </GridColumns>
+        </SfGrid>
+    </ControlSection>
+}
+
+@code{
+
+    SfDropDownList<int, DonemDto> dropDonem;
+
+    SfGrid<OgrHarcDto> HarcGrid;
+
+    List<OgrHarcDto> harcDtos = new List<OgrHarcDto>();
+
+    List<DonemDto> donemDtos = new List<DonemDto>();
+
+    [Parameter]
+    public OgrenciDto _OgrenciDto { get; set; }
+
+    [CascadingParameter]
+    Task<AuthenticationState> authenticationStateTask { get; set; }
+    ClaimsPrincipal user;
+
+    private List<Object> Toolbaritems= new List<Object>();
+
+    //protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
+    {
+        user = (await authenticationStateTask).User;
+        if (user.IsInRole(UserRoles.Personel.ToString()))
+        {
+            Toolbaritems = new List<Object>() { "Add", "Edit", "Delete", "Update", "Cancel" };
+        }
+        await ReadHarcs();
+
+        ApiResponseDto apiResponseDonem =await Http.GetFromJsonAsync<ApiResponseDto>("api/Donem");
+        donemDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<DonemDto[]>(apiResponseDonem.Result.ToString()).ToList<DonemDto>();
+
+    }
+
+    async Task ReadHarcs()
+    {
+        if (_OgrenciDto == null)
+        {
+            _OgrenciDto = await appState.GetOgrenciState();
+        }
+        ApiResponseDto apiResponse = Http.GetFromJsonAsync<ApiResponseDto>($"api/ogrharc/getwhere/{_OgrenciDto.Id}").Result;
+
+        if (apiResponse.StatusCode == Status200OK)
+        {
+            matToaster.Add(apiResponse.Message, MatToastType.Success, "Harcler getirildi");
+            harcDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<OgrHarcDto[]>(apiResponse.Result.ToString()).ToList<OgrHarcDto>();
+        }
+        else
+        {
+            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Harc bilgisi getirilirken hata oluştu!");
+        }
+    }
+
+    public void ActionCompletedHandler(ActionEventArgs<OgrHarcDto>
+        args)
+    {
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
+        {
+
+        }
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+        {
+            if (args.Action == "Edit")
+            {
+                Update(args.Data);
+            }
+            else if (args.Action == "Add")
+            {
+                Create(args.Data);
+            }
+
+        }
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
+        {
+            Delete(args.Data);
+        }
+    }
+
+    public async Task Create(OgrHarcDto harcDto)
+    {
+        try
+        {
+            harcDto.OgrenciId = _OgrenciDto.Id;
+            ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>
+                ("api/ogrharc", harcDto);
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success);
+            }
+            else
+            {
+                harcDtos.Remove(harcDto);
+                HarcGrid.Refresh();
+                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Harc Creation Failed");
+            }
+        }
+        catch (Exception ex)
+        {
+            harcDtos.Remove(harcDto);
+            HarcGrid.Refresh();
+            matToaster.Add(ex.Message, MatToastType.Danger, "Harc Creation Failed");
+        }
+    }
+
+
+    public async void Update(OgrHarcDto harcDto)
+    {
+        //this updates the IsCompleted flag only
+        try
+        {
+            harcDto.OgrenciId = _OgrenciDto.Id;
+            ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>
+            ("api/ogrharc", harcDto);
+
+            if (!apiResponse.IsError)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success);
+            }
+            else
+            {
+                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Harc Save Failed");
+                //update failed gridi boz !
+            }
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.Message, MatToastType.Danger, "Harc Save Failed");
+            //update failed gridi boz !
+        }
+    }
+
+    public async Task Delete(OgrHarcDto harcDto)
+    {
+        //try
+        //{
+        //    var response = await Http.DeleteAsync("api/harc/" + harcDto.Id);
+        //    if (response.StatusCode == (HttpStatusCode)Status200OK)
+        //    {
+        //        matToaster.Add("Harc Deleted", MatToastType.Success);
+        //        harcDtos.Remove(harcDto);
+        //    }
+        //    else
+        //    {
+        //        matToaster.Add("Harc Delete Failed: " + response.StatusCode, MatToastType.Danger);
+        //    }
+        //    //deleteDialogOpen = false;
+        //}
+        //catch (Exception ex)
+        //{
+        //    matToaster.Add(ex.Message, MatToastType.Danger, "Universite Save Failed");
+        //}
+    }
+
+}

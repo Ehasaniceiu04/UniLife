@@ -445,6 +445,7 @@ namespace UniLife.Server
             services.AddTransient<IAkademikTakvimManager, AkademikTakvimManager>();
             services.AddTransient<IUserProfileManager, UserProfileManager>();
             services.AddTransient<IYabanciBasvuruManager, YabanciBasvuruManager>();
+            services.AddTransient<IOgrHarcManager, OgrHarcManager>();
 
 
 

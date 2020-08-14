@@ -61,7 +61,7 @@ namespace UniLife.Storage
             services.AddTransient<IOgrStajStore, OgrStajStore>();
             services.AddTransient<IOgrTezStore, OgrTezStore>();
             services.AddTransient<IAkademikTakvimStore, AkademikTakvimStore>();
-
+            services.AddTransient<IOgrHarcStore, OgrHarcStore>();
 
             //services.AddTransient<ITenantStore, TenantStore>();
             services.AddTransient<IApiLogStore, ApiLogStore>();
