@@ -10,6 +10,7 @@ namespace UniLife.Shared.Dto.Definitions
         public string KisaAd { get; set; }
         public string Kod { get; set; }
         public string AdEn { get; set; }
+        public string KisaAdEn { get; set; }
         public string OsymKod { get; set; }
         public int OgrenimTurId { get; set; }
         public virtual OgrenimTurDto OgrenimTur { get; set; }

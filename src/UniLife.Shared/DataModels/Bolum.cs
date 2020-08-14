@@ -13,6 +13,7 @@ namespace UniLife.Shared.DataModels
         public string KisaAd { get; set; }
         public string Kod { get; set; }
         public string AdEn { get; set; }
+        public string KisaAdEn { get; set; }
         public string OsymKod { get; set; }
         public int OgrenimTurId { get; set; }
         public virtual OgrenimTur OgrenimTur { get; set; }
