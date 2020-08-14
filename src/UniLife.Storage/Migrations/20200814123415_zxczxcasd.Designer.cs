@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using UniLife.Storage;
@@ -9,9 +10,10 @@ using UniLife.Storage;
 namespace UniLife.Storage.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200814123415_zxczxcasd")]
+    partial class zxczxcasd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1204,9 +1206,6 @@ namespace UniLife.Storage.Migrations
                     b.Property<string>("AdEn")
                         .HasColumnType("text");
 
-                    b.Property<string>("AdEnKisa")
-                        .HasColumnType("text");
-
                     b.Property<string>("Adres")
                         .HasColumnType("text");
 
@@ -1230,14 +1229,17 @@ namespace UniLife.Storage.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<bool>("Durum")
-                        .HasColumnType("boolean");
+                    b.Property<string>("DiplomaAd")
+                        .HasColumnType("text");
 
                     b.Property<string>("EPosta")
                         .HasColumnType("text");
 
                     b.Property<string>("Faks")
                         .HasColumnType("text");
+
+                    b.Property<int>("FakulteTurId")
+                        .HasColumnType("integer");
 
                     b.Property<int>("IlKod")
                         .HasColumnType("integer");
@@ -1284,6 +1286,8 @@ namespace UniLife.Storage.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FakulteTurId");
 
                     b.HasIndex("OgrenimTurId");
 
@@ -3092,6 +3096,12 @@ namespace UniLife.Storage.Migrations
 
             modelBuilder.Entity("UniLife.Shared.DataModels.Fakulte", b =>
                 {
+                    b.HasOne("UniLife.Shared.DataModels.FakulteTur", "FakulteTur")
+                        .WithMany("Fakultes")
+                        .HasForeignKey("FakulteTurId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("UniLife.Shared.DataModels.OgrenimTur", "OgrenimTur")
                         .WithMany()
                         .HasForeignKey("OgrenimTurId")

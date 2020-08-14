@@ -11,12 +11,11 @@ namespace UniLife.Shared.Dto.Definitions
         public int? UniversiteId { get; set; }
         public virtual Universite Universite { get; set; }
 
-        public int? FakulteTurId { get; set; }
-        public virtual FakulteTur FakulteTur { get; set; }
         [Required]
         public string KisaAd { get; set; }
 
         public string AdEn { get; set; }
+        public string AdEnKisa { get; set; }
         public string EPosta { get; set; }
         public string Tel { get; set; }
         public string Adres { get; set; }
@@ -29,12 +28,11 @@ namespace UniLife.Shared.Dto.Definitions
         public int OgrenimSure { get; set; }
         public int IlKod { get; set; }
         public int Tip { get; set; }
-        public string DiplomaAd { get; set; }
         public bool IsBologna { get; set; }
         public string BolognaIcerikTR { get; set; }
         public string BolognaIcerikEN { get; set; }
         public int BirimID { get; set; }
-
+        public bool Durum { get; set; }
 
         public virtual ICollection<BolumDto> Bolums { get; set; }
 

@@ -14,6 +14,5 @@ namespace UniLife.Shared.DataModels
         public string TurEn { get; set; }
         public string YokasId { get; set; }
 
-        public virtual ICollection<Fakulte> Fakultes { get; set; }
     }
 }
