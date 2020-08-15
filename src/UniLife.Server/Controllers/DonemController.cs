@@ -66,5 +66,14 @@ namespace UniLife.Server.Controllers
         [Authorize(Permissions.Donem.Delete)]
         public async Task<ApiResponse> Delete(int id)
             => await _donemManager.Delete(id);
+
+        // POST: api/Donem
+        [HttpPost]
+        [Route("CreateNewDonemWithTakvim")]
+        [Authorize(Permissions.Donem.Create)]
+        public async Task<ApiResponse> CreateNewDonemWithTakvim([FromBody] DonemDto donemDto)
+            => ModelState.IsValid ?
+                await _donemManager.CreateNewDonemWithTakvim(donemDto) :
+                new ApiResponse(Status400BadRequest, "Donem Model is Invalid");
     }
 }

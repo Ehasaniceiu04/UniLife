@@ -88,5 +88,24 @@ namespace UniLife.Storage.Stores
             var result = await _db.Context.Set<Donem>().Where(predicate).ToListAsync();
             return _autoMapper.Map<IEnumerable<DonemDto>>(result);
         }
+
+        public async Task<Donem> CreateNewDonemWithTakvim(DonemDto donemDto)
+        {
+            var donem = _autoMapper.Map<DonemDto, Donem>(donemDto);
+            var baseAkaTakvim = await _db.AkademikTakvims.Where(x => x.DonemId == 1 && x.FakulteId == null).ToListAsync();
+
+            using (var context = _db.Context.Database.BeginTransaction())
+            {
+                
+                await _db.Donems.AddAsync(donem);
+                await _db.SaveChangesAsync(CancellationToken.None);
+
+                baseAkaTakvim.ForEach(x => { x.BasTarih = null; x.BitTarih = null; x.Id=0; x.DonemId = donem.Id; });
+                await _db.AkademikTakvims.AddRangeAsync(baseAkaTakvim);
+                await _db.SaveChangesAsync(CancellationToken.None);
+                context.Commit();
+            }
+            return donem;
+        }
     }
 }

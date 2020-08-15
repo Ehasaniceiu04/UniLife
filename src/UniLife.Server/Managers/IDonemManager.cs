@@ -12,5 +12,6 @@ namespace UniLife.Server.Managers
         Task<ApiResponse> Update(DonemDto donemDto);
         Task<ApiResponse> Delete(int id);
         Task<ApiResponse> Current();
+        Task<ApiResponse> CreateNewDonemWithTakvim(DonemDto donemDto);
     }
 }

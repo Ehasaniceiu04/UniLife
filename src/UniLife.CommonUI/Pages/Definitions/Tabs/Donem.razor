@@ -96,7 +96,7 @@
         try
         {
             ApiResponseDto<DonemDto> apiResponse = await Http.PostJsonAsync<ApiResponseDto<DonemDto>>
-                ("api/donem", donemDto);
+                ("api/donem/CreateNewDonemWithTakvim", donemDto);
             if (apiResponse.StatusCode == Status200OK)
             {
                 matToaster.Add(apiResponse.Message, MatToastType.Success);

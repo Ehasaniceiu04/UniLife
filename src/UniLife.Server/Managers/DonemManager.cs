@@ -51,5 +51,11 @@ namespace UniLife.Server.Managers
             return new ApiResponse(Status200OK, "Retrieved DonemDtos", await _donemStore.Current());
 
         }
+
+        public async Task<ApiResponse> CreateNewDonemWithTakvim(DonemDto donemDto)
+        {
+            var newDonem = await _donemStore.CreateNewDonemWithTakvim(donemDto);
+            return new ApiResponse(Status200OK, "Created DonemDto", newDonem);
+        }
     }
 }

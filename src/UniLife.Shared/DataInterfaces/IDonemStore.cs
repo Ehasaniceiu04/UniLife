@@ -23,5 +23,6 @@ namespace UniLife.Shared.DataInterfaces
         Task<List<DonemDto>> Current();
 
         Task<IEnumerable<DonemDto>> GetWhere(Expression<Func<Donem, bool>> predicate);
+        Task<Donem> CreateNewDonemWithTakvim(DonemDto donemDto);
     }
 }
