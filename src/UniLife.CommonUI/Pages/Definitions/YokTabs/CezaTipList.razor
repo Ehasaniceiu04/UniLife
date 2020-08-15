@@ -1,0 +1,30 @@
+﻿
+@inject HttpClient Http;
+@using UniLife.Shared.Dto.Definitions
+@inject IMatToaster matToaster
+@using Syncfusion.Blazor.Data
+@using System.Net
+
+<ControlSection>
+    <SfGrid Width="100%" Height="85%" AllowResizing="true" @ref="cezaGrid" TValue="CezaTipDto">
+        <SfDataManager Url="odata/cezatips" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+        <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
+        <GridColumns>
+            <GridColumn Visible="false" Field=@nameof(CezaTipDto.Id) AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+            <GridColumn Field=@nameof(CezaTipDto.Kod) HeaderText="Kod"></GridColumn>
+            <GridColumn Field=@nameof(CezaTipDto.Ad) HeaderText="Ceza Adı"></GridColumn>
+        </GridColumns>
+    </SfGrid>
+</ControlSection>
+@code{
+
+    SfGrid<CezaTipDto> cezaGrid;
+    string OdataQuery = "odata/cezatips";
+}
+
+
+<style type="text/css" class="cssStyles">
+    .e-grid .e-altrow {
+        background-color: #fafafa;
+    }
+</style>

@@ -663,6 +663,7 @@ namespace UniLife.Server
             builder.EntitySet<Askerlik>("Askerliks");
             builder.EntitySet<DersKayit>("DersKayits");
             builder.EntitySet<BursTip>("BursTips");
+            builder.EntitySet<CezaTip>("CezaTips");
             //builder.EntitySet<SinavKayit>("SinavKayits");
             return builder.GetEdmModel();
         }
