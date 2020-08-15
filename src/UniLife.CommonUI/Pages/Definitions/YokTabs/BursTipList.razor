@@ -1,0 +1,29 @@
+﻿@inject HttpClient Http;
+@using UniLife.Shared.Dto.Definitions
+@inject IMatToaster matToaster
+@using Syncfusion.Blazor.Data
+@using System.Net
+
+<ControlSection>
+    <SfGrid Width="100%" Height="85%" AllowResizing="true" @ref="bursGrid" TValue="BursTipDto">
+        <SfDataManager Url="odata/burstips" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+        <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
+        <GridColumns>
+            <GridColumn Visible="false" Field=@nameof(BursTipDto.Id) AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+            <GridColumn Field=@nameof(BursTipDto.Kod) HeaderText="Öğrenim Tür" Width="170"></GridColumn>
+            <GridColumn Field=@nameof(BursTipDto.Ad) HeaderText="Öğrenim Tür" Width="170"></GridColumn>
+        </GridColumns>
+    </SfGrid>
+</ControlSection>
+@code{
+
+    SfGrid<BursTipDto> bursGrid;
+    string OdataQuery = "odata/burstips";
+}
+
+
+<style type="text/css" class="cssStyles">
+    .e-grid .e-altrow {
+        background-color: #fafafa;
+    }
+</style>
