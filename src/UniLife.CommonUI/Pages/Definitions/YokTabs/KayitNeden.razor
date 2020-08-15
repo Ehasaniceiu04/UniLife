@@ -11,7 +11,17 @@
         <GridColumns>
             <GridColumn Visible="false" Field=@nameof(KayitNedenDto.Id) AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
             <GridColumn Field=@nameof(KayitNedenDto.Ad) HeaderText="Kayit Neden" Width="170"></GridColumn>
-            <GridColumn HeaderText="Manage Records" Width="150">
+            <GridColumn Field=@nameof(KayitNedenDto.Kod) HeaderText="Kod"></GridColumn>
+            <GridColumn Field=@nameof(KayitNedenDto.YoksisKod) HeaderText="YoksisKod"></GridColumn>
+            <GridColumn Field=@nameof(KayitNedenDto.YoksisStatusKod) HeaderText="YoksisStatusKod"></GridColumn>
+            <GridColumn Field=@nameof(KayitNedenDto.KisaAd) HeaderText="KisaAd"></GridColumn>
+            <GridColumn Field=@nameof(KayitNedenDto.AdEn) HeaderText="AdEn"></GridColumn>
+            <GridColumn Field=@nameof(KayitNedenDto.KisaAdEn) HeaderText="KisaAdEn"></GridColumn>
+            <GridColumn Field=@nameof(KayitNedenDto.YuzdeOn) DisplayAsCheckBox="true" HeaderText="YuzdeOn"></GridColumn>
+            <GridColumn Field=@nameof(KayitNedenDto.DersKayitKuralDisi) DisplayAsCheckBox="true" HeaderText="DersKayitKuralDisi"></GridColumn>
+            <GridColumn Field=@nameof(KayitNedenDto.OzelOgr) DisplayAsCheckBox="true" HeaderText="OzelOgr"></GridColumn>
+            <GridColumn Field=@nameof(KayitNedenDto.HarcTahakkukEtmez) DisplayAsCheckBox="true" HeaderText="HarcTahakkukEtmez"></GridColumn>
+            <GridColumn>
                 <GridCommandColumns>
                     <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-edit", CssClass = "e-flat" })"></GridCommandColumn>
                     <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-delete", CssClass = "e-flat" })"></GridCommandColumn>

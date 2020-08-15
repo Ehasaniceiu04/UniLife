@@ -10,8 +10,15 @@
         <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
         <GridColumns>
             <GridColumn Visible="false" Field=@nameof(OgrenimDurumDto.Id) AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
-            <GridColumn Field=@nameof(OgrenimDurumDto.Ad) HeaderText="Öğrenim Durum" Width="170"></GridColumn>
-            <GridColumn HeaderText="Manage Records" Width="150">
+            <GridColumn Field=@nameof(OgrenimDurumDto.Ad) HeaderText="Öğrenim Durum"></GridColumn>
+            <GridColumn Field=@nameof(OgrenimDurumDto.Kod) HeaderText="Kod"></GridColumn>
+            <GridColumn Field=@nameof(OgrenimDurumDto.Aktif) DisplayAsCheckBox="true" HeaderText="Aktif"></GridColumn>
+            <GridColumn Field=@nameof(OgrenimDurumDto.YoksisKod) HeaderText="YoksisKod"></GridColumn>
+            <GridColumn Field=@nameof(OgrenimDurumDto.YoksisStatuKod) HeaderText="YoksisStatuKod"></GridColumn>
+            <GridColumn Field=@nameof(OgrenimDurumDto.AdEn) HeaderText="Ad İng."></GridColumn>
+            <GridColumn Field=@nameof(OgrenimDurumDto.KisaAd) HeaderText="Kısa Ad"></GridColumn>
+            <GridColumn Field=@nameof(OgrenimDurumDto.KisaAdEn) HeaderText="Kısa Ad İng."></GridColumn>
+            <GridColumn>
                 <GridCommandColumns>
                     <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-edit", CssClass = "e-flat" })"></GridCommandColumn>
                     <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-delete", CssClass = "e-flat" })"></GridCommandColumn>

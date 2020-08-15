@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using UniLife.Storage;
@@ -9,9 +10,10 @@ using UniLife.Storage;
 namespace UniLife.Storage.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200815105952_asdmjasdm")]
+    partial class asdmjasdm
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2171,12 +2173,6 @@ namespace UniLife.Storage.Migrations
                     b.Property<string>("Ad")
                         .HasColumnType("text");
 
-                    b.Property<string>("AdEn")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("Aktif")
-                        .HasColumnType("boolean");
-
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uuid");
 
@@ -2188,12 +2184,6 @@ namespace UniLife.Storage.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("KisaAd")
-                        .HasColumnType("text");
-
-                    b.Property<string>("KisaAdEn")
-                        .HasColumnType("text");
-
                     b.Property<int>("Kod")
                         .HasColumnType("integer");
 
@@ -2204,15 +2194,6 @@ namespace UniLife.Storage.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp without time zone")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.Property<string>("OgrenciDurum")
-                        .HasColumnType("text");
-
-                    b.Property<int>("YoksisKod")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("YoksisStatuKod")
-                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
