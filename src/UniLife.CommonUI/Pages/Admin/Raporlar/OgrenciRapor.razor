@@ -41,10 +41,8 @@
             <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
             <GridColumn AutoFit="true" Visible="false" Field=@nameof(OgrenciDto.Id) Type="ColumnType.Number" IsPrimaryKey="true" Width="50"></GridColumn>
             <GridColumn AutoFit="true" Field=@nameof(OgrenciDto.OgrNo) Type="ColumnType.String" HeaderText="OgrenciNo" Width="50"></GridColumn>
-            <GridColumn AutoFit="true" Field=@nameof(OgrenciDto.Ad) HeaderText="Ad" Type="ColumnType.String" Width="50"></GridColumn>
-
+            <GridColumn ShowInColumnChooser="false" ShowColumnMenu="false" AutoFit="true" Field=@nameof(OgrenciDto.Ad) HeaderText="Ad" Type="ColumnType.String" Width="50"></GridColumn>
             <GridColumn AutoFit="true" Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad" Type="ColumnType.String" Width="50"></GridColumn>
-
             <GridColumn AutoFit="true" Visible="false" Field=@nameof(OgrenciDto.TCKN) HeaderText="TCKN" Width="50"></GridColumn>
             <GridColumn AutoFit="true" Field=@nameof(Ogrenci.Sinif) HeaderText="Sinif" Width="50"></GridColumn>
             <GridColumn AutoFit="true" Field=@nameof(OgrenciDto.KayitTarih) Format="d" Type="ColumnType.Date" HeaderText="KayitTarih" Width="70"></GridColumn>

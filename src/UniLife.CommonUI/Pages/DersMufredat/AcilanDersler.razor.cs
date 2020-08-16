@@ -26,13 +26,14 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         int? programId;
         int? bolumId;
         int? fakulteId;
+        int? donemId;
 
         int? tempProgramId;
         int? tempBolumId;
         int? tempFakulteId;
 
         string OdataQuery = "odata/dersacilans";
-        public Query totalQuery = new Query().Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)" });
+        public Query totalQuery = new Query().Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)", "Donem($select=Id,Ad)" });
         bool isGridVisible = true;
 
         bool akademisyenDialogOpen;
@@ -65,7 +66,11 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         private DialogSettings DialogParams = new DialogSettings { MinHeight = "400px", Width = "1100px" };
 
+        public Query donemQuery = new Query().Select(new List<string> { "Id", "Ad" }).Take(6).RequiresCount();
+        SfDropDownList<int?, DonemDto> DropDonem;
 
+
+        public bool isOpsCoklama { get; set; }
         public void Change(@Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
         {
             if (args.Value == null)
@@ -129,6 +134,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                         }
                         args.Cancel = true;
                         await DersAcilanGrid.CloseEdit();
+                        isOpsCoklama = false;
                     }
                     else if (args.Action == "Add")
                     {
@@ -138,7 +144,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                         }
                         args.Cancel = true;
                         await DersAcilanGrid.CloseEdit();
-                        
+                        isOpsCoklama = false;
                     }
 
                 }
@@ -151,8 +157,9 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                     }
                     args.Cancel = true;
                     await DersAcilanGrid.CloseEdit();
+                    isOpsCoklama = false;
                 }
-
+                
             }
             catch (Exception ex)
             {
@@ -167,6 +174,10 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         {
             try
             {
+                dersAcilanDto.Donem = null;
+                dersAcilanDto.Akademisyen = null;
+                dersAcilanDto.Program= null;
+
                 ApiResponseDto<DersAcilanDto> apiResponse = await Http.PostJsonAsync<ApiResponseDto<DersAcilanDto>>
                     ("api/dersAcilan", dersAcilanDto);
                 if (apiResponse.IsSuccessStatusCode)
@@ -191,23 +202,31 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         {
             try
             {
-                dersAcilanDto.Program = null;
-                dersAcilanDto.Bolum = null;
-                dersAcilanDto.Fakulte = null;
-                dersAcilanDto.Akademisyen = null;
-                ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>
-                    ("api/dersAcilan", dersAcilanDto);
-
-                if (apiResponse.IsSuccessStatusCode)
+                if (isOpsCoklama)
                 {
-                    matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
-                    return true;
+                    dersAcilanDto.Id = 0;
+                    return await Create(dersAcilanDto);
                 }
                 else
                 {
-                    matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
-                    return false;
-                }
+                    dersAcilanDto.Program = null;
+                    dersAcilanDto.Bolum = null;
+                    dersAcilanDto.Fakulte = null;
+                    dersAcilanDto.Akademisyen = null;
+                    ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>
+                        ("api/dersAcilan", dersAcilanDto);
+
+                    if (apiResponse.IsSuccessStatusCode)
+                    {
+                        matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+                        return true;
+                    }
+                    else
+                    {
+                        matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
+                        return false;
+                    }
+                }                
             }
             catch (Exception ex)
             {
@@ -244,6 +263,11 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             totalQuery = new Query();
             totalQuery.Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)" });
 
+            if (donemId.HasValue)
+            {
+                totalQuery.Where("donemId", "equal", donemId);
+            }
+
             if (programId.HasValue)
             {
                 totalQuery.Where("programId", "equal", programId);
@@ -255,9 +279,8 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             else if (fakulteId.HasValue)
             {
                 totalQuery.Where("fakulteId", "equal", fakulteId);
-
             }
-            
+
 
             isGridVisible = true;
 
@@ -290,9 +313,17 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             AkademisyeninAtanacagiDersAcId = dersAcilanId;
         }
 
+        public async Task CommandClickHandler(Syncfusion.Blazor.Grids.CommandClickEventArgs<DersAcilanDto> args)
+        {
+            if (args.CommandColumn.Title == "Çokla")
+            {
+                isOpsCoklama = true;
+                //Id sıfırla.
+                //    paramtereye coklama oldugun ata
+                //    insert çak. 
+            }
 
-        //string tempProgramAd;
-        //int tempProgramId;
-        
+        }
+
     }
 }
