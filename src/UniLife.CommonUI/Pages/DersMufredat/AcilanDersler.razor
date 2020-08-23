@@ -147,6 +147,8 @@
                         @if (dAcilanContext.Program != null)
                         {
                             <p>@dAcilanContext.Program.Ad</p>
+                            <p>@dAcilanContext.Bolum.Ad</p>
+                            <p>@dAcilanContext.Fakulte.Ad</p>
                         }
                         else
                         {
@@ -157,8 +159,8 @@
                             <label for="DonemId" class="col-sm-2 col-form-label">Dönem</label>
                             <div class="col-sm-10">
                                 @*<SfDropDownList ID="DonemId" CssClass="form-control-sm" @bind-Value="@(dAcilanContext.DonemId)" TValue="int?" TItem="DonemDto" Index="0" DataSource="donemDtos">
-                                    <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
-                                </SfDropDownList>*@
+                    <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
+                </SfDropDownList>*@
 
                                 <SfDropDownList ID="DonemId" TValue="int?" TItem="DonemDto" Placeholder="Dönem seçiniz..."
                                                 Query="@donemQuery"
@@ -196,8 +198,8 @@
     </GridEditSettings>
     <GridColumns>
         <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Açılan Ders ID" Edit="false" AllowEditing="false" TextAlign="TextAlign.Left" Width="140"></GridColumn>
-        <GridColumn  Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kod" ></GridColumn>
-        <GridColumn  FilterSettings="@(new FilterSettings{ Operator = Operator.Contains })" Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Ad" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
+        <GridColumn Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kod"></GridColumn>
+        <GridColumn FilterSettings="@(new FilterSettings{ Operator = Operator.Contains })" Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Ad" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
         @*<GridColumn Field=@nameof(DersAcilanDto.Kredi) HeaderText="T+U TODO"></GridColumn>*@
         <GridColumn Field=@nameof(DersAcilanDto.Kredi) HeaderText="Kredi"></GridColumn>
         <GridColumn Field=@nameof(DersAcilanDto.Akts) HeaderText="Akts"></GridColumn>
@@ -213,9 +215,11 @@
         </GridColumn>
         <GridColumn Field=@nameof(DersAcilanDto.Zorunlu) HeaderText="Zor." EditType="EditType.BooleanEdit" DisplayAsCheckBox="true"></GridColumn>
         @*<GridColumn Field=@nameof(DersAcilanDto.ProgramId) EditType="EditType.DropDownEdit" HeaderText="Program" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@programDtos" Width="150"></GridColumn>
-            <GridColumn Field=@nameof(DersAcilanDto.AkademisyenId) HeaderText="Öğrt Görev" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@akademisyenDtos" Width="150"></GridColumn>*@
+        <GridColumn Field=@nameof(DersAcilanDto.AkademisyenId) HeaderText="Öğrt Görev" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@akademisyenDtos" Width="150"></GridColumn>*@
         <GridColumn Field="Donem.Ad" HeaderText="Donem"></GridColumn>
         <GridColumn Field="Program.Ad" HeaderText="Program"></GridColumn>
+        <GridColumn  Visible="false" Field="Bolum.Ad" HeaderText="Bölüm"></GridColumn>
+        <GridColumn Visible="false" Field="Fakulte.Ad" HeaderText="Fakülte"></GridColumn>
         <GridColumn Field="Akademisyen.Ad" HeaderText="Akademisyen">
             <Template>
                 @{
