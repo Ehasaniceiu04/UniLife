@@ -14,7 +14,7 @@
 @inject IJSRuntime JSRuntime;
 
 
-@if (_OgrenciDto.Id == 0)
+@if (!isInitializingFinised)
 {
 
     <LoadingBackground ShowLogoBox="true">
@@ -27,10 +27,10 @@ else
         <div class="row info-panel">
             <div class="col-sm-12 col-md-12">
                 @*<div class="row">
-            <div class="col-sm-12 text-center">
-                <p>Akademik Bilgiler</p>
-            </div>
-        </div>*@
+                        <div class="col-sm-12 text-center">
+                            <p>Akademik Bilgiler</p>
+                        </div>
+                    </div>*@
 
                 @*Model=@_OgrenciDto OnValidSubmit="Kaydet"*@
                 <EditForm EditContext="@EC">
@@ -190,23 +190,23 @@ else
                                 </SfUploader>
 
                                 @*<SfUploader @ref="uploderObj" ID="UploadFiles" MinFileSize=1000 MaxFileSize=1500000 AllowedExtensions=".png,.jpeg,jpg">
-                            <UploaderEvents ValueChange="onChange" OnRemove="onRemove"></UploaderEvents>
-                            <UploaderTemplates>
-                                <Template>
-                                    <span class="wrapper">
-                                        <img class="upload-image" alt="Image"
-                                             src="@(files.Count >0 ? files.Where(item=>item.Name == context.Name)?.FirstOrDefault()?.Path : string.Empty)">
-                                    </span>
-                                    <div class="name file-name" title="@(context.Name)">@(context.Name)</div>
-                                    <div class="file-size">@(context.Size)</div>
-                                    <span class="e-icons e-file-remove-btn remove" id="removeIcon" title="Remove"></span>
-                                    <span class="e-upload-icon e-icons e-file-remove-btn" title="Upload" id="iconUpload"></span>
-                                </Template>
-                            </UploaderTemplates>
-                            <UploaderFiles>
-                                <UploaderUploadedFiles Name="@(_OgrenciDto.ApplicationUserId.ToString())" Size=12000 Type="png"></UploaderUploadedFiles>
-                            </UploaderFiles>
-                        </SfUploader>*@
+                                        <UploaderEvents ValueChange="onChange" OnRemove="onRemove"></UploaderEvents>
+                                        <UploaderTemplates>
+                                            <Template>
+                                                <span class="wrapper">
+                                                    <img class="upload-image" alt="Image"
+                                                         src="@(files.Count >0 ? files.Where(item=>item.Name == context.Name)?.FirstOrDefault()?.Path : string.Empty)">
+                                                </span>
+                                                <div class="name file-name" title="@(context.Name)">@(context.Name)</div>
+                                                <div class="file-size">@(context.Size)</div>
+                                                <span class="e-icons e-file-remove-btn remove" id="removeIcon" title="Remove"></span>
+                                                <span class="e-upload-icon e-icons e-file-remove-btn" title="Upload" id="iconUpload"></span>
+                                            </Template>
+                                        </UploaderTemplates>
+                                        <UploaderFiles>
+                                            <UploaderUploadedFiles Name="@(_OgrenciDto.ApplicationUserId.ToString())" Size=12000 Type="png"></UploaderUploadedFiles>
+                                        </UploaderFiles>
+                                    </SfUploader>*@
                             </div>
                         </div>
                     </div>
@@ -357,14 +357,22 @@ else
 
     //}
 
+
+    [CascadingParameter]
+    Task<AuthenticationState> authenticationStateTask { get; set; }
+    ClaimsPrincipal user;
+
+    bool isInitializingFinised;
+
     //protected override void OnInitialized()
     protected override async Task OnInitializedAsync()
     {
         EC = new EditContext(_OgrenciDto);
         danismanAd = "";
 
+        user = (await authenticationStateTask).User;
 
-        if (_OgrenciDto.Id==0)
+        if (user.IsInRole(UserRoles.Ogrenci.ToString()))
         {
             _OgrenciDto = await appState.GetOgrenciState();
             isPersonel = false;
@@ -374,9 +382,6 @@ else
             isPersonel = true;
 
         }
-
-
-
 
         ReadFakultes().ConfigureAwait(true);
         ReadKayitNedens().ConfigureAwait(true);
@@ -392,12 +397,7 @@ else
         {
             ReadAkademisyens(_OgrenciDto.DanismanId).ConfigureAwait(true);
         }
-        //StateHasChanged();
-
-        if (true)
-        {
-
-        }
+        isInitializingFinised = true;
     }
 
     async Task ReadFakultes()

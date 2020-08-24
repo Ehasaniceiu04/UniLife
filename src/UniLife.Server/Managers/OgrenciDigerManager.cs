@@ -3,7 +3,6 @@ using UniLife.Server.Middleware.Wrappers;
 using UniLife.Shared.DataInterfaces;
 using UniLife.Shared.DataModels;
 using UniLife.Shared.Dto.Definitions;
-using UniLife.Storage.Migrations;
 using static Microsoft.AspNetCore.Http.StatusCodes;
 
 namespace UniLife.Server.Managers

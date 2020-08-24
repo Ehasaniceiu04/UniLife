@@ -194,7 +194,15 @@ namespace UniLife.Storage.Stores
 
         public async Task<long> GetLastOgrNo(int fakId, int bolId)
         {
-            return await _db.Ogrencis.Where(x => x.FakulteId == fakId && x.BolumId == bolId).MaxAsync(x => x.OgrNo);
+            try
+            {
+                return await _db.Ogrencis.Where(x => x.FakulteId == fakId && x.BolumId == bolId).MaxAsync(x => x.OgrNo);
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+           
         }
     }
 }

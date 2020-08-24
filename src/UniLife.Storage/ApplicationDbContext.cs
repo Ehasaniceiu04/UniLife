@@ -70,6 +70,7 @@ namespace UniLife.Storage
         public DbSet<OgrHarc> OgrHarcs{ get; set; }
         public DbSet<BursTip> BursTips{ get; set; }
         public DbSet<CezaTip> CezaTips{ get; set; }
+        //public DbSet<ProgramTur> ProgramTurs{ get; set; }
 
 
         //TODO Bunu böyle bırakacakmıyız.

@@ -138,17 +138,24 @@
         public AkademisyenDto _AkademisyenDto { get; set; } = new AkademisyenDto();
 
 
-        //protected override void OnInitialized()
-        //{
-
-        //}
+        [CascadingParameter]
+        Task<AuthenticationState> authenticationStateTask { get; set; }
+        ClaimsPrincipal user;
 
         protected override async Task OnInitializedAsync()
         {
 
 
             EC = new EditContext(_AkademisyenDto);
-            if (_AkademisyenDto.Id == 0)
+            //if (_AkademisyenDto.Id == 0)
+            //{
+            //    _AkademisyenDto = await appState.GetAkademisyenState();
+            //}
+
+
+            user = (await authenticationStateTask).User;
+
+            if (user.IsInRole(UserRoles.Akademisyen.ToString()))
             {
                 _AkademisyenDto = await appState.GetAkademisyenState();
             }

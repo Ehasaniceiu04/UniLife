@@ -6,7 +6,7 @@
 <div class="form-group row">
     <label for="DropFakulte" class="col-sm-2 col-form-label-sm">Fakülte</label>
     <div class="col-sm-10">
-        <SfDropDownList ID="DropFakulte" @ref="DropFakulte" ShowClearButton="true" TItem="KeyValueDto" CssClass="form-control-sm"
+        <SfDropDownList @ref="DropFakulte" ShowClearButton="true" TItem="KeyValueDto" CssClass="form-control-sm"
                         TValue="int?" PopupHeight="230px"
                         @bind-Value="@FakulteId" DataSource="@fakulteDtos">
             <DropDownListEvents TValue="int?" ValueChange="FakulteToBolum"></DropDownListEvents>
@@ -17,7 +17,7 @@
 <div class="form-group row">
     <label for="DropBolum" class="col-sm-2 col-form-label-sm">Bölüm</label>
     <div class="col-sm-10">
-        <SfDropDownList ID="DropBolum" @ref="DropBolum" ShowClearButton="true" TItem="KeyValueDto" CssClass="form-control-sm"
+        <SfDropDownList @ref="DropBolum" ShowClearButton="true" TItem="KeyValueDto" CssClass="form-control-sm"
                         TValue="int?" PopupHeight="230px"
                         @bind-Value="@BolumId" DataSource="@bolumDtos">
             <DropDownListEvents TValue="int?" ValueChange="BolumToProgram"></DropDownListEvents>
@@ -30,7 +30,7 @@
     <div class="form-group row">
         <label for="DropProgram" class="col-sm-2 col-form-label-sm">Program</label>
         <div class="col-sm-10">
-            <SfDropDownList ID="DropProgram" @ref="DropProgram" ShowClearButton="true" TItem="KeyValueDto" CssClass="form-control-sm"
+            <SfDropDownList @ref="DropProgram" ShowClearButton="true" TItem="KeyValueDto" CssClass="form-control-sm"
                             TValue="int?" PopupHeight="230px" Placeholder="@(ProgramPlaceHolder)"
                             @bind-Value="@ProgramId" DataSource="@programDtos">
                 <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>

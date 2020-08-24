@@ -41,7 +41,7 @@
 else
 {
     <ControlSection>
-        <SfGrid @ref="AkademikTakvimGrid" DataSource="@akademikTakvimDtos" Toolbar="@(new List<string>() {"Add","Edit","Update", "Cancel" })" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
+        <SfGrid @ref="AkademikTakvimGrid" AllowResizing="true" DataSource="@akademikTakvimDtos" Toolbar="@(new List<string>() {"Add","Edit","Update", "Cancel" })" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
             <GridEvents OnActionComplete="ActionCompletedHandler" CommandClicked="CommandClickHandler" TValue="AkademikTakvimDto"></GridEvents>
             <GridEditSettings AllowEditing="true" Mode="EditMode.Normal"></GridEditSettings>
             <GridColumns>

@@ -8,7 +8,13 @@
 @using Syncfusion.Blazor.Buttons
 
 <ControlSection>
-    <SfGrid @ref="ProgramGrid" Height="400px" DataSource="@programDtos" Toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Update", "Cancel" })" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
+    <div class="col-12 pb-2">
+        <FakBolPrg ProgramHide="true"
+                   @bind-BolumId=@(filterBolumId)
+                   @bind-FakulteId=@(filterFakulteId)></FakBolPrg>
+    </div>
+
+    <SfGrid @ref="ProgramGrid" Height="400px" DataSource="@programDtos.Where(x=>filterFakulteId==null ? true : x.FakulteId==filterFakulteId).ToList()" Toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Update", "Cancel" })" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
         <GridEvents OnActionComplete="ActionCompletedHandler" TValue="ProgramDto"></GridEvents>
         @*<GridGroupSettings ShowDropArea="false" Columns="@Initial"></GridGroupSettings>*@
         <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.CheckBox"></GridFilterSettings>
@@ -102,8 +108,8 @@
             <GridColumn Visible="false" Field=@nameof(ProgramDto.KisaAd) HeaderText="Kısa Ad"></GridColumn>
             <GridColumn Visible="false" Field=@nameof(ProgramDto.KisaAdEn) HeaderText="İng. K.Ad"></GridColumn>
             <GridColumn Field=@nameof(ProgramDto.Kod) HeaderText="Kod"></GridColumn>
-            <GridColumn Field=@nameof(ProgramDto.FakulteId) HeaderText="Fakülte" EditType="EditType.DropDownEdit" ForeignKeyValue="Ad" ForeignKeyField="Id" Width="150" DataSource="@fakulteDtos"></GridColumn>
-            <GridColumn Field=@nameof(ProgramDto.BolumId) HeaderText="Bölüm" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@bolumDtos" Width="150"></GridColumn>
+            @*<GridColumn Field=@nameof(ProgramDto.FakulteId) HeaderText="Fakülte" EditType="EditType.DropDownEdit" ForeignKeyValue="Ad" ForeignKeyField="Id" Width="150" DataSource="@fakulteDtos"></GridColumn>
+        <GridColumn Field=@nameof(ProgramDto.BolumId) HeaderText="Bölüm" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@bolumDtos" Width="150"></GridColumn>*@
             <GridColumn Field=@nameof(ProgramDto.NormalSure) HeaderText="Normal Süre" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
             <GridColumn Visible="false" Field=@nameof(ProgramDto.AzamiSure) HeaderText="AzamiSure"></GridColumn>
             <GridColumn Visible="false" Field=@nameof(ProgramDto.OsymKod) HeaderText="ösym Kod"></GridColumn>
@@ -111,6 +117,7 @@
             <GridColumn Visible="false" Field=@nameof(ProgramDto.YoksisBirimKod) HeaderText="YoksisBirimKod"></GridColumn>
             <GridColumn Visible="false" Field=@nameof(ProgramDto.MezuniyetUnvan) HeaderText="MezuniyetUnvan"></GridColumn>
             @*Program turu , öğrenim turu atladım todo*@
+            <GridColumn Visible="false" Field=@nameof(ProgramDto.Yerleske) HeaderText="Yerleske"></GridColumn>
             <GridColumn Visible="false" Field=@nameof(ProgramDto.IsHazirlik) DisplayAsCheckBox="true" HeaderText="Hazırlık"></GridColumn>
             <GridColumn Visible="false" Field=@nameof(ProgramDto.StajDurum) DisplayAsCheckBox="true" HeaderText="Staj"></GridColumn>
             <GridColumn Visible="false" Field=@nameof(ProgramDto.Durum) DisplayAsCheckBox="true" HeaderText="Aktif"></GridColumn>
@@ -135,18 +142,21 @@
 
     List<ProgramDto> programDtos = new List<ProgramDto>();
 
-    List<BolumDto> bolumDtos = new List<BolumDto>();
-    List<FakulteDto> fakulteDtos = new List<FakulteDto>();
+    //List<BolumDto> bolumDtos = new List<BolumDto>();
+    //List<FakulteDto> fakulteDtos = new List<FakulteDto>();
+
+    public int? filterBolumId{ get; set; }
+    public int? filterFakulteId { get; set; }
 
     protected override void OnInitialized()
     {
         ReadPrograms();
 
-        ApiResponseDto apiResponse = Http.GetFromJsonAsync<ApiResponseDto>("api/bolum").Result;
-        bolumDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<BolumDto[]>(apiResponse.Result.ToString()).ToList<BolumDto>();
+        //ApiResponseDto apiResponse = Http.GetFromJsonAsync<ApiResponseDto>("api/bolum").Result;
+        //bolumDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<BolumDto[]>(apiResponse.Result.ToString()).ToList<BolumDto>();
 
-        ApiResponseDto<List<FakulteDto>> apiResponseFakulte = Http.GetFromJsonAsync<ApiResponseDto<List<FakulteDto>>>("api/fakulte").Result;
-        fakulteDtos = apiResponseFakulte.Result;
+        //ApiResponseDto<List<FakulteDto>> apiResponseFakulte = Http.GetFromJsonAsync<ApiResponseDto<List<FakulteDto>>>("api/fakulte").Result;
+        //fakulteDtos = apiResponseFakulte.Result;
 
     }
 

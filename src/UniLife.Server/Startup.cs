@@ -555,6 +555,16 @@ namespace UniLife.Server
             {
                 var databaseInitializer = serviceScope.ServiceProvider.GetService<IDatabaseInitializer>();
                 databaseInitializer.SeedAsync().Wait();
+
+                //var dbContext = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
+                //dbContext.Database.Migrate();
+
+                //var dbContextc = serviceScope.ServiceProvider.GetService<IdentityServer4.EntityFramework.DbContexts.ConfigurationDbContext>();
+                //dbContextc.Database.Migrate();
+
+                //var dbContextp = serviceScope.ServiceProvider.GetService<IdentityServer4.EntityFramework.DbContexts.PersistedGrantDbContext>();
+                //dbContextp.Database.Migrate();
+
             }
 
             //odatalari loglamiyoruz (APIResponseRequestLoggingMiddleware den ayirdik).
@@ -665,7 +675,7 @@ namespace UniLife.Server
             builder.EntitySet<BursTip>("BursTips");
             builder.EntitySet<CezaTip>("CezaTips");
             builder.EntitySet<CezaTip>("Donems");
-            //builder.EntitySet<SinavKayit>("SinavKayits");
+            builder.EntitySet<SinavKayit>("ProgramTurs");
             return builder.GetEdmModel();
         }
     }

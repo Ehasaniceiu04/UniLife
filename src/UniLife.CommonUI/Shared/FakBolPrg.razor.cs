@@ -71,6 +71,7 @@ namespace UniLife.CommonUI.Shared
                 BolumIdChanged.InvokeAsync(value);
             }
         }
+
         [Parameter]
         public EventCallback<int?> BolumIdChanged { get; set; }
 
@@ -80,6 +81,14 @@ namespace UniLife.CommonUI.Shared
         protected async override Task OnInitializedAsync()
         {
             await ReadFakultes();
+            if (BolumId !=null)
+            {
+                await ReadBolums(FakulteId);
+            }
+            if (ProgramId !=null)
+            {
+                await ReadPrograms(BolumId);
+            }
         }
         async Task ReadFakultes()
         {

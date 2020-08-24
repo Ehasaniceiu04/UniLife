@@ -12,6 +12,9 @@ namespace UniLife.Shared.Dto.Definitions
         public int? BolumId { get; set; }
         public virtual BolumDto Bolum { get; set; }
 
+        public int? ProgramTurId { get; set; }
+        public virtual ProgramTurDto ProgramTur { get; set; }
+
         public int Kod { get; set; }
         public string AdEn { get; set; }
         public string KisaAd { get; set; }
@@ -19,7 +22,6 @@ namespace UniLife.Shared.Dto.Definitions
         public string OptKod { get; set; }
         public int AnaBolum { get; set; }
         public int ProgramTipId { get; set; }
-        public int ProgramTurId { get; set; }
         public string Adres { get; set; }
         public string Iletisim { get; set; }
         public int? FakulteId { get; set; }

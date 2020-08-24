@@ -322,6 +322,10 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 //    paramtereye coklama oldugun ata
                 //    insert çak. 
             }
+            if (args.CommandColumn.Title == "Akademisyen")
+            {
+                AkademisyenAta(args.RowData.Id);
+            }
 
         }
 

@@ -15,14 +15,14 @@ namespace UniLife.Shared.DataModels
         public virtual Bolum Bolum { get; set; }
         public int FakulteId { get; set; }
         public virtual Fakulte Fakulte { get; set; }
+        public int ProgramTurId { get; set; }
+        public virtual ProgramTur ProgramTur { get; set; }
         public int Kod { get; set; }
         public string AdEn { get; set; }
         public string KisaAd { get; set; }
         public string KisaAdEn { get; set; }
         public string OptKod{ get; set; }
         public int AnaBolum { get; set; }
-        public int ProgramTipId { get; set; }
-        public int ProgramTurId { get; set; }
         public string Adres { get; set; }
         public string Iletisim { get; set; }
         
