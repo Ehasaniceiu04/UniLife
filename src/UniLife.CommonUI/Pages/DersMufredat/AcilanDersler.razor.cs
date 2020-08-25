@@ -33,7 +33,8 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         int? tempFakulteId;
 
         string OdataQuery = "odata/dersacilans";
-        public Query totalQuery = new Query().Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)", "Donem($select=Id,Ad)", "Bolum($select=Id,Ad)", "Fakulte($select=Id,Ad)" });
+        //public Query totalQuery = new Query().Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)", "Donem($select=Id,Ad)", "Bolum($select=Id,Ad)", "Fakulte($select=Id,Ad)" });
+        public Query totalQuery = new Query().Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)", "Donem($select=Id,Ad)", "bolum($expand=fakulte($select=Ad,Id);$select=Ad,Id)" });
         bool isGridVisible = true;
 
         bool akademisyenDialogOpen;
@@ -66,7 +67,8 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         private DialogSettings DialogParams = new DialogSettings { MinHeight = "400px", Width = "1100px" };
 
-        public Query donemQuery = new Query().Select(new List<string> { "Id", "Ad" }).Take(6).RequiresCount();
+        //public Query donemQuery = new Query().Select(new List<string> { "Id", "Ad" }).Take(6).RequiresCount();
+        public Query donemQuery = new Query().Select(new List<string> { "Id", "Ad" }).RequiresCount();
         SfDropDownList<int?, DonemDto> DropDonem;
 
 
@@ -213,6 +215,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                     dersAcilanDto.Bolum = null;
                     dersAcilanDto.Fakulte = null;
                     dersAcilanDto.Akademisyen = null;
+                    dersAcilanDto.Donem = null;
                     ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>
                         ("api/dersAcilan", dersAcilanDto);
 
@@ -261,7 +264,9 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         async Task Refresh()
         {
             totalQuery = new Query();
-            totalQuery.Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)" });
+            //totalQuery.Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)" });
+            totalQuery.Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)", "Donem($select=Id,Ad)", "bolum($expand=fakulte($select=Ad,Id);$select=Ad,Id)" });
+            
 
             if (donemId.HasValue)
             {

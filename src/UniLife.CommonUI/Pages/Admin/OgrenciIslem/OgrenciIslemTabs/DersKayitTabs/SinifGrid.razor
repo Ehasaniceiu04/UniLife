@@ -35,7 +35,7 @@
                         <GridEvents TValue="DersAcilanDto" CommandClicked="CommandClickHandler"></GridEvents>
                         <GridColumns>
                             <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
-                            <GridColumn HeaderText="Kayıt" Width="70">
+                            <GridColumn HeaderText="Kayıt">
                                 <GridCommandColumns>
                                     <GridCommandColumn Type="CommandButtonType.None" Title="Kayıt Ol" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowDown", CssClass="e-flat" })"></GridCommandColumn>
                                     @*<GridCommandColumn Type="CommandButtonType.None" Title="Seçmeli Al" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-StrokeColor", CssClass="e-flat" })"></GridCommandColumn>*@
@@ -123,7 +123,7 @@
 
                         <GridColumns>
                             <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
-                            <GridColumn Width="50">
+                            <GridColumn HeaderText="Kaldır">
                                 <GridCommandColumns>
                                     <GridCommandColumn Type="CommandButtonType.None" Title="Kayıt Kaldır" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowUP", CssClass="e-flat" })"></GridCommandColumn>
                                 </GridCommandColumns>

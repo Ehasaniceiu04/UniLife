@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using UniLife.Storage;
@@ -9,9 +10,10 @@ using UniLife.Storage;
 namespace UniLife.Storage.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200825063042_programturs")]
+    partial class programturs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -762,12 +764,6 @@ namespace UniLife.Storage.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<int?>("DersDilId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("DersNedenId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("DonemId")
                         .HasColumnType("integer");
 
@@ -831,10 +827,6 @@ namespace UniLife.Storage.Migrations
 
                     b.HasIndex("BolumId");
 
-                    b.HasIndex("DersDilId");
-
-                    b.HasIndex("DersNedenId");
-
                     b.HasIndex("DonemId");
 
                     b.HasIndex("FakulteId");
@@ -893,13 +885,7 @@ namespace UniLife.Storage.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<int?>("DersDilId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("DersId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("DersNedenId")
                         .HasColumnType("integer");
 
                     b.Property<int>("DonemId")
@@ -976,11 +962,7 @@ namespace UniLife.Storage.Migrations
 
                     b.HasIndex("BolumId");
 
-                    b.HasIndex("DersDilId");
-
                     b.HasIndex("DersId");
-
-                    b.HasIndex("DersNedenId");
 
                     b.HasIndex("DonemId");
 
@@ -991,43 +973,6 @@ namespace UniLife.Storage.Migrations
                     b.HasIndex("ProgramId");
 
                     b.ToTable("DersAcilans");
-                });
-
-            modelBuilder.Entity("UniLife.Shared.DataModels.DersDil", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Ad")
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp without time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("Kod")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid>("ModifiedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("ModifiedOn")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp without time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DersDils");
                 });
 
             modelBuilder.Entity("UniLife.Shared.DataModels.DersKayit", b =>
@@ -1102,43 +1047,6 @@ namespace UniLife.Storage.Migrations
                     b.HasIndex("OgrenciId");
 
                     b.ToTable("DersKayits");
-                });
-
-            modelBuilder.Entity("UniLife.Shared.DataModels.DersNeden", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Ad")
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp without time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("Kod")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid>("ModifiedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("ModifiedOn")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp without time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DersNedens");
                 });
 
             modelBuilder.Entity("UniLife.Shared.DataModels.Derslik", b =>
@@ -3275,14 +3183,6 @@ namespace UniLife.Storage.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("UniLife.Shared.DataModels.DersDil", "DersDil")
-                        .WithMany()
-                        .HasForeignKey("DersDilId");
-
-                    b.HasOne("UniLife.Shared.DataModels.DersNeden", "DersNeden")
-                        .WithMany()
-                        .HasForeignKey("DersNedenId");
-
                     b.HasOne("UniLife.Shared.DataModels.Donem", "Donem")
                         .WithMany()
                         .HasForeignKey("DonemId")
@@ -3320,19 +3220,11 @@ namespace UniLife.Storage.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("UniLife.Shared.DataModels.DersDil", "DersDil")
-                        .WithMany()
-                        .HasForeignKey("DersDilId");
-
                     b.HasOne("UniLife.Shared.DataModels.Ders", "Ders")
                         .WithMany("DersAcilans")
                         .HasForeignKey("DersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("UniLife.Shared.DataModels.DersNeden", "DersNeden")
-                        .WithMany()
-                        .HasForeignKey("DersNedenId");
 
                     b.HasOne("UniLife.Shared.DataModels.Donem", "Donem")
                         .WithMany()

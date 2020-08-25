@@ -1,14 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using UniLife.Shared.DataModels;
 using UniLife.Storage;
 
 namespace UniLife.Server.Controllers
 {
-    public class ProgramTursController : ControllerBase
+    public class DersNedensController : ControllerBase
     {
         private readonly IApplicationDbContext _applicationDbContext;
 
-        public ProgramTursController(IApplicationDbContext applicationDbContext)
+        public DersNedensController(IApplicationDbContext applicationDbContext)
         {
             _applicationDbContext = applicationDbContext;
         }
@@ -16,9 +17,9 @@ namespace UniLife.Server.Controllers
         [Microsoft.AspNet.OData.EnableQuery()]
         [HttpGet]
         //[Authorize(Permissions.Ogrenci.Create)]
-        public IEnumerable<UniLife.Shared.DataModels.ProgramTur> Get()
+        public IEnumerable<DersNeden> Get()
         {
-            return _applicationDbContext.ProgramTurs;
+            return _applicationDbContext.DersNedens;
         }
 
     }

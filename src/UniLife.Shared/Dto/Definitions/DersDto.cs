@@ -18,6 +18,10 @@ namespace UniLife.Shared.Dto.Definitions
         public virtual BolumDto Bolum { get; set; }
         public int? ProgramId { get; set; }
         public virtual ProgramDto Program { get; set; }
+        public int? DersNedenId { get; set; }
+        public virtual DersNedenDto DersNeden { get; set; }
+        public int? DersDilId { get; set; }
+        public virtual DersDilDto DersDil { get; set; }
         public string KisaAd { get; set; }
         public int? Akts { get; set; }
         public int? GecmeNotu { get; set; }

@@ -71,6 +71,8 @@ namespace UniLife.Storage.Mapping
             CreateMap<AkademikTakvim, AkademikTakvimDto>().ReverseMap();
             CreateMap<OgrHarc, OgrHarcDto>().ReverseMap();
             CreateMap<ProgramTur, ProgramTurDto>().ReverseMap();
+            CreateMap<DersDil, DersDilDto>().ReverseMap();
+            CreateMap<DersNeden, DersNedenDto>().ReverseMap();
         }
     }
 }

@@ -675,7 +675,9 @@ namespace UniLife.Server
             builder.EntitySet<BursTip>("BursTips");
             builder.EntitySet<CezaTip>("CezaTips");
             builder.EntitySet<CezaTip>("Donems");
-            builder.EntitySet<SinavKayit>("ProgramTurs");
+            builder.EntitySet<ProgramTur>("ProgramTurs");
+            builder.EntitySet<DersDil>("DersDils");
+            builder.EntitySet<DersNeden>("DersNedens");
             return builder.GetEdmModel();
         }
     }

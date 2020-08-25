@@ -2,6 +2,7 @@
 @using UniLife.Shared.Dto.Definitions
 @inject IMatToaster matToaster
 @using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Data
 @using System.Net
 @using Newtonsoft.Json
 @using Syncfusion.Blazor.Inputs
@@ -70,7 +71,12 @@
                                     <label class="col-md-2 col-form-label" for="YoksisBirimKod">YoksisBirimKod</label>
                                     <SfNumericTextBox ID="YoksisBirimKod" CssClass="form-control col-sm-7" @bind-Value="@(programInfo.YoksisBirimKod)"></SfNumericTextBox>
                                     <SfCheckBox Label="Yöksis Durum" CssClass="col-sm-2" @bind-Checked="@(programInfo.YoksisDurum)"></SfCheckBox>
-
+                                    <SfDropDownList @ref="DropProgramTur" TValue="int?" TItem="ProgramTurDto" Placeholder="Program Türü seçiniz..."
+                                                    Query="@programTurQuery"
+                                                    @bind-Value="@programInfo.ProgramTurId">
+                                        <SfDataManager Url="odata/programturs" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
+                                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                                    </SfDropDownList>
                                 </div>
                             </div>
                         </div>
@@ -109,7 +115,7 @@
             <GridColumn Visible="false" Field=@nameof(ProgramDto.KisaAdEn) HeaderText="İng. K.Ad"></GridColumn>
             <GridColumn Field=@nameof(ProgramDto.Kod) HeaderText="Kod"></GridColumn>
             @*<GridColumn Field=@nameof(ProgramDto.FakulteId) HeaderText="Fakülte" EditType="EditType.DropDownEdit" ForeignKeyValue="Ad" ForeignKeyField="Id" Width="150" DataSource="@fakulteDtos"></GridColumn>
-        <GridColumn Field=@nameof(ProgramDto.BolumId) HeaderText="Bölüm" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@bolumDtos" Width="150"></GridColumn>*@
+                <GridColumn Field=@nameof(ProgramDto.BolumId) HeaderText="Bölüm" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@bolumDtos" Width="150"></GridColumn>*@
             <GridColumn Field=@nameof(ProgramDto.NormalSure) HeaderText="Normal Süre" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
             <GridColumn Visible="false" Field=@nameof(ProgramDto.AzamiSure) HeaderText="AzamiSure"></GridColumn>
             <GridColumn Visible="false" Field=@nameof(ProgramDto.OsymKod) HeaderText="ösym Kod"></GridColumn>
@@ -117,7 +123,7 @@
             <GridColumn Visible="false" Field=@nameof(ProgramDto.YoksisBirimKod) HeaderText="YoksisBirimKod"></GridColumn>
             <GridColumn Visible="false" Field=@nameof(ProgramDto.MezuniyetUnvan) HeaderText="MezuniyetUnvan"></GridColumn>
             @*Program turu , öğrenim turu atladım todo*@
-            <GridColumn Visible="false" Field=@nameof(ProgramDto.Yerleske) HeaderText="Yerleske"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(ProgramDto.ProgramTurId) HeaderText="ProgramTurId"></GridColumn>
             <GridColumn Visible="false" Field=@nameof(ProgramDto.IsHazirlik) DisplayAsCheckBox="true" HeaderText="Hazırlık"></GridColumn>
             <GridColumn Visible="false" Field=@nameof(ProgramDto.StajDurum) DisplayAsCheckBox="true" HeaderText="Staj"></GridColumn>
             <GridColumn Visible="false" Field=@nameof(ProgramDto.Durum) DisplayAsCheckBox="true" HeaderText="Aktif"></GridColumn>
@@ -145,8 +151,11 @@
     //List<BolumDto> bolumDtos = new List<BolumDto>();
     //List<FakulteDto> fakulteDtos = new List<FakulteDto>();
 
-    public int? filterBolumId{ get; set; }
+    public int? filterBolumId { get; set; }
     public int? filterFakulteId { get; set; }
+
+    SfDropDownList<int?, ProgramTurDto> DropProgramTur;
+    public Query programTurQuery = new Query().Select(new List<string> { "Id", "Ad" }).RequiresCount();
 
     protected override void OnInitialized()
     {
