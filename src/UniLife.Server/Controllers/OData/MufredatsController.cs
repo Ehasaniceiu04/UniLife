@@ -14,7 +14,7 @@ namespace UniLife.Server.Controllers
             _applicationDbContext = applicationDbContext;
         }
 
-        [Microsoft.AspNet.OData.EnableQuery()]
+        [Microsoft.AspNet.OData.EnableQuery(MaxExpansionDepth = 4)]
         [HttpGet]
         //[Authorize(Permissions.Ogrenci.Create)]
         public IEnumerable<Mufredat> Get()

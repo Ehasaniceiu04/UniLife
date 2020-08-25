@@ -25,7 +25,7 @@ namespace UniLife.Shared.DataModels
         public virtual Program Program { get; set; }
         public int MufredatId { get; set; }
         public virtual Mufredat Mufredat{ get; set; }
-        public int? DersNedenId { get; set; }
+        public int DersNedenId { get; set; }
         public virtual DersNeden DersNeden { get; set; }
         public int? DersDilId { get; set; }
         public virtual DersDil DersDil { get; set; }

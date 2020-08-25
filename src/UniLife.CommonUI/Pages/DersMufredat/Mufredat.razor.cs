@@ -28,13 +28,15 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         int? fakulteId;
         int? bolumId;
-        //int? programId;
+        int? programId;
+
         int? ProgramValueHolder;
 
         string plazceHolderProgramAd = "";
 
         string OdataQuery = "odata/Mufredats";
-        public Query totalQuery = new Query().AddParams("$expand", "program($select=Id,Ad)");
+        //public Query totalQuery = new Query().AddParams("$expand", "program($select=Id,Ad)");
+        public Query totalQuery = new Query().AddParams("$expand", "program($expand=bolum($expand=fakulte($select=Ad,Id);$select=Ad,Id);$select=Ad,Id)");
 
 
 
@@ -348,6 +350,29 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             {
                 matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Donem getirilirken hata oluştu!");
             }
+        }
+
+        async Task Refresh()
+        {
+            totalQuery = new Query().AddParams("$expand", "program($expand=bolum($expand=fakulte($select=Ad,Id);$select=Ad,Id);$select=Ad,Id)");
+
+            if (programId.HasValue)
+            {
+                totalQuery.Where("programId", "equal", programId);
+            }
+            else if (bolumId.HasValue)
+            {
+                totalQuery.Where("program/bolumId", "equal", bolumId);
+            }
+            else if (fakulteId.HasValue)
+            {
+                totalQuery.Where("program/bolum/fakulteId", "equal", fakulteId);
+            }
+
+
+            //isGridVisible = true;
+
+
         }
 
     }
