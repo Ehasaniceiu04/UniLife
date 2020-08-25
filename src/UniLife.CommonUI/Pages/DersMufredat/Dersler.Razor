@@ -66,22 +66,22 @@
             </GridAggregateColumns>
         </GridAggregate>
         @*<GridAggregate>
-            <GridAggregateColumns>
-                <GridAggregateColumn Field=@nameof(DersDto.Kredi) Type="AggregateType.Sum" Format="N2">
-                    <GroupFooterTemplate>
-                        @{
-                            var aggregate = (context as AggregateTemplateContext);
-                            if (aggregate.Field == "DonemId")
-                            {
-                                <div>
-                                    <p>T: @aggregate.Sum</p>
-                                </div>
+                <GridAggregateColumns>
+                    <GridAggregateColumn Field=@nameof(DersDto.Kredi) Type="AggregateType.Sum" Format="N2">
+                        <GroupFooterTemplate>
+                            @{
+                                var aggregate = (context as AggregateTemplateContext);
+                                if (aggregate.Field == "DonemId")
+                                {
+                                    <div>
+                                        <p>T: @aggregate.Sum</p>
+                                    </div>
+                                }
                             }
-                        }
-                    </GroupFooterTemplate>
-                </GridAggregateColumn>
-            </GridAggregateColumns>
-        </GridAggregate>*@
+                        </GroupFooterTemplate>
+                    </GridAggregateColumn>
+                </GridAggregateColumns>
+            </GridAggregate>*@
     </GridAggregates>
     <GridEvents CommandClicked="CommandClickHandler" QueryCellInfo="QueryCellInfoHandler" OnActionComplete="ActionCompletedHandler" TValue="DersDto"></GridEvents>
     <GridEditSettings Dialog="DialogParams" ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
@@ -204,7 +204,7 @@
                             </div>
                             <label for="durum" class="col-sm-2 col-form-label">Aktif</label>
                             <div class="col-sm-4">
-                                <SfCheckBox ID="durum" CssClass="form-control-sm" @bind-Checked="@(dersDto.Durum)"></SfCheckBox>
+                                <SfCheckBox ID="durum" CssClass="form-control-sm" @onchange="onChange" @bind-Checked="@(dersDto.Durum)"></SfCheckBox>
                             </div>
                         </div>
                     </div>
@@ -253,6 +253,30 @@
     </GridColumns>
 </SfGrid>
 
+
+@if (yerineDersDialogOpen)
+{
+    <Dialog Baslik="Pasif dersin yerine başka bir ders şeçmek istermisiniz?" @bind-isDialogOpen="@yerineDersDialogOpen">
+        
+            <SfGrid TValue="DersDto" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowFiltering="true">
+                <SfDataManager Url="odata/Derss?$expand=Program($select=Ad,Id)" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+                <GridEvents TValue="DersDto" CommandClicked="CommandClickHandlerDers"></GridEvents>
+                <GridColumns>
+                    <GridColumn Visible="false" Field=@nameof(DersDto.Id) IsPrimaryKey="true" TextAlign="TextAlign.Right"></GridColumn>
+                    <GridColumn Field=@nameof(DersDto.Ad) HeaderText="Ders Ad"></GridColumn>
+                    <GridColumn Field=@nameof(DersDto.Kod) HeaderText="Ders Kod"></GridColumn>
+                    <GridColumn Field="Program.Ad" HeaderText="Program"></GridColumn>
+                    <GridColumn>
+                        <GridCommandColumns>
+                            <GridCommandColumn Type="CommandButtonType.None" Title="Ders Ekle" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-Circle_Add", CssClass="e-flat" })"></GridCommandColumn>
+                        </GridCommandColumns>
+                    </GridColumn>
+                </GridColumns>
+            </SfGrid>
+        
+    </Dialog>
+}
+
 <style>
     /*.form-group {
         margin-bottom: 0.2rem;
@@ -275,7 +299,8 @@
         content: '\e7fe';
         color: #80d192;
     }
-     .form-row {
+
+    .form-row {
         margin-right: unset;
         margin-left: unset;
     }
@@ -283,4 +308,8 @@
         margin-right: unset;
         margin-left: unset;
     }*/
+    .e-Circle_Add:before {
+        content: '\e755';
+        color: #31ba13;
+    }
 </style>

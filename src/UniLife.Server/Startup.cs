@@ -678,6 +678,7 @@ namespace UniLife.Server
             builder.EntitySet<ProgramTur>("ProgramTurs");
             builder.EntitySet<DersDil>("DersDils");
             builder.EntitySet<DersNeden>("DersNedens");
+            builder.EntitySet<DersNeden>("Derss");
             return builder.GetEdmModel();
         }
     }

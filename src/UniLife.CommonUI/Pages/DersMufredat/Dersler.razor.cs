@@ -41,6 +41,9 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         public bool isOpsCoklama { get; set; }
 
+
+        bool yerineDersDialogOpen;
+
         protected override void OnInitialized()
         {
             ReadDerss();
@@ -277,6 +280,33 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             }
 
 
+        }
+
+        private void onChange(Microsoft.AspNetCore.Components.ChangeEventArgs args)
+        {
+            if ((bool)args.Value == false)
+            {
+                yerineDersDialogOpen = true;
+            }
+        }
+
+        public async Task CommandClickHandlerAkademisyen(Syncfusion.Blazor.Grids.CommandClickEventArgs<DersDto> args)
+        {
+            if (args.CommandColumn.Title == "Ders Ekle")
+            {
+                ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>($"api/ders/UpdateDersAcilanAkademsiyen/{AkademisyeninAtanacagiDersAcId}/{args.RowData.Id}");
+                akademisyenDialogOpen = false;
+
+                if (apiResponse.IsSuccessStatusCode)
+                {
+                    DersAcilanGrid.Refresh();
+                    matToaster.Add(args.RowData.Ad + " " + args.RowData.Soyad, MatToastType.Success, "Akademisyen kaydı güncellendi");
+                }
+                else
+                {
+                    matToaster.Add(args.RowData.Ad + " " + args.RowData.Soyad + " : " + apiResponse.StatusCode, MatToastType.Danger, "Akademisyen kayıt edilemedi");
+                }
+            }
         }
 
     }
