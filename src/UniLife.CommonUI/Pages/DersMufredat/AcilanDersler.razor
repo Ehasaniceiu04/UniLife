@@ -141,14 +141,14 @@
                                     <div class="col-12 pb-2">
                                         <div class="form-row">
                                             <label class="col-md-2 col-form-label" for="DropAltKotaUyg">Ders Dil</label>
-                                            <SfDropDownList TValue="int?" TItem="DonemDto" Placeholder="Dil seçiniz..." CssClass="col-sm-4 pb-1"
+                                            <SfDropDownList TValue="int?" TItem="DersDilDto" Placeholder="Dil seçiniz..." CssClass="col-sm-4 pb-1"
                                                             @bind-Value="@dAcilanContext.DersDilId">
                                                 <SfDataManager Url="odata/dersdils" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
                                                 <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                                             </SfDropDownList>
 
                                             <label class="col-md-2 col-form-label" for="DropAltKotaUyg">Ders Neden</label>
-                                            <SfDropDownList TValue="int?" TItem="DonemDto" Placeholder="Neden seçiniz..." CssClass="col-sm-4 pb-1"
+                                            <SfDropDownList TValue="int?" TItem="DersNedenDto" Placeholder="Neden seçiniz..." CssClass="col-sm-4 pb-1"
                                                             @bind-Value="@dAcilanContext.DersNedenId">
                                                 <SfDataManager Url="odata/dersnedens" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
                                                 <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
