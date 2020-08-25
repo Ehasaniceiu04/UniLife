@@ -292,9 +292,11 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         public async Task CommandClickHandlerAkademisyen(Syncfusion.Blazor.Grids.CommandClickEventArgs<DersDto> args)
         {
+            Dersid si ile repositoryde kayıdı alıp değiştirip programın aktif dönem müfredatında çakacaz. program göndermeli
+
             if (args.CommandColumn.Title == "Ders Ekle")
             {
-                ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>($"api/ders/UpdateDersAcilanAkademsiyen/{AkademisyeninAtanacagiDersAcId}/{args.RowData.Id}");
+                ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>($"api/ders/AddYerineDers/{args.RowData.Id}");
                 akademisyenDialogOpen = false;
 
                 if (apiResponse.IsSuccessStatusCode)
