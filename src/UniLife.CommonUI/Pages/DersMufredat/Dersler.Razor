@@ -14,10 +14,75 @@
     <MatBlazor.MatHeadline6 class="col-md-3 col-sm-12">Müfredat : @(appState.MufredatState == null ? "Müfredat seçmelisiniz." : appState.MufredatState?.MufredatAd)</MatBlazor.MatHeadline6>
 
 </div>
-<SfGrid Height="500px" ShowColumnChooser="true" @ref="DersGrid" DataSource="@dersDtos" Dialog="DialogParams" Toolbar="@(new List<string>() { "Add","ColumnChooser" })" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowGrouping="true" ColumnMenuItems=@MenuItems ShowColumnMenu="true" Width="100%">
+<div class="form-group">
+    <div class="col-sm-12">
+        <SfDropDownList TValue="int?" TItem="DonemDto" Placeholder="Dönem filtresi..."
+                        @bind-Value="@donemId" ShowClearButton="true">
+            <SfDataManager Url="odata/donems?$orderby=yil desc" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
+            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+        </SfDropDownList>
+    </div>
+</div>
+<SfGrid ShowColumnChooser="true" @ref="DersGrid" DataSource="@dersDtos.Where(x=>donemId.HasValue? x.DonemId==donemId:true).ToList()" Dialog="DialogParams" Toolbar="@(new List<string>() { "Add","ColumnChooser" })" AllowSorting="true" AllowGrouping="true" AllowFiltering="true" AllowPaging="true" ColumnMenuItems=@MenuItems ShowColumnMenu="true" Width="100%">
     @*<SfDataManager AdaptorInstance="@typeof(CustomAdaptor)" Adaptor="Adaptors.CustomAdaptor"></SfDataManager>*@
-    <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.CheckBox"></GridFilterSettings>
-    <GridGroupSettings ShowGroupedColumn="true"></GridGroupSettings>
+    @*<GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.CheckBox"></GridFilterSettings>*@
+    <GridGroupSettings ShowDropArea="false" ShowGroupedColumn="false" Columns="@Initial">
+        <CaptionTemplate>
+            @{
+                var donemContext = (context as CaptionTemplateContext);
+            }
+            <div><b>@donemContext.ForeignKey</b></div>
+        </CaptionTemplate>
+    </GridGroupSettings>
+    <GridAggregates>
+        <GridAggregate>
+            <GridAggregateColumns>
+                <GridAggregateColumn Field=@nameof(DersDto.Akts) Type="AggregateType.Sum" Format="N2">
+                    <GroupFooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            if (aggregate.Field == "DonemId")
+                            {
+                                <div>
+                                    <p>T : @aggregate.Sum</p>
+                                </div>
+                            }
+                        }
+                    </GroupFooterTemplate>
+                </GridAggregateColumn>
+                <GridAggregateColumn Field=@nameof(DersDto.Kredi) Type="AggregateType.Sum" Format="N2">
+                    <GroupFooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            if (aggregate.Field == "DonemId")
+                            {
+                                <div>
+                                    <p>T : @aggregate.Sum</p>
+                                </div>
+                            }
+                        }
+                    </GroupFooterTemplate>
+                </GridAggregateColumn>
+            </GridAggregateColumns>
+        </GridAggregate>
+        @*<GridAggregate>
+            <GridAggregateColumns>
+                <GridAggregateColumn Field=@nameof(DersDto.Kredi) Type="AggregateType.Sum" Format="N2">
+                    <GroupFooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            if (aggregate.Field == "DonemId")
+                            {
+                                <div>
+                                    <p>T: @aggregate.Sum</p>
+                                </div>
+                            }
+                        }
+                    </GroupFooterTemplate>
+                </GridAggregateColumn>
+            </GridAggregateColumns>
+        </GridAggregate>*@
+    </GridAggregates>
     <GridEvents CommandClicked="CommandClickHandler" QueryCellInfo="QueryCellInfoHandler" OnActionComplete="ActionCompletedHandler" TValue="DersDto"></GridEvents>
     <GridEditSettings Dialog="DialogParams" ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
         <Template>
@@ -34,7 +99,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="Kod" class="col-sm-2 col-form-label">Kod</label>
+                            <label for="Kod" class="col-sm-2 col-form-label">Ders Kod</label>
                             <div class="col-sm-10">
                                 <SfTextBox ID="Kod" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.Kod)"></SfTextBox>
                             </div>
@@ -137,6 +202,10 @@
                                     <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                                 </SfDropDownList>
                             </div>
+                            <label for="durum" class="col-sm-2 col-form-label">Aktif</label>
+                            <div class="col-sm-4">
+                                <SfCheckBox ID="durum" CssClass="form-control-sm" @bind-Checked="@(dersDto.Durum)"></SfCheckBox>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -149,36 +218,38 @@
     </GridEditSettings>
     <GridColumns>
         <GridColumn Visible="false" Field=@nameof(DersDto.Id) HeaderText="Fakülte ID" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
-        <GridColumn Field=@nameof(DersDto.Ad) HeaderText="Ders Ad" ValidationRules="@(new ValidationRules{ Required=true})" Width="170"></GridColumn>
-        <GridColumn Field=@nameof(DersDto.Kod) HeaderText="Ders Kod" ValidationRules="@(new ValidationRules{ Required=true})" Width="170"></GridColumn>
+        <GridColumn Field=@nameof(DersDto.Ad) HeaderText="Ders Ad" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
+        <GridColumn Field=@nameof(DersDto.Kod) HeaderText="Ders Kod" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
 
-        <GridColumn Field=@nameof(DersDto.KisaAd) HeaderText="KisaAd" ValidationRules="@(new ValidationRules{ Required=true})" Width="170"></GridColumn>
+        @*<GridColumn Field=@nameof(DersDto.KisaAd) HeaderText="KisaAd" Width="170"></GridColumn>*@
 
         @*<GridColumn Field=@nameof(DersDto.MufredatId) HeaderText="Müfredat" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="mufredatDtos" Width="150"></GridColumn>*@
-        <GridColumn Field=@nameof(DersDto.DonemId) HeaderText="Dönem" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@donemDtos" Width="150"></GridColumn>
-        <GridColumn Visible="false" Field=@nameof(DersDto.Akts) HeaderText="Akts"></GridColumn>
+        <GridColumn Field=@nameof(DersDto.DonemId) HeaderText="Dönem" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@donemDtos"></GridColumn>
+        <GridColumn Field=@nameof(DersDto.Akts) HeaderText="Akts"></GridColumn>
         <GridColumn Visible="false" Field=@nameof(DersDto.GecmeNotu) HeaderText="GeçmeNotu"></GridColumn>
         <GridColumn Visible="false" Field=@nameof(DersDto.OptikKod) HeaderText="OptikKod"></GridColumn>
         <GridColumn Visible="false" Field=@nameof(DersDto.AdEn) HeaderText="AdEn"></GridColumn>
         <GridColumn Visible="false" Field=@nameof(DersDto.UygSaat) HeaderText="UygSaat"></GridColumn>
         <GridColumn Visible="false" Field=@nameof(DersDto.LabSaat) HeaderText="LabSaat"></GridColumn>
         <GridColumn Visible="false" Field=@nameof(DersDto.TeoSaat) HeaderText="TeoSaat"></GridColumn>
-        <GridColumn Visible="false" Field=@nameof(DersDto.Kredi) HeaderText="Kredi"></GridColumn>
+        <GridColumn Field=@nameof(DersDto.Kredi) HeaderText="Kredi"></GridColumn>
         <GridColumn Visible="false" Field=@nameof(DersAcilanDto.DersNedenId) HeaderText="DersNedenId"></GridColumn>
         <GridColumn Visible="false" Field=@nameof(DersAcilanDto.DersDilId) HeaderText="DersDilId"></GridColumn>
-        @*<GridColumn Visible="false" Field=@nameof(DersDto.Durum) HeaderText="Durum" DisplayAsCheckBox="true"></GridColumn>*@
-        <GridColumn Field=@nameof(DersDto.Zorunlu) HeaderText="Zorunlu" DisplayAsCheckBox="true"></GridColumn>
-        <GridColumn Field=@nameof(DersDto.SecmeliKodu) HeaderText="SecmeliKodu"></GridColumn>
-        <GridColumn Field=@nameof(DersDto.Sinif) HeaderText="Sinif"></GridColumn>
+        <GridColumn Visible="false" Field=@nameof(DersDto.Durum) HeaderText="Durum" DisplayAsCheckBox="true"></GridColumn>
+        <GridColumn AutoFit="true" Field=@nameof(DersDto.Zorunlu) HeaderText="Zorunlu" DisplayAsCheckBox="true"></GridColumn>
+        <GridColumn AutoFit="true" Field=@nameof(DersDto.SecmeliKodu) HeaderText="SecmeliKodu"></GridColumn>
+        <GridColumn AutoFit="true" Field=@nameof(DersDto.Sinif) HeaderText="Sinif"></GridColumn>
         <GridColumn>
             <GridCommandColumns>
                 <GridCommandColumn Type="CommandButtonType.None" Title="Dersi Ac" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-SendToBack", CssClass="e-flat" })"></GridCommandColumn>
+                <GridCommandColumn Type="CommandButtonType.Edit" Title="Çokla" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-copy", CssClass="e-flat" })"></GridCommandColumn>
                 <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-edit", CssClass="e-flat" })"></GridCommandColumn>
                 <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-delete", CssClass="e-flat" })"></GridCommandColumn>
                 <GridCommandColumn Type="CommandButtonType.Save" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-update", CssClass="e-flat" })"></GridCommandColumn>
                 <GridCommandColumn Type="CommandButtonType.Cancel" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-cancel-icon", CssClass="e-flat" })"></GridCommandColumn>
             </GridCommandColumns>
         </GridColumn>
+
     </GridColumns>
 </SfGrid>
 
@@ -204,4 +275,12 @@
         content: '\e7fe';
         color: #80d192;
     }
+     .form-row {
+        margin-right: unset;
+        margin-left: unset;
+    }
+    /*.row {
+        margin-right: unset;
+        margin-left: unset;
+    }*/
 </style>

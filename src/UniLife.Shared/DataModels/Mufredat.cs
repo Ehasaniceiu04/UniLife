@@ -14,14 +14,14 @@ namespace UniLife.Shared.DataModels
         public string KisaAd { get; set; }
         public string AdEn { get; set; }
         public DateTime BasTarih{ get; set; }
-        public DateTime BitTarih { get; set; }
+        public DateTime? BitTarih { get; set; }
         public int Durum { get; set; }
         public bool Aktif { get; set; }
 
 
         public int ProgramId { get; set; }
         public virtual Program Program { get; set; }
-        public DateTime KararTarih { get; set; }
+        public DateTime? KararTarih { get; set; }
         public string KararAcik { get; set; }
         public int ProgDersGec { get; set; }
         public int AraSinavEo { get; set; }

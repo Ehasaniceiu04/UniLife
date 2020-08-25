@@ -85,7 +85,7 @@ namespace UniLife.CommonUI.Shared
             {
                 await ReadBolums(FakulteId);
             }
-            if (ProgramId !=null)
+            if (ProgramId !=null && BolumId !=null)
             {
                 await ReadPrograms(BolumId);
             }
@@ -105,7 +105,7 @@ namespace UniLife.CommonUI.Shared
             }
         }
 
-        private void FakulteToBolum(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
+        private async Task FakulteToBolum(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
         {
             bolumDtos = new List<KeyValueDto>();
             programDtos = new List<KeyValueDto>();
@@ -113,7 +113,7 @@ namespace UniLife.CommonUI.Shared
             ProgramId = null;
             //if (reqOgrTopAtaDto.Id == 0)
             //{
-            ReadBolums(args.Value).ConfigureAwait(true);
+            await ReadBolums(args.Value);
             //}
             //else
             //{
@@ -122,12 +122,12 @@ namespace UniLife.CommonUI.Shared
             StateHasChanged();
         }
 
-        private void BolumToProgram(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
+        private async Task BolumToProgram(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
         {
             programDtos = new List<KeyValueDto>();
             ProgramId = null;
 
-            ReadPrograms(args.Value).ConfigureAwait(true);
+            await ReadPrograms(args.Value);
 
         }
 

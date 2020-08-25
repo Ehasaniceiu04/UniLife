@@ -28,7 +28,11 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         int? fakulteId;
         int? bolumId;
-        int? programId;
+        //int? programId;
+
+        int? filterFakulteId;
+        int? filterBolumId;
+        int? filterProgramId;
 
         int? ProgramValueHolder;
 
@@ -356,17 +360,17 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         {
             totalQuery = new Query().AddParams("$expand", "program($expand=bolum($expand=fakulte($select=Ad,Id);$select=Ad,Id);$select=Ad,Id)");
 
-            if (programId.HasValue)
+            if (filterProgramId.HasValue)
             {
-                totalQuery.Where("programId", "equal", programId);
+                totalQuery.Where("programId", "equal", filterProgramId);
             }
-            else if (bolumId.HasValue)
+            else if (filterBolumId.HasValue)
             {
-                totalQuery.Where("program/bolumId", "equal", bolumId);
+                totalQuery.Where("program/bolumId", "equal", filterBolumId);
             }
-            else if (fakulteId.HasValue)
+            else if (filterFakulteId.HasValue)
             {
-                totalQuery.Where("program/bolum/fakulteId", "equal", fakulteId);
+                totalQuery.Where("program/bolum/fakulteId", "equal", filterFakulteId);
             }
 
 

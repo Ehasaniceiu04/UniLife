@@ -31,7 +31,7 @@ namespace UniLife.Shared.Dto.Definitions
         public int? LabSaat { get; set; }
         public int? TeoSaat { get; set; }
         public double Kredi { get; set; }
-        public bool Durum { get; set; }
+        public bool Durum { get; set; } = true;
         public bool Zorunlu { get; set; } = true;
         public string SecmeliKodu { get; set; }
         public int? Sinif { get; set; }

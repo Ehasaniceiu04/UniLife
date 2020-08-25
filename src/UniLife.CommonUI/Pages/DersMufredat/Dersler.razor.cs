@@ -35,6 +35,12 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         private DialogSettings DialogParams = new DialogSettings { MinHeight = "400px", Width = "900px" };
 
+        string[] Initial = (new string[] { "DonemId" });
+
+        int? donemId;
+
+        public bool isOpsCoklama { get; set; }
+
         protected override void OnInitialized()
         {
             ReadDerss();
@@ -77,21 +83,41 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             {
                 if (args.Action == "Edit")
                 {
-                    Update(args.Data);
+                    //await Update(args.Data);
+                    if (await Update(args.Data))
+                    {
+                        DersGrid.Refresh();
+                    }
+                    args.Cancel = true;
+                    await DersGrid.CloseEdit();
+                    isOpsCoklama = false;
                 }
                 else if (args.Action == "Add")
                 {
-                    await Create(args.Data);
+                    //await Create(args.Data);
+                    if (await Create(args.Data, false))
+                    {
+                        DersGrid.Refresh();
+                    }
+                    args.Cancel = true;
+                    await DersGrid.CloseEdit();
+                    isOpsCoklama = false;
                 }
 
             }
             if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
             {
-                await Delete(args.Data);
+                if (await Delete(args.Data))
+                {
+                    DersGrid.Refresh();
+                }
+                args.Cancel = true;
+                await DersGrid.CloseEdit();
+                isOpsCoklama = false;
             }
         }
 
-        public async Task Create(DersDto dersDto)
+        public async Task<bool> Create(DersDto dersDto, bool isOpsCoklama)
         {
             try
             {
@@ -105,50 +131,73 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 if (apiResponse.IsSuccessStatusCode)
                 {
                     matToaster.Add(apiResponse.Message, MatToastType.Success);
-                    dersDtos.FirstOrDefault(x => x.Id == 0).Id = apiResponse.Result.Id;
-                    //DersGrid.Refresh();
+                    if (!isOpsCoklama)
+                    {
+                        dersDtos.FirstOrDefault(x => x.Id == 0).Id = apiResponse.Result.Id;
+                    }
+                    ReadDerss();
                     matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
-
+                    return true;
                 }
                 else
                 {
-                    dersDtos.Remove(dersDto);
+                    if (!isOpsCoklama)
+                    {
+                        dersDtos.Remove(dersDto);
+                    }
+
                     matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
+                    return false;
                 }
             }
             catch (Exception ex)
             {
-                dersDtos.Remove(dersDto);
-                DersGrid.Refresh();
+                if (!isOpsCoklama)
+                {
+                    dersDtos.Remove(dersDto);
+                    DersGrid.Refresh();
+                }
                 matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
+                return false;
             }
         }
 
 
-        public async void Update(DersDto dersDto)
+        public async Task<bool> Update(DersDto dersDto)
         {
             //this updates the IsCompleted flag only
             try
             {
-                ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>
-                    ("api/ders", dersDto);
-
-                if (!apiResponse.IsError)
+                if (isOpsCoklama)
                 {
-                    matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+                    dersDto.Id = 0;
+                    return await Create(dersDto, isOpsCoklama);
                 }
                 else
                 {
-                    matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
+                    ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>
+                    ("api/ders", dersDto);
+
+                    if (!apiResponse.IsError)
+                    {
+                        matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+                        return true;
+                    }
+                    else
+                    {
+                        matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
+                        return false;
+                    }
                 }
             }
             catch (Exception ex)
             {
                 matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
+                return false;
             }
         }
 
-        public async Task Delete(DersDto dersDto)
+        public async Task<bool> Delete(DersDto dersDto)
         {
             try
             {
@@ -157,15 +206,18 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 {
                     matToaster.Add("", MatToastType.Success, "İşlem başarılı.");
                     dersDtos.Remove(dersDto);
+                    return true;
                 }
                 else
                 {
                     matToaster.Add("", MatToastType.Danger, "İşlem başarısız!");
+                    return false;
                 }
             }
             catch (Exception ex)
             {
                 matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
+                return false;
             }
         }
 
@@ -199,7 +251,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 try
                 {
 
-                    
+
                     ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/ders/CreateDersAcilansByDersId", args.RowData.Id);
                     if (apiResponse.IsSuccessStatusCode)
                     {
@@ -215,9 +267,13 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 {
                     matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
                 }
-
-
-
+            }
+            if (args.CommandColumn.Title == "Çokla")
+            {
+                isOpsCoklama = true;
+                //Id sıfırla.
+                //    paramtereye coklama oldugun ata
+                //    insert çak. 
             }
 
 

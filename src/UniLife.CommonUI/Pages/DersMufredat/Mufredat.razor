@@ -13,92 +13,97 @@
 
 
 
-<div class="row pb-2 card">
+<div class="card">
     <div class="col-sm-7">
-        <FakBolPrg @bind-ProgramId="programId"
-                   @bind-BolumId="bolumId"
-                   @bind-FakulteId="fakulteId"
+        <FakBolPrg @bind-FakulteId="filterFakulteId"
+                   @bind-BolumId="filterBolumId"
+                   @bind-ProgramId="filterProgramId"
                    ProgramPlaceHolder=" "></FakBolPrg>
     </div>
     <div class="col-sm-5">
         <SfButton OnClick="Refresh" CssClass="e-success col-sm-12 form-control-sm">Bul / Yenile</SfButton>
     </div>
 </div>
-    <SfGrid @ref="MufredatGrid" ID="MufredatGrid" TValue="MufredatDto" Query="@totalQuery" ShowColumnChooser="true" AllowResizing="true" AllowSorting="true" AllowFiltering="true" AllowPaging="true" Toolbar="Toolbaritems"
-            ContextMenuItems="@(new List<ContextMenuItemModel>() { new ContextMenuItemModel { Text = "Ders Tanımla", Target = ".e-content", Id = "copywithheader" } })" Width="100%" Height="100%">
-        <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
-        <GridEvents RowSelecting="OnRowSelecting" QueryCellInfo="QueryCellInfoHandler" ContextMenuItemClicked="OnContextMenuClick" CommandClicked="CommandClickHandler" OnActionBegin="OnActionBeginHandler" OnToolbarClick="ToolbarClickHandler" OnActionComplete="ActionCompletedHandler" TValue="MufredatDto"></GridEvents>
-        <GridSelectionSettings Type="SelectionType.Multiple" CheckboxOnly="true"></GridSelectionSettings>
-        @*<GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.CheckBox"></GridFilterSettings>*@
-        <GridEditSettings Dialog="DialogParams" ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
-            <Template>
-                @{
-                    MufredatDto mufredatInfo = (context as MufredatDto);
-                    <div class="row pb-2 bg-light text-dark">
-                        <div class="col-sm-12 col-md-4">
-                            @*<FakBolPrg @bind-ProgramId="programId"*@
+<SfGrid @ref="MufredatGrid" ID="MufredatGrid" TValue="MufredatDto" Query="@totalQuery" ShowColumnChooser="true" AllowResizing="true" AllowSorting="true" AllowFiltering="true" AllowPaging="true" Toolbar="Toolbaritems"
+        ContextMenuItems="@(new List<ContextMenuItemModel>() { new ContextMenuItemModel { Text = "Ders Tanımla", Target = ".e-content", Id = "copywithheader" } })" Width="100%" Height="100%">
+    <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+    <GridEvents RowSelecting="OnRowSelecting" QueryCellInfo="QueryCellInfoHandler" ContextMenuItemClicked="OnContextMenuClick" CommandClicked="CommandClickHandler" OnActionBegin="OnActionBeginHandler" OnToolbarClick="ToolbarClickHandler" OnActionComplete="ActionCompletedHandler" TValue="MufredatDto"></GridEvents>
+    <GridSelectionSettings Type="SelectionType.Multiple" CheckboxOnly="true"></GridSelectionSettings>
+    @*<GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.CheckBox"></GridFilterSettings>*@
+    <GridEditSettings Dialog="DialogParams" ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
+        <Template>
+            @{
+                MufredatDto mufredatInfo = (context as MufredatDto);
+                <div class="row pb-2 bg-light text-dark">
+                    <div class="col-sm-12 col-md-4">
+                        @*<FakBolPrg @bind-ProgramId="programId"*@
 
-                            <FakBolPrg @bind-ProgramId="@(mufredatInfo.ProgramId)"
-                                       @bind-BolumId="bolumId"
-                                       @bind-FakulteId="fakulteId"
-                                       ProgramPlaceHolder="@(plazceHolderProgramAd)"></FakBolPrg>
-                        </div>
-                        <div class="col-sm-12 col-md-8">
-                            <div class="form-group row">
-                                <label for="Ad" class="col-sm-2 col-form-label-sm">Müfredat Ad</label>
-                                <div class="col-sm-4">
-                                    <SfTextBox ID="Ad" Placeholder="Müfredat Ad" CssClass="form-control-sm" @bind-Value="@(mufredatInfo.Ad)"></SfTextBox>
-                                </div>
-                                <label for="Yil" class="col-sm-2 col-form-label-sm">Yil</label>
-                                <div class="col-sm-4">
-                                    <SfNumericTextBox ID="Yil" Placeholder="Yil" CssClass="form-control-sm" @bind-Value="@(mufredatInfo.Yil)"></SfNumericTextBox>
-                                </div>
+                        <FakBolPrg @bind-FakulteId="fakulteId"
+                                   @bind-BolumId="bolumId"
+                                   @bind-ProgramId="@(mufredatInfo.ProgramId)"
+                                   ProgramPlaceHolder="@(plazceHolderProgramAd)"></FakBolPrg>
+                    </div>
+                    <div class="col-sm-12 col-md-8">
+                        <div class="form-group row">
+                            <label for="Ad" class="col-sm-2 col-form-label-sm">Müfredat Ad</label>
+                            <div class="col-sm-4">
+                                <SfTextBox ID="Ad" Placeholder="Müfredat Ad" CssClass="form-control-sm" @bind-Value="@(mufredatInfo.Ad)"></SfTextBox>
                             </div>
-                            <div class="form-group  row">
-                                <label for="BasTarih" class="col-sm-2 col-form-label-sm">BasTarih</label>
-                                <div class="col-sm-4">
-                                    <SfDatePicker ID="BasTarih" @bind-Value="@mufredatInfo.BasTarih" Placeholder="Kayıt Tarihi"></SfDatePicker>
-                                </div>
-                                <label for="BitTarih" class="col-sm-2 col-form-label-sm">BitTarih</label>
+                            <label for="Yil" class="col-sm-2 col-form-label-sm">Yil</label>
+                            <div class="col-sm-4">
+                                <SfNumericTextBox ID="Yil" Placeholder="Yil" CssClass="form-control-sm" @bind-Value="@(mufredatInfo.Yil)"></SfNumericTextBox>
+                            </div>
+                        </div>
+                        <div class="form-group  row">
+                            <label for="BasTarih" class="col-sm-2 col-form-label-sm">BasTarih</label>
+                            <div class="col-sm-4">
+                                <SfDatePicker ID="BasTarih" @bind-Value="@mufredatInfo.BasTarih" Placeholder="Kayıt Tarihi"></SfDatePicker>
+                            </div>
+                            @*<label for="BitTarih" class="col-sm-2 col-form-label-sm">BitTarih</label>
                                 <div class="col-sm-4">
                                     <SfDatePicker ID="BitTarih" @bind-Value="@mufredatInfo.BitTarih" Placeholder="Bitiş Tarihi"></SfDatePicker>
-                                </div>
+                                </div>*@
+                        </div>
+                        <div class="form-group  row">
+                            <label for="KararTarih" class="col-sm-2 col-form-label-sm">Karar Tarih</label>
+                            <div class="col-sm-4">
+                                <SfDatePicker ID="KararTarih" @bind-Value="@mufredatInfo.KararTarih" Placeholder="Karar Tarihi"></SfDatePicker>
                             </div>
-                            <div class="form-group  row">
-                                <label for="KararTarih" class="col-sm-2 col-form-label-sm">Karar Tarih</label>
-                                <div class="col-sm-4">
-                                    <SfDatePicker ID="KararTarih" @bind-Value="@mufredatInfo.KararTarih" Placeholder="Karar Tarihi"></SfDatePicker>
-                                </div>
+                            <div class="col-sm-6">
+                                <SfCheckBox Label="Aktif" @bind-Checked="@mufredatInfo.Aktif"></SfCheckBox>
                             </div>
+
                         </div>
                     </div>
-                }
-            </Template>
-        </GridEditSettings>
-        <GridColumns>
-            <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
-            <GridColumn Visible="false" Field=@nameof(MufredatDto.Id) HeaderText="Müfredat ID" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
-            <GridColumn Field=@nameof(MufredatDto.Ad) AllowEditing="true" HeaderText="Müfredat İsim" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
-            <GridColumn Field=@nameof(MufredatDto.Yil) HeaderText="Müfredat Yıl" Format="####" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
-            <GridColumn AutoFit="true" Field=@nameof(MufredatDto.BasTarih) HeaderText="Baş Tarih" Format="d" EditType="EditType.DatePickerEdit" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
-            <GridColumn AutoFit="true" Field=@nameof(MufredatDto.BitTarih) HeaderText="Son Tarih" Format="d" EditType="EditType.DatePickerEdit"></GridColumn>
-            @*<GridColumn AutoFit="true" Field=@nameof(MufredatDto.KararTarih) HeaderText="KararTarih" Format="d" EditType="EditType.DatePickerEdit"></GridColumn>*@
-            @*<GridColumn Field=@nameof(MufredatDto.ProgramId) HeaderText="Program" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@programDtos"></GridColumn>*@
-            <GridColumn Field="Program.Ad" HeaderText="Program"></GridColumn>
-            @*<GridColumn Field="Program.Bolum.Ad" HeaderText="Bolum"></GridColumn>
+                </div>
+            }
+        </Template>
+    </GridEditSettings>
+    <GridColumns>
+        <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
+        <GridColumn Visible="false" Field=@nameof(MufredatDto.Id) HeaderText="Müfredat ID" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+        <GridColumn Field=@nameof(MufredatDto.Ad) AllowEditing="true" HeaderText="Müfredat İsim" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
+        <GridColumn Field=@nameof(MufredatDto.Yil) HeaderText="Müfredat Yıl" Format="####" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
+        <GridColumn AutoFit="true" Field=@nameof(MufredatDto.BasTarih) HeaderText="Baş Tarih" Format="d" EditType="EditType.DatePickerEdit" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
+        @*<GridColumn AutoFit="true" Field=@nameof(MufredatDto.BitTarih) HeaderText="Son Tarih" Format="d" EditType="EditType.DatePickerEdit"></GridColumn>*@
+        <GridColumn AutoFit="true" Field=@nameof(MufredatDto.Aktif) HeaderText="Aktif" DisplayAsCheckBox="true"></GridColumn>
+        @*<GridColumn AutoFit="true" Field=@nameof(MufredatDto.KararTarih) HeaderText="KararTarih" Format="d" EditType="EditType.DatePickerEdit"></GridColumn>*@
+        @*<GridColumn Field=@nameof(MufredatDto.ProgramId) HeaderText="Program" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@programDtos"></GridColumn>*@
+        <GridColumn Field="Program.Ad" HeaderText="Program"></GridColumn>
+        @*<GridColumn Field="Program.Bolum.Ad" HeaderText="Bolum"></GridColumn>
             <GridColumn Field="Program.Bolum.Fakulte.Ad" HeaderText="Fakulte"></GridColumn>*@
-            <GridColumn>
-                <GridCommandColumns>
-                    <GridCommandColumn Type="CommandButtonType.None" Title="Tanımlı Dersler" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
-                    <GridCommandColumn Type="CommandButtonType.None" Title="Clone" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-copy", CssClass="e-flat" })"></GridCommandColumn>
-                    <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-edit", CssClass="e-flat" })"></GridCommandColumn>
-                    <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-delete", CssClass="e-flat" })"></GridCommandColumn>
-                    <GridCommandColumn Type="CommandButtonType.Save" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-update", CssClass="e-flat" })"></GridCommandColumn>
-                    <GridCommandColumn Type="CommandButtonType.Cancel" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-cancel-icon", CssClass="e-flat" })"></GridCommandColumn>
-                </GridCommandColumns>
-            </GridColumn>
-        </GridColumns>
-    </SfGrid>
+        <GridColumn>
+            <GridCommandColumns>
+                <GridCommandColumn Type="CommandButtonType.None" Title="Tanımlı Dersler" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
+                <GridCommandColumn Type="CommandButtonType.None" Title="Clone" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-copy", CssClass="e-flat" })"></GridCommandColumn>
+                <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-edit", CssClass="e-flat" })"></GridCommandColumn>
+                <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-delete", CssClass="e-flat" })"></GridCommandColumn>
+                <GridCommandColumn Type="CommandButtonType.Save" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-update", CssClass="e-flat" })"></GridCommandColumn>
+                <GridCommandColumn Type="CommandButtonType.Cancel" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-cancel-icon", CssClass="e-flat" })"></GridCommandColumn>
+            </GridCommandColumns>
+        </GridColumn>
+    </GridColumns>
+</SfGrid>
 
 <MatDialog Id="multiDialog" @bind-IsOpen="@multiDialogOpen" Style="z-index:100">
     <MatDialogTitle><MatIcon Icon="warning"></MatIcon> Confirm Delete</MatDialogTitle>
@@ -150,14 +155,15 @@
     .col-form-label-sm {
         font-size: .775rem;
     }
+
     .card {
         flex-direction: unset;
     }
 
-    .row {
+    /* .row {
         margin-right: unset;
         margin-left: unset;
-    }
+    }*/
     .form-group {
         margin-bottom: 0.2rem;
     }
@@ -171,5 +177,4 @@
         /*font-size: 0.65rem;*/
         font-size: .775rem;
     }
-
 </style>
