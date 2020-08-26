@@ -8,6 +8,7 @@ namespace UniLife.Shared.Dto.Definitions
     {
         public int DonemTipId { get; set; }
         public virtual DonemTipDto DonemTip { get; set; }
+        public string DonemTipAd { get; set; }
         public int Yil { get; set; }
         public string Ad { get; set; }
         public string KisaAd { get; set; }

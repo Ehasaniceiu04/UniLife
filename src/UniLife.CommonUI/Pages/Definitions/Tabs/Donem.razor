@@ -5,35 +5,35 @@
 @using System.Net
 @using Newtonsoft.Json
 
-    <ControlSection>
-        <SfGrid @ref="DonemGrid" DataSource="@donemDtos" Toolbar="@(new List<string>() { "Add"})" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
-            <GridEvents OnActionComplete="ActionCompletedHandler" TValue="DonemDto"></GridEvents>
-            <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
-            <GridColumns>
-                <GridColumn Visible="false" Field=@nameof(DonemDto.Id) HeaderText="Bölüm ID" AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
-                <GridColumn Field=@nameof(DonemDto.Ad) HeaderText="Donem Ad" ValidationRules="@(new ValidationRules{ Required=true})" Width="170"></GridColumn>
-                <GridColumn Field=@nameof(DonemDto.KisaAd) HeaderText="Kısa Ad"></GridColumn>
-                <GridColumn Field=@nameof(DonemDto.AdEn) HeaderText="İngilizce Ad"></GridColumn>
-                <GridColumn Field=@nameof(DonemDto.KisaAdEn) HeaderText="İng. Kısa Ad"></GridColumn>
-                <GridColumn Field=@nameof(DonemDto.DonemTipId) HeaderText="Donem Tipi" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@donemTipDtos" Width="150"></GridColumn>
-                <GridColumn Field=@nameof(DonemDto.Yil) HeaderText="Yil" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
-                <GridColumn Field=@nameof(DonemDto.Durum) HeaderText="Aktif" DisplayAsCheckBox="true" EditType="EditType.BooleanEdit"></GridColumn>
-                <GridColumn Field=@nameof(DonemDto.YokSisDurum) HeaderText="Yöksis" DisplayAsCheckBox="true" EditType="EditType.BooleanEdit"></GridColumn>
-                <GridColumn Field=@nameof(DonemDto.BasTarih) EditType="EditType.DatePickerEdit" Format="d" Type="ColumnType.Date" HeaderText="Başlangıç Tarih"></GridColumn>
-                <GridColumn Field=@nameof(DonemDto.BitTarih) EditType="EditType.DatePickerEdit" Format="d" Type="ColumnType.Date" HeaderText="Bitiş Tarih"></GridColumn>
+<ControlSection>
+    <SfGrid @ref="DonemGrid" DataSource="@donemDtos" Toolbar="@(new List<string>() { "Add"})" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
+        <GridEvents OnActionComplete="ActionCompletedHandler" TValue="DonemDto"></GridEvents>
+        <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
+        <GridColumns>
+            <GridColumn Visible="false" Field=@nameof(DonemDto.Id) HeaderText="Bölüm ID" AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+            <GridColumn Field=@nameof(DonemDto.Ad) HeaderText="Donem Ad" ValidationRules="@(new ValidationRules{ Required=true})" Width="170"></GridColumn>
+            <GridColumn Field=@nameof(DonemDto.KisaAd) HeaderText="Kısa Ad"></GridColumn>
+            <GridColumn Field=@nameof(DonemDto.AdEn) HeaderText="İngilizce Ad"></GridColumn>
+            <GridColumn Field=@nameof(DonemDto.KisaAdEn) HeaderText="İng. Kısa Ad"></GridColumn>
+            <GridColumn Field=@nameof(DonemDto.DonemTipId) HeaderText="Donem Tipi" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@donemTipDtos" Width="150"></GridColumn>
+            <GridColumn Field=@nameof(DonemDto.Yil) HeaderText="Yil" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
+            <GridColumn Field=@nameof(DonemDto.Durum) HeaderText="Aktif" DisplayAsCheckBox="true" EditType="EditType.BooleanEdit"></GridColumn>
+            <GridColumn Field=@nameof(DonemDto.YokSisDurum) HeaderText="Yöksis" DisplayAsCheckBox="true" EditType="EditType.BooleanEdit"></GridColumn>
+            <GridColumn Field=@nameof(DonemDto.BasTarih) EditType="EditType.DatePickerEdit" Format="d" Type="ColumnType.Date" HeaderText="Başlangıç Tarih"></GridColumn>
+            <GridColumn Field=@nameof(DonemDto.BitTarih) EditType="EditType.DatePickerEdit" Format="d" Type="ColumnType.Date" HeaderText="Bitiş Tarih"></GridColumn>
 
-                <GridColumn HeaderText="Manage Records" Width="150">
-                    <GridCommandColumns>
-                        <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-edit", CssClass = "e-flat" })"></GridCommandColumn>
-                        <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-delete", CssClass = "e-flat" })"></GridCommandColumn>
-                        <GridCommandColumn Type="CommandButtonType.Save" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-update", CssClass = "e-flat" })"></GridCommandColumn>
-                        <GridCommandColumn Type="CommandButtonType.Cancel" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-cancel-icon", CssClass = "e-flat" })"></GridCommandColumn>
-                    </GridCommandColumns>
-                </GridColumn>
-            </GridColumns>
-        </SfGrid>
-    </ControlSection>
-            
+            <GridColumn HeaderText="Manage Records" Width="150">
+                <GridCommandColumns>
+                    <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-edit", CssClass = "e-flat" })"></GridCommandColumn>
+                    <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-delete", CssClass = "e-flat" })"></GridCommandColumn>
+                    <GridCommandColumn Type="CommandButtonType.Save" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-update", CssClass = "e-flat" })"></GridCommandColumn>
+                    <GridCommandColumn Type="CommandButtonType.Cancel" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-cancel-icon", CssClass = "e-flat" })"></GridCommandColumn>
+                </GridCommandColumns>
+            </GridColumn>
+        </GridColumns>
+    </SfGrid>
+</ControlSection>
+
 @code{
 
     SfGrid<DonemDto> DonemGrid;
@@ -66,8 +66,7 @@
         }
     }
 
-    public void ActionCompletedHandler(ActionEventArgs<DonemDto>
-        args)
+    public void ActionCompletedHandler(ActionEventArgs<DonemDto>args)
     {
         if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
         {
@@ -95,6 +94,8 @@
     {
         try
         {
+            donemDto.DonemTipAd = donemTipDtos.FirstOrDefault(x => x.Id == donemDto.DonemTipId).Ad;
+
             ApiResponseDto<DonemDto> apiResponse = await Http.PostJsonAsync<ApiResponseDto<DonemDto>>
                 ("api/donem/CreateNewDonemWithTakvim", donemDto);
             if (apiResponse.StatusCode == Status200OK)
@@ -123,8 +124,10 @@
         //this updates the IsCompleted flag only
         try
         {
+            donemDto.DonemTipAd = donemTipDtos.FirstOrDefault(x => x.Id == donemDto.DonemTipId).Ad;
+
             ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>
-                ("api/donem", donemDto);
+            ("api/donem", donemDto);
 
             if (!apiResponse.IsError)
             {
