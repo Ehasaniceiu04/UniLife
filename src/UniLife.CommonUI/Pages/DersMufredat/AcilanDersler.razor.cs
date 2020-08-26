@@ -179,6 +179,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 dersAcilanDto.Donem = null;
                 dersAcilanDto.Akademisyen = null;
                 dersAcilanDto.Program= null;
+                dersAcilanDto.Bolum = null;
 
                 ApiResponseDto<DersAcilanDto> apiResponse = await Http.PostJsonAsync<ApiResponseDto<DersAcilanDto>>
                     ("api/dersAcilan", dersAcilanDto);

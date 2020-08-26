@@ -80,6 +80,15 @@ namespace UniLife.Server.Controllers
             => ModelState.IsValid ?
                     await _dersManager.CreateDersAcilansByDersId(dersId) :
                     new ApiResponse(Status400BadRequest, "DersFilterDto Model is Invalid");
-        
+
+
+        [HttpGet]
+        [Authorize(Permissions.Ders.Create)]
+        [Route("AddYerineDers/{dersId}/{yerineDersId}")]
+        public async Task<ApiResponse> AddYerineDers(int dersId, int yerineDersId)
+        => ModelState.IsValid ?
+                await _dersManager.AddYerineDers(dersId, yerineDersId) :
+                new ApiResponse(Status400BadRequest, "Ders Model is Invalid");
+
     }
 }

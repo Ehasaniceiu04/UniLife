@@ -43,6 +43,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
 
         bool yerineDersDialogOpen;
+        int yerineExistProgramId;
 
         protected override void OnInitialized()
         {
@@ -94,6 +95,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                     args.Cancel = true;
                     await DersGrid.CloseEdit();
                     isOpsCoklama = false;
+
                 }
                 else if (args.Action == "Add")
                 {
@@ -284,29 +286,34 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         private void onChange(Microsoft.AspNetCore.Components.ChangeEventArgs args)
         {
-            if ((bool)args.Value == false)
+            if ((bool)args.Value == false) //&& yerineExistProgramId!=0
             {
                 yerineDersDialogOpen = true;
             }
         }
 
-        public async Task CommandClickHandlerAkademisyen(Syncfusion.Blazor.Grids.CommandClickEventArgs<DersDto> args)
+        public async Task CommandClickHandlerDers(Syncfusion.Blazor.Grids.CommandClickEventArgs<DersDto> args)
         {
-            Dersid si ile repositoryde kayıdı alıp değiştirip programın aktif dönem müfredatında çakacaz. program göndermeli
+            //Dersid si ile repositoryde kayıdı alıp değiştirip programın aktif dönem müfredatında çakacaz. program göndermeli
 
             if (args.CommandColumn.Title == "Ders Ekle")
             {
-                ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>($"api/ders/AddYerineDers/{args.RowData.Id}");
-                akademisyenDialogOpen = false;
+                ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>($"api/ders/AddYerineDers/{args.RowData.Id}/{yerineExistProgramId}");
 
-                if (apiResponse.IsSuccessStatusCode)
+                try
                 {
-                    DersAcilanGrid.Refresh();
-                    matToaster.Add(args.RowData.Ad + " " + args.RowData.Soyad, MatToastType.Success, "Akademisyen kaydı güncellendi");
+                    if (apiResponse.IsSuccessStatusCode)
+                    {
+                        DersGrid.Refresh();
+                        matToaster.Add("Yerine ders seçildi.", MatToastType.Success, "İşlem başarılı.");
+                        yerineDersDialogOpen = false;
+                    }
+                    else
+                        matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
                 }
-                else
+                catch (Exception ex)
                 {
-                    matToaster.Add(args.RowData.Ad + " " + args.RowData.Soyad + " : " + apiResponse.StatusCode, MatToastType.Danger, "Akademisyen kayıt edilemedi");
+                    matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
                 }
             }
         }

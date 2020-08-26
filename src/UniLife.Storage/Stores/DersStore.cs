@@ -11,6 +11,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using SQLitePCL;
 using System.Security.Cryptography.X509Certificates;
+using UniLife.Shared;
+using UniLife.Shared.Dto;
 
 namespace UniLife.Storage.Stores
 {
@@ -98,7 +100,7 @@ namespace UniLife.Storage.Stores
                             && (string.IsNullOrWhiteSpace(dersFilterDto.DersKod) ? true : ders.Kod.Contains(dersFilterDto.DersKod))
                         select ders;
 
-            return _autoMapper.Map<List<DersDto>>(await derss.ToListAsync()) ;
+            return _autoMapper.Map<List<DersDto>>(await derss.ToListAsync());
 
 
         }
@@ -135,10 +137,10 @@ namespace UniLife.Storage.Stores
 
             ders.Durum = true;
 
-            var mufredat = await _db.Mufredats.FirstOrDefaultAsync(x=>x.Id == ders.MufredatId);
+            var mufredat = await _db.Mufredats.FirstOrDefaultAsync(x => x.Id == ders.MufredatId);
             mufredat.Durum = 1;
 
-            if (dumpDersAcilan!=null)
+            if (dumpDersAcilan != null)
             {
                 _db.DersAcilans.Remove(dumpDersAcilan);
             }
@@ -152,9 +154,19 @@ namespace UniLife.Storage.Stores
             await _db.SaveChangesAsync(CancellationToken.None);
         }
 
-        //void deneme()
-        //{
-        //    _db.Context.UserRoles
-        //}
+        public async Task<Ders> AddYerineDers(int dersId, int yerineDersId)
+        {
+            var oldDers = await _db.Derss.FirstOrDefaultAsync(x => x.Id == yerineDersId);
+            var secilenDers = await _db.Derss.FirstOrDefaultAsync(x => x.Id == dersId).DeepClone();
+
+            secilenDers.ProgramId = oldDers.ProgramId;
+            secilenDers.BolumId = oldDers.BolumId;
+            secilenDers.FakulteId = oldDers.FakulteId;
+            secilenDers.MufredatId = oldDers.MufredatId;
+
+            _db.Derss.Add(secilenDers);
+            await _db.SaveChangesAsync(CancellationToken.None);
+            return secilenDers;
+        }
     }
 }

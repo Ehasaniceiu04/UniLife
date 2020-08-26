@@ -63,5 +63,18 @@ namespace UniLife.Server.Managers
             await _dersStore.CreateDersAcilansByDersId(dersId);
             return new ApiResponse(Status200OK, "Ders Açıldı", null);
         }
+
+        public async Task<ApiResponse> AddYerineDers(int dersId, int yerineDersId)
+        {
+            try
+            {
+                var derss = await _dersStore.AddYerineDers(dersId, yerineDersId);
+                return new ApiResponse(Status200OK, "Created DersDto", derss);
+            }
+            catch (Shared.DomainException ex)
+            {
+                return new ApiResponse(Status400BadRequest, ex.Description);
+            }            
+        }
     }
 }
