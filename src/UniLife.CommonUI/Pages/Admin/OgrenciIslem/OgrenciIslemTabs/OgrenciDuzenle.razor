@@ -364,17 +364,17 @@ else
 
     bool isInitializingFinised;
 
-    //protected override void OnInitialized()
-    protected override async Task OnInitializedAsync()
+    //protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         EC = new EditContext(_OgrenciDto);
         danismanAd = "";
 
-        user = (await authenticationStateTask).User;
+        user = authenticationStateTask.Result.User;
 
         if (user.IsInRole(UserRoles.Ogrenci.ToString()))
         {
-            _OgrenciDto = await appState.GetOgrenciState();
+            _OgrenciDto = appState.GetOgrenciState().Result;
             isPersonel = false;
         }
         else

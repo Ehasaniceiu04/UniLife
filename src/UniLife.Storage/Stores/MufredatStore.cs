@@ -221,10 +221,12 @@ namespace UniLife.Storage.Stores
 
         public async Task<MufredatDto> GetLastMufredatByProgramId(int programId)
         {
-            var sonMufredat= await _db.Mufredats.Where(x => x.ProgramId == programId).OrderByDescending(y => y.Yil).FirstOrDefaultAsync();
-            
+            ////Eğer son eklene müfredatsa bu
+            //var aktifMufredat= await _db.Mufredats.Where(x => x.ProgramId == programId).OrderByDescending(y => y.Yil).FirstOrDefaultAsync();
 
-            return _autoMapper.Map<Mufredat, MufredatDto>(sonMufredat);
+            var aktifMufredat = await _db.Mufredats.FirstOrDefaultAsync(x => x.ProgramId == programId && x.Durum == 1);
+
+            return _autoMapper.Map<Mufredat, MufredatDto>(aktifMufredat);
         }
     }
 }

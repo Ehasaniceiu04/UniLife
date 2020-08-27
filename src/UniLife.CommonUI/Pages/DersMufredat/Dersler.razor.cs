@@ -307,8 +307,8 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         {
             if ((bool)args.Value == false && yerineExistProgramId.HasValue)
             {
-                ApiResponseDto<MufredatDto> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<MufredatDto>>($"api/Mufredat/GetLastMufredatByProgramId/{yerineExistProgramId}").Result;
-                sonMufredatId = apiResponse.Result.Id;
+                //ApiResponseDto<MufredatDto> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<MufredatDto>>($"api/Mufredat/GetLastMufredatByProgramId/{yerineExistProgramId}").Result;
+                //sonMufredatId = apiResponse.Result.Id;
 
                 yerineDersDialogOpen = true;
             }

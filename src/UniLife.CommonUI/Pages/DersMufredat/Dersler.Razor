@@ -283,7 +283,8 @@ else
     <Dialog Baslik="Pasif dersin yerine aktif müfredattan başka bir ders seçmek istermisiniz?" @bind-isDialogOpen="@yerineDersDialogOpen">
 
         <SfGrid TValue="DersDto" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowFiltering="true">
-            <SfDataManager Url="@($"odata/Derss?$filter=MufredatId eq {sonMufredatId}")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+            @*<SfDataManager Url="@($"odata/Derss?$filter=MufredatId eq {sonMufredatId}")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>*@
+            <SfDataManager Url="@($"odata/Derss?$expand=mufredat($expand=program($select=Ad,Id);$select=Ad,Id)&$filter=mufredat/program/Id eq {yerineExistProgramId} and mufredat/durum eq 1")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
             <GridEvents TValue="DersDto" CommandClicked="CommandClickHandlerDers"></GridEvents>
             <GridColumns>
                 <GridColumn Visible="false" Field=@nameof(DersDto.Id) IsPrimaryKey="true" TextAlign="TextAlign.Right"></GridColumn>
