@@ -10,6 +10,9 @@ namespace UniLife.Shared.Dto.Definitions
         public int? DonemId { get; set; }
         public virtual DonemDto Donem { get; set; }
 
+        public int? DonemTipId { get; set; }
+        public virtual DonemTipDto DonemTip { get; set; }
+
         public int? MufredatId { get; set; }
         public virtual MufredatDto Mufredat { get; set; }
         public int? FakulteId { get; set; }

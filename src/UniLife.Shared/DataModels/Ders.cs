@@ -14,6 +14,9 @@ namespace UniLife.Shared.DataModels
         public int DonemId { get; set; }
         public virtual Donem Donem { get; set; }
 
+        public int DonemTipId { get; set; }
+        public virtual DonemTip DonemTip { get; set; }
+
         public int MufredatId { get; set; }
         public virtual Mufredat Mufredat { get; set; }
         public int FakulteId { get; set; }

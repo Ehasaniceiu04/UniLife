@@ -14,7 +14,7 @@
     <MatBlazor.MatHeadline6 class="col-md-3 col-sm-12">Müfredat : @(appState.MufredatState == null ? "Müfredat seçmelisiniz." : appState.MufredatState?.MufredatAd)</MatBlazor.MatHeadline6>
 
 </div>
-<div class="form-group">
+@*<div class="form-group">
     <div class="col-sm-12">
         <SfDropDownList TValue="int?" TItem="DonemDto" Placeholder="Dönem filtresi..."
                         @bind-Value="@donemId" ShowClearButton="true">
@@ -22,7 +22,7 @@
             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
         </SfDropDownList>
     </div>
-</div>
+</div>*@
 <SfGrid ShowColumnChooser="true" @ref="DersGrid" DataSource="@dersDtos.Where(x=>donemId.HasValue? x.DonemId==donemId:true).ToList()" Dialog="DialogParams" Toolbar="@(new List<string>() { "Add","ColumnChooser" })" AllowSorting="true" AllowGrouping="true" AllowFiltering="true" AllowPaging="true" ColumnMenuItems=@MenuItems ShowColumnMenu="true" Width="100%">
     @*<SfDataManager AdaptorInstance="@typeof(CustomAdaptor)" Adaptor="Adaptors.CustomAdaptor"></SfDataManager>*@
     @*<GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.CheckBox"></GridFilterSettings>*@
