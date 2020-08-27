@@ -29,13 +29,14 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         List<DersDto> dersDtos = new List<DersDto>();
 
 
-        List<DonemDto> donemDtos = new List<DonemDto>();
+        //List<DonemDto> donemDtos = new List<DonemDto>();
+        List<DonemTipDto> donemTipDtos = new List<DonemTipDto>();
 
         public string[] MenuItems = new string[] { "Group", "Ungroup", "ColumnChooser", "Filter" };
 
         private DialogSettings DialogParams = new DialogSettings { MinHeight = "400px", Width = "900px" };
 
-        string[] Initial = (new string[] { "DonemId" });
+        string[] Initial = (new string[] { "DonemTipId" });
 
         int? donemId;
 
@@ -43,14 +44,21 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
 
         bool yerineDersDialogOpen;
-        int yerineExistProgramId;
+        int? yerineExistProgramId;
+        string yerineDersKod;
+        int sonMufredatId;
+
+        string edittekiDersKod;
 
         protected override void OnInitialized()
         {
             ReadDerss();
 
-            ApiResponseDto<List<DonemDto>> apiResponseDonem = Http.GetFromJsonAsync<ApiResponseDto<List<DonemDto>>>("api/donem/current").Result;
-            donemDtos = apiResponseDonem.Result;
+            //ApiResponseDto<List<DonemDto>> apiResponseDonem = Http.GetFromJsonAsync<ApiResponseDto<List<DonemDto>>>("api/donem/current").Result;
+            //donemDtos = apiResponseDonem.Result;
+
+            ApiResponseDto<List<DonemTipDto>> apiResponseDonem = Http.GetFromJsonAsync<ApiResponseDto<List<DonemTipDto>>>("api/donemtip").Result;
+            donemTipDtos = apiResponseDonem.Result;
 
         }
 
@@ -81,13 +89,18 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         {
             if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
             {
-
+                
+            }
+            if (args.RequestType == Syncfusion.Blazor.Grids.Action.Cancel)
+            {
+                isOpsCoklama = false;
+                yerineExistProgramId = null;
             }
             if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
             {
                 if (args.Action == "Edit")
                 {
-                    //await Update(args.Data);
+                    
                     if (await Update(args.Data))
                     {
                         DersGrid.Refresh();
@@ -243,7 +256,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         public void QueryCellInfoHandler(QueryCellInfoEventArgs<DersDto> args)
         {
-            if (args.Data.Durum)
+            if (args.Data.AktifDonemdeAcik)
             {
                 args.Cell.AddStyle(new string[] { "background-color:#80d192" });
             }
@@ -276,9 +289,15 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             if (args.CommandColumn.Title == "Çokla")
             {
                 isOpsCoklama = true;
+                yerineExistProgramId = null;
                 //Id sıfırla.
                 //    paramtereye coklama oldugun ata
                 //    insert çak. 
+            }
+            else if(args.CommandColumn.Type==CommandButtonType.Edit)
+            {
+                yerineExistProgramId = args.RowData.ProgramId;
+                yerineDersKod = args.RowData.Kod;
             }
 
 
@@ -286,8 +305,11 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         private void onChange(Microsoft.AspNetCore.Components.ChangeEventArgs args)
         {
-            if ((bool)args.Value == false) //&& yerineExistProgramId!=0
+            if ((bool)args.Value == false && yerineExistProgramId.HasValue)
             {
+                ApiResponseDto<MufredatDto> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<MufredatDto>>($"api/Mufredat/GetLastMufredatByProgramId/{yerineExistProgramId}").Result;
+                sonMufredatId = apiResponse.Result.Id;
+
                 yerineDersDialogOpen = true;
             }
         }
@@ -298,23 +320,29 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
             if (args.CommandColumn.Title == "Ders Ekle")
             {
-                ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>($"api/ders/AddYerineDers/{args.RowData.Id}/{yerineExistProgramId}");
+                yerineDersKod = yerineDersKod + "(" + args.RowData.Kod + ")";
+                yerineDersDialogOpen = false;
+                //ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>
+                //("api/ders", args.RowData);
 
-                try
-                {
-                    if (apiResponse.IsSuccessStatusCode)
-                    {
-                        DersGrid.Refresh();
-                        matToaster.Add("Yerine ders seçildi.", MatToastType.Success, "İşlem başarılı.");
-                        yerineDersDialogOpen = false;
-                    }
-                    else
-                        matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
-                }
-                catch (Exception ex)
-                {
-                    matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
-                }
+                ////ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>($"api/ders/AddYerineDers/{args.RowData.Id}/{yerineExistProgramId}");
+
+
+                //try
+                //{
+                //    if (apiResponse.IsSuccessStatusCode)
+                //    {
+                //        DersGrid.Refresh();
+                //        matToaster.Add("Yerine ders seçildi.", MatToastType.Success, "İşlem başarılı.");
+                //        yerineDersDialogOpen = false;
+                //    }
+                //    else
+                //        matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
+                //}
+                //catch (Exception ex)
+                //{
+                //    matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
+                //}
             }
         }
 

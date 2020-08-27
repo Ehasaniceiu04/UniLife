@@ -11,8 +11,8 @@ namespace UniLife.Shared.DataModels
         public string Ad { get; set; }
         public string Kod { get; set; }
 
-        public int DonemId { get; set; }
-        public virtual Donem Donem { get; set; }
+        //public int DonemId { get; set; }
+        //public virtual Donem Donem { get; set; }
 
         public int DonemTipId { get; set; }
         public virtual DonemTip DonemTip { get; set; }
@@ -38,8 +38,9 @@ namespace UniLife.Shared.DataModels
         public int LabSaat { get; set; }
         public int TeoSaat { get; set; }
         public double Kredi { get; set; }
-        public bool Durum { get; set; } = true;
+        public bool Durum { get; set; }
         public bool Zorunlu { get; set; }
+        public bool AktifDonemdeAcik { get; set; }
         public string SecmeliKodu { get; set; }
         public int Sinif { get; set; }
 

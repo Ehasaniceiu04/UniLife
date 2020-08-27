@@ -35,13 +35,13 @@
                         <GridEvents TValue="DersAcilanDto" CommandClicked="CommandClickHandler"></GridEvents>
                         <GridColumns>
                             <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
-                            <GridColumn HeaderText="Kayıt">
+                            <GridColumn HeaderText="Kayıt" AutoFit="true">
                                 <GridCommandColumns>
                                     <GridCommandColumn Type="CommandButtonType.None" Title="Kayıt Ol" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowDown", CssClass="e-flat" })"></GridCommandColumn>
                                     @*<GridCommandColumn Type="CommandButtonType.None" Title="Seçmeli Al" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-StrokeColor", CssClass="e-flat" })"></GridCommandColumn>*@
                                 </GridCommandColumns>
                             </GridColumn>
-                            <GridColumn HeaderText="Seçmeli" TextAlign="TextAlign.Center" Width="120">
+                            <GridColumn HeaderText="Seçmeli" AutoFit="true">
                                 <Template>
                                     @{
                                         var dersacilan = (context as DersAcilanDto);
@@ -56,8 +56,8 @@
 
                             <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kodu"></GridColumn>
                             <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Adı"></GridColumn>
-                            <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Zorunlu) HeaderText="Z/S" DisplayAsCheckBox="true"></GridColumn>
-                            <GridColumn Field=@nameof(DersAcilanDto.Kredi) HeaderText="Krd"></GridColumn>
+                            <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Zorunlu) HeaderText="Zorunlu" DisplayAsCheckBox="true"></GridColumn>
+                            <GridColumn Field=@nameof(DersAcilanDto.Kredi) HeaderText="Kredi"></GridColumn>
                             <GridColumn Field=@nameof(DersAcilanDto.Akts) HeaderText="Akts"></GridColumn>
                             <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
                             <GridColumn Field=@nameof(DersAcilanDto.ODTekrar) HeaderText="Önceki Dönemler Tekrar Durumu"></GridColumn>
@@ -123,17 +123,17 @@
 
                         <GridColumns>
                             <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
-                            <GridColumn HeaderText="Kaldır">
+                            <GridColumn HeaderText="Kaldır" AutoFit="true">
                                 <GridCommandColumns>
                                     <GridCommandColumn Type="CommandButtonType.None" Title="Kayıt Kaldır" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowUP", CssClass="e-flat" })"></GridCommandColumn>
                                 </GridCommandColumns>
                             </GridColumn>
-                            <GridColumn Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kodu"></GridColumn>
-                            <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Adı"></GridColumn>
                             <GridColumn Field=@nameof(DersAcilanDto.YerineSecilenAd) HeaderText="Yerine Ders"></GridColumn>
+                            <GridColumn Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kodu"></GridColumn>
+                            <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Adı"></GridColumn>                            
                             <GridColumn Visible="false" Field=@nameof(DersAcilanDto.YerineSecilenId) HeaderText="Yerine id"></GridColumn>
-                            <GridColumn Field=@nameof(DersAcilanDto.Zorunlu) DisplayAsCheckBox="true" HeaderText="Z/S"></GridColumn>
-                            <GridColumn Field=@nameof(DersAcilanDto.Kredi) Format="N2" HeaderText="Krd"></GridColumn>
+                            <GridColumn Field=@nameof(DersAcilanDto.Zorunlu) DisplayAsCheckBox="true" HeaderText="Zorunlu"></GridColumn>
+                            <GridColumn Field=@nameof(DersAcilanDto.Kredi) Format="N2" HeaderText="Kredi"></GridColumn>
                             <GridColumn Field=@nameof(DersAcilanDto.Akts) Format="N2" HeaderText="Akts"></GridColumn>
                             <GridColumn Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
 
@@ -197,7 +197,7 @@
         if (!string.IsNullOrWhiteSpace(args.Data.YerineSecilenAd))
         {
             args.Cell.AddClass(new string[] { "below-35" });
-            args.Cell.AddStyle(new string[] { "background-color:green" });
+            args.Cell.AddStyle(new string[] { "background-color:#cfe388" });
         }
     }
 

@@ -125,10 +125,16 @@
     <MatDialogContent>
         <p>Seçmiş olduğunuz müfredatların açmak istediğiniz dönemini seçiniz</p>
         <div class="form-row">
-            <label class="col-sm-2" for="DropDonem">Dönem:</label>
-            <SfDropDownList ID="DropDonem" @ref="DropDonem" TItem="DonemDto" CssClass="col-sm-10 pb-1"
-                            TValue="int?" PopupHeight="230px" Placeholder="Dönem Seçiniz"
-                            @bind-Value="@(AçilacakMufredatlarınSecilenDonemIdsi)" DataSource="@donemDtos">
+            @*<label class="col-sm-2" for="DropDonem">Dönem:</label>
+                <SfDropDownList ID="DropDonem" @ref="DropDonem" TItem="DonemDto" CssClass="col-sm-10 pb-1"
+                                TValue="int?" PopupHeight="230px" Placeholder="Dönem Seçiniz"
+                                @bind-Value="@(AçilacakMufredatlarınSecilenDonemTipIdsi)" DataSource="@donemDtos">
+                    <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                </SfDropDownList>*@
+            <label class="col-sm-2" for="DropDonemTip">Dönem Tip:</label>
+            <SfDropDownList ID="DropDonemTip" @ref="DropDonemTip" TItem="DonemTipDto" CssClass="col-sm-10 pb-1"
+                            TValue="int?" PopupHeight="230px" Placeholder="Dönem Tip Seçiniz"
+                            @bind-Value="@(AçilacakMufredatlarınSecilenDonemTipIdsi)" DataSource="@donemTipDtos">
                 <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
             </SfDropDownList>
         </div>

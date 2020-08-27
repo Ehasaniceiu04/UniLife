@@ -87,6 +87,7 @@ namespace UniLife.Storage.Stores
             return _autoMapper.Map<List<DersDto>>(derss);
         }
 
+        [System.Obsolete("Dönem dersleri ekranı daha kullanılmıyor. buda lazım değil.")]
         public async Task<List<DersDto>> GetAcilacakDersByFilterDto(DersFilterDto dersFilterDto)
         {
             var derss = from ders in _db.Derss
@@ -95,13 +96,13 @@ namespace UniLife.Storage.Stores
                             (dersFilterDto.MufredatSecilen.Contains(55555) ? dersFilterDto.MufredatSecenektekiler.Contains(ders.MufredatId) : dersFilterDto.MufredatSecilen.Contains(ders.MufredatId))
                             && (m.Aktif == dersFilterDto.IsActive) && (m.Aktif == dersFilterDto.IsIntibak)//TODO : intibak ve aktif konusu konuslacak
                             && (dersFilterDto.SinifSecilen.Contains(ders.Sinif))
-                            && (ders.DonemId == dersFilterDto.DonemSecilen)
+                            //&& (ders.DonemId == dersFilterDto.DonemSecilen)  //model değişti, DonemTipId olmalı
                             && (string.IsNullOrWhiteSpace(dersFilterDto.DersAd) ? true : ders.Ad.Contains(dersFilterDto.DersAd))
                             && (string.IsNullOrWhiteSpace(dersFilterDto.DersKod) ? true : ders.Kod.Contains(dersFilterDto.DersKod))
                         select ders;
 
-            return _autoMapper.Map<List<DersDto>>(await derss.ToListAsync());
-
+            //return _autoMapper.Map<List<DersDto>>(await derss.ToListAsync());
+            return null;
 
         }
 
@@ -110,6 +111,8 @@ namespace UniLife.Storage.Stores
             var dumpDersAcilan = await _db.DersAcilans.FirstOrDefaultAsync(x => x.DersId == dersId);
 
             var ders = await _db.Derss.FirstOrDefaultAsync(x => x.Id == dersId);
+
+            var aktifDonem = await _db.Donems.FirstOrDefaultAsync(x => x.Durum ==true);
 
             DersAcilan dersAcilan = new DersAcilan
             {
@@ -127,15 +130,17 @@ namespace UniLife.Storage.Stores
                 ProgramId = ders.ProgramId,
                 SecmeliKodu = ders.SecmeliKodu,
                 Sinif = ders.Sinif,
-                DonemId = ders.DonemId,
-                Durum = ders.Durum,
+                DonemId = aktifDonem.Id,
+                DersNedenId = ders.DersNedenId,
+                DersDilId =ders.DersDilId,
+                //Durum = ders.Durum, //dersaçılanda bu alanın henuz bir anlamı yok.
                 FakulteId = ders.FakulteId,
                 TeoSaat = ders.TeoSaat,
                 UygSaat = ders.UygSaat,
                 Zorunlu = ders.Zorunlu
             };
 
-            ders.Durum = true;
+            ders.AktifDonemdeAcik = true;
 
             var mufredat = await _db.Mufredats.FirstOrDefaultAsync(x => x.Id == ders.MufredatId);
             mufredat.Durum = 1;

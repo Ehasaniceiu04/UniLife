@@ -94,6 +94,15 @@ namespace UniLife.Server.Controllers
             => ModelState.IsValid ?
                 await _mufredatManager.CreateDersAcilansByMufredatIds(reqEntityIdWithOtherEntitiesIds) :
                 new ApiResponse(Status400BadRequest, "Mufredat Model is Invalid");
+
+        [HttpGet]
+        [Authorize]
+        [Route("GetLastMufredatByProgramId/{programId}")]
+        public async Task<ApiResponse> GetLastMufredatByProgramId(int programId)
+        => ModelState.IsValid ?
+                await _mufredatManager.GetLastMufredatByProgramId(programId) :
+                new ApiResponse(Status400BadRequest, "Mufredat Model is Invalid");
         
+
     }
 }

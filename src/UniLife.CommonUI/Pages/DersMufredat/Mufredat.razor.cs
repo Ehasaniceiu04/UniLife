@@ -57,9 +57,13 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         bool isUyariOpen;
         string dialogUyariText="";
 
-        List<DonemDto> donemDtos = new List<DonemDto>();
-        SfDropDownList<int?, DonemDto> DropDonem;
-        int? AçilacakMufredatlarınSecilenDonemIdsi;
+        //List<DonemDto> donemDtos = new List<DonemDto>();
+        //SfDropDownList<int?, DonemDto> DropDonem;
+
+        List<DonemTipDto> donemTipDtos = new List<DonemTipDto>();
+        SfDropDownList<int?, DonemTipDto> DropDonemTip;
+
+        int? AçilacakMufredatlarınSecilenDonemTipIdsi;
         bool mufredatAcDialogOpen;
 
         public async Task MultiplyRecord()
@@ -108,7 +112,8 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         {
             if (args.Item.Id == "MufredatDerslerAc")
             {
-                await ReadDonems();
+                //await ReadDonems();
+                await ReadDonemTips();
 
                 mufredatAcDialogOpen = true;
             }
@@ -120,7 +125,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             {               
 
                 ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds = new ReqEntityIdWithOtherEntitiesIds();
-                reqEntityIdWithOtherEntitiesIds.EntityId = (int)AçilacakMufredatlarınSecilenDonemIdsi;
+                reqEntityIdWithOtherEntitiesIds.EntityId = (int)AçilacakMufredatlarınSecilenDonemTipIdsi;
                 reqEntityIdWithOtherEntitiesIds.OtherEntityIds = (await MufredatGrid.GetSelectedRecords()).Select(x => x.Id).ToList();
                 mufredatAcDialogOpen = false;
 
@@ -342,19 +347,33 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             }
         }
 
-        async Task ReadDonems()
+        //async Task ReadDonems()
+        //{
+        //    ApiResponseDto<List<DonemDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<DonemDto>>>("api/donem/current");
+
+        //    if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
+        //    {
+        //        donemDtos = apiResponse.Result;
+        //    }
+        //    else
+        //    {
+        //        matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Donem getirilirken hata oluştu!");
+        //    }
+        //}
+        async Task ReadDonemTips()
         {
-            ApiResponseDto<List<DonemDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<DonemDto>>>("api/donem/current");
+            ApiResponseDto<List<DonemTipDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<DonemTipDto>>>("api/donemtip");
 
             if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
             {
-                donemDtos = apiResponse.Result;
+                donemTipDtos = apiResponse.Result;
             }
             else
             {
-                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Donem getirilirken hata oluştu!");
+                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Donem Tip getirilirken hata oluştu!");
             }
         }
+        
 
         async Task Refresh()
         {

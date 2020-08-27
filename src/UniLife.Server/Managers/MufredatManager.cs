@@ -68,5 +68,10 @@ namespace UniLife.Server.Managers
             return new ApiResponse(Status200OK, "Seçili müfredatların dersleri açıldı.");
 
         }
+
+        public async Task<ApiResponse> GetLastMufredatByProgramId(int programId)
+        {
+            return new ApiResponse(Status200OK, "Retrieved MufredatDtos", await _mufredatStore.GetLastMufredatByProgramId(programId));
+        }
     }
 }

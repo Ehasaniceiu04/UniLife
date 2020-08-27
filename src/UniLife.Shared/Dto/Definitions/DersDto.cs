@@ -7,8 +7,8 @@ namespace UniLife.Shared.Dto.Definitions
         public string Ad { get; set; }
         public string Kod { get; set; }
 
-        public int? DonemId { get; set; }
-        public virtual DonemDto Donem { get; set; }
+        //public int? DonemId { get; set; }
+        //public virtual DonemDto Donem { get; set; }
 
         public int? DonemTipId { get; set; }
         public virtual DonemTipDto DonemTip { get; set; }
@@ -36,6 +36,8 @@ namespace UniLife.Shared.Dto.Definitions
         public double Kredi { get; set; }
         public bool Durum { get; set; } = true;
         public bool Zorunlu { get; set; } = true;
+        public bool AktifDonemdeAcik { get; set; }
+        
         public string SecmeliKodu { get; set; }
         public int? Sinif { get; set; }
     }

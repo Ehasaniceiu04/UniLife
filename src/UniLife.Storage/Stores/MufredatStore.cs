@@ -150,7 +150,7 @@ namespace UniLife.Storage.Stores
 
         public async Task CreateDersAcilansByMufredatIds(ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds)
         {
-            var mufredatDerss = await _db.Derss.Where(x => reqEntityIdWithOtherEntitiesIds.EntityId == x.DonemId && reqEntityIdWithOtherEntitiesIds.OtherEntityIds.Contains(x.MufredatId)).ToListAsync();
+            var mufredatDerss = await _db.Derss.Where(x => reqEntityIdWithOtherEntitiesIds.EntityId == x.DonemTipId && reqEntityIdWithOtherEntitiesIds.OtherEntityIds.Contains(x.MufredatId)).ToListAsync();
 
 
             //RAW delete hard yapıyor.. tehlikeli.
@@ -167,6 +167,7 @@ namespace UniLife.Storage.Stores
 
             var dumpDersAcilans = _db.DersAcilans.Where(x => reqEntityIdWithOtherEntitiesIds.EntityId == x.DonemId && reqEntityIdWithOtherEntitiesIds.OtherEntityIds.Contains(x.MufredatId)).ToList(); //bunlar yeniden geldiği için silinecek.
 
+            var aktifDonem = await _db.Donems.FirstOrDefaultAsync(x => x.Durum == true);
 
             List<DersAcilan> dersAcilans = new List<DersAcilan>();
             foreach (var i in mufredatDerss)
@@ -187,8 +188,10 @@ namespace UniLife.Storage.Stores
                     ProgramId = i.ProgramId,
                     SecmeliKodu = i.SecmeliKodu,
                     Sinif = i.Sinif,
-                    DonemId = i.DonemId,
-                    Durum = i.Durum,
+                    DersNedenId = i.DersNedenId,
+                    DersDilId = i.DersDilId,
+                    DonemId = aktifDonem.Id, // Todo : burada sadece aktif döneme açmak yerine başka dönemlere açma seçeneği istenebilir.
+                    //Durum = i.Durum, //ders açılandan bu alanın henuz bir anlamı yok.
                     FakulteId = i.FakulteId,
                     TeoSaat = i.TeoSaat,
                     UygSaat = i.UygSaat,
@@ -196,7 +199,7 @@ namespace UniLife.Storage.Stores
                 };
                 dersAcilans.Add(dersAcilan);
 
-                i.Durum = true; // Dersleri açınca durumlarını aktif ediyoruz. Bir başka ifadeyle, "Ders"ler "DersAcilan"a aktarıldığında "Ders" aktif oluyor.
+                i.AktifDonemdeAcik = true; // "Ders"ler "DersAcilan"a aktarıldığında "Ders" yeşilleniyor oluyor. Bir sonki dönem bu sıfırlanır.
             }
 
             _db.DersAcilans.RemoveRange(dumpDersAcilans); //aynı dersacilan varsa sil
@@ -214,6 +217,14 @@ namespace UniLife.Storage.Stores
             await _db.SaveChangesAsync(CancellationToken.None);
 
                 
+        }
+
+        public async Task<MufredatDto> GetLastMufredatByProgramId(int programId)
+        {
+            var sonMufredat= await _db.Mufredats.Where(x => x.ProgramId == programId).OrderByDescending(y => y.Yil).FirstOrDefaultAsync();
+            
+
+            return _autoMapper.Map<Mufredat, MufredatDto>(sonMufredat);
         }
     }
 }
