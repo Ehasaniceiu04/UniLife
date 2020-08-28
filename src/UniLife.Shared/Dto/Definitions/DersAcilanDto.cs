@@ -14,6 +14,7 @@ namespace UniLife.Shared.Dto.Definitions
         public string Ad { get; set; }
         public string Kod { get; set; }
 
+        public string EskiMufBagliDersKod { get; set; }
         //External
         public int DersId { get; set; }
         public virtual DersDto Ders { get; set; }

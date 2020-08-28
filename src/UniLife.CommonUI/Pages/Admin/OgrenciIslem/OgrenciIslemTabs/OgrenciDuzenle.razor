@@ -358,30 +358,41 @@ else
     //}
 
 
-    [CascadingParameter]
-    Task<AuthenticationState> authenticationStateTask { get; set; }
-    ClaimsPrincipal user;
+    //[CascadingParameter]
+    //Task<AuthenticationState> authenticationStateTask { get; set; }
+    //ClaimsPrincipal user;
 
     bool isInitializingFinised;
 
-    //protected override async Task OnInitializedAsync()
-    protected override void OnInitialized()
+    //protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         EC = new EditContext(_OgrenciDto);
         danismanAd = "";
 
-        user = authenticationStateTask.Result.User;
+        //user = authenticationStateTask.Result.User;
 
-        if (user.IsInRole(UserRoles.Ogrenci.ToString()))
+        //if (user.IsInRole(UserRoles.Ogrenci.ToString()))
+        //{
+        //    _OgrenciDto = appState.GetOgrenciState().Result;
+        //    isPersonel = false;
+        //}
+        //else
+        //{
+        //    isPersonel = true;
+
+        //}
+
+        if (_OgrenciDto.Id == 0)
         {
-            _OgrenciDto = appState.GetOgrenciState().Result;
+            _OgrenciDto = await appState.GetOgrenciState();
             isPersonel = false;
         }
         else
         {
             isPersonel = true;
-
         }
+
 
         ReadFakultes().ConfigureAwait(true);
         ReadKayitNedens().ConfigureAwait(true);

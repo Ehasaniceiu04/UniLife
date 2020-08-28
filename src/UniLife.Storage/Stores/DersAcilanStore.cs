@@ -221,12 +221,31 @@ namespace UniLife.Storage.Stores
             return _autoMapper.Map<List<DersAcilanDto>>(await dersAcilans.ToListAsync());
         }
 
-        public async Task<List<DersAcilanDto>> GetAcilanDersByMufredatId(int mufredatId, int sinif, int donemId)
+        public async Task<List<DersAcilanDto>> GetAcilanDersByMufredatId(int mufredatId, int sinif, int donemId, int programId)
         {
-            var dersAcilans = from d in _db.DersAcilans.Where(x => x.MufredatId == mufredatId && x.Sinif == sinif && x.DonemId == donemId)
-                              select d;
+            List<DersAcilan> dersAcilans;
 
-            return _autoMapper.Map<List<DersAcilanDto>>(await dersAcilans.ToListAsync());
+            //@sinif tan kaldığı dersler varsa
+            if (true)
+            {
+
+                // kaldıgı derslerin kodu elimizde,Id tutulursa daha saglam olur
+                //TODO : kalınan ders bilgisini nasıl dolduracağımızı öğren.
+
+                var activeMufredatId = (await _db.Mufredats.FirstOrDefaultAsync(x => x.ProgramId == programId && x.Aktif == true)).Id;
+                dersAcilans = await _db.DersAcilans.Where(x => x.MufredatId == activeMufredatId && x.EskiMufBagliDersKod.Contains(",fiz")).AsNoTracking().ToListAsync();
+
+                Ders ekrnaındada bu ,fixi at bakalaım.
+            }
+            else
+            {
+                //yeni başlıyorsa
+                dersAcilans = await (from d in _db.DersAcilans.Where(x => x.MufredatId == mufredatId && x.Sinif == sinif && x.DonemId == donemId)
+                                  select d).ToListAsync();
+            }
+
+
+            return _autoMapper.Map<List<DersAcilanDto>>(dersAcilans);
         }
 
         public async Task<List<SubeDersAcilanDto>> PostDersAcilansByFilters(SinavDersAcDto sinavDersAcDto)

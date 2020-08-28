@@ -10,7 +10,7 @@ namespace UniLife.Shared.DataInterfaces
         //BUlk insering bilgilerini dönebiliriz List<DersAcilan> 
         Task<bool> CreateDersAcilanByDers(DersAcDto dersAcDto);
         Task<List<DersAcilanDto>> GetAcilanDersByFilterDto(DersAcilanFilterDto dersAcilanFilterDto);
-        Task<List<DersAcilanDto>> GetAcilanDersByMufredatId(int mufredatId,int sinif,int donemId);
+        Task<List<DersAcilanDto>> GetAcilanDersByMufredatId(int mufredatId,int sinif,int donemId, int programId);
         Task<List<DersAcilanDto>> GetKayitliDerssByOgrenciId(int ogrenciId, int sinif,int donemId);
         Task<List<DersAcilanDto>> GetKayitliDerssByOgrenciIdDonemId(int ogrenciId, int donemId);
         Task<List<DersAcilanDto>> ByZorunlu(bool isZorunlu);
