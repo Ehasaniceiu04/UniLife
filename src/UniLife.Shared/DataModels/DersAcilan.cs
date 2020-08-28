@@ -15,7 +15,7 @@ namespace UniLife.Shared.DataModels
         public string Ad { get; set; }
         public string Kod { get; set; }
 
-        public string EskiMufBagliDersKod { get; set; }
+        public string EskiMufBagliDersId { get; set; }
 
         public int DersId { get; set; }
         public virtual Ders Ders { get; set; }

@@ -110,7 +110,7 @@ namespace UniLife.Storage.Stores
         {
             var dumpDersAcilan = await _db.DersAcilans.FirstOrDefaultAsync(x => x.DersId == dersId);
 
-            var ders = await _db.Derss.FirstOrDefaultAsync(x => x.Id == dersId);
+            var ders = await _db.Derss.FirstOrDefaultAsync(x => x.Id == dersId && x.Durum ==true);
 
             var aktifDonem = await _db.Donems.FirstOrDefaultAsync(x => x.Durum ==true);
 
@@ -137,7 +137,8 @@ namespace UniLife.Storage.Stores
                 FakulteId = ders.FakulteId,
                 TeoSaat = ders.TeoSaat,
                 UygSaat = ders.UygSaat,
-                Zorunlu = ders.Zorunlu
+                Zorunlu = ders.Zorunlu,
+                EskiMufBagliDersId = ders.EskiMufBagliDersId
             };
 
             ders.AktifDonemdeAcik = true;

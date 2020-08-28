@@ -240,7 +240,7 @@
 
     void ReadAcilan()
     {
-        ApiResponseDto<List<DersAcilanDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<DersAcilanDto>>>($"api/dersacilan/GetAcilanDersByMufredatId/{appState.OgrenciState.MufredatId}/{Sinif}/{appState.DersKayitDonemIdState}/{appState.OgrenciState.ProgramId}").Result;
+        ApiResponseDto<List<DersAcilanDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<DersAcilanDto>>>($"api/dersacilan/GetAcilanDerssByOgrenciId/{appState.OgrenciState.Id}/{Sinif}/{appState.DersKayitDonemIdState}").Result;
         DersAcilanDtos = apiResponse.Result;
     }
 

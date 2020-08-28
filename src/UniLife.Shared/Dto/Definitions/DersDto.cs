@@ -40,5 +40,6 @@ namespace UniLife.Shared.Dto.Definitions
         
         public string SecmeliKodu { get; set; }
         public int? Sinif { get; set; }
+        public string EskiMufBagliDersId { get; set; }
     }
 }

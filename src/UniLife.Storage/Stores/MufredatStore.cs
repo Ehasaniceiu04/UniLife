@@ -150,7 +150,7 @@ namespace UniLife.Storage.Stores
 
         public async Task CreateDersAcilansByMufredatIds(ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds)
         {
-            var mufredatDerss = await _db.Derss.Where(x => reqEntityIdWithOtherEntitiesIds.EntityId == x.DonemTipId && reqEntityIdWithOtherEntitiesIds.OtherEntityIds.Contains(x.MufredatId)).ToListAsync();
+            var mufredatDerss = await _db.Derss.Where(x => reqEntityIdWithOtherEntitiesIds.EntityId == x.DonemTipId && reqEntityIdWithOtherEntitiesIds.OtherEntityIds.Contains(x.MufredatId) && x.Durum == true).ToListAsync();
 
 
             //RAW delete hard yapıyor.. tehlikeli.
@@ -195,7 +195,8 @@ namespace UniLife.Storage.Stores
                     FakulteId = i.FakulteId,
                     TeoSaat = i.TeoSaat,
                     UygSaat = i.UygSaat,
-                    Zorunlu = i.Zorunlu
+                    Zorunlu = i.Zorunlu,
+                    EskiMufBagliDersId = i.EskiMufBagliDersId
                 };
                 dersAcilans.Add(dersAcilan);
 

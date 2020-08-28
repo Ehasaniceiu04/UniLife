@@ -43,6 +43,7 @@ namespace UniLife.Shared.DataModels
         public bool AktifDonemdeAcik { get; set; }
         public string SecmeliKodu { get; set; }
         public int Sinif { get; set; }
+        public string EskiMufBagliDersId { get; set; }
 
         public virtual ICollection<DersAcilan> DersAcilans { get; set; }
     }

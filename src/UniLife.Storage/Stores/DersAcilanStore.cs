@@ -221,27 +221,69 @@ namespace UniLife.Storage.Stores
             return _autoMapper.Map<List<DersAcilanDto>>(await dersAcilans.ToListAsync());
         }
 
-        public async Task<List<DersAcilanDto>> GetAcilanDersByMufredatId(int mufredatId, int sinif, int donemId, int programId)
-        {
-            List<DersAcilan> dersAcilans;
 
-            //@sinif tan kaldığı dersler varsa
-            if (true)
+        public async Task<List<DersAcilanDto>> GetAcilanDerssByOgrenciId(int ogrenciId, int pageSinif, int pageDonemId)
+        {
+            List<DersAcilan> dersAcilans=new List<DersAcilan>();
+
+            var ogrenci = await _db.Ogrencis.FirstOrDefaultAsync(x => x.Id == ogrenciId);
+
+            //@sinif tan kaldığı dersler varsa vs vs birsürü kural gelecek.!!
+            if (pageSinif < ogrenci.Sinif)
             {
 
                 // kaldıgı derslerin kodu elimizde,Id tutulursa daha saglam olur
                 //TODO : kalınan ders bilgisini nasıl dolduracağımızı öğren.
 
-                var activeMufredatId = (await _db.Mufredats.FirstOrDefaultAsync(x => x.ProgramId == programId && x.Aktif == true)).Id;
-                dersAcilans = await _db.DersAcilans.Where(x => x.MufredatId == activeMufredatId && x.EskiMufBagliDersKod.Contains(",fiz")).AsNoTracking().ToListAsync();
+                List<string> kalinandersler = new List<string>();
+                List<int> kalinanDersIds = new List<int>() { 2, 16 };
 
-                Ders ekrnaındada bu ,fixi at bakalaım.
+                if (kalinanDersIds.Count > 0)
+                {
+                    //Kayıtlı old. mufredat hala aktif müfredatsa dolo gelecek. yoksa boş
+                    var ayniMufredatTekrarDersler = await _db.DersAcilans.Where(x => kalinanDersIds.Contains(x.DersId)).AsNoTracking().ToListAsync();
+
+                    //Kayıtlı old. mufredat pasif müfredat ve kaldığı dersler aktif müfredattaki derslere kancalı ise onları getirecez.
+                    List<DersAcilan> farkliMufredatKalinanDersler = new List<DersAcilan>();
+                    foreach (var item in kalinanDersIds)
+                    {
+                        kalinandersler.Add("," + item + ",");
+                    }
+                    try
+                    {
+                        var activeMufredatId = (await _db.Mufredats.FirstOrDefaultAsync(x => x.ProgramId == ogrenci.ProgramId && x.Aktif == true)).Id;
+                        var kalinanDersAcilans = await _db.DersAcilans.Where(x => x.MufredatId == activeMufredatId).AsNoTracking().ToListAsync();
+
+                        var kalinanDersAcilans2 = kalinanDersAcilans.Where(x => kalinandersler.Any(y => x.EskiMufBagliDersId != null ? x.EskiMufBagliDersId.Contains(y) : false));
+
+                        foreach (var item in kalinanDersAcilans2)
+                        {
+                            item.Kod = item.Kod + "(" + item.EskiMufBagliDersId + ")";
+                        }
+                        dersAcilans.AddRange(ayniMufredatTekrarDersler);
+                        dersAcilans.AddRange(kalinanDersAcilans2);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw;
+                    }
+                    
+
+                    
+
+                }
+
+
+
+
+
+                //Ders ekrnaındada bu ,fixi at bakalaım.
             }
             else
             {
                 //yeni başlıyorsa
-                dersAcilans = await (from d in _db.DersAcilans.Where(x => x.MufredatId == mufredatId && x.Sinif == sinif && x.DonemId == donemId)
-                                  select d).ToListAsync();
+                dersAcilans = await (from d in _db.DersAcilans.Where(x => x.MufredatId == ogrenci.MufredatId && x.Sinif == pageSinif && x.DonemId == pageDonemId)
+                                     select d).ToListAsync();
             }
 
 
