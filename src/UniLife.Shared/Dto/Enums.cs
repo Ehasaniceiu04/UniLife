@@ -32,6 +32,33 @@ namespace UniLife.Shared.Dto
         Ara_Sinav = 1,
         Final = 2
     }
+    public enum SinavDegerlendirmeTip
+    {
+        Bagil_Değerler = 1,
+        Temp = 2
+    }
+    public enum VarSayilanBagHarfTablo
+    {
+        Tablo_1 = 1,
+        Tablo_2 = 2
+    }
+    public enum MutlakDegerHarfTablo
+    {
+        Mutlak = 1,
+        Bağıl = 2
+    }
+    public enum VarSayilanBagilHesapTip
+    {
+        Mutlak = 1,
+        Bağıl = 2
+    }
+    public enum VarsayilanMutlakHesapTip
+    {
+        Mutlak = 1,
+        Bağıl = 2
+    }
+
+
 
     public enum UserRoles
     {

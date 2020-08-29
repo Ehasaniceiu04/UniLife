@@ -73,6 +73,7 @@ namespace UniLife.Storage.Mapping
             CreateMap<ProgramTur, ProgramTurDto>().ReverseMap();
             CreateMap<DersDil, DersDilDto>().ReverseMap();
             CreateMap<DersNeden, DersNedenDto>().ReverseMap();
+            CreateMap<SinavKriter, SinavKriterDto>().ReverseMap();
         }
     }
 }

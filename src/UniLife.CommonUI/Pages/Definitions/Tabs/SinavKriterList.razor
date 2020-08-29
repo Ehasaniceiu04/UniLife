@@ -1,0 +1,200 @@
+﻿@inject HttpClient Http;
+@using UniLife.Shared.Dto.Definitions
+@inject IMatToaster matToaster
+@using Syncfusion.Blazor.DropDowns
+@using System.Net
+@using Newtonsoft.Json
+
+    <ControlSection>
+        <SfGrid @ref="SinavKriterGrid" DataSource="@sinavKriterDtos" Toolbar="@(new List<string>() { "Add"})" AllowSorting="true" AllowFiltering="true" AllowPaging="true" Width="100%">
+            <GridEvents OnActionComplete="ActionCompletedHandler" TValue="SinavKriterDto"></GridEvents>
+            <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
+            <GridColumns>
+                <GridColumn Visible="false" Field=@nameof(SinavKriterDto.Id) HeaderText="Sınav Kriter ID" Edit="false" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+                <GridColumn Field=@nameof(SinavKriterDto.SinavDegerlendirmeTipi) EditType="EditType.DropDownEdit" HeaderText="Sınav Değerlendirme Tipi" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@SinavDergerTipDtos"></GridColumn>
+                <GridColumn Field=@nameof(SinavKriterDto.EnAzAraSnvEtkiOrnYuzde) HeaderText="EnAz YYS Etki oranı%"></GridColumn>
+                <GridColumn Field=@nameof(SinavKriterDto.BglDegKatmaLimiti) HeaderText="Bğl Değ. Katma Limiti"></GridColumn>
+                <GridColumn Field=@nameof(SinavKriterDto.YariYilSonSinavLimit) HeaderText="Yarı Yıl Sonu Sınav Limiti"></GridColumn>
+                <GridColumn Field=@nameof(SinavKriterDto.BglDegDisSinOrtTavan) HeaderText="Bğl Değ. Dış Sınıf Ort.(Tavan)"></GridColumn>
+                <GridColumn Field=@nameof(SinavKriterDto.BglDegEnAzOgrSayisi) HeaderText="Bğl. Değ. En Az Öğrenci Sayısı"></GridColumn>
+                @*<GridColumn Visible="false" Field=@nameof(SinavKriterDto.IkiAralikEnAzOgrSayisi) HeaderText="Ogrenim Tür" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@ogrenimTurDtos"></GridColumn>*@
+                <GridColumn Field=@nameof(SinavKriterDto.VarSayilanBagHarfTablosu) EditType="EditType.DropDownEdit" HeaderText="Varsayılan Bağıl Harf Tablosu" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@SinavDergerTipDtos"></GridColumn>
+                <GridColumn Field=@nameof(SinavKriterDto.MutlakDegerHarfTablo) HeaderText="Mutlak Değerlendirme Harf Tablosu" EditType="EditType.DropDownEdit" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@MutlakDegerHarfTabloDtos"></GridColumn>
+                <GridColumn Field=@nameof(SinavKriterDto.BasariDegTabanGeçHarf)  HeaderText="Başarı Taban Geçer Harf"></GridColumn>
+                <GridColumn Field=@nameof(SinavKriterDto.ButGirmeyenSifir) HeaderText="Büte Girmeyen Öğrenciye 0 Ver" EditType="EditType.BooleanEdit"></GridColumn>
+                <GridColumn Field=@nameof(SinavKriterDto.AraSinavSayi) HeaderText="Ara Sınav Sayısı"></GridColumn>
+                <GridColumn Field=@nameof(SinavKriterDto.EnAzAraSnvEtkiOrnYuzde) HeaderText="En Az Ara Sınav Etki Oranı%"></GridColumn>
+                <GridColumn Field=@nameof(SinavKriterDto.EnCokYYSEtkiOranYuzde) HeaderText="En Çok YYS Etki Oran"></GridColumn>
+                <GridColumn Field=@nameof(SinavKriterDto.HamBasariNotAltLimit) HeaderText="Ham Başarı Notu Alt Limiti"></GridColumn>
+                <GridColumn Field=@nameof(SinavKriterDto.EnFazlaHamBasariNotuOrt) HeaderText="En Fazla Ham Başarı Not Ort."></GridColumn>
+                <GridColumn Field=@nameof(SinavKriterDto.VarSayilanBagilHesapTipi) HeaderText="Varayılan Başarı Hesap Tipi" EditType="EditType.DropDownEdit" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@VarSayilanBagilHesapTipDtos"></GridColumn>
+                <GridColumn Field=@nameof(SinavKriterDto.VarsayilanMutlakHesapTipi) HeaderText="Varayilan Mutlak Hesap Tipi" EditType="EditType.DropDownEdit" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@VarsayilanMutlakHesapTipDtos"></GridColumn>
+                <GridColumn Field=@nameof(SinavKriterDto.YYSSinavSayisi) HeaderText="YYS Sınav Sayısı"></GridColumn>
+                <GridColumn Field=@nameof(SinavKriterDto.FinaleGirmeyenKalir) HeaderText="Finale Girmeyen Kalır" EditType="EditType.BooleanEdit"></GridColumn>
+                <GridColumn Field=@nameof(SinavKriterDto.ButuFinalleAyniDegerlendir) HeaderText="Bütü Finalle Aynı Değerlendir" EditType="EditType.BooleanEdit"></GridColumn>
+                <GridColumn HeaderText="Manage Records" Width="150">
+                    <GridCommandColumns>
+                        <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-edit", CssClass = "e-flat" })"></GridCommandColumn>
+                        <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-delete", CssClass = "e-flat" })"></GridCommandColumn>
+                        <GridCommandColumn Type="CommandButtonType.Save" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-update", CssClass = "e-flat" })"></GridCommandColumn>
+                        <GridCommandColumn Type="CommandButtonType.Cancel" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-cancel-icon", CssClass = "e-flat" })"></GridCommandColumn>
+                    </GridCommandColumns>
+                </GridColumn>
+
+            </GridColumns>
+        </SfGrid>
+    </ControlSection>
+            
+@code{
+
+    SfGrid<SinavKriterDto> SinavKriterGrid;
+
+    List<SinavKriterDto> sinavKriterDtos = new List<SinavKriterDto>();
+
+    List<KeyValueDto> SinavDergerTipDtos = new List<KeyValueDto>
+{
+            new KeyValueDto() { Ad = SinavDegerlendirmeTip.Bagil_Değerler.ToString(), Id = (int)SinavDegerlendirmeTip.Bagil_Değerler },
+            new KeyValueDto() { Ad = SinavDegerlendirmeTip.Temp.ToString(), Id = (int)SinavDegerlendirmeTip.Temp }
+};
+    List<KeyValueDto> VarSayilanBagHarfTabloDtos = new List<KeyValueDto>
+{
+            new KeyValueDto() { Ad = VarSayilanBagHarfTablo.Tablo_1.ToString(), Id = (int)VarSayilanBagHarfTablo.Tablo_1 },
+            new KeyValueDto() { Ad = VarSayilanBagHarfTablo.Tablo_2.ToString(), Id = (int)VarSayilanBagHarfTablo.Tablo_2 }
+};
+    List<KeyValueDto> MutlakDegerHarfTabloDtos = new List<KeyValueDto>
+{
+            new KeyValueDto() { Ad = MutlakDegerHarfTablo.Mutlak.ToString(), Id = (int)MutlakDegerHarfTablo.Mutlak },
+            new KeyValueDto() { Ad = MutlakDegerHarfTablo.Bağıl.ToString(), Id = (int)MutlakDegerHarfTablo.Bağıl }
+};
+    List<KeyValueDto> VarSayilanBagilHesapTipDtos = new List<KeyValueDto>
+{
+            new KeyValueDto() { Ad = VarSayilanBagilHesapTip.Mutlak.ToString(), Id = (int)VarSayilanBagilHesapTip.Mutlak },
+            new KeyValueDto() { Ad = VarSayilanBagilHesapTip.Bağıl.ToString(), Id = (int)VarSayilanBagilHesapTip.Bağıl }
+};
+    List<KeyValueDto> VarsayilanMutlakHesapTipDtos = new List<KeyValueDto>
+{
+            new KeyValueDto() { Ad = VarsayilanMutlakHesapTip.Mutlak.ToString(), Id = (int)VarsayilanMutlakHesapTip.Mutlak },
+            new KeyValueDto() { Ad = VarsayilanMutlakHesapTip.Bağıl.ToString(), Id = (int)VarsayilanMutlakHesapTip.Bağıl }
+};
+
+    protected override void OnInitialized()
+    {
+        ReadSinavKriters();
+    }
+
+    void ReadSinavKriters()
+    {
+
+        ApiResponseDto<List<SinavKriterDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<SinavKriterDto>>>("api/sinavKriter").Result;
+
+        if (apiResponse.StatusCode == Status200OK)
+        {
+            matToaster.Add(apiResponse.Message, MatToastType.Success, "Sınav Kriterler getirildi");
+            sinavKriterDtos = apiResponse.Result;
+        }
+        else
+        {
+            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Sınav Kriter bilgisi getirilirken hata oluştu!");
+        }
+    }
+
+
+    public void ActionCompletedHandler(ActionEventArgs<SinavKriterDto> args)
+    {
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
+        {
+
+        }
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+        {
+            if (args.Action == "Edit")
+            {
+                Update(args.Data);
+            }
+            else if (args.Action == "Add")
+            {
+                Create(args.Data);
+            }
+
+        }
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
+        {
+            Delete(args.Data);
+        }
+    }
+
+    public async Task Create(SinavKriterDto sinavKriterDto)
+    {
+        try
+        {
+            ApiResponseDto<SinavKriterDto> apiResponse = await Http.PostJsonAsync<ApiResponseDto<SinavKriterDto>>
+                ("api/sinavKriter", sinavKriterDto);
+            if (apiResponse.StatusCode == Status200OK)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success);
+                sinavKriterDtos.FirstOrDefault(x => x.Id == 0).Id = apiResponse.Result.Id;
+                SinavKriterGrid.Refresh();
+            }
+            else
+            {
+                sinavKriterDtos.Remove(sinavKriterDto);
+                SinavKriterGrid.Refresh();
+                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Sınav Kriter Creation Failed");
+            }
+        }
+        catch (Exception ex)
+        {
+            sinavKriterDtos.Remove(sinavKriterDto);
+            SinavKriterGrid.Refresh();
+            matToaster.Add(ex.Message, MatToastType.Danger, "Sınav Kriter Creation Failed");
+        }
+    }
+
+    public async void Update(SinavKriterDto sinavKriterDto)
+    {
+        //this updates the IsCompleted flag only
+        try
+        {
+            ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>
+                ("api/sinavKriter", sinavKriterDto);
+
+            if (!apiResponse.IsError)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success);
+            }
+            else
+            {
+                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Sınav Kriter Save Failed");
+                //update failed gridi boz !
+            }
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.Message, MatToastType.Danger, "Sınav Kriter Save Failed");
+            //update failed gridi boz !
+        }
+    }
+
+    public async Task Delete(SinavKriterDto sinavKriterDto)
+    {
+        try
+        {
+            var response = await Http.DeleteAsync("api/sinavKriter/" + sinavKriterDto.Id);
+            if (response.StatusCode == (HttpStatusCode)Status200OK)
+            {
+                matToaster.Add("Sınav Kriter Deleted", MatToastType.Success);
+                sinavKriterDtos.Remove(sinavKriterDto);
+            }
+            else
+            {
+                matToaster.Add("Sınav Kriter Delete Failed: " + response.StatusCode, MatToastType.Danger);
+            }
+            //deleteDialogOpen = false;
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.Message, MatToastType.Danger, "Sınav Kriter Save Failed");
+        }
+    }
+
+}
