@@ -174,5 +174,17 @@ namespace UniLife.Storage.Stores
             await _db.SaveChangesAsync(CancellationToken.None);
             return secilenDers;
         }
+
+        public async Task DeleteExistKancas(int dersId)
+        {
+            var kancaliDersler = await _db.Derss.Where(x => x.EskiMufBagliDersId.Contains("," + dersId + ",")).ToListAsync();
+
+            foreach (var item in kancaliDersler)
+            {
+                item.EskiMufBagliDersId = item.EskiMufBagliDersId.Replace($",{dersId},","");
+            }
+
+            await _db.SaveChangesAsync(CancellationToken.None);
+        }
     }
 }

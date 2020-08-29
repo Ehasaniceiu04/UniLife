@@ -323,6 +323,11 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
                 yerineDersDialogOpen = true;
             }
+
+            if ((bool)args.Value == true && yerineDersId !=0)
+            {
+                ApiResponseDto<MufredatDto> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<MufredatDto>>($"api/ders/DeleteExistKancas/{yerineDersId}").Result;
+            }
         }
 
         public async Task CommandClickHandlerDers(Syncfusion.Blazor.Grids.CommandClickEventArgs<DersDto> args)

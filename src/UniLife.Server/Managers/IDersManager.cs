@@ -15,5 +15,6 @@ namespace UniLife.Server.Managers
         Task<ApiResponse> GetAcilacakDersByFilterDto(DersFilterDto dersFilterDto);
         Task<ApiResponse> CreateDersAcilansByDersId(int dersId);
         Task<ApiResponse> AddYerineDers(int dersId, int yerineDersId);
+        Task<ApiResponse> DeleteExistKancas(int dersId);
     }
 }

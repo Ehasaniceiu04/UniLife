@@ -235,30 +235,32 @@ namespace UniLife.Storage.Stores
                 // kaldıgı derslerin kodu elimizde,Id tutulursa daha saglam olur
                 //TODO : kalınan ders bilgisini nasıl dolduracağımızı öğren.
 
-                List<string> kalinandersler = new List<string>();
-                List<int> kalinanDersIds = new List<int>() { 2, 16 };
+                List<string> kalinandersIdsString = new List<string>();
+                var kalinanDersler = await _db.Derss.Where(x => x.Id == 16).AsNoTracking().ToListAsync();
+                List<int> kalinanDersIdsInt = kalinanDersler.Select(x => x.Id).ToList();
 
-                if (kalinanDersIds.Count > 0)
+                if (kalinanDersIdsInt.Count > 0)
                 {
                     //Kayıtlı old. mufredat hala aktif müfredatsa dolo gelecek. yoksa boş
-                    var ayniMufredatTekrarDersler = await _db.DersAcilans.Where(x => kalinanDersIds.Contains(x.DersId)).AsNoTracking().ToListAsync();
+                    var ayniMufredatTekrarDersler = await _db.DersAcilans.Where(x => kalinanDersIdsInt.Contains(x.DersId)).AsNoTracking().ToListAsync();
 
                     //Kayıtlı old. mufredat pasif müfredat ve kaldığı dersler aktif müfredattaki derslere kancalı ise onları getirecez.
                     List<DersAcilan> farkliMufredatKalinanDersler = new List<DersAcilan>();
-                    foreach (var item in kalinanDersIds)
+                    foreach (var item in kalinanDersler)
                     {
-                        kalinandersler.Add("," + item + ",");
+                        kalinandersIdsString.Add("," + item.Id + ",");
                     }
                     try
                     {
                         var activeMufredatId = (await _db.Mufredats.FirstOrDefaultAsync(x => x.ProgramId == ogrenci.ProgramId && x.Aktif == true)).Id;
                         var kalinanDersAcilans = await _db.DersAcilans.Where(x => x.MufredatId == activeMufredatId).AsNoTracking().ToListAsync();
 
-                        var kalinanDersAcilans2 = kalinanDersAcilans.Where(x => kalinandersler.Any(y => x.EskiMufBagliDersId != null ? x.EskiMufBagliDersId.Contains(y) : false));
+                        var kalinanDersAcilans2 = kalinanDersAcilans.Where(x => kalinandersIdsString.Any(y => string.IsNullOrWhiteSpace(x.EskiMufBagliDersId) ? x.EskiMufBagliDersId.Contains(y) : false));
 
                         foreach (var item in kalinanDersAcilans2)
                         {
-                            item.Kod = item.Kod + "(" + item.EskiMufBagliDersId + ")";
+                            //derskayıda eski kodu parantez içinde yazdırıyoruz.
+                            item.Kod = item.Kod + "(" + kalinanDersler.FirstOrDefault(x=> item.EskiMufBagliDersId.Split(",").Contains(x.Id.ToString())).Kod + ")";
                         }
                         dersAcilans.AddRange(ayniMufredatTekrarDersler);
                         dersAcilans.AddRange(kalinanDersAcilans2);

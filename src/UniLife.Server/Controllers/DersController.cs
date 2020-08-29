@@ -90,5 +90,15 @@ namespace UniLife.Server.Controllers
                 await _dersManager.AddYerineDers(dersId, yerineDersId) :
                 new ApiResponse(Status400BadRequest, "Ders Model is Invalid");
 
+
+        [HttpGet]
+        [Authorize(Permissions.Ders.Update)]
+        [Route("DeleteExistKancas/{dersId}")]
+        public async Task<ApiResponse> DeleteExistKancas(int dersId)
+            => ModelState.IsValid ?
+                    await _dersManager.DeleteExistKancas(dersId) :
+                    new ApiResponse(Status400BadRequest, "Ders Model is Invalid");
+        
+
     }
 }

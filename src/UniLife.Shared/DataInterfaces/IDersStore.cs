@@ -23,5 +23,6 @@ namespace UniLife.Shared.DataInterfaces
         Task<List<DersDto>> GetAcilacakDersByFilterDto(DersFilterDto dersFilterDto);
         Task CreateDersAcilansByDersId(int dersId);
         Task<Ders> AddYerineDers(int dersId, int yerineDersId);
+        Task DeleteExistKancas(int dersId);
     }
 }

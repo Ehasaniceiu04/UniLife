@@ -74,7 +74,13 @@ namespace UniLife.Server.Managers
             catch (Shared.DomainException ex)
             {
                 return new ApiResponse(Status400BadRequest, ex.Description);
-            }            
+            }
+        }
+
+        public async Task<ApiResponse> DeleteExistKancas(int dersId)
+        {
+            await _dersStore.DeleteExistKancas(dersId);
+            return new ApiResponse(Status200OK, "Bağlı dersleri varsa silindi.");
         }
     }
 }
