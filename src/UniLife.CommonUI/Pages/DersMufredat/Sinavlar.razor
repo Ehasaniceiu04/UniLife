@@ -117,12 +117,42 @@
                         <SfGrid ID="SinavGrid" @ref="SinavGrid" DataSource="@SinavDtos" Toolbar="@(Toolbaritems)" RowHeight="20" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
                             <GridEvents RowSelected="RowSelectedHandlerSinav" OnActionComplete="ActionCompletedHandler" OnToolbarClick="ToolbarClickHandler" TValue="SinavDto"></GridEvents>
                             <GridSelectionSettings></GridSelectionSettings>
-                            <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
+                            <GridEditSettings Dialog="DialogParams" ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
                                 <Template>
                                     @{
                                         SinavDto sinavInfo = (context as SinavDto);
                                     }
-                                    <div class="col-md-10 offset-md-1">
+
+
+                                    @*<div class="row">
+                                        <div class="col-md-12">*@
+                                            <div class="form-row mt-2">
+                                                <div class="col-12 pb-2">
+                                                    <div class="form-row">
+                                                        <label class="col-md-3 col-form-label" for="SinavTipId">Sinav Tip</label>
+                                                        <SfDropDownList ID="SinavTipId" CssClass="form-control col-sm-9" @bind-Value="@(sinavInfo.SinavTipId)" TValue="int" TItem="SinavTipDto" Index="0" DataSource="@sinavTipDtos">
+                                                            <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
+                                                        </SfDropDownList>
+                                                        <label class="col-md-3 col-form-label" for="SinavTurId">Sinav Tur</label>
+                                                        <SfDropDownList Enabled="false" ID="SinavTurId" CssClass="form-control col-sm-9" @bind-Value="@(sinavInfo.SinavTurId)" TValue="int" TItem="SinavTurDto" Index="0" DataSource="@sinavTurDtos">
+                                                            <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
+                                                        </SfDropDownList>
+                                                        <label class="col-md-3 col-form-label" for="EtkiOran">EtkiOran (%)</label>
+                                                        <SfNumericTextBox CssClass="form-control col-sm-9" ID="EtkiOran" Min="0" Max="100" @bind-Value="@(sinavInfo.EtkiOran)" TValue="int?" Format=n0></SfNumericTextBox>
+                                                        <label class="col-md-3 col-form-label" for="Tarih">Zaman</label>
+                                                        <SfDateTimePicker CssClass="form-control col-sm-9" ID="Tarih" TValue="DateTime?" @bind-Value="@(sinavInfo.Tarih)" Placeholder="Lütfen bir tarih seçiniz."></SfDateTimePicker>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        @*</div>
+                                    </div>*@
+
+
+
+
+                                    @*<div class="col-md-10 offset-md-1">
                                         <div class="form-row mt-4">
                                             <div class="col-sm-6 pb-3">
                                                 <label for="SinavTipId">Sinav Tip</label>
@@ -138,34 +168,15 @@
                                                 <label for="SinavTurId">Sinav Tur</label>
                                                 <SfDropDownList Enabled="false" ID="SinavTurId" CssClass="form-control" @bind-Value="@(sinavInfo.SinavTurId)" TValue="int" TItem="SinavTurDto" Index="0" DataSource="@sinavTurDtos">
                                                     <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
-                                                    @*<DropDownListEvents TValue="int" ValueChange="SinavTurChange"></DropDownListEvents>*@
                                                 </SfDropDownList>
                                             </div>
-                                            @*@if (isMazeret)
-                                                {
-                                                    <div class="col-sm-6 pb-3">
-                                                        <label for="mazeretSinavId">Mazeret Olunan</label>
-                                                        <SfDropDownList ID="MazeretiSinavKayitId" CssClass="form-control" @bind-Value="@(sinavInfo.MazeretiSinavId)" TValue="int?" TItem="SinavDto" Index="0" DataSource="@mazeretSinavDtos">
-                                                            <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
-                                                            <DropDownListEvents TValue="int?" ValueChange="SinavTurChange"></DropDownListEvents>
-                                                        </SfDropDownList>
-                                                    </div>
-                                                }*@
                                             <div class="col-sm-6 pb-3">
                                                 <label for="EtkiOran">EtkiOran (%)</label>
                                                 <SfNumericTextBox ID="EtkiOran" Min="0" Max="100" @bind-Value="@(sinavInfo.EtkiOran)" TValue="int?" Format=n0></SfNumericTextBox>
                                             </div>
                                             <div class="col-sm-6 pb-3">
-                                                <label for="IsKilit">Kilitli</label>
-                                                <SfCheckBox ID="IsKilit" Name="IsKilit" @bind-Checked="@(sinavInfo.IsKilit)"></SfCheckBox>
-                                            </div>
-                                            <div class="col-sm-6 pb-3">
                                                 <label for="Tarih">Zaman</label>
                                                 <SfDateTimePicker ID="Tarih" TValue="DateTime?" @bind-Value="@(sinavInfo.Tarih)" Placeholder="Lütfen bir tarih seçiniz."></SfDateTimePicker>
-                                            </div>
-                                            <div class="col-sm-6 pb-3">
-                                                <label for="TarihIlan">Tarih ilan edilsin</label>
-                                                <SfCheckBox ID="TarihIlan" Name="TarihIlan" @bind-Checked="@(sinavInfo.TarihIlan)"></SfCheckBox>
                                             </div>
                                             <div class="col-sm-3 pb-3">
                                                 <label for="Ad">Sinav Adı</label>
@@ -178,7 +189,7 @@
 
                                         </div>
 
-                                    </div>
+                                    </div>*@
 
 
                                 </Template>
@@ -189,8 +200,8 @@
                                 <GridColumn Field=@nameof(SinavDto.Tarih) HeaderText="Tarih"></GridColumn>
                                 <GridColumn Field=@nameof(SinavDto.SinavTipId) ValidationRules="@(new ValidationRules{ Required=true})" HeaderText="Tipi" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@sinavTipDtos"></GridColumn>
                                 <GridColumn Field=@nameof(SinavDto.SinavTurId) ValidationRules="@(new ValidationRules{ Required=true})" HeaderText="Türü" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@sinavTurDtos"></GridColumn>
-                                <GridColumn Field=@nameof(SinavDto.KisaAd) HeaderText="Kısa Ad"></GridColumn>
-                                <GridColumn Field=@nameof(SinavDto.SablonAd) HeaderText="Ad Şablon"></GridColumn>
+                                @*<GridColumn Field=@nameof(SinavDto.KisaAd) HeaderText="Kısa Ad"></GridColumn>*@
+                                @*<GridColumn Field=@nameof(SinavDto.SablonAd) HeaderText="Ad Şablon"></GridColumn>*@
                                 <GridColumn Field=@nameof(SinavDto.EtkiOran) HeaderText="%"></GridColumn>
                                 <GridColumn Field=@nameof(SinavDto.OgrCount) HeaderText="Ö.Sayı"></GridColumn>
 

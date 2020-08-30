@@ -14,7 +14,7 @@ using UniLife.Shared.Dto.Definitions;
 
 namespace UniLife.CommonUI.Pages.DersMufredat
 {
-    public partial class Sinavlar : ComponentBase
+    public partial class SinavlarNew : ComponentBase
     {
         [InjectAttribute]
         public System.Net.Http.HttpClient Http { get; set; }
@@ -340,7 +340,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 var commandRowIndex = await DersAcGrid.GetRowIndexByPrimaryKey(args.RowData.Id); // alttaki doğru çalışıyopr bu olursa bunu yapt test edicen.
                 //var commandRowIndex = DersAcGrid.CurrentViewData.ToList().IndexOf(args.RowData);
                 await DersAcGrid.SelectRow(commandRowIndex);
-
+                sınav başka seçilince silinmiyor.
                 GetSinavsByDersAcilanId(args.RowData);
             }
 
@@ -380,10 +380,11 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             ApiResponseDto<List<SinavDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<SinavDto>>>($"api/Sinav/GetSinavListByAcilanDersId/{dersAcilanDto.Id}").Result;
             if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
             {
-                SinavDtos = apiResponse.Result;
+                SinavDtos = apiResponse.Result??new List<SinavDto>();
                 SelectedDersAcilans = new List<DersAcilanDto> { dersAcilanDto };
                 SinavGrid.Refresh();
                 OgrenciGridTemizle();
+                StateHasChanged();
             }
             else
             {

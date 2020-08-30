@@ -206,6 +206,7 @@
             @*<SfDataManager Url="http://localhost:53414/odata/DerslikRezervs?$expand=Derslik($select=Id,Ad)" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>*@
             <GridColumns>
                 <GridColumn Visible="false" Field=@nameof(DerslikRezervDto.Id) HeaderText="Ogrenci ID" IsPrimaryKey="true"></GridColumn>
+                <GridColumn Field=@nameof(DerslikRezervDto.Subject) HeaderText="Ders/Sinav"></GridColumn>
                 <GridColumn Field=@nameof(DerslikRezervDto.StartTimeDay) HeaderText="Gün"></GridColumn>
                 <GridColumn Field=@nameof(DerslikRezervDto.StartTimeTime) HeaderText="Başlangıç Saati"></GridColumn>
                 <GridColumn Field=@nameof(DerslikRezervDto.EndTimeTime) HeaderText="Bitiş Saati"></GridColumn>

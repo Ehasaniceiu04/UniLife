@@ -37,10 +37,10 @@ namespace UniLife.Storage.Stores
 
             var dsfg = await _db.AkademikTakvims.Where(x => x.DonemId == donemId && x.FakulteId == fakulteId).ToListAsync();
 
-            var asd = from bir in _db.AkademikTakvims.Where(x => x.DonemId == donemId && x.FakulteId == null)
-                      join iki in _db.AkademikTakvims.Where(x => x.DonemId == donemId && x.FakulteId == fakulteId) on bir.Kod equals iki.Kod into ps
-                      from iki in ps.DefaultIfEmpty()
-                      select bir;
+            //var asd = from bir in _db.AkademikTakvims.Where(x => x.DonemId == donemId && x.FakulteId == null)
+            //          join iki in _db.AkademikTakvims.Where(x => x.DonemId == donemId && x.FakulteId == fakulteId) on bir.Kod equals iki.Kod into ps
+            //          from iki in ps.DefaultIfEmpty()
+            //          select bir;
 
             var sonuc = from bir in _db.AkademikTakvims.Where(x => x.DonemId == donemId && x.FakulteId == null)
                         join iki in _db.AkademikTakvims.Where(x => x.DonemId == donemId && x.FakulteId == fakulteId) on bir.Kod equals iki.Kod into ps
@@ -56,7 +56,7 @@ namespace UniLife.Storage.Stores
                             FakulteId = (iki == null || iki.FakulteId == null) ? bir.FakulteId : iki.FakulteId
                         };
 
-            return await sonuc.ToListAsync();
+            return await sonuc.AsNoTracking().ToListAsync();
         }
 
         public async Task<int> PostChangeAllFakultesTakvim(AkademikTakvimDto akademikTakvimDto)
