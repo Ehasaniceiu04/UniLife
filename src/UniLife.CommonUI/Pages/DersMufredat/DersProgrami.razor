@@ -1,0 +1,303 @@
+﻿@page "/ders_programi"
+@using Syncfusion.Blazor.Schedule
+@using UniLife.Shared.Dto.Definitions
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Data
+
+
+<div class="control-section">
+    <div class="content-wrapper">
+        <div class="row pb-2 card">
+            <div class="col-sm-7">
+                <FakBolPrg @bind-ProgramId="programId"
+                           @bind-BolumId="bolumId"
+                           @bind-FakulteId="fakulteId"
+                           ProgramPlaceHolder=" "></FakBolPrg>
+            </div>
+            <div class="col-sm-5">
+                <div class="form-group row">
+                    <label for="DropFakulte" class="col-sm-2 col-form-label-sm">Dönem</label>
+                    <div class="col-sm-10">
+                        <SfDropDownList ID="DropDonem" @ref="DropDonem" TValue="int?" TItem="DonemDto" Placeholder="Dönem seçiniz..."
+                                        Query="@donemQuery"
+                                        @bind-Value="@donemId">
+                            <SfDataManager Url="odata/donems" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
+                            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                        </SfDropDownList>
+                    </div>
+                </div>
+                <SfButton OnClick="Refresh" CssClass="e-success col-sm-12 form-control-sm">Bul / Yenile</SfButton>
+
+            </div>
+        </div>
+        <div class="row pb-2 bg-light text-dark">
+            <SfGrid ID="DersAcGrid" @ref="DersAcGrid" Query="@totalQuery" TValue="DersAcilanDto" RowHeight="20" AllowSorting="true" AllowSelection="true" AllowFiltering="true" AllowPaging="true">
+                <GridEvents RowSelected="RowSelectedHandler" TValue="DersAcilanDto" CommandClicked="CommandClickHandler"></GridEvents>
+                <GridSelectionSettings EnableToggle="false" Type="SelectionType.Single"></GridSelectionSettings>
+                <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+                <GridColumns>
+                    <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) IsIdentity="true" IsPrimaryKey="true"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Sube) HeaderText="Şb."></GridColumn>
+                    <GridColumn Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kod"></GridColumn>
+                    <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Ad"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.TU) HeaderText="T+U"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kredi) HeaderText="kre"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Akts) HeaderText="AKTS"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Sinif) HeaderText="Snf"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Sube) HeaderText="Şube"></GridColumn>
+                    @*<GridColumn AutoFit="true" Field=@nameof(ResDersAcilansByLongFilters.Kon) HeaderText="Kon"></GridColumn>*@
+                    <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.TopKont) HeaderText="Kon"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Zorunlu) HeaderText="Zor" DisplayAsCheckBox="true"></GridColumn>
+                    <GridColumn AutoFit="true" Field="Program.Ad" HeaderText="Program"></GridColumn>
+                    <GridColumn AutoFit="true" Field="Akademisyen.Ad" HeaderText="Akademisyen"></GridColumn>
+                    <GridColumn>
+                        <GridCommandColumns>
+                            <GridCommandColumn Type="CommandButtonType.None" Title="Tanımlı Ders Programları" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
+                        </GridCommandColumns>
+                    </GridColumn>
+                </GridColumns>
+            </SfGrid>
+        </div>
+
+        @*<div class="row pb-2 bg-light text-dark">
+            <SfGrid ID="DersAcGrid" @ref="DersAcGrid" DataSource="@DersAcDtos" RowHeight="20" AllowSorting="true" AllowSelection="true" AllowFiltering="true" AllowPaging="true">
+                <GridEvents RowSelected="RowSelectedHandler" TValue="ResDersAcilansByLongFilters" CommandClicked="CommandClickHandler"></GridEvents>
+                <GridSelectionSettings EnableToggle="false" Type="SelectionType.Single"></GridSelectionSettings>
+                <GridColumns>
+                    <GridColumn Visible="false" Field=@nameof(ResDersAcilansByLongFilters.DersAcilanId) IsIdentity="true" IsPrimaryKey="true"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(ResDersAcilansByLongFilters.Sube) HeaderText="Şb."></GridColumn>
+                    <GridColumn Field=@nameof(ResDersAcilansByLongFilters.DersKod) HeaderText="Ders Kod"></GridColumn>
+                    <GridColumn Field=@nameof(ResDersAcilansByLongFilters.DersAd) HeaderText="Ders Ad"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(ResDersAcilansByLongFilters.TU) HeaderText="T+U"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(ResDersAcilansByLongFilters.Kredi) HeaderText="kre"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(ResDersAcilansByLongFilters.Akts) HeaderText="AKTS"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(ResDersAcilansByLongFilters.Sinif) HeaderText="Snf"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(ResDersAcilansByLongFilters.Kon) HeaderText="Kon"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(ResDersAcilansByLongFilters.Zorunlu) HeaderText="Zor" DisplayAsCheckBox="true"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(ResDersAcilansByLongFilters.ProgramAd) HeaderText="Program"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(ResDersAcilansByLongFilters.AkademisyenAd) HeaderText="Akademisyen"></GridColumn>
+                    <GridColumn>
+                        <GridCommandColumns>
+                            <GridCommandColumn Type="CommandButtonType.None" Title="Tanımlı Ders Programları" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
+                        </GridCommandColumns>
+                    </GridColumn>
+                </GridColumns>
+            </SfGrid>
+        </div>*@
+        <div class="row pb-2 bg-light text-dark">
+            <div class="col-sm-12 col-md-12">
+                <div class="form-group row">
+                    <label for="DropBina" class="col-sm-1 col-form-label-sm">Bina Seçimi</label>
+                    <div class="col-sm-5">
+                        <SfDropDownList ID="DropBina" @ref="DropBina" TItem="BinaDto" CssClass="form-control-sm"
+                                        TValue="int?" PopupHeight="430px" DataSource="@binaDtos" Placeholder="Ders programını görüntülemek/düzenlemek için bina seçiniz">
+                            <DropDownListEvents TValue="int?" ValueChange="BinaOnChange"> </DropDownListEvents>
+                            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                        </SfDropDownList>
+                    </div>
+                    <div class="col-sm-3">
+                    </div>
+                    <label for="DropBina" class="col-sm-1 col-form-label-sm">Sinav</label>
+                    <div class="col-sm-2">
+                        <SfSwitch @bind-Checked="@isSinav"></SfSwitch>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*</form>*@
+        @if (isBinaSelected)
+        {
+            <div class="row">
+                <SfSchedule ID="DersProgramSche" @ref="DersProgramSche" RowAutoHeight="true" TValue="DerslikRezervDto" Width="100%" Height="100%" SelectedDate="@(new DateTime(DateTime.Now.Year,DateTime.Now.Month, DateTime.Now.Day))" CurrentView="View.TimelineDay">
+                    <ScheduleWorkHours Start="08:00" End="18:00"></ScheduleWorkHours>
+                    <ScheduleTimeScale></ScheduleTimeScale>
+                    <ScheduleViews>
+                        <ScheduleView StartHour="06:00" EndHour="23:00" Option="View.TimelineDay">
+                            <ScheduleViewTimeScale SlotCount="1" Interval="60"></ScheduleViewTimeScale>
+                        </ScheduleView>
+                        @*<ScheduleView Option="View.TimelineWeek">
+                            <ScheduleViewTimeScale SlotCount="1" Interval="60"></ScheduleViewTimeScale>
+                        </ScheduleView>*@
+                    </ScheduleViews>
+                    <ScheduleGroup EnableCompactView="false" Resources="@GroupData"></ScheduleGroup>
+                    <ScheduleResources>
+                        <ScheduleResource TValue="DerslikDto" DataSource="@derslikDtos" Field="DerslikId" Title="Derslik" Name="MeetingRoomzx" TextField="Ad" IdField="Id" ColorField="Color" AllowMultiple="true"></ScheduleResource>
+                    </ScheduleResources>
+                    <ScheduleTemplates>
+                        <ResourceHeaderTemplate>
+                            @{
+                                DerslikDto contextDerslik = ((context as DerslikRezervDto).ResourceData as DerslikDto);
+                            }
+                            <div class='template-wrap'>
+                                <div class="room-name">@(contextDerslik.Ad)</div>
+                                <div class="room-capacity">@(contextDerslik.Capacity)</div>
+                                <div class="room-type">@(contextDerslik.Type)</div>
+                            </div>
+                        </ResourceHeaderTemplate>
+                    </ScheduleTemplates>
+                    @*OnPopupOpen="@OnPopupOpen" OnCellDoubleClick="OnCellDoubleClick" OnActionBegin="OnActionBegin"*@
+                    <ScheduleEvents TValue="DerslikRezervDto" ActionCompleted="@OnActionCompleted"
+                                    OnPopupOpen="@OnPopupOpen" OnActionBegin="@OnActionBegin" OnResizeStart="OnAppointmentResize"></ScheduleEvents>
+                    <ScheduleEventSettings DataSource="@derslikRezervDtos">
+                        <ScheduleField>
+                            <FieldSubject Title="Yerleştirilen Ders" Name="Subject" Default=" "></FieldSubject>
+                            <FieldLocation Title="Source" Name="Location"></FieldLocation>
+                            <FieldDescription Title="Comments" Name="Description"></FieldDescription>
+                            <FieldStartTime Title="Departure Time" Name="StartTime"></FieldStartTime>
+                            <FieldEndTime Title="Arrival Time" Name="EndTime"></FieldEndTime>
+                        </ScheduleField>
+                    </ScheduleEventSettings>
+                </SfSchedule>
+            </div>
+        }
+        else
+        {
+            <div class="row">
+                <p>@bosBinaText</p>
+            </div>
+        }
+
+
+
+
+    </div>
+</div>
+
+
+<Dialog Baslik="@dialogBaslik" @bind-isDialogOpen="@isDersPrgDialogOpen">
+    <div class="row">
+        <SfGrid ID="SecDrsProgramGrid" @ref="SecDrsProgramGrid" TValue="DerslikRezervDto" DataSource="@SecDrsPrgDtos" RowHeight="20">
+            @*<SfDataManager Url="http://localhost:53414/odata/DerslikRezervs?$expand=Derslik($select=Id,Ad)" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>*@
+            <GridColumns>
+                <GridColumn Visible="false" Field=@nameof(DerslikRezervDto.Id) HeaderText="Ogrenci ID" IsPrimaryKey="true"></GridColumn>
+                <GridColumn Field=@nameof(DerslikRezervDto.Subject) HeaderText="Ders/Sinav"></GridColumn>
+                <GridColumn Field=@nameof(DerslikRezervDto.StartTimeDay) HeaderText="Gün"></GridColumn>
+                <GridColumn Field=@nameof(DerslikRezervDto.StartTimeTime) HeaderText="Başlangıç Saati"></GridColumn>
+                <GridColumn Field=@nameof(DerslikRezervDto.EndTimeTime) HeaderText="Bitiş Saati"></GridColumn>
+                <GridColumn Field="ResourceData.Ad" HeaderText="Derslik Adı"></GridColumn>
+            </GridColumns>
+        </SfGrid>
+    </div>
+</Dialog>
+
+<Dialog Baslik="Uyarı!" @bind-isDialogOpen="@isUyariOpen">
+    <p>@dialogUyariText</p>
+</Dialog>
+
+
+<style>
+
+    .e-DoubleArrowRight:before {
+        content: '\e7bb';
+        color: #3ec9e8;
+    }
+
+
+    .form-group {
+        margin-bottom: 0.2rem;
+    }
+
+    /*.e-input-group .e-input-group-icon, .e-input-group.e-control-wrapper .e-input-group-icon {
+        min-height: 0px;
+        min-width: 0px;
+    }*/
+
+    input.e-input, .e-input-group input, .e-input-group.e-control-wrapper input, .e-input-group input.e-input, .e-input-group.e-control-wrapper input.e-input {
+        height: auto;
+    }
+
+    .col-form-label-sm {
+        padding-bottom: unset;
+    }
+
+
+
+    .e-schedule .e-timeline-view .e-resource-left-td {
+        vertical-align: bottom;
+    }
+
+    .e-schedule.e-device .e-timeline-view .e-resource-left-td {
+        width: 75px;
+    }
+
+    .e-schedule .e-timeline-view .e-resource-left-td .e-resource-text {
+        display: flex;
+        font-weight: 500;
+        padding: 0;
+    }
+
+        .e-schedule .e-timeline-view .e-resource-left-td .e-resource-text > div {
+            border-right: 1px solid rgba(0, 0, 0, 0.12);
+            border-top: 1px solid rgba(0, 0, 0, 0.12);
+            flex: 0 0 33.3%;
+            font-weight: 500;
+            height: 36px;
+            line-height: 34px;
+            padding-left: 5px;
+        }
+
+            .e-schedule .e-timeline-view .e-resource-left-td .e-resource-text > div:last-child {
+                border-right: 0;
+            }
+
+    .e-schedule .template-wrap {
+        display: flex;
+        height: 100%;
+        text-align: left;
+    }
+
+        .e-schedule .template-wrap > div {
+            border-right: 1px solid rgba(0, 0, 0, 0.12);
+            flex: 0 0 33.3%;
+            font-weight: 500;
+            line-height: 58px;
+            overflow: hidden;
+            padding-left: 5px;
+            text-overflow: ellipsis;
+        }
+
+            .e-schedule .template-wrap > div:last-child {
+                border-right: 0;
+            }
+
+    .e-schedule .e-timeline-view .e-resource-cells,
+    .e-schedule .e-timeline-month-view .e-resource-cells {
+        padding-left: 0;
+    }
+
+    .e-schedule .e-timeline-view .e-date-header-wrap table col,
+    .e-schedule .e-timeline-view .e-content-wrap table col {
+        width: 100px;
+    }
+
+    .e-schedule .e-read-only {
+        opacity: .8;
+    }
+
+    @@media (max-width: 550px) {
+        .e-schedule .e-timeline-view .e-resource-left-td {
+            width: 100px;
+        }
+
+            .e-schedule .e-timeline-view .e-resource-left-td .e-resource-text > div,
+            .e-schedule .template-wrap > div {
+                flex: 0 0 100%;
+            }
+
+                .e-schedule .template-wrap > div:first-child {
+                    border-right: 0;
+                }
+
+                .e-schedule .e-timeline-view .e-resource-left-td .e-resource-text > div:first-child {
+                    border-right: 0;
+                }
+
+        .e-schedule .room-type,
+        .e-schedule .room-capacity {
+            display: none;
+        }
+    }
+</style>

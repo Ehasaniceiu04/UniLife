@@ -70,6 +70,11 @@ namespace UniLife.Shared.Dto.Definitions
         public int BolDisKota { get; set; } // Enum kurallar
         public int AltKota { get; set; } // Enum kurallar
 
+        public string TU
+        {
+            get { return TeoSaat.ToString() + "+" + UygSaat.ToString(); }
+        }
+
         public virtual ICollection<SinavDto> Sinavs { get; set; }
     }
 }
