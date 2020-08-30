@@ -62,8 +62,8 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         Syncfusion.Blazor.Grids.SfGrid<DersAcilanDto> DersAcGrid;
         public List<DersAcilanDto> DersAcDtos = new List<DersAcilanDto>();
 
-        Syncfusion.Blazor.Grids.SfGrid<SinavDto> SinavGrid;
-        public List<SinavDto> SinavDtos = new List<SinavDto>();
+        Syncfusion.Blazor.Grids.SfGrid<SinavDto> SinavGrid=new SfGrid<SinavDto>();
+        public List<SinavDto> SinavDtos=new List<SinavDto>();
 
 
         Syncfusion.Blazor.Grids.SfGrid<OgrenciDto> OgrenciGrid;
@@ -100,6 +100,8 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             await ReadDonems();
             await ReadSinavTip();
             await ReadSinavTur();
+
+
         }
 
         async Task ReadFakultes()
@@ -275,11 +277,11 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             SinavGrid.Refresh();
         }
 
-        public double clickedRowIndex { get; set; }
-        public async Task OnRecordClickHandler(Syncfusion.Blazor.Grids.RecordClickEventArgs<DersAcilanDto> args)
-        {
-            clickedRowIndex = args.RowIndex;
-        }
+        //public double clickedRowIndex { get; set; }
+        //public async Task OnRecordClickHandler(Syncfusion.Blazor.Grids.RecordClickEventArgs<DersAcilanDto> args)
+        //{
+        //    clickedRowIndex = args.RowIndex;
+        //}
 
         //public async Task OnSinavRecordClickHandler(Syncfusion.Blazor.Grids.RecordClickEventArgs<SinavDto> args)
         //{
@@ -335,15 +337,18 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         }
 
 
-        public async Task CommandClickHandler(Syncfusion.Blazor.Grids.CommandClickEventArgs<DersAcilanDto> args)
+        public void CommandClickHandler(Syncfusion.Blazor.Grids.CommandClickEventArgs<DersAcilanDto> args)
         {
             if (args.CommandColumn.Title == "Tanımlı Sınavlar")
             {
-                var commandRowIndex = await DersAcGrid.GetRowIndexByPrimaryKey(args.RowData.Id); // alttaki doğru çalışıyopr bu olursa bunu yapt test edicen.
+                var commandRowIndex = DersAcGrid.GetRowIndexByPrimaryKey(args.RowData.Id).Result; // alttaki doğru çalışıyopr bu olursa bunu yapt test edicen.
                 //var commandRowIndex = DersAcGrid.CurrentViewData.ToList().IndexOf(args.RowData);
-                await DersAcGrid.SelectRow(commandRowIndex);
+                DersAcGrid.SelectRow(commandRowIndex);
 
-                await GetSinavsByDersAcilanId(args.RowData);
+
+                //DersAcGrid.SelectRow(clickedRowIndex);
+                GetSinavsByDersAcilanId(args.RowData);
+                StateHasChanged();
             }
 
         }
@@ -387,24 +392,25 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
 
 
-        private async Task GetSinavsByDersAcilanId(DersAcilanDto dersAcilanDto)
+        private void GetSinavsByDersAcilanId(DersAcilanDto dersAcilanDto)
         {
-            ApiResponseDto<List<SinavDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<SinavDto>>>($"api/Sinav/GetSinavListByAcilanDersId/{dersAcilanDto.Id}");
+            ApiResponseDto<List<SinavDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<SinavDto>>>($"api/Sinav/GetSinavListByAcilanDersId/{dersAcilanDto.Id}").Result;
             if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
             {
                 SinavDtos = apiResponse.Result;
-                isShowSinavs = true;
                 SinavGrid.Refresh();
-                SinavGrid.Refresh();
-                SinavGrid.Refresh();
-                SinavGrid.Refresh();
-                //if (SinavDtos.Count < 1)
-                //{
-                //    await Remove();
-                //}
                 SelectedDersAcilans = new List<DersAcilanDto> { dersAcilanDto };
-                await OgrenciGridTemizle();
-
+                OgrenciGridTemizle();
+                if (SinavDtos.Count<1)
+                {
+                    isShowSinavs = false;
+                }
+                else
+                {
+                    isShowSinavs = true;
+                }
+                SinavGrid.Refresh();
+                SinavGrid.Refresh();
             }
             else
             {
@@ -413,7 +419,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             }
         }
 
-        public async Task OgrenciGridTemizle()
+        public void OgrenciGridTemizle()
         {
             OgrenciDtos = new List<OgrenciDto>();
             OgrenciGrid.Refresh();
@@ -425,22 +431,8 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             {
 
             }
-            if (args.RequestType == Syncfusion.Blazor.Grids.Action.Refresh)
-            {
-                //if (SinavDtos.Count < 1)
-                //{
-                //    Remove();
-                //    isShowSinavs = false;
-
-                //}
-                //else
-                //{
-                //    isShowSinavs = true;
-                //}
-            }
             if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
             {
-                isShowSinavs = true;
                 if (args.Action == "Edit")
                 {
                     Update(args.Data);
@@ -448,12 +440,12 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 }
                 else if (args.Action == "Add")
                 {
+                    isShowSinavs = true;
                     Create(args.Data);
                 }
             }
             if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
             {
-                isShowSinavs = true;
                 Delete(args.Data);
             }
         }
@@ -515,7 +507,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                     if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
                     {
                         matToaster.Add(apiResponse.Message, MatToastType.Success);
-                        GetSinavsByDersAcilanId(DersAcDtos.FirstOrDefault(x => x.Id == sinavDto.DersAcilanId));
+                        GetSinavsByDersAcilanId(SelectedDersAcilans.FirstOrDefault(x => x.Id == sinavDto.DersAcilanId));
                     }
                     else
                     {
@@ -616,6 +608,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
         {
+            isShowSinavs = true;
             if (args.Item.Id == "Mazeret")
             {
                 if (selectedSinavId != 0)

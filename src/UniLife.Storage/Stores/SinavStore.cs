@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using UniLife.Shared;
 using UniLife.Shared.DataInterfaces;
 using UniLife.Shared.DataModels;
 using UniLife.Shared.Dto;
@@ -69,9 +70,32 @@ namespace UniLife.Storage.Stores
                                              //join dk in _db.DersKayits on da.Id equals dk.DersAcilanId
                                              select da).ToListAsync();
 
+            
+
             List<Sinav> generatedSinavList = new List<Sinav>();
+
+            int islenecekAkademikTakvimKodu;
+            switch (sinavDto.SinavTipId)
+            {
+                case (int)SinavTipEnum.Ara_Sinav:
+                    islenecekAkademikTakvimKodu = 7;
+                    break;
+                case (int)SinavTipEnum.Final:
+                    islenecekAkademikTakvimKodu = 9;
+                    break;
+                default:
+                    throw new DomainException("Sınav tipi anlaşılamadı");
+            }
+
+            var getAkademikTakvimByDonem = await _db.AkademikTakvims.Where(x=>x.Kod == islenecekAkademikTakvimKodu).ToListAsync();
+
             foreach (var item in selectedDersAcilans)
             {
+                getAkademikTakvimByDonem = getAkademikTakvimByDonem.Where(x => x.DonemId == item.DonemId).ToList();
+                var fakulteAkademikTakvim = getAkademikTakvimByDonem.FirstOrDefault(x => x.FakulteId == item.FakulteId)
+                                            ??
+                                            getAkademikTakvimByDonem.FirstOrDefault(x => x.FakulteId == null);
+
                 Sinav sinav = new Sinav()
                 {
                     Ad = enteredSinav.Ad,
@@ -81,7 +105,7 @@ namespace UniLife.Storage.Stores
                     SablonAd = enteredSinav.SablonAd,
                     EtkiOran = enteredSinav.EtkiOran,
                     IsKilit = enteredSinav.IsKilit,
-                    Tarih = enteredSinav.Tarih,
+                    Tarih = fakulteAkademikTakvim.BasTarih,  //enteredSinav.Tarih,
                     TarihIlan = enteredSinav.TarihIlan,
                     KisaAd = enteredSinav.KisaAd,
                 };
