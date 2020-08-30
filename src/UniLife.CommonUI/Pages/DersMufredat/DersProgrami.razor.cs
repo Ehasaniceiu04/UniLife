@@ -61,9 +61,11 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         public DersAcilanDto _dersAcilanDto { get; set; } = new DersAcilanDto(); //For to keep filter parameters.
 
         Syncfusion.Blazor.Grids.SfGrid<DersAcilanDto> DersAcGrid;
-        public List<DersAcilanDto> DersAcDtos = new List<DersAcilanDto>();
+                
+        Syncfusion.Blazor.Grids.SfGrid<SinavDto> SinavGrid;
 
         public DersAcilanDto SelectedDersAcilanGridRow { get; set; }
+        public SinavDto SelectedSinavGridRow { get; set; }
 
 
         Syncfusion.Blazor.Schedule.SfSchedule<DerslikRezervDto> DersProgramSche;
@@ -101,6 +103,12 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         string OdataQuery = "odata/dersacilans";
         public Query totalQuery = new Query().Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)", "Donem($select=Id,Ad)", "bolum($expand=fakulte($select=Ad,Id);$select=Ad,Id)" });
+
+        string OdataSinavQuery = "odata/dersacilans";
+        public Query totalSinavQuery = new Query().Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)", "Donem($select=Id,Ad)", "bolum($expand=fakulte($select=Ad,Id);$select=Ad,Id)" });
+
+        
+
         protected async override Task OnInitializedAsync()
         {
             //ReadDersliks();
@@ -261,22 +269,22 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             }
         }
 
-        async Task Refresh()
-        {
-            //await GetDersAcilansByFilters();
-            SelectedDersAcilanGridRow = null;
+        //async Task Refresh()
+        //{
+        //    //await GetDersAcilansByFilters();
+        //    SelectedDersAcilanGridRow = null;
 
-            ApiResponseDto<List<DersAcilanDto>> apiResponse = await Http.PostJsonAsync<ApiResponseDto<List<DersAcilanDto>>>("api/DersAcilan/DersAcilansByLongFilters", _dersAcilanDto);
-            if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
-            {
-                DersAcDtos = apiResponse.Result;
-                DersAcGrid.Refresh();
-            }
-            else
-            {
-                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Açılan Derslerin bilgisi getirilirken hata oluştu");
-            }
-        }
+        //    ApiResponseDto<List<DersAcilanDto>> apiResponse = await Http.PostJsonAsync<ApiResponseDto<List<DersAcilanDto>>>("api/DersAcilan/DersAcilansByLongFilters", _dersAcilanDto);
+        //    if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
+        //    {
+        //        DersAcDtos = apiResponse.Result;
+        //        DersAcGrid.Refresh();
+        //    }
+        //    else
+        //    {
+        //        matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Açılan Derslerin bilgisi getirilirken hata oluştu");
+        //    }
+        //}
 
 
         public async Task OnPopupOpen(PopupOpenEventArgs<DerslikRezervDto> args)
@@ -318,6 +326,11 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         {
             SelectedDersAcilanGridRow = args.Data;
         }
+        public async Task RowSelectedHandlerSinav(Syncfusion.Blazor.Grids.RowSelectEventArgs<SinavDto> args)
+        {
+            SelectedSinavGridRow = args.Data;
+        }
+        
 
         public void OnActionBegin(Syncfusion.Blazor.Schedule.ActionEventArgs<DerslikRezervDto> args)
         {
@@ -403,7 +416,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         }
 
 
-        public async Task CommandClickHandler(Syncfusion.Blazor.Grids.CommandClickEventArgs<DersAcilanDto> args)
+        public async Task CommandClickHandlerSinav(Syncfusion.Blazor.Grids.CommandClickEventArgs<SinavDto> args)
         {
             if (args.CommandColumn.Title == "Tanımlı Ders Programları")
             {
@@ -448,6 +461,37 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
 
             StateHasChanged();
+        }
+
+        async Task Refresh()
+        {
+            totalQuery = new Query();
+            //totalQuery.Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)" });
+            totalQuery.Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)", "Donem($select=Id,Ad)", "bolum($expand=fakulte($select=Ad,Id);$select=Ad,Id)" });
+
+
+            if (donemId.HasValue)
+            {
+                totalQuery.Where("donemId", "equal", donemId);
+            }
+
+            if (programId.HasValue)
+            {
+                totalQuery.Where("programId", "equal", programId);
+            }
+            else if (bolumId.HasValue)
+            {
+                totalQuery.Where("bolumId", "equal", bolumId);
+            }
+            else if (fakulteId.HasValue)
+            {
+                totalQuery.Where("fakulteId", "equal", fakulteId);
+            }
+
+
+            //isGridVisible = true;
+
+
         }
 
 

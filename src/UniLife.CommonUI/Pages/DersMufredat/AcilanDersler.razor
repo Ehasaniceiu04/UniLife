@@ -21,7 +21,7 @@
             <div class="form-group row">
                 <label for="DropFakulte" class="col-sm-2 col-form-label-sm">Dönem</label>
                 <div class="col-sm-10">
-                    <SfDropDownList ID="DropDonem" @ref="DropDonem" TValue="int?" TItem="DonemDto" Placeholder="Dönem seçiniz..."
+                    <SfDropDownList ID="DropDonem" @ref="DropDonem" ShowClearButton="true" TValue="int?" TItem="DonemDto" Placeholder="Dönem seçiniz..."
                                     Query="@donemQuery"
                                     @bind-Value="@donemId">
                         <SfDataManager Url="odata/donems" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
