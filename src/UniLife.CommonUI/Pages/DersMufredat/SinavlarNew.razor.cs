@@ -78,7 +78,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         bool ogrenciSecDialogOpen;
         //List<OgrenciDto> SecmeliOgrenciDtos = new List<OgrenciDto>();
         Syncfusion.Blazor.Grids.SfGrid<OgrenciDto> SecmeliOgrenciGrid;
-        
+
         string dialogUyariText;
         bool isUyariOpen;
         //protected override void OnInitialized()
@@ -92,6 +92,8 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         private DialogSettings DialogParams = new DialogSettings { MinHeight = "300px", Width = "400px", };
 
+
+        bool isShowSinavs = true;
         protected async override Task OnInitializedAsync()
         {
             await ReadFakultes();
@@ -340,10 +342,20 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 var commandRowIndex = await DersAcGrid.GetRowIndexByPrimaryKey(args.RowData.Id); // alttaki doğru çalışıyopr bu olursa bunu yapt test edicen.
                 //var commandRowIndex = DersAcGrid.CurrentViewData.ToList().IndexOf(args.RowData);
                 await DersAcGrid.SelectRow(commandRowIndex);
-                sınav başka seçilince silinmiyor.
-                GetSinavsByDersAcilanId(args.RowData);
+
+                await GetSinavsByDersAcilanId(args.RowData);
             }
 
+        }
+
+        async Task Remove()
+        {
+            SinavDtos = new List<SinavDto>();
+            //SinavGrid.CurrentViewData = null;
+            //SinavGrid.DataSource = null;
+            isShowSinavs = false;
+            SinavGrid.Refresh();
+            isShowSinavs = true;
         }
 
 
@@ -375,24 +387,33 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
 
 
-        private void GetSinavsByDersAcilanId(DersAcilanDto dersAcilanDto)
+        private async Task GetSinavsByDersAcilanId(DersAcilanDto dersAcilanDto)
         {
-            ApiResponseDto<List<SinavDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<SinavDto>>>($"api/Sinav/GetSinavListByAcilanDersId/{dersAcilanDto.Id}").Result;
+            ApiResponseDto<List<SinavDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<SinavDto>>>($"api/Sinav/GetSinavListByAcilanDersId/{dersAcilanDto.Id}");
             if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
             {
-                SinavDtos = apiResponse.Result??new List<SinavDto>();
-                SelectedDersAcilans = new List<DersAcilanDto> { dersAcilanDto };
+                SinavDtos = apiResponse.Result;
+                isShowSinavs = true;
                 SinavGrid.Refresh();
-                OgrenciGridTemizle();
-                StateHasChanged();
+                SinavGrid.Refresh();
+                SinavGrid.Refresh();
+                SinavGrid.Refresh();
+                //if (SinavDtos.Count < 1)
+                //{
+                //    await Remove();
+                //}
+                SelectedDersAcilans = new List<DersAcilanDto> { dersAcilanDto };
+                await OgrenciGridTemizle();
+
             }
             else
             {
+                SinavDtos = new List<SinavDto>();
                 matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Sinav bilgisi getirilirken hata oluştu");
             }
         }
 
-        public void OgrenciGridTemizle()
+        public async Task OgrenciGridTemizle()
         {
             OgrenciDtos = new List<OgrenciDto>();
             OgrenciGrid.Refresh();
@@ -404,20 +425,35 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             {
 
             }
+            if (args.RequestType == Syncfusion.Blazor.Grids.Action.Refresh)
+            {
+                //if (SinavDtos.Count < 1)
+                //{
+                //    Remove();
+                //    isShowSinavs = false;
+
+                //}
+                //else
+                //{
+                //    isShowSinavs = true;
+                //}
+            }
             if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
             {
+                isShowSinavs = true;
                 if (args.Action == "Edit")
                 {
                     Update(args.Data);
+
                 }
                 else if (args.Action == "Add")
                 {
                     Create(args.Data);
                 }
-
             }
             if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
             {
+                isShowSinavs = true;
                 Delete(args.Data);
             }
         }
@@ -575,7 +611,9 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         }
 
 
-        private List<Object> Toolbaritems = new List<Object>() { "Add", "Edit", "Delete", "ColumnChooser", new ItemModel() { Text = "Mazeret Sınavı", TooltipText = "Seçilenm Sınavın Mazereti", PrefixIcon = "e-click", Id = "Mazeret" } };
+        private List<Object> Toolbaritems = new List<Object>() { "Add", "Edit", "Delete", "ColumnChooser", new ItemModel() { Text = "Mazeret Sınavı", TooltipText = "Seçilenm Sınavın Mazereti", PrefixIcon = "e-icons e-Signature", Id = "Mazeret" } };
+
+
         public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
         {
             if (args.Item.Id == "Mazeret")
@@ -592,6 +630,16 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             }
         }
 
+        private List<Object> ToolbarDersitems = new List<Object>() { new ItemModel() { Text = "Toplu Büt Oluştur", TooltipText = "Seçilen dersler için büt sınavı oluşturur.", PrefixIcon = "e-icons e-Signature", Id = "TopluBut" } };
+        public async Task ToolbarDersClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+        {
+            if (args.Item.Id == "TopluBut")
+            {
+                TopluButOlustur();
+            }
+        }
+
+
         public async Task MazeretSinavOlustur()
         {
             var mazeret = SinavDtos.FirstOrDefault(x => x.Id == selectedSinavId);
@@ -607,7 +655,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             GetSinavsByDersAcilanId(DersAcDtos.FirstOrDefault(x => x.Id == mazeret.DersAcilanId));
             SinavGrid.Refresh();
         }
-        
+
         public async Task TopluButOlustur()
         {
             List<DersAcilanDto> seciliDersler = await DersAcGrid.GetSelectedRecords();
@@ -616,7 +664,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         }
 
         //bool isMazeret;
-        
+
         //public async Task SinavTurChange(ChangeEventArgs<int> args)
         //{
         //    if (args.Value == (int)SinavTurEnum.Mazeret_Sinav)

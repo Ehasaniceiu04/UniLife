@@ -9,11 +9,11 @@
 @using UniLife.Shared.DataModels
 
 <div class="row">
-    <div class="col-sm-12 col-md-12">
-        <div class="server-action-menu">
+    <div class="col-sm-12 col-md-12 pb-4">
+        <div class="server-action-menu card">
 
-            <SfGrid ID="DersAcGrid" @ref="DersAcGrid" TValue="DersAcilanDto" RowHeight="20" AllowSorting="true" AllowFiltering="true" AllowSelection="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
-                <GridEvents OnRecordClick="OnRecordClickHandler" RowSelected="RowSelectedHandler" TValue="DersAcilanDto" CommandClicked="CommandClickHandler"></GridEvents>
+            <SfGrid ID="DersAcGrid" @ref="DersAcGrid" TValue="DersAcilanDto" Toolbar="@(ToolbarDersitems)" RowHeight="20" AllowSorting="true" AllowFiltering="true" AllowSelection="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
+                <GridEvents OnRecordClick="OnRecordClickHandler" RowSelected="RowSelectedHandler" OnToolbarClick="ToolbarDersClickHandler" TValue="DersAcilanDto" CommandClicked="CommandClickHandler"></GridEvents>
                 <GridSelectionSettings CellSelectionMode="CellSelectionMode.BoxWithBorder" CheckboxOnly="true" Type="SelectionType.Multiple" PersistSelection="true"></GridSelectionSettings>
                 <GridPageSettings PageCount="5" PageSizes="new int[]{ 5, 10, 12, 30 }"></GridPageSettings>
                 <SfDataManager Url="@("odata/DersAcilans?$expand=derskayits($count=true;$top=0),akademisyen($select=Id,Ad)")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
@@ -29,17 +29,18 @@
                     @*<GridColumn Field="@("DersKayits@odata.count")" HeaderText="Ö.Sayı"></GridColumn>*@
                     <GridColumn>
                         <GridCommandColumns>
-                            <GridCommandColumn Type="CommandButtonType.None" Title="Tanımlı Sınavlar" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
+                            <GridCommandColumn Type="CommandButtonType.None" Title="Tanımlı Sınavlar" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowDown", CssClass="e-flat" })"></GridCommandColumn>
                         </GridCommandColumns>
                     </GridColumn>
                 </GridColumns>
             </SfGrid>
-            <SfButton OnClick="TopluButOlustur" CssClass="e-success">Seçilen Derslerin Bütlerini Oluştur.</SfButton>
-
+            @*<SfButton OnClick="TopluButOlustur" CssClass="e-success">Seçilen Derslerin Bütlerini Oluştur.</SfButton>*@
+            @*<input type="button" @onclick="Remove" value="remove" />*@
         </div>
     </div>
-    <div class="col-sm-12 col-md-6">
-        <div class="server-action-menu">
+
+    <div class="col-sm-12 col-md-12">
+        <div class="server-action-menu card">
             <div class="row">
                 <div class="col-sm-12 text-center">
                     @if (SelectedDersAcilans.Count() == 1)
@@ -48,7 +49,7 @@
                     }
                     else if (SelectedDersAcilans.Count() > 1)
                     {
-                        <p>Seçilen dersler için sınav oluşturmak için aşağıdaki menüleri kullanabilirsiniz</p>
+                        <p>Seçilen derslere sınav oluşturmak için aşağıdaki menüleri kullanabilirsiniz</p>
                     }
                     else
                     {
@@ -61,7 +62,7 @@
                 <div class="col-12">
                     <div class="form-row">
                         @*açılan ders grid OnRecordClick="OnSinavRecordClickHandler" *@
-                        <SfGrid ID="SinavGrid" @ref="SinavGrid" DataSource="@SinavDtos" Toolbar="@(Toolbaritems)" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
+                        <SfGrid @ref="SinavGrid" DataSource="@SinavDtos.Where(x=>isShowSinavs).ToList()" Toolbar="@(Toolbaritems)" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
                             <GridEvents RowSelected="RowSelectedHandlerSinav" OnActionComplete="ActionCompletedHandler" OnToolbarClick="ToolbarClickHandler" TValue="SinavDto"></GridEvents>
                             <GridSelectionSettings></GridSelectionSettings>
                             <GridEditSettings Dialog="DialogParams" ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
@@ -93,7 +94,6 @@
 
                                 </Template>
                             </GridEditSettings>
-
                             <GridColumns>
                                 <GridColumn Visible="false" Field=@nameof(SinavDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
                                 <GridColumn Field=@nameof(SinavDto.Tarih) HeaderText="Tarih"></GridColumn>
@@ -110,7 +110,8 @@
                 </div>
             </div>
         </div>
-        <div class="server-action-menu">
+        <br />
+        <div class="server-action-menu card">
             <div class="row">
                 <div class="col-sm-12 text-center">
                     <p>Öğrenciler</p>
@@ -199,9 +200,14 @@
         padding: 5px;
     }
 
-    .e-DoubleArrowRight:before {
-        content: '\e7bb';
+    .e-DoubleArrowDown:before {
+        content: '\e7bf';
         color: #3ec9e8;
+    }
+
+    .e-Signature:before {
+        content: '\e756';
+        color: #80d192;
     }
 
     .e-Circle_Add:before {
