@@ -336,14 +336,31 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
             if (args.CommandColumn.Title == "Ders Ekle")
             {
-                //yerineDersKod = yerineDersKod + "(" + args.RowData.Kod + ")";
                 try
                 {
-                    args.RowData.EskiMufBagliDersId = args.RowData.EskiMufBagliDersId + "," + yerineDersId + ",";
-                    args.RowData.EskiMufBagliDersId.Replace(",,", ",");
-                    args.RowData.Mufredat = null;
-                    ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>("api/ders", args.RowData);
+                    //Virgüllü çözüm
+                    //////args.RowData.EskiMufBagliDersId = args.RowData.EskiMufBagliDersId + "," + yerineDersId + ",";
+                    //////args.RowData.EskiMufBagliDersId.Replace(",,", ",");
 
+                    //////args.RowData.Mufredat = null;
+                    //////ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>("api/ders", args.RowData);
+
+                    //////if (apiResponse.IsSuccessStatusCode)
+                    //////{
+                    //////    //DersGrid.Refresh();
+                    //////    matToaster.Add("Yerine ders seçildi. Kayıt edip kapatabilirsiniz.", MatToastType.Success, "İşlem başarılı.");
+                    //////}
+                    //////else
+                    //////    matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
+                    ///
+                    DersKancaDto dersKancaDto = new DersKancaDto()
+                    {
+                        AktifMufredatDersId = args.RowData.Id,
+                        PasifMufredatDersId = yerineDersId
+                    };
+
+
+                    ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/derskanca", dersKancaDto);
                     if (apiResponse.IsSuccessStatusCode)
                     {
                         //DersGrid.Refresh();
@@ -351,6 +368,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                     }
                     else
                         matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
+
                 }
                 catch (Exception ex)
                 {
