@@ -91,7 +91,9 @@ namespace UniLife.Storage.Stores
 
             foreach (var item in selectedDersAcilans)
             {
+                //Eğer sadece aktif döneme sına voluşturulur falan derlerse.
                 getAkademikTakvimByDonem = getAkademikTakvimByDonem.Where(x => x.DonemId == item.DonemId).ToList();
+
                 var fakulteAkademikTakvim = getAkademikTakvimByDonem.FirstOrDefault(x => x.FakulteId == item.FakulteId)
                                             ??
                                             getAkademikTakvimByDonem.FirstOrDefault(x => x.FakulteId == null);
