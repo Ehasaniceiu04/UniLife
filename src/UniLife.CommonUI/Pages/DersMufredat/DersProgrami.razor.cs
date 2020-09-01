@@ -105,7 +105,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         public Query totalQuery = new Query().Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)", "Donem($select=Id,Ad)", "bolum($expand=fakulte($select=Ad,Id);$select=Ad,Id)" }); //, "bolum($expand=fakulte($select=Ad,Id);$select=Ad,Id)"
 
         string OdataSinavQuery = "odata/sinavs";
-        public Query totalSinavQuery = new Query().Expand(new List<string> { "DersAcilan($expand=program($select=Ad,Id),akademisyen($select=Ad,Id);$select=Ad,Id)" });
+        public Query totalSinavQuery = new Query().Expand(new List<string> { "DersAcilan($expand=program($select=Ad,Id),akademisyen($select=Ad,Id),fakulte($select=Ad,Id);$select=Ad,Id)" });
 
 
 
@@ -512,8 +512,8 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         {
             totalSinavQuery = new Query();
             //totalQuery.Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)" });
-            totalSinavQuery.Expand(new List<string> { "bolum($expand=fakulte($select=Ad,Id);$select=Ad,Id)" }); //, "bolum($expand=fakulte($select=Ad,Id);$select=Ad,Id)"
-
+            //totalSinavQuery.Expand(new List<string> { "bolum($expand=fakulte($select=Ad,Id);$select=Ad,Id)" }); //, "bolum($expand=fakulte($select=Ad,Id);$select=Ad,Id)"
+            totalSinavQuery.Expand(new List<string> { "DersAcilan($expand=program($select=Ad,Id),akademisyen($select=Ad,Id),fakulte($select=Ad,Id);$select=Ad,Id)" });
 
             if (donemId.HasValue)
             {

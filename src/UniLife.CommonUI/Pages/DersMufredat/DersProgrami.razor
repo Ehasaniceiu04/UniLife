@@ -80,9 +80,10 @@
                     <SfDataManager Url="@OdataSinavQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
                     <GridColumns>
                         <GridColumn Visible="false" Field=@nameof(SinavDto.Id) IsIdentity="true" IsPrimaryKey="true"></GridColumn>
+                        <GridColumn AutoFit="true" Field="DersAcilan.Fakulte.Ad" HeaderText="Ad"></GridColumn>
+                        <GridColumn AutoFit="true" Field="DersAcilan.Program.Ad" HeaderText="Ad"></GridColumn>
                         <GridColumn AutoFit="true" Field="DersAcilan.Ad" HeaderText="Ad"></GridColumn>
                         <GridColumn AutoFit="true" Field="DersAcilan.Akademisyen.Ad" HeaderText="Akademisyen"></GridColumn>
-                        <GridColumn AutoFit="true" Field="DersAcilan.Program.Ad" HeaderText="Program"></GridColumn>
                         <GridColumn Field=@nameof(SinavDto.Tarih) HeaderText="Tarih"></GridColumn>
                         <GridColumn>
                             <GridCommandColumns>
