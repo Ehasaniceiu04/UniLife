@@ -9,6 +9,8 @@ namespace UniLife.Shared.DataModels
 {
     public class SinavKriter : Entity<int>, IAuditable, ISoftDelete
     {
+        public int? ProgramId { get; set; }
+        public virtual Program Program { get; set; }
         public int SinavDegerlendirmeTipi { get; set; } //ENUM
         public int EnAzYYSEtkiOranYuzde { get; set; }
         public int BglDegKatmaLimiti { get; set; }
