@@ -102,12 +102,12 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         public Query donemQuery = new Query().Select(new List<string> { "Id", "Ad" }).RequiresCount();
 
         string OdataQuery = "odata/dersacilans";
-        public Query totalQuery = new Query().Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)", "Donem($select=Id,Ad)", "bolum($expand=fakulte($select=Ad,Id);$select=Ad,Id)" });
+        public Query totalQuery = new Query().Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)", "Donem($select=Id,Ad)", "bolum($expand=fakulte($select=Ad,Id);$select=Ad,Id)" }); //, "bolum($expand=fakulte($select=Ad,Id);$select=Ad,Id)"
 
-        string OdataSinavQuery = "odata/dersacilans";
-        public Query totalSinavQuery = new Query().Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)", "Donem($select=Id,Ad)", "bolum($expand=fakulte($select=Ad,Id);$select=Ad,Id)" });
+        string OdataSinavQuery = "odata/sinavs";
+        public Query totalSinavQuery = new Query().Expand(new List<string> { "DersAcilan($expand=program($select=Ad,Id),akademisyen($select=Ad,Id);$select=Ad,Id)" });
 
-        
+
 
         protected async override Task OnInitializedAsync()
         {
@@ -129,15 +129,15 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         async Task ReadDerlikRezervs()
         {
-            string odataQuery = "odata/derslikrezervs?$filter=";
+            string odataRezervQuery = "odata/derslikrezervs?$filter=";
             foreach (var item in selectedDersliksByBina)
             {
-                odataQuery += "DerslikId eq " + item + " or ";
+                odataRezervQuery += "DerslikId eq " + item + " or ";
             }
 
-            odataQuery = odataQuery.TrimEnd('o', 'r', ' ');
+            odataRezervQuery = odataRezervQuery.TrimEnd('o', 'r', ' ');
 
-            OData<DerslikRezervDto> apiResponse = await Http.GetFromJsonAsync<OData<DerslikRezervDto>>(odataQuery);
+            OData<DerslikRezervDto> apiResponse = await Http.GetFromJsonAsync<OData<DerslikRezervDto>>(odataRezervQuery);
             derslikRezervDtos = apiResponse.Value;
 
             //ApiResponseDto<List<DerslikRezervDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<DerslikRezervDto>>>("api/derslikrezerv").Result;
@@ -416,10 +416,29 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         }
 
 
+        public async Task CommandClickHandler(Syncfusion.Blazor.Grids.CommandClickEventArgs<DersAcilanDto> args)
+        {
+            if (args.CommandColumn.Title == "Tanımlı Ders Programları")
+            {
+                string oDataQuery = $"odata/DerslikRezervs?$expand=ResourceData($select=Id,Ad)&$filter=DersAcilanId eq {args.RowData.Id}";
+                OData<DerslikRezervDto> apiResponse = await Http.GetFromJsonAsync<OData<DerslikRezervDto>>(oDataQuery);
+                SecDrsPrgDtos = apiResponse.Value;
+
+                dialogBaslik = $"{args.RowData.Id} dersinin programı";
+                isDersPrgDialogOpen = true;
+
+                //await DersAcGrid.ClearSelection();
+                //DersAcGrid.SelectedRowIndex = clickedRowIndex;
+
+                //GetSinavsByDersAcilanId(args.RowData);
+            }
+        }
         public async Task CommandClickHandlerSinav(Syncfusion.Blazor.Grids.CommandClickEventArgs<SinavDto> args)
         {
             if (args.CommandColumn.Title == "Tanımlı Ders Programları")
             {
+                //SinaviID yi derslikrezerver e yazıcaz. dersAcilanId Zorunlulana onu kaldıracaz. impact test
+
                 string oDataQuery = $"odata/DerslikRezervs?$expand=ResourceData($select=Id,Ad)&$filter=DersAcilanId eq {args.RowData.Id}";
                 OData<DerslikRezervDto> apiResponse = await Http.GetFromJsonAsync<OData<DerslikRezervDto>>(oDataQuery);
                 SecDrsPrgDtos = apiResponse.Value;
@@ -467,7 +486,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         {
             totalQuery = new Query();
             //totalQuery.Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)" });
-            totalQuery.Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)", "Donem($select=Id,Ad)", "bolum($expand=fakulte($select=Ad,Id);$select=Ad,Id)" });
+            totalQuery.Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)", "Donem($select=Id,Ad)", "bolum($expand=fakulte($select=Ad,Id);$select=Ad,Id)" }); //, "bolum($expand=fakulte($select=Ad,Id);$select=Ad,Id)"
 
 
             if (donemId.HasValue)
@@ -488,12 +507,34 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 totalQuery.Where("fakulteId", "equal", fakulteId);
             }
 
+        }
+        async Task RefreshSinav()
+        {
+            totalSinavQuery = new Query();
+            //totalQuery.Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)" });
+            totalSinavQuery.Expand(new List<string> { "bolum($expand=fakulte($select=Ad,Id);$select=Ad,Id)" }); //, "bolum($expand=fakulte($select=Ad,Id);$select=Ad,Id)"
 
-            //isGridVisible = true;
 
+            if (donemId.HasValue)
+            {
+                totalQuery.Where("donemId", "equal", donemId);
+            }
+
+            if (programId.HasValue)
+            {
+                totalQuery.Where("programId", "equal", programId);
+            }
+            else if (bolumId.HasValue)
+            {
+                totalQuery.Where("bolumId", "equal", bolumId);
+            }
+            else if (fakulteId.HasValue)
+            {
+                totalQuery.Where("fakulteId", "equal", fakulteId);
+            }
 
         }
-
+        
 
     }
 }

@@ -28,17 +28,25 @@
                         </SfDropDownList>
                     </div>
                 </div>
-                <SfButton OnClick="Refresh" CssClass="e-success col-sm-12 form-control-sm">Bul / Yenile</SfButton>
+                @if (!isSinav)
+                {
+                    <SfButton OnClick="Refresh" CssClass="e-success col-sm-12 form-control-sm">Ders Bul / Yenile</SfButton>
+                }
+                else
+                {
+                    <SfButton OnClick="RefreshSinav" CssClass="e-success col-sm-12 form-control-sm">Sinav Bul / Yenile</SfButton>
+                }
+
 
             </div>
         </div>
-        @if (true)
+        @if (!isSinav)
         {
             <div class="row pb-2 bg-light text-dark">
                 <SfGrid ID="DersAcGrid" @ref="DersAcGrid" Query="@totalQuery" TValue="DersAcilanDto" RowHeight="20" AllowSorting="true" AllowSelection="true" AllowFiltering="true" AllowPaging="true">
                     <GridEvents RowSelected="RowSelectedHandler" TValue="DersAcilanDto" CommandClicked="CommandClickHandler"></GridEvents>
                     <GridSelectionSettings EnableToggle="false" Type="SelectionType.Single"></GridSelectionSettings>
-                    <SfDataManager Url="@OdataSinavQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+                    <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
                     <GridColumns>
                         <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) IsIdentity="true" IsPrimaryKey="true"></GridColumn>
                         <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Sube) HeaderText="Şb."></GridColumn>
@@ -69,25 +77,16 @@
                 <SfGrid ID="SinavGrid" @ref="SinavGrid" Query="@totalSinavQuery" TValue="SinavDto" RowHeight="20" AllowSorting="true" AllowSelection="true" AllowFiltering="true" AllowPaging="true">
                     <GridEvents RowSelected="RowSelectedHandlerSinav" TValue="SinavDto" CommandClicked="CommandClickHandlerSinav"></GridEvents>
                     <GridSelectionSettings EnableToggle="false" Type="SelectionType.Single"></GridSelectionSettings>
-                    <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+                    <SfDataManager Url="@OdataSinavQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
                     <GridColumns>
-                        <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) IsIdentity="true" IsPrimaryKey="true"></GridColumn>
-                        <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Sube) HeaderText="Şb."></GridColumn>
-                        <GridColumn Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kod"></GridColumn>
-                        <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Ad"></GridColumn>
-                        <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.TU) HeaderText="T+U"></GridColumn>
-                        <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kredi) HeaderText="kre"></GridColumn>
-                        <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Akts) HeaderText="AKTS"></GridColumn>
-                        <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Sinif) HeaderText="Snf"></GridColumn>
-                        <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Sube) HeaderText="Şube"></GridColumn>
-                        @*<GridColumn AutoFit="true" Field=@nameof(ResDersAcilansByLongFilters.Kon) HeaderText="Kon"></GridColumn>*@
-                        <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.TopKont) HeaderText="Kon"></GridColumn>
-                        <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Zorunlu) HeaderText="Zor" DisplayAsCheckBox="true"></GridColumn>
-                        <GridColumn AutoFit="true" Field="Program.Ad" HeaderText="Program"></GridColumn>
-                        <GridColumn AutoFit="true" Field="Akademisyen.Ad" HeaderText="Akademisyen"></GridColumn>
+                        <GridColumn Visible="false" Field=@nameof(SinavDto.Id) IsIdentity="true" IsPrimaryKey="true"></GridColumn>
+                        <GridColumn AutoFit="true" Field="DersAcilan.Ad" HeaderText="Ad"></GridColumn>
+                        <GridColumn AutoFit="true" Field="DersAcilan.Akademisyen.Ad" HeaderText="Akademisyen"></GridColumn>
+                        <GridColumn AutoFit="true" Field="DersAcilan.Program.Ad" HeaderText="Program"></GridColumn>
+                        <GridColumn Field=@nameof(SinavDto.Tarih) HeaderText="Tarih"></GridColumn>
                         <GridColumn>
                             <GridCommandColumns>
-                                <GridCommandColumn Type="CommandButtonType.None" Title="Tanımlı Ders Programları" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
+                                <GridCommandColumn Type="CommandButtonType.None" Title="Tanımlı Sinav Programları" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
                             </GridCommandColumns>
                         </GridColumn>
                     </GridColumns>
@@ -98,7 +97,7 @@
         <div class="row pb-2 bg-light text-dark">
             <div class="col-sm-12 col-md-12">
                 <div class="form-group row">
-                    <label for="DropBina" class="col-sm-1 col-form-label-sm">Bina Seçimi</label>
+                    <label for="DropBina" class="col-sm-2 col-form-label-sm">Bina Seçimi</label>
                     <div class="col-sm-5">
                         <SfDropDownList ID="DropBina" @ref="DropBina" TItem="BinaDto" CssClass="form-control-sm"
                                         TValue="int?" PopupHeight="430px" DataSource="@binaDtos" Placeholder="Ders programını görüntülemek/düzenlemek için bina seçiniz">
@@ -106,11 +105,11 @@
                             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                         </SfDropDownList>
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-2">
                     </div>
                     <label for="DropBina" class="col-sm-1 col-form-label-sm">Sinav</label>
                     <div class="col-sm-2">
-                        <SfSwitch @bind-Checked="@isSinav"></SfSwitch>
+                        <SfSwitch  CssClass="form-control-sm" @bind-Checked="@isSinav">Sinav</SfSwitch>
                     </div>
                 </div>
             </div>
@@ -128,8 +127,8 @@
                             <ScheduleViewTimeScale SlotCount="1" Interval="60"></ScheduleViewTimeScale>
                         </ScheduleView>
                         @*<ScheduleView Option="View.TimelineWeek">
-                            <ScheduleViewTimeScale SlotCount="1" Interval="60"></ScheduleViewTimeScale>
-                        </ScheduleView>*@
+                                <ScheduleViewTimeScale SlotCount="1" Interval="60"></ScheduleViewTimeScale>
+                            </ScheduleView>*@
                     </ScheduleViews>
                     <ScheduleGroup EnableCompactView="false" Resources="@GroupData"></ScheduleGroup>
                     <ScheduleResources>

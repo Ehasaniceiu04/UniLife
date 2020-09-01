@@ -20,11 +20,13 @@ namespace UniLife.Shared.Dto.Definitions
         public virtual DersDto Ders { get; set; }
         public int? FakulteId { get; set; }
         public virtual FakulteDto Fakulte { get; set; }
+        public string FakulteAd { get; set; }
         public int? BolumId { get; set; }
         public virtual BolumDto Bolum { get; set; }
+        public string BolumAd { get; set; }
         public int? ProgramId { get; set; }
         public virtual ProgramDto Program { get; set; }
-        public virtual string ProgramAd { get; set; }
+        public string ProgramAd { get; set; }
         public int MufredatId { get; set; }
         public virtual MufredatDto Mufredat { get; set; }
         public int? DersNedenId { get; set; }
@@ -32,8 +34,6 @@ namespace UniLife.Shared.Dto.Definitions
         public int? DersDilId { get; set; }
         public virtual DersDilDto DersDil { get; set; }
         public int? Sube { get; set; } = 1;
-
-        public string FakulteAd { get; set; }
 
         public int OgrCount { get; set; }
 

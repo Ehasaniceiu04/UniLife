@@ -156,6 +156,7 @@
                             <div class="col-md-3">
                                 @*<FakBolPrg></FakBolPrg>*@
                                 <SfButton OnClick="@(()=>programDialogOpen =true)" CssClass="e-success col-sm-12 form-control-sm">Program Ata</SfButton>
+                                
                                 @if (dAcilanContext.Program != null)
                                 {
                                     <p>@dAcilanContext.Program.Ad</p>
@@ -165,7 +166,10 @@
                                 else
                                 {
                                     <p>@dAcilanContext.ProgramAd</p>
+                                    <p>@dAcilanContext.BolumAd</p>
+                                    <p>@dAcilanContext.FakulteAd</p>
                                 }
+
 
                                 <div class="form-group row">
                                     <label for="DonemId" class="col-sm-2 col-form-label">Dönem</label>
@@ -180,9 +184,9 @@
                                 </div>
 
                                 @*<div class="form-group row">
-                                        <SfTextBox ID="akademisyen" Enabled="false" Placeholder="Akademisyen" CssClass="form-control col-sm-8" @bind-Value="@(dAcilanContext.Akademisyen.Ad)"></SfTextBox>
-                                        <SfButton IconCss="e-icons e-Resource" EnableRtl="true" OnClick="@(() =>AkademisyenAta(dAcilanContext.Id))" CssClass="e-flat form-control col-sm-2" IsPrimary="true"></SfButton>
-                                    </div>*@
+            <SfTextBox ID="akademisyen" Enabled="false" Placeholder="Akademisyen" CssClass="form-control col-sm-8" @bind-Value="@(dAcilanContext.Akademisyen.Ad)"></SfTextBox>
+            <SfButton IconCss="e-icons e-Resource" EnableRtl="true" OnClick="@(() =>AkademisyenAta(dAcilanContext.Id))" CssClass="e-flat form-control col-sm-2" IsPrimary="true"></SfButton>
+        </div>*@
 
                             </div>
                         </div>
@@ -198,8 +202,11 @@
                             isProgramSecildi = true;
 
                             dAcilanContext.ProgramAd = programDto.Ad;
+                            dAcilanContext.FakulteAd = programDto.Bolum.Fakulte.Ad;
+                            dAcilanContext.BolumAd = programDto.Bolum.Ad;
                             dAcilanContext.Bolum.Ad = programDto.Bolum.Ad;
-                            dAcilanContext.Fakulte.Ad = programDto.Bolum.Fakulte.Ad;
+                            //dAcilanContext.Fakulte.Ad = programDto.Bolum.Fakulte.Ad;
+
 
                             tempProgramId = programDto.Id;
                             tempBolumId = programDto.Bolum.Id;

@@ -236,7 +236,7 @@ namespace UniLife.Storage.Stores
                 //TODO : kalınan ders bilgisini nasıl dolduracağımızı öğren.
 
                 List<string> kalinandersIdsString = new List<string>();
-                var kalinanDersler = await _db.Derss.Where(x => x.Id == 16).AsNoTracking().ToListAsync();
+                var kalinanDersler = await _db.Derss.Where(x => x.Id == 15).AsNoTracking().ToListAsync();
                 List<int> kalinanDersIdsInt = kalinanDersler.Select(x => x.Id).ToList();
 
                 if (kalinanDersIdsInt.Count > 0)
@@ -255,7 +255,7 @@ namespace UniLife.Storage.Stores
                         var activeMufredatId = (await _db.Mufredats.FirstOrDefaultAsync(x => x.ProgramId == ogrenci.ProgramId && x.Aktif == true)).Id;
                         var kalinanDersAcilans = await _db.DersAcilans.Where(x => x.MufredatId == activeMufredatId).AsNoTracking().ToListAsync();
 
-                        var kalinanDersAcilans2 = kalinanDersAcilans.Where(x => kalinandersIdsString.Any(y => string.IsNullOrWhiteSpace(x.EskiMufBagliDersId) ? x.EskiMufBagliDersId.Contains(y) : false));
+                        var kalinanDersAcilans2 = kalinanDersAcilans.Where(x => kalinandersIdsString.Any(y => !string.IsNullOrWhiteSpace(x.EskiMufBagliDersId) ? x.EskiMufBagliDersId.Contains(y) : false));
 
                         foreach (var item in kalinanDersAcilans2)
                         {

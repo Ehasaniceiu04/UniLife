@@ -29,7 +29,7 @@ namespace UniLife.Storage.Stores
 
             //
 
-            var derslikRezervs = await (from dr in _db.DerslikRezervs.Where(x => mufredatAcilanDersler.Contains(x.DersAcilanId) && x.IsSinav == isSinav)
+            var derslikRezervs = await (from dr in _db.DerslikRezervs.Where(x => mufredatAcilanDersler.Contains((int)x.DersAcilanId) && x.IsSinav == isSinav)
                                         select dr).ToListAsync();
 
             var dersliks = await (from d in _db.Dersliks.Where(x => derslikRezervs.Select(y => y.DerslikId).Contains(x.Id))

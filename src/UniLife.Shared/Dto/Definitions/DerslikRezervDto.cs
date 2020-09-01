@@ -62,8 +62,11 @@ namespace UniLife.Shared.Dto.Definitions
         public string StartTimezone { get; set; }
         public string EndTimezone { get; set; }
 
-        public int DersAcilanId { get; set; }
+        public int? DersAcilanId { get; set; }
         public virtual DersAcilanDto DersAcilan{ get; set; }
+
+        public int? SinavId { get; set; }
+        public virtual SinavDto Sinav { get; set; }
         public bool IsSinav { get; set; }
         public string DerslikAd { get; set; }   
         public int DerslikId { get; set; }
