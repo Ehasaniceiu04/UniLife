@@ -97,6 +97,7 @@
     <PackageReference Include="MailKit" Version="2.7.0" />
     <PackageReference Include="Serilog.Sinks.MSSqlServer" Version="5.4.0" />
     <PackageReference Include="Syncfusion.Blazor" Version="18.2.0.55" />
+    <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="18.2.0.56" />
   </ItemGroup>
 
   <ItemGroup>
@@ -109,6 +110,7 @@
   <ItemGroup>
     <Folder Include="Logs\" />
     <Folder Include="Properties\PublishProfiles\" />
+    <Folder Include="wwwroot\Files\Uploads\" />
   </ItemGroup>
 
 </Project>

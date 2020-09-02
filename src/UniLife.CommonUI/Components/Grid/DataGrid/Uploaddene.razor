@@ -1,6 +1,10 @@
 ﻿@page "/filemanager"
-@using Syncfusion.Blazor.FileManager;
-<SfFileManager>
-    <FileManagerAjaxSettings Url="/api/SampleData/FileOperations">
+@using Syncfusion.Blazor.FileManager
+
+<SfFileManager AllowMultiSelection="true" ShowHiddenItems="true">
+    <FileManagerAjaxSettings Url="/uploapi/Default/FileOperations"
+                             UploadUrl="/uploapi/Default/Upload"
+                             DownloadUrl="/uploapi/Default/Download"
+                             GetImageUrl="/uploapi/Default/GetImage">
     </FileManagerAjaxSettings>
 </SfFileManager>

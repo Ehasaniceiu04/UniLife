@@ -81,6 +81,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\Files\Uploads\" />
     <Folder Include="wwwroot\images\ogrenci\" />
   </ItemGroup>
 
