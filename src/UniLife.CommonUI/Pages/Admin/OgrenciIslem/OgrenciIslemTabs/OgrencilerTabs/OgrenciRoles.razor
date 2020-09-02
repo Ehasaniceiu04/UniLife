@@ -4,6 +4,7 @@
 @inject IMatToaster matToaster
 @using Syncfusion.Blazor.SplitButtons
 @using Syncfusion.Blazor.Inputs
+@inject NavigationManager navigationManager
 
 <MatChipSet>
     @foreach (var role in roleSelections.OrderBy(x => x.Name))
@@ -16,6 +17,8 @@
 </SfProgressButton>
 
 <MatIconButton Icon="rotate_right" OnClick="@(() => OpenResetPasswordDialog(_OgrenciDto.Ad +" "+ _OgrenciDto.Soyad, _OgrenciDto.ApplicationUserId))"></MatIconButton>
+
+<MatIconButton Icon="delete" OnClick="@(OpenDeleteDialog)"></MatIconButton>
 
 
 <MatDialog @bind-IsOpen="@resetPasswordDialogOpen">
@@ -41,9 +44,21 @@
     </MatDialogActions>
 </MatDialog>
 
+<MatDialog @bind-IsOpen="@deleteUserDialogOpen" Style="z-index:100">
+    <MatDialogTitle><MatIcon Icon="warning"></MatIcon> Confirm Delete</MatDialogTitle>
+    <MatDialogContent>
+        "@user.UserName" numaralı öğrenci silinecek onaylıyor musunuz?
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="@(e => { deleteUserDialogOpen = false; })">Cancel</MatButton>
+        <MatButton OnClick="@(() => DeleteUserAsync(_OgrenciDto.Id))">Delete</MatButton>
+    </MatDialogActions>
+</MatDialog>
+
 @code{
 
     bool resetPasswordDialogOpen = false;
+    bool deleteUserDialogOpen = false;
 
 
     [Parameter]
@@ -183,6 +198,39 @@
         catch (Exception ex)
         {
             matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Password Reset Error");
+        }
+    }
+
+    public void OpenDeleteDialog()
+    {
+        deleteUserDialogOpen = true;
+    }
+
+    public async Task DeleteUserAsync(int ogrenciId)
+    {
+        try
+        {
+            //var response = await Http.DeleteAsync($"api/Account/{userId}");
+            var responseOgrenci = await Http.DeleteAsync($"api/ogrenci/{ogrenciId}");
+            //response.IsSuccessStatusCode &&
+            if ( responseOgrenci.IsSuccessStatusCode)
+            {
+                matToaster.Add("User Deleted", MatToastType.Success);
+                //users.Remove(user);//ogrenciler grdi refresh
+                navigationManager.NavigateTo("admin/ogrenci_islem", true);
+                deleteUserDialogOpen = false;
+                StateHasChanged();
+            }
+            else
+            {
+                matToaster.Add("Öğrenci silerken hata oluştu Admine haber verin!.", MatToastType.Danger, "Hata");
+            };
+
+
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "User Delete Error");
         }
     }
 }
