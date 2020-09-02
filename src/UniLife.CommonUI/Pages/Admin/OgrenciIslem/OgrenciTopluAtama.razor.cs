@@ -95,6 +95,9 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem
 
         bool mufredatDialogOpen;
         Syncfusion.Blazor.Grids.SfGrid<MufredatDto> MufreadatGrid;
+
+        bool ogrDurumDialogOpen;
+        Syncfusion.Blazor.Grids.SfGrid<OgrenimDurumDto> OgrenimDurumGrid;
         async Task DanismanEkle()
         {
             akademisyenDialogOpen = true;
@@ -106,7 +109,13 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem
             mufredatDialogOpen = true;
         }
         string selectedMuf = "";
-        
+
+        async Task OgrDurEkle()
+        {
+            ogrDurumDialogOpen = true;
+        }
+        string selectedOgrDur = "";
+
 
 
         protected async override Task OnInitializedAsync()
@@ -287,6 +296,28 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem
                 else
                 {
                     matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Müfredat ataması başarısız oldu!");
+                }
+            }
+        }
+        public async Task CommandClickHandlerOgrDurum(Syncfusion.Blazor.Grids.CommandClickEventArgs<OgrenimDurumDto> args)
+        {
+            mufredatDialogOpen = false;
+            if (args.CommandColumn.Title == "OgrDurum Ekle")
+            {
+                ReqEntityIdWithOtherEntitiesIds ReqEntityIdWithOtherEntitiesIds = new ReqEntityIdWithOtherEntitiesIds();
+                ReqEntityIdWithOtherEntitiesIds.EntityId = args.RowData.Id;
+                ReqEntityIdWithOtherEntitiesIds.OtherEntityIds = (await OgrencilerGrid.GetSelectedRecords()).Select(x => x.Id).ToList();
+
+                ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/ogrenci/SetOgrDurumToOgrencis", ReqEntityIdWithOtherEntitiesIds);
+                if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
+                {
+                    OgrencilerGrid.Refresh();
+                    matToaster.Add(args.RowData.Ad, MatToastType.Success, "Seçilen öğrenim durumu öğrencilere atandı.");
+                    selectedOgrDur = args.RowData.Ad;
+                }
+                else
+                {
+                    matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Öğrenim durum ataması başarısız oldu!");
                 }
             }
         }

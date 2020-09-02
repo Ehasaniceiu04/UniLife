@@ -14,6 +14,7 @@ namespace UniLife.Shared.DataInterfaces
         Task<List<OgrenciDto>> GetOgrenciListByDersAcId(int dersAcId);
         Task SetDanismanToOgrencis(ReqEntityIdWithOtherEntitiesIds ReqEntityIdWithOtherEntitiesIds);
         Task SetMufredatToOgrencis(ReqEntityIdWithOtherEntitiesIds ReqEntityIdWithOtherEntitiesIds);
+        Task SetOgrDurumToOgrencis(ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds);
         Task OgrencisSinifAtlat(ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds);
 
         Task<long> GetLastOgrNo(int fakId,int BolId);

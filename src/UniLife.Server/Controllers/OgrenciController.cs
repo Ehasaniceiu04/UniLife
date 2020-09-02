@@ -155,6 +155,16 @@ namespace UniLife.Server.Controllers
                 new ApiResponse(Status400BadRequest, "SetMufredatToOgrencis is Invalid");
 
         [HttpPost]
+        [Route("SetOgrDurumToOgrencis")]
+        [Authorize(Permissions.Ogrenci.Update)]
+        public async Task<ApiResponse> SetOgrDurumToOgrencis([FromBody] ReqEntityIdWithOtherEntitiesIds ReqEntityIdWithOtherEntitiesIds)
+            => ModelState.IsValid ?
+                await _ogrenciManager.SetOgrDurumToOgrencis(ReqEntityIdWithOtherEntitiesIds) :
+                new ApiResponse(Status400BadRequest, "SetOgrDurumToOgrencis is Invalid");
+
+
+
+        [HttpPost]
         [Route("OgrencisSinifAtlat")]
         [Authorize(Permissions.Ogrenci.Update)]
         public async Task<ApiResponse> OgrencisSinifAtlat([FromBody] ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds)

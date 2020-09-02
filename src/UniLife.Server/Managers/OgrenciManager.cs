@@ -37,16 +37,21 @@ namespace UniLife.Server.Managers
             return new ApiResponse(Status200OK, "Retrieved OgrenciDtos", await _ogrenciStore.GetOgrenciListByDersAcId(dersAcId));
         }
 
-        public async Task<ApiResponse> SetDanismanToOgrencis(ReqEntityIdWithOtherEntitiesIds ReqEntityIdWithOtherEntitiesIds)
+        public async Task<ApiResponse> SetDanismanToOgrencis(ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds)
         {
-            await _ogrenciStore.SetDanismanToOgrencis(ReqEntityIdWithOtherEntitiesIds);
+            await _ogrenciStore.SetDanismanToOgrencis(reqEntityIdWithOtherEntitiesIds);
             return new ApiResponse(Status200OK, "SetDanismanToOgrencis done!", null);
         }
 
-        public async Task<ApiResponse> SetMufredatToOgrencis(ReqEntityIdWithOtherEntitiesIds ReqEntityIdWithOtherEntitiesIds)
+        public async Task<ApiResponse> SetMufredatToOgrencis(ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds)
         {
-            await _ogrenciStore.SetMufredatToOgrencis(ReqEntityIdWithOtherEntitiesIds);
+            await _ogrenciStore.SetMufredatToOgrencis(reqEntityIdWithOtherEntitiesIds);
             return new ApiResponse(Status200OK, "SetMufredatToOgrencis done!", null);
+        }
+        public async Task<ApiResponse> SetOgrDurumToOgrencis(ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds)
+        {
+            await _ogrenciStore.SetOgrDurumToOgrencis(reqEntityIdWithOtherEntitiesIds);
+            return new ApiResponse(Status200OK, "SetOgrDurumToOgrencis done!", null);
         }
 
         public async Task<ApiResponse> OgrencisSinifAtlat(ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds)
@@ -54,5 +59,6 @@ namespace UniLife.Server.Managers
             await _ogrenciStore.OgrencisSinifAtlat(reqEntityIdWithOtherEntitiesIds);
             return new ApiResponse(Status200OK, "OgrencisSinifAtlat done!", null);
         }
+
     }
 }

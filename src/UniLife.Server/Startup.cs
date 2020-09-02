@@ -674,11 +674,12 @@ namespace UniLife.Server
             builder.EntitySet<DersKayit>("DersKayits");
             builder.EntitySet<BursTip>("BursTips");
             builder.EntitySet<CezaTip>("CezaTips");
-            builder.EntitySet<CezaTip>("Donems");
+            builder.EntitySet<Donem>("Donems");
             builder.EntitySet<ProgramTur>("ProgramTurs");
             builder.EntitySet<DersDil>("DersDils");
             builder.EntitySet<DersNeden>("DersNedens");
-            builder.EntitySet<DersNeden>("Derss");
+            builder.EntitySet<Ders>("Derss");
+            builder.EntitySet<OgrenimDurum>("OgrenimDurums");
             return builder.GetEdmModel();
         }
     }

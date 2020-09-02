@@ -142,17 +142,33 @@ namespace UniLife.Storage.Stores
             int numberOfRowAffected =  await _db.Database.ExecuteSqlCommandAsync(rawBulkUpdateQuery.Replace('\'','"'));
         }
 
-        public async Task SetMufredatToOgrencis(ReqEntityIdWithOtherEntitiesIds ReqEntityIdWithOtherEntitiesIds)
+        public async Task SetMufredatToOgrencis(ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds)
         {
             string queryIncludeIds = "";
-            foreach (var item in ReqEntityIdWithOtherEntitiesIds.OtherEntityIds)
+            foreach (var item in reqEntityIdWithOtherEntitiesIds.OtherEntityIds)
             {
                 queryIncludeIds = queryIncludeIds + item.ToString() + ",";
             }
             queryIncludeIds = queryIncludeIds.TrimEnd(',');
 
 
-            var rawBulkUpdateQuery = $"update public.'Ogrencis' set 'MufredatId' = {ReqEntityIdWithOtherEntitiesIds.EntityId} where 'Id' in ({queryIncludeIds})";
+            var rawBulkUpdateQuery = $"update public.'Ogrencis' set 'MufredatId' = {reqEntityIdWithOtherEntitiesIds.EntityId} where 'Id' in ({queryIncludeIds})";
+
+            int numberOfRowAffected = await _db.Database.ExecuteSqlCommandAsync(rawBulkUpdateQuery.Replace('\'', '"'));
+        }
+
+
+        public async Task SetOgrDurumToOgrencis(ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds)
+        {
+            string queryIncludeIds = "";
+            foreach (var item in reqEntityIdWithOtherEntitiesIds.OtherEntityIds)
+            {
+                queryIncludeIds = queryIncludeIds + item.ToString() + ",";
+            }
+            queryIncludeIds = queryIncludeIds.TrimEnd(',');
+
+
+            var rawBulkUpdateQuery = $"update public.'Ogrencis' set 'OgrenimDurumId' = {reqEntityIdWithOtherEntitiesIds.EntityId} where 'Id' in ({queryIncludeIds})";
 
             int numberOfRowAffected = await _db.Database.ExecuteSqlCommandAsync(rawBulkUpdateQuery.Replace('\'', '"'));
         }
@@ -205,5 +221,6 @@ namespace UniLife.Storage.Stores
             }
            
         }
+
     }
 }
