@@ -58,6 +58,9 @@ namespace UniLife.Storage.Stores
 
             donem = _autoMapper.Map(donemDto, donem);
             _db.Donems.Update(donem);
+
+            await _db.Ogrencis.ForEachAsync(x => x.DnmSnfGecBilgi = "");
+
             await _db.SaveChangesAsync(CancellationToken.None);
 
             return donem;

@@ -539,6 +539,7 @@ namespace UniLife.Server.Managers
                 {
                     //Öğrenci Kaydı ekleme
                     ogrenciDto.ApplicationUserId = possibleUserId;
+                    //ogrenciDto.SinitAtYil = (await _donemStore.GetWhere(x => x.Durum == true)).FirstOrDefault().Yil;
                     Ogrenci ogrCreateResult = await _ogrenciStore.Create(ogrenciDto);
                 }
                 catch (Exception ex)

@@ -61,7 +61,6 @@ namespace UniLife.Shared.Dto.Definitions
         public DateTime? AyrilTarih { get; set; }
         public string AnaOgrNo { get; set; }
         public int? Sinif { get; set; }
-
         public decimal GerekenTopUcret { get; set; }
         public decimal OdenenTopUcret { get; set; }
         public decimal GenelBakiye { get; set; }

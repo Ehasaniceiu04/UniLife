@@ -180,7 +180,8 @@ namespace UniLife.Storage.Stores
             foreach (var item in ogrencis)
             {
                 int ogrPrgSure = ogrPrograms.FirstOrDefault(x=>x.Id == item.Id).IntValue;
-                if (ogrPrgSure> item.Sinif)
+
+                if (ogrPrgSure> item.Sinif && !item.DnmSnfGecBilgi.Contains("Atlatıldı"))
                 {
                     item.Sinif++;
                     item.DnmSnfGecBilgi = "Sınıf Atlatıldı";
