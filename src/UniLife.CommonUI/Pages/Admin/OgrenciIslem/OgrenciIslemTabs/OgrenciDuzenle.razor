@@ -603,6 +603,9 @@ else
             }
             else
             {
+                _OgrenciDto.Bolum = null;
+                _OgrenciDto.Fakulte = null;
+                _OgrenciDto.Program = null;
                 ApiResponseDto apiResponse = await ((IdentityAuthenticationStateProvider)authStateProvider).UpdateOgrenciUser(_OgrenciDto);
 
                 if (apiResponse.StatusCode == Status200OK)

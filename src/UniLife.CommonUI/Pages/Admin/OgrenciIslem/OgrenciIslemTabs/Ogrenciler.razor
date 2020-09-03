@@ -1,5 +1,4 @@
-﻿
-@using Syncfusion.Blazor.Navigations
+﻿@using Syncfusion.Blazor.Navigations
 @inject Microsoft.AspNetCore.Components.NavigationManager UriHelper
 @attribute [Authorize(Policy = Policies.IsAdmin)]
 @inject HttpClient Http
@@ -7,77 +6,151 @@
 @using UniLife.Shared.Dto.Definitions
 @using UniLife.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs.OgrencilerTabs
 @using Syncfusion.Blazor.SplitButtons
+@using Syncfusion.Blazor.Data;
 @inject AppState appState
 @inject IJSRuntime Runtime
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Calendars
 
-@if (OgrGridDtos == null)
-{
+@*@if (OgrGridDtos == null)
+    {
 
-    <LoadingBackground ShowLogoBox="true">
-        <label>Öğrenciler Yükleniyor...</label>
-    </LoadingBackground>
-}
-else
-{
-    <SfGrid ID="OgrGrid" @ref="OgrGrid" AllowSorting="true" AllowFiltering="true" AllowPaging="true" DataSource="@OgrGridDtos">
-        @*OnActionFailure="ActionFailureHandler" DetailDataBound="DetailDataBound"  OnActionBegin="ActionBeginHandler" DetailDataBound="DetailDataBound" RowDataBound="RowBound"*@
-        <GridEvents TValue="OgrenciDto" CommandClicked="CommandClickHandler" DetailDataBound="DetailDataBound" DataBound="DataBound" OnActionBegin="ActionBeginHandler" OnActionComplete="ActionCompletedHandler"></GridEvents>
-        <GridTemplates>
-            <DetailTemplate>
-                @{
-                    var ogrenciInfo = (context as OgrenciDto);
+        <LoadingBackground ShowLogoBox="true">
+            <label>Öğrenciler Yükleniyor...</label>
+        </LoadingBackground>
+    }
+    else
+    {*@
+<div class="control_wrapper accordion-control-section">
+    <SfAccordion>
+        <AccordionItems>
+            <AccordionEvents Expanding="ExpandingHandler" Clicked="OnclickHandler"> </AccordionEvents>
+            <AccordionItem  Expanded="@ExFilterOpen">
+                <ContentTemplate>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <FakBolPrg @bind-ProgramId="programId"
+                                       @bind-BolumId="bolumId"
+                                       @bind-FakulteId="fakulteId"
+                                       ProgramPlaceHolder=" "></FakBolPrg>
+                            <div class="form-group row">
+                                <label for="KayitTarih" class="col-sm-2 col-form-label-sm">Kayıt Tarih</label>
+                                <div class="col-sm-10">
+                                    <SfDateRangePicker ID="KayitTarih" @bind-StartDate="@StartValue" @bind-EndDate="@EndValue">
+                                        @*<DateRangePickerEvents ValueChange="@onChange"></DateRangePickerEvents>*@
+                                    </SfDateRangePicker>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="AyrilTarih" class="col-sm-2 col-form-label-sm">Ayrılış Tarih</label>
+                                <div class="col-sm-10">
+                                    <SfDateRangePicker ID="AyrilTarih" @bind-StartDate="@StartValueAyril" @bind-EndDate="@EndValueAyril">
+                                        @*<DateRangePickerEvents ValueChange="@onChange"></DateRangePickerEvents>*@
+                                    </SfDateRangePicker>
+                                </div>
+                            </div>
+                        </div>
 
-                }
-                <div style="padding:20px">
+                        <div class="col-sm-6">
+                            <div class="form-group row">
+                                <label for="DropMufredat" class="col-sm-2 col-form-label-sm">Müfredat</label>
+                                <div class="col-sm-10">
+                                    <SfDropDownList ID="DropMufredat" @ref="DropMufredat" ShowClearButton="true" TValue="int?" TItem="KeyValueDto" Placeholder="Müfredat seçiniz..."
+                                                    Query="@AdIdQuery"
+                                                    @bind-Value="@mufredatId">
+                                        <SfDataManager Url="odata/mufredats" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
+                                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                                    </SfDropDownList>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group row">
+                                <label for="DropMufredat" class="col-sm-2 col-form-label-sm">Müfredat</label>
+                                <div class="col-sm-10">
+                                    <SfDropDownList @ref="DropKNe" ShowClearButton="true" TValue="int?" TItem="KeyValueDto" Placeholder="Müfredat seçiniz..."
+                                                    Query="@AdIdQuery"
+                                                    @bind-Value="@kayitNedenId">
+                                        <SfDataManager Url="odata/kayitnedens" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
+                                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                                    </SfDropDownList>
+                                </div>
+                            </div>
 
-                    <SfTab LoadOn="ContentLoad.Demand">
-                        <TabEvents Selecting="OnTabSelecting"></TabEvents>
-                        <TabItems>
-                            <TabItem>
-                                <ChildContent>
-                                    <TabHeader Text="Detay"></TabHeader>
-                                </ChildContent>
-                                <ContentTemplate>
-                                    <OgrenciBilgi ogrenciId="ogrenciInfo.Id"></OgrenciBilgi>
-                                </ContentTemplate>
-                            </TabItem>
-                            <TabItem>
-                                <ChildContent>
-                                    <TabHeader Text="İletişim Bilgileri"></TabHeader>
-                                </ChildContent>
-                                <ContentTemplate>
-                                    <OgrenciIletisim _OgrenciDto="ogrenciInfo"></OgrenciIletisim>
-                                </ContentTemplate>
-                            </TabItem>
-                            <TabItem>
-                                <ChildContent>
-                                    <TabHeader Text="Roller"></TabHeader>
-                                </ChildContent>
-                                <ContentTemplate>
-                                    <div @onkeydown:stopPropagation="true">
-                                        <OgrenciRoles _OgrenciDto="ogrenciInfo"></OgrenciRoles>
-                                    </div>
-                                </ContentTemplate>
-                            </TabItem>
-                        </TabItems>
-                    </SfTab>
-                </div>
-            </DetailTemplate>
-        </GridTemplates>
-        <GridColumns>
-            <GridColumn Visible="false" Field=@nameof(OgrenciDto.ApplicationUserId) AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
-            <GridColumn Field=@nameof(OgrenciDto.Ad) HeaderText="Ad"> </GridColumn>
-            <GridColumn Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad"></GridColumn>
-            <GridColumn Field=@nameof(OgrenciDto.TCKN) HeaderText="TCKN"></GridColumn>
-            <GridColumn Field=@nameof(OgrenciDto.OgrNo) HeaderText="Öğrenci No"></GridColumn>
-            <GridColumn>
-                <GridCommandColumns>
-                    <GridCommandColumn Type="CommandButtonType.None" Title="Akademik Bilgiler" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" , Content="Öğr. Detay" })"></GridCommandColumn>
-                </GridCommandColumns>
-            </GridColumn>
-        </GridColumns>
-    </SfGrid>
-}
+                            <SfButton OnClick="Refresh" CssClass="e-success col-sm-12 form-control-sm">Bul / Yenile</SfButton>
+
+                        </div>
+                    </div>
+                </ContentTemplate>
+
+            </AccordionItem>
+        </AccordionItems>
+    </SfAccordion>
+</div>
+
+@*DataSource = "@OgrGridDtos"*@
+<SfGrid ID="OgrGrid" @ref="OgrGrid" Query="@totalQuery" TValue="OgrenciDto" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
+    @*OnActionFailure="ActionFailureHandler" DetailDataBound="DetailDataBound"  OnActionBegin="ActionBeginHandler" DetailDataBound="DetailDataBound" RowDataBound="RowBound"*@
+    <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+    <GridEvents TValue="OgrenciDto" CommandClicked="CommandClickHandler" DetailDataBound="DetailDataBound" DataBound="DataBound" OnActionBegin="ActionBeginHandler" OnActionComplete="ActionCompletedHandler"></GridEvents>
+    @*<GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.Excel"></GridFilterSettings>*@
+    <GridTemplates>
+        <DetailTemplate>
+            @{
+                var ogrenciInfo = (context as OgrenciDto);
+
+            }
+            <div style="padding:20px">
+
+                <SfTab LoadOn="ContentLoad.Demand">
+                    <TabEvents Selecting="OnTabSelecting"></TabEvents>
+                    <TabItems>
+                        <TabItem>
+                            <ChildContent>
+                                <TabHeader Text="Detay"></TabHeader>
+                            </ChildContent>
+                            <ContentTemplate>
+                                <OgrenciBilgi ogrenciId="ogrenciInfo.Id"></OgrenciBilgi>
+                            </ContentTemplate>
+                        </TabItem>
+                        <TabItem>
+                            <ChildContent>
+                                <TabHeader Text="İletişim Bilgileri"></TabHeader>
+                            </ChildContent>
+                            <ContentTemplate>
+                                <OgrenciIletisim _OgrenciDto="ogrenciInfo"></OgrenciIletisim>
+                            </ContentTemplate>
+                        </TabItem>
+                        <TabItem>
+                            <ChildContent>
+                                <TabHeader Text="Roller"></TabHeader>
+                            </ChildContent>
+                            <ContentTemplate>
+                                <div @onkeydown:stopPropagation="true">
+                                    <OgrenciRoles _OgrenciDto="ogrenciInfo"></OgrenciRoles>
+                                </div>
+                            </ContentTemplate>
+                        </TabItem>
+                    </TabItems>
+                </SfTab>
+            </div>
+        </DetailTemplate>
+    </GridTemplates>
+    <GridColumns>
+        <GridColumn Visible="false" Field=@nameof(OgrenciDto.ApplicationUserId) AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.Ad) HeaderText="Ad"> </GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.TCKN) HeaderText="TCKN"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.OgrNo) HeaderText="Öğrenci No"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.KayitTarih) Format="d" Type="ColumnType.Date" HeaderText="KayitTarih"></GridColumn>
+        <GridColumn>
+            <GridCommandColumns>
+                <GridCommandColumn Type="CommandButtonType.None" Title="Akademik Bilgiler" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" , Content="Öğr. Detay" })"></GridCommandColumn>
+            </GridCommandColumns>
+        </GridColumn>
+    </GridColumns>
+</SfGrid>
+@*}*@
 
 
 
@@ -96,36 +169,60 @@ else
     OgrenciDto target;
 
 
-    List<OgrenciDto> OgrGridDtos;// = new List<OgrenciDto>();
+    //List<OgrenciDto> OgrGridDtos;// = new List<OgrenciDto>();
 
     public OgrenciDto _OgrenciDto { get; set; } = new OgrenciDto();
 
+    string OdataQuery = "odata/ogrencis";
+    //public Query totalQuery = new Query().Expand(new List<string> { "program($select=Id,Ad)", "Danisman($select=Id,Ad)", "Bolum($select=Id,Ad)", "Fakulte($select=Id,Ad)" });
+    public Query totalQuery = new Query();
+
+
+    bool ExFilterOpen;
+
+    int? programId;
+    int? bolumId;
+    int? fakulteId;
+    int? mufredatId;
+    int? kayitNedenId;
+
+    SfDropDownList<int?, KeyValueDto> DropMufredat;
+    public Query AdIdQuery = new Query().Select(new List<string> { "Id", "Ad" }).RequiresCount();
+
+    SfDropDownList<int?, KeyValueDto> DropKNe;
+
+
+    public DateTime? StartValue { get; set; }
+    public DateTime? EndValue { get; set; }
+
+    public DateTime? StartValueAyril { get; set; }
+    public DateTime? EndValueAyril { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        await ReadOgrencis();
+        //await ReadOgrencis();
     }
 
-    async Task ReadOgrencis()
-    {
-        //ApiResponseDto<List<OgrenciDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDto>>>($"api/Admin/GetOgrenciUsers?pageSize={10}&pageNumber={0}");
-        try
-        {
-            ApiResponseDto<List<OgrenciDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDto>>>("api/ogrenci");
-            if (apiResponse.IsSuccessStatusCode)
-            {
-                OgrGridDtos = apiResponse.Result;
-                matToaster.Add(apiResponse.Message, MatToastType.Success, "Öğrenciler getirildi.");
-            }
-            else
-                matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
-        }
-        catch (Exception ex)
-        {
-            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
-        }
+    //async Task ReadOgrencis()
+    //{
+    //    //ApiResponseDto<List<OgrenciDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDto>>>($"api/Admin/GetOgrenciUsers?pageSize={10}&pageNumber={0}");
+    //    try
+    //    {
+    //        ApiResponseDto<List<OgrenciDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDto>>>("api/ogrenci");
+    //        if (apiResponse.IsSuccessStatusCode)
+    //        {
+    //            OgrGridDtos = apiResponse.Result;
+    //            matToaster.Add(apiResponse.Message, MatToastType.Success, "Öğrenciler getirildi.");
+    //        }
+    //        else
+    //            matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
+    //    }
 
-    }
+    //}
 
 
 
@@ -162,7 +259,7 @@ else
         }
     }
 
-    
+
 
 
     async Task AddNew()
@@ -201,11 +298,63 @@ else
         target = args.Data;
     }
 
-    [JSInvokable("DetailCollapse")]              // method called from JS when collapse is done 
+    [JSInvokable("DetailCollapse")]              // method called from JS when collapse is done
     public void DetailRowCollapse()
     {
-        target = null;                   // empty the target when collapse action is done  
+        target = null;                   // empty the target when collapse action is done
     }
+
+    async Task Refresh()
+    {
+        totalQuery = new Query();
+        //totalQuery.Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)" });
+        totalQuery.Expand(new List<string> { "program($select=Id,Ad)", "Danisman($select=Id,Ad)", "Bolum($select=Id,Ad)", "Fakulte($select=Id,Ad)" });
+
+
+        if (mufredatId.HasValue)
+        {
+            totalQuery.Where("mufredatId", "equal", mufredatId);
+        }
+
+        if (StartValue.HasValue)
+        {
+            //totalQuery.Where(new WhereFilter() { Field = $"KayitTarih gt {StartValue}" });
+            //totalQuery.Where("KayitTarih", "GreaterThanOrEqual", StartValue);
+            totalQuery.Where("KayitTarih", "gl", StartValue?.ToString("yyyy-MM-dd"));
+        }
+        //if (EndValue.HasValue)
+        //{
+        //    //totalQuery.Where("KayitTarih", "LessThanOrEqual", EndValue);
+        //}
+
+        if (programId.HasValue)
+        {
+            totalQuery.Where("programId", "equal", programId);
+        }
+        else if (bolumId.HasValue)
+        {
+            totalQuery.Where("bolumId", "equal", bolumId);
+        }
+        else if (fakulteId.HasValue)
+        {
+            totalQuery.Where("fakulteId", "equal", fakulteId);
+        }
+    }
+
+    public void OnclickHandler(AccordionClickArgs args)
+    {
+
+    }
+    public void ExpandingHandler(ExpandEventArgs args)
+    {
+        if (!args.IsExpanded)
+        {
+            totalQuery = new Query();
+        }
+    }
+
+
+
 }
 
 
@@ -240,7 +389,20 @@ else
         content: '\e7bb';
         color: #3ec9e8 !important;
     }
+
     .e-grid td.e-active {
         background-color: #a2fdff;
-    } 
+    }
+
+    .form-group {
+        margin-bottom: unset;
+    }
+
+    .col-form-label-sm {
+        padding-bottom: unset;
+    }
+
+    .e-accordion .e-acrdn-item.e-select .e-acrdn-panel .e-acrdn-content {
+        background: #a2d4e3;
+    }
 </style>

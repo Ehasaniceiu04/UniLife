@@ -19,10 +19,11 @@ namespace UniLife.CommonUI.Shared
         SfDropDownList<int?, KeyValueDto> DropFakulte;
         SfDropDownList<int?, KeyValueDto> DropBolum;
         SfDropDownList<int?, KeyValueDto> DropProgram;
+        SfDropDownList<int?, KeyValueDto> DropMufredat;
         List<KeyValueDto> fakulteDtos = new List<KeyValueDto>();
         List<KeyValueDto> bolumDtos = new List<KeyValueDto>();
         List<KeyValueDto> programDtos = new List<KeyValueDto>();
-
+        List<KeyValueDto> mufredatDtos = new List<KeyValueDto>();
 
 
         private int? _fakValue;
@@ -77,6 +78,23 @@ namespace UniLife.CommonUI.Shared
 
         [Parameter]
         public bool ProgramHide { get; set; }
+
+        [Parameter]
+        public bool MufredatHide { get; set; }
+        private int? _mfrValue;
+        [Parameter]
+        public int? MufredatId
+        {
+            get => _mfrValue;
+            set
+            {
+                if (_mfrValue == value) return;
+                _mfrValue = value;
+                MufredatIdChanged.InvokeAsync(value);
+            }
+        }
+        [Parameter]
+        public EventCallback<int?> MufredatIdChanged { get; set; }
 
         protected async override Task OnInitializedAsync()
         {

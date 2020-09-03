@@ -1,54 +1,30 @@
 ﻿@page "/deneme"
-
-@using UniLife.Shared.Dto.Definitions
-@inject IMatToaster matToaster
-@using Syncfusion.Blazor.DropDowns
-@using Syncfusion.Blazor.Data
-@using System.Net
-@using Newtonsoft.Json
-
-<SfGrid @ref="ProgramGrid" Height="400px" TValue="ProgramDto" Toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Update", "Cancel" })" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
-    <GridEvents OnActionComplete="ActionCompletedHandler" TValue="ProgramDto"></GridEvents>
-    <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
-    <SfDataManager Url="odata/programs?$expand=bolum($expand=fakulte)" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
-    @*<GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.CheckBox"></GridFilterSettings>*@
-    <GridColumns>
-        <GridColumn Visible="false" Field="Id" HeaderText="Program ID" AllowAdding="false" AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
-        <GridColumn Field="Ad" HeaderText="Program İsim" ValidationRules="@(new ValidationRules{ Required=true})" Width="170"></GridColumn>
-        @*<GridColumn Field=@nameof(ProgramDto.FakulteId) HeaderText="Fakülte" EditType="EditType.DropDownEdit" ForeignKeyValue="Ad" ForeignKeyField="Id" Width="150" DataSource="@fakulteDtos"></GridColumn>*@
-        <GridColumn Field="Bolum.Ad" HeaderText="Bölüm" EditType="EditType.DropDownEdit" ForeignKeyField=@nameof(BolumDto.Id) Width="150"></GridColumn>
-        <GridColumn Field="NormalSure" HeaderText="Normal Süre" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
-
-    </GridColumns>
-</SfGrid>
-
-@code{
-    SfGrid<ProgramDto> ProgramGrid;
-
-
-
-    public void ActionCompletedHandler(ActionEventArgs<ProgramDto> args)
-    {
-        if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
-        {
-
-        }
-        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
-        {
-            //if (args.Action == "Edit")
-            //{
-            //    Update(args.Data);
-            //}
-            //else if (args.Action == "Add")
-            //{
-            //    Create(args.Data);
-            //}
-
-        }
-        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
-        {
-            //Delete(args.Data);
-        }
+@using Syncfusion.Blazor.Navigations
+@inherits SampleBaseComponent;
+<div class="control-section">
+    <div class="control_wrapper accordion-control-section">
+        <SfAccordion>
+            <AccordionItems>
+                <AccordionItem>
+                    <ContentTemplate>
+                        <p>
+                            Microsoft ASP.NET is a set of technologies in the Microsoft .NET Framework for building Web applications and XML Web services. ASP.NET pages execute on the server and generate markup such as HTML, WML, or XML that is sent to a desktop or mobile browser. ASP.NET pages use a compiled,event-driven programming model that improves performance and enables the separation of application logic and user interface."
+                        </p>
+                    </ContentTemplate>
+                   
+                </AccordionItem>
+            </AccordionItems>
+        </SfAccordion>
+    </div>
+</div>
+<style>
+    .accordion-control-section {
+        margin: 0 10% 0 10%;
     }
 
-}
+    @@media screen and (max-width: 768px) {
+        .accordion-control-section {
+            margin: 0;
+        }
+    }
+</style>
