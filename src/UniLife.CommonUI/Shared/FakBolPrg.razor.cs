@@ -77,7 +77,7 @@ namespace UniLife.CommonUI.Shared
         public EventCallback<int?> BolumIdChanged { get; set; }
 
         [Parameter]
-        public bool ProgramHide { get; set; }
+        public bool ProgramShow { get; set; }
 
         [Parameter]
         public bool MufredatShow { get; set; }
@@ -180,34 +180,42 @@ namespace UniLife.CommonUI.Shared
 
         async Task ReadPrograms(int? bolumId)
         {
-            OData<KeyValueDto> apiResponse;
-            apiResponse = await Http.GetFromJsonAsync<OData<KeyValueDto>>($"odata/programs?$filter=BolumId eq {bolumId}&select=Id,Ad");
+            if (ProgramShow)
+            {
+                OData<KeyValueDto> apiResponse;
+                apiResponse = await Http.GetFromJsonAsync<OData<KeyValueDto>>($"odata/programs?$filter=BolumId eq {bolumId}&select=Id,Ad");
 
-            if (apiResponse.Value != null)
-            {
-                programDtos = apiResponse.Value;
-                StateHasChanged();
+                if (apiResponse.Value != null)
+                {
+                    programDtos = apiResponse.Value;
+                    StateHasChanged();
+                }
+                else
+                {
+                    matToaster.Add("", MatToastType.Danger, "Program getirilirken hata oluştu!");
+                }
             }
-            else
-            {
-                matToaster.Add("", MatToastType.Danger, "Program getirilirken hata oluştu!");
-            }
+            
         }
 
         async Task ReadMufredats(int? programId)
         {
-            OData<KeyValueDto> apiResponse;
-            apiResponse = await Http.GetFromJsonAsync<OData<KeyValueDto>>($"odata/mufredats?$filter=ProgramId eq {programId}&select=Id,Ad");
+            if (MufredatShow)
+            {
+                OData<KeyValueDto> apiResponse;
+                apiResponse = await Http.GetFromJsonAsync<OData<KeyValueDto>>($"odata/mufredats?$filter=ProgramId eq {programId}&select=Id,Ad");
 
-            if (apiResponse.Value != null)
-            {
-                mufredatDtos = apiResponse.Value;
-                StateHasChanged();
+                if (apiResponse.Value != null)
+                {
+                    mufredatDtos = apiResponse.Value;
+                    StateHasChanged();
+                }
+                else
+                {
+                    matToaster.Add("", MatToastType.Danger, "Mufredat getirilirken hata oluştu!");
+                }
             }
-            else
-            {
-                matToaster.Add("", MatToastType.Danger, "Mufredat getirilirken hata oluştu!");
-            }
+            
         }
 
         
