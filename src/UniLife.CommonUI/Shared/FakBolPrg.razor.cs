@@ -80,7 +80,7 @@ namespace UniLife.CommonUI.Shared
         public bool ProgramHide { get; set; }
 
         [Parameter]
-        public bool MufredatHide { get; set; }
+        public bool MufredatShow { get; set; }
         private int? _mfrValue;
         [Parameter]
         public int? MufredatId
@@ -149,6 +149,17 @@ namespace UniLife.CommonUI.Shared
 
         }
 
+        private async Task ProgramToMufredat(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
+        {
+            mufredatDtos = new List<KeyValueDto>();
+            MufredatId = null;
+
+            await ReadMufredats(args.Value);
+
+        }
+
+        
+
         async Task ReadBolums(int? fakulteId)
         {
             OData<KeyValueDto> apiResponse;
@@ -182,5 +193,23 @@ namespace UniLife.CommonUI.Shared
                 matToaster.Add("", MatToastType.Danger, "Program getirilirken hata oluştu!");
             }
         }
+
+        async Task ReadMufredats(int? programId)
+        {
+            OData<KeyValueDto> apiResponse;
+            apiResponse = await Http.GetFromJsonAsync<OData<KeyValueDto>>($"odata/mufredats?$filter=ProgramId eq {programId}&select=Id,Ad");
+
+            if (apiResponse.Value != null)
+            {
+                mufredatDtos = apiResponse.Value;
+                StateHasChanged();
+            }
+            else
+            {
+                matToaster.Add("", MatToastType.Danger, "Mufredat getirilirken hata oluştu!");
+            }
+        }
+
+        
     }
 }

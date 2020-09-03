@@ -33,12 +33,13 @@
             <SfDropDownList @ref="DropProgram" ShowClearButton="true" TItem="KeyValueDto" CssClass="form-control-sm"
                             TValue="int?" PopupHeight="230px" Placeholder="@(ProgramPlaceHolder)"
                             @bind-Value="@ProgramId" DataSource="@programDtos">
+                <DropDownListEvents TValue="int?" ValueChange="ProgramToMufredat"></DropDownListEvents>
                 <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
             </SfDropDownList>
         </div>
     </div>
 }
-@if (MufredatHide)
+@if (MufredatShow)
 {
     <div class="form-group row">
         <label for="DropProgram" class="col-sm-2 col-form-label-sm">Program</label>
