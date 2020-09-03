@@ -45,7 +45,7 @@ namespace UniLife.Shared.Dto.Definitions
         public virtual OgrenimDurumDto OgrenimDurum { get; set; }
         public int? OgrenimTurId { get; set; }
         public virtual OgrenimTurDto OgrenimTur { get; set; }
-        public bool Durum { get; set; }
+        public bool Durum { get; set; } = true;
         
 
         public int? DanismanId { get; set; }

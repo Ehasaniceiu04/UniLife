@@ -34,6 +34,7 @@
                                        @bind-BolumId="bolumId"
                                        @bind-FakulteId="fakulteId"
                                        @bind-MufredatId="mufredatId"
+                                       ProgramShow="true"
                                        MufredatShow="true"
                                        ProgramPlaceHolder=" "></FakBolPrg>
                             <div class="form-group row">
@@ -56,24 +57,46 @@
 
                         <div class="col-sm-6">
                             @*<div class="form-group row">
-                                <label for="DropMufredat" class="col-sm-2 col-form-label-sm">Müfredat</label>
-                                <div class="col-sm-10">
-                                    <SfDropDownList ID="DropMufredat" @ref="DropMufredat" ShowClearButton="true" TValue="int?" TItem="KeyValueDto" Placeholder="Müfredat seçiniz..."
-                                                    Query="@AdIdQuery"
-                                                    @bind-Value="@mufredatId">
-                                        <SfDataManager Url="odata/mufredats" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
-                                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                                    </SfDropDownList>
-                                </div>
-                            </div>*@
-                            
+            <label for="DropMufredat" class="col-sm-2 col-form-label-sm">Müfredat</label>
+            <div class="col-sm-10">
+                <SfDropDownList ID="DropMufredat" @ref="DropMufredat" ShowClearButton="true" TValue="int?" TItem="KeyValueDto" Placeholder="Müfredat seçiniz..."
+                                Query="@AdIdQuery"
+                                @bind-Value="@mufredatId">
+                    <SfDataManager Url="odata/mufredats" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
+                    <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                </SfDropDownList>
+            </div>
+        </div>*@
+
                             <div class="form-group row">
                                 <label for="DropMufredat" class="col-sm-2 col-form-label-sm">Kayit Neden</label>
                                 <div class="col-sm-10">
-                                    <SfDropDownList @ref="DropKNe" ShowClearButton="true" TValue="int?" TItem="KeyValueDto" Placeholder="Müfredat seçiniz..."
+                                    <SfDropDownList @ref="DropKNe" ShowClearButton="true" TValue="int?" TItem="KeyValueDto"
                                                     Query="@AdIdQuery"
                                                     @bind-Value="@kayitNedenId">
                                         <SfDataManager Url="odata/kayitnedens" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
+                                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                                    </SfDropDownList>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="DropMufredat" class="col-sm-2 col-form-label-sm">Öğr. Durumu</label>
+                                <div class="col-sm-10">
+                                    <SfDropDownList @ref="DropOgrDurum" ShowClearButton="true" TValue="int?" TItem="KeyValueDto"
+                                                    Query="@AdIdQuery"
+                                                    @bind-Value="@ogrenimDurumId">
+                                        <SfDataManager Url="odata/OgrenimDurums" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
+                                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                                    </SfDropDownList>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="DropMufredat" class="col-sm-2 col-form-label-sm">Öğr. Türü</label>
+                                <div class="col-sm-10">
+                                    <SfDropDownList @ref="DropOgrTur" ShowClearButton="true" TValue="int?" TItem="KeyValueDto"
+                                                    Query="@AdIdQuery"
+                                                    @bind-Value="@ogrenimTurId">
+                                        <SfDataManager Url="odata/ogrenimturs" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
                                         <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                                     </SfDropDownList>
                                 </div>
@@ -144,7 +167,8 @@
         <GridColumn Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad"></GridColumn>
         <GridColumn Field=@nameof(OgrenciDto.TCKN) HeaderText="TCKN"></GridColumn>
         <GridColumn Field=@nameof(OgrenciDto.OgrNo) HeaderText="Öğrenci No"></GridColumn>
-        <GridColumn Field=@nameof(OgrenciDto.KayitTarih) Format="d" Type="ColumnType.Date" HeaderText="KayitTarih"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.Sinif) HeaderText="Sınıf"></GridColumn>
+        @*<GridColumn Field=@nameof(OgrenciDto.KayitTarih) Format="d" Type="ColumnType.Date" HeaderText="KayitTarih"></GridColumn>*@
         <GridColumn>
             <GridCommandColumns>
                 <GridCommandColumn Type="CommandButtonType.None" Title="Akademik Bilgiler" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" , Content="Öğr. Detay" })"></GridCommandColumn>
@@ -187,11 +211,15 @@
     int? fakulteId;
     int? mufredatId;
     int? kayitNedenId;
+    int? ogrenimDurumId;
+    int? ogrenimTurId;
 
     SfDropDownList<int?, KeyValueDto> DropMufredat;
     public Query AdIdQuery = new Query().Select(new List<string> { "Id", "Ad" }).RequiresCount();
 
     SfDropDownList<int?, KeyValueDto> DropKNe;
+    SfDropDownList<int?, KeyValueDto> DropOgrDurum;
+    SfDropDownList<int?, KeyValueDto> DropOgrTur;
 
 
     public DateTime? StartValue { get; set; }
@@ -313,10 +341,7 @@
         totalQuery.Expand(new List<string> { "program($select=Id,Ad)", "Danisman($select=Id,Ad)", "Bolum($select=Id,Ad)", "Fakulte($select=Id,Ad)" });
 
 
-        if (mufredatId.HasValue)
-        {
-            totalQuery.Where("mufredatId", "equal", mufredatId);
-        }
+
 
         if (StartValue.HasValue)
         {
@@ -329,7 +354,11 @@
         //    //totalQuery.Where("KayitTarih", "LessThanOrEqual", EndValue);
         //}
 
-        if (programId.HasValue)
+        if (mufredatId.HasValue)
+        {
+            totalQuery.Where("mufredatId", "equal", mufredatId);
+        }
+        else if (programId.HasValue)
         {
             totalQuery.Where("programId", "equal", programId);
         }
@@ -340,6 +369,19 @@
         else if (fakulteId.HasValue)
         {
             totalQuery.Where("fakulteId", "equal", fakulteId);
+        }
+
+        if (ogrenimTurId.HasValue)
+        {
+            totalQuery.Where("ogrenimturId", "equal", ogrenimTurId);
+        }
+        if (ogrenimDurumId.HasValue)
+        {
+            totalQuery.Where("ogrenimDurumId", "equal", ogrenimDurumId);
+        }
+        if (kayitNedenId.HasValue)
+        {
+            totalQuery.Where("kayitNedenId", "equal", kayitNedenId);
         }
     }
 

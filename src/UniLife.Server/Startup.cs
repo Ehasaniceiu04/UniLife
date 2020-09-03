@@ -680,7 +680,8 @@ namespace UniLife.Server
             builder.EntitySet<DersNeden>("DersNedens");
             builder.EntitySet<Ders>("Derss");
             builder.EntitySet<OgrenimDurum>("OgrenimDurums");
-            builder.EntitySet<KayitNeden>("KayitNedens");            
+            builder.EntitySet<KayitNeden>("KayitNedens");
+            builder.EntitySet<OgrenimTur>("OgrenimTurs");
             return builder.GetEdmModel();
         }
     }
