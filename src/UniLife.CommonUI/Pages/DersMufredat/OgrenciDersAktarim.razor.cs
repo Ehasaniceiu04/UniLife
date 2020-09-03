@@ -157,7 +157,15 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 hedefVisible = true;
             }
         }
-        
+
+        async Task Tasi()
+        {
+            var kaynakOgrenciIDs = (await ogrGrid.GetSelectedRecords()).Select(x=>x.OgrenciId);
+            var hedefOgrenciIDs = (await ogrHedefGrid.GetCurrentViewRecords()).Select(x => x.OgrenciId);
+            
+        }
+
+
 
     }
 }
