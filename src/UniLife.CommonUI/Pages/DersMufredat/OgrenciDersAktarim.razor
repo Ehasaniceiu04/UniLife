@@ -1,0 +1,241 @@
+﻿@page "/admin/Ogrenci_Ders_Aktarim"
+
+@using UniLife.Shared.Dto.Definitions
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Calendars
+@using Syncfusion.Blazor.Data
+@using UniLife.Shared.DataModels
+
+<div class="row">
+    <div class="col-sm-12 col-md-6">
+        <div class="server-action-menu">
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <p>Kaynak Ders</p>
+                </div>
+            </div>
+            <div class="row pb-2">
+                <div class="col-sm-12 col-md-12">
+                    @*@bind-ProgramId="_programId"*@
+                    <FakBolPrg @bind-BolumId="bolumId"
+                               @bind-FakulteId="fakulteId"
+                               ProgramShow="true"
+                               ProgramPlaceHolder=" "
+                               ProgramIdChanged="ProgramIdChangedHandler"></FakBolPrg>
+                    <div class="form-group row">
+                        <label for="DropSinif" class="col-sm-2 col-form-label-sm">Sınıf</label>
+                        <div class="col-sm-3">
+                            <SfDropDownList @ref="DropSinif" TItem="SinifDto"
+                                            TValue="int?" ShowClearButton="true"
+                                            DataSource="@(SinifDto.SinifDtos)" @bind-Value="@sinif">
+                                <DropDownListEvents TValue="int?" ValueChange="KaynakChange"></DropDownListEvents>
+                                <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                            </SfDropDownList>
+                        </div>
+                        <label for="DropDonem" class="col-sm-2 col-form-label-sm">Dönem</label>
+                        <div class="col-sm-5">
+                            <SfDropDownList @ref="DropDonem" ShowClearButton="true" TValue="int?" TItem="KeyValueDto" Placeholder="Dönem seçiniz..."
+                                            Query="@donemQuery"
+                                            @bind-Value="@donemId">
+                                <DropDownListEvents TValue="int?" ValueChange="KaynakChange"></DropDownListEvents>
+                                <SfDataManager Url="odata/donems" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
+                                <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                            </SfDropDownList>
+                        </div>
+                    </div>
+                    @if (_programId.HasValue)
+                    {
+
+                        <div class="form-group row">
+                            <label for="DropDers" class="col-sm-2 col-form-label-sm">Ders</label>
+                            <div class="col-sm-3">
+                                @*Query="@dersQuery"*@
+                                <SfDropDownList @ref="DropDers" ShowClearButton="true" TValue="int?" TItem="KeyValueDto" Placeholder="Dönem seçiniz..."
+                                                @bind-Value="@dersId">
+                                    <DropDownListEvents TValue="int?" ValueChange="KaynakChange"></DropDownListEvents>
+                                    <SfDataManager Url="@($"odata/dersacilans?$filter=programId eq {_programId}")" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=false></SfDataManager>
+                                    <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                                </SfDropDownList>
+                            </div>
+                        </div>
+                    }
+
+                    @*<SfButton OnClick="Refresh" CssClass="e-success col-sm-3">Yenile</SfButton>*@
+
+                </div>
+            </div>
+
+            @if (kaynakVisible)
+            {
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-row">
+                            <SfGrid ID="ogrGrid" @ref="ogrGrid" TValue="DersKayitDto" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowFiltering="true">
+                                <SfDataManager Url="@($"odata/derskayits?$filter=DersAcilanId eq {dersId} and DersAcilan/sinif eq {sinif} and DersAcilan/donemId eq {donemId}&$expand=Ogrenci($expand=Program($select=Ad,Id);$select=Ad,Id,Soyad,TCKN,OgrNo),DersAcilan($select=Ad,Id)&$select=Id")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+                                <GridColumns>
+                                    <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
+                                    <GridColumn Visible="false" Field="Ogrenci.Id" IsPrimaryKey="true" TextAlign="TextAlign.Right"></GridColumn>
+                                    <GridColumn Field="Ogrenci.OgrNo" HeaderText="Öğr No"></GridColumn>
+                                    <GridColumn Field="Ogrenci.Ad" HeaderText="Ad"></GridColumn>
+                                    <GridColumn Field="Ogrenci.Soyad" HeaderText="Soyad"></GridColumn>
+                                    <GridColumn Field="Ogrenci.Program.Ad" HeaderText="Program"></GridColumn>
+                                </GridColumns>
+                            </SfGrid>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-6">
+        <div class="server-action-menu">
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <p>Hedef Ders</p>
+                </div>
+            </div>
+            <div class="row pb-2">
+                <div class="col-sm-12 col-md-12">
+                    <FakBolPrg @bind-BolumId="bolumId2"
+                               @bind-FakulteId="fakulteId2"
+                               ProgramShow="true"
+                               ProgramPlaceHolder=" "
+                               ProgramIdChanged="ProgramId2ChangedHandler"></FakBolPrg>
+                    <div class="form-group row">
+                        <label for="DropSinif2" class="col-sm-2 col-form-label-sm">Sınıf</label>
+                        <div class="col-sm-3">
+                            <SfDropDownList @ref="DropSinif2" TItem="SinifDto"
+                                            TValue="int?" ShowClearButton="true"
+                                            DataSource="@(SinifDto.SinifDtos)" @bind-Value="@sinif2">
+                                <DropDownListEvents TValue="int?" ValueChange="HedefChange"></DropDownListEvents>
+                                <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                            </SfDropDownList>
+                        </div>
+                        <label for="DropDonem2" class="col-sm-2 col-form-label-sm">Dönem</label>
+                        <div class="col-sm-5">
+                            <SfDropDownList @ref="DropDonem2" ShowClearButton="true" TValue="int?" TItem="KeyValueDto" Placeholder="Dönem seçiniz..."
+                                            Query="@donemQuery"
+                                            @bind-Value="@donemId2">
+                                <DropDownListEvents TValue="int?" ValueChange="HedefChange"></DropDownListEvents>
+                                <SfDataManager Url="odata/donems" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
+                                <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                            </SfDropDownList>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="DropDers2" class="col-sm-2 col-form-label-sm">Ders</label>
+                        <div class="col-sm-3">
+                            <SfDropDownList @ref="DropDers2" ShowClearButton="true" TValue="int?" TItem="KeyValueDto" Placeholder="Ders seçiniz..."
+                                            Query="@ders2Query"
+                                            @bind-Value="@dersId2">
+                                <DropDownListEvents TValue="int?" ValueChange="HedefChange"></DropDownListEvents>
+                                <SfDataManager Url="@($"odata/dersacilans?$filter=programId eq {_programId2}")" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
+                                <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                            </SfDropDownList>
+                        </div>
+                    </div>
+
+
+                    @*<SfButton OnClick="Refresh" CssClass="e-success col-sm-3">Yenile</SfButton>*@
+
+                </div>
+            </div>
+
+            @if (hedefVisible)
+            {
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-row">
+                            <SfGrid @ref="ogrHedefGrid" TValue="DersKayitDto" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowFiltering="true">
+                                <SfDataManager Url="@($"odata/derskayits?$filter=DersAcilanId eq {dersId2} and DersAcilan/sinif eq {sinif2} and DersAcilan/donemId eq {donemId2}&$expand=Ogrenci($expand=Program($select=Ad,Id);$select=Ad,Id,Soyad,OgrNo),DersAcilan($select=Ad,Id)&$select=Id")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+                                <GridColumns>
+                                    <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
+                                    <GridColumn Visible="false" Field="Ogrenci.Id" IsPrimaryKey="true" TextAlign="TextAlign.Right"></GridColumn>
+                                    <GridColumn Field="Ogrenci.OgrNo" HeaderText="Öğr No"></GridColumn>
+                                    <GridColumn Field="Ogrenci.Ad" HeaderText="Ad"></GridColumn>
+                                    <GridColumn Field="Ogrenci.Soyad" HeaderText="Soyad"></GridColumn>
+                                    <GridColumn Field="Ogrenci.Program.Ad" HeaderText="Program"></GridColumn>
+                                </GridColumns>
+                            </SfGrid>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+@*<Dialog Baslik="Uyarı!" @bind-isDialogOpen="@isUyariOpen">
+        <p>@dialogUyariText</p>
+    </Dialog>*@
+
+
+<MatDialog @bind-IsOpen="@aktarimConfirmDialogOpen" Style="z-index:100">
+    <MatDialogTitle><MatIcon Icon="warning"></MatIcon>@aktarimConfirmDialogTitle</MatDialogTitle>
+    <MatDialogContent>
+        Kaynak ders öğrencilerini hedef dersine aktarmak istiyor musunuz?
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="@(e => { aktarimConfirmDialogOpen = false; })">İptal</MatButton>
+        <MatButton OnClick="@AktarimYap">Aktar</MatButton>
+    </MatDialogActions>
+</MatDialog>
+
+
+
+<style type="text/css" class="cssStyles">
+    textarea.e-input,
+    .e-float-input textarea,
+    .e-float-input.e-control-wrapper textarea,
+    .e-input-group textarea,
+    .e-input-group.e-control-wrapper textarea {
+        resize: none;
+    }
+
+
+    .server-action-menu {
+        background-color: transparent;
+        background-image: linear-gradient(to bottom, rgba(30, 87, 153, 0.2) 0%, rgba(125, 185, 232, 0) 100%);
+        background-repeat: repeat;
+        border-radius: 10px;
+        padding: 5px;
+    }
+
+    .e-DoubleArrowRight:before {
+        content: '\e7bb';
+        color: #3ec9e8;
+    }
+
+    .e-Circle_Add:before {
+        content: '\e755';
+        color: #31ba13;
+    }
+
+    /*.e-grid .e-headercelldiv {
+        font-size: 7px;
+    }
+
+    .e-grid .e-rowcell {
+        font-size: 7px;
+    } */
+
+    .mdc-dialog .mdc-dialog__container {
+        width: 100%;
+    }
+
+    .mdc-dialog .mdc-dialog__surface {
+        max-width: none;
+        width: 70%;
+    }
+
+    .form-group {
+        margin-bottom: unset;
+    }
+
+    .col-form-label-sm {
+        padding-bottom: unset;
+    }
+</style>
