@@ -115,6 +115,23 @@ namespace UniLife.Server.Controllers
                 await _dersKayitManager.GetOgrenciDersKayitsByDers(dersAcilanId) :
                 new ApiResponse(Status400BadRequest, "DersKayit Model is Invalid");
 
+        
+        [HttpPost]
+        [Route("HedefKaynakOgrAktar")]
+        [Authorize(Permissions.DersKayit.Create)]
+        [Authorize(Permissions.DersKayit.Delete)]
+        public async Task<ApiResponse> HedefKaynakOgrAktar([FromBody] HedefKaynakDto hedefKaynakDto)
+        {
+            if (ModelState.IsValid)
+            {
+                return await _dersKayitManager.HedefKaynakOgrAktar(hedefKaynakDto);
+            }
+            else
+            {
+                return new ApiResponse(Status400BadRequest, "DersKayitDto Model is Invalid");
+            }
+        }
+
 
     }
 }

@@ -50,5 +50,11 @@ namespace UniLife.Server.Managers
             var ogrenciDersKayits = await _dersKayitStore.GetOgrenciDersKayitsByDers(dersAcilanId);
             return new ApiResponse(Status200OK, "GetOgrenciDersKayitsByDers fetched", ogrenciDersKayits);
         }
+
+        public async Task<ApiResponse> HedefKaynakOgrAktar(HedefKaynakDto hedefKaynakDto)
+        {
+            await _dersKayitStore.HedefKaynakOgrAktar(hedefKaynakDto);
+            return new ApiResponse(Status200OK, "Güncellendi HedefKaynakOgrAktar");
+        }
     }
 }

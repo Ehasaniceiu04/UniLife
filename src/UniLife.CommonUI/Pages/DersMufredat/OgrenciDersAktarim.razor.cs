@@ -42,6 +42,16 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         public Query ders2Query = new Query().Select(new List<string> { "Id", "Ad" }).RequiresCount();
 
         int? _programId;
+        public int? ProgramId
+        {
+            get => _programId;
+            set
+            {
+                ProgramId2 = value;
+                if (_programId == value) return;
+                _programId = value;
+            }
+        }
         //public int? ProgramId
         //{
         //    get => _programId;
@@ -67,13 +77,66 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         //    }
         //}
 
-        int? bolumId;
-        int? fakulteId;
-        int? donemId;
+        int? _bolumId;
+        public int? BolumId
+        {
+            get => _bolumId;
+            set
+            {
+                bolumId2 = value;
+                if (_bolumId == value) return;
+                _bolumId = value;
+            }
+        }
+
+        int? _fakulteId;
+        public int? FakulteId
+        {
+            get => _fakulteId;
+            set
+            {
+                fakulteId2 = value;
+                if (_fakulteId == value) return;
+                _fakulteId = value;
+            }
+        }
+        int? _donemId;
+        public int? DonemId
+        {
+            get => _donemId;
+            set
+            {
+                donemId2 = value;
+                if (_donemId == value) return;
+                _donemId = value;
+            }
+        }
         int? dersId;
-        int? sinif;
+
+        int? _sinif;
+        public int? Sinif
+        {
+            get => _sinif;
+            set
+            {
+                sinif2 = value;
+                if (_sinif == value) return;
+                _sinif = value;
+            }
+        }
 
         int? _programId2;
+        public int? ProgramId2
+        {
+            get => _programId2;
+            set
+            {
+                ProgramId2ChangedHandler(value);
+                if (_programId2 == value) return;
+                _programId2 = value;
+            }
+        }
+
         int? bolumId2;
         int? fakulteId2;
         int? sinif2;
@@ -122,15 +185,15 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             if (programId.HasValue)
             {
                 kaynakVisible = false;
-                _programId = null;
+                ProgramId = null;
                 dersId = null;
                 await Task.Delay(100);
-                _programId = programId;
+                ProgramId = programId;
                 kaynakVisible = true;
             }
             else
             {
-                _programId = null;
+                ProgramId = null;
                 dersId = null;
                 kaynakVisible = false;
                 await Task.Delay(100);
@@ -142,15 +205,15 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             if (programId2.HasValue)
             {
                 hedefVisible = false;
-                _programId2 = null;
+                //_programId2 = null;
                 dersId2 = null;
                 await Task.Delay(100);
-                _programId2 = programId2;
+                //_programId2 = programId2;
                 hedefVisible = true;
             }
             else
             {
-                _programId2 = null;
+                //_programId2 = null;
                 dersId2 = null;
                 hedefVisible = false;
                 await Task.Delay(100);
@@ -160,9 +223,35 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         async Task Tasi()
         {
-            var kaynakOgrenciIDs = (await ogrGrid.GetSelectedRecords()).Select(x=>x.OgrenciId);
-            var hedefOgrenciIDs = (await ogrHedefGrid.GetCurrentViewRecords()).Select(x => x.OgrenciId);
+            //var kaynakOgrenciIDs = (await ogrGrid.GetSelectedRecords()).Select(x=>x.OgrenciId);
+            //var hedefOgrenciIDs = (await ogrHedefGrid.GetCurrentViewRecords()).Select(x => x.OgrenciId);
+
+            try
+            {
+                HedefKaynakDto hedefKaynakDto = new HedefKaynakDto
+                {
+                    HedefId = (int)dersId2,
+                    KaynakId = (int)dersId,
+                    HedefIdList = (await ogrHedefGrid.GetCurrentViewRecords()).Select(x => x.OgrenciId).ToList(),
+                    KaynakIdList = (await ogrGrid.GetSelectedRecords()).Select(x => x.OgrenciId).ToList()
+                };
+
+                ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/derskayit/HedefKaynakOgrAktar", hedefKaynakDto);
+
+                if (apiResponse.IsSuccessStatusCode)
+                {
+                    matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+                }
+                else
+                    matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
+            }
+            catch (Exception ex)
+            {
+                matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
+            }
+
             
+
         }
 
 

@@ -56,6 +56,29 @@ namespace UniLife.Storage.Stores
             return await ogrenciDersKayits.ToListAsync();
         }
 
+        public async Task HedefKaynakOgrAktar(HedefKaynakDto hedefKaynakDto)
+        {
+            var resultKaynak = hedefKaynakDto.KaynakIdList.Where(x => !hedefKaynakDto.HedefIdList.Contains(x));
+
+            var silinecekler = await _db.DersKayits.Where(x => x.DersAcilanId == hedefKaynakDto.KaynakId && hedefKaynakDto.KaynakIdList.Contains(x.OgrenciId)).ToListAsync();
+
+            _db.DersKayits.RemoveRange(silinecekler);
+
+            List<DersKayit> dersKayits = new List<DersKayit>();
+            foreach (var item in resultKaynak)
+            {
+                dersKayits.Add(new DersKayit
+                {
+                    DersAcilanId = hedefKaynakDto.HedefId,
+                    OgrenciId = item,
+                    DersYerineSecilenId = hedefKaynakDto.HedefId,
+                    
+                });
+            }
+            _db.DersKayits.AddRange(dersKayits);
+            await _db.SaveChangesAsync(CancellationToken.None);
+        }
+
         public async Task OgrenciKayitToDerss(IEnumerable<DersKayitDto> dersKayitDtos)
         {
             var silinecekler = from k in _db.DersKayits.Where(x => (x.OgrenciId == dersKayitDtos.FirstOrDefault().OgrenciId) && dersKayitDtos.Select(x => x.DersAcilanId).Contains(x.DersAcilanId))

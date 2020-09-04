@@ -12,5 +12,6 @@ namespace UniLife.Shared.DataInterfaces
         Task<int> PutUpdateOgrencisDersKayits(PutUpdateOgrencisDersKayitsDto putUpdateOgrencisDersKayitsDto);
         Task<int> PutUpdateOgrencisDersKayitsDeleteExSubes(ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds);
         Task<List<OgrenciDersKayitDto>> GetOgrenciDersKayitsByDers(int dersAcilanId);
+        Task HedefKaynakOgrAktar(HedefKaynakDto hedefKaynakDto);
     }
 }
