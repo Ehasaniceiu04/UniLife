@@ -205,15 +205,12 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             if (programId2.HasValue)
             {
                 hedefVisible = false;
-                //_programId2 = null;
                 dersId2 = null;
                 await Task.Delay(100);
-                //_programId2 = programId2;
                 hedefVisible = true;
             }
             else
             {
-                //_programId2 = null;
                 dersId2 = null;
                 hedefVisible = false;
                 await Task.Delay(100);
@@ -223,9 +220,6 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         async Task Tasi()
         {
-            //var kaynakOgrenciIDs = (await ogrGrid.GetSelectedRecords()).Select(x=>x.OgrenciId);
-            //var hedefOgrenciIDs = (await ogrHedefGrid.GetCurrentViewRecords()).Select(x => x.OgrenciId);
-
             try
             {
                 HedefKaynakDto hedefKaynakDto = new HedefKaynakDto
