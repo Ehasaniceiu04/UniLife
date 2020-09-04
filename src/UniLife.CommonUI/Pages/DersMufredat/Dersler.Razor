@@ -36,13 +36,21 @@ else
 
     <SfGrid ShowColumnChooser="true" @ref="DersGrid" DataSource="@dersDtos" Dialog="DialogParams" Toolbar="@(new List<string>() { "Add","ColumnChooser" })" AllowSorting="true" AllowGrouping="true" AllowFiltering="true" AllowPaging="true" ColumnMenuItems=@MenuItems ShowColumnMenu="true" Width="100%">
         @*<SfDataManager AdaptorInstance="@typeof(CustomAdaptor)" Adaptor="Adaptors.CustomAdaptor"></SfDataManager>*@
-        @*<GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.CheckBox"></GridFilterSettings>*@
+        <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.FilterBar"></GridFilterSettings>
         <GridGroupSettings ShowDropArea="false" ShowGroupedColumn="false" Columns="@Initial">
             <CaptionTemplate>
                 @{
                     var donemContext = (context as CaptionTemplateContext);
+                    if (donemContext.Field == "Sinif")
+                    {
+                        <div><b>@donemContext.Field : @donemContext.Key</b></div>
+                    }
+                    else
+                    {
+                        <div><b>@donemContext.ForeignKey</b></div>
+                    }
                 }
-                <div><b>@donemContext.ForeignKey</b></div>
+
             </CaptionTemplate>
         </GridGroupSettings>
         <GridAggregates>

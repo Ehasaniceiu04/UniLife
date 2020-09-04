@@ -40,7 +40,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         private DialogSettings DialogParams = new DialogSettings { MinHeight = "400px", Width = "900px" };
 
-        string[] Initial = (new string[] { "DonemTipId" });
+        string[] Initial = (new string[] { "Sinif", "DonemTipId" });
 
         int? donemId;
 
