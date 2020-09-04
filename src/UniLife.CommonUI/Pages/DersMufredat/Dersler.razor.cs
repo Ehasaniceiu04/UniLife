@@ -316,18 +316,32 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         private void onChange(Microsoft.AspNetCore.Components.ChangeEventArgs args)
         {
-            if ((bool)args.Value == false && yerineExistProgramId.HasValue)
+            try
             {
-                //ApiResponseDto<MufredatDto> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<MufredatDto>>($"api/Mufredat/GetLastMufredatByProgramId/{yerineExistProgramId}").Result;
-                //sonMufredatId = apiResponse.Result.Id;
+                if ((bool)args.Value == false && yerineExistProgramId.HasValue)
+                {
+                    //ApiResponseDto<MufredatDto> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<MufredatDto>>($"api/Mufredat/GetLastMufredatByProgramId/{yerineExistProgramId}").Result;
+                    //sonMufredatId = apiResponse.Result.Id;
 
-                yerineDersDialogOpen = true;
+                    yerineDersDialogOpen = true;
+                }
+                else if ((bool)args.Value == true && yerineDersId != 0)
+                {
+                    ApiResponseDto<MufredatDto> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<MufredatDto>>($"api/ders/DeleteExistKancas/{yerineDersId}").Result;
+                    if (apiResponse.IsSuccessStatusCode)
+                    {
+                        matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+                    }
+                    else
+                        matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
+                }                
+            }
+            catch (Exception ex)
+            {
+                matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
             }
 
-            if ((bool)args.Value == true && yerineDersId !=0)
-            {
-                ApiResponseDto<MufredatDto> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<MufredatDto>>($"api/ders/DeleteExistKancas/{yerineDersId}").Result;
-            }
+            
         }
 
         public async Task CommandClickHandlerDers(Syncfusion.Blazor.Grids.CommandClickEventArgs<DersDto> args)

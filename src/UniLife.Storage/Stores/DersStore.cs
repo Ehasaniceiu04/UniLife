@@ -177,13 +177,19 @@ namespace UniLife.Storage.Stores
 
         public async Task DeleteExistKancas(int dersId)
         {
-            var kancaliDersler = await _db.Derss.Where(x => x.EskiMufBagliDersId.Contains("," + dersId + ",")).ToListAsync();
+            //Virgüllü mantık
+            ////var kancaliDersler = await _db.Derss.Where(x => x.EskiMufBagliDersId.Contains("," + dersId + ",")).ToListAsync();
 
-            foreach (var item in kancaliDersler)
-            {
-                item.EskiMufBagliDersId = item.EskiMufBagliDersId.Replace($",{dersId},","");
-            }
+            ////foreach (var item in kancaliDersler)
+            ////{
+            ////    item.EskiMufBagliDersId = item.EskiMufBagliDersId.Replace($",{dersId},","");
+            ////}
 
+            ////await _db.SaveChangesAsync(CancellationToken.None);
+            ///
+
+            var kancasDelete = await _db.DersKancas.Where(x => x.PasifMufredatDersId == dersId).ToListAsync();
+            _db.DersKancas.RemoveRange(kancasDelete);
             await _db.SaveChangesAsync(CancellationToken.None);
         }
     }
