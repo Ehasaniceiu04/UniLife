@@ -682,6 +682,8 @@ namespace UniLife.Server
             builder.EntitySet<OgrenimDurum>("OgrenimDurums");
             builder.EntitySet<KayitNeden>("KayitNedens");
             builder.EntitySet<OgrenimTur>("OgrenimTurs");
+            builder.EntitySet<DersAcilanForSinav>("DersAcilansForSinavs");
+            
             return builder.GetEdmModel();
         }
     }
