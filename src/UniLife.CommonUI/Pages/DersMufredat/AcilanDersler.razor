@@ -236,7 +236,11 @@
                         }
                     </Template>
                 </GridColumn>
-                <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Zorunlu) HeaderText="Zor." EditType="EditType.BooleanEdit" DisplayAsCheckBox="true"></GridColumn>
+                <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Zorunlu) HeaderText="Zor." DisplayAsCheckBox="true">
+                    <FilterTemplate>
+                        <SfCheckBox TChecked="bool" ValueChange="ValueChange"></SfCheckBox>
+                    </FilterTemplate>
+                </GridColumn>
                 @*<GridColumn Field=@nameof(DersAcilanDto.ProgramId) EditType="EditType.DropDownEdit" HeaderText="Program" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@programDtos" Width="150"></GridColumn>
                     <GridColumn Field=@nameof(DersAcilanDto.AkademisyenId) HeaderText="Öğrt Görev" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@akademisyenDtos" Width="150"></GridColumn>*@
                 <GridColumn Field="Donem.Ad" HeaderText="Donem"></GridColumn>

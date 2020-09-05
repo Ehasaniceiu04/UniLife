@@ -335,5 +335,11 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         }
 
+        public void ValueChange(Syncfusion.Blazor.Buttons.ChangeEventArgs<bool> args)
+        {
+            DersAcilanGrid.FilterByColumn("Zorunlu", "equal", args.Checked);
+        }
+
+
     }
 }
