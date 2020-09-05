@@ -289,27 +289,41 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         public async Task OnPopupOpen(PopupOpenEventArgs<DerslikRezervDto> args)
         {
-            if (args.Data.DersAcilanId == 0 && SelectedDersAcilanGridRow == null)
+            if (!isSinav)
             {
-                args.Cancel = true;
-                if (isSinav)
+                if (args.Data.DersAcilanId == 0 && SelectedDersAcilanGridRow == null)
                 {
-                    dialogUyariText = "Sinav programı oluşturmadan önce yukarıdan bir ders seçmelisiniz.";
+                    args.Cancel = true;
+                        dialogUyariText = "Ders programı oluşturmadan önce yukarıdan bir ders seçmelisiniz.";
+                    isUyariOpen = true;
                 }
-                else
+                if (args.Type == PopupType.QuickInfo)
                 {
-                    dialogUyariText = "Ders programı oluşturmadan önce yukarıdan bir ders seçmelisiniz.";
+                    //args.Cancel = true;
                 }
-                isUyariOpen = true;
+                else if (args.Type == PopupType.Editor)
+                {
+                    //args.Data.DersAcilanId = SelectedDersAcilanGridRow.DersAcilanId;
+                }
             }
-            if (args.Type == PopupType.QuickInfo)
+            else
             {
-                //args.Cancel = true;
+                if (args.Data.DersAcilanId == 0 && SelectedSinavGridRow == null)
+                {
+                    args.Cancel = true;
+                        dialogUyariText = "Sinav programı oluşturmadan önce yukarıdan bir sınav seçmelisiniz.";
+                    isUyariOpen = true;
+                }
+                if (args.Type == PopupType.QuickInfo)
+                {
+                    //args.Cancel = true;
+                }
+                else if (args.Type == PopupType.Editor)
+                {
+                    //args.Data.DersAcilanId = SelectedSinavGridRow.DersAcilan.Id;
+                }
             }
-            else if (args.Type == PopupType.Editor)
-            {
-                //args.Data.DersAcilanId = SelectedDersAcilanGridRow.DersAcilanId;
-            }
+            
 
 
 
@@ -334,25 +348,53 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         public void OnActionBegin(Syncfusion.Blazor.Schedule.ActionEventArgs<DerslikRezervDto> args)
         {
-            if (args.RequestType == "eventCreate")   //To check for request type is event delete
+            if (!isSinav)
             {
-                if (args.AddedRecords[0].Subject == " ")
+                if (args.RequestType == "eventCreate")   
                 {
-                    args.AddedRecords[0].Subject = SelectedDersAcilanGridRow.Ad;
-                }
-                else
-                {
-                    args.AddedRecords[0].Subject = SelectedDersAcilanGridRow.Ad + "-" + args.AddedRecords[0].Subject;
+                    if (args.AddedRecords[0].Subject == " ")
+                    {
+                        args.AddedRecords[0].Subject = SelectedDersAcilanGridRow.Ad;
+                    }
+                    else
+                    {
+                        args.AddedRecords[0].Subject = SelectedDersAcilanGridRow.Ad + "-" + args.AddedRecords[0].Subject;
 
+                    }
+                    if (isSinav)
+                    {
+                        args.AddedRecords[0].Subject += " Sınav";
+                    }
+                    args.AddedRecords[0].DersAcilanId = SelectedDersAcilanGridRow.Id;
+                    args.AddedRecords[0].IsSinav = isSinav;
+                    //args.AddedRecords[0].IsBlock = appState.AppSettings.NotAllowOneDerslikMultiReserv;
                 }
-                if (isSinav)
-                {
-                    args.AddedRecords[0].Subject += " Sınav";
-                }
-                args.AddedRecords[0].DersAcilanId = SelectedDersAcilanGridRow.Id;
-                args.AddedRecords[0].IsSinav = isSinav;
-                //args.AddedRecords[0].IsBlock = appState.AppSettings.NotAllowOneDerslikMultiReserv;
             }
+            else
+            {
+                if (args.RequestType == "eventCreate") 
+                {
+                    if (args.AddedRecords[0].Subject == " ")
+                    {
+                        args.AddedRecords[0].Subject = SelectedSinavGridRow.DersAcilan.Ad;
+                    }
+                    else
+                    {
+                        args.AddedRecords[0].Subject = SelectedSinavGridRow.DersAcilan.Ad + "-" + args.AddedRecords[0].Subject;
+
+                    }
+                    if (isSinav)
+                    {
+                        args.AddedRecords[0].Subject += " Sınav";
+                    }
+                    args.AddedRecords[0].DersAcilanId = SelectedSinavGridRow.DersAcilan.Id;
+                    args.AddedRecords[0].SinavId = SelectedSinavGridRow.Id;
+                    args.AddedRecords[0].IsSinav = isSinav;
+                    //args.AddedRecords[0].IsBlock = appState.AppSettings.NotAllowOneDerslikMultiReserv;
+                }
+            }
+
+            
         }
 
         public void OnAppointmentResize(Syncfusion.Blazor.Schedule.ResizeEventArgs<DerslikRezervDto> args)
@@ -364,10 +406,20 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         {
             if (args.RequestType == "eventCreated")
             {
-                args.AddedRecords[0].DersAcilanId = SelectedDersAcilanGridRow.Id;
-                args.AddedRecords[0].IsSinav = isSinav;
-                //args.AddedRecords[0].IsBlock = appState.AppSettings.NotAllowOneDerslikMultiReserv;
-                //args.AddedRecords[0].Subject = SelectedDersAcilanGridRow.DersAd + "-" + args.AddedRecords[0].Subject;
+                if (!isSinav)
+                {
+                    args.AddedRecords[0].DersAcilanId = SelectedDersAcilanGridRow.Id;
+                    args.AddedRecords[0].IsSinav = isSinav;
+                    //args.AddedRecords[0].IsBlock = appState.AppSettings.NotAllowOneDerslikMultiReserv;
+                    //args.AddedRecords[0].Subject = SelectedDersAcilanGridRow.DersAd + "-" + args.AddedRecords[0].Subject;
+                }
+                else
+                {
+                    args.AddedRecords[0].DersAcilanId = SelectedSinavGridRow.DersAcilan.Id;
+                    args.AddedRecords[0].SinavId = SelectedSinavGridRow.Id;
+                    args.AddedRecords[0].IsSinav = isSinav;
+                }
+
                 ApiResponseDto<DerslikRezervDto> apiResponse = await Http.PostJsonAsync<ApiResponseDto<DerslikRezervDto>>("api/derslikrezerv", args.AddedRecords.FirstOrDefault());
                 if (apiResponse.StatusCode == StatusCodes.Status200OK)
                 {
