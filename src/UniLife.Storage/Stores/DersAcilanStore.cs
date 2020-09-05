@@ -225,33 +225,51 @@ namespace UniLife.Storage.Stores
         public async Task<List<DersAcilanDto>> GetAcilanDerssByOgrenciId(int ogrenciId, int pageSinif, int pageDonemId)
         {
             var ogrenci = await _db.Ogrencis.FirstOrDefaultAsync(x => x.Id == ogrenciId);
+            var donem = await _db.Donems.FirstOrDefaultAsync(x => x.Id == pageDonemId);
 
-            var normalDersler =await (from d in _db.Derss.Where(x => x.MufredatId == ogrenci.MufredatId 
-                                                     && x.Sinif == pageSinif)
-                         join da in _db.DersAcilans.Where(x => x.MufredatId == ogrenci.MufredatId
-                                                            && x.Sinif == pageSinif) on d.Id equals da.DersId
-                         //into ps from da in ps.DefaultIfEmpty()
-                         select da).ToListAsync();
-            var normalDerslerMapped = _autoMapper.Map<List<DersAcilanDto>>(normalDersler);
+            var normalDersler = await (from d in _db.Derss.Where(x => x.MufredatId == ogrenci.MufredatId
+                                                      && x.Sinif == pageSinif
+                                                      && x.Durum == true
+                                                      && x.DonemTipId == donem.DonemTipId)
+                                       join da in _db.DersAcilans.Where(x => x.MufredatId == ogrenci.MufredatId
+                                                                          && x.Sinif == pageSinif
+                                                                          && x.DonemId == pageDonemId) on d.Id equals da.DersId
+                                       into ps
+                                       from da in ps.DefaultIfEmpty()
+                                       select new DersAcilanDto
+                                       {
+                                           Id = da != null ? da.Id : 9999999,
+                                           Ad = da != null ? da.Ad : d.Ad,
+                                           Kod = da != null ? da.Kod + "(" + d.Kod + ")" : d.Kod,
+                                           Zorunlu = da != null ? da.Zorunlu : true,
+                                           Kredi = da != null ? da.Kredi : d.Kredi,
+                                           Akts = da != null ? da.Akts:d.Akts,
+                                           Sinif = da != null ? da.Sinif:d.Sinif,
+                                           ODTekrar = da.ODTekrar,
+                                           ADKayit = da.ADKayit,
+                                       }).ToListAsync();
+            //var normalDerslerMapped = _autoMapper.Map<List<DersAcilanDto>>(normalDersler);
 
-            var kancaliDersler =await (from d in _db.Derss.Where(x => x.MufredatId == ogrenci.MufredatId
-                                                     && x.Sinif == pageSinif)
-                          join dk in _db.DersKancas on d.Id equals dk.PasifMufredatDersId
-                          join da in _db.DersAcilans on dk.AktifMufredatDersId equals da.DersId
-                          select new DersAcilanDto { 
-                            Id = da.Id,
-                            Ad = da.Ad,
-                            Kod = da.Kod +"("+d.Kod+")",
-                            Zorunlu = da.Zorunlu,
-                            Kredi = da.Kredi,
-                            Akts = da.Akts,
-                            Sinif = da.Sinif,
-                            ODTekrar = da.ODTekrar,
-                            ADKayit = da.ADKayit,
-                          }).ToListAsync();
-            normalDerslerMapped.AddRange(kancaliDersler);
+            var kancaliDersler = await (from d in _db.Derss.Where(x => x.MufredatId == ogrenci.MufredatId
+                                                      && x.Sinif == pageSinif
+                                                      && x.DonemTipId == donem.DonemTipId)
+                                        join dk in _db.DersKancas on d.Id equals dk.PasifMufredatDersId
+                                        join da in _db.DersAcilans on dk.AktifMufredatDersId equals da.DersId
+                                        select new DersAcilanDto
+                                        {
+                                            Id = da.Id,
+                                            Ad = da.Ad,
+                                            Kod = da.Kod + "(" + d.Kod + ")",
+                                            Zorunlu = da.Zorunlu,
+                                            Kredi = da.Kredi,
+                                            Akts = da.Akts,
+                                            Sinif = da.Sinif,
+                                            ODTekrar = da.ODTekrar,
+                                            ADKayit = da.ADKayit,
+                                        }).ToListAsync();
+            normalDersler.AddRange(kancaliDersler);
 
-            return normalDerslerMapped;
+            return normalDersler;
 
             //Eski kafa virgüllü
             ////////List<DersAcilan> dersAcilans=new List<DersAcilan>();

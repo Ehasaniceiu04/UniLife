@@ -284,7 +284,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             }
             else if (fakulteId.HasValue)
             {
-                totalQuery.Where("fakulteId", "equal", fakulteId);
+                totalQuery.Where("bolum/fakulteId", "equal", fakulteId);
             }
 
 
