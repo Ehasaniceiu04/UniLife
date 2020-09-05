@@ -222,5 +222,11 @@ namespace UniLife.Storage.Stores
            
         }
 
+        public async Task SinifAtlaTemizle()
+        {
+            var rawBulkUpdateQuery = $"update public.'Ogrencis' set 'DnmSnfGecBilgi' = null";
+
+            int numberOfRowAffected = await _db.Database.ExecuteSqlCommandAsync(rawBulkUpdateQuery.Replace('\'', '"'));
+        }
     }
 }

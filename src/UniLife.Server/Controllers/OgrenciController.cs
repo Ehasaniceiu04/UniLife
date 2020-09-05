@@ -189,5 +189,16 @@ namespace UniLife.Server.Controllers
         [Authorize(Permissions.Ogrenci.Delete)]
         public async Task<ApiResponse> Delete(int id)
             => await _ogrenciManager.Delete(id);
+
+
+        [HttpGet]
+        [Route("SinifAtlaTemizle")]
+        [Authorize(Permissions.Ogrenci.Update)]
+        [Authorize(Roles = "Administrator,Personel")]
+        public async Task<ApiResponse> SinifAtlaTemizle()
+            => ModelState.IsValid ?
+                await _ogrenciManager.SinifAtlaTemizle() :
+                new ApiResponse(Status400BadRequest, "Ogrenci Model is Invalid");
+        
     }
 }

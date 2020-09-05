@@ -3,7 +3,7 @@
 @inject IMatToaster matToaster
 @using Syncfusion.Blazor.DropDowns
 @using System.Net
-@using Newtonsoft.Json
+@using Syncfusion.Blazor.Buttons
 
 <ControlSection>
     <SfGrid @ref="DonemGrid" DataSource="@donemDtos" Toolbar="@(new List<string>() { "Add"})" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
@@ -33,6 +33,12 @@
         </GridColumns>
     </SfGrid>
 </ControlSection>
+
+<div class="form-group row">
+    <div class="col-sm-4 offset-4">
+        <SfButton OnClick="SinitAtlaTemizle" CssClass="e-success form-control-sm">Yil Sonu Sınıf Atlatmalarını Temizle</SfButton>
+    </div>
+</div>
 
 @code{
 
@@ -66,7 +72,7 @@
         }
     }
 
-    public void ActionCompletedHandler(ActionEventArgs<DonemDto>args)
+    public void ActionCompletedHandler(ActionEventArgs<DonemDto> args)
     {
         if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
         {
@@ -166,6 +172,26 @@
         {
             matToaster.Add(ex.Message, MatToastType.Danger, "Bölüm Save Failed");
         }
+    }
+
+    async Task SinitAtlaTemizle()
+    {
+        try
+        {
+
+            ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/Ogrenci/SinifAtlaTemizle");
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+            }
+            else
+                matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
+        }
+
     }
 
 }
