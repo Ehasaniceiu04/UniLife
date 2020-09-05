@@ -105,6 +105,14 @@
                     <OgrenciDonemDersler></OgrenciDonemDersler>
                 </ContentTemplate>
             </TabItem>
+            <TabItem Visible="@(OgrSelected)">
+                <ChildContent>
+                    <TabHeader Text="Dosyalar"></TabHeader>
+                </ChildContent>
+                <ContentTemplate>
+                    <OgrenciDosya _OgrenciDto="_OgrenciDto"></OgrenciDosya>
+                </ContentTemplate>
+            </TabItem>
             @*<TabItem Visible="@(OgrSelected)">
             <ChildContent>
                 <TabHeader Text="Notlar"></TabHeader>

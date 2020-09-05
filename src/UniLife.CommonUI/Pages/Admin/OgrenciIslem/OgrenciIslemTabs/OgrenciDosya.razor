@@ -1,0 +1,15 @@
+﻿@using Syncfusion.Blazor.FileManager
+@using UniLife.Shared.Dto.Definitions
+
+<SfFileManager AllowMultiSelection="true" ShowHiddenItems="true">
+    <FileManagerAjaxSettings Url=@($"/uploapi/OgrFile/FileOperations?ogr={_OgrenciDto.OgrNo}")
+                             UploadUrl=@($"/uploapi/OgrFile/Upload?ogr={_OgrenciDto.OgrNo}")
+                             DownloadUrl=@($"/uploapi/OgrFile/Download?ogr={_OgrenciDto.OgrNo}")
+                             GetImageUrl="/uploapi/OgrFile/GetImage">
+    </FileManagerAjaxSettings>
+</SfFileManager>
+
+@code{
+    [Parameter]
+    public OgrenciDto _OgrenciDto { get; set; } = new OgrenciDto();
+}

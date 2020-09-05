@@ -110,6 +110,7 @@
   <ItemGroup>
     <Folder Include="Logs\" />
     <Folder Include="Properties\PublishProfiles\" />
+    <Folder Include="wwwroot\Files\Ogrenci\" />
     <Folder Include="wwwroot\Files\Uploads\" />
   </ItemGroup>
 
