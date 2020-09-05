@@ -433,7 +433,7 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem
 
             //    //topAtaQuery.AddParams("$filter", OdataQueryParameters);
             //}
-            topAtaQuery.AddParams("$expand", "program($select=Id,Ad),Danisman($select=Id,Ad)");
+            topAtaQuery.AddParams("$expand", "program($select=Id,Ad),Danisman($select=Id,Ad),Mufredat($select=Id,Ad),OgrenimDurum($select=Id,Ad)");
 
             isTopGridVisible = true;
             if (OgrencilerGrid !=null)
