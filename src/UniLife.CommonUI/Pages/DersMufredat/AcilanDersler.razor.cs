@@ -73,6 +73,14 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
 
         public bool isOpsCoklama { get; set; }
+
+        DersAcilanDto selectedRecord;
+
+        bool isKayitliShow;
+
+        bool isUyariOpen;
+        string dialogUyariText;
+
         public void Change(@Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
         {
             if (args.Value == null)
@@ -340,6 +348,25 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             DersAcilanGrid.FilterByColumn("Zorunlu", "equal", args.Checked);
         }
 
+        public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+        {
+            if (args.Item.Text == "Kayıtlı Öğrenciler")
+            {
+                if (selectedRecord!=null)
+                {
+                    isKayitliShow = true;
+                }
+                else
+                {
+                    dialogUyariText = "Önce bir öğrenci seçiniz.";
+                    isUyariOpen = true;
+                }
+            }
+        }
 
+        public async Task OnRowSelecting(RowSelectingEventArgs<DersAcilanDto> args)
+        {
+            selectedRecord = args.Data;
+        }
     }
 }

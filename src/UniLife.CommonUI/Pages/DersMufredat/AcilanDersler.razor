@@ -37,9 +37,9 @@
 
     @if (isGridVisible)
     {
-        <SfGrid @ref="DersAcilanGrid" Query="@totalQuery" TValue="DersAcilanDto" AllowSorting="true" AllowExcelExport="true" AllowPdfExport="true" AllowPaging="true" AllowFiltering="true" Toolbar="@(new List<string>() {  "Add","PdfExport","ExcelExport","ColumnChooser" })" ShowColumnChooser="true">
+        <SfGrid @ref="DersAcilanGrid" Query="@totalQuery" TValue="DersAcilanDto" AllowSorting="true" AllowExcelExport="true" AllowPdfExport="true" AllowPaging="true" AllowFiltering="true" Toolbar="@(new List<string>() {  "Add","PdfExport","ExcelExport","ColumnChooser","Kayıtlı Öğrenciler" })" ShowColumnChooser="true">
             <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
-            <GridEvents OnActionComplete="ActionCompletedHandler" OnActionBegin="OnActionBeginHandler" CommandClicked="CommandClickHandler" TValue="DersAcilanDto"></GridEvents>
+            <GridEvents RowSelecting="OnRowSelecting" OnToolbarClick="ToolbarClickHandler" OnActionComplete="ActionCompletedHandler" OnActionBegin="OnActionBeginHandler" CommandClicked="CommandClickHandler" TValue="DersAcilanDto"></GridEvents>
             @*<GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.CheckBox"></GridFilterSettings>*@
             <GridEditSettings Dialog="DialogParams" ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
                 <Template>
@@ -157,7 +157,7 @@
                             <div class="col-md-3">
                                 @*<FakBolPrg></FakBolPrg>*@
                                 <SfButton OnClick="@(()=>programDialogOpen =true)" CssClass="e-success col-sm-12 form-control-sm">Program Ata</SfButton>
-                                
+
                                 @if (dAcilanContext.Program != null)
                                 {
                                     <p>@dAcilanContext.Program.Ad</p>
@@ -185,9 +185,9 @@
                                 </div>
 
                                 @*<div class="form-group row">
-            <SfTextBox ID="akademisyen" Enabled="false" Placeholder="Akademisyen" CssClass="form-control col-sm-8" @bind-Value="@(dAcilanContext.Akademisyen.Ad)"></SfTextBox>
-            <SfButton IconCss="e-icons e-Resource" EnableRtl="true" OnClick="@(() =>AkademisyenAta(dAcilanContext.Id))" CssClass="e-flat form-control col-sm-2" IsPrimary="true"></SfButton>
-        </div>*@
+                                        <SfTextBox ID="akademisyen" Enabled="false" Placeholder="Akademisyen" CssClass="form-control col-sm-8" @bind-Value="@(dAcilanContext.Akademisyen.Ad)"></SfTextBox>
+                                        <SfButton IconCss="e-icons e-Resource" EnableRtl="true" OnClick="@(() =>AkademisyenAta(dAcilanContext.Id))" CssClass="e-flat form-control col-sm-2" IsPrimary="true"></SfButton>
+                                    </div>*@
 
                             </div>
                         </div>
@@ -308,6 +308,26 @@
     </Dialog>
 }
 
+@if (isKayitliShow)
+{
+    <Dialog Baslik="Kayıtlı Öğrenciler" @bind-isDialogOpen="@isKayitliShow">
+
+        <SfGrid TValue="DersKayitDto" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowFiltering="true">
+            <SfDataManager Url="@($"odata/derskayits?$filter=DersAcilanId eq {selectedRecord.Id}&$expand=Ogrenci($select=Ad,Id,Soyad,OgrNo)&$select=Id")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+            <GridColumns>
+                <GridColumn Visible="false" Field="Ogrenci.Id" IsPrimaryKey="true" TextAlign="TextAlign.Right"></GridColumn>
+                <GridColumn Field="Ogrenci.Ad" HeaderText="Ad"></GridColumn>
+                <GridColumn Field="Ogrenci.Soyad" HeaderText="Soyad"></GridColumn>
+                <GridColumn Field="Ogrenci.OgrNo" HeaderText="Öğr No"></GridColumn>
+            </GridColumns>
+        </SfGrid>
+    </Dialog>
+}
+
+<Dialog Baslik="Uyarı!" @bind-isDialogOpen="@isUyariOpen">
+    <p>@dialogUyariText</p>
+</Dialog>
+
 
 
 
@@ -323,7 +343,7 @@
     .col-form-label-sm {
         padding-bottom: unset;
         /*font-size: 0.65rem;*/
-        font-size: .775rem;
+        /*font-size: .775rem;*/
     }
 
     .e-Resource:before {
