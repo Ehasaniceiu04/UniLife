@@ -5,20 +5,34 @@
 @using System.Net
 @using Newtonsoft.Json
 
+@if (harcDtos == null)
+{
+    <LoadingBackground ShowLogoBox="true">
+        <label>Harçlar Yükleniyor.</label>
+    </LoadingBackground>
+}
+else
+{
+
     <ControlSection>
         <SfGrid @ref="HarcGrid" DataSource="@harcDtos" Toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Update", "Cancel" })" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
             <GridEvents OnActionComplete="ActionCompletedHandler" TValue="HarcDto"></GridEvents>
             <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
             <GridColumns>
-                <GridColumn Visible="false" Field=@nameof(HarcDto.Id) HeaderText="Harc ID" AllowAdding="false" AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
-                <GridColumn Field=@nameof(HarcDto.Ad) HeaderText="Harc İsim" ValidationRules="@(new ValidationRules{ Required=true})" Width="170"></GridColumn>
+                <GridColumn Visible="false" Field=@nameof(HarcDto.Id) HeaderText="Harc ID" AllowAdding="false" AllowEditing="false" IsPrimaryKey="true"></GridColumn>
+                @*<GridColumn Field=@nameof(HarcDto.Ad) HeaderText="Harc İsim"></GridColumn>*@
                 @*<GridColumn Field=@nameof(HarcDto.Fakulte.UniversiteId) HeaderText="Üniversite" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@universiteDtos" Width="150"></GridColumn>*@
-                <GridColumn Field=@nameof(HarcDto.ProgramId) HeaderText="Program" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@programDtos" Width="150"></GridColumn>
-                <GridColumn Field=@nameof(HarcDto.DonemId) HeaderText="Donem" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@donemDtos" Width="150"></GridColumn>
+                <GridColumn Field=@nameof(HarcDto.ProgramId) HeaderText="Program" EditType="EditType.DropDownEdit" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@programDtos"></GridColumn>
+                <GridColumn Field=@nameof(HarcDto.DonemId) HeaderText="Donem" EditType="EditType.DropDownEdit"  ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@donemDtos"></GridColumn>
+                <GridColumn Field=@nameof(HarcDto.Tutar) HeaderText="Tutar"></GridColumn>
+                <GridColumn Field=@nameof(HarcDto.OnTutar) HeaderText="%10 Tutar"></GridColumn>
+                <GridColumn Field=@nameof(HarcDto.YabanciTutar) HeaderText="Yabancı Tutar"></GridColumn>
 
             </GridColumns>
         </SfGrid>
     </ControlSection>
+}
+
 
 @code{
 
@@ -85,8 +99,9 @@
     {
         try
         {
+            harcDto.Ad = "";
             ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>
-                ("api/harc", harcDto);
+            ("api/harc", harcDto);
             if (apiResponse.IsSuccessStatusCode)
             {
                 matToaster.Add(apiResponse.Message, MatToastType.Success);

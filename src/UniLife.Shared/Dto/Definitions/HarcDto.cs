@@ -4,7 +4,6 @@ namespace UniLife.Shared.Dto.Definitions
 {
     public class HarcDto : EntityDto<int>
     {
-        [Required]
         [MaxLength(300)]
         public string Ad { get; set; }
 
@@ -13,6 +12,10 @@ namespace UniLife.Shared.Dto.Definitions
 
         public int DonemId { get; set; }
         public virtual DonemDto Donem { get; set; }
+
+        public double Tutar { get; set; }
+        public double OnTutar { get; set; }
+        public double YabanciTutar { get; set; }
 
         public int NormalSure { get; set; }
         public int IlkUzatma { get; set; }
