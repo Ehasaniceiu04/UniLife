@@ -66,6 +66,7 @@ namespace UniLife.Shared.DataModels
         public bool IsMale { get; set; }
         public string Adres { get; set; }
         public string BilgNotu { get; set; }
+        public bool MultiUni { get; set; }
 
         public virtual ICollection<DersKayit> DersKayits{ get; set; }
 

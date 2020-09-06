@@ -105,7 +105,7 @@ else
                                         <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                                     </SfDropDownList>
                                     <label class="col-sm-2" for="KayTarih">Kayıt Tarihi:</label>
-                                    <SfDatePicker  ID="KayTarih" TValue="DateTime?" @bind-Value="@_OgrenciDto.KayitTarih" CssClass="col-sm-4 pb-1" Placeholder="Kayıt Tarihi"></SfDatePicker>
+                                    <SfDatePicker ID="KayTarih" TValue="DateTime?" @bind-Value="@_OgrenciDto.KayitTarih" CssClass="col-sm-4 pb-1" Placeholder="Kayıt Tarihi"></SfDatePicker>
                                     <label class="col-sm-2" for="ogrDurum">Öğrenim Durum:</label>
                                     <SfDropDownList ID="DropOgrenimDurum" @ref="DropOgrenimDurum" TItem="OgrenimDurumDto" CssClass="col-sm-4 pb-1"
                                                     TValue="int?" PopupHeight="230px" Placeholder="Bölüm"
@@ -116,7 +116,7 @@ else
                                     <SfDatePicker ID="AyrTarih" TValue="DateTime?" @bind-Value="@_OgrenciDto.AyrilTarih" CssClass="col-sm-4 pb-1" Placeholder="Ayrılma Tarihi"></SfDatePicker>
 
                                     <label class="col-sm-2" for="ogrentip">Öğrenim Türü:</label>
-                                    <SfDropDownList  ID="DropOgrenimTur" @ref="DropOgrenimTur" TItem="OgrenimTurDto" CssClass="col-sm-4 pb-1"
+                                    <SfDropDownList ID="DropOgrenimTur" @ref="DropOgrenimTur" TItem="OgrenimTurDto" CssClass="col-sm-4 pb-1"
                                                     TValue="int?" PopupHeight="230px" Placeholder="Bölüm"
                                                     @bind-Value="@_OgrenciDto.OgrenimTurId" DataSource="@ogrenimTurDtos">
                                         <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
@@ -127,12 +127,12 @@ else
                                         <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
                                     </SfDropDownList>
                                     <label class="col-sm-2" for="ogrtip">Öğrenci Tipi:</label>
-                                    <SfDropDownList  ID="ogrtip" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
+                                    <SfDropDownList ID="ogrtip" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
                                         <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
                                         <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
                                     </SfDropDownList>
                                     <label class="col-sm-2" for="orthestip">Ort. Hesap Tip:</label>
-                                    <SfDropDownList  ID="orthestip" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
+                                    <SfDropDownList ID="orthestip" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
                                         <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
                                         <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
                                     </SfDropDownList>
@@ -147,8 +147,8 @@ else
                                         <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
                                     </SfDropDownList>
                                     <label class="col-sm-2" for="danis">Danışmanı:</label>
-                                    
-                                        <SfButton ID="danis" IconCss="e-icons e-Resource" EnableRtl="true" OnClick="AkademisyenAta" CssClass="e-flat col-sm-4" IsPrimary="true">@(string.IsNullOrWhiteSpace(danismanAd) ?"Ekle": danismanAd)</SfButton>
+
+                                    <SfButton ID="danis" IconCss="e-icons e-Resource" EnableRtl="true" OnClick="AkademisyenAta" CssClass="e-flat col-sm-4" IsPrimary="true">@(string.IsNullOrWhiteSpace(danismanAd) ?"Ekle": danismanAd)</SfButton>
 
                                     <label class="col-sm-2" for="digDanisman">Diğer Danışman:</label>
                                     <SfTextBox ID="digDanisman" CssClass="col-sm-4"></SfTextBox>
@@ -157,6 +157,8 @@ else
                                         <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
                                         <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
                                     </SfDropDownList>
+                                    <label class="col-sm-2" for="capYan">İkinci üniversite var mı?</label>
+                                    <SfCheckBox CssClass="col-sm-2" @bind-Checked="@_OgrenciDto.MultiUni"></SfCheckBox>
                                 </div>
                                 <div class="form-row">
                                     <SfTextBox Placeholder="Bilgi Notu" @bind-Value="@_OgrenciDto.BilgNotu" CssClass="col-sm-12" Readonly="false" FloatLabelType="@FloatLabelType.Auto" Multiline="true"></SfTextBox>

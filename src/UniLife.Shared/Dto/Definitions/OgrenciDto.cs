@@ -67,6 +67,7 @@ namespace UniLife.Shared.Dto.Definitions
         public bool IsMale { get; set; }
         public string Adres { get; set; }
         public string BilgNotu { get; set; }
+        public bool MultiUni { get; set; }
         //from UserInfoDTO
         public bool IsAuthenticated { get; set; }
 
