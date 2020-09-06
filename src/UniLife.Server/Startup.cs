@@ -448,6 +448,7 @@ namespace UniLife.Server
             services.AddTransient<IOgrHarcManager, OgrHarcManager>();
             services.AddTransient<ISinavKriterManager, SinavKriterManager>();
             services.AddTransient<IDersKancaManager, DersKancaManager>();
+            services.AddTransient<IOgrBursBasariManager, OgrBursBasariManager>();
 
             //Automapper to map DTO to Models https://www.c-sharpcorner.com/UploadFile/1492b1/crud-operations-using-automapper-in-mvc-application/
             var automapperConfig = new MapperConfiguration(configuration =>

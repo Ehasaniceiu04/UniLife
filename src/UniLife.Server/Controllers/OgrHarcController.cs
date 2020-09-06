@@ -59,7 +59,7 @@ namespace UniLife.Server.Controllers
 
         [HttpGet]
         [Route("GetWhere/{ogrId}")]
-        [Authorize]
+        [Authorize(Roles = "Administrator,Personel")]
         public async Task<ApiResponse> GetWhere(int ogrId)
             => await _ogrHarcManager.GetWhere(x => x.OgrenciId == ogrId);
     }

@@ -1,0 +1,176 @@
+﻿@page "/ogrenci/bursBasari"
+
+@inject HttpClient Http;
+@using UniLife.Shared.Dto.Definitions
+@inject IMatToaster matToaster
+@using Syncfusion.Blazor.DropDowns
+@using System.Net
+@using Newtonsoft.Json
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Calendars
+@inject AppState appState
+
+@if (bursBasariDtos == null)
+{
+    <LoadingBackground ShowLogoBox="true">
+        <label>Başarı Burs bilgileri yükleniyor.</label>
+    </LoadingBackground>
+}
+else
+{
+
+    <ControlSection>
+        <SfGrid @ref="BursBasariGrid" DataSource="@bursBasariDtos" Toolbar="@(Toolbaritems)" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
+            <GridEvents OnActionComplete="ActionCompletedHandler" TValue="OgrBursBasariDto"></GridEvents>
+            <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
+            <GridColumns>
+                <GridColumn Visible="false" Field=@nameof(OgrBursBasariDto.Id) HeaderText="Id" AllowAdding="false" AllowEditing="false" IsPrimaryKey="true"></GridColumn>
+                <GridColumn Visible="false" Field=@nameof(OgrBursBasariDto.OgrenciId)></GridColumn>
+                <GridColumn Field=@nameof(OgrBursBasariDto.DonemId) HeaderText="Donem" EditType="EditType.DropDownEdit" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@donemDtos"></GridColumn>
+                <GridColumn Field=@nameof(OgrBursBasariDto.BasariTipi) HeaderText="Basari Tipi" EditType="EditType.DropDownEdit" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@OgrBursBasariDto.BasariTipiDtos"></GridColumn>
+            </GridColumns>
+        </SfGrid>
+    </ControlSection>
+}
+
+@code{
+
+    SfDropDownList<int, DonemDto> dropDonem;
+
+    SfGrid<OgrBursBasariDto> BursBasariGrid;
+
+    List<OgrBursBasariDto> bursBasariDtos = new List<OgrBursBasariDto>();
+
+    List<DonemDto> donemDtos = new List<DonemDto>();
+
+    [Parameter]
+    public OgrenciDto _OgrenciDto { get; set; }
+
+    private List<Object> Toolbaritems= new List<Object>() { "Add", "Edit", "Delete", "Update", "Cancel" };
+
+    //protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
+    {
+        await ReadBursBasaris();
+
+        ApiResponseDto apiResponseDonem =await Http.GetFromJsonAsync<ApiResponseDto>("api/Donem");
+        donemDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<DonemDto[]>(apiResponseDonem.Result.ToString()).ToList<DonemDto>();
+
+    }
+
+    async Task ReadBursBasaris()
+    {
+        ApiResponseDto apiResponse = Http.GetFromJsonAsync<ApiResponseDto>($"api/ogrbursBasari/getwhere/{_OgrenciDto.Id}").Result;
+
+        if (apiResponse.StatusCode == Status200OK)
+        {
+            matToaster.Add(apiResponse.Message, MatToastType.Success, "BursBasarilar getirildi");
+            bursBasariDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<OgrBursBasariDto[]>(apiResponse.Result.ToString()).ToList<OgrBursBasariDto>();
+        }
+        else
+        {
+            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "BursBasari bilgisi getirilirken hata oluştu!");
+        }
+    }
+
+    public void ActionCompletedHandler(ActionEventArgs<OgrBursBasariDto>
+        args)
+    {
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
+        {
+
+        }
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+        {
+            if (args.Action == "Edit")
+            {
+                Update(args.Data);
+            }
+            else if (args.Action == "Add")
+            {
+                Create(args.Data);
+            }
+
+        }
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
+        {
+            Delete(args.Data);
+        }
+    }
+
+    public async Task Create(OgrBursBasariDto bursBasariDto)
+    {
+        try
+        {
+            bursBasariDto.OgrenciId = _OgrenciDto.Id;
+            ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>
+                ("api/ogrbursBasari", bursBasariDto);
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success);
+            }
+            else
+            {
+                bursBasariDtos.Remove(bursBasariDto);
+                BursBasariGrid.Refresh();
+                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "BursBasari Creation Failed");
+            }
+        }
+        catch (Exception ex)
+        {
+            bursBasariDtos.Remove(bursBasariDto);
+            BursBasariGrid.Refresh();
+            matToaster.Add(ex.Message, MatToastType.Danger, "BursBasari Creation Failed");
+        }
+    }
+
+
+    public async void Update(OgrBursBasariDto bursBasariDto)
+    {
+        //this updates the IsCompleted flag only
+        try
+        {
+            bursBasariDto.OgrenciId = _OgrenciDto.Id;
+            ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>
+            ("api/ogrbursBasari", bursBasariDto);
+
+            if (!apiResponse.IsError)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success);
+            }
+            else
+            {
+                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "BursBasari Save Failed");
+                //update failed gridi boz !
+            }
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.Message, MatToastType.Danger, "BursBasari Save Failed");
+            //update failed gridi boz !
+        }
+    }
+
+    public async Task Delete(OgrBursBasariDto bursBasariDto)
+    {
+        //try
+        //{
+        //    var response = await Http.DeleteAsync("api/bursBasari/" + bursBasariDto.Id);
+        //    if (response.StatusCode == (HttpStatusCode)Status200OK)
+        //    {
+        //        matToaster.Add("BursBasari Deleted", MatToastType.Success);
+        //        bursBasariDtos.Remove(bursBasariDto);
+        //    }
+        //    else
+        //    {
+        //        matToaster.Add("BursBasari Delete Failed: " + response.StatusCode, MatToastType.Danger);
+        //    }
+        //    //deleteDialogOpen = false;
+        //}
+        //catch (Exception ex)
+        //{
+        //    matToaster.Add(ex.Message, MatToastType.Danger, "Universite Save Failed");
+        //}
+    }
+
+}

@@ -57,6 +57,7 @@ namespace UniLife.Storage
             services.AddTransient<IOgrenciDigerStore, OgrenciDigerStore>();
             services.AddTransient<IOgrCezaStore, OgrCezaStore>();
             services.AddTransient<IOgrDondurStore, OgrDondurStore>();
+            services.AddTransient<IOgrBursBasariStore, OgrBursBasariStore>();
             services.AddTransient<IOgrGecisStore, OgrGecisStore>();
             services.AddTransient<IOgrStajStore, OgrStajStore>();
             services.AddTransient<IOgrTezStore, OgrTezStore>();

@@ -56,5 +56,11 @@ namespace UniLife.Server.Controllers
         [Authorize(Roles = "Administrator,Personel")]
         public async Task<ApiResponse> Delete(int id)
             => await _ogrStajManager.Delete(id);
+
+        [HttpGet]
+        [Route("GetWhere/{ogrId}")]
+        [Authorize(Roles = "Administrator,Personel")]
+        public async Task<ApiResponse> GetWhere(int ogrId)
+            => await _ogrStajManager.GetWhere(x => x.OgrenciId == ogrId);
     }
 }

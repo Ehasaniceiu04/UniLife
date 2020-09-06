@@ -39,11 +39,11 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs
         {
             try
             {
-                ApiResponseDto apiGecis = await Http.GetFromJsonAsync<ApiResponseDto>("api/ogrgecis");
-                ApiResponseDto apiCeza = await Http.GetFromJsonAsync<ApiResponseDto>("api/ogrceza");
-                ApiResponseDto apiDondur = await Http.GetFromJsonAsync<ApiResponseDto>("api/ogrdondur");
-                ApiResponseDto apiStaj = await Http.GetFromJsonAsync<ApiResponseDto>("api/ogrstaj");
-                ApiResponseDto apiTez = await Http.GetFromJsonAsync<ApiResponseDto>("api/ogrtez");
+                ApiResponseDto apiGecis = await Http.GetFromJsonAsync<ApiResponseDto>($"api/ogrgecis/getwhere/{_OgrenciDto.Id}");
+                ApiResponseDto apiCeza = await Http.GetFromJsonAsync<ApiResponseDto>($"api/ogrceza/getwhere/{_OgrenciDto.Id}");
+                ApiResponseDto apiDondur = await Http.GetFromJsonAsync<ApiResponseDto>($"api/ogrdondur/getwhere/{_OgrenciDto.Id}");
+                ApiResponseDto apiStaj = await Http.GetFromJsonAsync<ApiResponseDto>($"api/ogrstaj/getwhere/{_OgrenciDto.Id}");
+                ApiResponseDto apiTez = await Http.GetFromJsonAsync<ApiResponseDto>($"api/ogrtez/getwhere/{_OgrenciDto.Id}");
 
                 gecisDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<OgrGecisDto[]>(apiGecis.Result.ToString()).ToList<OgrGecisDto>(); 
                 cezaDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<OgrCezaDto[]>(apiGecis.Result.ToString()).ToList<OgrCezaDto>(); 
