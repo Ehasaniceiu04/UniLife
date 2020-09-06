@@ -235,6 +235,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 if (apiResponse.IsSuccessStatusCode)
                 {
                     matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+                    await HedefChange();
                 }
                 else
                     matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
