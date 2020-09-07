@@ -140,7 +140,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                     {
                         if (await Update(args.Data))
                         {
-                        DersAcilanGrid.Refresh();
+                            DersAcilanGrid.Refresh();
                         }
                         args.Cancel = true;
                         await DersAcilanGrid.CloseEdit();
@@ -163,21 +163,21 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                     if (await Delete(args.Data))
                     {
 
-                    DersAcilanGrid.Refresh();
+                        DersAcilanGrid.Refresh();
                     }
                     args.Cancel = true;
                     await DersAcilanGrid.CloseEdit();
                     isOpsCoklama = false;
                 }
-                
+
             }
             catch (Exception ex)
             {
                 matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
             }
-            
 
-            
+
+
         }
 
         public async Task<bool> Create(DersAcilanDto dersAcilanDto)
@@ -186,7 +186,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             {
                 dersAcilanDto.Donem = null;
                 dersAcilanDto.Akademisyen = null;
-                dersAcilanDto.Program= null;
+                dersAcilanDto.Program = null;
                 dersAcilanDto.Bolum = null;
 
                 ApiResponseDto<DersAcilanDto> apiResponse = await Http.PostJsonAsync<ApiResponseDto<DersAcilanDto>>
@@ -238,7 +238,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                         matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
                         return false;
                     }
-                }                
+                }
             }
             catch (Exception ex)
             {
@@ -275,7 +275,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             totalQuery = new Query();
             //totalQuery.Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)" });
             totalQuery.Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)", "Donem($select=Id,Ad)", "bolum($expand=fakulte($select=Ad,Id);$select=Ad,Id)" });
-            
+
 
             if (donemId.HasValue)
             {
@@ -352,7 +352,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         {
             if (args.Item.Text == "Kayıtlı Öğrenciler")
             {
-                if (selectedRecord!=null)
+                if (selectedRecord != null)
                 {
                     isKayitliShow = true;
                 }
@@ -368,5 +368,9 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         {
             selectedRecord = args.Data;
         }
+        //public void CheckTemiz()
+        //{
+        //    DersAcilanGrid.ClearFiltering("Zorunlu");
+        //}
     }
 }

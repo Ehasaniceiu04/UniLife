@@ -236,9 +236,10 @@
                         }
                     </Template>
                 </GridColumn>
-                <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Zorunlu) HeaderText="Zor." DisplayAsCheckBox="true">
+                <GridColumn Field=@nameof(DersAcilanDto.Zorunlu) HeaderText="Zor." DisplayAsCheckBox="true">
                     <FilterTemplate>
                         <SfCheckBox TChecked="bool" ValueChange="ValueChange"></SfCheckBox>
+                        @*<SfButton OnClick="CheckTemiz">✖</SfButton>*@
                     </FilterTemplate>
                 </GridColumn>
                 @*<GridColumn Field=@nameof(DersAcilanDto.ProgramId) EditType="EditType.DropDownEdit" HeaderText="Program" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@programDtos" Width="150"></GridColumn>
