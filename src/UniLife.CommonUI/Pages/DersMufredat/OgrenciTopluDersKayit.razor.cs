@@ -52,6 +52,14 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         string dialogUyariText;
         bool isUyariOpen;
+
+        bool ogrenciDersKayitDialogOpen;
+
+        protected override async Task OnInitializedAsync()
+        {
+            donemId = (await appState.GetDonemState()).Id;
+        }
+
         async Task Kayit()
         {
             try
@@ -153,6 +161,17 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 totalQueryDers.Where("fakulteId", "equal", fakulteId2);
             }
         }
-        
+
+
+        OgrenciDto secilenOgr;
+        public async Task CommandClickedKDers(Syncfusion.Blazor.Grids.CommandClickEventArgs<OgrenciDto> args)
+        {
+            if (args.CommandColumn.Title == "Kayıtlı Dersleri")
+            {
+                secilenOgr = args.RowData;
+                ogrenciDersKayitDialogOpen = true;
+            }
+        }
+
     }
 }

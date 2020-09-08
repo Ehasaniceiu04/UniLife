@@ -8,6 +8,7 @@
 @using Syncfusion.Blazor.Data
 @using UniLife.Shared.DataModels
 @using Syncfusion.Blazor.SplitButtons
+@inject AppState appState
 
 <div class="row">
     <div class="col-sm-12 col-md-6">
@@ -43,7 +44,7 @@
                 <SfGrid ID="OgrGrid" @ref="OgrGrid" Query="@totalQuery" TValue="OgrenciDto" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
                     @*OnActionFailure="ActionFailureHandler" DetailDataBound="DetailDataBound"  OnActionBegin="ActionBeginHandler" DetailDataBound="DetailDataBound" RowDataBound="RowBound"*@
                     <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
-                    <GridEvents TValue="OgrenciDto"></GridEvents>
+                    <GridEvents TValue="OgrenciDto" CommandClicked="CommandClickedKDers"></GridEvents>
                     <GridColumns>
                         <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
                         <GridColumn Visible="false" Field=@nameof(OgrenciDto.Id) IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
@@ -52,6 +53,11 @@
                         <GridColumn Field=@nameof(OgrenciDto.TCKN) HeaderText="TCKN"></GridColumn>
                         <GridColumn Field=@nameof(OgrenciDto.OgrNo) HeaderText="Öğrenci No"></GridColumn>
                         <GridColumn Field=@nameof(OgrenciDto.Sinif) HeaderText="Sınıf"></GridColumn>
+                        <GridColumn>
+                            <GridCommandColumns>
+                                <GridCommandColumn Type="CommandButtonType.None" Title="Kayıtlı Dersleri" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-Circle_Add", CssClass="e-flat" })"></GridCommandColumn>
+                            </GridCommandColumns>
+                        </GridColumn>
                     </GridColumns>
                 </SfGrid>
             }
@@ -78,7 +84,7 @@
                         <div class="col-sm-10">
                             <SfDropDownList ShowClearButton="true" TValue="int?" TItem="DonemDto" Placeholder="Dönem seçiniz..."
                                             @bind-Value="@donemId">
-                                <SfDataManager Url="odata/donems" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
+                                <SfDataManager Url="odata/donems?$orderby=Yil desc, DonemTipId" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
                                 <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                             </SfDropDownList>
                         </div>
@@ -116,8 +122,26 @@
 
 
 <Dialog Baslik="Uyarı!" @bind-isDialogOpen="@isUyariOpen">
-        <p>@dialogUyariText</p>
+    <p>@dialogUyariText</p>
+</Dialog>
+
+
+@if (ogrenciDersKayitDialogOpen)
+{
+    <Dialog Baslik="Öğrencinin kayıtlı olduğu ders listesi" @bind-isDialogOpen="@ogrenciDersKayitDialogOpen">
+        <div class="row">
+            <SfGrid TValue="DersKayitDto" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowFiltering="true">
+                <SfDataManager Url="@($"odata/derskayits?$expand=dersacilan($select=Id,Ad,Kod)&$filter=ogrenciId eq {secilenOgr.Id} and dersacilan/donemId eq {donemId}&$select=Id")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+                <GridEvents TValue="DersKayitDto"></GridEvents>
+                <GridColumns>
+                    <GridColumn Visible="false" Field="Id" HeaderText="ders id" IsPrimaryKey="true" TextAlign="TextAlign.Right"></GridColumn>
+                    <GridColumn Field="DersAcilan.Ad" HeaderText="Ad"></GridColumn>
+                    <GridColumn Field="DersAcilan.Kod" HeaderText="Kod"></GridColumn>
+                </GridColumns>
+            </SfGrid>
+        </div>
     </Dialog>
+}
 
 
 @*<MatDialog @bind-IsOpen="@aktarimConfirmDialogOpen" Style="z-index:100">
