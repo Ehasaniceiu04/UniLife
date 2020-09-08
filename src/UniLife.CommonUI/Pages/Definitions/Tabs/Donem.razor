@@ -34,11 +34,11 @@
     </SfGrid>
 </ControlSection>
 
-<div class="form-group row">
+@*<div class="form-group row">
     <div class="col-sm-4 offset-4">
         <SfButton OnClick="SinitAtlaTemizle" CssClass="e-success form-control-sm">Yil Sonu Sınıf Atlatmalarını Temizle</SfButton>
     </div>
-</div>
+</div>*@
 
 @code{
 
@@ -174,24 +174,24 @@
         }
     }
 
-    async Task SinitAtlaTemizle()
-    {
-        try
-        {
+    //async Task SinitAtlaTemizle()
+    //{
+    //    try
+    //    {
 
-            ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/Ogrenci/SinifAtlaTemizle");
-            if (apiResponse.IsSuccessStatusCode)
-            {
-                matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
-            }
-            else
-                matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
-        }
-        catch (Exception ex)
-        {
-            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
-        }
+    //        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/Ogrenci/SinifAtlaTemizle");
+    //        if (apiResponse.IsSuccessStatusCode)
+    //        {
+    //            matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+    //        }
+    //        else
+    //            matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
+    //    }
 
-    }
+    //}
 
 }

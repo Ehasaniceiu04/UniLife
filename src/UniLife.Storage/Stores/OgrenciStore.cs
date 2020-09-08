@@ -222,11 +222,17 @@ namespace UniLife.Storage.Stores
            
         }
 
-        public async Task SinifAtlaTemizle()
+        public async Task SinifAtlaTemizle(HedefKaynakDto hedefKaynakDto)
         {
-            var rawBulkUpdateQuery = $"update public.'Ogrencis' set 'DnmSnfGecBilgi' = null";
+            //var rawBulkUpdateQuery = $"update public.'Ogrencis' set 'DnmSnfGecBilgi' = null";
 
-            int numberOfRowAffected = await _db.Database.ExecuteSqlCommandAsync(rawBulkUpdateQuery.Replace('\'', '"'));
+            //int numberOfRowAffected = await _db.Database.ExecuteSqlCommandAsync(rawBulkUpdateQuery.Replace('\'', '"'));
+
+            var silAtlatOgrs = _db.Ogrencis.Where(x => hedefKaynakDto.KaynakIdList.Contains(x.Id));
+
+            await silAtlatOgrs.ForEachAsync(x => x.DnmSnfGecBilgi = null);
+
+            await _db.SaveChangesAsync(CancellationToken.None);
         }
     }
 }

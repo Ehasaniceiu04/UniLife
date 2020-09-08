@@ -19,6 +19,6 @@ namespace UniLife.Shared.DataInterfaces
 
         Task<long> GetLastOgrNo(int fakId,int BolId);
         Task<OgrenciDto> GetOgrenciState(Guid userId);
-        Task SinifAtlaTemizle();
+        Task SinifAtlaTemizle(HedefKaynakDto hedefKaynakDto);
     }
 }

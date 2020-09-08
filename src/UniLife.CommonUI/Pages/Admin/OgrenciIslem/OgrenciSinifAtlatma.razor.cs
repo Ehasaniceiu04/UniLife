@@ -166,5 +166,35 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem
                 dialogUyariText = $"{args.Data.Ad} Öğrencisine bu yıl için ders atlatma zaten yapılmış.";
             }
         }
+
+        async Task SinitAtlaTemizle()
+        {
+            try
+            {
+                HedefKaynakDto hedefKaynakDto = new HedefKaynakDto
+                {
+                    KaynakIdList = (await OgrencilerGrid.GetSelectedRecords()).Select(x => x.Id).ToList()
+                };
+
+                ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>
+                ("api/Ogrenci/SinifAtlaTemizle", hedefKaynakDto);
+
+                if (apiResponse.IsSuccessStatusCode)
+                {
+                    matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+                    //isOgrGridVisible = false;
+                    //await Task.Delay(100);
+                    //isOgrGridVisible = true;
+                    OgrencilerGrid.Refresh();
+                }
+                else
+                    matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
+            }
+            catch (Exception ex)
+            {
+                matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
+            }
+
+        }
     }
 }

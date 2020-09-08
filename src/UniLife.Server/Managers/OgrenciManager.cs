@@ -60,9 +60,9 @@ namespace UniLife.Server.Managers
             return new ApiResponse(Status200OK, "OgrencisSinifAtlat done!", null);
         }
 
-        public async Task<ApiResponse> SinifAtlaTemizle()
+        public async Task<ApiResponse> SinifAtlaTemizle(HedefKaynakDto hedefKaynakDto)
         {
-            await _ogrenciStore.SinifAtlaTemizle();
+            await _ogrenciStore.SinifAtlaTemizle(hedefKaynakDto);
             return new ApiResponse(Status200OK, "SinifAtlaTemizle done!");
         }
 
