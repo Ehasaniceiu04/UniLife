@@ -231,7 +231,8 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem
         }
         private void ValChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
         {
-            isTopGridVisible = false;
+            //isTopGridVisible = false;
+            Refresh();
         }
         
 
@@ -328,12 +329,14 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem
         private void onSinifChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
         {
             reqOgrTopAtaDto.Sinif = args.Value;
-            isTopGridVisible = false;
+            //isTopGridVisible = false;
+            Refresh();
         }
         private void onCinsChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
         {
             reqOgrTopAtaDto.Cinsiyet = args.Value;
-            isTopGridVisible = false;
+            //isTopGridVisible = false;
+            Refresh();
         }
 
 
@@ -435,11 +438,11 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem
             //}
             topAtaQuery.AddParams("$expand", "program($select=Id,Ad),Danisman($select=Id,Ad),Mufredat($select=Id,Ad),OgrenimDurum($select=Id,Ad)");
 
-            isTopGridVisible = true;
-            if (OgrencilerGrid !=null)
-            {
+            //isTopGridVisible = true;
+            //if (OgrencilerGrid !=null)
+            //{
                 OgrencilerGrid.Refresh();
-            }
+            //}
             
         }
 

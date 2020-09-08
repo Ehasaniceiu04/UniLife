@@ -175,7 +175,7 @@
 
 
 
-        @if (isTopGridVisible)
+        @if (reqOgrTopAtaDto.ProgramId!=0)
         {
             <div class="row pb-2 bg-light text-dark">
                 @*<SfGrid TValue="ResOgrTopAtaFilters" ID="OgrencilerGrid" @ref="OgrencilerGrid" RowHeight="20" AllowPaging="true" AllowFiltering="true">
@@ -222,6 +222,10 @@
 
             </div>
         }
+        else
+        {
+            <p>Program seçimi yapmalısınız.</p>
+        }
 
 
 
@@ -257,7 +261,7 @@
 {
     <Dialog Baslik="Müfredatlar" @bind-isDialogOpen="@mufredatDialogOpen">
         <div class="row">
-            <SfGrid ID="MufreadatGrid" @ref="MufreadatGrid" TValue="MufredatDto" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowFiltering="true">
+            <SfGrid ID="MufreadatGrid" @ref="MufreadatGrid" Query="new Query()" TValue="MufredatDto" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowFiltering="true">
                 <SfDataManager Url="odata/mufredats" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
                 <GridEvents TValue="MufredatDto" CommandClicked="CommandClickHandlerMufreadat"></GridEvents>
                 <GridColumns>
