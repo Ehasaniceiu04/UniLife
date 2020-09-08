@@ -104,8 +104,17 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem
         }
         string selectedAka = "";
 
+        bool isUyariOpen;
+        string dialogUyariText;
+
         async Task MufredatEkle()
         {
+            if (reqOgrTopAtaDto.ProgramId==0)
+            {
+                dialogUyariText = "Önce program seçmelisiniz.";
+                isUyariOpen = true;
+                return;
+            }
             mufredatDialogOpen = true;
         }
         string selectedMuf = "";
