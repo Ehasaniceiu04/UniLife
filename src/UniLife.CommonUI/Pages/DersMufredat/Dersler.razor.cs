@@ -1,5 +1,7 @@
 ﻿using MatBlazor;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
+using Syncfusion.Blazor.Data;
 using Syncfusion.Blazor.Grids;
 using Syncfusion.Blazor.Inputs;
 using System;
@@ -48,12 +50,16 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
 
         bool yerineDersDialogOpen;
-        int? yerineExistProgramId;
+        static int? yerineExistProgramId;
         string yerineDersKod;
         int yerineDersId;
         int sonMufredatId;
 
         string edittekiDersKod;
+
+        public Query totalQuery = new Query();
+
+        string OdataQuery = "odata/Derss";
 
         protected override void OnInitialized()
         {
@@ -87,7 +93,6 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             }
 
         }
-
 
 
         public async void ActionCompletedHandler(ActionEventArgs<DersDto> args)
@@ -203,6 +208,10 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                     if (!apiResponse.IsError)
                     {
                         matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+                        if (dersDto.Durum==false)
+                        {
+                            yerineDersDialogOpen = true;
+                        }                        
                         return true;
                     }
                     else
@@ -323,7 +332,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                     //ApiResponseDto<MufredatDto> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<MufredatDto>>($"api/Mufredat/GetLastMufredatByProgramId/{yerineExistProgramId}").Result;
                     //sonMufredatId = apiResponse.Result.Id;
 
-                    yerineDersDialogOpen = true;
+                    
                 }
                 else if ((bool)args.Value == true && yerineDersId != 0)
                 {
@@ -340,14 +349,11 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             {
                 matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
             }
-
-            
         }
 
-        public async Task CommandClickHandlerDers(Syncfusion.Blazor.Grids.CommandClickEventArgs<DersDto> args)
-        {
-            //Dersid si ile repositoryde kayıdı alıp değiştirip programın aktif dönem müfredatında çakacaz. program göndermeli
 
+        async Task CommandClickHandlerDers(Syncfusion.Blazor.Grids.CommandClickEventArgs<DersDto> args)
+        {
             if (args.CommandColumn.Title == "Ders Ekle")
             {
                 try
@@ -374,11 +380,11 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                     };
 
 
-                    ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/derskanca", dersKancaDto);
+                    ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/derskanca/YeniKanca", dersKancaDto);
                     if (apiResponse.IsSuccessStatusCode)
                     {
-                        //DersGrid.Refresh();
-                        matToaster.Add("Yerine ders seçildi. Kayıt edip kapatabilirsiniz.", MatToastType.Success, "İşlem başarılı.");
+                        //dersDto.KancalananDersAd = args.RowData.Ad;
+                        matToaster.Add("Yerine ders seçildi.", MatToastType.Success, "İşlem başarılı.");
                     }
                     else
                         matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
@@ -394,6 +400,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 }
             }
         }
+
 
     }
 }

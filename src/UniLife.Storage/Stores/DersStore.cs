@@ -138,7 +138,7 @@ namespace UniLife.Storage.Stores
                 TeoSaat = ders.TeoSaat,
                 UygSaat = ders.UygSaat,
                 Zorunlu = ders.Zorunlu,
-                EskiMufBagliDersId = ders.EskiMufBagliDersId
+                //EskiMufBagliDersId = ders.EskiMufBagliDersId
             };
 
             ders.AktifDonemdeAcik = true;
@@ -187,6 +187,8 @@ namespace UniLife.Storage.Stores
 
             ////await _db.SaveChangesAsync(CancellationToken.None);
             ///
+            (await _db.Derss.FirstOrDefaultAsync(x => x.Id == dersId)).KancalananDersAd = null;
+
 
             var kancasDelete = await _db.DersKancas.Where(x => x.PasifMufredatDersId == dersId).ToListAsync();
             _db.DersKancas.RemoveRange(kancasDelete);

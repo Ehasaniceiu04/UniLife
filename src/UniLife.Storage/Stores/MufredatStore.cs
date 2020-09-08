@@ -196,7 +196,7 @@ namespace UniLife.Storage.Stores
                     TeoSaat = i.TeoSaat,
                     UygSaat = i.UygSaat,
                     Zorunlu = i.Zorunlu,
-                    EskiMufBagliDersId = i.EskiMufBagliDersId
+                    //EskiMufBagliDersId = i.EskiMufBagliDersId
                 };
                 dersAcilans.Add(dersAcilan);
 

@@ -10,9 +10,16 @@ namespace UniLife.Server.Managers
 {
     public class DersKancaManager : BaseManager<DersKanca, DersKancaDto>, IDersKancaManager
     {
-        public DersKancaManager(IDersKancaStore osymStore) : base(osymStore)
+        private readonly IDersKancaStore _dersKancaStore;
+        public DersKancaManager(IDersKancaStore dersKancaStore) : base(dersKancaStore)
         {
-         
+            _dersKancaStore = dersKancaStore;
+        }
+
+        public async Task<ApiResponse> YeniKanca(DersKancaDto dersKancaDto)
+        {
+            await _dersKancaStore.YeniKanca(dersKancaDto);
+            return new ApiResponse(Status200OK, "Bağlı dersler güncellendi", null);
         }
     }
 }

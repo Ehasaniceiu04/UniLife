@@ -56,5 +56,15 @@ namespace UniLife.Server.Controllers
         [Authorize(Roles = "Administrator,Personel")]
         public async Task<ApiResponse> Delete(int id)
             => await _dersKancaManager.Delete(id);
+
+        
+        // POST: api/DersKanca
+        [HttpPost]
+        [Route("YeniKanca")]
+        [Authorize(Roles = "Administrator,Personel")]
+        public async Task<ApiResponse> YeniKanca([FromBody] DersKancaDto dersKancaDto)
+            => ModelState.IsValid ?
+                await _dersKancaManager.YeniKanca(dersKancaDto) :
+                new ApiResponse(Status400BadRequest, "DersKanca Model is Invalid");
     }
 }
