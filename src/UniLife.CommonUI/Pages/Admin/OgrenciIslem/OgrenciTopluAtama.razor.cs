@@ -109,7 +109,7 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem
 
         async Task MufredatEkle()
         {
-            if (reqOgrTopAtaDto.ProgramId==0)
+            if (reqOgrTopAtaDto.ProgramId==null)
             {
                 dialogUyariText = "Önce program seçmelisiniz.";
                 isUyariOpen = true;
