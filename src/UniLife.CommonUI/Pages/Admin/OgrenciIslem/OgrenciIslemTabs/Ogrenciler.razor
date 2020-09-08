@@ -56,18 +56,6 @@
                         </div>
 
                         <div class="col-sm-6">
-                            @*<div class="form-group row">
-            <label for="DropMufredat" class="col-sm-2 col-form-label-sm">Müfredat</label>
-            <div class="col-sm-10">
-                <SfDropDownList ID="DropMufredat" @ref="DropMufredat" ShowClearButton="true" TValue="int?" TItem="KeyValueDto" Placeholder="Müfredat seçiniz..."
-                                Query="@AdIdQuery"
-                                @bind-Value="@mufredatId">
-                    <SfDataManager Url="odata/mufredats" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
-                    <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                </SfDropDownList>
-            </div>
-        </div>*@
-
                             <div class="form-group row">
                                 <label for="DropMufredat" class="col-sm-2 col-form-label-sm">Kayit Neden</label>
                                 <div class="col-sm-10">
@@ -117,7 +105,7 @@
 <SfGrid ID="OgrGrid" @ref="OgrGrid" Query="@totalQuery" TValue="OgrenciDto" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
     @*OnActionFailure="ActionFailureHandler" DetailDataBound="DetailDataBound"  OnActionBegin="ActionBeginHandler" DetailDataBound="DetailDataBound" RowDataBound="RowBound"*@
     <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
-    <GridEvents TValue="OgrenciDto" CommandClicked="CommandClickHandler" DetailDataBound="DetailDataBound" DataBound="DataBound" OnActionBegin="ActionBeginHandler" OnActionComplete="ActionCompletedHandler"></GridEvents>
+    <GridEvents TValue="OgrenciDto" DetailDataBound="DetailDataBound" DataBound="DataBound" OnActionBegin="ActionBeginHandler" OnActionComplete="ActionCompletedHandler"></GridEvents>
     @*<GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.Excel"></GridFilterSettings>*@
     <GridTemplates>
         <DetailTemplate>
@@ -158,8 +146,12 @@
                         </TabItem>
                     </TabItems>
                 </SfTab>
-            </div>
-        </DetailTemplate>
+                <div class="col-3 float-right">
+                    <SfButton OnClick="@(()=>DeepDetail(ogrenciInfo))" IconCss="e-icons e-DoubleArrowRight" CssClass="col-sm-12 form-control-sm">Öğrenci Detay</SfButton>
+                </div>
+                    
+                </div>
+</DetailTemplate>
     </GridTemplates>
     <GridColumns>
         <GridColumn Visible="false" Field=@nameof(OgrenciDto.ApplicationUserId) AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
@@ -168,11 +160,11 @@
         <GridColumn Field=@nameof(OgrenciDto.OgrNo) HeaderText="Öğrenci No"></GridColumn>
         <GridColumn Field=@nameof(OgrenciDto.Sinif) HeaderText="Sınıf"></GridColumn>
         @*<GridColumn Field=@nameof(OgrenciDto.KayitTarih) Format="d" Type="ColumnType.Date" HeaderText="KayitTarih"></GridColumn>*@
-        <GridColumn>
+        @*<GridColumn>
             <GridCommandColumns>
                 <GridCommandColumn Type="CommandButtonType.None" Title="Akademik Bilgiler" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" , Content="Öğr. Detay" })"></GridCommandColumn>
             </GridCommandColumns>
-        </GridColumn>
+        </GridColumn>*@
     </GridColumns>
 </SfGrid>
 @*}*@
@@ -277,15 +269,22 @@
     [Parameter]
     public EventCallback<OgrenciDto> OgrenciToAkademik { get; set; }
 
-    public void CommandClickHandler(CommandClickEventArgs<OgrenciDto> args)
-    {
-        if (args.CommandColumn.Title == "Akademik Bilgiler")
-        {
-            _OgrenciDto = args.RowData;
-            appState.OgrenciState = _OgrenciDto;
-            OgrenciToAkademik.InvokeAsync(_OgrenciDto);
+    //public void CommandClickHandler(CommandClickEventArgs<OgrenciDto> args)
+    //{
+    //    if (args.CommandColumn.Title == "Akademik Bilgiler")
+    //    {
+    //        _OgrenciDto = args.RowData;
+    //        appState.OgrenciState = _OgrenciDto;
+    //        OgrenciToAkademik.InvokeAsync(_OgrenciDto);
 
-        }
+    //    }
+    //}
+
+    async Task DeepDetail(OgrenciDto ogrenciDto)
+    {
+        _OgrenciDto = ogrenciDto;
+        appState.OgrenciState = _OgrenciDto;
+        await OgrenciToAkademik.InvokeAsync(_OgrenciDto);
     }
 
 
@@ -336,22 +335,9 @@
     async Task Refresh()
     {
         totalQuery = new Query();
-        //totalQuery.Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)" });
         totalQuery.Expand(new List<string> { "program($select=Id,Ad)", "Danisman($select=Id,Ad)", "Bolum($select=Id,Ad)", "Fakulte($select=Id,Ad)" });
 
 
-
-
-        //if (StartValue.HasValue)
-        //{
-        //    //totalQuery.Where(new WhereFilter() { Field = $"KayitTarih gt {StartValue}" });
-        //    //totalQuery.Where("KayitTarih", "GreaterThanOrEqual", StartValue);
-        //    totalQuery.Where("KayitTarih", "gl", StartValue?.ToString("yyyy-MM-dd"));
-        //}
-        //if (EndValue.HasValue)
-        //{
-        //    //totalQuery.Where("KayitTarih", "LessThanOrEqual", EndValue);
-        //}
         if (StartValue.HasValue && EndValue.HasValue)
         {
             var ColPre = new WhereFilter();

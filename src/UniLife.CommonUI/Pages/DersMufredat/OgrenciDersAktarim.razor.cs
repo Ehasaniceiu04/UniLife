@@ -236,6 +236,9 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 {
                     matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
                     await HedefChange();
+                    await KaynakChange();
+                    ogrGrid.Refresh();
+                    ogrHedefGrid.Refresh();
                 }
                 else
                     matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
