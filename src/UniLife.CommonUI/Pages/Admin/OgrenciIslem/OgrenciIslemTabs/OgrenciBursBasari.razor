@@ -28,6 +28,9 @@ else
                 <GridColumn Visible="false" Field=@nameof(OgrBursBasariDto.OgrenciId)></GridColumn>
                 <GridColumn Field=@nameof(OgrBursBasariDto.DonemId) HeaderText="Donem" EditType="EditType.DropDownEdit" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@donemDtos"></GridColumn>
                 <GridColumn Field=@nameof(OgrBursBasariDto.BasariTipi) HeaderText="Basari Tipi" EditType="EditType.DropDownEdit" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@OgrBursBasariDto.BasariTipiDtos"></GridColumn>
+                <GridColumn Field=@nameof(OgrBursBasariDto.Tutar) HeaderText="Tutar"></GridColumn>
+                <GridColumn Field=@nameof(OgrBursBasariDto.IsOran) HeaderText="Tutar OranMı?" EditType="EditType.BooleanEdit" DisplayAsCheckBox="true"></GridColumn>
+                <GridColumn Field=@nameof(OgrBursBasariDto.Durum) HeaderText="Aktif" EditType="EditType.BooleanEdit" DisplayAsCheckBox="true"></GridColumn>
             </GridColumns>
         </SfGrid>
     </ControlSection>
@@ -153,24 +156,24 @@ else
 
     public async Task Delete(OgrBursBasariDto bursBasariDto)
     {
-        //try
-        //{
-        //    var response = await Http.DeleteAsync("api/bursBasari/" + bursBasariDto.Id);
-        //    if (response.StatusCode == (HttpStatusCode)Status200OK)
-        //    {
-        //        matToaster.Add("BursBasari Deleted", MatToastType.Success);
-        //        bursBasariDtos.Remove(bursBasariDto);
-        //    }
-        //    else
-        //    {
-        //        matToaster.Add("BursBasari Delete Failed: " + response.StatusCode, MatToastType.Danger);
-        //    }
-        //    //deleteDialogOpen = false;
-        //}
-        //catch (Exception ex)
-        //{
-        //    matToaster.Add(ex.Message, MatToastType.Danger, "Universite Save Failed");
-        //}
+        try
+        {
+            var response = await Http.DeleteAsync("api/OgrBursBasari/" + bursBasariDto.Id);
+            if (response.StatusCode == (HttpStatusCode)Status200OK)
+            {
+                matToaster.Add("BursBasari Deleted", MatToastType.Success);
+                bursBasariDtos.Remove(bursBasariDto);
+            }
+            else
+            {
+                matToaster.Add("BursBasari Delete Failed: " + response.StatusCode, MatToastType.Danger);
+            }
+            //deleteDialogOpen = false;
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.Message, MatToastType.Danger, "BursBasari Save Failed");
+        }
     }
 
 }

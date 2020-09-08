@@ -13,8 +13,9 @@ namespace UniLife.Shared.Dto.Definitions
         public virtual DonemDto Donem { get; set; }
 
         public int BasariTipi { get; set; }
-        //public bool OranOrTutar { get; set; } //oran true,tutar false
-        //public double Tutar { get; set; }
+        public bool Durum { get; set; }
+        public bool IsOran { get; set; } //oran true,tutar false
+        public double Tutar { get; set; }
 
         public static List<KeyValueDto> BasariTipiDtos { get; } = new List<KeyValueDto>
         {
