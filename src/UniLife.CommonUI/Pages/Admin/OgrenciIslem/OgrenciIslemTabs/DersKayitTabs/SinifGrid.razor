@@ -33,7 +33,7 @@
                     {
                         <SfGrid ID="DersAcilanGrid" @ref="DersAcilanGrid" DataSource="@DersAcilanDtos" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
                             @*<GridEvents OnActionComplete="ActionCompletedHandler" TValue="ProgramDto"></GridEvents>*@
-                            <GridEvents TValue="DersAcilanDto" CommandClicked="CommandClickHandler"></GridEvents>
+                            <GridEvents TValue="DersAcilanDto" QueryCellInfo="QueryCellInfoAcilanHandler" CommandClicked="CommandClickHandler"></GridEvents>
                             <GridColumns>
                                 <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
                                 <GridColumn HeaderText="Kayıt" Width="75">
@@ -202,6 +202,14 @@
             args.Cell.AddStyle(new string[] { "background-color:#cfe388" });
         }
     }
+    public void QueryCellInfoAcilanHandler(QueryCellInfoEventArgs<DersAcilanDto> args)
+    {
+        if (!args.Data.Durum)
+        {
+            //args.Cell.AddClass(new string[] { "below-35" });
+            args.Cell.AddStyle(new string[] { "background-color:#b57f7f" });
+        }
+    }
 
 
 
@@ -257,10 +265,18 @@
 
         if (args.CommandColumn.Title == "Kayıt Ol")
         {
+
+            if (args.RowData.Durum ==false)
+            {
+                dialogText = $"'{args.RowData.Kod}' kodlu, '{args.RowData.Ad}' isimli ders açılmadı.";
+                dialog = true;
+                return;
+            }
+
             if (DersKayitDtos.Any(x => x.Id == args.RowData.Id))
             {
                 dialog = true;
-                dialogText = $"{args.RowData.Kod} kodlu, {args.RowData.Ad} isimli ders zaten ekli!";
+                dialogText = $"'{args.RowData.Kod}' kodlu, '{args.RowData.Ad}' isimli ders zaten ekli!";
             }
             else
             {

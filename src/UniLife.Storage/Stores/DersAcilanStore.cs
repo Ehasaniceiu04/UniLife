@@ -238,7 +238,7 @@ namespace UniLife.Storage.Stores
                                        from da in ps.DefaultIfEmpty()
                                        select new DersAcilanDto
                                        {
-                                           Id = da != null ? da.Id : 9999999,
+                                           Id = da != null ? da.Id : 999999999,
                                            Ad = da != null ? da.Ad : d.Ad,
                                            Kod = da != null ? da.Kod + "(" + d.Kod + ")" : d.Kod,
                                            Zorunlu = da != null ? da.Zorunlu : true,
@@ -247,6 +247,7 @@ namespace UniLife.Storage.Stores
                                            Sinif = da != null ? da.Sinif:d.Sinif,
                                            ODTekrar = da.ODTekrar,
                                            ADKayit = da.ADKayit,
+                                           Durum = da != null ? true : false,
                                        }).ToListAsync();
             //var normalDerslerMapped = _autoMapper.Map<List<DersAcilanDto>>(normalDersler);
 

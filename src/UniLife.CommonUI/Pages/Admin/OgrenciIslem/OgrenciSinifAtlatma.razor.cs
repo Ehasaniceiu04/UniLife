@@ -10,7 +10,7 @@ using Syncfusion.Blazor.DropDowns;
 using System.Net.Http.Json;
 using MatBlazor;
 using UniLife.CommonUI.Extensions;
-
+using Syncfusion.Blazor.Grids;
 
 namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem
 {
@@ -53,6 +53,9 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem
 
 
         bool isOgrGridVisible;
+
+        bool isUyariOpen;
+        string dialogUyariText;
 
         protected async override Task OnInitializedAsync()
         {
@@ -152,6 +155,16 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem
                 }
             }
             
+        }
+
+        public async Task OnRowSelecting(RowSelectingEventArgs<OgrenciDto> args)
+        {
+            if (!string.IsNullOrWhiteSpace(args.Data.DnmSnfGecBilgi))
+            {
+                args.Cancel = true;
+                isUyariOpen = true;
+                dialogUyariText = $"{args.Data.Ad} Öğrencisine bu yıl için ders atlatma zaten yapılmış.";
+            }
         }
     }
 }
