@@ -1,0 +1,188 @@
+﻿@page "/admin/Ogrenci_Toplu_Ders_Kayit"
+
+@using UniLife.Shared.Dto.Definitions
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Calendars
+@using Syncfusion.Blazor.Data
+@using UniLife.Shared.DataModels
+@using Syncfusion.Blazor.SplitButtons
+
+<div class="row">
+    <div class="col-sm-12 col-md-6">
+        <div class="server-action-menu">
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <p>Öğrenciler</p>
+                </div>
+            </div>
+            <div class="row pb-2">
+                <div class="col-sm-12">
+                    <FakBolPrg @bind-ProgramId="programId"
+                               @bind-BolumId="bolumId"
+                               @bind-FakulteId="fakulteId"
+                               @bind-MufredatId="mufredatId"
+                               ProgramShow="true"
+                               MufredatShow="true"
+                               ProgramPlaceHolder=" "></FakBolPrg>
+                    <div class="form-group row">
+                        <label for="KayitTarih" class="col-sm-2 col-form-label-sm">Kayıt Tarih</label>
+                        <div class="col-sm-10">
+                            <SfDateRangePicker ID="KayitTarih" @bind-StartDate="@StartValue" @bind-EndDate="@EndValue">
+                                @*<DateRangePickerEvents ValueChange="ValueChangeHandler"></DateRangePickerEvents>*@
+                            </SfDateRangePicker>
+                        </div>
+                    </div>
+
+                    <SfButton OnClick="Refresh" CssClass="e-success col-sm-12 form-control-sm">Bul / Yenile</SfButton>
+                </div>
+            </div>
+            @if (kaynakVisible)
+            {
+                <SfGrid ID="OgrGrid" @ref="OgrGrid" Query="@totalQuery" TValue="OgrenciDto" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
+                    @*OnActionFailure="ActionFailureHandler" DetailDataBound="DetailDataBound"  OnActionBegin="ActionBeginHandler" DetailDataBound="DetailDataBound" RowDataBound="RowBound"*@
+                    <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+                    <GridEvents TValue="OgrenciDto"></GridEvents>
+                    <GridColumns>
+                        <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
+                        <GridColumn Visible="false" Field=@nameof(OgrenciDto.Id) IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+                        <GridColumn Field=@nameof(OgrenciDto.Ad) HeaderText="Ad"> </GridColumn>
+                        <GridColumn Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad"></GridColumn>
+                        <GridColumn Field=@nameof(OgrenciDto.TCKN) HeaderText="TCKN"></GridColumn>
+                        <GridColumn Field=@nameof(OgrenciDto.OgrNo) HeaderText="Öğrenci No"></GridColumn>
+                        <GridColumn Field=@nameof(OgrenciDto.Sinif) HeaderText="Sınıf"></GridColumn>
+                    </GridColumns>
+                </SfGrid>
+            }
+            <div class="row">
+                <div class="col-12 text-right">
+                    <SfProgressButton Content="Seçili Öğrencileri Hedef Derslere Kayıt Et >" OnClick="Kayit" CssClass="center-block e-primary">
+                        <ProgressButtonSpinSettings Position="SpinPosition.Right"></ProgressButtonSpinSettings>
+                    </SfProgressButton>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-6">
+        <div class="server-action-menu">
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <p>Hedef Dersler</p>
+                </div>
+            </div>
+            <div class="row pb-2">
+                <div class="col-sm-12">
+                    <div class="form-group row">
+                        <label for="DropFakulte" class="col-sm-2 col-form-label-sm">Dönem</label>
+                        <div class="col-sm-10">
+                            <SfDropDownList ShowClearButton="true" TValue="int?" TItem="DonemDto" Placeholder="Dönem seçiniz..."
+                                            @bind-Value="@donemId">
+                                <SfDataManager Url="odata/donems" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
+                                <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                            </SfDropDownList>
+                        </div>
+                    </div>
+                    <FakBolPrg @bind-ProgramId="programId2"
+                               @bind-BolumId="bolumId2"
+                               @bind-FakulteId="fakulteId2"
+                               @bind-MufredatId="mufredatId2"
+                               ProgramShow="true"
+                               MufredatShow="true"
+                               ProgramPlaceHolder=" "></FakBolPrg>
+                    <SfButton OnClick="RefreshHedef" CssClass="e-success col-sm-12 form-control-sm">Bul / Yenile</SfButton>
+                </div>
+            </div>
+
+            @if (hedefVisible)
+            {
+                <SfGrid ID="dersAcGrid" @ref="dersAcGrid" Query="@totalQueryDers" TValue="DersAcilanDto" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
+                    @*OnActionFailure="ActionFailureHandler" DetailDataBound="DetailDataBound"  OnActionBegin="ActionBeginHandler" DetailDataBound="DetailDataBound" RowDataBound="RowBound"*@
+                    <SfDataManager Url="@OdataQueryDers" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+                    <GridEvents TValue="DersAcilanDto"></GridEvents>
+                    @*<GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.Excel"></GridFilterSettings>*@
+                    <GridColumns>
+                        <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
+                        <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+                        <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Ad"> </GridColumn>
+                        <GridColumn Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kod"></GridColumn>
+                        <GridColumn Field=@nameof(DersAcilanDto.Kredi) HeaderText="Kredi"></GridColumn>
+                    </GridColumns>
+                </SfGrid>
+            }
+        </div>
+    </div>
+</div>
+
+
+<Dialog Baslik="Uyarı!" @bind-isDialogOpen="@isUyariOpen">
+        <p>@dialogUyariText</p>
+    </Dialog>
+
+
+@*<MatDialog @bind-IsOpen="@aktarimConfirmDialogOpen" Style="z-index:100">
+        <MatDialogTitle><MatIcon Icon="warning"></MatIcon>@aktarimConfirmDialogTitle</MatDialogTitle>
+        <MatDialogContent>
+            Kaynak ders öğrencilerini hedef dersine aktarmak istiyor musunuz?
+        </MatDialogContent>
+        <MatDialogActions>
+            <MatButton OnClick="@(e => { aktarimConfirmDialogOpen = false; })">İptal</MatButton>
+            <MatButton OnClick="@AktarimYap">Aktar</MatButton>
+        </MatDialogActions>
+    </MatDialog>*@
+
+
+
+<style type="text/css" class="cssStyles">
+    textarea.e-input,
+    .e-float-input textarea,
+    .e-float-input.e-control-wrapper textarea,
+    .e-input-group textarea,
+    .e-input-group.e-control-wrapper textarea {
+        resize: none;
+    }
+
+
+    .server-action-menu {
+        background-color: transparent;
+        background-image: linear-gradient(to bottom, rgba(30, 87, 153, 0.2) 0%, rgba(125, 185, 232, 0) 100%);
+        background-repeat: repeat;
+        border-radius: 10px;
+        padding: 5px;
+    }
+
+    .e-DoubleArrowRight:before {
+        content: '\e7bb';
+        color: #3ec9e8;
+    }
+
+    .e-Circle_Add:before {
+        content: '\e755';
+        color: #31ba13;
+    }
+
+    /*.e-grid .e-headercelldiv {
+        font-size: 7px;
+    }
+
+    .e-grid .e-rowcell {
+        font-size: 7px;
+    } */
+
+    .mdc-dialog .mdc-dialog__container {
+        width: 100%;
+    }
+
+    .mdc-dialog .mdc-dialog__surface {
+        max-width: none;
+        width: 70%;
+    }
+
+    .form-group {
+        margin-bottom: unset;
+    }
+
+    .col-form-label-sm {
+        padding-bottom: unset;
+    }
+</style>

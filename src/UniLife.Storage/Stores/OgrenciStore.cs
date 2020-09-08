@@ -197,7 +197,7 @@ namespace UniLife.Storage.Stores
             {
                 int ogrPrgSure = ogrPrograms.FirstOrDefault(x=>x.Id == item.Id).IntValue;
 
-                if (ogrPrgSure> item.Sinif && !item.DnmSnfGecBilgi.Contains("Atlatıldı"))
+                if (ogrPrgSure> item.Sinif && item.DnmSnfGecBilgi != "Sınıf Atlatıldı")
                 {
                     item.Sinif++;
                     item.DnmSnfGecBilgi = "Sınıf Atlatıldı";

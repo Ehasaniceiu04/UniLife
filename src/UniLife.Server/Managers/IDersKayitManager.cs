@@ -14,5 +14,6 @@ namespace UniLife.Server.Managers
         Task<ApiResponse> PutUpdateOgrencisDersKayitsDeleteExSubes(ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds);
         Task<ApiResponse> GetOgrenciDersKayitsByDers(int dersAcilanId);
         Task<ApiResponse> HedefKaynakOgrAktar(HedefKaynakDto hedefKaynakDto);
+        Task<ApiResponse> HedefKaynakOgrDersKayit(HedefKaynakDto hedefKaynakDto);
     }
 }

@@ -56,5 +56,11 @@ namespace UniLife.Server.Managers
             await _dersKayitStore.HedefKaynakOgrAktar(hedefKaynakDto);
             return new ApiResponse(Status200OK, "Güncellendi HedefKaynakOgrAktar");
         }
+
+        public async Task<ApiResponse> HedefKaynakOgrDersKayit(HedefKaynakDto hedefKaynakDto)
+        {
+            await _dersKayitStore.HedefKaynakOgrDersKayit(hedefKaynakDto);
+            return new ApiResponse(Status200OK, "Güncellendi HedefKaynakOgrAktar");
+        }
     }
 }

@@ -79,6 +79,13 @@ namespace UniLife.Storage.Stores
             await _db.SaveChangesAsync(CancellationToken.None);
         }
 
+
+        public Task HedefKaynakOgrDersKayit(HedefKaynakDto hedefKaynakDto)
+        {
+            //Burada seçilenler 
+            throw new System.NotImplementedException();
+        }
+
         public async Task OgrenciKayitToDerss(IEnumerable<DersKayitDto> dersKayitDtos)
         {
             var silinecekler = from k in _db.DersKayits.Where(x => (x.OgrenciId == dersKayitDtos.FirstOrDefault().OgrenciId) && dersKayitDtos.Select(x => x.DersAcilanId).Contains(x.DersAcilanId))

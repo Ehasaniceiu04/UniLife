@@ -132,6 +132,23 @@ namespace UniLife.Server.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("HedefKaynakOgrDersKayit")]
+        [Authorize(Permissions.DersKayit.Create)]
+        [Authorize(Permissions.DersKayit.Delete)]
+        public async Task<ApiResponse> HedefKaynakOgrDersKayit([FromBody] HedefKaynakDto hedefKaynakDto)
+        {
+            if (ModelState.IsValid)
+            {
+                return await _dersKayitManager.HedefKaynakOgrDersKayit(hedefKaynakDto);
+            }
+            else
+            {
+                return new ApiResponse(Status400BadRequest, "DersKayitDto Model is Invalid");
+            }
+        }
+
+        
 
     }
 }
