@@ -159,12 +159,12 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem
 
         public async Task OnRowSelecting(RowSelectingEventArgs<OgrenciDto> args)
         {
-            if (!string.IsNullOrWhiteSpace(args.Data.DnmSnfGecBilgi))
-            {
-                args.Cancel = true;
-                isUyariOpen = true;
-                dialogUyariText = $"{args.Data.Ad} Öğrencisine bu yıl için ders atlatma zaten yapılmış.";
-            }
+            //if (!string.IsNullOrWhiteSpace(args.Data.DnmSnfGecBilgi))
+            //{
+            //    args.Cancel = true;
+            //    isUyariOpen = true;
+            //    dialogUyariText = $"{args.Data.Ad} Öğrencisine bu yıl için ders atlatma zaten yapılmış.";
+            //}
         }
 
         async Task SinitAtlaTemizle()
