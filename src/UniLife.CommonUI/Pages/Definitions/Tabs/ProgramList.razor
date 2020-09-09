@@ -7,6 +7,7 @@
 @using Newtonsoft.Json
 @using Syncfusion.Blazor.Inputs
 @using Syncfusion.Blazor.Buttons
+@attribute [Authorize(Roles = "Personel")]
 
 <ControlSection>
     <div class="col-12 pb-2">
@@ -26,21 +27,21 @@
                 }
                 <div class="row">
 
-                    <div class="col-md-4">
+                    <div class="col-sm-4">
                         <div class="form-row mt-2">
                             <div class="col-12 pb-2">
                                 <div class="form-row">
 
-                                    <label class="col-md-2 col-form-label" for="Ad">Ad</label>
-                                    <SfTextBox ID="Ad" CssClass="form-control col-sm-10 pb-1" @bind-Value="@(programInfo.Ad)"></SfTextBox>
-                                    <label class="col-md-2 col-form-label" for="KisaAd">KisaAd</label>
-                                    <SfTextBox ID="KisaAd" CssClass="form-control col-sm-10 pb-1" @bind-Value="@(programInfo.KisaAd)"></SfTextBox>
-                                    <label class="col-md-2 col-form-label" for="AdEn">AdEn</label>
-                                    <SfTextBox ID="AdEn" CssClass="form-control col-sm-10 pb-1" @bind-Value="@(programInfo.AdEn)"></SfTextBox>
-                                    <label class="col-md-2 col-form-label" for="KisaAdEn">KisaAdEn</label>
-                                    <SfTextBox ID="KisaAdEn" CssClass="form-control col-sm-10 pb-1" @bind-Value="@(programInfo.KisaAdEn)"></SfTextBox>
-                                    <label class="col-md-2 col-form-label" for="Kod">Kod</label>
-                                    <SfNumericTextBox ID="Kod" CssClass="form-control col-sm-10" @bind-Value="@(programInfo.Kod)"></SfNumericTextBox>
+                                    <label class="col-sm-2 col-form-label" for="Ad">Ad</label>
+                                    <SfTextBox ID="Ad" CssClass=" col-sm-10 pb-1" @bind-Value="@(programInfo.Ad)"></SfTextBox>
+                                    <label class="col-sm-2 col-form-label" for="KisaAd">KisaAd</label>
+                                    <SfTextBox ID="KisaAd" CssClass=" col-sm-10 pb-1" @bind-Value="@(programInfo.KisaAd)"></SfTextBox>
+                                    <label class="col-sm-2 col-form-label" for="AdEn">AdEn</label>
+                                    <SfTextBox ID="AdEn" CssClass=" col-sm-10 pb-1" @bind-Value="@(programInfo.AdEn)"></SfTextBox>
+                                    <label class="col-sm-2 col-form-label" for="KisaAdEn">KisaAdEn</label>
+                                    <SfTextBox ID="KisaAdEn" CssClass=" col-sm-10 pb-1" @bind-Value="@(programInfo.KisaAdEn)"></SfTextBox>
+                                    <label class="col-sm-2 col-form-label" for="Kod">Kod</label>
+                                    <SfNumericTextBox ID="Kod" CssClass=" col-sm-10" @bind-Value="@(programInfo.Kod)"></SfNumericTextBox>
 
                                 </div>
                             </div>
@@ -56,21 +57,21 @@
                         </div>
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-sm-4">
                         <div class="form-row mt-2">
                             <div class="col-12 pb-2">
                                 <div class="form-row">
-                                    <label class="col-md-2 col-form-label" for="AzamiSure">AzamiSure</label>
-                                    <SfNumericTextBox ID="AzamiSure" CssClass="form-control col-sm-10" @bind-Value="@(programInfo.AzamiSure)"></SfNumericTextBox>
-                                    <label class="col-md-2 col-form-label" for="NormalSure">NormalSure</label>
-                                    <SfNumericTextBox ID="NormalSure" CssClass="form-control col-sm-10" @bind-Value="@(programInfo.NormalSure)"></SfNumericTextBox>
-                                    <label class="col-md-2 col-form-label" for="OsymKod">OsymKod</label>
-                                    <SfTextBox ID="OsymKod" CssClass="form-control col-sm-10" @bind-Value="@(programInfo.OsymKod)"></SfTextBox>
-                                    <label class="col-md-2 col-form-label" for="OsymTur">OsymTur</label>
-                                    <SfTextBox ID="OsymTur" CssClass="form-control col-sm-10" @bind-Value="@(programInfo.OsymTur)"></SfTextBox>
-                                    <label class="col-md-2 col-form-label" for="YoksisBirimKod">YoksisBirimKod</label>
-                                    <SfNumericTextBox ID="YoksisBirimKod" CssClass="form-control col-sm-7" @bind-Value="@(programInfo.YoksisBirimKod)"></SfNumericTextBox>
-                                    <SfCheckBox Label="Yöksis Durum" CssClass="col-sm-2" @bind-Checked="@(programInfo.YoksisDurum)"></SfCheckBox>
+                                    <label class="col-sm-3 col-form-label" for="AzamiSure">Azami Süre</label>
+                                    <SfNumericTextBox ID="AzamiSure" CssClass=" col-sm-9" @bind-Value="@(programInfo.AzamiSure)"></SfNumericTextBox>
+                                    <label class="col-sm-3 col-form-label" for="NormalSure">Normal Süre</label>
+                                    <SfNumericTextBox ID="NormalSure" CssClass=" col-sm-9" @bind-Value="@(programInfo.NormalSure)"></SfNumericTextBox>
+                                    <label class="col-sm-3 col-form-label" for="OsymKod">Ösym Kod</label>
+                                    <SfTextBox ID="OsymKod" CssClass=" col-sm-9" @bind-Value="@(programInfo.OsymKod)"></SfTextBox>
+                                    <label class="col-sm-3 col-form-label" for="OsymTur">Ösym Tür</label>
+                                    <SfTextBox ID="OsymTur" CssClass=" col-sm-9" @bind-Value="@(programInfo.OsymTur)"></SfTextBox>
+                                    <label class="col-sm-3 col-form-label" for="YoksisBirimKod">YoksisBirimKod</label>
+                                    <SfNumericTextBox ID="YoksisBirimKod" CssClass=" col-sm-3" @bind-Value="@(programInfo.YoksisBirimKod)"></SfNumericTextBox>
+                                    <SfCheckBox Label="Yöksis Durum" CssClass="col-sm-6" @bind-Checked="@(programInfo.YoksisDurum)"></SfCheckBox>
                                     <SfDropDownList @ref="DropProgramTur" TValue="int?" TItem="ProgramTurDto" Placeholder="Program Türü seçiniz..."
                                                     Query="@programTurQuery"
                                                     @bind-Value="@programInfo.ProgramTurId">
@@ -81,24 +82,28 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-sm-4">
                         <div class="form-row mt-2">
                             <div class="col-12 pb-2">
                                 <div class="form-row">
-                                    <label class="col-md-2 col-form-label" for="MezuniyetUnvan">MezuniyetUnvan</label>
-                                    <SfTextBox ID="MezuniyetUnvan" CssClass="form-control col-sm-10" @bind-Value="@(programInfo.MezuniyetUnvan)"></SfTextBox>
-                                    <label class="col-md-2 col-form-label" for="DiplomaAd">DiplomaAd</label>
-                                    <SfTextBox ID="DiplomaAd" CssClass="form-control col-sm-10" @bind-Value="@(programInfo.DiplomaAd)"></SfTextBox>
-                                    <label class="col-md-2 col-form-label" for="DiplomaAdEn">DiplomaAdEn</label>
-                                    <SfTextBox ID="DiplomaAdEn" CssClass="form-control col-sm-10" @bind-Value="@(programInfo.DiplomaAdEn)"></SfTextBox>
-                                    <label class="col-md-2 col-form-label" for="Dil">Dil</label>
-                                    <SfNumericTextBox ID="Dil" CssClass="form-control col-sm-10" @bind-Value="@(programInfo.Dil)"></SfNumericTextBox>
-                                    <label class="col-md-2 col-form-label" for="Yerleske">Yerleske</label>
-                                    <SfTextBox ID="Yerleske" CssClass="form-control col-sm-10" @bind-Value="@(programInfo.Yerleske)"></SfTextBox>
-                                    <SfCheckBox Label="Hazırlık" CssClass="col-sm-2" @bind-Checked="@(programInfo.IsHazirlik)"></SfCheckBox>
-                                    <SfCheckBox Label="Staj" CssClass="col-sm-2" @bind-Checked="@(programInfo.StajDurum)"></SfCheckBox>
-                                    <SfCheckBox Label="Durum" CssClass="col-sm-2" @bind-Checked="@(programInfo.Durum)"></SfCheckBox>
-                                    <SfCheckBox Label="Yillik" CssClass="col-sm-2" @bind-Checked="@(programInfo.Yillik)"></SfCheckBox>
+                                    <label class="col-sm-3 col-form-label" for="MezuniyetUnvan">Mezuniyet Ünvan</label>
+                                    <SfTextBox ID="MezuniyetUnvan" CssClass=" col-sm-9" @bind-Value="@(programInfo.MezuniyetUnvan)"></SfTextBox>
+                                    <label class="col-sm-3 col-form-label" for="DiplomaAd">Diploma Adı</label>
+                                    <SfTextBox ID="DiplomaAd" CssClass=" col-sm-9" @bind-Value="@(programInfo.DiplomaAd)"></SfTextBox>
+                                    <label class="col-sm-3 col-form-label" for="DiplomaAdEn">Diploma AdEn</label>
+                                    <SfTextBox ID="DiplomaAdEn" CssClass=" col-sm-9" @bind-Value="@(programInfo.DiplomaAdEn)"></SfTextBox>
+                                    <label class="col-sm-3 col-form-label" for="dil">Dil</label>
+                                    <SfDropDownList ID="dil" TValue="int" TItem="DersDilDto" Index="0" CssClass="col-sm-9"
+                                                    @bind-Value="@programInfo.Dil">
+                                        <SfDataManager Url="odata/dersdils" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
+                                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                                    </SfDropDownList>
+                                    <label class="col-sm-3 col-form-label" for="Yerleske">Yerleşke</label>
+                                    <SfTextBox ID="Yerleske" CssClass=" col-sm-9" @bind-Value="@(programInfo.Yerleske)"></SfTextBox>
+                                    <SfCheckBox Label="Hazırlık" CssClass="col-sm-3" @bind-Checked="@(programInfo.IsHazirlik)"></SfCheckBox>
+                                    <SfCheckBox Label="Staj" CssClass="col-sm-3" @bind-Checked="@(programInfo.StajDurum)"></SfCheckBox>
+                                    <SfCheckBox Label="Durum" CssClass="col-sm-3" @bind-Checked="@(programInfo.Durum)"></SfCheckBox>
+                                    <SfCheckBox Label="Yillik" CssClass="col-sm-3" @bind-Checked="@(programInfo.Yillik)"></SfCheckBox>
                                 </div>
                             </div>
                         </div>
@@ -137,12 +142,12 @@
     </SfGrid>
 </ControlSection>
 
-
+<SfButton OnClick="asdf" Content="asdf"></SfButton>
 
 @code{
 
     string[] Initial = (new string[] { "FakulteId", "BolumId" });
-    private DialogSettings DialogParams = new DialogSettings { MinHeight = "400px", Width = "1300px" };
+    private DialogSettings DialogParams = new DialogSettings { MinHeight = "400px", Width = "1400px" };
 
     SfGrid<ProgramDto> ProgramGrid;
 
@@ -219,10 +224,9 @@
             if (apiResponse.StatusCode == Status200OK)
             {
                 matToaster.Add(apiResponse.Message, MatToastType.Success);
-                //todo = Newtonsoft.Json.JsonConvert.DeserializeObject<ProgramDto>
-                //(apiResponse.Result.ToString());
-                //todos.Add(todo);
-                //todo = new TodoDto(); //reset todo after insert
+                programDtos.Add(programDto);
+                ReadPrograms();
+                StateHasChanged();
             }
             else
             {
@@ -262,6 +266,7 @@
                 matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Program Save Failed");
                 //update failed gridi boz !
             }
+            StateHasChanged();
         }
         catch (Exception ex)
         {
@@ -284,7 +289,7 @@
             {
                 matToaster.Add("Program Delete Failed: " + response.StatusCode, MatToastType.Danger);
             }
-            //deleteDialogOpen = false;
+            StateHasChanged();
         }
         catch (Exception ex)
         {
@@ -292,9 +297,15 @@
         }
     }
 
-    public async Task ProgramSelected()
+    public async Task asdf()
     {
-
+        StateHasChanged();
     }
 
 }
+
+<style>
+    .form-group {
+        margin-bottom: unset;
+    }
+</style>

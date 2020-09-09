@@ -14,17 +14,17 @@
                 <GridColumn Field=@nameof(BolumDto.Ad) HeaderText="Bölüm İsim" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
                 <GridColumn Field=@nameof(BolumDto.KisaAd) HeaderText="KisaAd" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
                 <GridColumn Field=@nameof(BolumDto.Kod) HeaderText="Kod"></GridColumn>
-                <GridColumn Field=@nameof(BolumDto.AdEn) HeaderText="AdEn"></GridColumn>
-                <GridColumn Field=@nameof(BolumDto.KisaAdEn) HeaderText="İng. K.Ad"></GridColumn>
-                <GridColumn Field=@nameof(BolumDto.OsymKod) HeaderText="OsymKod"></GridColumn>
+                <GridColumn Visible="false" Field=@nameof(BolumDto.AdEn) HeaderText="AdEn"></GridColumn>
+                <GridColumn Visible="false" Field=@nameof(BolumDto.KisaAdEn) HeaderText="İng. K.Ad"></GridColumn>
+                <GridColumn Visible="false" Field=@nameof(BolumDto.OsymKod) HeaderText="OsymKod"></GridColumn>
                 <GridColumn Field=@nameof(BolumDto.OgrenimTurId) HeaderText="Ogrenim Tür" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@ogrenimTurDtos"></GridColumn>
                 <GridColumn Field=@nameof(BolumDto.FakulteId) HeaderText="Fakülte" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@fakulteDtos"></GridColumn>
                 <GridColumn Field=@nameof(BolumDto.OgrenimSure) HeaderText="OgrenimSure"></GridColumn>
                 <GridColumn Field=@nameof(BolumDto.Durum) EditType="EditType.BooleanEdit" HeaderText="Aktif"></GridColumn>
-                <GridColumn Field=@nameof(BolumDto.DiplomaAd) HeaderText="DiplomaAd"></GridColumn>
-                <GridColumn Field=@nameof(BolumDto.IsBologna) EditType="EditType.BooleanEdit" HeaderText="IsBologna"></GridColumn>
-                <GridColumn Field=@nameof(BolumDto.DiplomaAdEn) HeaderText="DiplomaAdEn"></GridColumn>
-                <GridColumn HeaderText="Manage Records" Width="150">
+                <GridColumn Visible="false" Field=@nameof(BolumDto.DiplomaAd) HeaderText="DiplomaAd"></GridColumn>
+                <GridColumn Visible="false" Field=@nameof(BolumDto.IsBologna) EditType="EditType.BooleanEdit" HeaderText="IsBologna"></GridColumn>
+                <GridColumn Visible="false" Field=@nameof(BolumDto.DiplomaAdEn) HeaderText="DiplomaAdEn"></GridColumn>
+                <GridColumn>
                     <GridCommandColumns>
                         <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-edit", CssClass = "e-flat" })"></GridCommandColumn>
                         <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-delete", CssClass = "e-flat" })"></GridCommandColumn>
@@ -74,12 +74,17 @@
     }
 
 
-    public void ActionCompletedHandler(ActionEventArgs<BolumDto> args)
-    {
-        if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
-        {
+    //public async Task OnActionBeginHandler(ActionEventArgs<BolumDto> args)
+    //{
 
-        }
+    //    //if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit || args.RequestType == Syncfusion.Blazor.Grids.Action.Add)
+    //    //{
+    //    //    await BolumGrid.ShowColumns("DiplomaAdEn");
+    //    //}
+    //}
+
+    public async Task ActionCompletedHandler(ActionEventArgs<BolumDto> args)
+    {
         if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
         {
             if (args.Action == "Edit")
@@ -96,7 +101,21 @@
         {
             Delete(args.Data);
         }
+
+
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit || args.RequestType == Syncfusion.Blazor.Grids.Action.Add)
+        {
+            await BolumGrid.ShowColumns(new string[] { "DiplomaAdEn", "AdEn", "OsymKod", "DiplomaAd", "DiplomaAdEn", "IsBologna" });
+        }
+
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save || args.RequestType == Syncfusion.Blazor.Grids.Action.Cancel)
+        {
+            await BolumGrid.HideColumns(new string[] { "DiplomaAdEn", "AdEn", "OsymKod", "DiplomaAd", "DiplomaAdEn", "IsBologna" });
+        }
     }
+
+
+
 
     public async Task Create(BolumDto bolumDto)
     {
