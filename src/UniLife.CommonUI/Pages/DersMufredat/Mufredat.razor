@@ -25,10 +25,11 @@
         <SfButton OnClick="Refresh" CssClass="e-success col-sm-12 form-control-sm">Bul / Yenile</SfButton>
     </div>
 </div>
+@*QueryCellInfo="QueryCellInfoHandler" RowSelecting="OnRowSelecting" *@
 <SfGrid @ref="MufredatGrid" ID="MufredatGrid" TValue="MufredatDto" Query="@totalQuery" ShowColumnChooser="true" AllowResizing="true" AllowSorting="true" AllowFiltering="true" AllowPaging="true" Toolbar="Toolbaritems"
         ContextMenuItems="@(new List<ContextMenuItemModel>() { new ContextMenuItemModel { Text = "Ders Tanımla", Target = ".e-content", Id = "copywithheader" } })" Width="100%" Height="100%">
     <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
-    <GridEvents RowSelecting="OnRowSelecting" QueryCellInfo="QueryCellInfoHandler" ContextMenuItemClicked="OnContextMenuClick" CommandClicked="CommandClickHandler" OnActionBegin="OnActionBeginHandler" OnToolbarClick="ToolbarClickHandler" OnActionComplete="ActionCompletedHandler" TValue="MufredatDto"></GridEvents>
+    <GridEvents ContextMenuItemClicked="OnContextMenuClick" CommandClicked="CommandClickHandler" OnActionBegin="OnActionBeginHandler" OnToolbarClick="ToolbarClickHandler" OnActionComplete="ActionCompletedHandler" TValue="MufredatDto"></GridEvents>
     <GridSelectionSettings Type="SelectionType.Multiple" CheckboxOnly="true"></GridSelectionSettings>
     @*<GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.CheckBox"></GridFilterSettings>*@
     <GridEditSettings Dialog="DialogParams" ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
@@ -42,7 +43,8 @@
                         <FakBolPrg @bind-FakulteId="fakulteId"
                                    @bind-BolumId="bolumId"
                                    @bind-ProgramId="@(mufredatInfo.ProgramId)"
-                                   ProgramPlaceHolder="@(plazceHolderProgramAd)"></FakBolPrg>
+                                   ProgramPlaceHolder="@(plazceHolderProgramAd)"
+                                   ProgramShow="true"></FakBolPrg>
                     </div>
                     <div class="col-sm-12 col-md-8">
                         <div class="form-group row">
@@ -96,7 +98,7 @@
         <GridColumn>
             <GridCommandColumns>
                 <GridCommandColumn Type="CommandButtonType.None" Title="Tanımlı Dersler" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
-                <GridCommandColumn Type="CommandButtonType.None" Title="Clone" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-copy", CssClass="e-flat" })"></GridCommandColumn>
+                <GridCommandColumn Type="CommandButtonType.Edit" Title="Clone" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-copy", CssClass="e-flat" })"></GridCommandColumn>
                 <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-edit", CssClass="e-flat" })"></GridCommandColumn>
                 <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-delete", CssClass="e-flat" })"></GridCommandColumn>
                 <GridCommandColumn Type="CommandButtonType.Save" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-update", CssClass="e-flat" })"></GridCommandColumn>
@@ -106,16 +108,16 @@
     </GridColumns>
 </SfGrid>
 
-<MatDialog Id="multiDialog" @bind-IsOpen="@multiDialogOpen" Style="z-index:100">
-    <MatDialogTitle><MatIcon Icon="warning"></MatIcon> Confirm Delete</MatDialogTitle>
-    <MatDialogContent>
-        "@mufredatDto.Ad" isimli müfredatı çoklamak istediğinize emin misiniz?
-    </MatDialogContent>
-    <MatDialogActions>
-        <MatButton OnClick="@(e => { multiDialogOpen = false; })">Kapat</MatButton>
-        <MatButton OnClick="@MultiplyRecord">Çokla</MatButton>
-    </MatDialogActions>
-</MatDialog>
+@*<MatDialog Id="multiDialog" @bind-IsOpen="@multiDialogOpen" Style="z-index:100">
+        <MatDialogTitle><MatIcon Icon="warning"></MatIcon> Confirm Delete</MatDialogTitle>
+        <MatDialogContent>
+            "@mufredatDto.Ad" isimli müfredatı çoklamak istediğinize emin misiniz?
+        </MatDialogContent>
+        <MatDialogActions>
+            <MatButton OnClick="@(e => { multiDialogOpen = false; })">Kapat</MatButton>
+            <MatButton OnClick="@MultiplyRecord">Çokla</MatButton>
+        </MatDialogActions>
+    </MatDialog>*@
 
 <Dialog Baslik="Uyarı!" @bind-isDialogOpen="@isUyariOpen">
     <p>@dialogUyariText</p>

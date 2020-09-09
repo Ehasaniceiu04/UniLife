@@ -267,13 +267,13 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             this.StateHasChanged();
         }
 
-        public void QueryCellInfoHandler(QueryCellInfoEventArgs<DersDto> args)
-        {
-            if (args.Data.AktifDonemdeAcik)
-            {
-                args.Cell.AddStyle(new string[] { "background-color:#80d192" });
-            }
-        }
+        //public void QueryCellInfoHandler(QueryCellInfoEventArgs<DersDto> args)
+        //{
+        //    if (args.Data.AktifDonemdeAcik)
+        //    {
+        //        args.Cell.AddStyle(new string[] { "background-color:#80d192" });
+        //    }
+        //}
 
         public async Task CommandClickHandler(CommandClickEventArgs<DersDto> args)
         {

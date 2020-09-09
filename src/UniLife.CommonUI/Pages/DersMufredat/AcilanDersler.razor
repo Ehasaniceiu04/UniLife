@@ -35,8 +35,6 @@
         </div>
     </div>
 
-    @if (isGridVisible)
-    {
         <SfGrid @ref="DersAcilanGrid" Query="@totalQuery" TValue="DersAcilanDto" AllowSorting="true" AllowExcelExport="true" AllowPdfExport="true" AllowPaging="true" AllowFiltering="true" Toolbar="@(new List<string>() {  "Add","PdfExport","ExcelExport","ColumnChooser","Kayıtlı Öğrenciler" })" ShowColumnChooser="true">
             <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
             <GridEvents RowSelecting="OnRowSelecting" OnToolbarClick="ToolbarClickHandler" OnActionComplete="ActionCompletedHandler" OnActionBegin="OnActionBeginHandler" CommandClicked="CommandClickHandler" TValue="DersAcilanDto"></GridEvents>
@@ -282,7 +280,6 @@
 
             </GridColumns>
         </SfGrid>
-    }
 </ControlSection>
 
 @if (akademisyenDialogOpen)

@@ -164,10 +164,11 @@ namespace UniLife.Storage.Stores
             //var rawBulkDeleteQuery = $"delete from public.'DersAcilans' where 'DersId' in ({queryIncludeIds})";
 
             //int numberOfRowAffected = await _db.Database.ExecuteSqlCommandAsync(rawBulkDeleteQuery.Replace('\'', '"'));
-
-            var dumpDersAcilans = _db.DersAcilans.Where(x => reqEntityIdWithOtherEntitiesIds.EntityId == x.DonemId && reqEntityIdWithOtherEntitiesIds.OtherEntityIds.Contains(x.MufredatId)).ToList(); //bunlar yeniden geldiği için silinecek.
-
             var aktifDonem = await _db.Donems.FirstOrDefaultAsync(x => x.Durum == true);
+
+            var dumpDersAcilans = _db.DersAcilans.Where(x => aktifDonem.Id == x.DonemId && reqEntityIdWithOtherEntitiesIds.OtherEntityIds.Contains(x.MufredatId)).ToList(); //bunlar yeniden geldiği için silinecek.
+
+            
 
             List<DersAcilan> dersAcilans = new List<DersAcilan>();
             foreach (var i in mufredatDerss)
@@ -200,20 +201,20 @@ namespace UniLife.Storage.Stores
                 };
                 dersAcilans.Add(dersAcilan);
 
-                i.AktifDonemdeAcik = true; // "Ders"ler "DersAcilan"a aktarıldığında "Ders" yeşilleniyor oluyor. Bir sonki dönem bu sıfırlanır.
+                //i.AktifDonemdeAcik = true; // "Ders"ler "DersAcilan"a aktarıldığında "Ders" yeşilleniyor oluyor. Bir sonki dönem bu sıfırlanır.
             }
 
             _db.DersAcilans.RemoveRange(dumpDersAcilans); //aynı dersacilan varsa sil
-            _db.Derss.UpdateRange(mufredatDerss); // açilan dersler in durumunu 1 yap.
+            //_db.Derss.UpdateRange(mufredatDerss); // açilan dersler in durumunu 1 yap.
 
 
-            var aktifMufredats = await _db.Mufredats.Where(x=> reqEntityIdWithOtherEntitiesIds.OtherEntityIds.Contains(x.Id)).ToListAsync();
-            aktifMufredats.ForEach(x => { x.Durum = 1;});  //açılan derslerin bağlı oldugu müfredatların durumu 1 yap.
+            //var aktifMufredats = await _db.Mufredats.Where(x=> reqEntityIdWithOtherEntitiesIds.OtherEntityIds.Contains(x.Id)).ToListAsync();
+            //aktifMufredats.ForEach(x => { x.Durum = 1;});  //açılan derslerin bağlı oldugu müfredatların durumu 1 yap.
 
             await _db.DersAcilans.AddRangeAsync(dersAcilans); //açılan dersleri ekle
 
 
-            _db.Mufredats.UpdateRange(aktifMufredats); //1 leri kaydet.
+            //_db.Mufredats.UpdateRange(aktifMufredats); //1 leri kaydet.
 
             await _db.SaveChangesAsync(CancellationToken.None);
 
@@ -228,6 +229,33 @@ namespace UniLife.Storage.Stores
             var aktifMufredat = await _db.Mufredats.FirstOrDefaultAsync(x => x.ProgramId == programId && x.Durum == 1);
 
             return _autoMapper.Map<Mufredat, MufredatDto>(aktifMufredat);
+        }
+
+        public async Task CoklaModified(MufredatDto mufredatDto)
+        {
+            using (var context = _db.Context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var derss = await _db.Derss.AsNoTracking().Where(t => t.MufredatId == mufredatDto.Id).ToListAsync();
+
+                    mufredatDto.Id = 0;
+                    var temizMuf = _autoMapper.Map<Mufredat>(mufredatDto);
+                    _db.Mufredats.Add(temizMuf);
+                    await _db.SaveChangesAsync(CancellationToken.None);
+                    //derss.ForEach(x => x.MufredatId = mufredatDto.Id);
+                    derss.ForEach(x => { x.Id = 0; x.MufredatId = temizMuf.Id; });
+                    _db.Derss.AddRange(derss);
+                    await _db.SaveChangesAsync(CancellationToken.None);
+
+                    context.Commit();
+                }
+                catch (System.Exception)
+                {
+
+                    throw;
+                }
+            }
         }
     }
 }

@@ -24,5 +24,6 @@ namespace UniLife.Shared.DataInterfaces
         Task<MufredatStateDto> GetMufredatState(int mufredatId);
         Task CreateDersAcilansByMufredatIds(ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds);
         Task<MufredatDto> GetLastMufredatByProgramId(int programId);
+        Task CoklaModified(MufredatDto mufredatDto);
     }
 }

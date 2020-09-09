@@ -102,7 +102,15 @@ namespace UniLife.Server.Controllers
         => ModelState.IsValid ?
                 await _mufredatManager.GetLastMufredatByProgramId(programId) :
                 new ApiResponse(Status400BadRequest, "Mufredat Model is Invalid");
-        
 
+
+
+        [HttpPost]
+        [Authorize(Permissions.Mufredat.Create)]
+        [Route("CoklaModified")]
+        public async Task<ApiResponse> CoklaModified([FromBody] MufredatDto mufredatDto)
+        => ModelState.IsValid ?
+            await _mufredatManager.CoklaModified(mufredatDto) :
+            new ApiResponse(Status400BadRequest, "Mufredat Model is Invalid");
     }
 }

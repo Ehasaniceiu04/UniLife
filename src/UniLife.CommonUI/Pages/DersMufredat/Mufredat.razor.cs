@@ -50,7 +50,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         private List<Object> Toolbaritems = new List<Object>() { "Add", "ColumnChooser", new ItemModel() { Text = "Seçili Mufredatları Aç", TooltipText = "Click", PrefixIcon = "e-icons e-SendToBack", Id = "MufredatDerslerAc" } };
 
-        bool multiDialogOpen = false;
+        //bool multiDialogOpen = false;
 
         private DialogSettings DialogParams = new DialogSettings { MinHeight = "400px", Width = "900px" };
 
@@ -65,6 +65,8 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         int? AçilacakMufredatlarınSecilenDonemTipIdsi;
         bool mufredatAcDialogOpen;
+
+        bool isOpsCoklama;
 
         public async Task MultiplyRecord()
         {
@@ -153,8 +155,10 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             {
                 if (args.CommandColumn.Title == "Clone")
                 {
-                    mufredatDto = args.RowData;
-                    multiDialogOpen = true;
+                    //mufredatDto = args.RowData;
+                    //multiDialogOpen = true;
+
+                    isOpsCoklama = true;
                 }
                 if (args.CommandColumn.Title == "Tanımlı Dersler")
                 {
@@ -232,7 +236,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 }
                 else if (args.Action == "Add")
                 {
-                    if (await Create(args.Data))
+                    if (await Create(args.Data,false))
                     {
 
                     MufredatGrid.Refresh();
@@ -254,13 +258,25 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             }
         }
 
-        public async Task<bool> Create(MufredatDto mufredatDto)
+        public async Task<bool> Create(MufredatDto mufredatDto,bool isOpsCoklama)
         {
             try
             {
-                mufredatDto.Program = null;
-                ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>
-                    ("api/mufredat", mufredatDto);
+                ApiResponseDto apiResponse;
+                if (!isOpsCoklama)
+                {
+                    mufredatDto.Program = null;
+                     apiResponse = await Http.PostJsonAsync<ApiResponseDto>
+                        ("api/mufredat", mufredatDto);
+                }
+                else
+                {
+                    mufredatDto.Program = null;
+                     apiResponse = await Http.PostJsonAsync<ApiResponseDto>
+                        ("api/mufredat/CoklaModified", mufredatDto);
+                }
+
+                
                 if (apiResponse.IsSuccessStatusCode)
                 {
                     matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
@@ -284,19 +300,28 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         {
             try
             {
-                mufredatDto.Program = null;
-                ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>
-                    ("api/mufredat", mufredatDto);
 
-                if (!apiResponse.IsError)
+                if (isOpsCoklama)
                 {
-                    matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
-                    return true;
+                    //mufredatDto.Id = 0;
+                    return await Create(mufredatDto, isOpsCoklama);
                 }
                 else
                 {
-                    matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
-                    return false;
+                    mufredatDto.Program = null;
+                    ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>
+                        ("api/mufredat", mufredatDto);
+
+                    if (!apiResponse.IsError)
+                    {
+                        matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+                        return true;
+                    }
+                    else
+                    {
+                        matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
+                        return false;
+                    }
                 }
             }
             catch (Exception ex)
@@ -329,23 +354,23 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             }
         }
 
-        public void QueryCellInfoHandler(QueryCellInfoEventArgs<MufredatDto> args)
-        {
-            if (args.Data.Durum==1)
-            {
-                args.Cell.AddStyle(new string[] { "background-color:#80d192" });
-            }
-        }
+        //public void QueryCellInfoHandler(QueryCellInfoEventArgs<MufredatDto> args)
+        //{
+        //    if (args.Data.Durum==1)
+        //    {
+        //        args.Cell.AddStyle(new string[] { "background-color:#80d192" });
+        //    }
+        //}
 
-        public async Task OnRowSelecting(RowSelectingEventArgs<MufredatDto> args)
-        {
-            if (args.Data.Durum ==1)
-            {
-                //args.Cancel = true;
-                isUyariOpen = true;
-                dialogUyariText = $"{args.Data.Ad} müfredatının bazı dersleri aktifleştirilmiş. Kırmızı oka basarak 'Tanımlı Derslerine' göz atabilirsiniz";
-            }
-        }
+        //public async Task OnRowSelecting(RowSelectingEventArgs<MufredatDto> args)
+        //{
+        //    if (args.Data.Durum ==1)
+        //    {
+        //        //args.Cancel = true;
+        //        isUyariOpen = true;
+        //        dialogUyariText = $"{args.Data.Ad} müfredatının bazı dersleri aktifleştirilmiş. Kırmızı oka basarak 'Tanımlı Derslerine' göz atabilirsiniz";
+        //    }
+        //}
 
         //async Task ReadDonems()
         //{
@@ -373,7 +398,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Donem Tip getirilirken hata oluştu!");
             }
         }
-        
+
 
         async Task Refresh()
         {

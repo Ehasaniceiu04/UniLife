@@ -73,5 +73,11 @@ namespace UniLife.Server.Managers
         {
             return new ApiResponse(Status200OK, "Retrieved MufredatDtos", await _mufredatStore.GetLastMufredatByProgramId(programId));
         }
+
+        public async Task<ApiResponse> CoklaModified(MufredatDto mufredatDto)
+        {
+            await _mufredatStore.CoklaModified(mufredatDto);
+            return new ApiResponse(Status200OK, "CoklaModified MufredatDto");
+        }
     }
 }

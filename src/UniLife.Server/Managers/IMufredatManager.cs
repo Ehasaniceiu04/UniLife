@@ -17,5 +17,6 @@ namespace UniLife.Server.Managers
         Task<ApiResponse> GetMufredatState(int mufredatId);
         Task<ApiResponse> CreateDersAcilansByMufredatIds(ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds);
         Task<ApiResponse> GetLastMufredatByProgramId(int programId);
+        Task<ApiResponse> CoklaModified(MufredatDto mufredatDto);
     }
 }

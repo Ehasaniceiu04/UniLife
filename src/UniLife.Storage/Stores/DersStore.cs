@@ -141,21 +141,21 @@ namespace UniLife.Storage.Stores
                 //EskiMufBagliDersId = ders.EskiMufBagliDersId
             };
 
-            ders.AktifDonemdeAcik = true;
+            //ders.AktifDonemdeAcik = true;
 
-            var mufredat = await _db.Mufredats.FirstOrDefaultAsync(x => x.Id == ders.MufredatId);
-            mufredat.Durum = 1;
+            //var mufredat = await _db.Mufredats.FirstOrDefaultAsync(x => x.Id == ders.MufredatId);
+            //mufredat.Durum = 1;
 
             if (dumpDersAcilan != null)
             {
                 _db.DersAcilans.Remove(dumpDersAcilan);
             }
 
-            _db.Mufredats.Update(mufredat);
+            //_db.Mufredats.Update(mufredat);
 
             _db.DersAcilans.Add(dersAcilan);
 
-            _db.Derss.Update(ders);
+            //_db.Derss.Update(ders);
 
             await _db.SaveChangesAsync(CancellationToken.None);
         }
