@@ -25,7 +25,7 @@ namespace UniLife.Server.Controllers
                             new RequestCulture(culture)));
                 }
 
-                _logger.LogError("redirect ahmet");
+                _logger.LogError(redirectUri.Replace("//", "/"));
 
                 return LocalRedirect(redirectUri.Replace("//", "/"));
             }
