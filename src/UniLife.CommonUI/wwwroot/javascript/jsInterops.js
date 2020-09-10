@@ -1,29 +1,57 @@
 ﻿window.jsInterops = {
     setCookie: function (cookie) {
-        document.cookie = cookie;
+        try {
+            document.cookie = cookie;
+        }
+        catch (err) {
+            console.log(err.message);
+        }
+        
     },
     removeCookie: function (cookieName) {
-        window.location = " "; // TO REFRESH THE PAGE
+        try {
+            
 
-        console.log(cookieName + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;');
-        console.log(document.cookie);
-        document.cookie = cookieName + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-        console.log(document.cookie);
+            console.log(cookieName + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;');
+            console.log(document.cookie);
+            document.cookie = cookieName + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+            console.log(document.cookie);
+        }
+        catch (err) {
+            console.log(err.message);
+        }
+        
     },
     eraseCookie: function (cookieName) {
-        document.cookie = cookieName + '=; Max-Age=-99999999;';
+        try {
+            document.cookie = cookieName + '=; Max-Age=-99999999;';
+        }
+        catch (err) {
+            console.log(err.message);
+        }
+        
     },
     deleteCookieFromAllPaths: function (cookieName)
     {
-        var path = window.location.pathname;
-        var paths = ['/'], pathLength = 1, nextSlashPosition;
-        while ((nextSlashPosition = path.indexOf('/', pathLength)) != -1) {
-            pathLength = nextSlashPosition + 1;
-            paths.push(path.substr(0, pathLength));
-        }
+        try {
+            var path = window.location.pathname;
+            var paths = ['/'], pathLength = 1, nextSlashPosition;
+            while ((nextSlashPosition = path.indexOf('/', pathLength)) != -1) {
+                pathLength = nextSlashPosition + 1;
+                paths.push(path.substr(0, pathLength));
+            }
 
-        for (let path of paths)
-            document.cookie = `${cookieName}=; path=${path}; expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
+            for (let path of paths)
+                document.cookie = `${cookieName}=; path=${path}; expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
+
+            console.log("deleteCookieFromAllPaths geldi");
+
+            window.location = " "; // TO REFRESH THE PAGE
+        }
+        catch (err) {
+            console.log(err.message);
+        }
+        
 
         
     },
@@ -35,5 +63,8 @@
         console.log(adres);
         var myWindow = window.open(adres, '_blank');
         myWindow.print();
+    },
+    logla: function (mesaj) {
+        console.log(mesaj);
     }
 }

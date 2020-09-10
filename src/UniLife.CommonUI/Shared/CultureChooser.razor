@@ -7,10 +7,10 @@
 
     <select @onchange="OnSelected">
         <option>Select...</option>
+        <option value="tr">Turkish</option>
         <option value="en-US">English</option>
         <option value="fr-FR">Français</option>
         <option value="de">German</option>
-        <option value="tr">Turkish</option>
     </select>
     <br />
     Current UI culture (used for localization): @Thread.CurrentThread.CurrentUICulture.Name
@@ -39,10 +39,11 @@
  
     public List<CultureData> Cultures { get; set; } = new List<CultureData>()
 {
+        new  CultureData() { Text = "Türkçe", Value = "tr" },
         new  CultureData() { Text = "English", Value = "en-US" },
         new  CultureData() { Text = "French", Value = "fr-FR" },
         new  CultureData() { Text = "German", Value = "de" },
-        new  CultureData() { Text = "Türkçe", Value = "tr" },
+        
     };
 
     public string SelectedCulture { get; set; } = Thread.CurrentThread.CurrentUICulture.Name;

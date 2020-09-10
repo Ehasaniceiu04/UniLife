@@ -489,10 +489,10 @@ namespace UniLife.Server
 
             services.AddServerSideBlazor().AddCircuitOptions(o =>
             {
-                if (_environment.IsDevelopment()) //only add details when debugging
-                {
+                //if (_environment.IsDevelopment()) //only add details when debugging
+                //{
                     o.DetailedErrors = true;
-                }
+                //}
             });
 
             #region Localization
@@ -514,7 +514,7 @@ namespace UniLife.Server
                     new CultureInfo("zh"),
                 };
                 // Set the default culture
-                options.DefaultRequestCulture = new RequestCulture("en-US");
+                options.DefaultRequestCulture = new RequestCulture("tr");
                 options.SupportedCultures = supportedCultures;
                 options.SupportedUICultures = supportedCultures;
             });

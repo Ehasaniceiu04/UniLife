@@ -1,5 +1,7 @@
 ﻿@inject NavigationManager NavigationManager
 @inject HttpClient Http
+@inject IMatToaster matToaster
+@inject IJSRuntime JSRuntime;
 
 <select @onchange="OnSelected">
     <option hidden>@culture</option>
@@ -13,19 +15,41 @@
 
 @code { private string culture { get; set; }
 
-            protected override async Task OnInitializedAsync()
-            {
-                await base.OnInitializedAsync();
-                this.culture = System.Globalization.CultureInfo.CurrentCulture.Name;
-            }
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            await base.OnInitializedAsync();
+            this.culture = System.Globalization.CultureInfo.CurrentCulture.Name;
+        }
+        catch (Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("jsInterops.logla", ex.Message + "inner:" + ex.InnerException + "stack:" + ex.StackTrace, MatToastType.Danger);
+            throw;
+        }
 
-            private void OnSelected(ChangeEventArgs e)
-            {
-                var culture = (string)e.Value;
-                var uri = new Uri(NavigationManager.Uri)
-                    .GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
-                var query = $"?culture={Uri.EscapeDataString(culture)}&" +
-                    $"redirectUri={Uri.EscapeDataString(uri)}";
+    }
 
-                NavigationManager.NavigateTo("/Culture/SetCulture" + query, forceLoad: true);
-            } }
+    private async Task OnSelected(ChangeEventArgs e)
+    {
+        try
+        {
+
+            var culture = (string)e.Value;
+
+            var uri = new Uri(NavigationManager.Uri)
+        .GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
+            var query = $"?culture={Uri.EscapeDataString(culture)}&" +
+                $"redirectUri={Uri.EscapeDataString(uri)}";
+
+            await JSRuntime.InvokeVoidAsync("jsInterops.logla", query+"asd");
+
+            NavigationManager.NavigateTo("/Culture/SetCulture" + query, forceLoad: true);
+        }
+        catch (Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("jsInterops.logla", ex.Message + "inner:" + ex.InnerException.Message + "stack:" + ex.StackTrace, MatToastType.Danger);
+            //throw;
+        }
+
+    } }

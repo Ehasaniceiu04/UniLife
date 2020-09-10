@@ -79,6 +79,9 @@
 		<LastGenOutput>Resources\SfResources.Designer.cs</LastGenOutput>
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Update="Resources\SfResources.tr.resx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Update="Resources\SfResources.zh.resx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
