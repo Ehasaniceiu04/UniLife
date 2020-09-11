@@ -100,7 +100,7 @@ else
                                 <div class="form-row form-group form-inline ">
                                     <label class="col-sm-2" for="DropKayitNeden">Kayıt Neden:</label>
                                     <SfDropDownList ID="DropKayitNeden" @ref="DropKayitNeden" TItem="KayitNedenDto" CssClass="col-sm-4 pb-1"
-                                                    TValue="int?" PopupHeight="230px" Placeholder="Kayıt Neden"
+                                                    TValue="int?" PopupHeight="230px" PopupWidth="400px" Placeholder="Kayıt Neden"
                                                     @bind-Value="@_OgrenciDto.KayitNedenId" DataSource="@kayitNedenDtos">
                                         <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                                     </SfDropDownList>
@@ -121,37 +121,37 @@ else
                                                     @bind-Value="@_OgrenciDto.OgrenimTurId" DataSource="@ogrenimTurDtos">
                                         <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                                     </SfDropDownList>
-                                    <label class="col-sm-2" for="notsis">Not Sistemi:</label>
-                                    <SfDropDownList ID="notsis" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
-                                        <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
-                                        <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
-                                    </SfDropDownList>
-                                    <label class="col-sm-2" for="ogrtip">Öğrenci Tipi:</label>
-                                    <SfDropDownList ID="ogrtip" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
-                                        <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
-                                        <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
-                                    </SfDropDownList>
+                                    @*<label class="col-sm-2" for="notsis">Not Sistemi:</label>
+            <SfDropDownList ID="notsis" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
+                <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
+                <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
+            </SfDropDownList>*@
+                                    @*<label class="col-sm-2" for="ogrtip">Öğrenci Tipi:</label>
+            <SfDropDownList ID="ogrtip" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
+                <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
+                <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
+            </SfDropDownList>*@
                                     <label class="col-sm-2" for="orthestip">Ort. Hesap Tip:</label>
                                     <SfDropDownList ID="orthestip" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
                                         <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
                                         <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
                                     </SfDropDownList>
-                                    <label class="col-sm-2" for="derskayislemtur">Ders Kayıt İşlem Türü:</label>
-                                    <SfDropDownList ID="derskayislemtur" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
-                                        <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
-                                        <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
-                                    </SfDropDownList>
-                                    <label class="col-sm-2" for="anaProNeden">Ana Program Okuma Nedeni:</label>
-                                    <SfDropDownList ID="anaProNeden" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
-                                        <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
-                                        <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
-                                    </SfDropDownList>
+                                    @*<label class="col-sm-2" for="derskayislemtur">Ders Kayıt İşlem Türü:</label>
+            <SfDropDownList ID="derskayislemtur" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
+                <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
+                <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
+            </SfDropDownList>*@
+                                    @*<label class="col-sm-2" for="anaProNeden">Ana Program Okuma Nedeni:</label>
+            <SfDropDownList ID="anaProNeden" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
+                <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
+                <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
+            </SfDropDownList>*@
                                     <label class="col-sm-2" for="danis">Danışmanı:</label>
 
                                     <SfButton ID="danis" IconCss="e-icons e-Resource" EnableRtl="true" OnClick="AkademisyenAta" CssClass="e-flat col-sm-4" IsPrimary="true">@(string.IsNullOrWhiteSpace(danismanAd) ?"Ekle": danismanAd)</SfButton>
 
                                     @*<label class="col-sm-2" for="digDanisman">Diğer Danışman:</label>
-                                    <SfTextBox ID="digDanisman" CssClass="col-sm-4"></SfTextBox>*@
+            <SfTextBox ID="digDanisman" CssClass="col-sm-4"></SfTextBox>*@
                                     <label class="col-sm-2" for="capYan">Çap Yandal Durum:</label>
                                     <SfDropDownList ID="capYan" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
                                         <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
@@ -164,52 +164,83 @@ else
                                     <SfTextBox Placeholder="Bilgi Notu" @bind-Value="@_OgrenciDto.BilgNotu" CssClass="col-sm-12" Readonly="false" FloatLabelType="@FloatLabelType.Auto" Multiline="true"></SfTextBox>
                                 </div>
 
+                                <div class="control_wrapper">
+                                    <div id="dropArea" style="height: auto; overflow: auto">
+                                        <p>Resim Ekleyiniz. maks: 1.5 MB</p>
 
+                                        <SfUploader ID="UploadFiles" AutoUpload="false" DropArea=".control-fluid" MinFileSize=1000 MaxFileSize=1500000 AllowedExtensions=".png,.jpeg,jpg">
+                                            <UploaderEvents ValueChange="OnChangeUpload" OnRemove="onRemove"></UploaderEvents>
+                                            @*<UploaderAsyncSettings SaveUrl="http://localhost:53414/services/api/uploadbox/Save" RemoveUrl="https://aspnetmvc.syncfusion.com/services/api/uploadbox/Remove"></UploaderAsyncSettings>*@
+                                            <UploaderFiles>
+                                                <UploaderUploadedFiles Name="@(_OgrenciDto.ApplicationUserId.ToString())" Size=12000 Type="png"></UploaderUploadedFiles>
+                                            </UploaderFiles>
+                                        </SfUploader>
+
+                                        @*<SfUploader @ref="uploderObj" ID="UploadFiles" MinFileSize=1000 MaxFileSize=1500000 AllowedExtensions=".png,.jpeg,jpg">
+                    <UploaderEvents ValueChange="onChange" OnRemove="onRemove"></UploaderEvents>
+                    <UploaderTemplates>
+                        <Template>
+                            <span class="wrapper">
+                                <img class="upload-image" alt="Image"
+                                     src="@(files.Count >0 ? files.Where(item=>item.Name == context.Name)?.FirstOrDefault()?.Path : string.Empty)">
+                            </span>
+                            <div class="name file-name" title="@(context.Name)">@(context.Name)</div>
+                            <div class="file-size">@(context.Size)</div>
+                            <span class="e-icons e-file-remove-btn remove" id="removeIcon" title="Remove"></span>
+                            <span class="e-upload-icon e-icons e-file-remove-btn" title="Upload" id="iconUpload"></span>
+                        </Template>
+                    </UploaderTemplates>
+                    <UploaderFiles>
+                        <UploaderUploadedFiles Name="@(_OgrenciDto.ApplicationUserId.ToString())" Size=12000 Type="png"></UploaderUploadedFiles>
+                    </UploaderFiles>
+                </SfUploader>*@
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                 </EditForm>
 
-                <div class="row">
+                <!--<div class="row">
+                    <div class="col-sm-12 col-md-6">
+                        
+                    </div>
                     <div class="col-sm-12 col-md-6">
                         <div class="control_wrapper">
                             <div id="dropArea" style="height: auto; overflow: auto">
                                 <p>Resim Ekleyiniz. maks: 1.5 MB</p>
 
                                 <SfUploader ID="UploadFiles" AutoUpload="false" DropArea=".control-fluid" MinFileSize=1000 MaxFileSize=1500000 AllowedExtensions=".png,.jpeg,jpg">
-                                    <UploaderEvents ValueChange="OnChangeUpload" OnRemove="onRemove"></UploaderEvents>
+                                    <UploaderEvents ValueChange="OnChangeUpload" OnRemove="onRemove"></UploaderEvents>-->
                                     @*<UploaderAsyncSettings SaveUrl="http://localhost:53414/services/api/uploadbox/Save" RemoveUrl="https://aspnetmvc.syncfusion.com/services/api/uploadbox/Remove"></UploaderAsyncSettings>*@
-                                    <UploaderFiles>
+                                    <!--<UploaderFiles>
                                         <UploaderUploadedFiles Name="@(_OgrenciDto.ApplicationUserId.ToString())" Size=12000 Type="png"></UploaderUploadedFiles>
                                     </UploaderFiles>
-                                </SfUploader>
+                                </SfUploader>-->
 
                                 @*<SfUploader @ref="uploderObj" ID="UploadFiles" MinFileSize=1000 MaxFileSize=1500000 AllowedExtensions=".png,.jpeg,jpg">
-                                        <UploaderEvents ValueChange="onChange" OnRemove="onRemove"></UploaderEvents>
-                                        <UploaderTemplates>
-                                            <Template>
-                                                <span class="wrapper">
-                                                    <img class="upload-image" alt="Image"
-                                                         src="@(files.Count >0 ? files.Where(item=>item.Name == context.Name)?.FirstOrDefault()?.Path : string.Empty)">
-                                                </span>
-                                                <div class="name file-name" title="@(context.Name)">@(context.Name)</div>
-                                                <div class="file-size">@(context.Size)</div>
-                                                <span class="e-icons e-file-remove-btn remove" id="removeIcon" title="Remove"></span>
-                                                <span class="e-upload-icon e-icons e-file-remove-btn" title="Upload" id="iconUpload"></span>
-                                            </Template>
-                                        </UploaderTemplates>
-                                        <UploaderFiles>
-                                            <UploaderUploadedFiles Name="@(_OgrenciDto.ApplicationUserId.ToString())" Size=12000 Type="png"></UploaderUploadedFiles>
-                                        </UploaderFiles>
-                                    </SfUploader>*@
-                            </div>
+                    <UploaderEvents ValueChange="onChange" OnRemove="onRemove"></UploaderEvents>
+                    <UploaderTemplates>
+                        <Template>
+                            <span class="wrapper">
+                                <img class="upload-image" alt="Image"
+                                     src="@(files.Count >0 ? files.Where(item=>item.Name == context.Name)?.FirstOrDefault()?.Path : string.Empty)">
+                            </span>
+                            <div class="name file-name" title="@(context.Name)">@(context.Name)</div>
+                            <div class="file-size">@(context.Size)</div>
+                            <span class="e-icons e-file-remove-btn remove" id="removeIcon" title="Remove"></span>
+                            <span class="e-upload-icon e-icons e-file-remove-btn" title="Upload" id="iconUpload"></span>
+                        </Template>
+                    </UploaderTemplates>
+                    <UploaderFiles>
+                        <UploaderUploadedFiles Name="@(_OgrenciDto.ApplicationUserId.ToString())" Size=12000 Type="png"></UploaderUploadedFiles>
+                    </UploaderFiles>
+                </SfUploader>*@
+                            <!--</div>
                         </div>
                     </div>
-                    <div class="col-sm-12 col-md-6">
-
-                    </div>
-                </div>
+                </div>-->
 
                 
                     <div class="row">
@@ -384,19 +415,19 @@ else
         //}
 
 
-        ReadFakultes().ConfigureAwait(true);
-        ReadKayitNedens().ConfigureAwait(true);
-        ReadOgrenimDurums().ConfigureAwait(true);
-        ReadOgrenimTurs().ConfigureAwait(true);
+        await ReadFakultes();
+        await ReadKayitNedens();
+        await ReadOgrenimDurums();
+        await ReadOgrenimTurs();
         if (_OgrenciDto.Id != 0)
         {
-            ReadBolums(_OgrenciDto.FakulteId).ConfigureAwait(true);
-            ReadPrograms(_OgrenciDto.BolumId).ConfigureAwait(true);
-            ReadMufredats(_OgrenciDto.ProgramId).ConfigureAwait(true);
+            await ReadBolums(_OgrenciDto.FakulteId);
+            await ReadPrograms(_OgrenciDto.BolumId);
+            await ReadMufredats(_OgrenciDto.ProgramId);
         }
         if (_OgrenciDto.DanismanId.HasValue)
         {
-            ReadAkademisyens(_OgrenciDto.DanismanId).ConfigureAwait(true);
+            await ReadAkademisyens(_OgrenciDto.DanismanId);
         }
         isInitializingFinised = true;
     }
