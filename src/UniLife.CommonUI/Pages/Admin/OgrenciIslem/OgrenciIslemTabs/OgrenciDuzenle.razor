@@ -42,8 +42,8 @@ else
                                 <div class="form-row form-group form-inline ">
                                     <label class="col-sm-2" for="OgrNo">Öğrenci NO:</label>
                                     <SfNumericTextBox @bind-Value="@_OgrenciDto.OgrNo" Enabled="false" ID="OgrNo" CssClass="col-sm-4"></SfNumericTextBox>
-                                    <label class="col-sm-2" for="DosNo">Dosya NO:</label>
-                                    <SfTextBox ID="DosNo"  CssClass="col-sm-2"></SfTextBox>
+                                    @*<label class="col-sm-2" for="DosNo">Dosya NO:</label>
+                                    <SfTextBox ID="DosNo"  CssClass="col-sm-2"></SfTextBox>*@
                                     <SfCheckBox  Label="Durum" CssClass="col-sm-1" @bind-Checked="@_OgrenciDto.Durum"></SfCheckBox>
                                     <label class="col-sm-2" for="TCKN">TCKN:</label>
                                     <SfTextBox @bind-Value="@_OgrenciDto.TCKN" ID="TCKN" CssClass="col-sm-4"></SfTextBox>
@@ -150,8 +150,8 @@ else
 
                                     <SfButton ID="danis" IconCss="e-icons e-Resource" EnableRtl="true" OnClick="AkademisyenAta" CssClass="e-flat col-sm-4" IsPrimary="true">@(string.IsNullOrWhiteSpace(danismanAd) ?"Ekle": danismanAd)</SfButton>
 
-                                    <label class="col-sm-2" for="digDanisman">Diğer Danışman:</label>
-                                    <SfTextBox ID="digDanisman" CssClass="col-sm-4"></SfTextBox>
+                                    @*<label class="col-sm-2" for="digDanisman">Diğer Danışman:</label>
+                                    <SfTextBox ID="digDanisman" CssClass="col-sm-4"></SfTextBox>*@
                                     <label class="col-sm-2" for="capYan">Çap Yandal Durum:</label>
                                     <SfDropDownList ID="capYan" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
                                         <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>

@@ -11,6 +11,8 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
+using UniLife.Shared;
+
 namespace UniLife.Storage.Stores
 {
     public class MufredatStore : IMufredatStore
@@ -52,15 +54,28 @@ namespace UniLife.Storage.Stores
 
         public async Task<Mufredat> Update(MufredatDto mufredatDto)
         {
-            var mufredat = await _db.Mufredats.SingleOrDefaultAsync(t => t.Id == mufredatDto.Id);
-            if (mufredat == null)
-                throw new InvalidDataException($"Müfredat bulunamadı: {mufredatDto.Id}");
+            using (var context = _db.Context.Database.BeginTransaction())
+            {
 
-            mufredat = _autoMapper.Map(mufredatDto, mufredat);
-            _db.Mufredats.Update(mufredat);
-            await _db.SaveChangesAsync(CancellationToken.None);
+                var mufredat = await _db.Mufredats.SingleOrDefaultAsync(t => t.Id == mufredatDto.Id);
+                if (mufredat == null)
+                    throw new InvalidDataException($"Müfredat bulunamadı: {mufredatDto.Id}");
 
-            return mufredat;
+                
+
+                mufredat = _autoMapper.Map(mufredatDto, mufredat);
+                _db.Mufredats.Update(mufredat);
+                await _db.SaveChangesAsync(CancellationToken.None);
+
+                var aktifMufredats = await _db.Mufredats.Where(t => t.Aktif == true).ToListAsync();
+                if (aktifMufredats.Count>1)
+                {
+                    throw new DomainException($"Dikkat! Bir program içinde birden fazla aktif müfredat olamaz");
+                }
+
+                context.Commit();
+                return mufredat;
+            }
         }
 
         public async Task DeleteById(int id)

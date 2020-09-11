@@ -34,7 +34,7 @@ else
 {
     @*DataSource="@dersDtos.Where(x => donemId.HasValue ? x.DonemId == donemId : true).ToList()"*@
 
-<SfGrid ShowColumnChooser="true" @ref="DersGrid" DataSource="@dersDtos" Dialog="DialogParams" Toolbar="@(new List<string>() { "Add","ColumnChooser" })" AllowSorting="true" AllowGrouping="true" AllowFiltering="true" AllowPaging="true" ColumnMenuItems=@MenuItems ShowColumnMenu="true" Width="100%">
+<SfGrid ShowColumnChooser="true" @ref="DersGrid" DataSource="@dersDtos" Dialog="DialogParams" Toolbar="@(new List<string>() { "Add","ColumnChooser" })" AllowSorting="true" AllowGrouping="true" AllowFiltering="true" ColumnMenuItems=@MenuItems ShowColumnMenu="true" Width="100%">
     @*<SfDataManager AdaptorInstance="@typeof(CustomAdaptor)" Adaptor="Adaptors.CustomAdaptor"></SfDataManager>*@
     <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.FilterBar"></GridFilterSettings>
     <GridGroupSettings ShowDropArea="false" ShowGroupedColumn="false" Columns="@Initial">
@@ -115,31 +115,31 @@ else
                         <div class="form-group row">
                             <label for="Ad" class="col-sm-2 col-form-label">Ders Ad</label>
                             <div class="col-sm-10">
-                                <SfTextBox ID="Ad" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.Ad)"></SfTextBox>
+                                <SfTextBox ID="Ad" Placeholder="" @bind-Value="@(dersDto.Ad)"></SfTextBox>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="Kod" class="col-sm-2 col-form-label">Ders Kod</label>
                             <div class="col-sm-10">
-                                <SfTextBox ID="Kod" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.Kod)"></SfTextBox>
+                                <SfTextBox ID="Kod" Placeholder="" @bind-Value="@(dersDto.Kod)"></SfTextBox>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="KisaAd" class="col-sm-2 col-form-label">Kisa Ad</label>
                             <div class="col-sm-10">
-                                <SfTextBox ID="KisaAd" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.KisaAd)"></SfTextBox>
+                                <SfTextBox ID="KisaAd" Placeholder="" @bind-Value="@(dersDto.KisaAd)"></SfTextBox>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="AdEn" class="col-sm-2 col-form-label">İng. Ad</label>
                             <div class="col-sm-10">
-                                <SfTextBox ID="AdEn" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.AdEn)"></SfTextBox>
+                                <SfTextBox ID="AdEn" Placeholder="" @bind-Value="@(dersDto.AdEn)"></SfTextBox>
                             </div>
                         </div>
                         @*<div class="form-group row">
                                 <label for="DonemId" class="col-sm-2 col-form-label">Dönem</label>
                                 <div class="col-sm-10">
-                                    <SfDropDownList ID="DonemId" CssClass="form-control-sm" @bind-Value="@(dersDto.DonemId)" TValue="int?" TItem="DonemDto" Index="0" DataSource="donemDtos">
+                                    <SfDropDownList ID="DonemId"  @bind-Value="@(dersDto.DonemId)" TValue="int?" TItem="DonemDto" Index="0" DataSource="donemDtos">
                                         <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
                                     </SfDropDownList>
                                 </div>
@@ -147,7 +147,7 @@ else
                         <div class="form-group row">
                             <label for="DonemTipId" class="col-sm-2 col-form-label">Dönem Tip</label>
                             <div class="col-sm-10">
-                                <SfDropDownList ID="DonemTipId" CssClass="form-control-sm" @bind-Value="@(dersDto.DonemTipId)" TValue="int?" TItem="DonemTipDto" Index="0" DataSource="donemTipDtos">
+                                <SfDropDownList ID="DonemTipId" @bind-Value="@(dersDto.DonemTipId)" TValue="int?" TItem="DonemTipDto" Index="0" DataSource="donemTipDtos">
                                     <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
                                 </SfDropDownList>
                             </div>
@@ -155,7 +155,7 @@ else
                         <div class="form-group row">
                             <label class="col-md-2 col-form-label" for="DropAltKotaUyg">Ders Neden</label>
                             <div class="col-sm-10">
-                                <SfDropDownList TValue="int?" TItem="DersNedenDto" Placeholder="Neden seçiniz..." CssClass="form-control-sm"
+                                <SfDropDownList TValue="int?" TItem="DersNedenDto" Placeholder="Neden seçiniz..."
                                                 @bind-Value="@dersDto.DersNedenId">
                                     <SfDataManager Url="odata/dersnedens" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
                                     <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
@@ -165,7 +165,7 @@ else
                         @*<div class="form-group row">
                                 <label for="Durum" class="col-sm-2 col-form-label">Durum</label>
                                 <div class="col-sm-4">
-                                    <SfCheckBox ID="Durum" CssClass="form-control-sm" @bind-Checked="@(dersDto.Durum)"></SfCheckBox>
+                                    <SfCheckBox ID="Durum"  @bind-Checked="@(dersDto.Durum)"></SfCheckBox>
                                 </div>
                             </div>*@
                     </div>
@@ -173,58 +173,58 @@ else
                         <div class="form-group row">
                             <label for="Akts" class="col-sm-2 col-form-label">Akts</label>
                             <div class="col-sm-4">
-                                <SfNumericTextBox ID="Akts" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.Akts)"></SfNumericTextBox>
+                                <SfNumericTextBox ID="Akts" Placeholder="" @bind-Value="@(dersDto.Akts)"></SfNumericTextBox>
                             </div>
-                            <label for="GecmeNotu" class="col-sm-2 col-form-label">Geçme Notu</label>
-                            <div class="col-sm-4">
-                                <SfNumericTextBox ID="GecmeNotu" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.GecmeNotu)"></SfNumericTextBox>
-                            </div>
+                            @*<label for="GecmeNotu" class="col-sm-2 col-form-label">Geçme Notu</label>
+                                <div class="col-sm-4">
+                                    <SfNumericTextBox ID="GecmeNotu" Placeholder=""  @bind-Value="@(dersDto.GecmeNotu)"></SfNumericTextBox>
+                                </div>*@
                         </div>
                         <div class="form-group row">
                             <label for="OptikKod" class="col-sm-2 col-form-label">OptikKod</label>
                             <div class="col-sm-4">
-                                <SfTextBox ID="OptikKod" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.OptikKod)"></SfTextBox>
+                                <SfTextBox ID="OptikKod" Placeholder="" @bind-Value="@(dersDto.OptikKod)"></SfTextBox>
                             </div>
                             <label for="UygSaat" class="col-sm-2 col-form-label">Uyg.Saat</label>
                             <div class="col-sm-4">
-                                <SfNumericTextBox ID="UygSaat" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.UygSaat)"></SfNumericTextBox>
+                                <SfNumericTextBox ID="UygSaat" Placeholder="" @bind-Value="@(dersDto.UygSaat)"></SfNumericTextBox>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="LabSaat" class="col-sm-2 col-form-label">Lab.Saat</label>
                             <div class="col-sm-4">
-                                <SfNumericTextBox ID="LabSaat" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.LabSaat)"></SfNumericTextBox>
+                                <SfNumericTextBox ID="LabSaat" Placeholder="" @bind-Value="@(dersDto.LabSaat)"></SfNumericTextBox>
                             </div>
                             <label for="Sinif" class="col-sm-2 col-form-label">Sinif</label>
                             <div class="col-sm-4">
-                                <SfNumericTextBox ID="Sinif" CssClass="form-control-sm" @bind-Value="@(dersDto.Sinif)"></SfNumericTextBox>
+                                <SfNumericTextBox ID="Sinif" @bind-Value="@(dersDto.Sinif)"></SfNumericTextBox>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="TeoSaat" class="col-sm-2 col-form-label">Teo.Saat</label>
                             <div class="col-sm-4">
-                                <SfNumericTextBox ID="TeoSaat" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.TeoSaat)"></SfNumericTextBox>
+                                <SfNumericTextBox ID="TeoSaat" Placeholder="" @bind-Value="@(dersDto.TeoSaat)"></SfNumericTextBox>
                             </div>
                             <label for="Kredi" class="col-sm-2 col-form-label">Kredi</label>
                             <div class="col-sm-4">
-                                <SfNumericTextBox ID="Kredi" Placeholder="" CssClass="form-control-sm" @bind-Value="@(dersDto.Kredi)"></SfNumericTextBox>
+                                <SfNumericTextBox ID="Kredi" Placeholder="" @bind-Value="@(dersDto.Kredi)"></SfNumericTextBox>
                             </div>
                         </div>
 
                         <div class="form-group row">
                             <label for="Zorunlu" class="col-sm-2 col-form-label">Zorunlu</label>
                             <div class="col-sm-4">
-                                <SfCheckBox ID="Zorunlu" CssClass="form-control-sm" @bind-Checked="@(dersDto.Zorunlu)"></SfCheckBox>
+                                <SfCheckBox ID="Zorunlu" @bind-Checked="@(dersDto.Zorunlu)"></SfCheckBox>
                             </div>
                             <label for="SecmeliKodu" class="col-sm-2 col-form-label">Seç. Kod</label>
                             <div class="col-sm-4">
-                                <SfTextBox ID="SecmeliKodu" CssClass="form-control-sm" @bind-Value="@(dersDto.SecmeliKodu)" Enabled="@true"></SfTextBox>
+                                <SfTextBox ID="SecmeliKodu" @bind-Value="@(dersDto.SecmeliKodu)" Enabled="@true"></SfTextBox>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-2 col-form-label" for="DropAltKotaUyg">Ders Dil</label>
                             <div class="col-sm-4">
-                                <SfDropDownList TValue="int?" TItem="DersDilDto" Placeholder="Dil seçiniz..." CssClass="form-control-sm"
+                                <SfDropDownList TValue="int?" TItem="DersDilDto" Placeholder="Dil seçiniz..."
                                                 @bind-Value="@dersDto.DersDilId">
                                     <SfDataManager Url="odata/dersdils" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
                                     <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
@@ -232,7 +232,7 @@ else
                             </div>
                             <label for="durum" class="col-sm-2 col-form-label">Aktif</label>
                             <div class="col-sm-4">
-                                <SfCheckBox ID="durum" CssClass="form-control-sm" @onchange="onChange" @bind-Checked="@(dersDto.Durum)"></SfCheckBox>
+                                <SfCheckBox ID="durum" @onchange="onChange" @bind-Checked="@(dersDto.Durum)"></SfCheckBox>
                             </div>
                             <div class="col-sm-6"></div>
                             <label class="col-sm-4">@(dersDto.Durum ? "":$"Bağlı old. ders : {dersDto.KancalananDersAd}")</label>
@@ -244,6 +244,11 @@ else
         </Template>
 
     </GridEditSettings>
+    <GridSortSettings>
+        <GridSortColumns>
+            <GridSortColumn Field="Kod" Direction="SortDirection.Ascending"></GridSortColumn>
+        </GridSortColumns>
+    </GridSortSettings>
     <GridColumns>
         <GridColumn Visible="false" Field=@nameof(DersDto.Id) HeaderText="Fakülte ID" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
         <GridColumn Field=@nameof(DersDto.Ad) HeaderText="Ders Ad" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
@@ -275,7 +280,7 @@ else
                 <GridCommandColumn Type="CommandButtonType.None" Title="Dersi Ac" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-SendToBack", CssClass="e-flat" })"></GridCommandColumn>
                 <GridCommandColumn Type="CommandButtonType.Edit" Title="Çokla" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-copy", CssClass="e-flat" })"></GridCommandColumn>
                 <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-edit", CssClass="e-flat" })"></GridCommandColumn>
-                <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-delete", CssClass="e-flat" })"></GridCommandColumn>
+                @*<GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-delete", CssClass="e-flat" })"></GridCommandColumn>*@
                 <GridCommandColumn Type="CommandButtonType.Save" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-update", CssClass="e-flat" })"></GridCommandColumn>
                 <GridCommandColumn Type="CommandButtonType.Cancel" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-cancel-icon", CssClass="e-flat" })"></GridCommandColumn>
             </GridCommandColumns>

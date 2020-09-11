@@ -312,7 +312,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                     ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>
                         ("api/mufredat", mufredatDto);
 
-                    if (!apiResponse.IsError)
+                    if (apiResponse.IsSuccessStatusCode)
                     {
                         matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
                         return true;

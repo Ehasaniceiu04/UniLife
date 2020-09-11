@@ -40,7 +40,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         public string[] MenuItems = new string[] { "Group", "Ungroup", "ColumnChooser", "Filter" };
 
-        private DialogSettings DialogParams = new DialogSettings { MinHeight = "400px", Width = "900px" };
+        private DialogSettings DialogParams = new DialogSettings { MinHeight = "400px", Width = "1200px" };
 
         string[] Initial = (new string[] { "Sinif", "DonemTipId" });
 

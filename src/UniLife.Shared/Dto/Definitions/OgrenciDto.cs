@@ -19,7 +19,9 @@ namespace UniLife.Shared.Dto.Definitions
         public string Soyad { get; set; }
         public long OgrNo { get; set; }
 
-        [MaxLength(11)]
+        [StringLength(11, ErrorMessage = "{0} uzunluğu 11 rakamdan oluşmalıdır.", MinimumLength = 11)]
+        //[MaxLength(11)]
+        //[MinLength(11)]
         [Required]
         public string TCKN { get; set; }
 

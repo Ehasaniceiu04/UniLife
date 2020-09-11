@@ -36,7 +36,15 @@ namespace UniLife.Server.Managers
 
         public async Task<ApiResponse> Update(MufredatDto mufredatDto)
         {
-            return new ApiResponse(Status200OK, "Müfredat gÜncellendi.", await _mufredatStore.Update(mufredatDto));
+            try
+            {
+                return new ApiResponse(Status200OK, "Müfredat gÜncellendi.", await _mufredatStore.Update(mufredatDto));
+            }
+            catch (Shared.DomainException ex)
+            {
+                return new ApiResponse(Status400BadRequest, ex.Description);
+            }
+            
         }
 
         public async Task<ApiResponse> Delete(int id)
