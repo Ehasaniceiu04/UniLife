@@ -158,6 +158,8 @@
         <GridColumn Field=@nameof(OgrenciDto.Ad) HeaderText="Ad"> </GridColumn>
         <GridColumn Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad"></GridColumn>
         <GridColumn Field=@nameof(OgrenciDto.OgrNo) HeaderText="Öğrenci No"></GridColumn>
+        <GridColumn Field="Program.Ad" HeaderText="Program" Visible="@(isAccordExpanded)"></GridColumn>
+        <GridColumn Field="Fakulte.Ad" HeaderText="Fakulte" Visible="@(isAccordExpanded)"></GridColumn>
         <GridColumn Field=@nameof(OgrenciDto.Sinif) HeaderText="Sınıf"></GridColumn>
         @*<GridColumn Field=@nameof(OgrenciDto.KayitTarih) Format="d" Type="ColumnType.Date" HeaderText="KayitTarih"></GridColumn>*@
         @*<GridColumn>
@@ -335,7 +337,8 @@
     async Task Refresh()
     {
         totalQuery = new Query();
-        totalQuery.Expand(new List<string> { "program($select=Id,Ad)", "Danisman($select=Id,Ad)", "Bolum($select=Id,Ad)", "Fakulte($select=Id,Ad)" });
+        //totalQuery.Expand(new List<string> { "program($select=Id,Ad)", "Danisman($select=Id,Ad)", "Bolum($select=Id,Ad)", "Fakulte($select=Id,Ad)" });
+        totalQuery.Expand(new List<string> { "program($select=Id,Ad)", "Fakulte($select=Id,Ad)" });
 
 
         if (StartValue.HasValue && EndValue.HasValue)
@@ -439,11 +442,18 @@
     {
 
     }
-    public void ExpandingHandler(ExpandEventArgs args)
+    bool isAccordExpanded;
+    public async Task ExpandingHandler(ExpandEventArgs args)
     {
         if (!args.IsExpanded)
         {
+            isAccordExpanded = false;
             totalQuery = new Query();
+        }
+        else
+        {
+            isAccordExpanded = true;
+            await Refresh();
         }
     }
 
