@@ -67,7 +67,7 @@ namespace UniLife.Storage.Stores
                 _db.Mufredats.Update(mufredat);
                 await _db.SaveChangesAsync(CancellationToken.None);
 
-                var aktifMufredats = await _db.Mufredats.Where(t => t.Aktif == true).ToListAsync();
+                var aktifMufredats = await _db.Mufredats.Where(t => t.Aktif == true && mufredatDto.ProgramId == t.ProgramId).ToListAsync();
                 if (aktifMufredats.Count>1)
                 {
                     throw new DomainException($"Dikkat! Bir program içinde birden fazla aktif müfredat olamaz");
