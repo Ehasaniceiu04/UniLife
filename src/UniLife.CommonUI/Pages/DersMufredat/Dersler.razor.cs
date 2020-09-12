@@ -61,6 +61,10 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         string OdataQuery = "odata/Derss";
 
+        SfTextBox DialogKod;
+
+        DersDto dersDtoContext;
+
         protected override void OnInitialized()
         {
             ReadDerss();
@@ -399,6 +403,33 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                     yerineDersDialogOpen = false;
                 }
             }
+        }
+
+        async Task KodChanged(ChangedEventArgs args)
+        {
+            try
+            {
+                if (this.dersDtoContext.Kod != null)
+                {
+                    OData<DersDto> apiResponse = await Http.GetFromJsonAsync<OData<DersDto>>($"odata/derss?$filter=Kod eq '{args.Value.ToUpper()}' and MufredatId eq {appState.MufredatState.MufredatId}");
+                    if (apiResponse.Value.Count > 0)
+                    {
+                        matToaster.Add($"{args.Value.ToUpper()} kod bilgisi {appState.MufredatState.MufredatAd} da zaten mevcut!", MatToastType.Danger, "Hata oluştu!");
+                        this.dersDtoContext.Kod = null;
+                    }
+                    //else
+                    //{
+                    //    this.dersDtoContext.Kod = this.dersDtoContext.Kod.ToUpper();
+                    //    this.StateHasChanged();
+                    //}
+                }
+
+            }
+            catch (Exception ex)
+            {
+                matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
+            }
+
         }
 
 

@@ -107,7 +107,7 @@ else
         <GridEditSettings Dialog="DialogParams" ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
             <Template>
                 @{
-                    DersDto dersDto = (context as DersDto);
+                    dersDtoContext = (context as DersDto);
 
 
                     <div class="row">
@@ -115,32 +115,32 @@ else
                             <div class="form-group row">
                                 <label for="Kod" class="col-sm-2 col-form-label">Ders Kod</label>
                                 <div class="col-sm-10">
-                                    <SfTextBox ID="Kod" Placeholder="" @bind-Value="@(dersDto.Kod)"></SfTextBox>
+                                    <SfTextBox ID="Kod" @ref="DialogKod" CssClass="conversion" ValueChange ="KodChanged" @bind-Value="@(dersDtoContext.Kod)"></SfTextBox>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="Ad" class="col-sm-2 col-form-label">Ders Ad</label>
                                 <div class="col-sm-10">
-                                    <SfTextBox ID="Ad" Placeholder="" @bind-Value="@(dersDto.Ad)"></SfTextBox>
+                                    <SfTextBox ID="Ad" @bind-Value="@(dersDtoContext.Ad)"></SfTextBox>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="AdEn" class="col-sm-2 col-form-label">İng. Ad</label>
                                 <div class="col-sm-10">
-                                    <SfTextBox ID="AdEn" Placeholder="" @bind-Value="@(dersDto.AdEn)"></SfTextBox>
+                                    <SfTextBox ID="AdEn" @bind-Value="@(dersDtoContext.AdEn)"></SfTextBox>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="KisaAd" class="col-sm-2 col-form-label">Kisa Ad</label>
                                 <div class="col-sm-10">
-                                    <SfTextBox ID="KisaAd" Placeholder="" @bind-Value="@(dersDto.KisaAd)"></SfTextBox>
+                                    <SfTextBox ID="KisaAd" @bind-Value="@(dersDtoContext.KisaAd)"></SfTextBox>
                                 </div>
                             </div>
                             <div class="form-group row">
 
                                 <label for="Sinif" class="col-sm-2 col-form-label">Sinif</label>
                                 <div class="col-sm-4">
-                                    <SfNumericTextBox ID="Sinif" @bind-Value="@(dersDto.Sinif)"></SfNumericTextBox>
+                                    <SfNumericTextBox ID="Sinif" @bind-Value="@(dersDtoContext.Sinif)"></SfNumericTextBox>
                                 </div>
                             </div>
                             @*<div class="form-group row">
@@ -154,7 +154,7 @@ else
                             <div class="form-group row">
                                 <label for="DonemTipId" class="col-sm-2 col-form-label">Dönem Tip</label>
                                 <div class="col-sm-10">
-                                    <SfDropDownList ID="DonemTipId" @bind-Value="@(dersDto.DonemTipId)" TValue="int?" TItem="DonemTipDto" Index="0" DataSource="donemTipDtos">
+                                    <SfDropDownList ID="DonemTipId" @bind-Value="@(dersDtoContext.DonemTipId)" TValue="int?" TItem="DonemTipDto" Index="0" DataSource="donemTipDtos">
                                         <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
                                     </SfDropDownList>
                                 </div>
@@ -163,7 +163,7 @@ else
                                 <label class="col-md-2 col-form-label" for="DropAltKotaUyg">Ders Neden</label>
                                 <div class="col-sm-10">
                                     <SfDropDownList TValue="int?" TItem="DersNedenDto" Placeholder="Neden seçiniz..."
-                                                    @bind-Value="@dersDto.DersNedenId">
+                                                    @bind-Value="@dersDtoContext.DersNedenId">
                                         <SfDataManager Url="odata/dersnedens" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
                                         <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                                     </SfDropDownList>
@@ -180,11 +180,11 @@ else
                             <div class="form-group row">
                                 <label for="TeoSaat" class="col-sm-2 col-form-label">Teo.Saat</label>
                                 <div class="col-sm-4">
-                                    <SfNumericTextBox ID="TeoSaat" Placeholder="" @bind-Value="@(dersDto.TeoSaat)"></SfNumericTextBox>
+                                    <SfNumericTextBox ID="TeoSaat" @bind-Value="@(dersDtoContext.TeoSaat)"></SfNumericTextBox>
                                 </div>
                                 <label for="UygSaat" class="col-sm-2 col-form-label">Uyg.Saat</label>
                                 <div class="col-sm-4">
-                                    <SfNumericTextBox ID="UygSaat" Placeholder="" @bind-Value="@(dersDto.UygSaat)"></SfNumericTextBox>
+                                    <SfNumericTextBox ID="UygSaat" @bind-Value="@(dersDtoContext.UygSaat)"></SfNumericTextBox>
                                 </div>
 
 
@@ -194,35 +194,35 @@ else
 
                                 @*<label for="GecmeNotu" class="col-sm-2 col-form-label">Geçme Notu</label>
                                     <div class="col-sm-4">
-                                        <SfNumericTextBox ID="GecmeNotu" Placeholder=""  @bind-Value="@(dersDto.GecmeNotu)"></SfNumericTextBox>
+                                        <SfNumericTextBox ID="GecmeNotu"  @bind-Value="@(dersDto.GecmeNotu)"></SfNumericTextBox>
                                     </div>*@
                             </div>
                             @*<div class="form-group row">
                                     <label for="OptikKod" class="col-sm-2 col-form-label">OptikKod</label>
                                     <div class="col-sm-4">
-                                        <SfTextBox ID="OptikKod" Placeholder="" @bind-Value="@(dersDto.OptikKod)"></SfTextBox>
+                                        <SfTextBox ID="OptikKod" @bind-Value="@(dersDto.OptikKod)"></SfTextBox>
                                     </div>
                                     <label for="UygSaat" class="col-sm-2 col-form-label">Uyg.Saat</label>
                                     <div class="col-sm-4">
-                                        <SfNumericTextBox ID="UygSaat" Placeholder="" @bind-Value="@(dersDto.UygSaat)"></SfNumericTextBox>
+                                        <SfNumericTextBox ID="UygSaat" @bind-Value="@(dersDto.UygSaat)"></SfNumericTextBox>
                                     </div>
                                 </div>*@
                             <div class="form-group row">
 
                                 <label for="LabSaat" class="col-sm-2 col-form-label">Lab.Saat</label>
                                 <div class="col-sm-4">
-                                    <SfNumericTextBox ID="LabSaat" Placeholder="" @bind-Value="@(dersDto.LabSaat)"></SfNumericTextBox>
+                                    <SfNumericTextBox ID="LabSaat" @bind-Value="@(dersDtoContext.LabSaat)"></SfNumericTextBox>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label for="Kredi" class="col-sm-2 col-form-label">Kredi</label>
                                 <div class="col-sm-4">
-                                    <SfNumericTextBox ID="Kredi" Placeholder="" @bind-Value="@(dersDto.Kredi)"></SfNumericTextBox>
+                                    <SfNumericTextBox ID="Kredi" @bind-Value="@(dersDtoContext.Kredi)"></SfNumericTextBox>
                                 </div>
                                 <label for="Akts" class="col-sm-2 col-form-label">Akts</label>
                                 <div class="col-sm-4">
-                                    <SfNumericTextBox ID="Akts" Placeholder="" @bind-Value="@(dersDto.Akts)"></SfNumericTextBox>
+                                    <SfNumericTextBox ID="Akts" @bind-Value="@(dersDtoContext.Akts)"></SfNumericTextBox>
                                 </div>
 
                             </div>
@@ -232,27 +232,27 @@ else
                                 <label class="col-md-2 col-form-label" for="DropAltKotaUyg">Ders Dil</label>
                                 <div class="col-sm-4">
                                     <SfDropDownList TValue="int?" TItem="DersDilDto" Placeholder="Dil seçiniz..."
-                                                    @bind-Value="@dersDto.DersDilId">
+                                                    @bind-Value="@dersDtoContext.DersDilId">
                                         <SfDataManager Url="odata/dersdils" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
                                         <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                                     </SfDropDownList>
                                 </div>
                                 <label for="SecmeliKodu" class="col-sm-2 col-form-label">Seç. Kod</label>
                                 <div class="col-sm-4">
-                                    <SfTextBox ID="SecmeliKodu" @bind-Value="@(dersDto.SecmeliKodu)" Enabled="@true"></SfTextBox>
+                                    <SfTextBox ID="SecmeliKodu" @bind-Value="@(dersDtoContext.SecmeliKodu)" Enabled="@true"></SfTextBox>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="Zorunlu" class="col-sm-2 col-form-label">Zorunlu</label>
                                 <div class="col-sm-4">
-                                    <SfCheckBox ID="Zorunlu" @bind-Checked="@(dersDto.Zorunlu)"></SfCheckBox>
+                                    <SfCheckBox ID="Zorunlu" @bind-Checked="@(dersDtoContext.Zorunlu)"></SfCheckBox>
                                 </div>
                                 <label for="durum" class="col-sm-2 col-form-label">Aktif</label>
                                 <div class="col-sm-4">
-                                    <SfCheckBox ID="durum" @onchange="onChange" @bind-Checked="@(dersDto.Durum)"></SfCheckBox>
+                                    <SfCheckBox ID="durum" @onchange="onChange" @bind-Checked="@(dersDtoContext.Durum)"></SfCheckBox>
                                 </div>
                                 <div class="col-sm-6"></div>
-                                <label class="col-sm-4">@(string.IsNullOrWhiteSpace(dersDto.KancalananDersAd) ? "":$"Bağlı old. ders : {dersDto.KancalananDersAd}")</label>
+                                <label class="col-sm-4">@(string.IsNullOrWhiteSpace(dersDtoContext.KancalananDersAd) ? "":$"Bağlı old. ders : {dersDtoContext.KancalananDersAd}")</label>
                             </div>
                         </div>
                     </div>
@@ -376,4 +376,7 @@ else
         content: '\e755';
         color: #31ba13;
     }
+    .e-control-wrapper.conversion .e-textbox {
+        text-transform: uppercase;
+    } 
 </style>
