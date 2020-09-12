@@ -17,7 +17,7 @@ namespace UniLife.Shared.DataModels
         public virtual Fakulte Fakulte { get; set; }
         public int ProgramTurId { get; set; }
         public virtual ProgramTur ProgramTur { get; set; }
-        public int Kod { get; set; }
+        public string Kod { get; set; }
         public string AdEn { get; set; }
         public string KisaAd { get; set; }
         public string KisaAdEn { get; set; }

@@ -65,6 +65,8 @@ namespace UniLife.Storage
             services.AddTransient<IOgrHarcStore, OgrHarcStore>();
             services.AddTransient<ISinavKriterStore, SinavKriterStore>();
             services.AddTransient<IDersKancaStore, DersKancaStore>();
+            services.AddTransient<IKampusStore, KampusStore>();
+
             //services.AddTransient<ITenantStore, TenantStore>();
             services.AddTransient<IApiLogStore, ApiLogStore>();
                        

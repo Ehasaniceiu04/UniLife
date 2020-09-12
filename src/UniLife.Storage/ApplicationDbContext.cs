@@ -76,6 +76,7 @@ namespace UniLife.Storage
         public DbSet<SinavKriter> SinavKriters{ get; set; }
         public DbSet<DersKanca> DersKancas{ get; set; }
         public DbSet<OgrBursBasari> OgrBursBasaris{ get; set; }
+        public DbSet<Kampus> Kampuss{ get; set; }
 
 
         //TODO Bunu böyle bırakacakmıyız.

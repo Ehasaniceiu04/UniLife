@@ -72,7 +72,8 @@
                                     <label class="col-sm-3 col-form-label" for="YoksisBirimKod">YoksisBirimKod</label>
                                     <SfNumericTextBox ID="YoksisBirimKod" CssClass=" col-sm-3" @bind-Value="@(programInfo.YoksisBirimKod)"></SfNumericTextBox>
                                     <SfCheckBox Label="Yöksis Durum" CssClass="col-sm-6" @bind-Checked="@(programInfo.YoksisDurum)"></SfCheckBox>
-                                    <SfDropDownList @ref="DropProgramTur" TValue="int?" TItem="ProgramTurDto" Placeholder="Program Türü seçiniz..."
+                                    <label class="col-sm-3 col-form-label" for="OgrDuzey">Öğrenim Düzeyi</label>
+                                    <SfDropDownList ID="OgrDuzey" @ref="DropProgramTur" CssClass=" col-sm-9" TValue="int?" TItem="ProgramTurDto"
                                                     Query="@programTurQuery"
                                                     @bind-Value="@programInfo.ProgramTurId">
                                         <SfDataManager Url="odata/programturs" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
