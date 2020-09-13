@@ -41,24 +41,20 @@ namespace UniLife.Shared.DataModels
 
         public int OgrenimDurumId { get; set; }
         public virtual OgrenimDurum OgrenimDurum{ get; set; }
-        public int OgrenimTurId { get; set; }
-        public virtual OgrenimTur OgrenimTur { get; set; }
+        //public int OgrenimTurId { get; set; }
+        //public virtual OgrenimTur OgrenimTur { get; set; }
         public bool Durum { get; set; }
 
         [System.ComponentModel.DataAnnotations.Schema.ForeignKey("Danisman")]
         public int? DanismanId { get; set; }
         public virtual Akademisyen Danisman { get; set; }
 
-        [System.ComponentModel.DataAnnotations.Schema.ForeignKey("DanismanIki")]
-        public int? DanismanIkiId { get; set; }
-        public virtual Akademisyen DanismanIki { get; set; }
 
         public string DnmSnfGecBilgi { get; set; }
 
         public string AskerDurum { get; set; }
         public DateTime? KayitTarih { get; set; }
         public DateTime? AyrilTarih { get; set; }
-        public string AnaOgrNo { get; set; }
         public int Sinif { get; set; }
         public decimal GerekenTopUcret { get; set; }
         public decimal OdenenTopUcret { get; set; }
@@ -67,6 +63,7 @@ namespace UniLife.Shared.DataModels
         public string Adres { get; set; }
         public string BilgNotu { get; set; }
         public bool MultiUni { get; set; }
+        public string IlaveDonem { get; set; }
 
         public virtual ICollection<DersKayit> DersKayits{ get; set; }
 

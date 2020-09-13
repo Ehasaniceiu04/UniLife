@@ -10,58 +10,58 @@ namespace UniLife.Shared.Dto.Definitions
 
         public virtual ApplicationUserDto ApplicationUser { get; set; }
 
-        //[Required]
+        [Required(ErrorMessage = "Ad bilgisi zorunludur")]
         //[StringLength(64, ErrorMessage = "{0} uzunluğu {2} ila {1} arasında olmalıdır.", MinimumLength = 2)]
         //[RegularExpression(@"[^\s]+", ErrorMessage = "Boşluk bırakmayınız.")]
         //[Display(Name = "Ad")]
         public string Ad { get; set; }
 
+        [Required(ErrorMessage = "Soyad bilgisi zorunludur")]
         public string Soyad { get; set; }
+        [Required(ErrorMessage = "Öğrenci No bilgisi zorunludur")]
         public long OgrNo { get; set; }
 
         [StringLength(11, ErrorMessage = "{0} uzunluğu 11 rakamdan oluşmalıdır.", MinimumLength = 11)]
         //[MaxLength(11)]
         //[MinLength(11)]
-        [Required]
+        [Required(ErrorMessage = "TCKN bilgisi zorunludur")]
         public string TCKN { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Fakulte bilgisi zorunludur")]
         public int? FakulteId { get; set; }
         public virtual FakulteDto Fakulte { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Bolum bilgisi zorunludur")]
         public int? BolumId { get; set; }
         public virtual BolumDto Bolum { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Program bilgisi zorunludur")]
         public int? ProgramId { get; set; }
         public virtual ProgramDto Program { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Mufredat bilgisi zorunludur")]
         public int? MufredatId { get; set; }
         public virtual MufredatDto Mufredat { get; set; }
 
         public string Eimg { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Kayıt Neden bilgisi zorunludur")]
         public int? KayitNedenId { get; set; }
         public virtual KayitNedenDto KayitNeden { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Öğrenim Durum bilgisi zorunludur")]
         public int? OgrenimDurumId { get; set; }
         public virtual OgrenimDurumDto OgrenimDurum { get; set; }
-        public int? OgrenimTurId { get; set; }
-        public virtual OgrenimTurDto OgrenimTur { get; set; }
+        //public int? OgrenimTurId { get; set; }
+        //public virtual OgrenimTurDto OgrenimTur { get; set; }
         public bool Durum { get; set; } = true;
-        
 
+        [Required(ErrorMessage = "Danişman bilgisi zorunludur")]
         public int? DanismanId { get; set; }
         public virtual AkademisyenDto Danisman { get; set; }
 
         public string DnmSnfGecBilgi { get; set; }
 
-        public int? DanismanIkiId { get; set; }
-        public virtual AkademisyenDto DanismanIki { get; set; }
-
         public string AskerDurum { get; set; }
+        [Required(ErrorMessage = "Kayıt Tarih bilgisi zorunludur")]
         public DateTime? KayitTarih { get; set; }
         public DateTime? AyrilTarih { get; set; }
-        public string AnaOgrNo { get; set; }
+        [Required(ErrorMessage = "Sınıf bilgisi zorunludur")]
         public int? Sinif { get; set; }
         public decimal GerekenTopUcret { get; set; }
         public decimal OdenenTopUcret { get; set; }
@@ -70,6 +70,7 @@ namespace UniLife.Shared.Dto.Definitions
         public string Adres { get; set; }
         public string BilgNotu { get; set; }
         public bool MultiUni { get; set; }
+        public string IlaveDonem { get; set; }
         //from UserInfoDTO
         public bool IsAuthenticated { get; set; }
 
@@ -79,10 +80,11 @@ namespace UniLife.Shared.Dto.Definitions
         //[Display(Name = "KullanıcıTCKN")]
         //public string UserName { get; set; }
         public int TenantId { get; set; }
-        //[Required]
-        //[DataType(DataType.EmailAddress)]
-        //[EmailAddress]
+
         //[Display(Name = "Email")]
+        [Required]
+        [DataType(DataType.EmailAddress)]
+        [EmailAddress]        
         public string Email { get; set; }
         public string EmailOutValid {
             get { return Email; }

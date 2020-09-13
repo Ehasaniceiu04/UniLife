@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using UniLife.Storage;
@@ -9,9 +10,10 @@ using UniLife.Storage;
 namespace UniLife.Storage.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200913145649_ogrtur")]
+    partial class ogrtur
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2315,6 +2317,9 @@ namespace UniLife.Storage.Migrations
                     b.Property<string>("Adres")
                         .HasColumnType("text");
 
+                    b.Property<string>("AnaOgrNo")
+                        .HasColumnType("text");
+
                     b.Property<Guid>("ApplicationUserId")
                         .HasColumnType("uuid");
 
@@ -2341,6 +2346,9 @@ namespace UniLife.Storage.Migrations
                     b.Property<int?>("DanismanId")
                         .HasColumnType("integer");
 
+                    b.Property<int?>("DanismanIkiId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("DnmSnfGecBilgi")
                         .HasColumnType("text");
 
@@ -2361,9 +2369,6 @@ namespace UniLife.Storage.Migrations
 
                     b.Property<decimal>("GerekenTopUcret")
                         .HasColumnType("numeric");
-
-                    b.Property<string>("IlaveDonem")
-                        .HasColumnType("text");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
@@ -2420,6 +2425,8 @@ namespace UniLife.Storage.Migrations
                     b.HasIndex("BolumId");
 
                     b.HasIndex("DanismanId");
+
+                    b.HasIndex("DanismanIkiId");
 
                     b.HasIndex("FakulteId");
 
@@ -3838,6 +3845,10 @@ namespace UniLife.Storage.Migrations
                     b.HasOne("UniLife.Shared.DataModels.Akademisyen", "Danisman")
                         .WithMany()
                         .HasForeignKey("DanismanId");
+
+                    b.HasOne("UniLife.Shared.DataModels.Akademisyen", "DanismanIki")
+                        .WithMany()
+                        .HasForeignKey("DanismanIkiId");
 
                     b.HasOne("UniLife.Shared.DataModels.Fakulte", "Fakulte")
                         .WithMany("Ogrencis")

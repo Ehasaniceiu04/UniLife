@@ -113,6 +113,9 @@
                 var ogrenciInfo = (context as OgrenciDto);
 
             }
+            <div class="col-3 float-right">
+                <SfButton OnClick="@(()=>DeepDetail(ogrenciInfo))" IconCss="e-icons e-DoubleArrowRight" CssClass="col-sm-12 form-control-sm">Öğrenci Detay</SfButton>
+            </div>
             <div style="padding:20px">
 
                 <SfTab LoadOn="ContentLoad.Demand">
@@ -146,12 +149,10 @@
                         </TabItem>
                     </TabItems>
                 </SfTab>
-                <div class="col-3 float-right">
-                    <SfButton OnClick="@(()=>DeepDetail(ogrenciInfo))" IconCss="e-icons e-DoubleArrowRight" CssClass="col-sm-12 form-control-sm">Öğrenci Detay</SfButton>
-                </div>
-                    
-                </div>
-</DetailTemplate>
+
+
+            </div>
+        </DetailTemplate>
     </GridTemplates>
     <GridColumns>
         <GridColumn Visible="false" Field=@nameof(OgrenciDto.ApplicationUserId) AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>

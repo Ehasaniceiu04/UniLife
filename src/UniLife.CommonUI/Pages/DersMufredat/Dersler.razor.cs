@@ -395,6 +395,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
                 }
                 catch (Exception ex)
+
                 {
                     matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
                 }
