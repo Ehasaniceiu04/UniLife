@@ -9,7 +9,7 @@
         <GridEvents OnActionComplete="ActionCompletedHandler" TValue="KampusDto"></GridEvents>
         <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
         <GridColumns>
-            <GridColumn Visible="false" Field=@nameof(KampusDto.Id) HeaderText="Kampus ID" Edit="false" AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(KampusDto.Id) HeaderText="Kampus ID" Edit="false" AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
             <GridColumn Field=@nameof(KampusDto.Ad) HeaderText="Kampus İsim"></GridColumn>
             <GridColumn Field=@nameof(KampusDto.Il) HeaderText="il"></GridColumn>
             <GridColumn Field=@nameof(KampusDto.Ilce) HeaderText="İlçe"></GridColumn>
@@ -40,25 +40,26 @@
     List<KampusDto> kampusDtos = new List<KampusDto>();
 
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        ReadKampuss();
+        await ReadKampuss();
     }
 
-    void ReadKampuss()
+    async Task ReadKampuss()
     {
-        ApiResponseDto<List<KampusDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<KampusDto>>>("api/kampus").Result;
+        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/kampus");
 
         if (apiResponse.StatusCode == Status200OK)
         {
-            matToaster.Add(apiResponse.Message, MatToastType.Success, "Kampusler getirildi");
-            kampusDtos = apiResponse.Result;
+            matToaster.Add(apiResponse.Message, MatToastType.Success, "Kampüsler getirildi");
+            kampusDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<KampusDto[]>(apiResponse.Result.ToString()).ToList<KampusDto>();
         }
         else
         {
-            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Kampus bilgisi getirilirken hata oluştu!");
+            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Kampüs bilgisi getirilirken hata oluştu!");
         }
     }
+
 
     public void ActionCompletedHandler(ActionEventArgs<KampusDto> args)
     {
