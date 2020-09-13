@@ -3,6 +3,7 @@
 @using UniLife.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs
 @using UniLife.Shared.Dto.Definitions
 @inject Microsoft.AspNetCore.Components.NavigationManager UriHelper
+@using Syncfusion.Blazor.Buttons
 @*@attribute [Authorize(Policy = Policies.IsAdmin)]*@
 
 @if (OgrSelected)
@@ -19,6 +20,7 @@
                 <tbody style="font-size: 13px;">
                     <tr>
                         <td rowspan="4" style="text-align: center;">
+                            <SfButton IconCss="e-icons e-DoubleArrowLeft" EnableRtl="true" OnClick="@(() => { OgrSelected = false; })" CssClass="e-flat col-sm-2 e-outline azkenar"></SfButton>
                             <img class="photo" src="@UriHelper.ToAbsoluteUri($"/_content/UniLife.CommonUI/images/ogrenci/{_OgrenciDto.ApplicationUserId.ToString()}.png")" alt="@_OgrenciDto.Id" />
                         </td>
                         <td>
@@ -114,13 +116,13 @@
                 </ContentTemplate>
             </TabItem>
             @*<TabItem Visible="@(OgrSelected)">
-            <ChildContent>
-                <TabHeader Text="Notlar"></TabHeader>
-            </ChildContent>
-            <ContentTemplate>
-                <OgrenciNotlar></OgrenciNotlar>
-            </ContentTemplate>
-        </TabItem>*@
+                    <ChildContent>
+                        <TabHeader Text="Notlar"></TabHeader>
+                    </ChildContent>
+                    <ContentTemplate>
+                        <OgrenciNotlar></OgrenciNotlar>
+                    </ContentTemplate>
+                </TabItem>*@
             <TabItem Visible="@(OgrSelected)">
                 <ChildContent>
                     <TabHeader Text="Nûfus Bilgileri"></TabHeader>
@@ -289,7 +291,7 @@
         color: #13b6d6;
     }
 
-    
+
     .detailtable td {
         font-size: 13px;
         padding: 4px;
@@ -309,5 +311,12 @@
     .table td, .table th {
         padding-top: 10px;
         padding-bottom: 0px;
+    }
+    .e-DoubleArrowLeft:before {
+        content: '\e7ba';
+        color: #12a37c;
+    }
+    .azkenar {
+        margin-right: 20px;
     }
 </style>
