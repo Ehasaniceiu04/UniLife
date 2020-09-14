@@ -27,7 +27,7 @@
 </div>
 @*QueryCellInfo="QueryCellInfoHandler" RowSelecting="OnRowSelecting" *@
 <SfGrid @ref="MufredatGrid" ID="MufredatGrid" TValue="MufredatDto" Query="@totalQuery" ShowColumnChooser="true" AllowResizing="true" AllowSorting="true" AllowFiltering="true" AllowPaging="true" Toolbar="Toolbaritems"
-        ContextMenuItems="@(new List<ContextMenuItemModel>() { new ContextMenuItemModel { Text = "Ders Tanımla", Target = ".e-content", Id = "copywithheader" } })" Width="100%" Height="100%">
+        ContextMenuItems="@(new List<ContextMenuItemModel>() { new ContextMenuItemModel { Text = "Ders Tanımla", Target = ".e-content", Id = "copywithheader" } })">
     <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
     <GridEvents ContextMenuItemClicked="OnContextMenuClick" CommandClicked="CommandClickHandler" OnActionBegin="OnActionBeginHandler" OnToolbarClick="ToolbarClickHandler" OnActionComplete="ActionCompletedHandler" TValue="MufredatDto"></GridEvents>
     <GridSelectionSettings Type="SelectionType.Multiple" CheckboxOnly="true"></GridSelectionSettings>
@@ -85,8 +85,8 @@
     <GridColumns>
         <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
         <GridColumn Visible="false" Field=@nameof(MufredatDto.Id) HeaderText="Müfredat ID" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
-        <GridColumn Field=@nameof(MufredatDto.Ad) AllowEditing="true" HeaderText="Müfredat İsim" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
-        <GridColumn Field=@nameof(MufredatDto.Yil) HeaderText="Müfredat Yıl" Format="####" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
+        <GridColumn AutoFit="true" Field=@nameof(MufredatDto.Ad) AllowEditing="true" HeaderText="Müfredat İsim" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
+        <GridColumn AutoFit="true" Field=@nameof(MufredatDto.Yil) HeaderText="Müfredat Yıl" Format="####" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
         <GridColumn AutoFit="true" Field=@nameof(MufredatDto.BasTarih) HeaderText="Baş Tarih" Format="d" EditType="EditType.DatePickerEdit" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
         @*<GridColumn AutoFit="true" Field=@nameof(MufredatDto.BitTarih) HeaderText="Son Tarih" Format="d" EditType="EditType.DatePickerEdit"></GridColumn>*@
         <GridColumn AutoFit="true" Field=@nameof(MufredatDto.Aktif) HeaderText="Aktif" DisplayAsCheckBox="true"></GridColumn>
@@ -95,7 +95,7 @@
         <GridColumn Field="Program.Ad" HeaderText="Program"></GridColumn>
         @*<GridColumn Field="Program.Bolum.Ad" HeaderText="Bolum"></GridColumn>
             <GridColumn Field="Program.Bolum.Fakulte.Ad" HeaderText="Fakulte"></GridColumn>*@
-        <GridColumn>
+        <GridColumn AutoFit="true" HeaderText="*" Width="178">
             <GridCommandColumns>
                 <GridCommandColumn Type="CommandButtonType.None" Title="Tanımlı Dersler" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
                 <GridCommandColumn Type="CommandButtonType.Edit" Title="Clone" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-copy", CssClass="e-flat" })"></GridCommandColumn>
