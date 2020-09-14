@@ -37,7 +37,7 @@
             <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
             <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
             <GridEvents OnToolbarClick="ToolbarClickHandler" TValue="OgrenciDersRaporDto"></GridEvents>
-            <GridPageSettings PageCount="5" PageSizes="new int[]{ 5, 10, 12, 30,10000}"></GridPageSettings>
+            <GridPageSettings PageCount="5" PageSizes="new int[]{ 5, 10, 50, 100,10000}"></GridPageSettings>
             <GridColumns>
                 <GridColumn Visible="false" Field=@nameof(OgrenciDersRaporDto.Id) Type="ColumnType.Number" IsPrimaryKey="true" Width="50"></GridColumn>
                 <GridColumn Field=@nameof(OgrenciDersRaporDto.OgrNo) Type="ColumnType.String" HeaderText="OgrenciNo" Width="50"></GridColumn>

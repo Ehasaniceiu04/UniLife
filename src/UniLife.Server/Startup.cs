@@ -625,7 +625,7 @@ namespace UniLife.Server
             {
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapControllers();
-                endpoints.Expand().Select().Count().OrderBy().Filter().MaxTop(2000);
+                endpoints.Expand().Select().Count().OrderBy().Filter().MaxTop(20000);
                 endpoints.MapODataRoute("odata", "odata", GetEdmModel());
                 // new SignalR endpoint routing setup
                 endpoints.MapHub<Hubs.ChatHub>("/chathub");

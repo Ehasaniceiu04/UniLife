@@ -41,6 +41,14 @@
                     <AkaNotlar _SinavDto="_SinavDto"></AkaNotlar>
                 </ContentTemplate>
             </TabItem>
+            <TabItem>
+                <ChildContent>
+                    <TabHeader Text="Danışmanlık Öğrencileri"></TabHeader>
+                </ChildContent>
+                <ContentTemplate>
+                    <AkademisyenDanismanlik _AkademisyenDto="_AkademisyenDto"></AkademisyenDanismanlik>
+                </ContentTemplate>
+            </TabItem>
         </TabItems>
     </SfTab>
 </div>
@@ -70,6 +78,7 @@
         Tab.EnableTab(1, tabIndex > 0);
         Tab.EnableTab(2, tabIndex > 0);
         Tab.EnableTab(3, tabIndex > 0);
+        Tab.EnableTab(4, tabIndex > 0);
         Tab.Select(tabIndex);
     }
 
@@ -84,7 +93,9 @@
         Tab.EnableTab(0, true);
         Tab.EnableTab(1, false);
         Tab.EnableTab(2, false);
-        Tab.HideTab(3, true);
+        Tab.EnableTab(3, false);
+        Tab.EnableTab(4, false);
+        //Tab.HideTab(3, true);
     }
 
     public async void onDonemChange()
@@ -102,6 +113,11 @@
         {
             args.Cancel = true;
         }
+
+        //if (args.SelectedIndex == 3 && args.SelectingIndex!=3)
+        //{
+
+        //}
     }
 }
 

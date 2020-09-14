@@ -32,6 +32,7 @@
     <GridEvents ContextMenuItemClicked="OnContextMenuClick" CommandClicked="CommandClickHandler" OnActionBegin="OnActionBeginHandler" OnToolbarClick="ToolbarClickHandler" OnActionComplete="ActionCompletedHandler" TValue="MufredatDto"></GridEvents>
     <GridSelectionSettings Type="SelectionType.Multiple" CheckboxOnly="true"></GridSelectionSettings>
     @*<GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.CheckBox"></GridFilterSettings>*@
+    <GridPageSettings PageCount="5" PageSizes="new int[]{ 5, 10, 50, 100,10000}"></GridPageSettings>
     <GridEditSettings Dialog="DialogParams" ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
         <Template>
             @{

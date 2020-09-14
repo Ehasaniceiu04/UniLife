@@ -27,7 +27,7 @@ else
                 <SfGrid ID="DersAcGrid" @ref="DersAcGrid" TValue="DersAcilanForSinav" RowHeight="20" AllowSorting="true" AllowFiltering="true" AllowSelection="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
                     <GridEvents RowSelected="RowSelectedHandler" TValue="DersAcilanForSinav" CommandClicked="CommandClickHandler"></GridEvents>
                     <GridSelectionSettings CellSelectionMode="CellSelectionMode.BoxWithBorder" CheckboxOnly="true" Type="SelectionType.Multiple" PersistSelection="true"></GridSelectionSettings>
-                    <GridPageSettings PageCount="5" PageSizes="new int[]{ 5, 10, 12, 30 }"></GridPageSettings>
+                    <GridPageSettings PageCount="5" PageSizes="new int[]{ 5, 10, 50, 100,10000}"></GridPageSettings>
                     <SfDataManager Url="@("odata/DersAcilansForSinavs")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
                     <GridColumns>
                         <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
