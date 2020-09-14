@@ -36,14 +36,18 @@ namespace UniLife.CommonUI.Pages.Akademisyen
                 {
                     matToaster.Add("Akademisyen bilgisi alınamadı", MatToastType.Danger, "Hata oluştu!");
                 }
+                else
+                {
+                    await GetDersliksAndDerslikRezsByAkaId((int)akademisyenDto.Id);
+                    isProgramOpen = true;
+                }
             }
             catch (Exception ex)
             {
                 matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
             }
 
-            await GetDersliksAndDerslikRezsByAkaId((int)akademisyenDto.Id);
-            isProgramOpen = true;
+            
         }
 
         async Task GetDersliksAndDerslikRezsByAkaId(int akaId)

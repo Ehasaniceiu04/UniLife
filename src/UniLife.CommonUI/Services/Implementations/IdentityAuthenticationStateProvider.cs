@@ -146,7 +146,7 @@ namespace UniLife.CommonUI.States
         public async Task<ApiResponseDto> UpdateAkademisyenUser(AkademisyenDto akademisyenDto)
         {
             ApiResponseDto apiResponse = await _authorizeApi.UpdateAkademisyenUser(akademisyenDto);
-            NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+            //NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
             return apiResponse;
         }
 

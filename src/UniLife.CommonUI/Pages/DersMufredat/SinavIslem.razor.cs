@@ -15,7 +15,7 @@ using UniLife.Shared.Dto.Definitions;
 
 namespace UniLife.CommonUI.Pages.DersMufredat
 {
-    public partial class Sinavlar : ComponentBase
+    public partial class SinavIslem : ComponentBase
     {
         [InjectAttribute]
         public System.Net.Http.HttpClient Http { get; set; }

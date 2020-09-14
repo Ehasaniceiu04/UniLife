@@ -11,8 +11,8 @@
         <GridColumn AllowEditing="false" Visible="false" Field=@nameof(SinavOgrNotlarDto.SinavKayitId) HeaderText="Sinav Id" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
         <GridColumn AllowEditing="false" Visible="false" Field=@nameof(SinavOgrNotlarDto.SinavId) HeaderText="SinavId"></GridColumn>
         <GridColumn AllowEditing="false" Visible="false" Field=@nameof(SinavOgrNotlarDto.OgrenciId) HeaderText="OgrenciId"></GridColumn>
-        <GridColumn AllowEditing="false" Field=@nameof(SinavOgrNotlarDto.OgrenciAd) HeaderText="Öğrenci"></GridColumn>
-        <GridColumn AllowEditing="false" Field=@nameof(SinavOgrNotlarDto.OgrenciNo) HeaderText="No"></GridColumn>
+        <GridColumn AllowEditing="false" Field=@nameof(SinavOgrNotlarDto.OgrenciNo) HeaderText="Öğrenci No"></GridColumn>
+        <GridColumn AllowEditing="false" Field=@nameof(SinavOgrNotlarDto.OgrenciAd) HeaderText="Adı Soyadı"></GridColumn>
         <GridColumn Field=@nameof(SinavOgrNotlarDto.OgrNot) HeaderText="Notu" ValidationRules="@(new ValidationRules{ Required=true, Number=true,Max=100,Min=0})" ></GridColumn>
     </GridColumns>
 </SfGrid>

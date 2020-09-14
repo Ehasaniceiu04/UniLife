@@ -104,10 +104,11 @@ namespace UniLife.CommonUI.Services.Implementations
                     {
                         var cookieParts = cookie.Split('=');
                         await _jsRuntime.InvokeVoidAsync("jsInterops.removeCookie", cookieParts[0]);
-                        //await _jsRuntime.InvokeVoidAsync("jsInterops.eraseCookie", cookieParts[0]);
-                        await _jsRuntime.InvokeVoidAsync("jsInterops.deleteCookieFromAllPaths", cookieParts[0]);
+                        await _jsRuntime.InvokeVoidAsync("jsInterops.eraseCookie", cookieParts[0]);
+                        //await _jsRuntime.InvokeVoidAsync("jsInterops.deleteCookieFromAllPaths", cookieParts[0]);
 
                     }
+                    await _jsRuntime.InvokeVoidAsync("jsInterops.refreshPage");
                 }
 #endif
 

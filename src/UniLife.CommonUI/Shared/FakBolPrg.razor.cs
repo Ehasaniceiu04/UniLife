@@ -99,7 +99,7 @@ namespace UniLife.CommonUI.Shared
         protected async override Task OnInitializedAsync()
         {
             await ReadFakultes();
-            if (BolumId !=null)
+            if (BolumId !=null && FakulteId!=null)
             {
                 await ReadBolums(FakulteId);
             }

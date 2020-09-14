@@ -1,4 +1,6 @@
-﻿@using Syncfusion.Blazor.DropDowns
+﻿@page "/akademisyen/bilgi"
+
+@using Syncfusion.Blazor.DropDowns
 @using Syncfusion.Blazor.Inputs
 @using Syncfusion.Blazor.Buttons
 @using UniLife.Shared.Dto.Definitions
@@ -133,14 +135,16 @@
         }
 
 
-        [Parameter]
+        
         public AkademisyenDto _AkademisyenDto { get; set; } = new AkademisyenDto();
 
 
         protected override async Task OnInitializedAsync()
         {
+            _AkademisyenDto = await appState.GetAkademisyenState();
             EC = new EditContext(_AkademisyenDto);
         }
+
 
         [Parameter]
         public EventCallback<int> BilgilerToAkademisyen { get; set; }

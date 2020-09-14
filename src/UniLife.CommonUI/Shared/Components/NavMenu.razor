@@ -85,9 +85,9 @@
                 </MatNavSubMenuHeader>
                 <MatNavSubMenuList>
                     @if (user == null ? false : (user.HasClaim("permission", Permissions.DersKayit.Read) &&
-     user.HasClaim("permission", Permissions.DersKayit.Create) &&
-     user.HasClaim("permission", Permissions.DersKayit.Update) &&
-     user.HasClaim("permission", Permissions.DersKayit.Delete)))
+   user.HasClaim("permission", Permissions.DersKayit.Create) &&
+   user.HasClaim("permission", Permissions.DersKayit.Update) &&
+   user.HasClaim("permission", Permissions.DersKayit.Delete)))
                     {
                         <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/dersKayit").AbsoluteUri">
                             <MatIcon>business</MatIcon> <span class="miniHover">Ders Kayıt</span>
@@ -184,8 +184,8 @@
                         <MatIcon>touch_app</MatIcon> <span class="miniHover">Müfredat</span>
                     </MatNavItem>
                     @*<MatNavItem Href="@navigationManager.ToAbsoluteUri("donemdersleri").AbsoluteUri">
-            <MatIcon>screen_share</MatIcon> <span class="miniHover">Dönem Dersleri</span>
-        </MatNavItem>*@
+                            <MatIcon>screen_share</MatIcon> <span class="miniHover">Dönem Dersleri</span>
+                        </MatNavItem>*@
                     <MatNavItem Href="@navigationManager.ToAbsoluteUri("acilandersler").AbsoluteUri">
                         <MatIcon>screen_share</MatIcon> <span class="miniHover">Açılan Dersler</span>
                     </MatNavItem>
@@ -195,20 +195,33 @@
                     <MatNavItem Href="@navigationManager.ToAbsoluteUri("ders_programi").AbsoluteUri">
                         <MatIcon>screen_share</MatIcon> <span class="miniHover">Ders Programı Planlama</span>
                     </MatNavItem>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("Sinavlar").AbsoluteUri">
+                    @*<MatNavItem Href="@navigationManager.ToAbsoluteUri("Sinavlar").AbsoluteUri">
                         <MatIcon>screen_share</MatIcon> <span class="miniHover">Sınav ve Not</span>
+                    </MatNavItem>*@
+                    
+
+                </MatNavSubMenuList>
+            </MatNavSubMenu>
+        </Authorized>
+    </AuthorizeView>
+
+
+    @*Personel*@
+    <AuthorizeView Roles="Personel" Context="AuthorizeContext">
+        <Authorized>
+            <MatNavSubMenu>
+                <MatNavSubMenuHeader>
+                    <MatNavItem AllowSelection="false">
+                        <MatIcon>stars</MatIcon><span class="miniHover">Sınav Ve Not</span>
                     </MatNavItem>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/ogrenci_toplu_atama").AbsoluteUri">
-                        <MatIcon>screen_share</MatIcon> <span class="miniHover">Öğrenci Toplu Atama</span>
+                </MatNavSubMenuHeader>
+                <MatNavSubMenuList>
+
+                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("SinavIslem").AbsoluteUri">
+                        <MatIcon>screen_share</MatIcon> <span class="miniHover">Sınav İşlemleri</span>
                     </MatNavItem>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/sinif_atlatma").AbsoluteUri">
-                        <MatIcon>screen_share</MatIcon> <span class="miniHover">Öğrenci Sınıf Atlatma</span>
-                    </MatNavItem>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("admin/Ogrenci_Ders_Aktarim").AbsoluteUri">
-                        <MatIcon>screen_share</MatIcon> <span class="miniHover">Öğrenci Ders Aktarım</span>
-                    </MatNavItem>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("admin/Ogrenci_Toplu_Ders_Kayit").AbsoluteUri">
-                    <MatIcon>screen_share</MatIcon> <span class="miniHover">Toplu Ders Kayıt</span>
+                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("SinavList").AbsoluteUri">
+                        <MatIcon>touch_app</MatIcon> <span class="miniHover">Sinav Listesi</span>
                     </MatNavItem>
 
                 </MatNavSubMenuList>
@@ -216,11 +229,43 @@
         </Authorized>
     </AuthorizeView>
 
+
+    @*Personel*@
     <AuthorizeView Roles="Personel" Context="AuthorizeContext">
         <Authorized>
-            <MatNavItem Href="@navigationManager.ToAbsoluteUri("/admin/ogrenci_islem").AbsoluteUri">
-                <MatIcon>supervisor_account</MatIcon> <span class="miniHover">Öğrenci İşlemleri</span>
-            </MatNavItem>
+            <MatNavSubMenu>
+                <MatNavSubMenuHeader>
+                    <MatNavItem AllowSelection="false">
+                        <MatIcon>stars</MatIcon><span class="miniHover">Öğrenci İşlemleri</span>
+                    </MatNavItem>
+                </MatNavSubMenuHeader>
+                <MatNavSubMenuList>
+                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("/admin/ogrenci_islem").AbsoluteUri">
+                        <MatIcon>supervisor_account</MatIcon> <span class="miniHover">Öğrenciler</span>
+                    </MatNavItem>
+                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/ogrenci_toplu_atama").AbsoluteUri">
+                        <MatIcon>screen_share</MatIcon> <span class="miniHover">Toplu Atama</span>
+                    </MatNavItem>
+                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/sinif_atlatma").AbsoluteUri">
+                        <MatIcon>screen_share</MatIcon> <span class="miniHover">Sınıf Atlatma</span>
+                    </MatNavItem>
+                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("admin/Ogrenci_Ders_Aktarim").AbsoluteUri">
+                        <MatIcon>screen_share</MatIcon> <span class="miniHover">Ders Aktarım</span>
+                    </MatNavItem>
+                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("admin/Ogrenci_Toplu_Ders_Kayit").AbsoluteUri">
+                        <MatIcon>screen_share</MatIcon> <span class="miniHover">Toplu Ders Kayıt</span>
+                    </MatNavItem>
+
+                </MatNavSubMenuList>
+            </MatNavSubMenu>
+        </Authorized>
+    </AuthorizeView>
+
+
+
+    <AuthorizeView Roles="Personel" Context="AuthorizeContext">
+        <Authorized>
+            
             @*Todo*@
             <MatNavItem Href="@navigationManager.ToAbsoluteUri("/admin/ogrenci_islem").AbsoluteUri">
                 <MatIcon>supervisor_account</MatIcon> <span class="miniHover">E-Kayıt İşlemleri</span>
@@ -505,36 +550,36 @@
             </MatNavItem>
         }*@
 
-    @if (!IsLoggedIn)
-        {
-    <MatNavSubMenu Class="asagiBos">
-        <MatNavSubMenuHeader>
-            <MatNavItem AllowSelection="false">
-                <MatIcon>stars</MatIcon><span class="miniHover">Online Başvuru İşlemleri</span>
-            </MatNavItem>
-        </MatNavSubMenuHeader>
-        <MatNavSubMenuList>
-            <MatNavItem Href="@navigationManager.ToAbsoluteUri("/yabanci_Basvuru").AbsoluteUri" NavLinkMatch="NavLinkMatch.All">
-                <MatIcon>home</MatIcon> <span class="miniHover">Yabancı Başvuru</span>
-            </MatNavItem>
-            <MatNavItem Href="@navigationManager.ToAbsoluteUri("/yabanci_Basvuru").AbsoluteUri" NavLinkMatch="NavLinkMatch.All">
-                <MatIcon>home</MatIcon> <span class="miniHover">Staj Başvurusu</span>
-            </MatNavItem>
-            <MatNavItem Href="@navigationManager.ToAbsoluteUri("/yabanci_Basvuru").AbsoluteUri" NavLinkMatch="NavLinkMatch.All">
-                <MatIcon>home</MatIcon> <span class="miniHover">Erasmus Başvurusu</span>
-            </MatNavItem>
-            <MatNavItem Href="@navigationManager.ToAbsoluteUri("/yabanci_Basvuru").AbsoluteUri" NavLinkMatch="NavLinkMatch.All">
-                <MatIcon>home</MatIcon> <span class="miniHover">Farabi Başvurusu</span>
-            </MatNavItem>
-            <MatNavItem Href="@navigationManager.ToAbsoluteUri("/yabanci_Basvuru").AbsoluteUri" NavLinkMatch="NavLinkMatch.All">
-                <MatIcon>home</MatIcon> <span class="miniHover">Enstitü Başvurusu</span>
-            </MatNavItem>
-            <MatNavItem Href="@navigationManager.ToAbsoluteUri("/yabanci_Basvuru").AbsoluteUri" NavLinkMatch="NavLinkMatch.All">
-                <MatIcon>home</MatIcon> <span class="miniHover">Yatay Geçiş Başvurusu</span>
-            </MatNavItem>
-        </MatNavSubMenuList>
-    </MatNavSubMenu>
-    }
+    @*@if (!IsLoggedIn)
+    {*@
+        <MatNavSubMenu Class="asagiBos">
+            <MatNavSubMenuHeader>
+                <MatNavItem AllowSelection="false">
+                    <MatIcon>stars</MatIcon><span class="miniHover">Online Başvuru İşlemleri</span>
+                </MatNavItem>
+            </MatNavSubMenuHeader>
+            <MatNavSubMenuList>
+                <MatNavItem Href="@navigationManager.ToAbsoluteUri("/yabanci_Basvuru").AbsoluteUri" NavLinkMatch="NavLinkMatch.All">
+                    <MatIcon>home</MatIcon> <span class="miniHover">Yabancı Başvuru</span>
+                </MatNavItem>
+                <MatNavItem Href="@navigationManager.ToAbsoluteUri("/yabanci_Basvuru").AbsoluteUri" NavLinkMatch="NavLinkMatch.All">
+                    <MatIcon>home</MatIcon> <span class="miniHover">Staj Başvurusu</span>
+                </MatNavItem>
+                <MatNavItem Href="@navigationManager.ToAbsoluteUri("/yabanci_Basvuru").AbsoluteUri" NavLinkMatch="NavLinkMatch.All">
+                    <MatIcon>home</MatIcon> <span class="miniHover">Erasmus Başvurusu</span>
+                </MatNavItem>
+                <MatNavItem Href="@navigationManager.ToAbsoluteUri("/yabanci_Basvuru").AbsoluteUri" NavLinkMatch="NavLinkMatch.All">
+                    <MatIcon>home</MatIcon> <span class="miniHover">Farabi Başvurusu</span>
+                </MatNavItem>
+                <MatNavItem Href="@navigationManager.ToAbsoluteUri("/yabanci_Basvuru").AbsoluteUri" NavLinkMatch="NavLinkMatch.All">
+                    <MatIcon>home</MatIcon> <span class="miniHover">Enstitü Başvurusu</span>
+                </MatNavItem>
+                <MatNavItem Href="@navigationManager.ToAbsoluteUri("/yabanci_Basvuru").AbsoluteUri" NavLinkMatch="NavLinkMatch.All">
+                    <MatIcon>home</MatIcon> <span class="miniHover">Yatay Geçiş Başvurusu</span>
+                </MatNavItem>
+            </MatNavSubMenuList>
+        </MatNavSubMenu>
+    @*}*@
 
 </MatNavMenu>
 

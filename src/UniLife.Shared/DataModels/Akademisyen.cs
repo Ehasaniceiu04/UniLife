@@ -27,6 +27,10 @@ namespace UniLife.Shared.DataModels
         public bool Durum { get; set; }
         public DateTime? KayitTarih { get; set; }
         public DateTime? AyrilTarih { get; set; }
+        public int? FakulteId { get; set; }
+        public virtual Fakulte Fakulte { get; set; }
+        public int? BolumId { get; set; }
+        public virtual Bolum Bolum { get; set; }
         public string Diller { get; set; }
         public string EgitimBilg { get; set; }
         public string Telefon { get; set; }

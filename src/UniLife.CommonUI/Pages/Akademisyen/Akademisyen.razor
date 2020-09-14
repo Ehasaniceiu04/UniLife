@@ -1,1 +1,13 @@
 ﻿@page "/Akademisyen"
+@inject AppState appState
+
+@code{
+    protected override async Task  OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var ads = await appState.GetAkademisyenState();
+        }
+    }
+
+}

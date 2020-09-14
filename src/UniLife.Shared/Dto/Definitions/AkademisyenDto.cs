@@ -17,6 +17,7 @@ namespace UniLife.Shared.Dto.Definitions
 
         public string OgrtNo { get; set; }
 
+        [Required]
         [MaxLength(11)]
         public string TCKN { get; set; }
 
@@ -24,6 +25,10 @@ namespace UniLife.Shared.Dto.Definitions
         public bool Durum { get; set; }
         public DateTime? KayitTarih { get; set; }
         public DateTime? AyrilTarih { get; set; }
+        public int? FakulteId { get; set; }
+        public virtual FakulteDto Fakulte { get; set; }
+        public int? BolumId { get; set; }
+        public virtual BolumDto Bolum { get; set; }
         public string Diller { get; set; }
         public string EgitimBilg { get; set; }
         public string Telefon { get; set; }

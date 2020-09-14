@@ -10,8 +10,6 @@
     },
     removeCookie: function (cookieName) {
         try {
-            
-
             console.log(cookieName + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;');
             console.log(document.cookie);
             document.cookie = cookieName + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
@@ -51,9 +49,6 @@
         catch (err) {
             console.log(err.message);
         }
-        
-
-        
     },
     deleteCookieFromWithoutName: function () {
         //Üstteki olmazsa buna gelecen denemedik daha!
@@ -66,5 +61,8 @@
     },
     logla: function (mesaj) {
         console.log(mesaj);
+    },
+    refreshPage: function () {
+        window.location = " "; // TO REFRESH THE PAGE
     }
 }
