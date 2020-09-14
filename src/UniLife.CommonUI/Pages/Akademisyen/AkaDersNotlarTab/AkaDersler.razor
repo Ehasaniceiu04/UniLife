@@ -15,14 +15,14 @@
 else
 {
     <SfDropDownList ID="DropDonem" @ref="DropDonem" ShowClearButton="true" TItem="DonemDto" Index="0" CssClass="form-control-sm"
-                    TValue="int?"
+                    TValue="int?" Placeholder="Dönem Seçimi..."
                     DataSource="@(donemDtos.OrderByDescending(x=>x.Yil).ThenBy(n => n.BasTarih))" @bind-Value="@(selectedDonemId)">
         <DropDownListEvents TValue="int?" ValueChange="DonemChange"></DropDownListEvents>
         <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
     </SfDropDownList>
 
     <SfGrid ID="grdDersler" @ref="grdDersler" TValue="DersAcilanDto"  Toolbar="@(Toolbaritems)" AllowPaging="true">
-        <SfDataManager Url="@(gridOdata)" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+        <SfDataManager Url="@($"odata/dersacilans?$expand=akademisyen($select=Ad,Id),donem($select=Ad,Id)&$select=Ad,Id,Kod&$filter=akademisyen/Id eq {akademisyenDto.Id} and donem/Id eq {selectedDonemId}")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
         <GridEvents TValue="DersAcilanDto" OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectedHandler"></GridEvents>
         @*<GridGroupSettings Columns="@Initial"></GridGroupSettings>*@
         <GridTemplates>
@@ -151,8 +151,8 @@ else
                 {
                     akademisyenDto = _AkademisyenDto;
                 }
-
-                gridOdata = $"odata/dersacilans?$expand=akademisyen($select=Ad,Id),donem($select=Ad,Id)&$select=Ad,Id,Kod&$filter=akademisyen/Id eq {akademisyenDto.Id} and donem/Id eq {selectedDonemId}";
+                var aktifDonem = await appState.GetDonemState();
+                gridOdata = $"odata/dersacilans?$expand=akademisyen($select=Ad,Id),donem($select=Ad,Id)&$select=Ad,Id,Kod&$filter=akademisyen/Id eq {akademisyenDto.Id} and donem/Id eq {aktifDonem.Id}";
             }
             else
             {
@@ -205,7 +205,7 @@ else
 
     void DonemChange()
     {
-        gridOdata = $"odata/dersacilans?$expand=akademisyen($select=Ad,Id),donem($select=Ad,Id)&$select=Ad,Id,Kod&$filter=akademisyen/Id eq {akademisyenDto.Id} and donem/Id eq {selectedDonemId}";
+        //gridOdata = $"odata/dersacilans?$expand=akademisyen($select=Ad,Id),donem($select=Ad,Id)&$select=Ad,Id,Kod&$filter=akademisyen/Id eq {akademisyenDto.Id} and donem/Id eq {selectedDonemId}";
         grdDersler.Refresh();
     }
 

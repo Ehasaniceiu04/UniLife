@@ -8,10 +8,10 @@
 @using Syncfusion.Blazor.Inputs
 
 
-@if (!isProgramOpen)
+@if (derslikDtos.Count<1)
 {
     <LoadingBackground ShowLogoBox="true">
-        <label>Program Yükleniyor.</label>
+        <label>Takvim belirlenmedi.</label>
     </LoadingBackground>
 }
 else
