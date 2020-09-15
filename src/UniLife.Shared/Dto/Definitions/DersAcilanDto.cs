@@ -48,7 +48,7 @@ namespace UniLife.Shared.Dto.Definitions
 
         public string KisaAd { get; set; }
         public int? Akts { get; set; }
-        public int GecmeNotu { get; set; }
+        
         public string OptikKod { get; set; }
         public string AdEn { get; set; }
         public int UygSaat { get; set; }
@@ -74,6 +74,8 @@ namespace UniLife.Shared.Dto.Definitions
         {
             get { return TeoSaat.ToString() + "+" + UygSaat.ToString(); }
         }
+
+        public bool Kayitta { get; set; }
 
         public virtual ICollection<SinavDto> Sinavs { get; set; }
     }

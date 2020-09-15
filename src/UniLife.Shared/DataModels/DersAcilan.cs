@@ -41,7 +41,6 @@ namespace UniLife.Shared.DataModels
         
         public string KisaAd { get; set; }
         public int Akts { get; set; }
-        public int GecmeNotu { get; set; }
         public string OptikKod { get; set; }
         public string AdEn { get; set; }
         public int UygSaat { get; set; }

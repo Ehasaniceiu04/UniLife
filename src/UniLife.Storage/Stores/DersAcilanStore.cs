@@ -44,7 +44,6 @@ namespace UniLife.Storage.Stores
                                   ProgramId = da.ProgramId,
                                   DonemId = da.DonemId,
                                   KisaAd = da.KisaAd,
-                                  GecmeNotu = da.GecmeNotu,
                                   Durum = da.Durum,
                                   Sinif = da.Sinif
                               };
@@ -74,7 +73,6 @@ namespace UniLife.Storage.Stores
                                           DersId = d.Id,
                                           DonemId = dersAcDto.AcDonemSecilen, // TODO : eğer farklı döneme atması mümkün değilse d.DonemId olsun
                                           Durum = d.Durum,
-                                          GecmeNotu = d.GecmeNotu,
                                           KisaAd = d.KisaAd,
                                           Kod = d.Kod,
                                           Kredi = d.Kredi,
@@ -102,7 +100,6 @@ namespace UniLife.Storage.Stores
                                           DersId = d.Id,
                                           DonemId = dersAcDto.AcDonemSecilen, // TODO : eğer farklı döneme atması mümkün değilse d.DonemId olsun
                                           Durum = d.Durum,
-                                          GecmeNotu = d.GecmeNotu,
                                           KisaAd = d.KisaAd,
                                           Kod = d.Kod,
                                           Kredi = d.Kredi,
@@ -130,7 +127,6 @@ namespace UniLife.Storage.Stores
                                           DersId = d.Id,
                                           DonemId = dersAcDto.AcDonemSecilen, // TODO : eğer farklı döneme atması mümkün değilse d.DonemId olsun
                                           Durum = d.Durum,
-                                          GecmeNotu = d.GecmeNotu,
                                           KisaAd = d.KisaAd,
                                           Kod = d.Kod,
                                           Kredi = d.Kredi,
@@ -156,7 +152,6 @@ namespace UniLife.Storage.Stores
                                           DersId = d.Id,
                                           DonemId = dersAcDto.AcDonemSecilen, // TODO : eğer farklı döneme atması mümkün değilse d.DonemId olsun
                                           Durum = d.Durum,
-                                          GecmeNotu = d.GecmeNotu,
                                           KisaAd = d.KisaAd,
                                           Kod = d.Kod,
                                           Kredi = d.Kredi,
@@ -487,7 +482,6 @@ namespace UniLife.Storage.Stores
                                   ProgramId = a.ProgramId,
                                   DonemId = a.DonemId,
                                   KisaAd = a.KisaAd,
-                                  GecmeNotu = a.GecmeNotu,
                                   Durum = a.Durum,
                                   Sinif = a.Sinif
                               };

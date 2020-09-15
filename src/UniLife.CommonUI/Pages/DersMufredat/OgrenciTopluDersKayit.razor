@@ -20,19 +20,30 @@
             </div>
             <div class="row pb-2">
                 <div class="col-sm-12">
-                    <FakBolPrg @bind-ProgramId="programId"
-                               @bind-BolumId="bolumId"
-                               @bind-FakulteId="fakulteId"
-                               @bind-MufredatId="mufredatId"
+                    <FakBolPrg @bind-ProgramId="ProgramId"
+                               @bind-BolumId="BolumId"
+                               @bind-FakulteId="FakulteId"
+                               @bind-MufredatId="MufredatId"
                                ProgramShow="true"
                                MufredatShow="true"
                                ProgramPlaceHolder=" "></FakBolPrg>
                     <div class="form-group row">
                         <label for="KayitTarih" class="col-sm-2 col-form-label-sm">Kayıt Tarih</label>
                         <div class="col-sm-10">
-                            <SfDateRangePicker ID="KayitTarih" @bind-StartDate="@StartValue" @bind-EndDate="@EndValue">
+                            <SfDateRangePicker ID="KayitTarih" @bind-StartDate="@StartValue" OnChange="KaynakChange" @bind-EndDate="@EndValue">
                                 @*<DateRangePickerEvents ValueChange="ValueChangeHandler"></DateRangePickerEvents>*@
                             </SfDateRangePicker>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="DropKayit" class="col-sm-2 col-form-label-sm">Kayıt Neden</label>
+                        <div class="col-sm-10">
+                            <SfDropDownList ShowClearButton="true" TValue="int?" TItem="DonemDto"
+                                            @bind-Value="@kayitNeden">
+                                <SfDataManager Url="odata/kayitnedens" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
+                                <DropDownListEvents TValue="int?" ValueChange="KaynakChange"></DropDownListEvents>
+                                <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                            </SfDropDownList>
                         </div>
                     </div>
 
@@ -85,14 +96,15 @@
                             <SfDropDownList ShowClearButton="true" TValue="int?" TItem="DonemDto" Placeholder="Dönem seçiniz..."
                                             @bind-Value="@donemId">
                                 <SfDataManager Url="odata/donems?$orderby=Yil desc, DonemTipId" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
+                                <DropDownListEvents TValue="int?" ValueChange="HedefChange"></DropDownListEvents>
                                 <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                             </SfDropDownList>
                         </div>
                     </div>
-                    <FakBolPrg @bind-ProgramId="programId2"
-                               @bind-BolumId="bolumId2"
-                               @bind-FakulteId="fakulteId2"
-                               @bind-MufredatId="mufredatId2"
+                    <FakBolPrg @bind-ProgramId="ProgramId2"
+                               @bind-BolumId="BolumId2"
+                               @bind-FakulteId="FakulteId2"
+                               @bind-MufredatId="MufredatId2"
                                ProgramShow="true"
                                MufredatShow="true"
                                ProgramPlaceHolder=" "></FakBolPrg>
@@ -107,13 +119,14 @@
                     <SfDataManager Url="@OdataQueryDers" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
                     <GridEvents TValue="DersAcilanDto"></GridEvents>
                     @*<GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.Excel"></GridFilterSettings>*@
-                    <GridColumns>
-                        <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
-                        <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
-                        <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Ad"> </GridColumn>
-                        <GridColumn Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kod"></GridColumn>
-                        <GridColumn Field=@nameof(DersAcilanDto.Kredi) HeaderText="Kredi"></GridColumn>
-                    </GridColumns>
+                <GridColumns>
+                    <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
+                    <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+                    <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Ad"> </GridColumn>
+                    <GridColumn Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kod"></GridColumn>
+                    <GridColumn Field=@nameof(DersAcilanDto.Kredi) HeaderText="Kredi"></GridColumn>
+                    <GridColumn Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sınıf"></GridColumn>
+                </GridColumns>
                 </SfGrid>
             }
         </div>
@@ -135,8 +148,9 @@
                 <GridEvents TValue="DersKayitDto"></GridEvents>
                 <GridColumns>
                     <GridColumn Visible="false" Field="Id" HeaderText="ders id" IsPrimaryKey="true" TextAlign="TextAlign.Right"></GridColumn>
-                    <GridColumn Field="DersAcilan.Ad" HeaderText="Ad"></GridColumn>
                     <GridColumn Field="DersAcilan.Kod" HeaderText="Kod"></GridColumn>
+                    <GridColumn Field="DersAcilan.Ad" HeaderText="Ad"></GridColumn>
+                    <GridColumn Field="DersAcilan.Sinif" HeaderText="Sınıf"></GridColumn>
                 </GridColumns>
             </SfGrid>
         </div>

@@ -78,7 +78,7 @@
         <div class="server-action-menu">
             <div class="row">
                 <div class="col-sm-12 text-center">
-                    <legend>Kayıt Dersleri</legend>
+                    <legend>Kayıt Olunan Dersler</legend>
                 </div>
             </div>
             <div class="row">
@@ -209,6 +209,10 @@
             //args.Cell.AddClass(new string[] { "below-35" });
             args.Cell.AddStyle(new string[] { "background-color:#b57f7f" });
         }
+        //if (args.Data.Kayitta)
+        //{
+        //    args.Cell.AddStyle(new string[] { "background-color:#62734d" });
+        //}
     }
 
 
@@ -237,21 +241,56 @@
 
     protected override void OnInitialized()
     {
-        ReadAcilan();
         ReadKayitli();
+        ReadAcilan();
     }
 
 
     void ReadKayitli()
     {
-        ApiResponseDto<List<DersAcilanDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<DersAcilanDto>>>($"api/dersAcilan/GetKayitliDerssByOgrenciId/{appState.OgrenciState.Id}/{Sinif}/{appState.DersKayitDonemIdState}").Result;
-        DersKayitDtos = apiResponse.Result;
+        try
+        {
+            ApiResponseDto<List<DersAcilanDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<DersAcilanDto>>>($"api/dersAcilan/GetKayitliDerssByOgrenciId/{appState.OgrenciState.Id}/{Sinif}/{appState.DersKayitDonemIdState}").Result;
+
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                DersKayitDtos = apiResponse.Result.OrderBy(x => x.Kod).ToList();
+            }
+            else
+                matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
+        }
     }
 
     void ReadAcilan()
     {
-        ApiResponseDto<List<DersAcilanDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<DersAcilanDto>>>($"api/dersacilan/GetAcilanDerssByOgrenciId/{appState.OgrenciState.Id}/{Sinif}/{appState.DersKayitDonemIdState}").Result;
-        DersAcilanDtos = apiResponse.Result;
+        try
+        {
+            ApiResponseDto<List<DersAcilanDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<DersAcilanDto>>>($"api/dersacilan/GetAcilanDerssByOgrenciId/{appState.OgrenciState.Id}/{Sinif}/{appState.DersKayitDonemIdState}").Result;
+
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                //apiResponse.Result=apiResponse.Result.Where(x => DersKayitDtos.Select(x => x.Kod).Contains(x.Kod)).ToList().ForEach(x => { x.Kayitta = true; });
+                DersAcilanDtos = apiResponse.Result.OrderBy(x=>x.Kod).ToList();
+                //foreach (var item in DersAcilanDtos)
+                //{
+                //    if (DersKayitDtos.Any(x=>x.Kod == item.Kod))
+                //    {
+                //        item.Kayitta = true;
+                //    }
+                //}
+            }
+            else
+                matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
+        }
+
     }
 
 

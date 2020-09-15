@@ -1,0 +1,36 @@
+﻿
+@using Syncfusion.Blazor.Data
+@using UniLife.Shared.Dto.Definitions
+
+
+<p>adasds</p>
+
+<SfGrid TValue="OgrenciDto" Toolbar="@(Toolbaritems)" AllowPaging="true">
+    <SfDataManager Url="odata/ogrencis?$filter=danismanId eq {_AkademisyenDto.Id}" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+    <GridEvents TValue="OgrenciDto"></GridEvents>
+    <GridColumns>
+        <GridColumn Visible="false" Field=@nameof(OgrenciDto.Id) HeaderText="Id" AllowEditing="false" IsPrimaryKey="true"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.Ad) HeaderText="Ad"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.OgrNo) HeaderText="OgrNo"></GridColumn>
+        <GridColumn>
+            <GridCommandColumns>
+                <GridCommandColumn Type="CommandButtonType.None" Title="Ders Kayıt Onayı" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat",Content="Ders Onay " })"></GridCommandColumn>
+            </GridCommandColumns>
+        </GridColumn>
+    </GridColumns>
+</SfGrid>
+
+@code{
+
+    [Parameter]
+    public AkademisyenDto _AkademisyenDto { get; set; } = new AkademisyenDto();
+
+    private List<Object> Toolbaritems = new List<Object>() { "ExcelExport", "CsvExport", "PdfExport" };
+
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+        }
+
+}

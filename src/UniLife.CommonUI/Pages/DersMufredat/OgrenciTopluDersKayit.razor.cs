@@ -37,18 +37,108 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         public SfGrid<DersAcilanDto> dersAcGrid;
 
-        int? programId;
-        int? bolumId;
-        int? fakulteId;
-        int? mufredatId;
+        int? _programId;
+        public int? ProgramId
+        {
+            get => _programId;
+            set
+            {
+                ProgramId2 = value;
+                KaynakChange();
+                if (_programId == value) return;
+                _programId = value;
+            }
+        }
+
+        int? _bolumId;
+        public int? BolumId
+        {
+            get => _bolumId;
+            set
+            {
+                BolumId2 = value;
+                KaynakChange();
+                if (_bolumId == value) return;
+                _bolumId = value;
+            }
+        }
+
+
+        int? _fakulteId;
+        public int? FakulteId
+        {
+            get => _fakulteId;
+            set
+            {
+                FakulteId2 = value;
+                KaynakChange();
+                if (_fakulteId == value) return;
+                _fakulteId = value;
+            }
+        }
+        int? _mufredatId;
+        public int? MufredatId
+        {
+            get => _mufredatId;
+            set
+            {
+                MufredatId2 = value;
+                KaynakChange();
+                if (_mufredatId == value) return;
+                _mufredatId = value;
+            }
+        }
         public DateTime? StartValue { get; set; }
         public DateTime? EndValue { get; set; }
 
-        int? programId2;
-        int? bolumId2;
-        int? fakulteId2;
-        int? mufredatId2;
+        int? _programId2;
+        public int? ProgramId2
+        {
+            get => _programId2;
+            set
+            {
+                HedefChange();
+                if (_programId2 == value) return;
+                _programId2 = value;
+            }
+        }
+
+        int? _bolumId2;
+        public int? BolumId2
+        {
+            get => _bolumId2;
+            set
+            {
+                HedefChange();
+                if (_bolumId2 == value) return;
+                _bolumId2 = value;
+            }
+        }
+        int? _fakulteId2;
+        public int? FakulteId2
+        {
+            get => _fakulteId2;
+            set
+            {
+                HedefChange();
+                if (_fakulteId2 == value) return;
+                _fakulteId2 = value;
+            }
+        }
+        int? _mufredatId2;
+        public int? MufredatId2
+        {
+            get => _mufredatId2;
+            set
+            {
+                HedefChange();
+                if (_mufredatId2 == value) return;
+                _mufredatId2 = value;
+            }
+        }
+
         int? donemId;
+        int? kayitNeden;
 
         string dialogUyariText;
         bool isUyariOpen;
@@ -117,22 +207,26 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 totalQuery = new Query().Where(ColPre);
             }
 
+            if (kayitNeden.HasValue)
+            {
+                totalQuery.Where("kayitNedenId", "equal", kayitNeden);
+            }
 
-            if (mufredatId.HasValue)
+            if (MufredatId.HasValue)
             {
-                totalQuery.Where("mufredatId", "equal", mufredatId);
+                totalQuery.Where("mufredatId", "equal", MufredatId);
             }
-            else if (programId.HasValue)
+            else if (ProgramId.HasValue)
             {
-                totalQuery.Where("programId", "equal", programId);
+                totalQuery.Where("programId", "equal", ProgramId);
             }
-            else if (bolumId.HasValue)
+            else if (BolumId.HasValue)
             {
-                totalQuery.Where("bolumId", "equal", bolumId);
+                totalQuery.Where("bolumId", "equal", BolumId);
             }
-            else if (fakulteId.HasValue)
+            else if (FakulteId.HasValue)
             {
-                totalQuery.Where("fakulteId", "equal", fakulteId);
+                totalQuery.Where("fakulteId", "equal", FakulteId);
             }
         }
         async Task RefreshHedef()
@@ -144,21 +238,21 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 totalQueryDers.Where("donemId", "equal", donemId);
             }
 
-            if (mufredatId2.HasValue)
+            if (MufredatId2.HasValue)
             {
-                totalQueryDers.Where("mufredatId", "equal", mufredatId2);
+                totalQueryDers.Where("mufredatId", "equal", MufredatId2);
             }
-            else if (programId2.HasValue)
+            else if (ProgramId2.HasValue)
             {
-                totalQueryDers.Where("programId", "equal", programId2);
+                totalQueryDers.Where("programId", "equal", ProgramId2);
             }
-            else if (bolumId2.HasValue)
+            else if (BolumId2.HasValue)
             {
-                totalQueryDers.Where("bolumId", "equal", bolumId2);
+                totalQueryDers.Where("bolumId", "equal", BolumId2);
             }
-            else if (fakulteId2.HasValue)
+            else if (FakulteId2.HasValue)
             {
-                totalQueryDers.Where("fakulteId", "equal", fakulteId2);
+                totalQueryDers.Where("fakulteId", "equal", FakulteId2);
             }
         }
 
@@ -171,6 +265,24 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 secilenOgr = args.RowData;
                 ogrenciDersKayitDialogOpen = true;
             }
+        }
+
+        async Task KaynakChange()
+        {
+            kaynakVisible = false;
+            await Task.Delay(100);
+            kaynakVisible = true;
+            await Refresh();
+            StateHasChanged();
+        }
+
+        async Task HedefChange()
+        {
+            hedefVisible = false;
+            await Task.Delay(100);
+            hedefVisible = true;
+            await Refresh();
+            StateHasChanged();
         }
 
     }
