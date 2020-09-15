@@ -30,6 +30,12 @@
                     </SfDropDownList>
                 </div>
             </div>
+            <div class="form-group row">
+                <label for="KayOgr" class="col-sm-3">Kayıtlı Öğrenci Sayısı</label>
+                <div class="col-sm-9">
+                    <SfCheckBox @bind-Checked="@isShowKayOgrSay" TChecked="bool" ValueChange="@OnChange"></SfCheckBox>
+                </div>
+            </div>
             <SfButton OnClick="Refresh" CssClass="e-success col-sm-12 form-control-sm">Bul / Yenile</SfButton>
 
         </div>
@@ -226,7 +232,7 @@
             <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kredi) HeaderText="Kredi"></GridColumn>
             <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Akts) HeaderText="Akts"></GridColumn>
             <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
-            <GridColumn Field=@nameof(DersAcilanDto.AltKota) HeaderText="Alt-Bol-Top">
+            <GridColumn  AutoFit="true" Field=@nameof(DersAcilanDto.AltKota) HeaderText="Alt-Bol-Top">
                 <Template>
                     @{
                         var dersAcilanContext = (context as DersAcilanDto);
@@ -235,7 +241,7 @@
                     }
                 </Template>
             </GridColumn>
-            <GridColumn Field=@nameof(DersAcilanDto.Zorunlu) HeaderText="Zor." DisplayAsCheckBox="true">
+            <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Zorunlu) HeaderText="Zor." DisplayAsCheckBox="true">
                 <FilterTemplate>
                     <SfCheckBox TChecked="bool" ValueChange="ValueChange"></SfCheckBox>
                     @*<SfButton OnClick="CheckTemiz">✖</SfButton>*@
@@ -243,13 +249,13 @@
             </GridColumn>
             @*<GridColumn Field=@nameof(DersAcilanDto.ProgramId) EditType="EditType.DropDownEdit" HeaderText="Program" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@programDtos" Width="150"></GridColumn>
             <GridColumn Field=@nameof(DersAcilanDto.AkademisyenId) HeaderText="Öğrt Görev" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@akademisyenDtos" Width="150"></GridColumn>*@
-            <GridColumn Field="Donem.Ad" HeaderText="Donem"></GridColumn>
-            <GridColumn Field="Program.Ad" HeaderText="Program"></GridColumn>
+            <GridColumn  AutoFit="true" Field="Donem.Ad" HeaderText="Donem"></GridColumn>
+            <GridColumn  AutoFit="true" Field="Program.Ad" HeaderText="Program"></GridColumn>
             <GridColumn Visible="false" Field="Bolum.Ad" HeaderText="Bölüm"></GridColumn>
             <GridColumn Visible="false" Field="Bolum.Fakulte.Ad" HeaderText="Fakülte"></GridColumn>
             <GridColumn Visible="false" Field=@nameof(DersAcilanDto.DersNedenId) HeaderText="DersNedenId"></GridColumn>
             <GridColumn Visible="false" Field=@nameof(DersAcilanDto.DersDilId) HeaderText="DersDilId"></GridColumn>
-            <GridColumn Field="Akademisyen.Ad" HeaderText="Akademisyen">
+            <GridColumn  AutoFit="true" Field="Akademisyen.Ad" HeaderText="Akademisyen">
                 @*<Template>
                     @{
                         DersAcilanDto dersAcInfo = (context as DersAcilanDto);
@@ -268,10 +274,10 @@
                     }
                 </Template>*@
             </GridColumn>
-            <GridColumn AutoFit="true" AllowFiltering="false">
+            <GridColumn AutoFit="true" Width="200" AllowFiltering="false">
                 <GridCommandColumns>
                     <GridCommandColumn Type="CommandButtonType.None" Title="Akademisyen" ID="akaDegis" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-Resource", CssClass = "e-flat",IsPrimary=true })"></GridCommandColumn>
-                    <GridCommandColumn Type="CommandButtonType.Edit" Title="Çokla" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-edit", CssClass = "e-flat",Content="Çokla" })"></GridCommandColumn>
+                    <GridCommandColumn Type="CommandButtonType.Edit" Title="Çokla" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-copy", CssClass = "e-flat"})"></GridCommandColumn>
                     <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-edit", CssClass = "e-flat" })"></GridCommandColumn>
                     <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-delete", CssClass = "e-flat" })"></GridCommandColumn>
                     <GridCommandColumn Type="CommandButtonType.Save" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-update", CssClass = "e-flat" })"></GridCommandColumn>
