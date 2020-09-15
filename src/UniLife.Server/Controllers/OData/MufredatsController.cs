@@ -21,6 +21,5 @@ namespace UniLife.Server.Controllers
         {
             return _applicationDbContext.Mufredats;
         }
-
     }
 }

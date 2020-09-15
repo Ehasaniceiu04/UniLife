@@ -90,6 +90,15 @@ namespace UniLife.Server.Controllers
         public async Task<ApiResponse> Delete(int id)
             => await _SinavManager.Delete(id);
 
+        [HttpPost]
+        [Route("BulkDelete")]
+        [Authorize(Permissions.Sinav.Delete)]
+        public async Task<ApiResponse> BulkDelete([FromBody] IntEnumarableDto intEnumarableDto)
+            => ModelState.IsValid ?
+                await _SinavManager.BulkDelete(intEnumarableDto) :
+                new ApiResponse(Status400BadRequest, "Sinav Model is Invalid");
+
+
         [HttpGet]
         [Route("GetSinavlarByAkademisyenId/{akaId}")]
         [Authorize(Permissions.Sinav.Read)]

@@ -78,6 +78,14 @@ namespace UniLife.Storage.Stores
             await _db.SaveChangesAsync(CancellationToken.None);
         }
 
+        public async Task BulkDelete(IntEnumarableDto intEnumarableDto)
+        {
+            var tList = _db.Context.Set<T>().Where(t => intEnumarableDto.Ids.Contains(t.Id));
+
+            _db.Context.Set<T>().RemoveRange(tList);
+            await _db.SaveChangesAsync(CancellationToken.None);
+        }
+
 
         public async Task<IEnumerable<TDto>> GetWhere(Expression<Func<T, bool>> predicate)
         {

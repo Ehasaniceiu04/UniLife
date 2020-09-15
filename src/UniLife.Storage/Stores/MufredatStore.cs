@@ -61,14 +61,14 @@ namespace UniLife.Storage.Stores
                 if (mufredat == null)
                     throw new InvalidDataException($"Müfredat bulunamadı: {mufredatDto.Id}");
 
-                
+
 
                 mufredat = _autoMapper.Map(mufredatDto, mufredat);
                 _db.Mufredats.Update(mufredat);
                 await _db.SaveChangesAsync(CancellationToken.None);
 
                 var aktifMufredats = await _db.Mufredats.Where(t => t.Aktif == true && mufredatDto.ProgramId == t.ProgramId).ToListAsync();
-                if (aktifMufredats.Count>1)
+                if (aktifMufredats.Count > 1)
                 {
                     throw new DomainException($"Dikkat! Bir program içinde birden fazla aktif müfredat olamaz");
                 }
@@ -86,6 +86,10 @@ namespace UniLife.Storage.Stores
                 throw new InvalidDataException($"Unable to find Mufredat with ID: {id}");
 
             _db.Mufredats.Remove(mufredat);
+
+            _db.Derss.RemoveRange(_db.Derss.Where(x => x.MufredatId == mufredat.Id));
+
+
             await _db.SaveChangesAsync(CancellationToken.None);
         }
 
@@ -120,7 +124,7 @@ namespace UniLife.Storage.Stores
                     throw;
                 }
             }
-            
+
 
         }
 
@@ -136,7 +140,7 @@ namespace UniLife.Storage.Stores
             {
                 mufredats = await _db.Mufredats.Where(t => myInts.Contains(t.ProgramId)).ToListAsync();
             }
-            
+
             if (mufredats == null)
                 throw new InvalidDataException($"Unable to find Mufredats with IDs:...");
 
@@ -153,12 +157,12 @@ namespace UniLife.Storage.Stores
                                 {
                                     MufredatId = m.Id,
                                     MufredatAd = m.Ad,
-                                    ProgramId =p.Id,
-                                    ProgramAd =p.Ad,
-                                    BolumId =b.Id,
-                                    BolumAd =b.Ad,
-                                    FakulteId=f.Id,
-                                    FakulteAd =f.Ad
+                                    ProgramId = p.Id,
+                                    ProgramAd = p.Ad,
+                                    BolumId = b.Id,
+                                    BolumAd = b.Ad,
+                                    FakulteId = f.Id,
+                                    FakulteAd = f.Ad
                                 };
             return await mufredatState.FirstOrDefaultAsync();
         }
@@ -183,7 +187,7 @@ namespace UniLife.Storage.Stores
 
             var dumpDersAcilans = _db.DersAcilans.Where(x => aktifDonem.Id == x.DonemId && reqEntityIdWithOtherEntitiesIds.OtherEntityIds.Contains(x.MufredatId)).ToList(); //bunlar yeniden geldiği için silinecek.
 
-            
+
 
             List<DersAcilan> dersAcilans = new List<DersAcilan>();
             foreach (var i in mufredatDerss)
@@ -233,7 +237,7 @@ namespace UniLife.Storage.Stores
 
             await _db.SaveChangesAsync(CancellationToken.None);
 
-                
+
         }
 
         public async Task<MufredatDto> GetLastMufredatByProgramId(int programId)
@@ -252,6 +256,7 @@ namespace UniLife.Storage.Stores
             {
                 try
                 {
+                    var program = await _db.Programs.FirstOrDefaultAsync(x => x.Id == mufredatDto.ProgramId);
                     var derss = await _db.Derss.AsNoTracking().Where(t => t.MufredatId == mufredatDto.Id).ToListAsync();
 
                     mufredatDto.Id = 0;
@@ -259,7 +264,14 @@ namespace UniLife.Storage.Stores
                     _db.Mufredats.Add(temizMuf);
                     await _db.SaveChangesAsync(CancellationToken.None);
                     //derss.ForEach(x => x.MufredatId = mufredatDto.Id);
-                    derss.ForEach(x => { x.Id = 0; x.MufredatId = temizMuf.Id; });
+                    derss.ForEach(x =>
+                    {
+                        x.Id = 0;
+                        x.MufredatId = temizMuf.Id;
+                        x.ProgramId = program.Id;
+                        x.BolumId = program.BolumId;
+                        x.FakulteId = program.FakulteId;
+                    });
                     _db.Derss.AddRange(derss);
                     await _db.SaveChangesAsync(CancellationToken.None);
 

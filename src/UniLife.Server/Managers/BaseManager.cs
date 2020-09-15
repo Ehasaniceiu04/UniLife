@@ -48,6 +48,12 @@ namespace UniLife.Server.Managers
             return new ApiResponse(Status200OK, "Soft Delete Dto");
         }
 
+        public async Task<ApiResponse> BulkDelete(IntEnumarableDto intEnumarableDto)
+        {
+            await _baseStore.BulkDelete(intEnumarableDto);
+            return new ApiResponse(Status200OK, "Soft Delete Dto");
+        }
+
         public async Task<ApiResponse> GetWhere(System.Linq.Expressions.Expression<Func<T, bool>> predicate)
         {
             return new ApiResponse(Status200OK, "Retrieved Dtos", await _baseStore.GetWhere(predicate));

@@ -1,1 +1,104 @@
 ﻿@page "/SinavList"
+
+@using Syncfusion.Blazor.Data
+@using UniLife.Shared.Dto.Definitions
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Inputs
+
+
+<div class="card">
+    <div class="col-sm-7">
+        <FakBolPrg @bind-FakulteId="FilterFakulteId"
+                   @bind-BolumId="FilterBolumId"
+                   @bind-ProgramId="FilterProgramId"
+                   @bind-MufredatId="FilterMufredatId"
+                   MufredatShow="true"
+                   ProgramShow="true"></FakBolPrg>
+    </div>
+    <div class="col-sm-5">
+        <div class="form-group row">
+            <label for="DropSinif" class="col-sm-2 col-form-label-sm">Sınıf</label>
+            <div class="col-sm-3">
+                <SfDropDownList @ref="DropSinif" TItem="SinifDto"
+                                TValue="int?" ShowClearButton="true"
+                                DataSource="@(SinifDto.SinifDtos)" @bind-Value="@sinif">
+                    <DropDownListEvents TValue="int?" ValueChange="KaynakChange"></DropDownListEvents>
+                    <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                </SfDropDownList>
+            </div>
+            <label for="DropDonem" class="col-sm-2 col-form-label-sm">Dönem</label>
+            <div class="col-sm-5">
+                <SfDropDownList @ref="DropDonem" ShowClearButton="true" TValue="int?" TItem="KeyValueDto" Placeholder="Dönem seçiniz..."
+                                Query="@donemQuery"
+                                @bind-Value="@donemId">
+                    <DropDownListEvents TValue="int?" ValueChange="KaynakChange"></DropDownListEvents>
+                    <SfDataManager Url="odata/donems" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
+                    <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                </SfDropDownList>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (kaynakVisible)
+{
+    <SfGrid @ref="sinavGrid" TValue="SinavDto"
+            Query="@(totalQuery)"
+            Toolbar="@(Toolbaritems)" AllowPaging="true">
+        <SfDataManager Url=@(OdataQuery) Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+        <GridEvents TValue="SinavDto" OnToolbarClick="ToolbarClickHandler"></GridEvents>
+        <GridPageSettings PageCount="5" PageSizes="new int[]{ 5, 10, 50, 100,10000}"></GridPageSettings>
+        <GridSelectionSettings Type="SelectionType.Multiple" CheckboxOnly="true"></GridSelectionSettings>
+        <GridEditSettings AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
+            <Template>
+                @{
+                    SinavDto sinavInfo = (context as SinavDto);
+                    <SfNumericTextBox Placeholder="EtkiOran" Max="100" Min="1" @bind-Value="@(sinavInfo.EtkiOran)"></SfNumericTextBox>
+                }
+            </Template>
+        </GridEditSettings>
+        <GridColumns>
+            <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(SinavDto.Id) HeaderText="Id" AllowEditing="false" IsPrimaryKey="true"></GridColumn>
+            <GridColumn Field="DersAcilan.Kod" HeaderText="Ders Kod"></GridColumn>
+            <GridColumn Field="DersAcilan.Ad" HeaderText="Ders Ad"></GridColumn>
+            <GridColumn Field="DersAcilan.Program.Ad" HeaderText="Program"></GridColumn>
+            <GridColumn Field=@nameof(SinavDto.EtkiOran) HeaderText="EtkiOran"></GridColumn>
+        </GridColumns>
+    </SfGrid>
+}
+
+
+@code{
+
+    [Parameter]
+    public AkademisyenDto _AkademisyenDto { get; set; } = new AkademisyenDto();
+
+    private List<Object> Toolbaritems = new List<Object>() { "Edit", "Delete", "ExcelExport", "CsvExport", "PdfExport" };
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+
+}
+
+<style>
+    .card {
+        flex-direction: unset;
+    }
+
+    .form-group {
+        margin-bottom: 0.2rem;
+    }
+
+    input.e-input, .e-input-group input, .e-input-group.e-control-wrapper input, .e-input-group input.e-input, .e-input-group.e-control-wrapper input.e-input {
+        height: auto;
+    }
+
+    .col-form-label-sm {
+        padding-bottom: unset;
+        /*font-size: 0.65rem;*/
+        /*font-size: .775rem;*/
+    }
+</style>

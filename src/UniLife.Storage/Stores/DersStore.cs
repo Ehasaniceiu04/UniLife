@@ -74,6 +74,9 @@ namespace UniLife.Storage.Stores
                 throw new InvalidDataException($"Unable to find Ders with ID: {id}");
 
             _db.Derss.Remove(ders);
+
+            _db.DersAcilans.RemoveRange(_db.DersAcilans.Where(x => x.DersId == ders.Id));
+
             await _db.SaveChangesAsync(CancellationToken.None);
         }
 

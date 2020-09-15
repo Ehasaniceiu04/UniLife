@@ -41,8 +41,8 @@
                     <div class="col-sm-12 col-md-4">
                         @*<FakBolPrg @bind-ProgramId="programId"*@
 
-                        <FakBolPrg @bind-FakulteId="fakulteId"
-                                   @bind-BolumId="bolumId"
+                        <FakBolPrg @bind-FakulteId="@(mufredatInfo.FakulteId)"
+                                   @bind-BolumId="@(mufredatInfo.BolumId)"
                                    @bind-ProgramId="@(mufredatInfo.ProgramId)"
                                    ProgramPlaceHolder="@(plazceHolderProgramAd)"
                                    ProgramShow="true"></FakBolPrg>

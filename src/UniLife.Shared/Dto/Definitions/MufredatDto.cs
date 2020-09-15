@@ -26,6 +26,9 @@ namespace UniLife.Shared.Dto.Definitions
         public int GecmeNot { get; set; }
         public int FinalBaraj { get; set; }
 
+        public int? FakulteId { get; set; }
+        public int? BolumId { get; set; }
+
         public virtual ICollection<DersDto> Derss { get; set; }
         public virtual ICollection<DersAcilanDto> DersAcilans { get; set; }
     }

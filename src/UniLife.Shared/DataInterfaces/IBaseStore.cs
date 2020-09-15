@@ -22,6 +22,7 @@ namespace UniLife.Shared.DataInterfaces
         Task<T> Update(TDto tDto);
 
         Task DeleteById(int id);
+        Task BulkDelete(IntEnumarableDto intEnumarableDto);
         Task<IEnumerable<TDto>> GetWhere(Expression<Func<T, bool>> predicate);
         Task<TDto> First(Expression<Func<T, bool>> predicate);
     }

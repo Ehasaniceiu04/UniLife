@@ -26,8 +26,8 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         public AppState appState { get; set; }
 
 
-        int? fakulteId;
-        int? bolumId;
+        //int? fakulteId;
+        //int? bolumId;
         //int? programId;
 
         int? filterFakulteId;
@@ -186,14 +186,14 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             {
                 plazceHolderProgramAd = "";
                 ProgramValueHolder = null;
-                fakulteId = null;
-                bolumId = null;
+                //fakulteId = null;
+                //bolumId = null;
 
             }
             else if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
             {
-                fakulteId = null;
-                bolumId = null;
+                //fakulteId = null;
+                //bolumId = null;
                 plazceHolderProgramAd = args.Data.Program.Ad; // ((UniLife.Shared.Dto.Definitions.ProgramDto)args.ForeignKeyData.Values.FirstOrDefault().FirstOrDefault()).Ad;
 
             }
@@ -218,6 +218,10 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             {
                 ProgramValueHolder = args.Data.ProgramId;
             }
+            if (args.RequestType == Syncfusion.Blazor.Grids.Action.Cancel)
+            {
+                isOpsCoklama = false;
+            }
             else if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
             {
                 if (args.Action == "Edit")
@@ -233,6 +237,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                     }
                     args.Cancel = true;
                     await MufredatGrid.CloseEdit();
+                    isOpsCoklama = false;
                 }
                 else if (args.Action == "Add")
                 {
@@ -243,6 +248,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                     }
                     args.Cancel = true;
                     await MufredatGrid.CloseEdit();
+                    isOpsCoklama = false;
                 }
 
             }
@@ -255,6 +261,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 }
                 args.Cancel = true;
                 await MufredatGrid.CloseEdit();
+                isOpsCoklama = false;
             }
         }
 

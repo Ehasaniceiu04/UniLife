@@ -8,6 +8,6 @@ namespace UniLife.Shared.Dto.Definitions
 {
     public class IntEnumarableDto
     {
-        public IEnumerable<int> EnumerableList { get; set; }
+        public IEnumerable<int> Ids { get; set; }
     }
 }
