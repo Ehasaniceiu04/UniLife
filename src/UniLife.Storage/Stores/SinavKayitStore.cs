@@ -104,6 +104,17 @@ namespace UniLife.Storage.Stores
 
         public async Task<List<SinavOgrNotlarDto>> GetSinavKayitOgrenciNotlar(int sinavId)
         {
+            var derseKayitliOgrlerinTumSinavlari = await (from s in _db.Sinavs.Where(x => x.DersAcilanId == 371)
+                                                          join st in _db.SinavTips on s.SinavTipId equals st.Id
+                                                          join sk in _db.SinavKayits on s.Id equals sk.SinavId
+                                                          select new OgrDigerSinavlar
+                                                          {
+                                                              OgrenciId = sk.OgrenciId,
+                                                              SinavTipAd = st.Ad,
+                                                              Not = sk.OgrNot
+                                                          }).ToListAsync();
+
+
             var ogrenciNotlar = from sk in _db.SinavKayits.Where(x => x.SinavId == sinavId)
                                 join o in _db.Ogrencis on sk.OgrenciId equals o.Id
                                 select new SinavOgrNotlarDto
@@ -113,12 +124,18 @@ namespace UniLife.Storage.Stores
                                     OgrenciId = sk.OgrenciId,
                                     OgrenciAd = o.Ad + " " + o.Soyad,
                                     OgrenciNo = o.OgrNo,
-                                    OgrNot = sk.OgrNot
+                                    OgrNot = sk.OgrNot,
+                                    OgrDigerSinavlarText = GetDigerSinavsByText(derseKayitliOgrlerinTumSinavlari, o)
                                 };
 
 
 
             return await ogrenciNotlar.ToListAsync();
+        }
+
+        private static string GetDigerSinavsByText(List<OgrDigerSinavlar> derseKayitliOgrlerinTumSinavlari, Ogrenci o)
+        {
+            return String.Join(" ", derseKayitliOgrlerinTumSinavlari.Where(y => y.OgrenciId == o.Id).Select(x => x.SinavTipAd + ":" + x.Not));
         }
 
         public async Task<List<KeyValueDto>> GetOgrenciSinavsByDers(int ogrenciId, int dersAcilanId)
@@ -213,7 +230,7 @@ namespace UniLife.Storage.Stores
                 dersKayitExist.Ort = Ortlama;
                 _db.DersKayits.Update(dersKayitExist);
 
-                
+
                 if (await _db.SaveChangesAsync(CancellationToken.None) > 0)
                 {
                     context.Commit();

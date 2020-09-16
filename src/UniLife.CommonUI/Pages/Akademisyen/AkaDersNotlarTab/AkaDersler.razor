@@ -21,7 +21,7 @@ else
         <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
     </SfDropDownList>
 
-    <SfGrid ID="grdDersler" @ref="grdDersler" TValue="DersAcilanDto"  Toolbar="@(Toolbaritems)" AllowPaging="true">
+    <SfGrid ID="grdDersler" @ref="grdDersler" TValue="DersAcilanDto" AllowFiltering="true" Toolbar="@(Toolbaritems)" AllowPaging="true">
         <SfDataManager Url="@($"odata/dersacilans?$expand=akademisyen($select=Ad,Id),donem($select=Ad,Id)&$select=Ad,Id,Kod&$filter=akademisyen/Id eq {akademisyenDto.Id} and donem/Id eq {selectedDonemId}")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
         <GridEvents TValue="DersAcilanDto" OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectedHandler"></GridEvents>
         @*<GridGroupSettings Columns="@Initial"></GridGroupSettings>*@
