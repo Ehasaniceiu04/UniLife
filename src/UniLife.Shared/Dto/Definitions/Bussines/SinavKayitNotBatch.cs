@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace UniLife.Shared.Dto.Definitions
 {
-    public class SinifDto : EntityDto<int?>
+    public class SinavKayitNotBatch
     {
-        public string Ad { get; set; }
-
+        public long SinavKayitId { get; set; }
+        public double OgrNot { get; set; }
     }
 }

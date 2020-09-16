@@ -17,12 +17,5 @@ namespace UniLife.Shared.Dto.Definitions
         public bool IsOran { get; set; } //oran true,tutar false
         public double Tutar { get; set; }
 
-        public static List<KeyValueDto> BasariTipiDtos { get; } = new List<KeyValueDto>
-        {
-            new KeyValueDto() { Ad = "%10", Id = 1 },
-            new KeyValueDto() { Ad = "Engelli", Id = 2 },
-            new KeyValueDto() { Ad = "Şehit-Gazi Yakını", Id = 3 },
-            new KeyValueDto() { Ad = "Araştırma Görevlisi", Id = 4 }
-        };
     }
 }

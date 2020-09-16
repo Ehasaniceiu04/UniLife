@@ -30,7 +30,7 @@
                         <div class="col-sm-3">
                             <SfDropDownList @ref="DropSinif" TItem="SinifDto"
                                             TValue="int?" ShowClearButton="true"
-                                            DataSource="@(SinifDto.SinifDtos)" @bind-Value="@Sinif">
+                                            DataSource="@(Sabitler.SinifDtos)" @bind-Value="@Sinif">
                                 <DropDownListEvents TValue="int?" ValueChange="KaynakChange"></DropDownListEvents>
                                 <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                             </SfDropDownList>
@@ -117,7 +117,7 @@
                         <div class="col-sm-3">
                             <SfDropDownList @ref="DropSinif2" TItem="SinifDto"
                                             TValue="int?" ShowClearButton="true"
-                                            DataSource="@(SinifDto.SinifDtos)" @bind-Value="@sinif2">
+                                            DataSource="@(Sabitler.SinifDtos)" @bind-Value="@sinif2">
                                 <DropDownListEvents TValue="int?" ValueChange="HedefChange"></DropDownListEvents>
                                 <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                             </SfDropDownList>

@@ -102,9 +102,9 @@ namespace UniLife.Storage.Stores
             return await ogrenciNotlar.ToListAsync();
         }
 
-        public async Task<List<SinavOgrNotlarDto>> GetSinavKayitOgrenciNotlar(int sinavId)
+        public async Task<List<SinavOgrNotlarDto>> GetSinavKayitOgrenciNotlar(int sinavId, int dersAcilanId)
         {
-            var derseKayitliOgrlerinTumSinavlari = await (from s in _db.Sinavs.Where(x => x.DersAcilanId == 371)
+            var derseKayitliOgrlerinTumSinavlari = await (from s in _db.Sinavs.Where(x => x.DersAcilanId == dersAcilanId)
                                                           join st in _db.SinavTips on s.SinavTipId equals st.Id
                                                           join sk in _db.SinavKayits on s.Id equals sk.SinavId
                                                           select new OgrDigerSinavlar
@@ -303,6 +303,18 @@ namespace UniLife.Storage.Stores
                     throw new DomainException($"Dikkat! Not ve ortlama değişikliği gerçekleştirilemedi ogrenci:{sinavOgrNotlarDto.OgrenciId} ders:{sinavOgrNotlarDto.SinavId}");
 
             }
+        }
+
+        public async Task UpdateOgrNotsBatch(List<SinavKayitNotBatch> sinavKayitNotBatches)
+        {
+            var existSinavKayits = _db.SinavKayits.Where(x => sinavKayitNotBatches.Select(y => y.SinavKayitId).Contains(x.Id));
+
+            foreach (var item in existSinavKayits)
+            {
+                item.OgrNot = sinavKayitNotBatches.FirstOrDefault(x => x.SinavKayitId == item.Id).OgrNot;
+            }
+
+            await _db.SaveChangesAsync(CancellationToken.None);
         }
     }
 }

@@ -21,7 +21,7 @@
             <div class="col-sm-3">
                 <SfDropDownList @ref="DropSinif" TItem="SinifDto"
                                 TValue="int?" ShowClearButton="true"
-                                DataSource="@(SinifDto.SinifDtos)" @bind-Value="@sinif">
+                                DataSource="@(Sabitler.SinifDtos)" @bind-Value="@sinif">
                     <DropDownListEvents TValue="int?" ValueChange="KaynakChange"></DropDownListEvents>
                     <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                 </SfDropDownList>

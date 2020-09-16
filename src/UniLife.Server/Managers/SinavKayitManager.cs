@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using UniLife.Server.Middleware.Wrappers;
 using UniLife.Shared.DataInterfaces;
 using UniLife.Shared.Dto.Definitions;
@@ -48,9 +49,9 @@ namespace UniLife.Server.Managers
             return new ApiResponse(Status200OK, "Öğrenci notları getirildi", ogrenciNots);
         }
 
-        public async Task<ApiResponse> GetSinavKayitOgrenciNotlar(int sinavId)
+        public async Task<ApiResponse> GetSinavKayitOgrenciNotlar(int sinavId,int dersAcilanId)
         {
-            var ogrenciNots = await _sinavKayitStore.GetSinavKayitOgrenciNotlar(sinavId);
+            var ogrenciNots = await _sinavKayitStore.GetSinavKayitOgrenciNotlar(sinavId, dersAcilanId);
             return new ApiResponse(Status200OK, "Sınav öğrenci notları getirildi", ogrenciNots);
         }
 
@@ -98,6 +99,10 @@ namespace UniLife.Server.Managers
 
         }
 
-        
+        public async Task<ApiResponse> UpdateOgrNotsBatch(List<SinavKayitNotBatch> sinavKayitNotBatches)
+        {
+            await _sinavKayitStore.UpdateOgrNotsBatch(sinavKayitNotBatches);
+            return new ApiResponse(Status200OK, "Sinav kayıtları güncellendi");
+        }
     }
 }

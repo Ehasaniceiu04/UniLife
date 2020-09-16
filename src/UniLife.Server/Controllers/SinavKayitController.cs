@@ -72,10 +72,10 @@ namespace UniLife.Server.Controllers
 
         [HttpGet]
         [Authorize(Permissions.SinavKayit.Read)]
-        [Route("GetSinavKayitOgrenciNotlar/{sinavId}")]
-        public async Task<ApiResponse> GetSinavKayitOgrenciNotlar(int sinavId)
+        [Route("GetSinavKayitOgrenciNotlar/{sinavId}/{dersAcilanId}")]
+        public async Task<ApiResponse> GetSinavKayitOgrenciNotlar(int sinavId,int dersAcilanId)
         => ModelState.IsValid ?
-            await _sinavKayitManager.GetSinavKayitOgrenciNotlar(sinavId) :
+            await _sinavKayitManager.GetSinavKayitOgrenciNotlar(sinavId, dersAcilanId) :
             new ApiResponse(Status400BadRequest, "SinavKayit Model is Invalid");
 
 
@@ -119,6 +119,15 @@ namespace UniLife.Server.Controllers
             => ModelState.IsValid ?
                 await _sinavKayitManager.PutAkaOgrenciSinavKayitNot(sinavOgrNotlarDto) :
                 new ApiResponse(Status400BadRequest, "SinavKayit Model is Invalid");
+
+        [HttpPut]
+        [Authorize(Permissions.SinavKayit.Update)]
+        [Route("UpdateOgrNotsBatch")]
+        public async Task<ApiResponse> UpdateOgrNotsBatch([FromBody] List<SinavKayitNotBatch> sinavKayitNotBatches)
+            => ModelState.IsValid ?
+                await _sinavKayitManager.UpdateOgrNotsBatch(sinavKayitNotBatches) :
+                new ApiResponse(Status400BadRequest, "SinavKayit Model is Invalid");
+        
 
     }
 }
