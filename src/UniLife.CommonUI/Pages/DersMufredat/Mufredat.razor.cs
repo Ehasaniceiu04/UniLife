@@ -131,6 +131,13 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 reqEntityIdWithOtherEntitiesIds.OtherEntityIds = (await MufredatGrid.GetSelectedRecords()).Select(x => x.Id).ToList();
                 mufredatAcDialogOpen = false;
 
+                if (reqEntityIdWithOtherEntitiesIds.OtherEntityIds.Count()<1)
+                {
+                    dialogUyariText = "Bir müfredat seçimi yapmalısınız.";
+                    isUyariOpen = true;
+                    return;
+                }
+
                 ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/mufredat/CreateDersAcilansByMufredatIds", reqEntityIdWithOtherEntitiesIds);
 
 

@@ -301,7 +301,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                     }
                     else
                     {
-                        matToaster.Add("", MatToastType.Danger, "İşlem başarısız!");
+                        matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
                     }
                 }
                 catch (Exception ex)

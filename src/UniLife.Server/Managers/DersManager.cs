@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using UniLife.Server.Middleware.Wrappers;
+using UniLife.Shared;
 using UniLife.Shared.DataInterfaces;
 using UniLife.Shared.Dto.Definitions;
 using static Microsoft.AspNetCore.Http.StatusCodes;
@@ -60,8 +61,15 @@ namespace UniLife.Server.Managers
 
         public async Task<ApiResponse> CreateDersAcilansByDersId(int dersId)
         {
-            await _dersStore.CreateDersAcilansByDersId(dersId);
-            return new ApiResponse(Status200OK, "Ders Açıldı", null);
+            try
+            {
+                await _dersStore.CreateDersAcilansByDersId(dersId);
+                return new ApiResponse(Status200OK, "Ders Açıldı", null);
+            }
+            catch (DomainException ex)
+            {
+                return new ApiResponse(Status400BadRequest, $"{ex.Description}");
+            }
         }
 
         public async Task<ApiResponse> AddYerineDers(int dersId, int yerineDersId)

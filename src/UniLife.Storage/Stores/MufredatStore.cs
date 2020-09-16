@@ -185,7 +185,7 @@ namespace UniLife.Storage.Stores
             //int numberOfRowAffected = await _db.Database.ExecuteSqlCommandAsync(rawBulkDeleteQuery.Replace('\'', '"'));
             #endregion RAWDEL
 
-            
+
 
 
 
@@ -233,8 +233,19 @@ namespace UniLife.Storage.Stores
 
 
 
+            //var OpeningMufredatList = await _db.Mufredats.Where(x => reqEntityIdWithOtherEntitiesIds.OtherEntityIds.Contains(x.Id))
+            //    .Include(y => y.Derss.Where(z => reqEntityIdWithOtherEntitiesIds.EntityId == z.DonemTipId && z.Durum == true))
+            //    .ToListAsync();
+
+            //var OpeningMufredatList = (from m in _db.Mufredats.Where(x => reqEntityIdWithOtherEntitiesIds.OtherEntityIds.Contains(x.Id))
+            //                           join d in _db.Derss.Where(z => reqEntityIdWithOtherEntitiesIds.EntityId == z.DonemTipId && z.Durum == true 
+            //                           && reqEntityIdWithOtherEntitiesIds.OtherEntityIds.Contains(z.MufredatId)) on m.Id equals d.MufredatId
+            //                           into derssLeft
+            //                           from d in derssLeft.DefaultIfEmpty()
+            //                           select m).ToList();
+
             var OpeningMufredatList = await _db.Mufredats.Where(x => reqEntityIdWithOtherEntitiesIds.OtherEntityIds.Contains(x.Id))
-                .Include(y => y.Derss.Where(z => reqEntityIdWithOtherEntitiesIds.EntityId == z.DonemTipId && z.Durum == true))
+                .Include(y => y.Derss)
                 .ToListAsync();
 
             foreach (var mufredat in OpeningMufredatList)
@@ -243,46 +254,7 @@ namespace UniLife.Storage.Stores
                 {
                     foreach (var ders in mufredat.Derss)
                     {
-                        DersAcilan dersAcilan = new DersAcilan
-                        {
-                            Ad = ders.Ad,
-                            AdEn = ders.AdEn,
-                            Akts = ders.Akts,
-                            BolumId = ders.BolumId,
-                            DersId = ders.Id,
-                            KisaAd = ders.KisaAd,
-                            Kod = ders.Kod,
-                            Kredi = ders.Kredi,
-                            LabSaat = ders.LabSaat,
-                            MufredatId = ders.MufredatId,
-                            OptikKod = ders.OptikKod,
-                            ProgramId = ders.ProgramId,
-                            SecmeliKodu = ders.SecmeliKodu,
-                            Sinif = ders.Sinif,
-                            DersNedenId = ders.DersNedenId,
-                            DersDilId = ders.DersDilId,
-                            DonemId = aktifDonem.Id, // Todo : burada sadece aktif döneme açmak yerine başka dönemlere açma seçeneği istenebilir.
-                                                     //Durum = ders.Durum, //ders açılandan bu alanın henuz bir anlamı yok.
-                            FakulteId = ders.FakulteId,
-                            TeoSaat = ders.TeoSaat,
-                            UygSaat = ders.UygSaat,
-                            Zorunlu = ders.Zorunlu,
-                            //EskiMufBagliDersId = ders.EskiMufBagliDersId
-                        };
-                        dersAcilans.Add(dersAcilan);
-                    }
-                }
-                else
-                {
-                    //Pasif mufredatın derslerini açma
-
-                    var beraberSeçilenAktifMufredat = OpeningMufredatList.FirstOrDefault(x => x.Aktif = true && x.ProgramId == mufredat.ProgramId);
-
-                    var acilmisAktifMufredatDersKodlari = _db.DersAcilans.Where(x => x.DonemId == aktifDonem.Id && x.ProgramId == mufredat.ProgramId).Select(x => x.Kod);
-
-                    foreach (var ders in mufredat.Derss)
-                    {
-                        if (!beraberSeçilenAktifMufredat.Derss.Any(x => x.Kod == ders.Kod) && !acilmisAktifMufredatDersKodlari.Any(x => x == ders.Kod))
+                        if (reqEntityIdWithOtherEntitiesIds.EntityId == ders.DonemTipId && ders.Durum == true)
                         {
                             DersAcilan dersAcilan = new DersAcilan
                             {
@@ -312,6 +284,52 @@ namespace UniLife.Storage.Stores
                             };
                             dersAcilans.Add(dersAcilan);
                         }
+                        
+                    }
+                }
+                else
+                {
+                    //Pasif mufredatın derslerini açma
+
+                    var beraberSeçilenAktifMufredat = OpeningMufredatList.FirstOrDefault(x => x.Aktif = true && x.ProgramId == mufredat.ProgramId);
+
+                    var acilmisAktifMufredatDersKodlari = _db.DersAcilans.Where(x => x.DonemId == aktifDonem.Id && x.ProgramId == mufredat.ProgramId).Select(x => x.Kod);
+
+                    foreach (var ders in mufredat.Derss)
+                    {
+                        if (reqEntityIdWithOtherEntitiesIds.EntityId == ders.DonemTipId && ders.Durum == true)
+                        {
+                            if (!beraberSeçilenAktifMufredat.Derss.Any(x => x.Kod == ders.Kod) && !acilmisAktifMufredatDersKodlari.Any(x => x == ders.Kod))
+                            {
+                                DersAcilan dersAcilan = new DersAcilan
+                                {
+                                    Ad = ders.Ad,
+                                    AdEn = ders.AdEn,
+                                    Akts = ders.Akts,
+                                    BolumId = ders.BolumId,
+                                    DersId = ders.Id,
+                                    KisaAd = ders.KisaAd,
+                                    Kod = ders.Kod,
+                                    Kredi = ders.Kredi,
+                                    LabSaat = ders.LabSaat,
+                                    MufredatId = ders.MufredatId,
+                                    OptikKod = ders.OptikKod,
+                                    ProgramId = ders.ProgramId,
+                                    SecmeliKodu = ders.SecmeliKodu,
+                                    Sinif = ders.Sinif,
+                                    DersNedenId = ders.DersNedenId,
+                                    DersDilId = ders.DersDilId,
+                                    DonemId = aktifDonem.Id, // Todo : burada sadece aktif döneme açmak yerine başka dönemlere açma seçeneği istenebilir.
+                                                             //Durum = ders.Durum, //ders açılandan bu alanın henuz bir anlamı yok.
+                                    FakulteId = ders.FakulteId,
+                                    TeoSaat = ders.TeoSaat,
+                                    UygSaat = ders.UygSaat,
+                                    Zorunlu = ders.Zorunlu,
+                                    //EskiMufBagliDersId = ders.EskiMufBagliDersId
+                                };
+                                dersAcilans.Add(dersAcilan);
+                            }
+                        }
                     }
                 }
             }
@@ -339,7 +357,7 @@ namespace UniLife.Storage.Stores
 
 
 
-            
+
 
         }
 

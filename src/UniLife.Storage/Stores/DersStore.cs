@@ -111,9 +111,20 @@ namespace UniLife.Storage.Stores
 
         public async Task CreateDersAcilansByDersId(int dersId)
         {
+            
+
+
             var dumpDersAcilan = await _db.DersAcilans.FirstOrDefaultAsync(x => x.DersId == dersId);
 
             var ders = await _db.Derss.FirstOrDefaultAsync(x => x.Id == dersId && x.Durum ==true);
+
+            var aktifMufredat = await _db.Mufredats.FirstOrDefaultAsync(x => x.Aktif == true && x.ProgramId == ders.ProgramId);
+
+            DersAcilan ayniKodlaAcilanAktifMufredatDersi = await _db.DersAcilans.FirstOrDefaultAsync(x => x.Kod == ders.Kod && x.MufredatId == aktifMufredat.Id);
+            if (ayniKodlaAcilanAktifMufredatDersi != null)
+            {
+                throw new DomainException(description:$"{ders.Kod} kodlu ders, aktif müfredat({aktifMufredat.Ad}) üzerinden zaten açılmıştır."); 
+            }
 
             var aktifDonem = await _db.Donems.FirstOrDefaultAsync(x => x.Durum ==true);
 
