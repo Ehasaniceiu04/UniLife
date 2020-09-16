@@ -32,9 +32,9 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         int? tempBolumId;
         int? tempFakulteId;
 
-        //string OdataQuery = "odata/dersacilans";
-        string OdataQuery = "odata/DersAcilansExt";
-        
+        string OdataQuery = "odata/dersacilans";
+        //string OdataQuery = "odata/DersAcilansExt";
+
         //public Query totalQuery = new Query().Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)", "Donem($select=Id,Ad)", "Bolum($select=Id,Ad)", "Fakulte($select=Id,Ad)" });
         public Query totalQuery = new Query().Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)", "Donem($select=Id,Ad)", "bolum($expand=fakulte($select=Ad,Id);$select=Ad,Id)" });
         

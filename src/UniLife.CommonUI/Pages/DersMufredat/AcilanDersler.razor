@@ -224,6 +224,11 @@
                 }
             </Template>
         </GridEditSettings>
+        <GridSortSettings>
+            <GridSortColumns>
+                <GridSortColumn Field="Kod" Direction="SortDirection.Ascending"></GridSortColumn>
+            </GridSortColumns>
+        </GridSortSettings>
         <GridColumns>
             <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Açılan Ders ID" Edit="false" AllowEditing="false" TextAlign="TextAlign.Left"></GridColumn>
             <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kod"></GridColumn>
@@ -232,7 +237,7 @@
             <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kredi) HeaderText="Kredi"></GridColumn>
             <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Akts) HeaderText="Akts"></GridColumn>
             <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
-            <GridColumn  AutoFit="true" Field=@nameof(DersAcilanDto.AltKota) HeaderText="Alt-Bol-Top">
+            <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.AltKota) HeaderText="Alt-Bol-Top">
                 <Template>
                     @{
                         var dersAcilanContext = (context as DersAcilanDto);
@@ -249,13 +254,13 @@
             </GridColumn>
             @*<GridColumn Field=@nameof(DersAcilanDto.ProgramId) EditType="EditType.DropDownEdit" HeaderText="Program" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@programDtos" Width="150"></GridColumn>
             <GridColumn Field=@nameof(DersAcilanDto.AkademisyenId) HeaderText="Öğrt Görev" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@akademisyenDtos" Width="150"></GridColumn>*@
-            <GridColumn  AutoFit="true" Field="Donem.Ad" HeaderText="Donem"></GridColumn>
-            <GridColumn  AutoFit="true" Field="Program.Ad" HeaderText="Program"></GridColumn>
+            <GridColumn AutoFit="true" Field="Donem.Ad" HeaderText="Donem"></GridColumn>
+            <GridColumn AutoFit="true" Field="Program.Ad" HeaderText="Program"></GridColumn>
             <GridColumn Visible="false" Field="Bolum.Ad" HeaderText="Bölüm"></GridColumn>
             <GridColumn Visible="false" Field="Bolum.Fakulte.Ad" HeaderText="Fakülte"></GridColumn>
             <GridColumn Visible="false" Field=@nameof(DersAcilanDto.DersNedenId) HeaderText="DersNedenId"></GridColumn>
             <GridColumn Visible="false" Field=@nameof(DersAcilanDto.DersDilId) HeaderText="DersDilId"></GridColumn>
-            <GridColumn  AutoFit="true" Field="Akademisyen.Ad" HeaderText="Akademisyen">
+            <GridColumn AutoFit="true" Field="Akademisyen.Ad" HeaderText="Akademisyen">
                 @*<Template>
                     @{
                         DersAcilanDto dersAcInfo = (context as DersAcilanDto);

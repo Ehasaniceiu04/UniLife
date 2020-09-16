@@ -39,8 +39,6 @@
                 MufredatDto mufredatInfo = (context as MufredatDto);
                 <div class="row pb-2 bg-light text-dark">
                     <div class="col-sm-12 col-md-4">
-                        @*<FakBolPrg @bind-ProgramId="programId"*@
-
                         <FakBolPrg @bind-FakulteId="@(mufredatInfo.FakulteId)"
                                    @bind-BolumId="@(mufredatInfo.BolumId)"
                                    @bind-ProgramId="@(mufredatInfo.ProgramId)"
@@ -63,10 +61,6 @@
                             <div class="col-sm-4">
                                 <SfDatePicker ID="BasTarih" @bind-Value="@mufredatInfo.BasTarih" Placeholder="Kayıt Tarihi"></SfDatePicker>
                             </div>
-                            @*<label for="BitTarih" class="col-sm-2 col-form-label-sm">BitTarih</label>
-                                <div class="col-sm-4">
-                                    <SfDatePicker ID="BitTarih" @bind-Value="@mufredatInfo.BitTarih" Placeholder="Bitiş Tarihi"></SfDatePicker>
-                                </div>*@
                         </div>
                         <div class="form-group  row">
                             <label for="KararTarih" class="col-sm-2 col-form-label-sm">Karar Tarih</label>
@@ -83,6 +77,11 @@
             }
         </Template>
     </GridEditSettings>
+    <GridSortSettings>
+        <GridSortColumns>
+            <GridSortColumn Field="Program.Ad" Direction="SortDirection.Ascending"></GridSortColumn>
+        </GridSortColumns>
+    </GridSortSettings>
     <GridColumns>
         <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
         <GridColumn Visible="false" Field=@nameof(MufredatDto.Id) HeaderText="Müfredat ID" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
