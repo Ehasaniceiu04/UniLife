@@ -291,7 +291,7 @@ namespace UniLife.Storage.Stores
                 {
                     //Pasif mufredatın derslerini açma
 
-                    var beraberSeçilenAktifMufredat = OpeningMufredatList.FirstOrDefault(x => x.Aktif = true && x.ProgramId == mufredat.ProgramId);
+                    var beraberSeçilenAktifMufredat = OpeningMufredatList.FirstOrDefault(x => x.Aktif == true && x.ProgramId == mufredat.ProgramId);
 
                     var acilmisAktifMufredatDersKodlari = _db.DersAcilans.Where(x => x.DonemId == aktifDonem.Id && x.ProgramId == mufredat.ProgramId).Select(x => x.Kod);
 
@@ -299,7 +299,7 @@ namespace UniLife.Storage.Stores
                     {
                         if (reqEntityIdWithOtherEntitiesIds.EntityId == ders.DonemTipId && ders.Durum == true)
                         {
-                            if (!beraberSeçilenAktifMufredat.Derss.Any(x => x.Kod == ders.Kod) && !acilmisAktifMufredatDersKodlari.Any(x => x == ders.Kod))
+                            if (!(beraberSeçilenAktifMufredat !=null && beraberSeçilenAktifMufredat.Derss.Any(x => x.Kod == ders.Kod)) && !acilmisAktifMufredatDersKodlari.Any(x => x == ders.Kod))
                             {
                                 DersAcilan dersAcilan = new DersAcilan
                                 {
