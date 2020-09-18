@@ -108,7 +108,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         public Query donemQuery = new Query().Select(new List<string> { "Id", "Ad" }).RequiresCount();
 
-        public Query totalQuery = new Query().Expand(new List<string> { "Dersacilan($expand=Program($select=Ad,Id);$select=Ad,Id,Kod)" });
+        public Query totalQuery = new Query().Expand(new List<string> { "Dersacilan($expand=Program($select=Ad,Id);$select=Ad,Id,Kod)", "SinavTur($select=Ad,Id)" });
         string OdataQuery = "odata/sinavs";
 
         Syncfusion.Blazor.Grids.SfGrid<SinavDto> sinavGrid;
