@@ -18,6 +18,7 @@ namespace UniLife.Shared.Dto.Definitions
         public string DersKisaAd { get; set; }
         public string DersAd { get; set; }
         public int DersId { get; set; }
+        public int Katilim { get; set; } = 1;
 
         public string OgrDigerSinavlarText { get; set; }
     }

@@ -125,6 +125,7 @@ namespace UniLife.Storage.Stores
                                     OgrenciAd = o.Ad + " " + o.Soyad,
                                     OgrenciNo = o.OgrNo,
                                     OgrNot = sk.OgrNot,
+                                    Katilim = sk.Katilim,
                                     OgrDigerSinavlarText = GetDigerSinavsByText(derseKayitliOgrlerinTumSinavlari, o)
                                 };
 
@@ -311,7 +312,9 @@ namespace UniLife.Storage.Stores
 
             foreach (var item in existSinavKayits)
             {
-                item.OgrNot = sinavKayitNotBatches.FirstOrDefault(x => x.SinavKayitId == item.Id).OgrNot;
+                var enteredSinavKayit= sinavKayitNotBatches.FirstOrDefault(x => x.SinavKayitId == item.Id);
+                item.OgrNot = enteredSinavKayit.OgrNot;
+                item.Katilim = enteredSinavKayit.Katilim;
             }
 
             await _db.SaveChangesAsync(CancellationToken.None);

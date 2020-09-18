@@ -10,7 +10,7 @@ namespace UniLife.Shared.DataModels
         public virtual Sinav Sinav{ get; set; }
         public int OgrenciId { get; set; }
         public virtual Ogrenci Ogrenci { get; set; }
-
+        public int Katilim { get; set; } = 1;
         public double OgrNot { get; set; }
         public long? MazeretiSinavKayitId { get; set; } // mazereti var olan finalin bütü var demektir. final kale alınmaz. Vizeninde aynı şekilde.
     }

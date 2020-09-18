@@ -29,5 +29,12 @@ namespace UniLife.Shared.Dto.Definitions
             new KeyValueDto() { Ad = "Şehit-Gazi Yakını", Id = 3 },
             new KeyValueDto() { Ad = "Araştırma Görevlisi", Id = 4 }
         };
+
+        public static List<KeyValueDto> SinavKatilim { get; } = new List<KeyValueDto>
+        {
+            new KeyValueDto() { Ad = "Katıldı", Id = 1 },
+            new KeyValueDto() { Ad = "Katılmadı", Id = 2 },
+            new KeyValueDto() { Ad = "DEvamsız", Id = 3 }
+        };
     }
 }

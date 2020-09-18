@@ -324,6 +324,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             {
                 OgrenciDtos = apiResponse.Result;
                 matToaster.Add(apiResponse.Message, MatToastType.Success, "Sınava tabi öğrenicler getirildi");
+                StateHasChanged();
             }
             else
             {
@@ -659,8 +660,9 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             mazeret.KisaAd = $"{SelectedSinav.KisaAd} Mazeret";
             ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/sinav", mazeret);
             isMazeretConfirmDialogOpen = false;
-
+            
             SinavGrid.Refresh();
+            StateHasChanged();
         }
 
         //public async Task TopluButOlustur()

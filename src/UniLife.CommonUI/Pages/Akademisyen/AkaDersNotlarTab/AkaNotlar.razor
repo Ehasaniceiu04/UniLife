@@ -14,6 +14,7 @@
         <GridColumn AllowEditing="false" Field=@nameof(SinavOgrNotlarDto.OgrenciNo) HeaderText="Öğrenci No"></GridColumn>
         <GridColumn AllowEditing="false" Field=@nameof(SinavOgrNotlarDto.OgrenciAd) HeaderText="Adı Soyadı"></GridColumn>
         <GridColumn AllowEditing="false" Field=@nameof(SinavOgrNotlarDto.OgrDigerSinavlarText) HeaderText="Tüm Notları"></GridColumn>
+        <GridColumn Field=@nameof(SinavOgrNotlarDto.Katilim) EditType="EditType.DropDownEdit" HeaderText="Katılım" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@(Sabitler.SinavKatilim)"></GridColumn>
         <GridColumn Field=@nameof(SinavOgrNotlarDto.OgrNot) HeaderText="Notu" ValidationRules="@(new ValidationRules{ Required=true, Number=true,Max=100,Min=0})"></GridColumn>
     </GridColumns>
 </SfGrid>
@@ -120,6 +121,7 @@
             .Select(x => new SinavKayitNotBatch
             {
                 SinavKayitId = x.SinavKayitId,
+                Katilim = x.Katilim,
                 OgrNot = x.OgrNot
             }).ToList();
 
