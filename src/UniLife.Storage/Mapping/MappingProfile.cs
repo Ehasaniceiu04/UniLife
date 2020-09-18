@@ -33,6 +33,7 @@ namespace UniLife.Storage.Mapping
             CreateMap<Mufredat, MufredatDto>().ReverseMap();
             CreateMap<Ders, DersDto>().ReverseMap();
             CreateMap<DersAcilan, DersAcilanDto>().ReverseMap()
+                .ForMember(c => c.Mufredat, o => o.Ignore())
                 .ForMember(c => c.Program, o => o.Ignore())
                 .ForMember(c => c.Bolum, o => o.Ignore())
                 .ForMember(c => c.Fakulte, o => o.Ignore())

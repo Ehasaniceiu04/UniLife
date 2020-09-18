@@ -667,5 +667,22 @@ namespace UniLife.Storage.Stores
             //return null;
         }
 
+        public async Task<List<DersAcilanDto>> GetDersAcilansByMufredat(int mufredatId, int donemId)
+        {
+            var mufredat = await _db.Mufredats.FirstOrDefaultAsync(x => x.Id == mufredatId);
+
+            var mufredatdersKods = await _db.Derss.Where(x => x.MufredatId == mufredatId).Select(x=>x.Kod).ToListAsync();
+
+            var ustMufredatIds = await _db.Mufredats.Where(x => x.Yil >= mufredat.Yil && x.ProgramId == mufredat.ProgramId).Select(x => x.Id).ToListAsync();
+
+            var donemdeMufredatProgramininAcilanDersleri
+                =await _db.DersAcilans.Where(x => x.DonemId == donemId
+                                           && ustMufredatIds.Contains(x.MufredatId)
+                                           && mufredatdersKods.Contains(x.Kod)).ToListAsync();
+
+            donemdeMufredatProgramininAcilanDersleri.ForEach(x => { x.Mufredat = null; });
+
+            return _autoMapper.Map<List<DersAcilanDto>>(donemdeMufredatProgramininAcilanDersleri);
+        }
     }
 }

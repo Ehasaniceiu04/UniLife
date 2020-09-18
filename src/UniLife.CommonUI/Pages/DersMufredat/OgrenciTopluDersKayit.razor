@@ -112,11 +112,12 @@
                 </div>
             </div>
 
-            @if (hedefVisible && MufredatId2.HasValue)
+            @if (MufredatId2.HasValue)
             {
-                <SfGrid ID="dersAcGrid" @ref="dersAcGrid" Query="@totalQueryDers" TValue="DersAcilanDto" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
+                //Query = "@totalQueryDers"
+                <SfGrid ID="dersAcGrid" @ref="dersAcGrid" DataSource="dersAcilanDtos" TValue="DersAcilanDto" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
                     @*OnActionFailure="ActionFailureHandler" DetailDataBound="DetailDataBound"  OnActionBegin="ActionBeginHandler" DetailDataBound="DetailDataBound" RowDataBound="RowBound"*@
-                    <SfDataManager Url="@OdataQueryDers" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+                    @*<SfDataManager Url="@OdataQueryDers" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>*@
                     <GridEvents TValue="DersAcilanDto"></GridEvents>
                     @*<GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.Excel"></GridFilterSettings>*@
                 <GridColumns>

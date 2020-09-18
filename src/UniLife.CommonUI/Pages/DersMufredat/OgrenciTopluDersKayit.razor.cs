@@ -23,19 +23,21 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         [InjectAttribute]
         public MatBlazor.IMatToaster matToaster { get; set; }
 
-        bool hedefVisible=false;
+        bool hedefVisible=true;
         bool kaynakVisible= false;
         
         string OdataQuery = "odata/ogrencis";
         public Query totalQuery = new Query();
 
         
-            string OdataQueryDers = "odata/dersacilans";
+        string OdataQueryDers = "odata/dersacilans";
         public Query totalQueryDers = new Query();
 
         public SfGrid<OgrenciDto> OgrGrid;
 
         public SfGrid<DersAcilanDto> dersAcGrid;
+
+        List<DersAcilanDto> dersAcilanDtos = new List<DersAcilanDto>();
 
         int? _programId;
         public int? ProgramId
@@ -231,29 +233,33 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         }
         async Task RefreshHedef()
         {
-            totalQueryDers = new Query();
+            ApiResponseDto<List<DersAcilanDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<DersAcilanDto>>>($"api/DersAcilan/GetDersAcilansByMufredat/{MufredatId2}/{donemId}").Result;
 
-            if (donemId.HasValue)
-            {
-                totalQueryDers.Where("donemId", "equal", donemId);
-            }
+            dersAcilanDtos = apiResponse.Result;
+            dersAcGrid.Refresh();
+            //totalQueryDers = new Query();
 
-            if (MufredatId2.HasValue)
-            {
-                totalQueryDers.Where("mufredatId", "equal", MufredatId2);
-            }
-            else if (ProgramId2.HasValue)
-            {
-                totalQueryDers.Where("programId", "equal", ProgramId2);
-            }
-            else if (BolumId2.HasValue)
-            {
-                totalQueryDers.Where("bolumId", "equal", BolumId2);
-            }
-            else if (FakulteId2.HasValue)
-            {
-                totalQueryDers.Where("fakulteId", "equal", FakulteId2);
-            }
+            //if (donemId.HasValue)
+            //{
+            //    totalQueryDers.Where("donemId", "equal", donemId);
+            //}
+
+            //if (MufredatId2.HasValue)
+            //{
+            //    totalQueryDers.Where("mufredatId", "equal", MufredatId2);
+            //}
+            //else if (ProgramId2.HasValue)
+            //{
+            //    totalQueryDers.Where("programId", "equal", ProgramId2);
+            //}
+            //else if (BolumId2.HasValue)
+            //{
+            //    totalQueryDers.Where("bolumId", "equal", BolumId2);
+            //}
+            //else if (FakulteId2.HasValue)
+            //{
+            //    totalQueryDers.Where("fakulteId", "equal", FakulteId2);
+            //}
         }
 
 
@@ -278,9 +284,10 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         async Task HedefChange()
         {
-            hedefVisible = false;
-            await Task.Delay(100);
-            hedefVisible = true;
+            //hedefVisible = false;
+            //await Task.Delay(100);
+            //hedefVisible = true;
+
             await RefreshHedef();
             StateHasChanged();
         }
