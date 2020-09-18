@@ -94,6 +94,9 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
 
         bool isShowSinavs = true;
+
+        bool OgrGridShow = true;
+
         protected async override Task OnInitializedAsync()
         {
             await ReadFakultes();
@@ -298,6 +301,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         public async Task RowSelectedHandlerSinav(Syncfusion.Blazor.Grids.RowSelectEventArgs<SinavDto> args)
         {
+            await Task.Delay(100);
             SelectedSinav = args.Data;
             selectedSinavId = args.Data.Id;
             if (selectedSinavId != 0)
@@ -324,7 +328,14 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             {
                 OgrenciDtos = apiResponse.Result;
                 matToaster.Add(apiResponse.Message, MatToastType.Success, "Sınava tabi öğrenicler getirildi");
-                StateHasChanged();
+                OgrGridShow = false;
+                await Task.Delay(100);
+
+                OgrenciGrid.Refresh();
+
+                base.InvokeAsync(StateHasChanged);
+                OgrGridShow = true;
+
             }
             else
             {
