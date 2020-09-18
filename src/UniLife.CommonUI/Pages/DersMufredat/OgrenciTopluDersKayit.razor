@@ -50,7 +50,7 @@
                     <SfButton OnClick="Refresh" CssClass="e-success col-sm-12 form-control-sm">Bul / Yenile</SfButton>
                 </div>
             </div>
-            @if (kaynakVisible)
+            @if (kaynakVisible && MufredatId.HasValue)
             {
                 <SfGrid ID="OgrGrid" @ref="OgrGrid" Query="@totalQuery" TValue="OgrenciDto" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
                     @*OnActionFailure="ActionFailureHandler" DetailDataBound="DetailDataBound"  OnActionBegin="ActionBeginHandler" DetailDataBound="DetailDataBound" RowDataBound="RowBound"*@
@@ -112,7 +112,7 @@
                 </div>
             </div>
 
-            @if (hedefVisible)
+            @if (hedefVisible && MufredatId2.HasValue)
             {
                 <SfGrid ID="dersAcGrid" @ref="dersAcGrid" Query="@totalQueryDers" TValue="DersAcilanDto" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
                     @*OnActionFailure="ActionFailureHandler" DetailDataBound="DetailDataBound"  OnActionBegin="ActionBeginHandler" DetailDataBound="DetailDataBound" RowDataBound="RowBound"*@

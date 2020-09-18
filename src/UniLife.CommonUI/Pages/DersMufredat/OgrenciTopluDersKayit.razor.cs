@@ -23,8 +23,8 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         [InjectAttribute]
         public MatBlazor.IMatToaster matToaster { get; set; }
 
-        bool hedefVisible=true;
-        bool kaynakVisible=true;
+        bool hedefVisible=false;
+        bool kaynakVisible= false;
         
         string OdataQuery = "odata/ogrencis";
         public Query totalQuery = new Query();
@@ -97,7 +97,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             get => _programId2;
             set
             {
-                HedefChange();
+                //HedefChange();
                 if (_programId2 == value) return;
                 _programId2 = value;
             }
@@ -109,7 +109,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             get => _bolumId2;
             set
             {
-                HedefChange();
+                //HedefChange();
                 if (_bolumId2 == value) return;
                 _bolumId2 = value;
             }
@@ -120,7 +120,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             get => _fakulteId2;
             set
             {
-                HedefChange();
+                //HedefChange();
                 if (_fakulteId2 == value) return;
                 _fakulteId2 = value;
             }
@@ -281,7 +281,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             hedefVisible = false;
             await Task.Delay(100);
             hedefVisible = true;
-            await Refresh();
+            await RefreshHedef();
             StateHasChanged();
         }
 
