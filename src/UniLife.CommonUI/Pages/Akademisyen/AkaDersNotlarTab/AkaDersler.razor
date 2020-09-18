@@ -14,7 +14,7 @@
 }
 else
 {
-    <SfDropDownList ID="DropDonem" @ref="DropDonem" ShowClearButton="true" TItem="DonemDto" Index="0" CssClass="form-control-sm"
+    <SfDropDownList ID="DropDonem" @ref="DropDonem" ShowClearButton="true" TItem="DonemDto" CssClass="form-control-sm"
                     TValue="int?" Placeholder="Dönem Seçimi..."
                     DataSource="@(donemDtos.OrderByDescending(x=>x.Yil).ThenBy(n => n.BasTarih))" @bind-Value="@(selectedDonemId)">
         <DropDownListEvents TValue="int?" ValueChange="DonemChange"></DropDownListEvents>
@@ -141,6 +141,9 @@ else
             ApiResponseDto<List<DonemDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<DonemDto>>>("api/donem");
             donemDtos = apiResponse.Result;
 
+
+
+
             if (SpesificDersAcilan == 0)
             {
                 if (_AkademisyenDto == null)
@@ -159,7 +162,8 @@ else
                 gridOdata = $"odata/dersacilans?$filter=Id eq {SpesificDersAcilan}";
             }
 
-
+            selectedDonemId = donemDtos.FirstOrDefault(x => x.Durum == true).Id;
+            StateHasChanged();
 
             //ApiResponseDto<List<AkademisyenDersDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<AkademisyenDersDto>>>("api/sinav/GetDersAcilanByAkademisyenId/" + akademisyenDto.Id);
 
@@ -203,7 +207,7 @@ else
     }
 
 
-    void DonemChange()
+    async Task DonemChange()
     {
         //gridOdata = $"odata/dersacilans?$expand=akademisyen($select=Ad,Id),donem($select=Ad,Id)&$select=Ad,Id,Kod&$filter=akademisyen/Id eq {akademisyenDto.Id} and donem/Id eq {selectedDonemId}";
         grdDersler.Refresh();

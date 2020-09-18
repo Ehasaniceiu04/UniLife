@@ -11,6 +11,8 @@ namespace UniLife.Shared.Dto.Definitions
         public int DersAcilanId { get; set; }
         public virtual DersAcilanDto DersAcilan { get; set; }
 
+        public string DersAcilanAd { get; set; }
+
         public int SinavTipId { get; set; }
         public virtual SinavTipDto SinavTip { get; set; }
 
@@ -22,6 +24,7 @@ namespace UniLife.Shared.Dto.Definitions
         public int? EtkiOran { get; set; } = 0;
 
         public bool IsKilit { get; set; }
+        public bool IsYayinli { get; set; }
         public DateTime? Tarih { get; set; }
         public bool TarihIlan { get; set; }
         public string KisaAd { get; set; }

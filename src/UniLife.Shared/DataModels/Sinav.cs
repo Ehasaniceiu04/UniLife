@@ -23,6 +23,7 @@ namespace UniLife.Shared.DataModels
         public int EtkiOran { get; set; }
 
         public bool IsKilit{ get; set; }
+        public bool IsYayinli { get; set; }
         public DateTime? Tarih{ get; set; }
         public bool TarihIlan { get; set; }
         public string KisaAd { get; set; }

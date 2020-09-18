@@ -148,6 +148,22 @@ namespace UniLife.Server.Controllers
             }
         }
 
+
+        [HttpPost]
+        [Route("Onayla")]
+        [Authorize(Permissions.DersKayit.Update)]
+        [Authorize(Roles = "Administrator,Personel,Akademisyen")]
+        public async Task<ApiResponse> Onayla([FromBody] List<int> Ids)
+        {
+            if (ModelState.IsValid)
+            {
+                return await _dersKayitManager.Onayla(Ids);
+            }
+            else
+            {
+                return new ApiResponse(Status400BadRequest, "DersKayitDto Model is Invalid");
+            }
+        }
         
 
     }

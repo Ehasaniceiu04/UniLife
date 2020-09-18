@@ -129,8 +129,9 @@
             {
 
                 matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
-                StateHasChanged();
+
                 await GetNots();
+                grdNotlar.Refresh();
             }
             else
                 matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");

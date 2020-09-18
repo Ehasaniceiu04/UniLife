@@ -23,5 +23,6 @@ namespace UniLife.Shared.DataModels
         public string HarfNot { get; set; }
         public bool GecDurum { get; set; }
         public string AlTip { get; set; }
+        public bool IsOnayli { get; set; }
     }
 }

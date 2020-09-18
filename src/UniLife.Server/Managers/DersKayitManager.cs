@@ -62,5 +62,11 @@ namespace UniLife.Server.Managers
             await _dersKayitStore.HedefKaynakOgrDersKayit(hedefKaynakDto);
             return new ApiResponse(Status200OK, "Güncellendi HedefKaynakOgrAktar");
         }
+
+        public async Task<ApiResponse> Onayla(List<int> ids)
+        {
+            await _dersKayitStore.Onayla(ids);
+            return new ApiResponse(Status200OK, "Kayıtlı dersler onaylandı.");
+        }
     }
 }

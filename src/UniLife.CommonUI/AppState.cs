@@ -34,6 +34,8 @@ namespace UniLife.CommonUI
 
         public int DersKayitDonemIdState { get; set; }
 
+        public string UserNavigationLoadRole { get; set; }
+
 
         public AppState(IUserProfileApi userProfileApi)
         {

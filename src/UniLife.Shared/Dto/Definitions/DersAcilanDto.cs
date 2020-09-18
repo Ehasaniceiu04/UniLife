@@ -76,6 +76,8 @@ namespace UniLife.Shared.Dto.Definitions
         }
 
         public bool Kayitta { get; set; }
+        public bool IsOnayli { get; set; }
+        public int DersKayitId { get; set; }
 
         public virtual ICollection<SinavDto> Sinavs { get; set; }
     }

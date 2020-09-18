@@ -483,7 +483,9 @@ namespace UniLife.Storage.Stores
                                   DonemId = a.DonemId,
                                   KisaAd = a.KisaAd,
                                   Durum = a.Durum,
-                                  Sinif = a.Sinif
+                                  Sinif = a.Sinif,
+                                  IsOnayli = k.IsOnayli,
+                                  DersKayitId = k.Id
                               };
 
             return _autoMapper.Map<List<DersAcilanDto>>(await dersAcilans.ToListAsync());

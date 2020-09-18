@@ -15,5 +15,6 @@ namespace UniLife.Server.Managers
         Task<ApiResponse> GetOgrenciDersKayitsByDers(int dersAcilanId);
         Task<ApiResponse> HedefKaynakOgrAktar(HedefKaynakDto hedefKaynakDto);
         Task<ApiResponse> HedefKaynakOgrDersKayit(HedefKaynakDto hedefKaynakDto);
+        Task<ApiResponse> Onayla(List<int> ids);
     }
 }

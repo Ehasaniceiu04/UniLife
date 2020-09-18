@@ -1,41 +1,41 @@
-﻿@inject HttpClient Http;
-@using UniLife.Shared.Dto.Definitions
+﻿@using UniLife.Shared.Dto.Definitions
 @using Syncfusion.Blazor.SplitButtons
 @using Syncfusion.Blazor.Buttons
 @using UniLife.CommonUI.Extensions
 @using UniLife.Shared.Dto.Definitions.Bussines
 @inject AppState appState
-@inject IMatToaster matToaster
-@using System.Net
 
 
-    <Divider5></Divider5>
 
-    <ControlSection>
-        <div class="server-action-menu" style="padding-top: 10px;">
-            <div class="row">
-                <div class="col-sm-12 text-center">
+<Divider5></Divider5>
 
-                    <legend>Müfredat Dersleri</legend>
-                </div>
+<ControlSection>
+    <div class="server-action-menu" style="padding-top: 10px;">
+        <div class="row">
+            <div class="col-sm-12 text-center">
+
+                <legend>Müfredat Dersleri</legend>
             </div>
-            <div class="row">
+        </div>
+        <div class="row">
 
-                <div class="col-sm-12 col-md-12">
-                    @if (DersAcilanDtos == null)
-                    {
+            <div class="col-sm-12 col-md-12">
+                @if (DersAcilanDtos == null)
+                {
 
-                        <LoadingBackground ShowLogoBox="true">
-                            <label>Müfredat Dersleri Yükleniyor...</label>
-                        </LoadingBackground>
-                    }
-                    else
-                    {
-                        <SfGrid ID="DersAcilanGrid" @ref="DersAcilanGrid" DataSource="@DersAcilanDtos" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
-                            @*<GridEvents OnActionComplete="ActionCompletedHandler" TValue="ProgramDto"></GridEvents>*@
-                            <GridEvents TValue="DersAcilanDto" QueryCellInfo="QueryCellInfoAcilanHandler" CommandClicked="CommandClickHandler"></GridEvents>
-                            <GridColumns>
-                                <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+                    <LoadingBackground ShowLogoBox="true">
+                        <label>Müfredat Dersleri Yükleniyor...</label>
+                    </LoadingBackground>
+                }
+                else
+                {
+                    <SfGrid ID="DersAcilanGrid" @ref="DersAcilanGrid" DataSource="@DersAcilanDtos" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
+                        @*<GridEvents OnActionComplete="ActionCompletedHandler" TValue="ProgramDto"></GridEvents>*@
+                        <GridEvents TValue="DersAcilanDto" QueryCellInfo="QueryCellInfoAcilanHandler" CommandClicked="CommandClickHandler"></GridEvents>
+                        <GridColumns>
+                            <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+                            @if (!isOnayli)
+                            {
                                 <GridColumn HeaderText="Kayıt" Width="75">
                                     <GridCommandColumns>
                                         <GridCommandColumn Type="CommandButtonType.None" Title="Kayıt Ol" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowDown", CssClass="e-flat" })"></GridCommandColumn>
@@ -54,104 +54,135 @@
                                         }
                                     </Template>
                                 </GridColumn>
+                            }
 
-                                <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kodu"></GridColumn>
-                                <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Adı"></GridColumn>
-                                <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Zorunlu) HeaderText="Zorunlu" DisplayAsCheckBox="true"></GridColumn>
-                                <GridColumn Field=@nameof(DersAcilanDto.Kredi) HeaderText="Kredi"></GridColumn>
-                                <GridColumn Field=@nameof(DersAcilanDto.Akts) HeaderText="Akts"></GridColumn>
-                                <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
-                                <GridColumn Field=@nameof(DersAcilanDto.ODTekrar) HeaderText="Önceki Dönemler Tekrar Durumu"></GridColumn>
-                                <GridColumn Field=@nameof(DersAcilanDto.ADKayit) HeaderText="Aktif Dönem Kayıt Durumu"></GridColumn>
-                            </GridColumns>
-                        </SfGrid>
-                    }
 
-                </div>
+                            <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kodu"></GridColumn>
+                            <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Adı"></GridColumn>
+                            <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Zorunlu) HeaderText="Zorunlu" DisplayAsCheckBox="true"></GridColumn>
+                            <GridColumn Field=@nameof(DersAcilanDto.Kredi) HeaderText="Kredi"></GridColumn>
+                            <GridColumn Field=@nameof(DersAcilanDto.Akts) HeaderText="Akts"></GridColumn>
+                            <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
+                            <GridColumn Field=@nameof(DersAcilanDto.ODTekrar) HeaderText="Önceki Dönemler Tekrar Durumu"></GridColumn>
+                            <GridColumn Field=@nameof(DersAcilanDto.ADKayit) HeaderText="Aktif Dönem Kayıt Durumu"></GridColumn>
+                        </GridColumns>
+                    </SfGrid>
+                }
 
             </div>
-        </div>
 
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="astrodivider"><div class="astrodividermask"></div><span><i>&#10038;</i></span></div>
+    </div>
+    <div class="server-action-menu">
         <div class="row">
-            <div class="astrodivider"><div class="astrodividermask"></div><span><i>&#10038;</i></span></div>
-        </div>
-        <div class="server-action-menu">
-            <div class="row">
-                <div class="col-sm-12 text-center">
-                    <legend>Kayıt Olunan Dersler</legend>
-                </div>
+            <div class="col-sm-12 text-center">
+                <legend>Kayıt Olunan Dersler @(isOnayli?"(Onaylı)":string.Empty)</legend>
             </div>
-            <div class="row">
-                <div class="col-sm-12 col-md-12">
-                    @if (DersKayitDtos == null)
-                    {
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                @if (DersKayitDtos == null)
+                {
 
-                        <LoadingBackground ShowLogoBox="true">
-                            <label>Kayıtlı Dersler Yükleniyor...</label>
-                        </LoadingBackground>
-                    }
-                    else
-                    {
+                    <LoadingBackground ShowLogoBox="true">
+                        <label>Kayıtlı Dersler Yükleniyor...</label>
+                    </LoadingBackground>
+                }
+                else
+                {
 
-                        <SfGrid ID="DersKayitGrid" @ref="DersKayitGrid" DataSource="@DersKayitDtos" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
-                            <GridEvents TValue="DersAcilanDto" QueryCellInfo="QueryCellInfoHandler" CommandClicked="CommandClickHandlerKayit"></GridEvents>
-                            <GridAggregates>
-                                <GridAggregate>
-                                    <GridAggregateColumns>
-                                        <GridAggregateColumn Field=@nameof(DersAcilanDto.Akts) Type="AggregateType.Sum" Format="N2">
-                                            <FooterTemplate>
-                                                @{
-                                                    var aggregate = (context as AggregateTemplateContext);
-                                                    <div>
-                                                        <p>Toplam: @aggregate.Sum</p>
-                                                    </div>
-                                                }
-                                            </FooterTemplate>
-                                        </GridAggregateColumn>
-                                        <GridAggregateColumn Field=@nameof(DersAcilanDto.Kredi) Type="AggregateType.Sum" Format="N2">
-                                            <FooterTemplate>
-                                                @{
-                                                    var aggregate = (context as AggregateTemplateContext);
-                                                    <div>
-                                                        <p>Toplam: @aggregate.Sum</p>
-                                                    </div>
-                                                }
-                                            </FooterTemplate>
-                                        </GridAggregateColumn>
-                                    </GridAggregateColumns>
-                                </GridAggregate>
-                            </GridAggregates>
+                    <SfGrid ID="DersKayitGrid" @ref="DersKayitGrid" DataSource="@DersKayitDtos" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
+                        <GridEvents TValue="DersAcilanDto" QueryCellInfo="QueryCellInfoHandler" CommandClicked="CommandClickHandlerKayit"></GridEvents>
+                        <GridAggregates>
+                            <GridAggregate>
+                                <GridAggregateColumns>
+                                    <GridAggregateColumn Field=@nameof(DersAcilanDto.Akts) Type="AggregateType.Sum" Format="N2">
+                                        <FooterTemplate>
+                                            @{
+                                                var aggregate = (context as AggregateTemplateContext);
+                                                <div>
+                                                    <p>Toplam: @aggregate.Sum</p>
+                                                </div>
+                                            }
+                                        </FooterTemplate>
+                                    </GridAggregateColumn>
+                                    <GridAggregateColumn Field=@nameof(DersAcilanDto.Kredi) Type="AggregateType.Sum" Format="N2">
+                                        <FooterTemplate>
+                                            @{
+                                                var aggregate = (context as AggregateTemplateContext);
+                                                <div>
+                                                    <p>Toplam: @aggregate.Sum</p>
+                                                </div>
+                                            }
+                                        </FooterTemplate>
+                                    </GridAggregateColumn>
+                                </GridAggregateColumns>
+                            </GridAggregate>
+                        </GridAggregates>
 
-                            <GridColumns>
-                                <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+                        <GridColumns>
+                            <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+                            @if (!isOnayli)
+                            {
                                 <GridColumn HeaderText="Kaldır" Width="75">
                                     <GridCommandColumns>
                                         <GridCommandColumn Type="CommandButtonType.None" Title="Kayıt Kaldır" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowUP", CssClass="e-flat" })"></GridCommandColumn>
                                     </GridCommandColumns>
                                 </GridColumn>
-                                <GridColumn Field=@nameof(DersAcilanDto.YerineSecilenAd) HeaderText="Yerine Ders"></GridColumn>
-                                <GridColumn Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kodu"></GridColumn>
-                                <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Adı"></GridColumn>
-                                <GridColumn Visible="false" Field=@nameof(DersAcilanDto.YerineSecilenId) HeaderText="Yerine id"></GridColumn>
-                                <GridColumn Field=@nameof(DersAcilanDto.Zorunlu) DisplayAsCheckBox="true" HeaderText="Zorunlu"></GridColumn>
-                                <GridColumn Field=@nameof(DersAcilanDto.Kredi) Format="N2" HeaderText="Kredi"></GridColumn>
-                                <GridColumn Field=@nameof(DersAcilanDto.Akts) Format="N2" HeaderText="Akts"></GridColumn>
-                                <GridColumn Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
+                            }
+                            <GridColumn Field=@nameof(DersAcilanDto.YerineSecilenAd) HeaderText="Yerine Ders"></GridColumn>
+                            <GridColumn Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kodu"></GridColumn>
+                            <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Adı"></GridColumn>
+                            <GridColumn Visible="false" Field=@nameof(DersAcilanDto.YerineSecilenId) HeaderText="Yerine id"></GridColumn>
+                            <GridColumn Field=@nameof(DersAcilanDto.Zorunlu) DisplayAsCheckBox="true" HeaderText="Zorunlu"></GridColumn>
+                            <GridColumn Field=@nameof(DersAcilanDto.Kredi) Format="N2" HeaderText="Kredi"></GridColumn>
+                            <GridColumn Field=@nameof(DersAcilanDto.Akts) Format="N2" HeaderText="Akts"></GridColumn>
+                            <GridColumn Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
 
-                            </GridColumns>
-                        </SfGrid>
-                    }
+                        </GridColumns>
+                    </SfGrid>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        @if (appState.UserNavigationLoadRole == UserRoles.Ogrenci.ToString() || UserRoles.Personel.ToString() == appState.UserNavigationLoadRole)
+        {
+            @if (!isOnayli)
+            {
+                <div class="col-6 text-center">
+                    <SfProgressButton Content="Eklenen Derslere Kayıt Ol" OnClick="KayıtOl" CssClass="center-block e-primary">
+                        <ProgressButtonSpinSettings Position="SpinPosition.Center"></ProgressButtonSpinSettings>
+                    </SfProgressButton>
                 </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12 text-center">
-                <SfProgressButton Content="Eklenen Derslere Kayıt Ol" OnClick="KayıtOl" CssClass="center-block e-primary">
-                    <ProgressButtonSpinSettings Position="SpinPosition.Center"></ProgressButtonSpinSettings>
-                </SfProgressButton>
-            </div>
-        </div>
-    </ControlSection>
+            }
+        }
+        @if (appState.UserNavigationLoadRole == UserRoles.Personel.ToString() || UserRoles.Akademisyen.ToString() == appState.UserNavigationLoadRole)
+        {
+            @if (!isOnayli)
+            {
+                <div class="col-6 text-center">
+                    <SfProgressButton Content="Onayla" OnClick="Onayla" CssClass="center-block e-primary">
+                        <ProgressButtonSpinSettings Position="SpinPosition.Center"></ProgressButtonSpinSettings>
+                    </SfProgressButton>
+                </div>
+            }
+            else if (appState.UserNavigationLoadRole == UserRoles.Personel.ToString())
+            {
+                <div class="col-6 text-center">
+                    <SfProgressButton Content="Onay Kaldır" OnClick="OnayKaldir" CssClass="center-block e-primary">
+                        <ProgressButtonSpinSettings Position="SpinPosition.Center"></ProgressButtonSpinSettings>
+                    </SfProgressButton>
+                </div>
+            }
+        }
+
+    </div>
+</ControlSection>
 
 
 
@@ -187,300 +218,6 @@
 
 </Dialog>
 
-@code{
-    private Dictionary<string, object> primButton = new Dictionary<string, object>() { { "title", "Ders Seç" } };
-
-
-    bool secmeliDersDialogOpen;
-    List<DersAcilanDto> SecmeliDerslerDtos = new List<DersAcilanDto>();
-    SfGrid<DersAcilanDto> SecmeliDersGrid;
-    public void QueryCellInfoHandler(QueryCellInfoEventArgs<DersAcilanDto> args)
-    {
-        if (!string.IsNullOrWhiteSpace(args.Data.YerineSecilenAd))
-        {
-            args.Cell.AddClass(new string[] { "below-35" });
-            args.Cell.AddStyle(new string[] { "background-color:#cfe388" });
-        }
-    }
-    public void QueryCellInfoAcilanHandler(QueryCellInfoEventArgs<DersAcilanDto> args)
-    {
-        if (!args.Data.Durum)
-        {
-            //args.Cell.AddClass(new string[] { "below-35" });
-            args.Cell.AddStyle(new string[] { "background-color:#b57f7f" });
-        }
-        //if (args.Data.Kayitta)
-        //{
-        //    args.Cell.AddStyle(new string[] { "background-color:#62734d" });
-        //}
-    }
-
-
-
-    SfGrid<DersAcilanDto> DersAcilanGrid;
-    SfGrid<DersAcilanDto> DersKayitGrid;
-
-    [Parameter]
-    public int Sinif { get; set; }
-
-
-    //[Parameter]
-    //public int DonemTipId { get; set; }
-
-    //[Parameter]
-    public List<DersAcilanDto> DersAcilanDtos { get; set; } = new List<DersAcilanDto>();
-
-    //[Parameter]
-    public List<DersAcilanDto> DersKayitDtos { get; set; }// = new List<DersAcilanDto>();
-
-    bool dialog;
-    string dialogText = "";
-
-
-
-
-    protected override void OnInitialized()
-    {
-        ReadKayitli();
-        ReadAcilan();
-    }
-
-
-    void ReadKayitli()
-    {
-        try
-        {
-            ApiResponseDto<List<DersAcilanDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<DersAcilanDto>>>($"api/dersAcilan/GetKayitliDerssByOgrenciId/{appState.OgrenciState.Id}/{Sinif}/{appState.DersKayitDonemIdState}").Result;
-
-            if (apiResponse.IsSuccessStatusCode)
-            {
-                DersKayitDtos = apiResponse.Result.OrderBy(x => x.Kod).ToList();
-            }
-            else
-                matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
-        }
-        catch (Exception ex)
-        {
-            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
-        }
-    }
-
-    void ReadAcilan()
-    {
-        try
-        {
-            ApiResponseDto<List<DersAcilanDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<DersAcilanDto>>>($"api/dersacilan/GetAcilanDerssByOgrenciId/{appState.OgrenciState.Id}/{Sinif}/{appState.DersKayitDonemIdState}").Result;
-
-            if (apiResponse.IsSuccessStatusCode)
-            {
-                //apiResponse.Result=apiResponse.Result.Where(x => DersKayitDtos.Select(x => x.Kod).Contains(x.Kod)).ToList().ForEach(x => { x.Kayitta = true; });
-                DersAcilanDtos = apiResponse.Result.OrderBy(x=>x.Kod).ToList();
-                //foreach (var item in DersAcilanDtos)
-                //{
-                //    if (DersKayitDtos.Any(x=>x.Kod == item.Kod))
-                //    {
-                //        item.Kayitta = true;
-                //    }
-                //}
-            }
-            else
-                matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
-        }
-        catch (Exception ex)
-        {
-            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
-        }
-
-    }
-
-
-    public void CommandClickHandler(CommandClickEventArgs<DersAcilanDto> args)
-    {
-        // oka bastıkmı varsa zaten uyarı veriyoruz onu vermeye devam edecek
-        // eğer atma başrılı olursa üsttegi giridn satırı boyayacaz
-        // ilk açılıştada alttaki gidin idlerini üsttekilerde aratacaz varsa boyayacaz
-
-
-
-        if (args.CommandColumn.Title == "Kayıt Ol")
-        {
-
-            if (args.RowData.Durum ==false)
-            {
-                dialogText = $"'{args.RowData.Kod}' kodlu, '{args.RowData.Ad}' isimli ders açılmadı.";
-                dialog = true;
-                return;
-            }
-
-            if (DersKayitDtos.Any(x => x.Id == args.RowData.Id))
-            {
-                dialog = true;
-                dialogText = $"'{args.RowData.Kod}' kodlu, '{args.RowData.Ad}' isimli ders zaten ekli!";
-            }
-            else
-            {
-                DersKayitDtos.Add(args.RowData);
-                DersKayitGrid.Refresh();
-            }
-        }
-
-        if (args.CommandColumn.Title == "Seçmeli Al")
-        {
-            if (DersKayitDtos.Any(x => x.Id == args.RowData.Id))
-            {
-                dialog = true;
-                dialogText = $"{args.RowData.Kod} kodlu, {args.RowData.Ad} isimli ders yerine seçim zaten yapılmış!";
-            }
-            else
-            {
-                secmeliDersDialogOpen = true;
-                //Modal içinde girden seçmeli ders seçtiriyoruz.
-                //ApiResponseDto<List<DersAcilanDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<DersAcilanDto>>>($"api/dersAcilan/ByZorunlu/{false}").Result;
-
-                OData<DersAcilanDto> apiResponse = Http.GetFromJsonAsync<OData<DersAcilanDto>>($"odata/dersAcilans?$filter=Zorunlu eq false and Sinif eq '{args.RowData.Sinif}'").Result;
-
-                SecmeliDerslerDtos = apiResponse.Value;
-                foreach (var item in SecmeliDerslerDtos)
-                {
-                    item.YerineSecilenAd = args.RowData.Ad;
-                    item.YerineSecilenId = args.RowData.Id;
-                }
-            }
-        }
-        //DersKayitGrid.Refresh();
-
-    }
-
-
-    public async Task CommandClickSecmeliAl(DersAcilanDto args)
-    {
-        if (DersKayitDtos.Any(x => x.Id == args.Id))
-        {
-            dialog = true;
-            dialogText = $"{args.Kod} kodlu, {args.Ad} isimli ders yerine seçim zaten yapılmış!";
-        }
-        else
-        {
-            try
-            {
-                secmeliDersDialogOpen = true;
-                //Modal içinde girden seçmeli ders seçtiriyoruz.
-                //ApiResponseDto<List<DersAcilanDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<DersAcilanDto>>>($"api/dersAcilan/ByZorunlu/{false}");
-                OData<DersAcilanDto> apiResponse = await Http.GetFromJsonAsync<OData<DersAcilanDto>>($"odata/dersAcilans?$filter=Zorunlu eq false and SecmeliKodu eq '{args.SecmeliKodu}' and Sinif eq {args.Sinif}");
-
-                if (apiResponse.Value.Count() > 0)
-                {
-                    SecmeliDerslerDtos = apiResponse.Value;
-                    foreach (var item in SecmeliDerslerDtos)
-                    {
-                        item.YerineSecilenAd = args.Ad;
-                        item.YerineSecilenId = args.Id;
-                    }
-                }
-                else
-                    matToaster.Add("", MatToastType.Danger, "İşlem başarısız!");
-            }
-            catch (Exception ex)
-            {
-                matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
-            }
-
-
-
-
-            //secmeliDersDialogOpen = true;
-            ////Modal içinde girden seçmeli ders seçtiriyoruz.
-            ////ApiResponseDto<List<DersAcilanDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<DersAcilanDto>>>($"api/dersAcilan/ByZorunlu/{false}");
-            //OData<DersAcilanDto> apiResponse = await Http.GetFromJsonAsync<OData<DersAcilanDto>>($"odata/dersAcilans?$filter=Zorunlu eq false and SecmeliKodu eq '{args.SecmeliKodu}'");
-            //SecmeliDerslerDtos = apiResponse.Value;
-            //foreach (var item in SecmeliDerslerDtos)
-            //{
-            //    item.YerineSecilenAd = args.Ad;
-            //    item.YerineSecilenId = args.Id;
-            //}
-        }
-
-    }
-
-    public async Task CommandClickHandlerSecmeli(CommandClickEventArgs<DersAcilanDto> args)
-    {
-        secmeliDersDialogOpen = false;
-        if (args.CommandColumn.Title == "Kayıt Ol Secmeli")
-        {
-            DersKayitDtos.Add(args.RowData);
-            DersKayitGrid.Refresh();
-        }
-    }
-
-
-
-    public async Task CommandClickHandlerKayit(CommandClickEventArgs<DersAcilanDto> args)
-    {
-        if (args.CommandColumn.Title == "Kayıt Kaldır")
-        {
-            try
-            {
-                var response = await Http.DeleteAsync($"api/DersKayit/DeleteByOgrId_DersId/{appState.OgrenciState.Id}/{args.RowData.Id}");
-
-
-                if (response.StatusCode == (HttpStatusCode)Status200OK)
-                {
-                    matToaster.Add("Ders kayıdı kaldırıldı", MatToastType.Success);
-                    DersKayitDtos.RemoveAll(x => x.Id == args.RowData.Id);
-                    DersKayitGrid.Refresh();
-                    StateHasChanged();
-                    matToaster.Add("İşlem başarılı.", MatToastType.Success);
-                }
-                else
-                    matToaster.Add("İşlem başarısız!", MatToastType.Danger);
-            }
-            catch (Exception ex)
-            {
-                matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
-            }
-        }
-    }
-
-
-
-    async Task KayıtOl()
-    {
-
-        try
-        {
-            List<DersKayitDto> ogrenciDersKayitDtos = new List<DersKayitDto>();
-            foreach (var item in DersKayitDtos)
-            {
-                ogrenciDersKayitDtos.Add(new DersKayitDto { DersAcilanId = item.Id, OgrenciId = appState.OgrenciState.Id, DersYerineSecilenId = item.YerineSecilenId ?? item.Id, DersYerineSecilenAd = item.YerineSecilenAd });
-            }
-
-            ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/DersKayit/OgrenciKayitToDerss", ogrenciDersKayitDtos);
-
-
-            if (apiResponse.IsSuccessStatusCode)
-            {
-                matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
-                DersKayitGrid.Refresh();
-                StateHasChanged();
-            }
-            else
-                matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
-        }
-        catch (Exception ex)
-        {
-            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
-        }
-
-
-
-
-
-
-    }
-
-
-
-}
 
 <style>
     .server-action-menu {
