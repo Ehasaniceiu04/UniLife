@@ -156,5 +156,12 @@ namespace UniLife.Storage.Stores
             return await sinavList.ToListAsync();
 
         }
+
+        public async Task Yayinla(int sinavId)
+        {
+            var sinav =  await _db.Sinavs.FirstOrDefaultAsync(x => x.Id == sinavId);
+            sinav.IsYayinli = true;
+            await _db.SaveChangesAsync(CancellationToken.None);
+        }
     }
 }

@@ -28,13 +28,13 @@ else
         <GridTemplates>
             <DetailTemplate>
                 @{
-                    var dersAcilanInfo = (context as DersAcilanDto);
+                    expDersAcilan = (context as DersAcilanDto);
 
                     //string gridSinavOdata = $"odata/sinavs?$filter=DersAcilanId eq {dersAcilanInfo.Id}&$expand=SinavTip,SinavTur";
                 }
                 <div style="padding:20px">
                     <SfGrid ID="grdSinavlar" @ref="grdSinavlar" TValue="SinavDto">
-                        <SfDataManager Url="@($"odata/sinavs?$filter=DersAcilanId eq {dersAcilanInfo.Id}&$expand=SinavTip,SinavTur")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+                        <SfDataManager Url="@($"odata/sinavs?$filter=DersAcilanId eq {expDersAcilan.Id}&$expand=SinavTip,SinavTur")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
                         <GridEvents TValue="SinavDto" CommandClicked="CommandClickHandlerSinav"></GridEvents>
                         <GridColumns>
                             <GridColumn Visible="false" Field=@nameof(SinavDto.Id) HeaderText="Id" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
@@ -134,6 +134,8 @@ else
     [Parameter]
     public AkademisyenDto _AkademisyenDto { get; set; }
 
+    DersAcilanDto expDersAcilan;
+
     protected override async Task OnInitializedAsync()
     {
         try
@@ -202,6 +204,7 @@ else
     {
         if (args.CommandColumn.Title == "Sınava Git")
         {
+            args.RowData.DersAcilanAd = expDersAcilan.Ad +" - "+ args.RowData.SinavTip.Ad;
             SinavToNotlar.InvokeAsync(args.RowData);
         }
     }

@@ -3,10 +3,12 @@
 @using UniLife.Shared.Dto.Definitions
 @using Syncfusion.Blazor.Navigations
 
+<legend>@_SinavDto.DersAcilanAd</legend>
+
 @*OnActionComplete="ActionCompletedHandler"*@
 <SfGrid ID="grdNotlar" @ref="grdNotlar" DataSource="@sinavOgrNotlarDtos" Toolbar="@(new List<string>() {"Update", "Cancel", "ExcelExport", "CsvExport", "PdfExport" })" AllowPaging="true">
-    <GridEvents TValue="SinavOgrNotlarDto" OnBatchSave="OnBatchSaveHandler" OnActionBegin="OnActionBeginHandler"></GridEvents>
-    <GridEditSettings AllowEditing="true" Mode="EditMode.Batch"></GridEditSettings>
+    <GridEvents TValue="SinavOgrNotlarDto" QueryCellInfo="QueryCellInfoHandler" OnBatchSave="OnBatchSaveHandler" OnActionBegin="OnActionBeginHandler"></GridEvents>
+    <GridEditSettings AllowEditing="true"   Mode="EditMode.Batch"></GridEditSettings>
     <GridColumns>
         <GridColumn AllowEditing="false" Visible="false" Field=@nameof(SinavOgrNotlarDto.SinavKayitId) HeaderText="Sinav Id" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
         <GridColumn AllowEditing="false" Visible="false" Field=@nameof(SinavOgrNotlarDto.SinavId) HeaderText="SinavId"></GridColumn>
@@ -18,6 +20,11 @@
         <GridColumn Field=@nameof(SinavOgrNotlarDto.OgrNot) HeaderText="Notu" ValidationRules="@(new ValidationRules{ Required=true, Number=true,Max=100,Min=0})"></GridColumn>
     </GridColumns>
 </SfGrid>
+<div class="row">
+    <div class="col-12 text-right">
+        <Syncfusion.Blazor.Buttons.SfButton CssClass="center-block e-primary" OnClick="Yayinla">Yayinla</Syncfusion.Blazor.Buttons.SfButton>
+    </div>
+</div>
 
 
 @code{
@@ -143,5 +150,35 @@
             matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
         }
 
+    }
+
+    async Task Yayinla()
+    {
+
+        try
+        {
+
+            ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/sinav/yayinla/"+ _SinavDto.Id);
+
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+            }
+            else
+                matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
+        }
+
+    }
+
+    public void QueryCellInfoHandler(QueryCellInfoEventArgs<SinavOgrNotlarDto> args)
+    {
+        if (_SinavDto.IsYayinli)
+        {
+            args.Cell.AddStyle(new string[] { "background-color:#71a879" });
+        }
     }
 }

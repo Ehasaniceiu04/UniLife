@@ -640,7 +640,15 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             {
                 if (selectedSinavId != 0)
                 {
-                    isMazeretConfirmDialogOpen = true;
+                    if (SelectedSinav.IsYayinli)
+                    {
+                        isMazeretConfirmDialogOpen = true;
+                    }
+                    else
+                    {
+                        dialogUyariText = "Mazeret sınavı oluşturmak için önce sınav sonucunun yayınlanması lazım.";
+                        isUyariOpen = true;
+                    }
                 }
                 else
                 {
@@ -671,7 +679,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             mazeret.KisaAd = $"{SelectedSinav.KisaAd} Mazeret";
             ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/sinav", mazeret);
             isMazeretConfirmDialogOpen = false;
-            
+
             SinavGrid.Refresh();
             StateHasChanged();
         }

@@ -108,5 +108,15 @@ namespace UniLife.Server.Controllers
                 new ApiResponse(Status400BadRequest, "akaId is Invalid");
 
 
+        [HttpGet]
+        [Route("Yayinla/{sinavId}")]
+        [Authorize(Permissions.Sinav.Update)]
+        public async Task<ApiResponse> Yayinla(int sinavId)
+            => ModelState.IsValid ?
+                await _SinavManager.Yayinla(sinavId) :
+                new ApiResponse(Status400BadRequest, "Sinav is Invalid");
+        
+
+
     }
 }

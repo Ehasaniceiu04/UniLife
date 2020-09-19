@@ -10,5 +10,6 @@ namespace UniLife.Shared.DataInterfaces
         Task<List<SinavDto>> GetSinavListByAcilanDersId(int dersId);
         Task PostBulkCreate(SinavDto sinavDto);
         Task<List<AkademisyenSinavDto>> GetSinavlarByAkademisyenId(int akaId);
+        Task Yayinla(int sinavId);
     }
 }

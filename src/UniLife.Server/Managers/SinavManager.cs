@@ -32,5 +32,10 @@ namespace UniLife.Server.Managers
             return new ApiResponse(Status200OK, "Retrieved SinavDtos", await _sinavStore.GetSinavlarByAkademisyenId(akaId));
         }
 
+        public async Task<ApiResponse> Yayinla(int sinavId)
+        {
+            await _sinavStore.Yayinla(sinavId);
+            return new ApiResponse(Status200OK, "Sinav yayınlandı", null);
+        }
     }
 }

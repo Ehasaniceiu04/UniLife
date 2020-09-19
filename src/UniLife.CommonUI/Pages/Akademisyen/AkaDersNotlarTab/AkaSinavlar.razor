@@ -3,6 +3,7 @@
 @inject IMatToaster matToaster
 @inject AppState appState
 
+
 <SfGrid ID="grdSinavlar" @ref="grdSinavlar" DataSource="@AkademisyenSinavDtos" Toolbar="@(new List<string>() {"ExcelExport", "CsvExport", "PdfExport" })" AllowPaging="true">
     <GridEvents TValue="AkademisyenSinavDto" CommandClicked="CommandClickHandler"></GridEvents>
     <GridColumns>
