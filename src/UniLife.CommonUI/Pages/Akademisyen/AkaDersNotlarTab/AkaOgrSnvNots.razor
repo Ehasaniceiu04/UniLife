@@ -1,5 +1,7 @@
 ﻿@*@page "/DersSinavOgrNotlar"*@
 
+@attribute [Authorize(Roles = "Administrator,Personel,Akademisyen")]
+
 @inject HttpClient Http;
 @inject IMatToaster matToaster
 @using UniLife.Shared.Dto.Definitions

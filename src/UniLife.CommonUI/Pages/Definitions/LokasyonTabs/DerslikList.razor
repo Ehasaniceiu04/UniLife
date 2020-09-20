@@ -5,7 +5,8 @@
 @using System.Net
 @using Newtonsoft.Json
 
-@attribute [Authorize(Roles = "Administrator,Personel")]
+@attribute [Authorize(Permissions.Derslik.Update)]
+
 
 <ControlSection>
     <SfGrid @ref="DonemGrid" DataSource="@derslikDtos" Toolbar="@(new List<string>() { "Add"})" AllowSorting="true" AllowFiltering="true" AllowPaging="true">

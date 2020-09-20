@@ -1,7 +1,7 @@
 ﻿
 @using Syncfusion.Blazor.Data
 @using UniLife.Shared.Dto.Definitions
-
+@attribute [Authorize(Roles = "Administrator,Personel,Akademisyen")]
 
 
 <SfGrid TValue="OgrenciDto" Toolbar="@(Toolbaritems)" AllowPaging="true">

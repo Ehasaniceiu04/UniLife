@@ -2,6 +2,8 @@
 @using UniLife.Shared.Dto.Definitions
 @inject IMatToaster matToaster
 @inject AppState appState
+@attribute [Authorize(Roles = "Administrator,Personel,Akademisyen")]
+
 
 
 <SfGrid ID="grdSinavlar" @ref="grdSinavlar" DataSource="@AkademisyenSinavDtos" Toolbar="@(new List<string>() {"ExcelExport", "CsvExport", "PdfExport" })" AllowPaging="true">
@@ -67,7 +69,7 @@
     }
 }
 
-<style  type="text/css" class="cssStyles">
+<style type="text/css" class="cssStyles">
     .e-DoubleArrowRight:before {
         content: '\e7bb';
         color: #3ec9e8;

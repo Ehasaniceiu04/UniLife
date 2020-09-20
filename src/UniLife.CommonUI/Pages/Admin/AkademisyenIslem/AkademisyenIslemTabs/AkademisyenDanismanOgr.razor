@@ -1,7 +1,7 @@
 ﻿
 @using Syncfusion.Blazor.Data
 @using UniLife.Shared.Dto.Definitions
-
+@attribute [Authorize(Roles = "Administrator,Personel,Akademisyen")]
 
 <p>adasds</p>
 
@@ -28,9 +28,9 @@
 
     private List<Object> Toolbaritems = new List<Object>() { "ExcelExport", "CsvExport", "PdfExport" };
 
-        protected override void OnInitialized()
-        {
-            base.OnInitialized();
-        }
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
 
 }

@@ -9,98 +9,99 @@
 @using Syncfusion.Blazor.Calendars
 @using System.IO;
 @inject AppState appState
+@attribute [Authorize(Roles = "Administrator,Personel,Akademisyen")]
 
 
 
 <ControlSection>
 
 
-        @*<div class="row">
-                <div class="col-sm-12 text-center">
-                    <p>Akademik Bilgiler</p>
-                </div>
-            </div>*@
+    @*<div class="row">
+            <div class="col-sm-12 text-center">
+                <p>Akademik Bilgiler</p>
+            </div>
+        </div>*@
 
-        @*Model=@_AkademisyenDto OnValidSubmit="Kaydet"*@
-        <EditForm EditContext="@EC">
-            <DataAnnotationsValidator />
-            <ValidationSummary />
-            <div class="row">
-                <div class="col-sm-12 col-md-7">
-                    <div class="server-action-menu">
-                        <div class="form-row form-group form-inline ">
-                            <label class="col-sm-2" for="OgrtNo">Akademisyen NO:</label>
-                            <SfTextBox @bind-Value="@_AkademisyenDto.OgrtNo" ID="OgrtNo" CssClass="col-sm-4"></SfTextBox>
-                            <label class="col-sm-2" for="durum">Durum:</label>
-                            <SfCheckBox CssClass="col-sm-4" @bind-Checked="@_AkademisyenDto.Durum"></SfCheckBox>
-                            <label class="col-sm-2" for="TCKN">TCKN:</label>
-                            <SfTextBox @bind-Value="@_AkademisyenDto.TCKN" ID="TCKN" CssClass="col-sm-4"></SfTextBox>
-                            <label class="col-sm-2" for="Seri">Kimlik Seri:</label>
-                            <SfTextBox ID="Seri" CssClass="col-sm-4"></SfTextBox>
-                            <label class="col-sm-2" for="Adi">Adı:</label>
-                            <SfTextBox @bind-Value="@_AkademisyenDto.Ad" ID="Adı" CssClass="col-sm-4"></SfTextBox>
-                            <label class="col-sm-2" for="Soyadi">Soyadı:</label>
-                            <SfTextBox @bind-Value="@_AkademisyenDto.Soyad" ID="Soyadi" CssClass="col-sm-4"></SfTextBox>
-                            <label class="col-sm-2" for="Email">Email:</label>
-                            <SfTextBox @bind-Value="@_AkademisyenDto.Email" ID="Email" CssClass="col-sm-4"></SfTextBox>
-                            <label class="col-sm-2" for="Soyadi">Telefon:</label>
-                            <SfTextBox @bind-Value="@_AkademisyenDto.Telefon" ID="Telefon" CssClass="col-sm-4"></SfTextBox>
+    @*Model=@_AkademisyenDto OnValidSubmit="Kaydet"*@
+    <EditForm EditContext="@EC">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="row">
+            <div class="col-sm-12 col-md-7">
+                <div class="server-action-menu">
+                    <div class="form-row form-group form-inline ">
+                        <label class="col-sm-2" for="OgrtNo">Akademisyen NO:</label>
+                        <SfTextBox @bind-Value="@_AkademisyenDto.OgrtNo" ID="OgrtNo" CssClass="col-sm-4"></SfTextBox>
+                        <label class="col-sm-2" for="durum">Durum:</label>
+                        <SfCheckBox CssClass="col-sm-4" @bind-Checked="@_AkademisyenDto.Durum"></SfCheckBox>
+                        <label class="col-sm-2" for="TCKN">TCKN:</label>
+                        <SfTextBox @bind-Value="@_AkademisyenDto.TCKN" ID="TCKN" CssClass="col-sm-4"></SfTextBox>
+                        <label class="col-sm-2" for="Seri">Kimlik Seri:</label>
+                        <SfTextBox ID="Seri" CssClass="col-sm-4"></SfTextBox>
+                        <label class="col-sm-2" for="Adi">Adı:</label>
+                        <SfTextBox @bind-Value="@_AkademisyenDto.Ad" ID="Adı" CssClass="col-sm-4"></SfTextBox>
+                        <label class="col-sm-2" for="Soyadi">Soyadı:</label>
+                        <SfTextBox @bind-Value="@_AkademisyenDto.Soyad" ID="Soyadi" CssClass="col-sm-4"></SfTextBox>
+                        <label class="col-sm-2" for="Email">Email:</label>
+                        <SfTextBox @bind-Value="@_AkademisyenDto.Email" ID="Email" CssClass="col-sm-4"></SfTextBox>
+                        <label class="col-sm-2" for="Soyadi">Telefon:</label>
+                        <SfTextBox @bind-Value="@_AkademisyenDto.Telefon" ID="Telefon" CssClass="col-sm-4"></SfTextBox>
 
 
 
-                            <label class="col-sm-2" for="Email">Diller:</label>
-                            <SfTextBox @bind-Value="@_AkademisyenDto.Diller" ID="Diller" CssClass="col-sm-10" Multiline="true"></SfTextBox>
-                        </div>
-                        <p>Bağlı olduğu,</p>
-                        <FakBolPrg @bind-FakulteId="@_AkademisyenDto.FakulteId"
-                                   @bind-BolumId="@_AkademisyenDto.BolumId"
-                                   ProgramShow="false"></FakBolPrg>
+                        <label class="col-sm-2" for="Email">Diller:</label>
+                        <SfTextBox @bind-Value="@_AkademisyenDto.Diller" ID="Diller" CssClass="col-sm-10" Multiline="true"></SfTextBox>
                     </div>
-
+                    <p>Bağlı olduğu,</p>
+                    <FakBolPrg @bind-FakulteId="@_AkademisyenDto.FakulteId"
+                               @bind-BolumId="@_AkademisyenDto.BolumId"
+                               ProgramShow="false"></FakBolPrg>
                 </div>
-                <div class="col-sm-12 col-md-5">
-                    <div class="server-action-menu">
-                        <div class="form-row form-group form-inline ">
 
-                            <label class="col-sm-2" for="KayTarih">Kayıt Tarihi:</label>
-                            <SfDatePicker ID="KayTarih" TValue="DateTime?" @bind-Value="@_AkademisyenDto.KayitTarih" CssClass="col-sm-4 pb-1" Placeholder="Kayıt Tarihi"></SfDatePicker>
+            </div>
+            <div class="col-sm-12 col-md-5">
+                <div class="server-action-menu">
+                    <div class="form-row form-group form-inline ">
 
-                            <label class="col-sm-2" for="AyrTarih">Ayrılma Tarihi:</label>
-                            <SfDatePicker ID="AyrTarih" TValue="DateTime?" @bind-Value="@_AkademisyenDto.AyrilTarih" CssClass="col-sm-4 pb-1" Placeholder="Ayrılma Tarihi"></SfDatePicker>
-                            <label class="col-sm-2" for="Email">Eğitim Bilgileri:</label>
-                            <SfTextBox @bind-Value="@_AkademisyenDto.EgitimBilg" ID="EgitimBilg" CssClass="col-sm-10" Multiline="true"></SfTextBox>
+                        <label class="col-sm-2" for="KayTarih">Kayıt Tarihi:</label>
+                        <SfDatePicker ID="KayTarih" TValue="DateTime?" @bind-Value="@_AkademisyenDto.KayitTarih" CssClass="col-sm-4 pb-1" Placeholder="Kayıt Tarihi"></SfDatePicker>
 
-                        </div>
+                        <label class="col-sm-2" for="AyrTarih">Ayrılma Tarihi:</label>
+                        <SfDatePicker ID="AyrTarih" TValue="DateTime?" @bind-Value="@_AkademisyenDto.AyrilTarih" CssClass="col-sm-4 pb-1" Placeholder="Ayrılma Tarihi"></SfDatePicker>
+                        <label class="col-sm-2" for="Email">Eğitim Bilgileri:</label>
+                        <SfTextBox @bind-Value="@_AkademisyenDto.EgitimBilg" ID="EgitimBilg" CssClass="col-sm-10" Multiline="true"></SfTextBox>
+
                     </div>
-                    <div class="control_wrapper">
-                        <div id="dropArea" style="height: auto; overflow: auto">
-                            <p>Resim Ekleyiniz. maks: 1.5 MB</p>
+                </div>
+                <div class="control_wrapper">
+                    <div id="dropArea" style="height: auto; overflow: auto">
+                        <p>Resim Ekleyiniz. maks: 1.5 MB</p>
 
-                            <SfUploader ID="UploadFiles" AutoUpload="false" DropArea=".control-fluid" MinFileSize=1000 MaxFileSize=1500000 AllowedExtensions=".png,.jpeg,jpg">
-                                <UploaderEvents ValueChange="OnChangeUpload" OnRemove="onRemove"></UploaderEvents>
-                                <UploaderFiles>
-                                    <UploaderUploadedFiles Name="@(_AkademisyenDto.ApplicationUserId.ToString())" Size=12000 Type="png"></UploaderUploadedFiles>
-                                </UploaderFiles>
-                            </SfUploader>
-                        </div>
+                        <SfUploader ID="UploadFiles" AutoUpload="false" DropArea=".control-fluid" MinFileSize=1000 MaxFileSize=1500000 AllowedExtensions=".png,.jpeg,jpg">
+                            <UploaderEvents ValueChange="OnChangeUpload" OnRemove="onRemove"></UploaderEvents>
+                            <UploaderFiles>
+                                <UploaderUploadedFiles Name="@(_AkademisyenDto.ApplicationUserId.ToString())" Size=12000 Type="png"></UploaderUploadedFiles>
+                            </UploaderFiles>
+                        </SfUploader>
                     </div>
                 </div>
             </div>
+        </div>
 
-        </EditForm>
+    </EditForm>
     <div class="row">
         <div class="col-sm-12 col-md-7">
-            
+
         </div>
         <div class="col-sm-12 col-md-5">
-            
+
         </div>
     </div>
     <div class="row">
         <div class="col-6 text-left">
             @*<SfProgressButton Content="< Farklı Akademisyen Seç" OnClick="GoBackAkademisyen" CssClass="center-block e-primary">
-                <ProgressButtonSpinSettings Position="SpinPosition.Left"></ProgressButtonSpinSettings>
-            </SfProgressButton>*@
+                    <ProgressButtonSpinSettings Position="SpinPosition.Left"></ProgressButtonSpinSettings>
+                </SfProgressButton>*@
         </div>
         <div class="col-6 text-right">
             <SfProgressButton Content="Kaydet >" OnClick="SubmitHandler" CssClass="center-block e-primary">
@@ -115,332 +116,333 @@
 
 
 
-    @code {
+@code {
 
-        private EditContext EC { get; set; }
-        private async Task SubmitHandler()
+    private EditContext EC { get; set; }
+    private async Task SubmitHandler()
+    {
+        //// manually trigger the validation here
+        if (EC.Validate())
         {
-            //// manually trigger the validation here
-            if (EC.Validate())
+            await Kaydet();
+        }
+    }
+
+    public void OnChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<string> args)
+    {
+        var asd = args;
+    }
+
+
+    [Parameter]
+    public AkademisyenDto _AkademisyenDto { get; set; } = new AkademisyenDto();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        EC = new EditContext(_AkademisyenDto);
+    }
+
+    [Parameter]
+    public EventCallback<int> BilgilerToAkademisyen { get; set; }
+
+    async Task GoBackAkademisyen()
+    {
+        await BilgilerToAkademisyen.InvokeAsync(0);
+    }
+
+    async Task Kaydet()
+    {
+        try
+        {
+            if (_AkademisyenDto.Id == 0)
             {
-                await Kaydet();
-            }
-        }
-
-        public void OnChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<string> args)
-        {
-            var asd = args;
-        }
-
-
-        [Parameter]
-        public AkademisyenDto _AkademisyenDto { get; set; } = new AkademisyenDto();
-
-
-        protected override async Task OnInitializedAsync()
-        {
-            EC = new EditContext(_AkademisyenDto);
-        }
-
-        [Parameter]
-        public EventCallback<int> BilgilerToAkademisyen { get; set; }
-
-        async Task GoBackAkademisyen()
-        {
-            await BilgilerToAkademisyen.InvokeAsync(0);
-        }
-
-        async Task Kaydet()
-        {
-            try
-            {
-                if (_AkademisyenDto.Id == 0)
+                var apiResponse = await ((IdentityAuthenticationStateProvider)authStateProvider).Create(_AkademisyenDto);
+                if (apiResponse.IsSuccessStatusCode)
                 {
-                    var apiResponse = await ((IdentityAuthenticationStateProvider)authStateProvider).Create(_AkademisyenDto);
-                    if (apiResponse.IsSuccessStatusCode)
-                    {
-                        matToaster.Add(apiResponse.Message, MatToastType.Success);
-                        await GoBackAkademisyen();
-                    }
-                    else
-                    {
-                        matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Akademisyen kullanıcısı oluşturulurken hata oluştu");
-                    }
+                    matToaster.Add(apiResponse.Message, MatToastType.Success);
+                    await GoBackAkademisyen();
                 }
                 else
                 {
-                    ApiResponseDto apiResponse = await ((IdentityAuthenticationStateProvider)authStateProvider).UpdateAkademisyenUser(_AkademisyenDto);
-
-                    if (apiResponse.StatusCode == Status200OK)
-                    {
-                        matToaster.Add("Akademisyen bilgileri güncellendi", MatToastType.Success);
-                    }
-                    else
-                    {
-                        matToaster.Add(apiResponse.Message, MatToastType.Danger, "Güncelleme başarısız oldu!");
-                    }
+                    matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Akademisyen kullanıcısı oluşturulurken hata oluştu");
                 }
-
             }
-            catch (Exception ex)
+            else
             {
-                matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Akademisyen ile ilgili değişiklikler kayıt edilirken hata oluştu");
+                ApiResponseDto apiResponse = await ((IdentityAuthenticationStateProvider)authStateProvider).UpdateAkademisyenUser(_AkademisyenDto);
+
+                if (apiResponse.StatusCode == Status200OK)
+                {
+                    matToaster.Add("Akademisyen bilgileri güncellendi", MatToastType.Success);
+                }
+                else
+                {
+                    matToaster.Add(apiResponse.Message, MatToastType.Danger, "Güncelleme başarısız oldu!");
+                }
             }
 
         }
-
-
-        private void onRemove(RemovingEventArgs args)
+        catch (Exception ex)
         {
-            args.PostRawFile = false;
-
-
-            //BU gerçekten siliyor.
-            //foreach (var removeFile in args.FilesData)
-            //{
-            //    var rootPath = @"../UniLife.CommonUI/wwwroot/images/ogrenci/";
-            //    if (File.Exists(Path.Combine(rootPath, removeFile.Name)))
-            //    {
-            //        File.Delete(Path.Combine(rootPath, removeFile.Name));
-            //    }
-            //}
-        }
-
-        //Eski upladın metodu
-        private void OnChangeUpload(UploadChangeEventArgs args)
-        {
-            foreach (var file in args.Files)
-            {
-                //var path = @"path" + file.FileInfo.Name;
-
-                var path = @"../UniLife.CommonUI/wwwroot/images/ogrenci/" + _AkademisyenDto.ApplicationUserId.ToString() + "." + file.FileInfo.Type;
-
-                FileStream filestream = new FileStream(path, FileMode.Create, FileAccess.Write);
-                file.Stream.WriteTo(filestream);
-                filestream.Close();
-                file.Stream.Close();
-            }
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Akademisyen ile ilgili değişiklikler kayıt edilirken hata oluştu");
         }
 
     }
 
-    <style>
 
-        .control_wrapper {
-            width: 350px;
-            margin: 0 auto;
-        }
-
-        textarea.e-input,
-        .e-float-input textarea,
-        .e-float-input.e-control-wrapper textarea,
-        .e-input-group textarea,
-        .e-input-group.e-control-wrapper textarea {
-            resize: none;
-        }
-
-        .server-action-menu {
-            background-color: transparent;
-            background-image: linear-gradient(to bottom, rgba(30, 87, 153, 0.2) 0%, rgba(125, 185, 232, 0) 100%);
-            background-repeat: repeat;
-            border-radius: 10px;
-            padding: 5px;
-        }
+    private void onRemove(RemovingEventArgs args)
+    {
+        args.PostRawFile = false;
 
 
-        /*Autocomplate start*/
-        .content {
-            max-width: 270px;
-            margin: 25px 300px;
-            padding-top: 55px;
-        }
+        //BU gerçekten siliyor.
+        //foreach (var removeFile in args.FilesData)
+        //{
+        //    var rootPath = @"../UniLife.CommonUI/wwwroot/images/ogrenci/";
+        //    if (File.Exists(Path.Combine(rootPath, removeFile.Name)))
+        //    {
+        //        File.Delete(Path.Combine(rootPath, removeFile.Name));
+        //    }
+        //}
+    }
 
-        .header {
-            font-weight: 600;
-            color: rgba(0, 0, 0, .54);
-            height: 48px;
-            padding: 15px 0 0 16px;
-            font-size: 16px;
-            background-color: #f5f5f5;
-            font-family: "Segoe UI", "GeezaPro", "DejaVu Serif";
-        }
+    //Eski upladın metodu
+    private void OnChangeUpload(UploadChangeEventArgs args)
+    {
+        foreach (var file in args.Files)
+        {
+            //var path = @"path" + file.FileInfo.Name;
 
-        .fabric .header {
-            background-color: #fff;
-            border-bottom: 1px solid #ccc;
-            color: #0078d7;
-            font-weight: 400;
-        }
+            var path = @"../UniLife.CommonUI/wwwroot/images/ogrenci/" + _AkademisyenDto.ApplicationUserId.ToString() + "." + file.FileInfo.Type;
 
-        .bootstrap .header {
-            background-color: #fff;
-            border-bottom: 1px solid #ccc;
-            color: #777;
-            font-family: "Helvetica Neue", "Helvetica", "Arial", "sans-serif";
-            font-weight: 400;
-            font-size: 12px;
-            line-height: 30px;
-            height: 30px;
-            padding: 0 0 0 24px;
+            FileStream filestream = new FileStream(path, FileMode.Create, FileAccess.Write);
+            file.Stream.WriteTo(filestream);
+            filestream.Close();
+            file.Stream.Close();
         }
+    }
 
-        .e-bigger.bootstrap .header {
-            line-height: 44px;
-            height: 44px;
-            font-size: 13px;
-        }
+}
 
-        .highcontrast .header {
-            color: #fff;
-            background-color: #000;
-        }
+<style>
 
-        .bootstrap4 .header {
-            color: #6c757d;
-        }
+    .control_wrapper {
+        width: 350px;
+        margin: 0 auto;
+    }
 
-        .bootstrap .info,
-        .e-bigger.bootstrap .info {
-            margin-left: 25px;
-        }
+    textarea.e-input,
+    .e-float-input textarea,
+    .e-float-input.e-control-wrapper textarea,
+    .e-input-group textarea,
+    .e-input-group.e-control-wrapper textarea {
+        resize: none;
+    }
 
-        .bootstrap .job {
-            opacity: .54;
-            font-size: 14px;
-            margin-top: -25px;
-            margin-bottom: 20px;
-        }
+    .server-action-menu {
+        background-color: transparent;
+        background-image: linear-gradient(to bottom, rgba(30, 87, 153, 0.2) 0%, rgba(125, 185, 232, 0) 100%);
+        background-repeat: repeat;
+        border-radius: 10px;
+        padding: 5px;
+    }
 
-        .e-bigger.bootstrap .job {
-            font-size: 15px;
-            margin-top: -32px;
-            margin-bottom: 17px;
-        }
 
-        .bootstrap .ename {
-            font-size: 15px;
-            margin-top: 20px;
-            opacity: .87;
-            padding: 3px 0 20px;
-        }
+    /*Autocomplate start*/
+    .content {
+        max-width: 270px;
+        margin: 25px 300px;
+        padding-top: 55px;
+    }
 
-        .e-bigger.bootstrap .ename {
-            font-size: 16px;
-            padding-bottom: 15px;
-        }
+    .header {
+        font-weight: 600;
+        color: rgba(0, 0, 0, .54);
+        height: 48px;
+        padding: 15px 0 0 16px;
+        font-size: 16px;
+        background-color: #f5f5f5;
+        font-family: "Segoe UI", "GeezaPro", "DejaVu Serif";
+    }
 
-        .bootstrap .empImage,
-        .e-bigger.bootstrap .empImage {
-            margin: 0px 10px 0 20px;
-        }
+    .fabric .header {
+        background-color: #fff;
+        border-bottom: 1px solid #ccc;
+        color: #0078d7;
+        font-weight: 400;
+    }
 
-        .bootstrap .value {
-            margin-top: 3px;
-            margin-left: 3px;
-        }
+    .bootstrap .header {
+        background-color: #fff;
+        border-bottom: 1px solid #ccc;
+        color: #777;
+        font-family: "Helvetica Neue", "Helvetica", "Arial", "sans-serif";
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 30px;
+        height: 30px;
+        padding: 0 0 0 24px;
+    }
 
-        .e-bigger.bootstrap .value {
-            margin-top: 5px;
-            margin-left: 5px;
-        }
+    .e-bigger.bootstrap .header {
+        line-height: 44px;
+        height: 44px;
+        font-size: 13px;
+    }
 
-        .bootstrap .name {
-            padding: 9px 42px;
-        }
+    .highcontrast .header {
+        color: #fff;
+        background-color: #000;
+    }
 
-        .e-bigger.bootstrap .name {
-            padding: 12px 42px;
-        }
+    .bootstrap4 .header {
+        color: #6c757d;
+    }
 
-        .info {
-            margin-left: 34px;
-        }
+    .bootstrap .info,
+    .e-bigger.bootstrap .info {
+        margin-left: 25px;
+    }
 
-        .ename {
-            display: block !important;
-            opacity: .87;
-            font-size: 16px;
-            margin-top: 8px;
-        }
+    .bootstrap .job {
+        opacity: .54;
+        font-size: 14px;
+        margin-top: -25px;
+        margin-bottom: 20px;
+    }
 
-        .name {
-            padding: 5px 42px;
-            opacity: .87;
-            line-height: 1.063em;
-        }
+    .e-bigger.bootstrap .job {
+        font-size: 15px;
+        margin-top: -32px;
+        margin-bottom: 17px;
+    }
 
-        .job {
-            opacity: .54;
-            font-size: 14px;
-            margin-top: -15px;
-            margin-bottom: 7px;
-        }
+    .bootstrap .ename {
+        font-size: 15px;
+        margin-top: 20px;
+        opacity: .87;
+        padding: 3px 0 20px;
+    }
 
-        .empImage {
-            margin: 6px 16px;
-            float: left;
-            width: 50px;
-            height: 50px;
-        }
+    .e-bigger.bootstrap .ename {
+        font-size: 16px;
+        padding-bottom: 15px;
+    }
 
-        .value {
-            border-radius: 50%;
-            float: left;
-            margin-top: 2px;
-            margin-left: 2px;
-        }
+    .bootstrap .empImage,
+    .e-bigger.bootstrap .empImage {
+        margin: 0px 10px 0 20px;
+    }
 
-        .e-bigger:not(.bootstrap) .value {
-            margin-top: 7px;
-        }
+    .bootstrap .value {
+        margin-top: 3px;
+        margin-left: 3px;
+    }
 
-        .e-bigger:not(.bootstrap) .name {
-            padding: 11px 42px;
-        }
+    .e-bigger.bootstrap .value {
+        margin-top: 5px;
+        margin-left: 5px;
+    }
 
-        .template.e-popup .e-list-item * {
-            display: block;
-            text-indent: 0;
-        }
+    .bootstrap .name {
+        padding: 9px 42px;
+    }
 
-        .e-bigger:not(.bootstrap) .template .e-dropdownbase .e-list-item {
-            line-height: 42px;
-            height: 80px;
-        }
+    .e-bigger.bootstrap .name {
+        padding: 12px 42px;
+    }
 
-        .e-bigger:not(.bootstrap) .template.e-popup .empImage {
-            margin: 10px 16px;
-        }
+    .info {
+        margin-left: 34px;
+    }
 
-        .bootstrap4 .template.e-popup .empImage {
-            margin: 0px 16px;
-        }
+    .ename {
+        display: block !important;
+        opacity: .87;
+        font-size: 16px;
+        margin-top: 8px;
+    }
 
-        .bootstrap4 .template.e-popup .job {
-            margin-top: 0;
-        }
+    .name {
+        padding: 5px 42px;
+        opacity: .87;
+        line-height: 1.063em;
+    }
 
-        .e-bigger.bootstrap4 .template.e-popup .job {
-            margin-top: -15px;
-        }
+    .job {
+        opacity: .54;
+        font-size: 14px;
+        margin-top: -15px;
+        margin-bottom: 7px;
+    }
 
-        .template .e-dropdownbase.e-content {
-            max-height: 200px !important;
-        }
-        /*Autocomplate end*/
+    .empImage {
+        margin: 6px 16px;
+        float: left;
+        width: 50px;
+        height: 50px;
+    }
 
-        .row {
-            margin-right: unset;
-            margin-left: unset;
-            font-size: 13px;
-            padding: 4px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+    .value {
+        border-radius: 50%;
+        float: left;
+        margin-top: 2px;
+        margin-left: 2px;
+    }
+
+    .e-bigger:not(.bootstrap) .value {
+        margin-top: 7px;
+    }
+
+    .e-bigger:not(.bootstrap) .name {
+        padding: 11px 42px;
+    }
+
+    .template.e-popup .e-list-item * {
+        display: block;
+        text-indent: 0;
+    }
+
+    .e-bigger:not(.bootstrap) .template .e-dropdownbase .e-list-item {
+        line-height: 42px;
+        height: 80px;
+    }
+
+    .e-bigger:not(.bootstrap) .template.e-popup .empImage {
+        margin: 10px 16px;
+    }
+
+    .bootstrap4 .template.e-popup .empImage {
+        margin: 0px 16px;
+    }
+
+    .bootstrap4 .template.e-popup .job {
+        margin-top: 0;
+    }
+
+    .e-bigger.bootstrap4 .template.e-popup .job {
+        margin-top: -15px;
+    }
+
+    .template .e-dropdownbase.e-content {
+        max-height: 200px !important;
+    }
+    /*Autocomplate end*/
+
+    .row {
+        margin-right: unset;
+        margin-left: unset;
+        font-size: 13px;
+        padding: 4px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    @@media (min-width: 576px) {
+        .form-inline label {
+            justify-content: unset;
         }
-        @@media (min-width: 576px) {
-            .form-inline label {
-                justify-content: unset;
-            }
-        }
-    </style>
+    }
+</style>

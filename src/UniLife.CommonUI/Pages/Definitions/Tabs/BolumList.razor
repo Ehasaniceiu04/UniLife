@@ -8,38 +8,38 @@
 
 @attribute [Authorize(Roles = "Administrator,Personel")]
 
-    <ControlSection>
-        <SfGrid @ref="BolumGrid" DataSource="@bolumDtos" Toolbar="@(new List<string>() { "Add"})" AllowSorting="true" AllowFiltering="true" AllowPaging="true" Width="100%">
-            <GridEvents OnActionComplete="ActionCompletedHandler" TValue="BolumDto"></GridEvents>
-            <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
-            <GridColumns>
-                <GridColumn Visible="false" Field=@nameof(BolumDto.Id) HeaderText="Bölüm ID" Edit="false" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
-                <GridColumn Field=@nameof(BolumDto.FakulteId) HeaderText="Fakülte" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@fakulteDtos"></GridColumn>
-                <GridColumn Field=@nameof(BolumDto.Ad) HeaderText="Bölüm İsim" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
-                <GridColumn Field=@nameof(BolumDto.KisaAd) HeaderText="KisaAd" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
-                <GridColumn Field=@nameof(BolumDto.Kod) HeaderText="Kod"></GridColumn>
-                <GridColumn Visible="false" Field=@nameof(BolumDto.AdEn) HeaderText="AdEn"></GridColumn>
-                <GridColumn Visible="false" Field=@nameof(BolumDto.KisaAdEn) HeaderText="İng. K.Ad"></GridColumn>
-                <GridColumn Visible="false" Field=@nameof(BolumDto.OsymKod) HeaderText="OsymKod"></GridColumn>
-                <GridColumn Field=@nameof(BolumDto.OgrenimTurId) HeaderText="Ogrenim Tür" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@ogrenimTurDtos"></GridColumn>
-                <GridColumn Field=@nameof(BolumDto.OgrenimSure) HeaderText="OgrenimSure"></GridColumn>
-                <GridColumn Field=@nameof(BolumDto.Durum) EditType="EditType.BooleanEdit" HeaderText="Aktif"></GridColumn>
-                <GridColumn Visible="false" Field=@nameof(BolumDto.DiplomaAd) HeaderText="DiplomaAd"></GridColumn>
-                <GridColumn Visible="false" Field=@nameof(BolumDto.IsBologna) EditType="EditType.BooleanEdit" HeaderText="IsBologna"></GridColumn>
-                <GridColumn Visible="false" Field=@nameof(BolumDto.DiplomaAdEn) HeaderText="DiplomaAdEn"></GridColumn>
-                <GridColumn>
-                    <GridCommandColumns>
-                        <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-edit", CssClass = "e-flat" })"></GridCommandColumn>
-                        <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-delete", CssClass = "e-flat" })"></GridCommandColumn>
-                        <GridCommandColumn Type="CommandButtonType.Save" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-update", CssClass = "e-flat" })"></GridCommandColumn>
-                        <GridCommandColumn Type="CommandButtonType.Cancel" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-cancel-icon", CssClass = "e-flat" })"></GridCommandColumn>
-                    </GridCommandColumns>
-                </GridColumn>
+<ControlSection>
+    <SfGrid @ref="BolumGrid" DataSource="@bolumDtos" Toolbar="@(new List<string>() { "Add"})" AllowSorting="true" AllowFiltering="true" AllowPaging="true" Width="100%">
+        <GridEvents OnActionComplete="ActionCompletedHandler" TValue="BolumDto"></GridEvents>
+        <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
+        <GridColumns>
+            <GridColumn Visible="false" Field=@nameof(BolumDto.Id) HeaderText="Bölüm ID" Edit="false" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+            <GridColumn Field=@nameof(BolumDto.FakulteId) HeaderText="Fakülte" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@fakulteDtos"></GridColumn>
+            <GridColumn Field=@nameof(BolumDto.Ad) HeaderText="Bölüm İsim" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
+            <GridColumn Field=@nameof(BolumDto.KisaAd) HeaderText="KisaAd" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
+            <GridColumn Field=@nameof(BolumDto.Kod) HeaderText="Kod"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(BolumDto.AdEn) HeaderText="AdEn"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(BolumDto.KisaAdEn) HeaderText="İng. K.Ad"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(BolumDto.OsymKod) HeaderText="OsymKod"></GridColumn>
+            <GridColumn Field=@nameof(BolumDto.OgrenimTurId) HeaderText="Ogrenim Tür" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@ogrenimTurDtos"></GridColumn>
+            <GridColumn Field=@nameof(BolumDto.OgrenimSure) HeaderText="OgrenimSure"></GridColumn>
+            <GridColumn Field=@nameof(BolumDto.Durum) EditType="EditType.BooleanEdit" HeaderText="Aktif"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(BolumDto.DiplomaAd) HeaderText="DiplomaAd"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(BolumDto.IsBologna) EditType="EditType.BooleanEdit" HeaderText="IsBologna"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(BolumDto.DiplomaAdEn) HeaderText="DiplomaAdEn"></GridColumn>
+            <GridColumn>
+                <GridCommandColumns>
+                    <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-edit", CssClass = "e-flat" })"></GridCommandColumn>
+                    <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-delete", CssClass = "e-flat" })"></GridCommandColumn>
+                    <GridCommandColumn Type="CommandButtonType.Save" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-update", CssClass = "e-flat" })"></GridCommandColumn>
+                    <GridCommandColumn Type="CommandButtonType.Cancel" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-cancel-icon", CssClass = "e-flat" })"></GridCommandColumn>
+                </GridCommandColumns>
+            </GridColumn>
 
-            </GridColumns>
-        </SfGrid>
-    </ControlSection>
-            
+        </GridColumns>
+    </SfGrid>
+</ControlSection>
+
 @code{
 
     SfGrid<BolumDto> BolumGrid;

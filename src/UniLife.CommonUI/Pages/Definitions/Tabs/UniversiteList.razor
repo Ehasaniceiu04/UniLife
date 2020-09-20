@@ -9,7 +9,7 @@
 @attribute [Authorize(Roles = "Administrator,Personel")]
 
 <ControlSection>
-    <SfGrid  Width="100%" Height="85%" AllowResizing="true" @ref="UniGrid" DataSource="@universiteDtos" Toolbar="@(new List<string>() { "Add" })" AllowPaging="true" AllowFiltering="true">
+    <SfGrid Width="100%" Height="85%" AllowResizing="true" @ref="UniGrid" DataSource="@universiteDtos" Toolbar="@(new List<string>() { "Add" })" AllowPaging="true" AllowFiltering="true">
         <GridEvents OnActionComplete="ActionCompletedHandler" TValue="UniversiteDto"></GridEvents>
         <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
         <GridColumns>
@@ -41,7 +41,7 @@
 
     List<UniversiteDto> universiteDtos;// = new List<UniversiteDto>();
 
-    
+
     protected override async Task OnInitializedAsync()
     {
 

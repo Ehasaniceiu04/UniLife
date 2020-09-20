@@ -5,6 +5,9 @@
 @using Syncfusion.Blazor.Inputs
 @using System.Net
 
+
+@attribute [Authorize(Roles = "Administrator,Personel")]
+
 @using Newtonsoft.Json
 
 @*<style>

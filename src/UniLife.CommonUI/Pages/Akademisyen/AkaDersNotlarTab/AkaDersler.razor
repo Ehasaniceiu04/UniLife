@@ -69,41 +69,41 @@ else
                 </GridColumn>*@
         </GridColumns>
         @*<GridGroupSettings Columns=@Template>
-            <CaptionTemplate>
-                @{
-                    var donemContext = (context as CaptionTemplateContext);
-                    <div><b>@donemContext.Key</b></div>
-                }
+                <CaptionTemplate>
+                    @{
+                        var donemContext = (context as CaptionTemplateContext);
+                        <div><b>@donemContext.Key</b></div>
+                    }
 
-            </CaptionTemplate>
-        </GridGroupSettings>*@
+                </CaptionTemplate>
+            </GridGroupSettings>*@
     </SfGrid>
 
     @if (isYoklamaShow)
-	{
-<Dialog Baslik="Kayıtlı Öğrenciler" @bind-isDialogOpen="@isYoklamaShow">
-    @*<SfGrid ID="ogrGrid" @ref="ogrGrid" TValue="OgrenciDto" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowFiltering="true">
-        <SfDataManager Url="@(ogrGridOdata)" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
-        <GridColumns>
-            <GridColumn Field="Ogrenci.Ad" HeaderText="Ad"></GridColumn>
-            <GridColumn Field="Ogrenci.Soyad" HeaderText="Soyad"></GridColumn>
-            <GridColumn Field="Ogrenci.TCKN" HeaderText="TCKN"></GridColumn>
-            <GridColumn Field="Ogrenci.OgrNo" HeaderText="Öğr No"></GridColumn>
-        </GridColumns>
-    </SfGrid>*@
+    {
+        <Dialog Baslik="Kayıtlı Öğrenciler" @bind-isDialogOpen="@isYoklamaShow">
+            @*<SfGrid ID="ogrGrid" @ref="ogrGrid" TValue="OgrenciDto" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowFiltering="true">
+                    <SfDataManager Url="@(ogrGridOdata)" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+                    <GridColumns>
+                        <GridColumn Field="Ogrenci.Ad" HeaderText="Ad"></GridColumn>
+                        <GridColumn Field="Ogrenci.Soyad" HeaderText="Soyad"></GridColumn>
+                        <GridColumn Field="Ogrenci.TCKN" HeaderText="TCKN"></GridColumn>
+                        <GridColumn Field="Ogrenci.OgrNo" HeaderText="Öğr No"></GridColumn>
+                    </GridColumns>
+                </SfGrid>*@
 
-    <SfGrid ID="ogrGrid" @ref="ogrGrid" TValue="DersKayitDto" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowFiltering="true">
-        <SfDataManager Url="@($"odata/derskayits?$filter=DersAcilanId eq {seciliDers.Id}&$expand=Ogrenci($select=Ad,Id,Soyad,TCKN,OgrNo)&$select=Id")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
-        <GridColumns>
-            <GridColumn Visible="false" Field="Ogrenci.Id" IsPrimaryKey="true" TextAlign="TextAlign.Right"></GridColumn>
-            <GridColumn Field="Ogrenci.Ad" HeaderText="Ad"></GridColumn>
-            <GridColumn Field="Ogrenci.Soyad" HeaderText="Soyad"></GridColumn>
-            <GridColumn Field="Ogrenci.TCKN" HeaderText="TCKN"></GridColumn>
-            <GridColumn Field="Ogrenci.OgrNo" HeaderText="Öğr No"></GridColumn>
-        </GridColumns>
-    </SfGrid>
-</Dialog>
-	}
+            <SfGrid ID="ogrGrid" @ref="ogrGrid" TValue="DersKayitDto" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowFiltering="true">
+                <SfDataManager Url="@($"odata/derskayits?$filter=DersAcilanId eq {seciliDers.Id}&$expand=Ogrenci($select=Ad,Id,Soyad,TCKN,OgrNo)&$select=Id")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+                <GridColumns>
+                    <GridColumn Visible="false" Field="Ogrenci.Id" IsPrimaryKey="true" TextAlign="TextAlign.Right"></GridColumn>
+                    <GridColumn Field="Ogrenci.Ad" HeaderText="Ad"></GridColumn>
+                    <GridColumn Field="Ogrenci.Soyad" HeaderText="Soyad"></GridColumn>
+                    <GridColumn Field="Ogrenci.TCKN" HeaderText="TCKN"></GridColumn>
+                    <GridColumn Field="Ogrenci.OgrNo" HeaderText="Öğr No"></GridColumn>
+                </GridColumns>
+            </SfGrid>
+        </Dialog>
+    }
 
 }
 
@@ -112,7 +112,7 @@ else
 
     bool isYoklamaShow;
     SfGrid<DersKayitDto> ogrGrid;
-    string ogrGridOdata="";
+    string ogrGridOdata = "";
 
     SfDropDownList<int?, DonemDto> DropDonem;
     int? selectedDonemId;
@@ -207,7 +207,7 @@ else
     {
         if (args.CommandColumn.Title == "Sınava Git")
         {
-            args.RowData.DersAcilanAd = expDersAcilan.Ad +" - "+ args.RowData.SinavTip.Ad;
+            args.RowData.DersAcilanAd = expDersAcilan.Ad + " - " + args.RowData.SinavTip.Ad;
             SinavToNotlar.InvokeAsync(args.RowData);
         }
     }
