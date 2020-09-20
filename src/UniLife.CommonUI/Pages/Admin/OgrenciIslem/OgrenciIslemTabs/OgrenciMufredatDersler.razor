@@ -6,7 +6,7 @@
 @inject AppState appState
 @using UniLife.CommonUI.Pages.Akademisyen.AkaDersNotlarTab
 @inject NavigationManager navigationManager
-
+@attribute [Authorize(Roles = "Administrator,Personel,Ogrenci")]
 
 @if (ogrenciDerslerDtos == null)
 {
@@ -58,10 +58,10 @@ else
             <GridColumn AutoFit="true" Field=@nameof(OgrenciDerslerDto.Kredi) HeaderText="Krd"></GridColumn>
             <GridColumn Field=@nameof(OgrenciDerslerDto.Akts) HeaderText="Akts"></GridColumn>
             @*<GridColumn>
-                <GridCommandColumns>
-                    <GridCommandColumn Type="CommandButtonType.None" Title="Öğrenci Dersleri" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
-                </GridCommandColumns>
-            </GridColumn>*@
+                    <GridCommandColumns>
+                        <GridCommandColumn Type="CommandButtonType.None" Title="Öğrenci Dersleri" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
+                    </GridCommandColumns>
+                </GridColumn>*@
         </GridColumns>
         <GridGroupSettings Columns=@Template>
             <CaptionTemplate>
@@ -117,7 +117,7 @@ else
     bool ShowTumSinif;
 
     public OgrenciDto _OgrenciDto { get; set; }
-    protected override async Task  OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
         try
         {

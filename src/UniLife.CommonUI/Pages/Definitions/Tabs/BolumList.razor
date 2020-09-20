@@ -5,6 +5,9 @@
 @using System.Net
 @using Newtonsoft.Json
 
+
+@attribute [Authorize(Roles = "Administrator,Personel")]
+
     <ControlSection>
         <SfGrid @ref="BolumGrid" DataSource="@bolumDtos" Toolbar="@(new List<string>() { "Add"})" AllowSorting="true" AllowFiltering="true" AllowPaging="true" Width="100%">
             <GridEvents OnActionComplete="ActionCompletedHandler" TValue="BolumDto"></GridEvents>

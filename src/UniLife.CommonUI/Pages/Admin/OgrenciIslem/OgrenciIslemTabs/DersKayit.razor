@@ -11,11 +11,12 @@
 @using Syncfusion.Blazor.DropDowns;
 @using Syncfusion.Blazor.Buttons
 
+@attribute [Authorize(Roles = "Administrator,Personel,Ogrenci,Akademisyen")]
 @*<Divider />
     <b class="hr anim" style="padding-top: 10px;padding-bottom: 10px;"></b>*@
 
 
-@if (_OgrenciDto == null || _OgrenciDto.Id==0)
+@if (_OgrenciDto == null || _OgrenciDto.Id == 0)
 {
 
     <LoadingBackground ShowLogoBox="true">

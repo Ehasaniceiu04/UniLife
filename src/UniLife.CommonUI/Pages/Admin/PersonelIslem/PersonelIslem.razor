@@ -2,7 +2,7 @@
 @using Syncfusion.Blazor.Navigations
 @using UniLife.CommonUI.Pages.Admin.PersonelIslem.PersonelIslemTabs
 @using UniLife.Shared.Dto.Definitions
-@attribute [Authorize(Policy = Policies.IsAdmin)]
+@attribute [Authorize(Roles = "Administrator,Personel")]
 
 <div class="control-section e-tab-section">
     <SfTab @ref="Tab" CssClass="BlazorTab" LoadOn="ContentLoad.Dynamic">

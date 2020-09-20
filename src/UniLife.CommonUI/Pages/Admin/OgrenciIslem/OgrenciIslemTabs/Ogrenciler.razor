@@ -1,6 +1,5 @@
 ﻿@using Syncfusion.Blazor.Navigations
 @inject Microsoft.AspNetCore.Components.NavigationManager UriHelper
-@attribute [Authorize(Policy = Policies.IsAdmin)]
 @inject HttpClient Http
 @inject IMatToaster matToaster
 @using UniLife.Shared.Dto.Definitions
@@ -13,6 +12,7 @@
 @using Syncfusion.Blazor.Buttons
 @using Syncfusion.Blazor.Calendars
 
+@attribute [Authorize(Roles = "Administrator,Personel")]
 @*@if (OgrGridDtos == null)
     {
 
@@ -26,7 +26,7 @@
     <SfAccordion>
         <AccordionItems>
             <AccordionEvents Expanding="ExpandingHandler" Clicked="OnclickHandler"> </AccordionEvents>
-            <AccordionItem  Expanded="@ExFilterOpen">
+            <AccordionItem Expanded="@ExFilterOpen">
                 <ContentTemplate>
                     <div class="row">
                         <div class="col-sm-6">
@@ -165,10 +165,10 @@
         <GridColumn Field=@nameof(OgrenciDto.Sinif) HeaderText="Sınıf"></GridColumn>
         @*<GridColumn Field=@nameof(OgrenciDto.KayitTarih) Format="d" Type="ColumnType.Date" HeaderText="KayitTarih"></GridColumn>*@
         @*<GridColumn>
-            <GridCommandColumns>
-                <GridCommandColumn Type="CommandButtonType.None" Title="Akademik Bilgiler" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" , Content="Öğr. Detay" })"></GridCommandColumn>
-            </GridCommandColumns>
-        </GridColumn>*@
+                <GridCommandColumns>
+                    <GridCommandColumn Type="CommandButtonType.None" Title="Akademik Bilgiler" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" , Content="Öğr. Detay" })"></GridCommandColumn>
+                </GridCommandColumns>
+            </GridColumn>*@
     </GridColumns>
 </SfGrid>
 @*}*@

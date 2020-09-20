@@ -7,11 +7,12 @@
 @using Syncfusion.Blazor.Buttons
 @using Syncfusion.Blazor.Inputs
 
+@attribute [Authorize(Roles = "Administrator,Personel,Akademisyen")]
 
-@if (derslikDtos.Count<1)
+@if (derslikDtos.Count < 1)
 {
     <LoadingBackground ShowLogoBox="true">
-        <label>Takvim belirlenmedi.</label>
+        <label>Takvim yükleniyor.</label>
     </LoadingBackground>
 }
 else

@@ -2,6 +2,7 @@
 
 @inject HttpClient Http
 @inject IMatToaster matToaster
+@attribute [Authorize(Roles = "Administrator")]
 
 @using static Microsoft.AspNetCore.Http.StatusCodes
 

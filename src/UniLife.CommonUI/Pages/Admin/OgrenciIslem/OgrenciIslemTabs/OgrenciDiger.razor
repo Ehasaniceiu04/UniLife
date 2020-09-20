@@ -7,6 +7,8 @@
 @using Syncfusion.Blazor.Buttons
 @using Syncfusion.Blazor.Calendars
 
+@attribute [Authorize(Roles = "Administrator,Personel")]
+
 
 <div class="dashboardParent" style="visibility: @Visible;">
     <SfDashboardLayout CellSpacing="@CellSpacing" Columns="@Columns" CellAspectRatio="@AspectRatio">

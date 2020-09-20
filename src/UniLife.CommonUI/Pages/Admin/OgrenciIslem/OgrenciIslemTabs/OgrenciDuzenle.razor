@@ -13,6 +13,7 @@
 @inject AppState appState
 @inject IJSRuntime JSRuntime;
 
+@attribute [Authorize(Roles = "Administrator,Personel")]
 
 @if (!isInitializingFinised)
 {

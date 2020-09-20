@@ -8,6 +8,8 @@
 @inject NavigationManager navigationManager
 @inject AppState appState
 
+@attribute [Authorize(Roles = "Administrator,Personel,Ogrenci")]
+
 @if (ogrenciDerslerDtos == null)
 {
 
@@ -19,61 +21,61 @@ else
 {
 
 
-<SfGrid ID="grdDersler" @ref="grdDersler" DataSource="@ogrenciDerslerDtos" AllowGrouping="true" Toolbar="@(new List<string>() {"ExcelExport", "CsvExport", "PdfExport" })">
-    <GridEvents TValue="OgrenciDerslerDto" QueryCellInfo="QueryCellInfoHandler"></GridEvents>
-    <GridGroupSettings ShowDropArea="false" Columns="@Initial">
-        <CaptionTemplate>
-            @{
-                var sinifContext = (context as CaptionTemplateContext);
-                if (sinifContext.Field == "Sinif")
-                {
-                    <div><b>@sinifContext.Field : @sinifContext.Key</b></div>
+    <SfGrid ID="grdDersler" @ref="grdDersler" DataSource="@ogrenciDerslerDtos" AllowGrouping="true" Toolbar="@(new List<string>() {"ExcelExport", "CsvExport", "PdfExport" })">
+        <GridEvents TValue="OgrenciDerslerDto" QueryCellInfo="QueryCellInfoHandler"></GridEvents>
+        <GridGroupSettings ShowDropArea="false" Columns="@Initial">
+            <CaptionTemplate>
+                @{
+                    var sinifContext = (context as CaptionTemplateContext);
+                    if (sinifContext.Field == "Sinif")
+                    {
+                        <div><b>@sinifContext.Field : @sinifContext.Key</b></div>
+                    }
+                    else
+                    {
+                        <div><b>@sinifContext.Key</b></div>
+                    }
                 }
-                else
-                {
-                    <div><b>@sinifContext.Key</b></div>
-                }
-            }
-        </CaptionTemplate>
-    </GridGroupSettings>
-    <GridAggregates>
-        <GridAggregate>
-            <GridAggregateColumns>
-                <GridAggregateColumn Field=@nameof(DersAcilanDto.Akts) Type="AggregateType.Sum" Format="N2">
-                    <GroupFooterTemplate>
-                        @{
-                            var aggregate = (context as AggregateTemplateContext);
-                            if (aggregate.Field == "Donem")
-                            {
-                                <div>
-                                    <p>T: @aggregate.Sum</p>
-                                </div>
+            </CaptionTemplate>
+        </GridGroupSettings>
+        <GridAggregates>
+            <GridAggregate>
+                <GridAggregateColumns>
+                    <GridAggregateColumn Field=@nameof(DersAcilanDto.Akts) Type="AggregateType.Sum" Format="N2">
+                        <GroupFooterTemplate>
+                            @{
+                                var aggregate = (context as AggregateTemplateContext);
+                                if (aggregate.Field == "Donem")
+                                {
+                                    <div>
+                                        <p>T: @aggregate.Sum</p>
+                                    </div>
+                                }
                             }
-                        }
-                    </GroupFooterTemplate>
-                </GridAggregateColumn>
-            </GridAggregateColumns>
-        </GridAggregate>
-    </GridAggregates>
-    <GridColumns>
-        <GridColumn Visible="false" Field=@nameof(OgrenciDerslerDto.DersAcilanId) HeaderText="DersAcilanId" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
-        <GridColumn Visible="false" Field=@nameof(OgrenciDerslerDto.AkademisyenId) HeaderText="AkademisyenId"></GridColumn>
-        <GridColumn Field=@nameof(OgrenciDerslerDto.DersKod) HeaderText="DersKod"></GridColumn>
-        <GridColumn Field=@nameof(OgrenciDerslerDto.DersAd) HeaderText="DersAd"></GridColumn>
-        <GridColumn Field=@nameof(OgrenciDerslerDto.SonucDurum) HeaderText="S.Durum"></GridColumn>
-        <GridColumn Field=@nameof(OgrenciDerslerDto.SinavNotlari) HeaderText="Sinav Notlar"></GridColumn>
-        <GridColumn AutoFit="true" Field=@nameof(OgrenciDerslerDto.Ort) HeaderText="Ort"></GridColumn>
-        <GridColumn AutoFit="true" Field=@nameof(OgrenciDerslerDto.HarfNot) HeaderText="HarfNot"></GridColumn>
-        <GridColumn Field=@nameof(OgrenciDerslerDto.Durumu) HeaderText="Durumu"></GridColumn>
-        <GridColumn Field=@nameof(OgrenciDerslerDto.Sinif) HeaderText="Sinif"></GridColumn>
-        <GridColumn Field=@nameof(OgrenciDerslerDto.Donem) HeaderText="Donem"></GridColumn>
-        <GridColumn Field=@nameof(OgrenciDerslerDto.Carpan) HeaderText="Carpan"></GridColumn>
-        <GridColumn AutoFit="true" Field=@nameof(OgrenciDerslerDto.IsZorunlu) DisplayAsCheckBox="true" HeaderText="Z"></GridColumn>
-        <GridColumn AutoFit="true" Field=@nameof(OgrenciDerslerDto.Kredi) HeaderText="Krd"></GridColumn>
-        <GridColumn Field=@nameof(OgrenciDerslerDto.Akts) HeaderText="Akts"></GridColumn>
-    </GridColumns>
+                        </GroupFooterTemplate>
+                    </GridAggregateColumn>
+                </GridAggregateColumns>
+            </GridAggregate>
+        </GridAggregates>
+        <GridColumns>
+            <GridColumn Visible="false" Field=@nameof(OgrenciDerslerDto.DersAcilanId) HeaderText="DersAcilanId" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(OgrenciDerslerDto.AkademisyenId) HeaderText="AkademisyenId"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciDerslerDto.DersKod) HeaderText="DersKod"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciDerslerDto.DersAd) HeaderText="DersAd"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciDerslerDto.SonucDurum) HeaderText="S.Durum"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciDerslerDto.SinavNotlari) HeaderText="Sinav Notlar"></GridColumn>
+            <GridColumn AutoFit="true" Field=@nameof(OgrenciDerslerDto.Ort) HeaderText="Ort"></GridColumn>
+            <GridColumn AutoFit="true" Field=@nameof(OgrenciDerslerDto.HarfNot) HeaderText="HarfNot"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciDerslerDto.Durumu) HeaderText="Durumu"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciDerslerDto.Sinif) HeaderText="Sinif"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciDerslerDto.Donem) HeaderText="Donem"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciDerslerDto.Carpan) HeaderText="Carpan"></GridColumn>
+            <GridColumn AutoFit="true" Field=@nameof(OgrenciDerslerDto.IsZorunlu) DisplayAsCheckBox="true" HeaderText="Z"></GridColumn>
+            <GridColumn AutoFit="true" Field=@nameof(OgrenciDerslerDto.Kredi) HeaderText="Krd"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciDerslerDto.Akts) HeaderText="Akts"></GridColumn>
+        </GridColumns>
 
-</SfGrid>
+    </SfGrid>
 
 }
 

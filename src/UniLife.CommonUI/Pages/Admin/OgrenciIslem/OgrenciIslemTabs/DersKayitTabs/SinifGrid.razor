@@ -5,6 +5,8 @@
 @using UniLife.Shared.Dto.Definitions.Bussines
 @inject AppState appState
 
+@attribute [Authorize(Roles = "Administrator,Personel,Ogrenci,Akademisyen")]
+
 
 
 <Divider5></Divider5>

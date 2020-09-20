@@ -5,6 +5,7 @@
 @using Syncfusion.Blazor.DropDowns;
 @using Syncfusion.Blazor.Inputs
 @using Syncfusion.Blazor.Buttons
+@attribute [Authorize(Roles = "Administrator,Personel")]
 
 
 <ControlSection>
@@ -13,7 +14,7 @@
             <div class="form-group row">
                 <label for="OsymTip" class="col-sm-2 col-form-label-sm">OsymTip</label>
                 <div class="col-sm-10">
-                    <SfTextBox ID="OsymTip" @bind-Value="@(_Osym.OsymTip)" 
+                    <SfTextBox ID="OsymTip" @bind-Value="@(_Osym.OsymTip)"
                                Multiline="true"></SfTextBox>
                 </div>
                 <label for="Yil" class="col-sm-2 col-form-label-sm">Yil</label>
@@ -82,7 +83,7 @@
         try
         {
             //OData<OsymDto> apiResponse = await Http.GetFromJsonAsync<OData<OsymDto>>($"odata/osyms?$filter=ApplicationUserId eq {_OgrenciDto.ApplicationUserId}");
-            ApiResponseDto<OsymDto> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<OsymDto>>("api/osym/GetByAppId"+ _OgrenciDto.ApplicationUserId);
+            ApiResponseDto<OsymDto> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<OsymDto>>("api/osym/GetByAppId" + _OgrenciDto.ApplicationUserId);
 
             if (apiResponse.IsSuccessStatusCode)
             {

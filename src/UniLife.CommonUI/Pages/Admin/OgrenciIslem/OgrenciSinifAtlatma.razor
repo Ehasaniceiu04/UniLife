@@ -4,6 +4,7 @@
 @using Syncfusion.Blazor.Data
 
 @using UniLife.Shared.Dto.Definitions
+@attribute [Authorize(Roles = "Administrator,Personel")]
 
 <ControlSection>
     <div class="row pb-2 bg-light text-dark">

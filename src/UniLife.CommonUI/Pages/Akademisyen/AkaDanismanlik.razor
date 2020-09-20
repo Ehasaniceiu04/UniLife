@@ -8,6 +8,9 @@
 @using UniLife.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs
 @inject AppState appState
 
+@attribute [Authorize(Roles = "Administrator,Personel,Akademisyen")]
+
+
 <div class="control-section e-tab-section">
     <SfTab @ref="DanismanTab" LoadOn="ContentLoad.Dynamic">
         @*Selected="OnTabSelected" Selecting="OnTabSelecting"*@

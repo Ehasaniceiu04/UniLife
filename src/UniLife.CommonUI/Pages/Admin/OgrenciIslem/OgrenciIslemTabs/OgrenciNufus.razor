@@ -5,6 +5,7 @@
 @using Syncfusion.Blazor.DropDowns;
 @using Syncfusion.Blazor.Inputs
 @using Syncfusion.Blazor.Buttons
+@attribute [Authorize(Roles = "Administrator,Personel")]
 
 <ControlSection>
     <div class="row pb-2 bg-light text-dark" style="margin-right: unset;margin-left: unset;">
@@ -58,7 +59,7 @@
                 <div class="col-sm-3">
                     <SfButton OnClick="Kaydet" CssClass="e-success form-control">Kaydet</SfButton>
                 </div>
-                
+
             </div>
         </div>
         <div class="col-sm-12 col-md-6">
@@ -69,7 +70,7 @@
 
 @code{
     public NufusDto Nufus { get; set; } = new NufusDto();
-    List<IlDto> IlsList=new List<IlDto>();
+    List<IlDto> IlsList = new List<IlDto>();
 
     SfDropDownList<int?, IlDto> dropIl;
 

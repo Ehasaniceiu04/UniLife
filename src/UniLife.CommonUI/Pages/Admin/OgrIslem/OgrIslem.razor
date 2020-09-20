@@ -1,23 +1,24 @@
 ﻿@page "/admin/ogrislem"
+@attribute [Authorize(Roles = "Administrator")]
 @using UniLife.CommonUI.Pages.Admin.OgrIslem.Tabs
-    <MatTabGroup>
+<MatTabGroup>
 
-        <MatTab>
-            <LabelContent>
-                Öğrenciler <MatIcon Icon="@MatIconNames.Person"></MatIcon>
-            </LabelContent>
-            <ChildContent>
-                <Ogr></Ogr>
-            </ChildContent>
-            
-        </MatTab>
-        <MatTab Label="Ders Kayıt">
+    <MatTab>
+        <LabelContent>
+            Öğrenciler <MatIcon Icon="@MatIconNames.Person"></MatIcon>
+        </LabelContent>
+        <ChildContent>
+            <Ogr></Ogr>
+        </ChildContent>
 
-        </MatTab>
-        <MatTab Label="Akademik İşlemler">
+    </MatTab>
+    <MatTab Label="Ders Kayıt">
 
-        </MatTab>
-        <MatTab Label="Diğer">
+    </MatTab>
+    <MatTab Label="Akademik İşlemler">
 
-        </MatTab>
-    </MatTabGroup>
+    </MatTab>
+    <MatTab Label="Diğer">
+
+    </MatTab>
+</MatTabGroup>

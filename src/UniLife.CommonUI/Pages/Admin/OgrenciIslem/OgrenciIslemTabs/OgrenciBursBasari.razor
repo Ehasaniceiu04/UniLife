@@ -10,6 +10,8 @@
 @using Syncfusion.Blazor.Calendars
 @inject AppState appState
 
+@attribute [Authorize(Roles = "Administrator,Personel,Ogrenci")]
+
 @if (bursBasariDtos == null)
 {
     <LoadingBackground ShowLogoBox="true">
@@ -49,14 +51,14 @@ else
     [Parameter]
     public OgrenciDto _OgrenciDto { get; set; }
 
-    private List<Object> Toolbaritems= new List<Object>() { "Add", "Edit", "Delete", "Update", "Cancel" };
+    private List<Object> Toolbaritems = new List<Object>() { "Add", "Edit", "Delete", "Update", "Cancel" };
 
     //protected override void OnInitialized()
     protected override async Task OnInitializedAsync()
     {
         await ReadBursBasaris();
 
-        ApiResponseDto apiResponseDonem =await Http.GetFromJsonAsync<ApiResponseDto>("api/Donem");
+        ApiResponseDto apiResponseDonem = await Http.GetFromJsonAsync<ApiResponseDto>("api/Donem");
         donemDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<DonemDto[]>(apiResponseDonem.Result.ToString()).ToList<DonemDto>();
 
     }

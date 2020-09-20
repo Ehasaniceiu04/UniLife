@@ -2,6 +2,7 @@
 @using UniLife.Shared.Dto.Definitions
 @inject IMatToaster matToaster
 @inject AppState appState
+@attribute [Authorize(Roles = "Administrator,Personel")]
 
 <SfGrid ID="OgrNotlar" @ref="OgrNotlar" AllowGrouping="true" DataSource="@ogrenciNotlarDtos" Toolbar="@(new List<string>() {"Edit", "Update", "Cancel" })" AllowPaging="true">
     <GridEditSettings AllowEditing="true"></GridEditSettings>
@@ -91,8 +92,8 @@
         }
         catch (Exception ex)
         {
-            var zxc= ogrenciNotlarDtos.FirstOrDefault(x => x.SinavId == args.RowData.SinavId);
-            zxc.OgrNot = ogrenciNotlarDtoOnceki.OgrNot ;
+            var zxc = ogrenciNotlarDtos.FirstOrDefault(x => x.SinavId == args.RowData.SinavId);
+            zxc.OgrNot = ogrenciNotlarDtoOnceki.OgrNot;
             OgrNotlar.Refresh();
             matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
         }

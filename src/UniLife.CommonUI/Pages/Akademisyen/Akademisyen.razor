@@ -1,6 +1,8 @@
 ﻿@page "/Akademisyen"
 @inject AppState appState
 
+@attribute [Authorize(Roles = "Administrator,Personel,Akademisyen")]
+
 @code{
     protected override async Task  OnAfterRenderAsync(bool firstRender)
     {

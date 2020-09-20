@@ -2,6 +2,9 @@
 @using UniLife.Shared.Dto.Definitions
 @inject IMatToaster matToaster
 
+@attribute [Authorize(Roles = "Administrator,Personel")]
+
+
 @using System.Net
 
 <ControlSection>

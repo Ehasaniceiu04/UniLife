@@ -1,12 +1,14 @@
 ﻿@using Syncfusion.Blazor.Navigations
 @inject Microsoft.AspNetCore.Components.NavigationManager UriHelper
-@attribute [Authorize(Policy = Policies.IsAdmin)]
+
 @inject HttpClient Http
 @inject IMatToaster matToaster
 @using UniLife.Shared.Dto.Definitions
 @using UniLife.CommonUI.Pages.Admin.PersonelIslem.PersonelIslemTabs.PersonellerTabs
 @using Syncfusion.Blazor.SplitButtons
 @inject AppState appState
+
+@attribute [Authorize(Roles = "Administrator,Personel")]
 
 
 
@@ -58,11 +60,11 @@
             </GridColumn>
         </GridColumns>
     </SfGrid>
-        <div class="col-12 text-right">
-            <SfProgressButton OnClick="AddNew" Content="Yeni Personel Kaydı >" CssClass="center-block e-primary">
-                <ProgressButtonSpinSettings Position="SpinPosition.Right"></ProgressButtonSpinSettings>
-            </SfProgressButton>
-        </div>
+    <div class="col-12 text-right">
+        <SfProgressButton OnClick="AddNew" Content="Yeni Personel Kaydı >" CssClass="center-block e-primary">
+            <ProgressButtonSpinSettings Position="SpinPosition.Right"></ProgressButtonSpinSettings>
+        </SfProgressButton>
+    </div>
 
 
 </ControlSection>
@@ -73,7 +75,7 @@
     public SfGrid<PersonelDto> PersGrid;
     //PersonelDto target;
 
-    List<PersonelDto> PersGridDtos=new List<PersonelDto>();
+    List<PersonelDto> PersGridDtos = new List<PersonelDto>();
 
     protected override void OnInitialized()
     {

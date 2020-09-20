@@ -283,21 +283,21 @@ else
         </GridSortSettings>
         <GridColumns>
             <GridColumn Visible="false" Field=@nameof(DersDto.Id) HeaderText="Fakülte ID" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
-            <GridColumn Field=@nameof(DersDto.Ad) HeaderText="Ders Ad" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
-            <GridColumn Field=@nameof(DersDto.Kod) HeaderText="Ders Kod" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
+            <GridColumn AutoFit="true" Field=@nameof(DersDto.Ad) HeaderText="Ders Ad" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
+            <GridColumn AutoFit="true" Field=@nameof(DersDto.Kod) HeaderText="Ders Kod" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
 
             @*<GridColumn Field=@nameof(DersDto.KisaAd) HeaderText="KisaAd" Width="170"></GridColumn>*@
 
             @*<GridColumn Field=@nameof(DersDto.MufredatId) HeaderText="Müfredat" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="mufredatDtos" Width="150"></GridColumn>*@
             @*<GridColumn Field=@nameof(DersDto.DonemId) HeaderText="Dönem" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@donemDtos"></GridColumn>*@
-            <GridColumn Field=@nameof(DersDto.DonemTipId) HeaderText="Dönem Tip" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@donemTipDtos"></GridColumn>
-            <GridColumn Field=@nameof(DersDto.Akts) HeaderText="Akts"></GridColumn>
+            <GridColumn AutoFit="true" Field=@nameof(DersDto.DonemTipId) HeaderText="Dönem Tip" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@donemTipDtos"></GridColumn>
+            <GridColumn AutoFit="true" Field=@nameof(DersDto.Akts) HeaderText="Akts"></GridColumn>
             <GridColumn Visible="false" Field=@nameof(DersDto.OptikKod) HeaderText="OptikKod"></GridColumn>
             <GridColumn Visible="false" Field=@nameof(DersDto.AdEn) HeaderText="AdEn"></GridColumn>
             <GridColumn Visible="false" Field=@nameof(DersDto.UygSaat) HeaderText="UygSaat"></GridColumn>
             <GridColumn Visible="false" Field=@nameof(DersDto.LabSaat) HeaderText="LabSaat"></GridColumn>
             <GridColumn Visible="false" Field=@nameof(DersDto.TeoSaat) HeaderText="TeoSaat"></GridColumn>
-            <GridColumn Field=@nameof(DersDto.Kredi) HeaderText="Kredi"></GridColumn>
+            <GridColumn AutoFit="true" Field=@nameof(DersDto.Kredi) HeaderText="Kredi"></GridColumn>
             <GridColumn Visible="false" Field=@nameof(DersDto.DersNedenId) HeaderText="DersNedenId"></GridColumn>
             <GridColumn Visible="false" Field=@nameof(DersDto.KancalananDersAd) HeaderText="KancalananDersAd"></GridColumn>
             <GridColumn Visible="false" Field=@nameof(DersDto.DersDilId) HeaderText="DersDilId"></GridColumn>
@@ -306,7 +306,7 @@ else
             @*<GridColumn Visible="false" Field=@nameof(DersDto.AktifDonemdeAcik) HeaderText="AktifDonemdeAcik" DisplayAsCheckBox="true"></GridColumn>*@
             <GridColumn AutoFit="true" Field=@nameof(DersDto.SecmeliKodu) HeaderText="SecmeliKodu"></GridColumn>
             <GridColumn AutoFit="true" Field=@nameof(DersDto.Sinif) HeaderText="Sinif"></GridColumn>
-            <GridColumn>
+            <GridColumn Width="178">
                 <GridCommandColumns>
                     <GridCommandColumn Type="CommandButtonType.None" Title="Dersi Ac" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-SendToBack", CssClass="e-flat" })"></GridCommandColumn>
                     <GridCommandColumn Type="CommandButtonType.Edit" Title="Çokla" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-copy", CssClass="e-flat" })"></GridCommandColumn>

@@ -4,6 +4,8 @@
 @using Syncfusion.Blazor.Data
 @using Syncfusion.Blazor.Buttons
 
+@attribute [Authorize(Roles = "Administrator,Personel")]
+
 
 <ControlSection>
     <div class="row pb-2 bg-light text-dark">

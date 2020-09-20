@@ -6,6 +6,9 @@
 @using Syncfusion.Blazor.DropDowns
 @using Syncfusion.Blazor.Navigations
 
+@attribute [Authorize(Roles = "Administrator,Personel,Akademisyen")]
+
+
 @if (donemDtos == null)
 {
     <LoadingBackground ShowLogoBox="true">

@@ -1,11 +1,12 @@
 @page "/admin/roles"
 @using UniLife.Shared.Dto.Admin
-@attribute [Authorize]
 @inject HttpClient Http
 @inject IAuthorizationService AuthorizationService
 @inject AuthenticationStateProvider authStateProvider
 @inject IMatToaster matToaster
 @inject AppState appState
+
+@attribute [Authorize(Roles = "Administrator")]
 
 @using System.Net
 

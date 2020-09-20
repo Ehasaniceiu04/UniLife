@@ -2,6 +2,7 @@
 @inject HttpClient Http
 @inject IMatToaster matToaster
 @using Syncfusion.Blazor.SplitButtons
+@attribute [Authorize(Roles = "Administrator")]
 
 <MatChipSet>
     @foreach (var role in roleSelections.OrderBy(x => x.Name))

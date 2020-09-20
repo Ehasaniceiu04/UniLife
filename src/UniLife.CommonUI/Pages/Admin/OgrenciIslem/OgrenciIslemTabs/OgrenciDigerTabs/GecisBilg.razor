@@ -5,6 +5,8 @@
 @using UniLife.Shared.Dto.Definitions
 @using Syncfusion.Blazor.Inputs
 
+@attribute [Authorize(Roles = "Administrator,Personel")]
+
 <div class="row pb-2" style="margin-right: unset;margin-left: unset;">
     <div class="col-sm-12 col-md-6">
         <div class="form-group row">

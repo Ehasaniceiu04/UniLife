@@ -2,6 +2,7 @@
 @using UniLife.Shared.Dto.Definitions
 @inject IMatToaster matToaster
 @inject Microsoft.AspNetCore.Components.NavigationManager UriHelper
+@attribute [Authorize(Roles = "Administrator,Personel")]
 
 <div style="display:inline-flex">
     <div style="float:left;padding:45px;padding-top:70px"><img class="photo" src="@($"/_content/UniLife.CommonUI/images/ogrenci/{_AkademisyenDto.ApplicationUserId.ToString()}.png")" alt="@_AkademisyenDto.Id" /></div>

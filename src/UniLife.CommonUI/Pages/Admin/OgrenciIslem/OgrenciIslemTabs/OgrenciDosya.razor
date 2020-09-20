@@ -1,6 +1,8 @@
 ﻿@using Syncfusion.Blazor.FileManager
 @using UniLife.Shared.Dto.Definitions
 
+@attribute [Authorize(Roles = "Administrator,Personel")]
+
 <SfFileManager AllowMultiSelection="true" ShowHiddenItems="true">
     <FileManagerAjaxSettings Url=@($"/uploapi/OgrFile/FileOperations?ogr={_OgrenciDto.OgrNo}")
                              UploadUrl=@($"/uploapi/OgrFile/Upload?ogr={_OgrenciDto.OgrNo}")

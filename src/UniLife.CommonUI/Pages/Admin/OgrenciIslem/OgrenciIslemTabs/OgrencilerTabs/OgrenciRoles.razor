@@ -6,6 +6,8 @@
 @using Syncfusion.Blazor.Inputs
 @inject NavigationManager navigationManager
 
+@attribute [Authorize(Roles = "Administrator")]
+
 <MatChipSet>
     @foreach (var role in roleSelections.OrderBy(x => x.Name))
     {

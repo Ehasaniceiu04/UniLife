@@ -7,6 +7,7 @@
 @using Syncfusion.Blazor.SplitButtons
 @inject AuthenticationStateProvider authStateProvider
 @using Syncfusion.Blazor.Calendars
+@attribute [Authorize(Roles = "Administrator,Personel")]
 
 
 
@@ -48,14 +49,14 @@
                         </div>
                         <div class="col-sm-12 col-md-6">
                             <div class="form-row form-group form-inline ">
-                                
+
                                 <label class="col-sm-2" for="KayTarih">Kayıt Tarihi:</label>
                                 <SfDatePicker ID="KayTarih" TValue="DateTime?" @bind-Value="@_PersonelDto.KayitTarih" CssClass="col-sm-4 pb-1" Placeholder="Kayıt Tarihi"></SfDatePicker>
-                                
+
                                 <label class="col-sm-2" for="AyrTarih">Ayrılma Tarihi:</label>
                                 <SfDatePicker ID="AyrTarih" TValue="DateTime?" @bind-Value="@_PersonelDto.AyrilTarih" CssClass="col-sm-4 pb-1" Placeholder="Ayrılma Tarihi"></SfDatePicker>
 
-                                
+
                             </div>
 
                         </div>

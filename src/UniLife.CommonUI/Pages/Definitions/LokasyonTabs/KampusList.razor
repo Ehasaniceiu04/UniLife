@@ -4,6 +4,9 @@
 
 @using System.Net
 
+
+@attribute [Authorize(Roles = "Administrator,Personel")]
+
 <ControlSection>
     <SfGrid Width="100%" Height="85%" AllowResizing="true" @ref="KampusGrid" DataSource="@kampusDtos" Toolbar="@(new List<string>() { "Add" })" AllowPaging="true" AllowFiltering="true">
         <GridEvents OnActionComplete="ActionCompletedHandler" TValue="KampusDto"></GridEvents>

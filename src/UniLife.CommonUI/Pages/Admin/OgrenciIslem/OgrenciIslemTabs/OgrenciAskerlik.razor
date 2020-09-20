@@ -7,13 +7,15 @@
 @using Syncfusion.Blazor.Buttons
 @using Syncfusion.Blazor.Calendars
 
+@attribute [Authorize(Roles = "Administrator,Personel")]
+
 <ControlSection>
     <div class="row pb-2 bg-light text-dark" style="margin-right: unset;margin-left: unset;">
         <div class="col-sm-12 col-md-6">
             <div class="form-group row">
                 <label for="Adres" class="col-sm-2 col-form-label-sm">AskerlikDurum</label>
                 <div class="col-sm-10">
-                    <SfDropDownList ID="DropDurum" @ref="DropDurum" ShowClearButton="true" TItem="KeyValueDto"                                    TValue="int?" PopupHeight="230px" Placeholder="Durum Seçiniz"
+                    <SfDropDownList ID="DropDurum" @ref="DropDurum" ShowClearButton="true" TItem="KeyValueDto" TValue="int?" PopupHeight="230px" Placeholder="Durum Seçiniz"
                                     @bind-Value="@Askerlik.Durum" DataSource="@durums">
                         <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                     </SfDropDownList>
@@ -32,7 +34,7 @@
             <div class="form-group row">
                 <label for="Alinis" class="col-sm-2 col-form-label-sm">Aliniş Tarih</label>
                 <div class="col-sm-10">
-                    <SfDatePicker ID="Alinis" @bind-Value="@Askerlik.Alinis" TValue="DateTime?" ></SfDatePicker>
+                    <SfDatePicker ID="Alinis" @bind-Value="@Askerlik.Alinis" TValue="DateTime?"></SfDatePicker>
                 </div>
                 <label for="Islem" class="col-sm-2 col-form-label-sm">İşlem Tarih</label>
                 <div class="col-sm-10">
@@ -45,7 +47,7 @@
                 </div>
             </div>
         </div>
-        </div>
+    </div>
 </ControlSection>
 @code{
     public AskerlikDto Askerlik { get; set; } = new AskerlikDto();

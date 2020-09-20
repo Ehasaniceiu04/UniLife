@@ -10,6 +10,8 @@
 @using Syncfusion.Blazor.Calendars
 @inject AppState appState
 
+@attribute [Authorize(Roles = "Administrator,Personel,Ogrenci")]
+
 @if (harcDtos == null)
 {
     <LoadingBackground ShowLogoBox="true">
@@ -104,7 +106,7 @@ else
     Task<AuthenticationState> authenticationStateTask { get; set; }
     ClaimsPrincipal user;
 
-    private List<Object> Toolbaritems= new List<Object>();
+    private List<Object> Toolbaritems = new List<Object>();
 
     //protected override void OnInitialized()
     protected override async Task OnInitializedAsync()
@@ -116,7 +118,7 @@ else
         }
         await ReadHarcs();
 
-        ApiResponseDto apiResponseDonem =await Http.GetFromJsonAsync<ApiResponseDto>("api/Donem");
+        ApiResponseDto apiResponseDonem = await Http.GetFromJsonAsync<ApiResponseDto>("api/Donem");
         donemDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<DonemDto[]>(apiResponseDonem.Result.ToString()).ToList<DonemDto>();
 
     }

@@ -5,6 +5,8 @@
 @using System.Net
 @using Syncfusion.Blazor.Buttons
 
+@attribute [Authorize(Roles = "Administrator,Personel")]
+
 <ControlSection>
     <SfGrid @ref="DonemGrid" DataSource="@donemDtos" Toolbar="@(new List<string>() { "Add"})" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
         <GridEvents OnActionComplete="ActionCompletedHandler" TValue="DonemDto"></GridEvents>
@@ -35,10 +37,10 @@
 </ControlSection>
 
 @*<div class="form-group row">
-    <div class="col-sm-4 offset-4">
-        <SfButton OnClick="SinitAtlaTemizle" CssClass="e-success form-control-sm">Yil Sonu Sınıf Atlatmalarını Temizle</SfButton>
-    </div>
-</div>*@
+        <div class="col-sm-4 offset-4">
+            <SfButton OnClick="SinitAtlaTemizle" CssClass="e-success form-control-sm">Yil Sonu Sınıf Atlatmalarını Temizle</SfButton>
+        </div>
+    </div>*@
 
 @code{
 

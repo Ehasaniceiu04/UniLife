@@ -1,6 +1,6 @@
 ﻿@page "/admin/users"
 @using UniLife.Shared.Dto.Account
-@attribute [Authorize(Roles = "Administrator,Personel")]
+
 @inject HttpClient Http
 @inject IAuthorizationService AuthorizationService
 @inject AuthenticationStateProvider authStateProvider
@@ -8,13 +8,15 @@
 @inject AppState appState
 @using System.Net
 
-<h1>Users</h1>
-<p>User Management.</p>
+@attribute [Authorize(Roles = "Administrator")]
+
+<h1>Kullanıcılar</h1>
+<p>Kullanıcı Yönetimi.</p>
 
 @if (users == null)
 {
     <LoadingBackground ShowLogoBox="true">
-        <label>Loading Users</label>
+        <label>Kullanıcılar yükleniyor..</label>
     </LoadingBackground>
 }
 else
@@ -23,9 +25,9 @@ else
               DebounceMilliseconds="150">
         <MatTableHeader>
             <th><MatButton Icon="person_add" Label="New User" OnClick="@(e => { createUserDialogOpen = true; })"></MatButton></th>
-            <th>User Name</th>
+            <th>Kulanıcı Adı</th>
             <th>Email</th>
-            <th>Roles</th>
+            <th>Rolleri</th>
         </MatTableHeader>
         <MatTableRow Context="UserRow">
             <td>

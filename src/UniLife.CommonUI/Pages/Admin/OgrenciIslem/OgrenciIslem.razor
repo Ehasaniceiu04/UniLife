@@ -4,7 +4,7 @@
 @using UniLife.Shared.Dto.Definitions
 @inject Microsoft.AspNetCore.Components.NavigationManager UriHelper
 @using Syncfusion.Blazor.Buttons
-@*@attribute [Authorize(Policy = Policies.IsAdmin)]*@
+@attribute [Authorize(Roles = "Administrator,Personel")]
 
 @if (OgrSelected)
 {
@@ -312,10 +312,12 @@
         padding-top: 10px;
         padding-bottom: 0px;
     }
+
     .e-DoubleArrowLeft:before {
         content: '\e7ba';
         color: #12a37c;
     }
+
     .azkenar {
         margin-right: 20px;
     }
