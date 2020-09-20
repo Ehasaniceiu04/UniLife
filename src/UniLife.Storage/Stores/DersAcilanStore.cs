@@ -222,20 +222,33 @@ namespace UniLife.Storage.Stores
             var ogrenci = await _db.Ogrencis.FirstOrDefaultAsync(x => x.Id == ogrenciId);
             var donem = await _db.Donems.FirstOrDefaultAsync(x => x.Id == pageDonemId);
 
+            var mufredat = await _db.Mufredats.FirstOrDefaultAsync(x => x.Id == ogrenci.MufredatId);
+
+            var ustMufredatIds = await _db.Mufredats.Where(x => x.Yil >= mufredat.Yil && x.ProgramId == mufredat.ProgramId).Select(x => x.Id).ToListAsync();
+
+            //var OgrenciNormalMufDersleri = await (_db.Derss.Where(x => x.MufredatId == ogrenci.MufredatId
+            //                                          && x.Sinif == pageSinif
+            //                                          && x.Durum == true
+            //                                          && x.DonemTipId == donem.DonemTipId)).ToListAsync();
+
+            
+
+
             var normalDersler = await (from d in _db.Derss.Where(x => x.MufredatId == ogrenci.MufredatId
                                                       && x.Sinif == pageSinif
                                                       && x.Durum == true
                                                       && x.DonemTipId == donem.DonemTipId)
-                                       join da in _db.DersAcilans.Where(x => x.MufredatId == ogrenci.MufredatId
+                                       join da in _db.DersAcilans.Where(x => ustMufredatIds.Contains(x.MufredatId)
                                                                           && x.Sinif == pageSinif
-                                                                          && x.DonemId == pageDonemId) on d.Id equals da.DersId
+                                                                          && x.DonemId == pageDonemId) on d.Kod equals da.Kod
                                        into ps
                                        from da in ps.DefaultIfEmpty()
                                        select new DersAcilanDto
                                        {
                                            Id = da != null ? da.Id : 999999999,
                                            Ad = da != null ? da.Ad : d.Ad,
-                                           Kod = da != null ? da.Kod + "(" + d.Kod + ")" : d.Kod,
+                                           //Kod = da != null ? da.Kod + "(" + d.Kod + ")" : d.Kod,
+                                           Kod = da != null ? da.Kod : d.Kod,
                                            Zorunlu = da != null ? da.Zorunlu : true,
                                            Kredi = da != null ? da.Kredi : d.Kredi,
                                            Akts = da != null ? da.Akts:d.Akts,
@@ -267,64 +280,6 @@ namespace UniLife.Storage.Stores
 
             return normalDersler;
 
-            //Eski kafa virgüllü
-            ////////List<DersAcilan> dersAcilans=new List<DersAcilan>();
-
-            ////////var ogrenci = await _db.Ogrencis.FirstOrDefaultAsync(x => x.Id == ogrenciId);
-
-            //////////@sinif tan kaldığı dersler varsa vs vs birsürü kural gelecek.!!
-            ////////if (pageSinif < ogrenci.Sinif)
-            ////////{
-
-            ////////    // kaldıgı derslerin kodu elimizde,Id tutulursa daha saglam olur
-            ////////    //TODO : kalınan ders bilgisini nasıl dolduracağımızı öğren.
-
-            ////////    List<string> kalinandersIdsString = new List<string>();
-            ////////    var kalinanDersler = await _db.Derss.Where(x => x.Id == 15).AsNoTracking().ToListAsync();
-            ////////    List<int> kalinanDersIdsInt = kalinanDersler.Select(x => x.Id).ToList();
-
-            ////////    if (kalinanDersIdsInt.Count > 0)
-            ////////    {
-            ////////        //Kayıtlı old. mufredat hala aktif müfredatsa dolo gelecek. yoksa boş
-            ////////        var ayniMufredatTekrarDersler = await _db.DersAcilans.Where(x => kalinanDersIdsInt.Contains(x.DersId)).AsNoTracking().ToListAsync();
-
-            ////////        //Kayıtlı old. mufredat pasif müfredat ve kaldığı dersler aktif müfredattaki derslere kancalı ise onları getirecez.
-            ////////        List<DersAcilan> farkliMufredatKalinanDersler = new List<DersAcilan>();
-            ////////        foreach (var item in kalinanDersler)
-            ////////        {
-            ////////            kalinandersIdsString.Add("," + item.Id + ",");
-            ////////        }
-            ////////        try
-            ////////        {
-            ////////            var activeMufredatId = (await _db.Mufredats.FirstOrDefaultAsync(x => x.ProgramId == ogrenci.ProgramId && x.Aktif == true)).Id;
-            ////////            var kalinanDersAcilans = await _db.DersAcilans.Where(x => x.MufredatId == activeMufredatId).AsNoTracking().ToListAsync();
-
-            ////////            var kalinanDersAcilans2 = kalinanDersAcilans.Where(x => kalinandersIdsString.Any(y => !string.IsNullOrWhiteSpace(x.EskiMufBagliDersId) ? x.EskiMufBagliDersId.Contains(y) : false));
-
-            ////////            foreach (var item in kalinanDersAcilans2)
-            ////////            {
-            ////////                //derskayıda eski kodu parantez içinde yazdırıyoruz.
-            ////////                item.Kod = item.Kod + "(" + kalinanDersler.FirstOrDefault(x=> item.EskiMufBagliDersId.Split(",").Contains(x.Id.ToString())).Kod + ")";
-            ////////            }
-            ////////            dersAcilans.AddRange(ayniMufredatTekrarDersler);
-            ////////            dersAcilans.AddRange(kalinanDersAcilans2);
-            ////////        }
-            ////////        catch (Exception ex)
-            ////////        {
-            ////////            throw;
-            ////////        }
-            ////////    }
-            ////////    //Ders ekrnaındada bu ,fixi at bakalaım.
-            ////////}
-            ////////else
-            ////////{
-            ////////    //yeni başlıyorsa
-            ////////    dersAcilans = await (from d in _db.DersAcilans.Where(x => x.MufredatId == ogrenci.MufredatId && x.Sinif == pageSinif && x.DonemId == pageDonemId)
-            ////////                         select d).ToListAsync();
-            ////////}
-
-
-            ////////return _autoMapper.Map<List<DersAcilanDto>>(dersAcilans);
         }
 
         public async Task<List<SubeDersAcilanDto>> PostDersAcilansByFilters(SinavDersAcDto sinavDersAcDto)
