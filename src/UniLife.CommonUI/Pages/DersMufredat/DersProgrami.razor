@@ -15,7 +15,8 @@
                 <FakBolPrg @bind-ProgramId="programId"
                            @bind-BolumId="bolumId"
                            @bind-FakulteId="fakulteId"
-                           ProgramPlaceHolder=" "></FakBolPrg>
+                           ProgramPlaceHolder=" "
+                           ProgramShow="true"></FakBolPrg>
             </div>
             <div class="col-sm-5">
                 <div class="form-group row">
@@ -63,7 +64,7 @@
                         <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Zorunlu) HeaderText="Zor" DisplayAsCheckBox="true"></GridColumn>
                         <GridColumn AutoFit="true" Field="Program.Ad" HeaderText="Program"></GridColumn>
                         <GridColumn AutoFit="true" Field="Akademisyen.Ad" HeaderText="Akademisyen"></GridColumn>
-                        <GridColumn>
+                        <GridColumn Width="60">
                             <GridCommandColumns>
                                 <GridCommandColumn Type="CommandButtonType.None" Title="Tanımlı Ders Programları" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
                             </GridCommandColumns>
@@ -88,7 +89,7 @@
                         <GridColumn Visible="false" Field="DersAcilan.Id" HeaderText="Ders Id"></GridColumn>
                         <GridColumn AutoFit="true" Field="DersAcilan.Akademisyen.Ad" HeaderText="Akademisyen"></GridColumn>
                         <GridColumn Field=@nameof(SinavDto.Tarih) HeaderText="Tarih"></GridColumn>
-                        <GridColumn>
+                        <GridColumn Width="60">
                             <GridCommandColumns>
                                 <GridCommandColumn Type="CommandButtonType.None" Title="Tanımlı Sinav Programları" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
                             </GridCommandColumns>

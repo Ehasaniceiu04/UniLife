@@ -13,25 +13,37 @@
 
 <AuthorizeView Roles="Admin,Personel" Context="AuthorizeContext">
     <Authorized>
-        <SfDropDownList ID="DropDonem" @ref="DropDonem" ShowClearButton="true" TItem="DonemDto"
-                        TValue="int?" PopupHeight="230px" Placeholder="Dönem Seçiniz"
-                        @bind-Value="@donemId" DataSource="@donemDtos.OrderByDescending(x=>x.Durum).ThenBy(x=>x.Yil)">
-            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-            <DropDownListEvents TValue="int?" ValueChange="DonemChange"></DropDownListEvents>
-        </SfDropDownList>
 
-        <SfDropDownList ID="DropFakulte" @ref="DropFakulte" ShowClearButton="true" TItem="KeyValueDto" CssClass="col-sm-10"
-                        TValue="int?" PopupHeight="230px" Placeholder="Fakülte Seçiniz"
-                        @bind-Value="@fakulteId" DataSource="@fakulteDtos">
-            <DropDownListEvents TValue="int?" ValueChange="FakChange"></DropDownListEvents>
-            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-        </SfDropDownList>
+        <div class="form-group row">
+            <label for="DropDonem" class="col-sm-1 col-form-label-sm">Dönem</label>
+            <div class="col-sm-4">
+                <SfDropDownList ID="DropDonem" @ref="DropDonem" ShowClearButton="true" TItem="DonemDto"
+                                TValue="int?" PopupHeight="230px" Placeholder="Dönem Seçiniz"
+                                @bind-Value="@donemId" DataSource="@donemDtos.OrderByDescending(x=>x.Durum).ThenBy(x=>x.Yil)">
+                    <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                    <DropDownListEvents TValue="int?" ValueChange="DonemChange"></DropDownListEvents>
+                </SfDropDownList>
+            </div>
+            <label for="DropFakulte" class="col-sm-1 col-form-label-sm">Fakülte</label>
+            <div class="col-sm-4">
+                <SfDropDownList ID="DropFakulte" @ref="DropFakulte" ShowClearButton="true" TItem="KeyValueDto"
+                                TValue="int?" PopupHeight="230px" Placeholder="Fakülte Seçiniz"
+                                @bind-Value="@fakulteId" DataSource="@fakulteDtos">
+                    <DropDownListEvents TValue="int?" ValueChange="FakChange"></DropDownListEvents>
+                    <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                </SfDropDownList>
+            </div>
+            <Syncfusion.Blazor.Buttons.SfButton OnClick="Getir" CssClass="e-success col-sm-2">Yenile</Syncfusion.Blazor.Buttons.SfButton>
+
+        </div>
+
+
+        
     </Authorized>
 </AuthorizeView>
 
 
 
-<Syncfusion.Blazor.Buttons.SfButton OnClick="Getir" CssClass="e-success col-sm-1">Yenile</Syncfusion.Blazor.Buttons.SfButton>
 
 @if (akademikTakvimDtos == null)
 {
