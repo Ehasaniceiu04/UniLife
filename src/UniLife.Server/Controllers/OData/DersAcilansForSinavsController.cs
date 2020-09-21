@@ -33,7 +33,11 @@ namespace UniLife.Server.Controllers
                                  Sinif = da.Sinif,
                                  Zorunlu = da.Zorunlu,
                                  AkademisyenAd = a.Ad,
-                                 DersKayitCount = cCount
+                                 DersKayitCount = cCount,
+                                 ProgramId = da.ProgramId,
+                                 FakulteId = da.FakulteId,
+                                 BolumId =da.BolumId,
+                                 DonemId = da.DonemId
                              };
             return daForSinav;
 

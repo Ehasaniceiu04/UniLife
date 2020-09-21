@@ -1,5 +1,6 @@
 ﻿using MatBlazor;
 using Microsoft.AspNetCore.Components;
+using Syncfusion.Blazor.Data;
 using Syncfusion.Blazor.DropDowns;
 using Syncfusion.Blazor.Grids;
 using Syncfusion.Blazor.Navigations;
@@ -96,6 +97,54 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         bool isShowSinavs = true;
 
         bool OgrGridShow = true;
+
+        public Query donemQuery = new Query().Select(new List<string> { "Id", "Ad" }).RequiresCount();
+        int? _programId;
+        public int? ProgramId
+        {
+            get => _programId;
+            set
+            {
+                Refresh();
+                if (_programId == value) return;
+                _programId = value;
+            }
+        }
+        int? _bolumId;
+        public int? BolumId
+        {
+            get => _bolumId;
+            set
+            {
+                Refresh();
+                if (_bolumId == value) return;
+                _bolumId = value;
+            }
+        }
+        int? _fakulteId;
+        public int? FakulteId
+        {
+            get => _fakulteId;
+            set
+            {
+                Refresh();
+                if (_fakulteId == value) return;
+                _fakulteId = value;
+            }
+        }
+        int? _donemId;
+        public int? DonemId
+        {
+            get => _donemId;
+            set
+            {
+                Refresh();
+                if (_donemId == value) return;
+                _donemId = value;
+            }
+        }
+        public Query totalQuery;// = new Query().Expand(new List<string> { "program($select=Id,Ad)" });
+
 
         protected async override Task OnInitializedAsync()
         {
@@ -239,39 +288,39 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             _dersAcilanDto.Sinif = DropSinif.Value;
         }
 
-        async Task Refresh()
-        {
+        //async Task Refresh()
+        //{
 
-            await GetDersAcilansByFilters();
-        }
-
-
-        private async Task GetDersAcilansByFilters()
-        {
-            SinavDersAcDto sinavDersAcDto = new SinavDersAcDto
-            {
-                donemId = _dersAcilanDto.DonemId,
-                programId = _dersAcilanDto.ProgramId,
-                sinif = _dersAcilanDto.Sinif,
-                dersKodu = _dersAcilanDto.Kod
-            };
-
-            //var reqURL = $"api/DersAcilan/GetDersAcilansByFilters/{_dersAcilanDto.DonemId ?? 0}/{_dersAcilanDto.ProgramId ?? 0}/{_dersAcilanDto.Sinif ?? 0}/{_dersAcilanDto.Kod ?? ""}";
+        //    await GetDersAcilansByFilters();
+        //}
 
 
+        //private async Task GetDersAcilansByFilters()
+        //{
+        //    SinavDersAcDto sinavDersAcDto = new SinavDersAcDto
+        //    {
+        //        donemId = _dersAcilanDto.DonemId,
+        //        programId = _dersAcilanDto.ProgramId,
+        //        sinif = _dersAcilanDto.Sinif,
+        //        dersKodu = _dersAcilanDto.Kod
+        //    };
 
-            ApiResponseDto<List<DersAcilanDto>> apiResponse = await Http.PostJsonAsync<ApiResponseDto<List<DersAcilanDto>>>("api/DersAcilan/PostDersAcilansByFilters", sinavDersAcDto);
-            if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
-            {
-                DersAcGrid.Refresh();
-            }
-            else
-            {
-                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Açılan Derslerin bilgisi getirilirken hata oluştu");
-            }
+        //    //var reqURL = $"api/DersAcilan/GetDersAcilansByFilters/{_dersAcilanDto.DonemId ?? 0}/{_dersAcilanDto.ProgramId ?? 0}/{_dersAcilanDto.Sinif ?? 0}/{_dersAcilanDto.Kod ?? ""}";
 
-            await SinavGridTemizle();
-        }
+
+
+        //    ApiResponseDto<List<DersAcilanDto>> apiResponse = await Http.PostJsonAsync<ApiResponseDto<List<DersAcilanDto>>>("api/DersAcilan/PostDersAcilansByFilters", sinavDersAcDto);
+        //    if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
+        //    {
+        //        DersAcGrid.Refresh();
+        //    }
+        //    else
+        //    {
+        //        matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Açılan Derslerin bilgisi getirilirken hata oluştu");
+        //    }
+
+        //    await SinavGridTemizle();
+        //}
 
         async Task SinavGridTemizle()
         {
@@ -712,5 +761,35 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         //List<SinavKayitDto> mazeretSinavKayitDtos;
 
+        async Task Refresh()
+        {
+            totalQuery = new Query();
+            //totalQuery.Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)" });
+            //totalQuery.Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)", "Donem($select=Id,Ad)", "bolum($expand=fakulte($select=Ad,Id);$select=Ad,Id)" });
+
+
+            if (DonemId.HasValue)
+            {
+                totalQuery.Where("donemId", "equal", DonemId);
+            }
+
+            if (ProgramId.HasValue)
+            {
+                totalQuery.Where("programId", "equal", ProgramId);
+            }
+            else if (BolumId.HasValue)
+            {
+                totalQuery.Where("bolumId", "equal", BolumId);
+            }
+            else if (FakulteId.HasValue)
+            {
+                totalQuery.Where("fakulteId", "equal", FakulteId);
+            }
+
+            StateHasChanged();
+            DersAcGrid.Refresh();
+
+
+        }
     }
 }
