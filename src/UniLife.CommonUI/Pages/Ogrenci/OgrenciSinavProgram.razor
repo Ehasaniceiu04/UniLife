@@ -5,6 +5,7 @@
 @using Syncfusion.Blazor.DropDowns
 @using Syncfusion.Blazor.Buttons
 @using Syncfusion.Blazor.Inputs
+@attribute [Authorize(Roles = "Administrator,Personel,Ogrenci")]
 
 @if (derslikRezervDtos.Count < 1)
 {
@@ -20,45 +21,45 @@ else if (!isProgramOpen)
 }
 else
 {
-<div class="row">
-    <SfSchedule ID="DersProgramSche" @ref="DersProgramSche" RowAutoHeight="true" TValue="DerslikRezervDto" Width="100%" Height="100%" SelectedDate="@(new DateTime(DateTime.Now.Year,DateTime.Now.Month, DateTime.Now.Day))" CurrentView="View.TimelineDay">
-        <ScheduleWorkHours Start="08:00" End="18:00"></ScheduleWorkHours>
-        <ScheduleTimeScale></ScheduleTimeScale>
-        <ScheduleViews>
-            <ScheduleView StartHour="06:00" EndHour="23:00" Option="View.TimelineDay">
-                <ScheduleViewTimeScale SlotCount="1" Interval="60"></ScheduleViewTimeScale>
-            </ScheduleView>
-            @*<ScheduleView Option="View.TimelineWeek">
+    <div class="row">
+        <SfSchedule ID="DersProgramSche" @ref="DersProgramSche" RowAutoHeight="true" TValue="DerslikRezervDto" Width="100%" Height="100%" SelectedDate="@(new DateTime(DateTime.Now.Year,DateTime.Now.Month, DateTime.Now.Day))" CurrentView="View.TimelineDay">
+            <ScheduleWorkHours Start="08:00" End="18:00"></ScheduleWorkHours>
+            <ScheduleTimeScale></ScheduleTimeScale>
+            <ScheduleViews>
+                <ScheduleView StartHour="06:00" EndHour="23:00" Option="View.TimelineDay">
                     <ScheduleViewTimeScale SlotCount="1" Interval="60"></ScheduleViewTimeScale>
-                </ScheduleView>*@
-        </ScheduleViews>
-        <ScheduleGroup EnableCompactView="false" Resources="@GroupData"></ScheduleGroup>
-        <ScheduleResources>
-            <ScheduleResource TValue="DerslikDto" DataSource="@derslikDtos" Field="DerslikId" Title="Derslik" Name="MeetingRoomzx" TextField="Ad" IdField="Id" ColorField="Color" AllowMultiple="true"></ScheduleResource>
-        </ScheduleResources>
-        <ScheduleTemplates>
-            <ResourceHeaderTemplate>
-                @{
-                    DerslikDto contextDerslik = ((context as DerslikRezervDto).ResourceData as DerslikDto);
-                }
-                <div class='template-wrap'>
-                    <div class="room-name">@(contextDerslik.Ad)</div>
-                    <div class="room-capacity">@(contextDerslik.Capacity)</div>
-                    <div class="room-type">@(contextDerslik.Type)</div>
-                </div>
-            </ResourceHeaderTemplate>
-        </ScheduleTemplates>
-        <ScheduleEventSettings DataSource="@derslikRezervDtos">
-            <ScheduleField>
-                <FieldSubject Title="Yerleştirilen Ders" Name="Subject" Default=" "></FieldSubject>
-                <FieldLocation Title="Source" Name="Location"></FieldLocation>
-                <FieldDescription Title="Yorumlar" Name="Description"></FieldDescription>
-                <FieldStartTime Title="Başlangıç Zamanı" Name="StartTime"></FieldStartTime>
-                <FieldEndTime Title="Bitiş Zamanı" Name="EndTime"></FieldEndTime>
-            </ScheduleField>
-        </ScheduleEventSettings>
-    </SfSchedule>
-</div>
+                </ScheduleView>
+                @*<ScheduleView Option="View.TimelineWeek">
+                        <ScheduleViewTimeScale SlotCount="1" Interval="60"></ScheduleViewTimeScale>
+                    </ScheduleView>*@
+            </ScheduleViews>
+            <ScheduleGroup EnableCompactView="false" Resources="@GroupData"></ScheduleGroup>
+            <ScheduleResources>
+                <ScheduleResource TValue="DerslikDto" DataSource="@derslikDtos" Field="DerslikId" Title="Derslik" Name="MeetingRoomzx" TextField="Ad" IdField="Id" ColorField="Color" AllowMultiple="true"></ScheduleResource>
+            </ScheduleResources>
+            <ScheduleTemplates>
+                <ResourceHeaderTemplate>
+                    @{
+                        DerslikDto contextDerslik = ((context as DerslikRezervDto).ResourceData as DerslikDto);
+                    }
+                    <div class='template-wrap'>
+                        <div class="room-name">@(contextDerslik.Ad)</div>
+                        <div class="room-capacity">@(contextDerslik.Capacity)</div>
+                        <div class="room-type">@(contextDerslik.Type)</div>
+                    </div>
+                </ResourceHeaderTemplate>
+            </ScheduleTemplates>
+            <ScheduleEventSettings DataSource="@derslikRezervDtos">
+                <ScheduleField>
+                    <FieldSubject Title="Yerleştirilen Ders" Name="Subject" Default=" "></FieldSubject>
+                    <FieldLocation Title="Source" Name="Location"></FieldLocation>
+                    <FieldDescription Title="Yorumlar" Name="Description"></FieldDescription>
+                    <FieldStartTime Title="Başlangıç Zamanı" Name="StartTime"></FieldStartTime>
+                    <FieldEndTime Title="Bitiş Zamanı" Name="EndTime"></FieldEndTime>
+                </ScheduleField>
+            </ScheduleEventSettings>
+        </SfSchedule>
+    </div>
 }
 
 

@@ -8,6 +8,9 @@
 @using Syncfusion.Blazor.Buttons
 @using Syncfusion.Blazor.SplitButtons
 @*@using System.ComponentModel.DataAnnotations;*@
+@attribute [Authorize(Roles = "Administrator,Personel")]
+
+
 <style>
     textarea.e-input,
     .e-float-input textarea,

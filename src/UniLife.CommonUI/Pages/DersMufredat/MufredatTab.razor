@@ -3,21 +3,23 @@
 @using UniLife.Shared.Dto.Definitions
 @inject AppState appState
 
+@attribute [Authorize(Roles = "Administrator,Personel")]
 
-    <div class="control-section e-tab-section card">
-        <SfTab @ref="Tab" CssClass="BlazorTab" LoadOn="ContentLoad.Dynamic">
-            @*Selected="OnTabSelected" Selecting="OnTabSelecting"*@
-            <TabEvents Created="TabCreate" Selecting="OnTabSelecting"></TabEvents>
-            <TabItems>
-                <TabItem>
-                    <ChildContent>
-                        <TabHeader Text="Müfredat"></TabHeader>
-                    </ChildContent>
-                    <ContentTemplate>
-                        <Mufredat TabDegis="TabDegis"></Mufredat>
-                    </ContentTemplate>
-                </TabItem>
-                @*<TabItem>
+
+<div class="control-section e-tab-section card">
+    <SfTab @ref="Tab" CssClass="BlazorTab" LoadOn="ContentLoad.Dynamic">
+        @*Selected="OnTabSelected" Selecting="OnTabSelecting"*@
+        <TabEvents Created="TabCreate" Selecting="OnTabSelecting"></TabEvents>
+        <TabItems>
+            <TabItem>
+                <ChildContent>
+                    <TabHeader Text="Müfredat"></TabHeader>
+                </ChildContent>
+                <ContentTemplate>
+                    <Mufredat TabDegis="TabDegis"></Mufredat>
+                </ContentTemplate>
+            </TabItem>
+            @*<TabItem>
                     <ChildContent>
                         <TabHeader Text="Bağlı Ders Oluştur"></TabHeader>
                     </ChildContent>
@@ -25,17 +27,17 @@
                         <BagliDersOlustur TabDegis="TabDegis"></BagliDersOlustur>
                     </ContentTemplate>
                 </TabItem>*@
-                <TabItem>
-                    <ChildContent>
-                        <TabHeader Text="Bağlı Dersler"></TabHeader>
-                    </ChildContent>
-                    <ContentTemplate>
-                        <Dersler TabDegis="TabDegis"></Dersler>
-                    </ContentTemplate>
-                </TabItem>
-            </TabItems>
-        </SfTab>
-    </div>
+            <TabItem>
+                <ChildContent>
+                    <TabHeader Text="Bağlı Dersler"></TabHeader>
+                </ChildContent>
+                <ContentTemplate>
+                    <Dersler TabDegis="TabDegis"></Dersler>
+                </ContentTemplate>
+            </TabItem>
+        </TabItems>
+    </SfTab>
+</div>
 
 
 
@@ -70,7 +72,7 @@
     public void TabDegis(int tabIndex)
     {
         Tab.EnableTab(0, true);
-        Tab.EnableTab(1, tabIndex>0);
+        Tab.EnableTab(1, tabIndex > 0);
         Tab.Select(tabIndex);
     }
 

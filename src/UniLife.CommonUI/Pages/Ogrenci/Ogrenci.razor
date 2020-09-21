@@ -4,6 +4,9 @@
 
 @using Syncfusion.Blazor.Cards
 
+@attribute [Authorize(Roles = "Administrator,Personel,Ogrenci")]
+
+
 <div class="control-section db-seo">
     <div class="col-lg-12 col-sm-12 col-md-12" id="sidebar-section">
         <div id="target">
@@ -82,9 +85,9 @@
 <div class="divider"><span></span><span>Genel Duyurular</span><span></span></div>
 
 @if (true)
-	{
-		 <p>Genel duyuru yok.</p>
-	}
+{
+    <p>Genel duyuru yok.</p>
+}
 
 
 <Divider4></Divider4>

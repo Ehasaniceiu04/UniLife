@@ -12,6 +12,7 @@
 @using System.IO;
 @inject AppState appState
 @inject IJSRuntime JSRuntime;
+@attribute [Authorize(Roles = "Administrator,Personel,Ogrenci")]
 
 
 @if (!isInitializingFinised)
@@ -113,7 +114,7 @@ else
                                     <label class="col-sm-2" for="AyrTarih">Ayrılma Tarihi:</label>
                                     <SfDatePicker Enabled="isPersonel" ID="AyrTarih" TValue="DateTime?" @bind-Value="@_OgrenciDto.AyrilTarih" CssClass="col-sm-4 pb-1" Placeholder="Ayrılma Tarihi"></SfDatePicker>
 
-                                    
+
                                     <label class="col-sm-2" for="danis">Danışmanı:</label>
                                     @if (isPersonel)
                                     {
@@ -124,7 +125,7 @@ else
                                         <SfButton ID="danis" IconCss="e-icons e-Resource" EnableHtmlSanitizer="false" EnableRtl="true" CssClass="e-flat col-sm-4" IsPrimary="true">@(string.IsNullOrWhiteSpace(danismanAd) ?"Ekle": danismanAd)</SfButton>
                                     }
 
-                                    
+
                                     <label class="col-sm-2" for="capYan">Çap Yandal Durum:</label>
                                     <SfDropDownList Enabled="isPersonel" ID="capYan" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
                                         <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>

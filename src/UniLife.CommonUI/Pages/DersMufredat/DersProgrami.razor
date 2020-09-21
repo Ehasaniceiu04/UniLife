@@ -6,6 +6,7 @@
 @using Syncfusion.Blazor.Inputs
 @using Syncfusion.Blazor.Data
 
+@attribute [Authorize(Roles = "Administrator,Personel")]
 
 <div class="control-section">
     <div class="content-wrapper">
@@ -112,7 +113,7 @@
                     </div>
                     <label for="DropBina" class="col-sm-1 col-form-label-sm">Sinav</label>
                     <div class="col-sm-2">
-                        <SfSwitch  CssClass="form-control-sm" @bind-Checked="@isSinav">Sinav</SfSwitch>
+                        <SfSwitch CssClass="form-control-sm" @bind-Checked="@isSinav">Sinav</SfSwitch>
                     </div>
                 </div>
             </div>

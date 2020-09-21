@@ -1,7 +1,8 @@
 ﻿@page "/lokasyon_tanimlar"
 @inject HttpClient Http;
-@using UniLife.CommonUI.Pages.Definitions.LokasyonTabs 
+@using UniLife.CommonUI.Pages.Definitions.LokasyonTabs
 @inject IMatToaster matToaster
+@attribute [Authorize(Roles = "Administrator,Personel")]
 
 <MatTabGroup>
 

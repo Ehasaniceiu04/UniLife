@@ -5,6 +5,7 @@
 @using UniLife.CommonUI.Pages.Definitions.Tabs
 @using UniLife.CommonUI.Pages.Definitions.YokTabs
 @inject IMatToaster matToaster
+@attribute [Authorize(Roles = "Administrator,Personel")]
 
 <MatTabGroup>
 
@@ -15,9 +16,9 @@
     </MatTab>
     @*<MatTab Label="Fakülte Tur">
 
-        <FakulteTur></FakulteTur>
+            <FakulteTur></FakulteTur>
 
-    </MatTab>*@
+        </MatTab>*@
     <MatTab Label="Dönem Tip">
 
         <DonemTip></DonemTip>

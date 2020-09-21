@@ -6,6 +6,7 @@
 @using Syncfusion.Blazor.Buttons
 @using Syncfusion.Blazor.Inputs
 
+@attribute [Authorize(Roles = "Administrator,Personel,Ogrenci")]
 
 @if (!isProgramOpen)
 {

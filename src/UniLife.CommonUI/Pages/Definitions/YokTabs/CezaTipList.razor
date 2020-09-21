@@ -4,6 +4,7 @@
 @inject IMatToaster matToaster
 @using Syncfusion.Blazor.Data
 @using System.Net
+@attribute [Authorize(Roles = "Administrator,Personel")]
 
 <ControlSection>
     <SfGrid Width="100%" Height="85%" AllowResizing="true" @ref="cezaGrid" TValue="CezaTipDto">

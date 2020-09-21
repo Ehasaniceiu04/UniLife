@@ -9,6 +9,7 @@
 @using UniLife.Shared.DataModels
 @using Syncfusion.Blazor.SplitButtons
 @inject AppState appState
+@attribute [Authorize(Roles = "Administrator,Personel")]
 
 <div class="row">
     <div class="col-sm-12 col-md-6">
@@ -120,14 +121,14 @@
                     @*<SfDataManager Url="@OdataQueryDers" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>*@
                     <GridEvents TValue="DersAcilanDto"></GridEvents>
                     @*<GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.Excel"></GridFilterSettings>*@
-                <GridColumns>
-                    <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
-                    <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
-                    <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Ad"> </GridColumn>
-                    <GridColumn Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kod"></GridColumn>
-                    <GridColumn Field=@nameof(DersAcilanDto.Kredi) HeaderText="Kredi"></GridColumn>
-                    <GridColumn Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sınıf"></GridColumn>
-                </GridColumns>
+                    <GridColumns>
+                        <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
+                        <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+                        <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Ad"> </GridColumn>
+                        <GridColumn Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kod"></GridColumn>
+                        <GridColumn Field=@nameof(DersAcilanDto.Kredi) HeaderText="Kredi"></GridColumn>
+                        <GridColumn Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sınıf"></GridColumn>
+                    </GridColumns>
                 </SfGrid>
             }
         </div>

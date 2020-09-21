@@ -7,6 +7,8 @@
 @using Syncfusion.Blazor.Calendars
 @using Syncfusion.Blazor.Data
 
+@attribute [Authorize(Roles = "Administrator,Personel")]
+
 <div class="row">
     <div class="col-sm-12 col-md-6">
         <div class="server-action-menu">
@@ -20,7 +22,7 @@
                     <div class="form-row">
                         @*açılan ders filtre*@
                         <label class="col-sm-2" for="DropDonem">Dönem:</label>
-                        <SfDropDownList ID="DropDonem" @ref="DropDonem"  ShowClearButton="true" TItem="DonemDto" CssClass="col-sm-10 pb-1"
+                        <SfDropDownList ID="DropDonem" @ref="DropDonem" ShowClearButton="true" TItem="DonemDto" CssClass="col-sm-10 pb-1"
                                         TValue="int?" PopupHeight="230px" Placeholder="Dönem Seçiniz"
                                         @bind-Value="@_dersAcilanDto.DonemId" DataSource="@donemDtos">
                             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
@@ -171,7 +173,8 @@
                         @if (IsStateSubelendir)
                         {
                             <SfButton OnClick="Onayla" CssClass="e-success col-sm-4">Şubelendirmeyi Onayla &#10004;</SfButton>
-                        }else
+                        }
+                        else
                         {
                             //Subelendirme bitmişi düzenle
                             <label class="col-sm-4" for="ogrSubeler">Seçilen Öğrenciyi</label>

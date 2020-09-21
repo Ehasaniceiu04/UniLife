@@ -4,6 +4,7 @@
 @using Syncfusion.Blazor.DropDowns
 @using System.Net
 @using Newtonsoft.Json
+@attribute [Authorize(Roles = "Administrator,Personel")]
 
 @if (harcDtos == null)
 {
@@ -23,7 +24,7 @@ else
                 @*<GridColumn Field=@nameof(HarcDto.Ad) HeaderText="Harc İsim"></GridColumn>*@
                 @*<GridColumn Field=@nameof(HarcDto.Fakulte.UniversiteId) HeaderText="Üniversite" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@universiteDtos" Width="150"></GridColumn>*@
                 <GridColumn Field=@nameof(HarcDto.ProgramId) HeaderText="Program" EditType="EditType.DropDownEdit" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@programDtos"></GridColumn>
-                <GridColumn Field=@nameof(HarcDto.DonemId) HeaderText="Donem" EditType="EditType.DropDownEdit"  ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@donemDtos"></GridColumn>
+                <GridColumn Field=@nameof(HarcDto.DonemId) HeaderText="Donem" EditType="EditType.DropDownEdit" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@donemDtos"></GridColumn>
                 <GridColumn Field=@nameof(HarcDto.Tutar) HeaderText="Tutar"></GridColumn>
                 <GridColumn Field=@nameof(HarcDto.OnTutar) HeaderText="%10 Tutar"></GridColumn>
                 <GridColumn Field=@nameof(HarcDto.YabanciTutar) HeaderText="Yabancı Tutar"></GridColumn>

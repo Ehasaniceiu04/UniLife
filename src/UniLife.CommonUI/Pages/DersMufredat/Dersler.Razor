@@ -6,6 +6,8 @@
 @using Syncfusion.Blazor.Data
 @inject AppState appState
 
+@attribute [Authorize(Roles = "Administrator,Personel")]
+
 <div class="form-row">
 
     <MatBlazor.MatHeadline6 class="col-md-3 col-sm-12">Fakülte : @(appState.MufredatState == null?"Bağlı fakülte yok.": appState.MufredatState.FakulteAd)</MatBlazor.MatHeadline6>

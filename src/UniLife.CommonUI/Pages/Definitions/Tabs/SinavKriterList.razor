@@ -4,47 +4,48 @@
 @using Syncfusion.Blazor.DropDowns
 @using System.Net
 @using Newtonsoft.Json
+@attribute [Authorize(Roles = "Administrator,Personel")]
 
-    <ControlSection>
-        <SfGrid @ref="SinavKriterGrid" DataSource="@sinavKriterDtos" Toolbar="@(new List<string>() { "Add"})" AllowSorting="true" AllowFiltering="true" AllowPaging="true" Width="100%">
-            <GridEvents OnActionComplete="ActionCompletedHandler" TValue="SinavKriterDto"></GridEvents>
-            <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
-            <GridColumns>
-                <GridColumn Visible="false" Field=@nameof(SinavKriterDto.Id) HeaderText="Sınav Kriter ID" Edit="false" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
-                <GridColumn Field=@nameof(SinavKriterDto.SinavDegerlendirmeTipi) EditType="EditType.DropDownEdit" HeaderText="Sınav Değerlendirme Tipi" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@SinavDergerTipDtos"></GridColumn>
-                <GridColumn Field=@nameof(SinavKriterDto.EnAzAraSnvEtkiOrnYuzde) HeaderText="EnAz YYS Etki oranı%"></GridColumn>
-                <GridColumn Field=@nameof(SinavKriterDto.BglDegKatmaLimiti) HeaderText="Bğl Değ. Katma Limiti"></GridColumn>
-                <GridColumn Field=@nameof(SinavKriterDto.YariYilSonSinavLimit) HeaderText="Yarı Yıl Sonu Sınav Limiti"></GridColumn>
-                <GridColumn Field=@nameof(SinavKriterDto.BglDegDisSinOrtTavan) HeaderText="Bğl Değ. Dış Sınıf Ort.(Tavan)"></GridColumn>
-                <GridColumn Field=@nameof(SinavKriterDto.BglDegEnAzOgrSayisi) HeaderText="Bğl. Değ. En Az Öğrenci Sayısı"></GridColumn>
-                @*<GridColumn Visible="false" Field=@nameof(SinavKriterDto.IkiAralikEnAzOgrSayisi) HeaderText="Ogrenim Tür" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@ogrenimTurDtos"></GridColumn>*@
-                <GridColumn Field=@nameof(SinavKriterDto.VarSayilanBagHarfTablosu) EditType="EditType.DropDownEdit" HeaderText="Varsayılan Bağıl Harf Tablosu" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@SinavDergerTipDtos"></GridColumn>
-                <GridColumn Field=@nameof(SinavKriterDto.MutlakDegerHarfTablo) HeaderText="Mutlak Değerlendirme Harf Tablosu" EditType="EditType.DropDownEdit" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@MutlakDegerHarfTabloDtos"></GridColumn>
-                <GridColumn Field=@nameof(SinavKriterDto.BasariDegTabanGeçHarf)  HeaderText="Başarı Taban Geçer Harf"></GridColumn>
-                <GridColumn Field=@nameof(SinavKriterDto.ButGirmeyenSifir) HeaderText="Büte Girmeyen Öğrenciye 0 Ver" EditType="EditType.BooleanEdit"></GridColumn>
-                <GridColumn Field=@nameof(SinavKriterDto.AraSinavSayi) HeaderText="Ara Sınav Sayısı"></GridColumn>
-                <GridColumn Field=@nameof(SinavKriterDto.EnAzAraSnvEtkiOrnYuzde) HeaderText="En Az Ara Sınav Etki Oranı%"></GridColumn>
-                <GridColumn Field=@nameof(SinavKriterDto.EnCokYYSEtkiOranYuzde) HeaderText="En Çok YYS Etki Oran"></GridColumn>
-                <GridColumn Field=@nameof(SinavKriterDto.HamBasariNotAltLimit) HeaderText="Ham Başarı Notu Alt Limiti"></GridColumn>
-                <GridColumn Field=@nameof(SinavKriterDto.EnFazlaHamBasariNotuOrt) HeaderText="En Fazla Ham Başarı Not Ort."></GridColumn>
-                <GridColumn Field=@nameof(SinavKriterDto.VarSayilanBagilHesapTipi) HeaderText="Varayılan Başarı Hesap Tipi" EditType="EditType.DropDownEdit" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@VarSayilanBagilHesapTipDtos"></GridColumn>
-                <GridColumn Field=@nameof(SinavKriterDto.VarsayilanMutlakHesapTipi) HeaderText="Varayilan Mutlak Hesap Tipi" EditType="EditType.DropDownEdit" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@VarsayilanMutlakHesapTipDtos"></GridColumn>
-                <GridColumn Field=@nameof(SinavKriterDto.YYSSinavSayisi) HeaderText="YYS Sınav Sayısı"></GridColumn>
-                <GridColumn Field=@nameof(SinavKriterDto.FinaleGirmeyenKalir) HeaderText="Finale Girmeyen Kalır" EditType="EditType.BooleanEdit"></GridColumn>
-                <GridColumn Field=@nameof(SinavKriterDto.ButuFinalleAyniDegerlendir) HeaderText="Bütü Finalle Aynı Değerlendir" EditType="EditType.BooleanEdit"></GridColumn>
-                <GridColumn HeaderText="Manage Records" Width="150">
-                    <GridCommandColumns>
-                        <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-edit", CssClass = "e-flat" })"></GridCommandColumn>
-                        <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-delete", CssClass = "e-flat" })"></GridCommandColumn>
-                        <GridCommandColumn Type="CommandButtonType.Save" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-update", CssClass = "e-flat" })"></GridCommandColumn>
-                        <GridCommandColumn Type="CommandButtonType.Cancel" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-cancel-icon", CssClass = "e-flat" })"></GridCommandColumn>
-                    </GridCommandColumns>
-                </GridColumn>
+<ControlSection>
+    <SfGrid @ref="SinavKriterGrid" DataSource="@sinavKriterDtos" Toolbar="@(new List<string>() { "Add"})" AllowSorting="true" AllowFiltering="true" AllowPaging="true" Width="100%">
+        <GridEvents OnActionComplete="ActionCompletedHandler" TValue="SinavKriterDto"></GridEvents>
+        <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
+        <GridColumns>
+            <GridColumn Visible="false" Field=@nameof(SinavKriterDto.Id) HeaderText="Sınav Kriter ID" Edit="false" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+            <GridColumn Field=@nameof(SinavKriterDto.SinavDegerlendirmeTipi) EditType="EditType.DropDownEdit" HeaderText="Sınav Değerlendirme Tipi" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@SinavDergerTipDtos"></GridColumn>
+            <GridColumn Field=@nameof(SinavKriterDto.EnAzAraSnvEtkiOrnYuzde) HeaderText="EnAz YYS Etki oranı%"></GridColumn>
+            <GridColumn Field=@nameof(SinavKriterDto.BglDegKatmaLimiti) HeaderText="Bğl Değ. Katma Limiti"></GridColumn>
+            <GridColumn Field=@nameof(SinavKriterDto.YariYilSonSinavLimit) HeaderText="Yarı Yıl Sonu Sınav Limiti"></GridColumn>
+            <GridColumn Field=@nameof(SinavKriterDto.BglDegDisSinOrtTavan) HeaderText="Bğl Değ. Dış Sınıf Ort.(Tavan)"></GridColumn>
+            <GridColumn Field=@nameof(SinavKriterDto.BglDegEnAzOgrSayisi) HeaderText="Bğl. Değ. En Az Öğrenci Sayısı"></GridColumn>
+            @*<GridColumn Visible="false" Field=@nameof(SinavKriterDto.IkiAralikEnAzOgrSayisi) HeaderText="Ogrenim Tür" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@ogrenimTurDtos"></GridColumn>*@
+            <GridColumn Field=@nameof(SinavKriterDto.VarSayilanBagHarfTablosu) EditType="EditType.DropDownEdit" HeaderText="Varsayılan Bağıl Harf Tablosu" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@SinavDergerTipDtos"></GridColumn>
+            <GridColumn Field=@nameof(SinavKriterDto.MutlakDegerHarfTablo) HeaderText="Mutlak Değerlendirme Harf Tablosu" EditType="EditType.DropDownEdit" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@MutlakDegerHarfTabloDtos"></GridColumn>
+            <GridColumn Field=@nameof(SinavKriterDto.BasariDegTabanGeçHarf) HeaderText="Başarı Taban Geçer Harf"></GridColumn>
+            <GridColumn Field=@nameof(SinavKriterDto.ButGirmeyenSifir) HeaderText="Büte Girmeyen Öğrenciye 0 Ver" EditType="EditType.BooleanEdit"></GridColumn>
+            <GridColumn Field=@nameof(SinavKriterDto.AraSinavSayi) HeaderText="Ara Sınav Sayısı"></GridColumn>
+            <GridColumn Field=@nameof(SinavKriterDto.EnAzAraSnvEtkiOrnYuzde) HeaderText="En Az Ara Sınav Etki Oranı%"></GridColumn>
+            <GridColumn Field=@nameof(SinavKriterDto.EnCokYYSEtkiOranYuzde) HeaderText="En Çok YYS Etki Oran"></GridColumn>
+            <GridColumn Field=@nameof(SinavKriterDto.HamBasariNotAltLimit) HeaderText="Ham Başarı Notu Alt Limiti"></GridColumn>
+            <GridColumn Field=@nameof(SinavKriterDto.EnFazlaHamBasariNotuOrt) HeaderText="En Fazla Ham Başarı Not Ort."></GridColumn>
+            <GridColumn Field=@nameof(SinavKriterDto.VarSayilanBagilHesapTipi) HeaderText="Varayılan Başarı Hesap Tipi" EditType="EditType.DropDownEdit" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@VarSayilanBagilHesapTipDtos"></GridColumn>
+            <GridColumn Field=@nameof(SinavKriterDto.VarsayilanMutlakHesapTipi) HeaderText="Varayilan Mutlak Hesap Tipi" EditType="EditType.DropDownEdit" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@VarsayilanMutlakHesapTipDtos"></GridColumn>
+            <GridColumn Field=@nameof(SinavKriterDto.YYSSinavSayisi) HeaderText="YYS Sınav Sayısı"></GridColumn>
+            <GridColumn Field=@nameof(SinavKriterDto.FinaleGirmeyenKalir) HeaderText="Finale Girmeyen Kalır" EditType="EditType.BooleanEdit"></GridColumn>
+            <GridColumn Field=@nameof(SinavKriterDto.ButuFinalleAyniDegerlendir) HeaderText="Bütü Finalle Aynı Değerlendir" EditType="EditType.BooleanEdit"></GridColumn>
+            <GridColumn HeaderText="Manage Records" Width="150">
+                <GridCommandColumns>
+                    <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-edit", CssClass = "e-flat" })"></GridCommandColumn>
+                    <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-delete", CssClass = "e-flat" })"></GridCommandColumn>
+                    <GridCommandColumn Type="CommandButtonType.Save" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-update", CssClass = "e-flat" })"></GridCommandColumn>
+                    <GridCommandColumn Type="CommandButtonType.Cancel" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-cancel-icon", CssClass = "e-flat" })"></GridCommandColumn>
+                </GridCommandColumns>
+            </GridColumn>
 
-            </GridColumns>
-        </SfGrid>
-    </ControlSection>
-            
+        </GridColumns>
+    </SfGrid>
+</ControlSection>
+
 @code{
 
     SfGrid<SinavKriterDto> SinavKriterGrid;

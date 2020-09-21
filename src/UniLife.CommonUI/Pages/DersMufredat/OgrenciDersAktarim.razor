@@ -8,6 +8,7 @@
 @using Syncfusion.Blazor.Data
 @using UniLife.Shared.DataModels
 @using Syncfusion.Blazor.SplitButtons
+@attribute [Authorize(Roles = "Administrator,Personel")]
 
 <div class="row">
     <div class="col-sm-12 col-md-6">
@@ -160,7 +161,7 @@
                                 <SfDataManager Url="@($"odata/derskayits?$filter=DersAcilanId eq {dersId2} and DersAcilan/sinif eq {sinif2} and DersAcilan/donemId eq {donemId2}&$expand=Ogrenci($expand=Program($select=Ad,Id);$select=Ad,Id,Soyad,OgrNo),DersAcilan($select=Ad,Id)&$select=Id,ogrenciId")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
                                 <GridColumns>
                                     <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
-                                    <GridColumn Visible="false" Field=@nameof(DersKayitDto.OgrenciId)  IsPrimaryKey="true" TextAlign="TextAlign.Right"></GridColumn>
+                                    <GridColumn Visible="false" Field=@nameof(DersKayitDto.OgrenciId) IsPrimaryKey="true" TextAlign="TextAlign.Right"></GridColumn>
                                     <GridColumn Field="Ogrenci.OgrNo" HeaderText="Öğr No"></GridColumn>
                                     <GridColumn Field="Ogrenci.Ad" HeaderText="Ad"></GridColumn>
                                     <GridColumn Field="Ogrenci.Soyad" HeaderText="Soyad"></GridColumn>

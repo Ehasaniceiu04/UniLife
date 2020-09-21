@@ -3,6 +3,7 @@
 @inject IMatToaster matToaster
 
 @using System.Net
+@attribute [Authorize(Roles = "Administrator,Personel")]
 
 <ControlSection>
     <SfGrid Width="100%" Height="85%" AllowResizing="true" @ref="UniGrid" DataSource="@fakulteTurDtos" Toolbar="@(new List<string>() { "Add" })" AllowPaging="true" AllowFiltering="true">
