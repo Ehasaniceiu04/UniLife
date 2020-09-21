@@ -53,7 +53,7 @@ namespace UniLife.Shared.DataModels
         public string DnmSnfGecBilgi { get; set; }
 
         public string AskerDurum { get; set; }
-        public DateTime? KayitTarih { get; set; }
+        public DateTime KayitTarih { get; set; }
         public DateTime? AyrilTarih { get; set; }
         public int Sinif { get; set; }
         public decimal GerekenTopUcret { get; set; }

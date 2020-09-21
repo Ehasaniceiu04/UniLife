@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using UniLife.Shared.DataModels;
@@ -17,7 +18,7 @@ namespace UniLife.Server.Controllers
 
         [Microsoft.AspNet.OData.EnableQuery()]
         [HttpGet]
-        //[Authorize(Permissions.Ogrenci.Create)]
+        [Authorize]
         public IEnumerable<CezaTip> Get()
         {
             return _applicationDbContext.CezaTips;

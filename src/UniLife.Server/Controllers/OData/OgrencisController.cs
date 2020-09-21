@@ -89,6 +89,7 @@ namespace UniLife.Server.Controllers
 
         [Microsoft.AspNet.OData.EnableQuery()]
         [HttpGet]
+        [Authorize(Roles = "Administrator,Personel,Akademisyen")]
         public IEnumerable<Ogrenci> Get()
         {
             return _applicationDbContext.Ogrencis;

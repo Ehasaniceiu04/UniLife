@@ -83,12 +83,13 @@ namespace UniLife.Storage.Stores
         {
             var ogrenciList = await (from o in _db.Ogrencis
                                      join sk in _db.SinavKayits.Where(x => x.SinavId == sinavId) on o.Id equals sk.OgrenciId
-                                     select new OgrenciDto { 
-                                        Ad=o.Ad,
-                                        Soyad = o.Soyad,
-                                        OgrNo = o.OgrNo,
-                                        TCKN = o.TCKN,
-                                        SinavKayitId = sk.Id
+                                     select new OgrenciDto
+                                     {
+                                         Ad = o.Ad,
+                                         Soyad = o.Soyad,
+                                         OgrNo = o.OgrNo,
+                                         TCKN = o.TCKN,
+                                         SinavKayitId = sk.Id
                                      }).ToListAsync();
 
 
@@ -108,12 +109,12 @@ namespace UniLife.Storage.Stores
                                      join dk in _db.DersKayits.Where(x => x.DersAcilanId == dersAcId) on o.Id equals dk.OgrenciId
                                      select new OgrenciDto
                                      {
-                                         Id= o .Id,
+                                         Id = o.Id,
                                          OgrNo = o.OgrNo,
                                          Ad = o.Ad,
                                          Soyad = o.Soyad,
                                          Sinif = o.Sinif,
-                                         ProgramAdi=p.Ad,
+                                         ProgramAdi = p.Ad,
                                          TCKN = o.TCKN,
                                          //SinavKayitId = sk.Id
                                      }).ToListAsync();
@@ -129,7 +130,7 @@ namespace UniLife.Storage.Stores
 
         public async Task SetDanismanToOgrencis(ReqEntityIdWithOtherEntitiesIds ReqEntityIdWithOtherEntitiesIds)
         {
-            string queryIncludeIds="";
+            string queryIncludeIds = "";
             foreach (var item in ReqEntityIdWithOtherEntitiesIds.OtherEntityIds)
             {
                 queryIncludeIds = queryIncludeIds + item.ToString() + ",";
@@ -139,7 +140,7 @@ namespace UniLife.Storage.Stores
 
             var rawBulkUpdateQuery = $"update public.'Ogrencis' set 'DanismanId' = {ReqEntityIdWithOtherEntitiesIds.EntityId} where 'Id' in ({queryIncludeIds})";
 
-            int numberOfRowAffected =  await _db.Database.ExecuteSqlCommandAsync(rawBulkUpdateQuery.Replace('\'','"'));
+            int numberOfRowAffected = await _db.Database.ExecuteSqlCommandAsync(rawBulkUpdateQuery.Replace('\'', '"'));
         }
 
         public async Task SetMufredatToOgrencis(ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds)
@@ -176,12 +177,13 @@ namespace UniLife.Storage.Stores
         public async Task OgrencisSinifAtlat(ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds)
         {
             var ogrencis = await (from o in _db.Ogrencis.Where(x => reqEntityIdWithOtherEntitiesIds.OtherEntityIds.Contains(x.Id))
-                                 select o).ToListAsync();
+                                  select o).ToListAsync();
 
             var ogrPrograms = await (from o in _db.Ogrencis.Where(x => reqEntityIdWithOtherEntitiesIds.OtherEntityIds.Contains(x.Id))
                                      join p in _db.Programs on o.ProgramId equals p.Id
-                                     select new KeyValueDto { 
-                                         Id= o.Id,
+                                     select new KeyValueDto
+                                     {
+                                         Id = o.Id,
                                          IntValue = p.NormalSure
                                      }).ToListAsync();
 
@@ -195,9 +197,9 @@ namespace UniLife.Storage.Stores
 
             foreach (var item in ogrencis)
             {
-                int ogrPrgSure = ogrPrograms.FirstOrDefault(x=>x.Id == item.Id).IntValue;
+                int ogrPrgSure = ogrPrograms.FirstOrDefault(x => x.Id == item.Id).IntValue;
 
-                if (ogrPrgSure> item.Sinif && item.DnmSnfGecBilgi != "Sınıf Atlatıldı")
+                if (ogrPrgSure > item.Sinif && item.DnmSnfGecBilgi != "Sınıf Atlatıldı")
                 {
                     item.Sinif++;
                     item.DnmSnfGecBilgi = "Sınıf Atlatıldı";
@@ -219,7 +221,7 @@ namespace UniLife.Storage.Stores
             {
                 return 0;
             }
-           
+
         }
 
         public async Task SinifAtlaTemizle(HedefKaynakDto hedefKaynakDto)
@@ -233,6 +235,43 @@ namespace UniLife.Storage.Stores
             await silAtlatOgrs.ForEachAsync(x => x.DnmSnfGecBilgi = null);
 
             await _db.SaveChangesAsync(CancellationToken.None);
+        }
+
+        public async Task<OgrenciInfoDto> GetOgrInfos(string kullaniciId)
+        {
+            return await (from o in _db.Ogrencis
+                          join f in _db.Fakultes on o.FakulteId equals f.Id
+                          join b in _db.Bolums on o.BolumId equals b.Id
+                          join p in _db.Programs on o.ProgramId equals p.Id
+                          join m in _db.Mufredats on o.MufredatId equals m.Id
+                          join kn in _db.KayitNedens on o.KayitNedenId equals kn.Id
+                          join od in _db.OgrenimDurums on o.OgrenimDurumId equals od.Id
+                          join d in _db.Akademisyens on o.DanismanId equals d.Id
+                          select new OgrenciInfoDto
+                          {
+                              Ad = o.Ad,
+                              BilgNot = o.BilgNotu,
+                              BolumAd = b.Ad,
+                              DanismanAd = d.Ad,
+                              Durum = o.Durum,
+                              CapYandal = "asd",
+                              Email = o.Email,
+                              FakulteAd = f.Ad,
+                              IlaveDonem = "",
+                              KayitNedenAd = kn.Ad,
+                              MufredatAd = m.Ad,
+                              OgrenciId = o.Id,
+                              OgrenimDurumAd = od.Ad,
+                              ProgramAd = p.Ad,
+                              Sinif = o.Sinif,
+                              Tckn = o.TCKN,
+                              UserId = o.ApplicationUserId,
+                              OgrNo = o.OgrNo,
+                              Soyad = o.Soyad,
+                              KayitTarih=o.KayitTarih,
+                              AyrilTarih=o.AyrilTarih
+                          }).FirstOrDefaultAsync();
+
         }
     }
 }

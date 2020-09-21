@@ -34,114 +34,68 @@ else
                     </div>*@
 
                 @*Model=@_OgrenciDto OnValidSubmit="Kaydet"*@
-                <EditForm EditContext="@EC">
-                    <DataAnnotationsValidator />
-                    <ValidationSummary />
-                    <div class="row">
-                        <div class="col-sm-12 col-md-6">
-                            <div class="server-action-menu">
-                                <div class="form-row form-group form-inline ">
-                                    <label class="col-sm-2" for="OgrNo">Öğrenci NO:</label>
-                                    <SfNumericTextBox @bind-Value="@_OgrenciDto.OgrNo" Enabled="false" ID="OgrNo" CssClass="col-sm-4"></SfNumericTextBox>
-                                    <SfCheckBox Enabled="isPersonel" Label="Durum" CssClass="col-sm-1" @bind-Checked="@_OgrenciDto.Durum"></SfCheckBox>
-                                    <label class="col-sm-2" for="TCKN">TCKN:</label>
-                                    <SfTextBox Enabled="isPersonel" @bind-Value="@_OgrenciDto.TCKN" ID="TCKN" CssClass="col-sm-4"></SfTextBox>
-                                    <label class="col-sm-2" for="Seri">Kimlik Seri:</label>
-                                    <SfTextBox Enabled="isPersonel" ID="Seri" CssClass="col-sm-4"></SfTextBox>
-                                    <label class="col-sm-2" for="Adi">Adı:</label>
-                                    <SfTextBox Enabled="isPersonel" @bind-Value="@_OgrenciDto.Ad" ID="Adı" CssClass="col-sm-4"></SfTextBox>
-                                    <label class="col-sm-2" for="Soyadi">Soyadı:</label>
-                                    <SfTextBox Enabled="isPersonel" @bind-Value="@_OgrenciDto.Soyad" ID="Soyadi" CssClass="col-sm-4"></SfTextBox>
-                                    <label class="col-sm-2" for="Email">Email:</label>
-                                    <SfTextBox Enabled="isPersonel" @bind-Value="@_OgrenciDto.Email" ID="Email" CssClass="col-sm-10"></SfTextBox>
-                                    <label class="col-sm-2" for="DropFakulte">Fakulte:</label>
-                                    <SfDropDownList Enabled="isPersonel" ID="DropFakulte" @ref="DropFakulte" TItem="FakulteDto" CssClass="col-sm-10 pb-1"
-                                                    TValue="int?" PopupHeight="230px" Placeholder="Fakülte Seçiniz"
-                                                    @bind-Value="@_OgrenciDto.FakulteId" DataSource="@fakulteDtos">
-                                        <DropDownListEvents TValue="int?" ValueChange="FakulteToBolum"></DropDownListEvents>
-                                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                                    </SfDropDownList>
-                                    <label class="col-sm-2" for="DropBolum">Bolum:</label>
-                                    <SfDropDownList Enabled="isPersonel" ID="DropBolum" @ref="DropBolum" TItem="BolumDto" CssClass="col-sm-10 pb-1"
-                                                    TValue="int?" PopupHeight="230px" Placeholder="Bölüm Seçiniz"
-                                                    @bind-Value="@_OgrenciDto.BolumId" DataSource="@bolumDtos">
-                                        <DropDownListEvents TValue="int?" ValueChange="BolumToProgram"></DropDownListEvents>
-                                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                                    </SfDropDownList>
-                                    <label class="col-sm-2" for="DropProgram">Program:</label>
-                                    <SfDropDownList Enabled="isPersonel" ID="DropProgram" @ref="DropProgram" TItem="ProgramDto" CssClass="col-sm-10 pb-1"
-                                                    TValue="int?" PopupHeight="230px" Placeholder="Program Seçiniz"
-                                                    @bind-Value="@_OgrenciDto.ProgramId" DataSource="@programDtos">
-                                        <DropDownListEvents TValue="int?" ValueChange="ProgramToMufredat"></DropDownListEvents>
-                                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                                    </SfDropDownList>
-                                    <label class="col-sm-2" for="DropMufredat">Mufredat:</label>
-                                    <SfDropDownList Enabled="isPersonel" ID="DropMufredat" @ref="DropMufredat" TItem="MufredatDto" CssClass="col-sm-10 pb-1"
-                                                    TValue="int?" PopupHeight="230px" Placeholder="Müfredat Seçiniz"
-                                                    @bind-Value="@_OgrenciDto.MufredatId" DataSource="@mufredatDtos">
-                                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                                    </SfDropDownList>
-                                    <label class="col-sm-2" for="DropSinif">Sınıf:</label>
-                                    <SfDropDownList Enabled="isPersonel" ID="DropSinif" @ref="DropSinif" TItem="SinifDto" CssClass="col-sm-10 pb-1"
-                                                    TValue="int?" PopupHeight="230px" Placeholder="Sınıf Seçiniz"
-                                                    @bind-Value="@_OgrenciDto.Sinif" DataSource="@sinifDtos">
-                                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                                    </SfDropDownList>
-                                    <label class="col-sm-2" for="ilDonem">ilave Dönem:</label>
-                                    <SfTextBox Enabled="isPersonel" ID="ilDonem" Placeholder="ilave Dönem" CssClass="col-sm-3"></SfTextBox>
-
-                                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                        <div class="server-action-menu">
+                            <div class="form-row form-group form-inline ">
+                                <label class="col-sm-2" for="OgrNo">Öğrenci NO:</label>
+                                <SfNumericTextBox @bind-Value="@ogrenciInfoDto.OgrNo" Enabled="false" ID="OgrNo" CssClass="col-sm-4"></SfNumericTextBox>
+                                <SfCheckBox Enabled="false" Label="Durum" CssClass="col-sm-6" @bind-Checked="@ogrenciInfoDto.Durum"></SfCheckBox>
+                                <label class="col-sm-2" for="TCKN">TCKN:</label>
+                                <SfTextBox Enabled="false" @bind-Value="@ogrenciInfoDto.Tckn" ID="TCKN" CssClass="col-sm-4"></SfTextBox>
+                                <label class="col-sm-2" for="Seri">Kimlik Seri:</label>
+                                <SfTextBox Enabled="false" ID="Seri" CssClass="col-sm-4"></SfTextBox>
+                                <label class="col-sm-2" for="Adi">Adı:</label>
+                                <SfTextBox Enabled="false" @bind-Value="@ogrenciInfoDto.Ad" ID="Adı" CssClass="col-sm-4"></SfTextBox>
+                                <label class="col-sm-2" for="Soyadi">Soyadı:</label>
+                                <SfTextBox Enabled="false" @bind-Value="@ogrenciInfoDto.Soyad" ID="Soyadi" CssClass="col-sm-4"></SfTextBox>
+                                <label class="col-sm-2" for="Email">Email:</label>
+                                <SfTextBox Enabled="false" @bind-Value="@ogrenciInfoDto.Email" ID="Email" CssClass="col-sm-10"></SfTextBox>
+                                <label class="col-sm-2" for="fakulte">Fakulte:</label>
+                                <SfTextBox Enabled="false" @bind-Value="@ogrenciInfoDto.FakulteAd" ID="fakulte" CssClass="col-sm-10"></SfTextBox>
+                                <label class="col-sm-2" for="bolum">Bolum:</label>
+                                <SfTextBox Enabled="false" @bind-Value="@ogrenciInfoDto.BolumAd" ID="bolum" CssClass="col-sm-10"></SfTextBox>
+                                <label class="col-sm-2" for="Program">Program:</label>
+                                <SfTextBox Enabled="false" @bind-Value="@ogrenciInfoDto.ProgramAd" ID="Program" CssClass="col-sm-10"></SfTextBox>
+                                <label class="col-sm-2" for="Mufredat">Mufredat:</label>
+                                <SfTextBox Enabled="false" @bind-Value="@ogrenciInfoDto.MufredatAd" ID="Mufredat" CssClass="col-sm-10"></SfTextBox>
+                                <label class="col-sm-2" for="Sinif">Sınıf:</label>
+                                <SfNumericTextBox Enabled="false" @bind-Value="@ogrenciInfoDto.Sinif" ID="Sinif" CssClass="col-sm-10"></SfNumericTextBox>
+                                <label class="col-sm-2" for="ilDonem">ilave Dönem:</label>
+                                <SfTextBox Enabled="false" ID="ilDonem" Placeholder="ilave Dönem" CssClass="col-sm-3"></SfTextBox>
 
                             </div>
-                        </div>
-                        <div class="col-sm-12 col-md-6">
-                            <div class="server-action-menu">
-                                <div class="form-row form-group form-inline ">
-                                    <label class="col-sm-2" for="DropKayitNeden">Kayıt Neden:</label>
-                                    <SfDropDownList Enabled="isPersonel" ID="DropKayitNeden" @ref="DropKayitNeden" TItem="KayitNedenDto" CssClass="col-sm-4 pb-1"
-                                                    TValue="int?" PopupHeight="230px" Placeholder="Kayıt Neden"
-                                                    @bind-Value="@_OgrenciDto.KayitNedenId" DataSource="@kayitNedenDtos">
-                                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                                    </SfDropDownList>
-                                    <label class="col-sm-2" for="KayTarih">Kayıt Tarihi:</label>
-                                    <SfDatePicker Enabled="isPersonel" ID="KayTarih" TValue="DateTime?" @bind-Value="@_OgrenciDto.KayitTarih" CssClass="col-sm-4 pb-1" Placeholder="Kayıt Tarihi"></SfDatePicker>
-                                    <label class="col-sm-2" for="ogrDurum">Öğrenim Durum:</label>
-                                    <SfDropDownList ID="DropOgrenimDurum" @ref="DropOgrenimDurum" TItem="OgrenimDurumDto" CssClass="col-sm-4 pb-1"
-                                                    TValue="int?" PopupHeight="230px" Placeholder="Bölüm"
-                                                    @bind-Value="@_OgrenciDto.OgrenimDurumId" DataSource="@ogrenimDurumDtos">
-                                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                                    </SfDropDownList>
-                                    <label class="col-sm-2" for="AyrTarih">Ayrılma Tarihi:</label>
-                                    <SfDatePicker Enabled="isPersonel" ID="AyrTarih" TValue="DateTime?" @bind-Value="@_OgrenciDto.AyrilTarih" CssClass="col-sm-4 pb-1" Placeholder="Ayrılma Tarihi"></SfDatePicker>
 
-
-                                    <label class="col-sm-2" for="danis">Danışmanı:</label>
-                                    @if (isPersonel)
-                                    {
-                                        <SfButton ID="danis" IconCss="e-icons e-Resource" EnableRtl="true" OnClick="AkademisyenAta" CssClass="e-flat col-sm-4" IsPrimary="true">@(string.IsNullOrWhiteSpace(danismanAd) ?"Ekle": danismanAd)</SfButton>
-                                    }
-                                    else
-                                    {
-                                        <SfButton ID="danis" IconCss="e-icons e-Resource" EnableHtmlSanitizer="false" EnableRtl="true" CssClass="e-flat col-sm-4" IsPrimary="true">@(string.IsNullOrWhiteSpace(danismanAd) ?"Ekle": danismanAd)</SfButton>
-                                    }
-
-
-                                    <label class="col-sm-2" for="capYan">Çap Yandal Durum:</label>
-                                    <SfDropDownList Enabled="isPersonel" ID="capYan" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
-                                        <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
-                                        <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
-                                    </SfDropDownList>
-                                </div>
-                                <div class="form-row">
-                                    <SfTextBox Enabled="@(isPersonel)" Placeholder="Bilgi Notu" @bind-Value="@_OgrenciDto.BilgNotu" CssClass="col-sm-12" Readonly="false" FloatLabelType="@FloatLabelType.Auto" Multiline="true"></SfTextBox>
-                                </div>
-
-
-                            </div>
                         </div>
                     </div>
+                    <div class="col-sm-12 col-md-6">
+                        <div class="server-action-menu">
+                            <div class="form-row form-group form-inline ">
+                                <label class="col-sm-2" for="KayitNeden">Kayıt Neden:</label>
+                                <SfTextBox Enabled="false" @bind-Value="@ogrenciInfoDto.KayitNedenAd" ID="KayitNeden" CssClass="col-sm-10"></SfTextBox>
+                                <label class="col-sm-2" for="OgrenimDurum">Öğrenim Durum:</label>
+                                <SfTextBox Enabled="false" @bind-Value="@ogrenciInfoDto.OgrenimDurumAd" ID="OgrenimDurum" CssClass="col-sm-10"></SfTextBox>
+                                <label class="col-sm-2" for="KayTarih">Kayıt Tarihi:</label>
+                                <SfDatePicker Enabled="false" ID="KayTarih" TValue="DateTime" @bind-Value="@ogrenciInfoDto.KayitTarih" CssClass="col-sm-4 pb-1" Placeholder="Kayıt Tarihi"></SfDatePicker>
+                                <label class="col-sm-2" for="AyrTarih">Ayrılma Tarihi:</label>
+                                <SfDatePicker Enabled="false" ID="AyrTarih" TValue="DateTime?" @bind-Value="@ogrenciInfoDto.AyrilTarih" CssClass="col-sm-4 pb-1" Placeholder="Ayrılma Tarihi"></SfDatePicker>
 
-                </EditForm>
+
+                                <label class="col-sm-2" for="danis">Danışmanı:</label>
+                                <SfTextBox Enabled="false" ID="danis" Placeholder="ilave Dönem" CssClass="col-sm-4" Value="@(string.IsNullOrWhiteSpace(danismanAd) ?"Ekle": danismanAd)"></SfTextBox>
+
+
+                                <label class="col-sm-2" for="capYan">Çap Yandal Durum:</label>
+                                <SfTextBox Enabled="@(false)" CssClass="col-sm-4" Readonly="false"></SfTextBox>
+                            </div>
+                            <div class="form-row">
+                                <SfTextBox Enabled="@(false)" Placeholder="Bilgi Notu" @bind-Value="@ogrenciInfoDto.BilgNot" CssClass="col-sm-12" Readonly="false" Multiline="true"></SfTextBox>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
 
                 <div class="row">
                     <div class="col-sm-12 col-md-6">
@@ -157,24 +111,6 @@ else
                                     </UploaderFiles>
                                 </SfUploader>
 
-                                @*<SfUploader @ref="uploderObj" ID="UploadFiles" MinFileSize=1000 MaxFileSize=1500000 AllowedExtensions=".png,.jpeg,jpg">
-                                        <UploaderEvents ValueChange="onChange" OnRemove="onRemove"></UploaderEvents>
-                                        <UploaderTemplates>
-                                            <Template>
-                                                <span class="wrapper">
-                                                    <img class="upload-image" alt="Image"
-                                                         src="@(files.Count >0 ? files.Where(item=>item.Name == context.Name)?.FirstOrDefault()?.Path : string.Empty)">
-                                                </span>
-                                                <div class="name file-name" title="@(context.Name)">@(context.Name)</div>
-                                                <div class="file-size">@(context.Size)</div>
-                                                <span class="e-icons e-file-remove-btn remove" id="removeIcon" title="Remove"></span>
-                                                <span class="e-upload-icon e-icons e-file-remove-btn" title="Upload" id="iconUpload"></span>
-                                            </Template>
-                                        </UploaderTemplates>
-                                        <UploaderFiles>
-                                            <UploaderUploadedFiles Name="@(_OgrenciDto.ApplicationUserId.ToString())" Size=12000 Type="png"></UploaderUploadedFiles>
-                                        </UploaderFiles>
-                                    </SfUploader>*@
                             </div>
                         </div>
                     </div>
@@ -182,24 +118,6 @@ else
 
                     </div>
                 </div>
-
-                @if (isPersonel)
-                {
-
-                    <div class="row">
-                        <div class="col-6 text-left">
-                            <SfProgressButton Content="< Farklı Öğrenci Seç" OnClick="GoBackOgrenci" CssClass="center-block e-primary">
-                                <ProgressButtonSpinSettings Position="SpinPosition.Left"></ProgressButtonSpinSettings>
-                            </SfProgressButton>
-                        </div>
-                        <div class="col-6 text-right">
-                            <SfProgressButton Content="Kaydet >" OnClick="SubmitHandler" CssClass="center-block e-primary">
-                                <ProgressButtonSpinSettings Position="SpinPosition.Right"></ProgressButtonSpinSettings>
-                            </SfProgressButton>
-                        </div>
-                    </div>
-
-                }
 
 
             </div>
@@ -209,76 +127,15 @@ else
 
 
 
-@if (akaDialogOpen)
-{
-    @*<ProgramSec CommandClickHandlerProgram="AkaSecildi" @bind-isProgramDialogOpen="@akaDialogOpen"></ProgramSec>*@
-    <AkademisyenSec CommandClickHandlerAkademisyen="AkaSecildi" @bind-isAkademisyenDialogOpen="@akaDialogOpen"></AkademisyenSec>
-}
-
-
 
 @code {
 
     string danismanAd;
-    bool akaDialogOpen;
-    async Task AkaSecildi(AkademisyenDto akademisyenDto)
-    {
-        danismanAd = akademisyenDto.Ad + " " + akademisyenDto.Soyad;
-        _OgrenciDto.DanismanId = akademisyenDto.Id;
-    }
 
-
-    private EditContext EC { get; set; }
-    private async Task SubmitHandler()
-    {
-        // manually trigger the validation here
-        if (EC.Validate())
-        {
-            await Kaydet();
-        }
-    }
-
-    private string textValue { get; set; }
-    public class GameFields
-    {
-        public string ID { get; set; }
-        public string Text { get; set; }
-    }
-    private List<GameFields> Games = new List<GameFields>() {
-        new GameFields(){ ID= "Game1", Text= "American Football" },
-        new GameFields(){ ID= "Game2", Text= "Badminton" },
-        new GameFields(){ ID= "Game3", Text= "Basketball" },
-        new GameFields(){ ID= "Game4", Text= "Cricket" },
-        new GameFields(){ ID= "Game5", Text= "Football" },
-        new GameFields(){ ID= "Game6", Text= "Golf" },
-        new GameFields(){ ID= "Game7", Text= "Hockey" },
-        new GameFields(){ ID= "Game8", Text= "Rugby"},
-        new GameFields(){ ID= "Game9", Text= "Snooker" },
-        new GameFields(){ ID= "Game10", Text= "Tennis"},
-     };
-    public string DropVal;
-    public string ChangeValue { get; set; } = "Basketball";
-    public void OnChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<string> args)
-    {
-        var asd = args;
-    }
 
     //Sonradan doldurulacak dropdownlar
     [Parameter]
     public OgrenciDto _OgrenciDto { get; set; } = new OgrenciDto();
-
-
-    SfDropDownList<int?, FakulteDto> DropFakulte;
-    SfDropDownList<int?, BolumDto> DropBolum;
-    SfDropDownList<int?, ProgramDto> DropProgram;
-    SfDropDownList<int?, MufredatDto> DropMufredat;
-    SfDropDownList<int?, SinifDto> DropSinif;
-    SfDropDownList<int?, KayitNedenDto> DropKayitNeden;
-    SfDropDownList<int?, OgrenimDurumDto> DropOgrenimDurum;
-    SfDropDownList<int?, OgrenimTurDto> DropOgrenimTur;
-
-
-    bool isPersonel;
 
 
 
@@ -286,400 +143,39 @@ else
     public bool EnableSelectionOrders { get; set; } = false;
     public bool EnableDropDownIcon { get; set; } = true;
 
-    List<FakulteDto> fakulteDtos = new List<FakulteDto>();
-    List<BolumDto> bolumDtos = new List<BolumDto>();
-    List<ProgramDto> programDtos = new List<ProgramDto>();
-    List<MufredatDto> mufredatDtos = new List<MufredatDto>();
-    List<KayitNedenDto> kayitNedenDtos = new List<KayitNedenDto>();
-    List<OgrenimDurumDto> ogrenimDurumDtos = new List<OgrenimDurumDto>();
-    List<OgrenimTurDto> ogrenimTurDtos = new List<OgrenimTurDto>();
 
-    List<SinifDto> sinifDtos = new List<SinifDto>
-{
-            new SinifDto() { Ad = "0", Id = 0 },
-            new SinifDto() { Ad = "1", Id = 1 },
-            new SinifDto() { Ad = "2", Id = 2 },
-            new SinifDto() { Ad = "3", Id = 3 },
-            new SinifDto() { Ad = "4", Id = 4 },
-            new SinifDto() { Ad = "5", Id = 5 },
-            new SinifDto() { Ad = "6", Id = 6 },
-            new SinifDto() { Ad = "7", Id = 7 },
-            new SinifDto() { Ad = "8", Id = 8 },
-            new SinifDto() { Ad = "9", Id = 9 },
-};
-
-
-
-    //protected override async Task OnInitializedAsync()
-    //{
-    //    await ReadFakultes().ConfigureAwait(true);
-    //    await ReadKayitNedens().ConfigureAwait(true);
-    //    await ReadOgrenimDurums().ConfigureAwait(true);
-    //    if (_OgrenciDto.Id != 0)
-    //    {
-    //        await ReadBolums(_OgrenciDto.FakulteId).ConfigureAwait(true);
-    //        await ReadPrograms(_OgrenciDto.BolumId).ConfigureAwait(true);
-    //        await ReadMufredats(_OgrenciDto.ProgramId).ConfigureAwait(true);
-    //    }
-    //    //StateHasChanged();
-
-    //}
-
-
-    //[CascadingParameter]
-    //Task<AuthenticationState> authenticationStateTask { get; set; }
-    //ClaimsPrincipal user;
 
     bool isInitializingFinised;
 
-    //protected override void OnInitialized()
+    OgrenciInfoDto ogrenciInfoDto = new OgrenciInfoDto();
+
     protected override async Task OnInitializedAsync()
     {
-        EC = new EditContext(_OgrenciDto);
         danismanAd = "";
+        _OgrenciDto = await appState.GetOgrenciState();
 
-        //user = authenticationStateTask.Result.User;
+        await ReadOgrenciInfo();
+    }
 
-        //if (user.IsInRole(UserRoles.Ogrenci.ToString()))
-        //{
-        //    _OgrenciDto = appState.GetOgrenciState().Result;
-        //    isPersonel = false;
-        //}
-        //else
-        //{
-        //    isPersonel = true;
+    async Task ReadOgrenciInfo()
+    {
+        ApiResponseDto<OgrenciInfoDto> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<OgrenciInfoDto>>("api/ogrenci/GetOgrInfos");
 
-        //}
-
-        if (_OgrenciDto.Id == 0)
+        if (apiResponse.StatusCode == Status200OK)
         {
-            _OgrenciDto = await appState.GetOgrenciState();
-            isPersonel = false;
+            ogrenciInfoDto = apiResponse.Result;
+            StateHasChanged();
         }
         else
         {
-            isPersonel = true;
+            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Öğrencci bilgileri getirilirken hata oluştu!");
         }
 
-
-        ReadFakultes().ConfigureAwait(true);
-        ReadKayitNedens().ConfigureAwait(true);
-        ReadOgrenimDurums().ConfigureAwait(true);
-        ReadOgrenimTurs().ConfigureAwait(true);
-        if (_OgrenciDto.Id != 0)
-        {
-            ReadBolums(_OgrenciDto.FakulteId).ConfigureAwait(true);
-            ReadPrograms(_OgrenciDto.BolumId).ConfigureAwait(true);
-            ReadMufredats(_OgrenciDto.ProgramId).ConfigureAwait(true);
-        }
-        if (_OgrenciDto.DanismanId.HasValue)
-        {
-            ReadAkademisyens(_OgrenciDto.DanismanId).ConfigureAwait(true);
-        }
         isInitializingFinised = true;
     }
 
-    async Task ReadFakultes()
-    {
-        ApiResponseDto<List<FakulteDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<FakulteDto>>>("api/fakulte");
-
-        if (apiResponse.StatusCode == Status200OK)
-        {
-            fakulteDtos = apiResponse.Result;
-            StateHasChanged();
-        }
-        else
-        {
-            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "fakulte getirilirken hata oluştu!");
-        }
-    }
 
 
-
-    private void FakulteToBolum(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
-    {
-        bolumDtos = new List<BolumDto>();
-        programDtos = new List<ProgramDto>();
-        mufredatDtos = new List<MufredatDto>();
-        _OgrenciDto.BolumId = null;
-        _OgrenciDto.ProgramId = null;
-        _OgrenciDto.MufredatId = null;
-        if (_OgrenciDto.Id == 0)
-        {
-            ReadBolums(args.Value).ConfigureAwait(true);
-        }
-        else
-        {
-            ReadBolums(_OgrenciDto.FakulteId).ConfigureAwait(true);
-        }
-        StateHasChanged();
-
-
-    }
-
-
-
-    async Task ReadBolums(int? fakulteId)
-    {
-        ApiResponseDto<List<BolumDto>> apiResponse;
-        //if (fakulteId == null)
-        //{
-        //    apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<BolumDto>>>("api/bolum/GetBolumByFakulteIds/" + string.Join(',', DropFakulte.Value));
-        //}
-        //else
-        //{
-        apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<BolumDto>>>("api/bolum/GetBolumByFakulteIds/" + string.Join(',', fakulteId));
-        //}
-
-
-        if (apiResponse.StatusCode == Status200OK)
-        {
-            bolumDtos = apiResponse.Result;
-            StateHasChanged();
-
-        }
-        else
-        {
-            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Bölüm getirilirken hata oluştu!");
-        }
-    }
-
-    private void BolumToProgram(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
-    {
-        programDtos = new List<ProgramDto>();
-        mufredatDtos = new List<MufredatDto>();
-        _OgrenciDto.ProgramId = null;
-        _OgrenciDto.MufredatId = null;
-        if (_OgrenciDto.Id == 0)
-        {
-
-            ReadPrograms(args.Value).ConfigureAwait(true);
-        }
-        else
-        {
-            ReadPrograms(_OgrenciDto.BolumId).ConfigureAwait(true);
-        }
-        //StateHasChanged();
-    }
-
-    async Task ReadPrograms(int? bolumId)
-    {
-        ApiResponseDto<List<ProgramDto>> apiResponse;
-        if (bolumId == null)
-        {
-            //apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<ProgramDto>>>("api/program/GetProgramByBolumIds/" + string.Join(',', DropBolum.Value));
-            return;
-        }
-        else
-        {
-            apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<ProgramDto>>>("api/program/GetProgramByBolumIds/" + string.Join(',', bolumId));
-        }
-
-
-        if (apiResponse.StatusCode == Status200OK)
-        {
-            programDtos = apiResponse.Result;
-            StateHasChanged();
-        }
-        else
-        {
-            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "program getirilirken hata oluştu!");
-        }
-    }
-
-    private void ProgramToMufredat(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
-    {
-        mufredatDtos = new List<MufredatDto>();
-        _OgrenciDto.MufredatId = null;
-        if (_OgrenciDto.Id == 0)
-        {
-
-            ReadMufredats(args.Value).ConfigureAwait(true);
-        }
-        else
-        {
-            ReadMufredats(_OgrenciDto.ProgramId).ConfigureAwait(true);
-        }
-        //StateHasChanged();
-    }
-
-    async Task ReadMufredats(int? programId)
-    {
-        ApiResponseDto<List<MufredatDto>> apiResponse;
-        if (programId == null)
-        {
-            //apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<MufredatDto>>>("api/mufredat/GetMufredatByProgramIds/" + string.Join(',', DropProgram.Value));
-            return;
-        }
-        else
-        {
-            apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<MufredatDto>>>("api/mufredat/GetMufredatByProgramIds/" + string.Join(',', programId));
-        }
-
-
-        if (apiResponse.StatusCode == Status200OK)
-        {
-            mufredatDtos = apiResponse.Result;
-            StateHasChanged();
-        }
-        else
-        {
-            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "mufredat getirilirken hata oluştu!");
-        }
-    }
-
-    async Task ReadAkademisyens(int? DanismanId)
-    {
-
-        try
-        {
-            OData<AkademisyenDto> apiResponse = await Http.GetFromJsonAsync<OData<AkademisyenDto>>($"odata/akademisyens?$select=Id,Ad,Soyad&$filter=Id eq {_OgrenciDto.DanismanId}");
-
-            if (apiResponse.Value.Count != 0)
-            {
-                var akaDanisman = apiResponse.Value.FirstOrDefault();
-                danismanAd = akaDanisman.Ad + " " + akaDanisman.Soyad;
-            }
-            else
-                matToaster.Add("Danisman bilgisi getirilemedi", MatToastType.Danger, "Hata oluştu!");
-        }
-        catch (Exception ex)
-        {
-            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
-        }
-    }
-
-
-
-    [Parameter]
-    public EventCallback<int> AkademikToOgrenci { get; set; }
-
-    async Task GoBackOgrenci()
-    {
-        await AkademikToOgrenci.InvokeAsync(0);
-    }
-
-    async Task Kaydet()
-    {
-        try
-        {
-            if (_OgrenciDto.Id == 0)
-            {
-                var apiResponse = await ((IdentityAuthenticationStateProvider)authStateProvider).Create(_OgrenciDto);
-                if (apiResponse.IsSuccessStatusCode)
-                {
-
-                    _OgrenciDto.OgrNo = Newtonsoft.Json.JsonConvert.DeserializeObject<OgrenciDto>(apiResponse.Result.ToString()).OgrNo;
-
-                    matToaster.Add(apiResponse.Message, MatToastType.Success);
-
-                    //await GoBackOgrenci();
-                    appState.OgrenciState = _OgrenciDto;
-                }
-                else
-                {
-                    matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Öğrenci kullanıcısı oluşturulurken hata oluştu");
-                }
-            }
-            else
-            {
-                ApiResponseDto apiResponse = await ((IdentityAuthenticationStateProvider)authStateProvider).UpdateOgrenciUser(_OgrenciDto);
-
-                if (apiResponse.StatusCode == Status200OK)
-                {
-                    matToaster.Add("Öğrenci bilgileri güncellendi", MatToastType.Success);
-                }
-                else
-                {
-                    matToaster.Add(apiResponse.Message, MatToastType.Danger, "Güncelleme başarısız oldu!");
-                }
-            }
-
-        }
-        catch (Exception ex)
-        {
-            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Öğrenci ile ilgili değişiklikler kayıt edilirken hata oluştu");
-        }
-
-    }
-
-    //async Task Duzenle()
-    //{
-    //    try
-    //    {
-    //        ApiResponseDto apiResponse = await ((IdentityAuthenticationStateProvider)authStateProvider).UpdateOgrenciUser(_OgrenciDto);
-
-    //        if (apiResponse.StatusCode == Status200OK)
-    //        {
-    //            matToaster.Add("Öğrenci bilgileri güncellendi", MatToastType.Success);
-    //        }
-    //        else
-    //        {
-    //            matToaster.Add(apiResponse.Message, MatToastType.Danger, "Güncelleme başarısız oldu!");
-    //        }
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        matToaster.Add(ex.Message, MatToastType.Danger, "Güncelleme başarısız oldu!");
-    //    }
-
-    //}
-
-
-    async Task ReadKayitNedens()
-    {
-        ApiResponseDto<List<KayitNedenDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<KayitNedenDto>>>("api/KeyValues/GetKayitNeden");
-
-        if (apiResponse.StatusCode == Status200OK)
-        {
-            kayitNedenDtos = apiResponse.Result;
-
-        }
-        else
-        {
-            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Kayit neden getirilirken hata oluştu!");
-        }
-    }
-    async Task ReadOgrenimDurums()
-    {
-        ApiResponseDto<List<OgrenimDurumDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenimDurumDto>>>("api/ogrenimdurum");
-
-        if (apiResponse.StatusCode == Status200OK)
-        {
-            ogrenimDurumDtos = apiResponse.Result;
-
-        }
-        else
-        {
-            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Kayit neden getirilirken hata oluştu!");
-        }
-    }
-    async Task ReadOgrenimTurs()
-    {
-        ApiResponseDto<List<OgrenimTurDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenimTurDto>>>("api/ogrenimtur");
-
-        if (apiResponse.StatusCode == Status200OK)
-        {
-            ogrenimTurDtos = apiResponse.Result;
-
-        }
-        else
-        {
-            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Öğrenim türü getirilirken hata oluştu!");
-        }
-    }
-
-    SfTextBox date;
-    public void onCreateDate()
-    {
-        this.date.AddIcon("append", "e-date-icon");
-    }
-
-
-    public void AkademisyenAta()
-    {
-        akaDialogOpen = true;
-    }
 
 
     //eski upladın removu
@@ -720,51 +216,6 @@ else
         }
     }
 
-    ////UPLOAD IMAGE ADN REMOVE
-    //private SfUploader uploderObj;
-    //private object selectedFile { get; set; }
-    //List<fileInfo> files = new List<fileInfo>();
-
-
-
-    //public class fileInfo
-    //{
-    //    public string Path { get; set; }
-    //    public string Name { get; set; }
-    //    public double Size { get; set; }
-    //}
-
-    //public void onChange(UploadChangeEventArgs args)
-    //{
-    //    files = new List<fileInfo>();
-    //    foreach (var file in args.Files)
-    //    {
-
-    //        var path = @"../UniLife.CommonUI/wwwroot/images/ogrenci/"+ _OgrenciDto.ApplicationUserId.ToString() + "." + file.FileInfo.Type; //+ file.FileInfo.Name;
-    //        FileStream filestream = new FileStream(path, FileMode.Create, FileAccess.Write);
-    //        file.Stream.WriteTo(filestream);
-    //        filestream.Close();
-    //        file.Stream.Close();
-
-    //        files.Add(new fileInfo() { Path = $"/_content/UniLife.CommonUI/images/ogrenci/" + _OgrenciDto.ApplicationUserId.ToString() + "." + file.FileInfo.Type, Name = file.FileInfo.Name, Size = file.FileInfo.Size });
-    //    }
-    //}
-    //public void onRemove(RemovingEventArgs args)
-    //{
-    //    foreach (var removeFile in args.FilesData)
-    //    {
-    //        if (File.Exists(Path.Combine(@"../UniLife.CommonUI/wwwroot/images/ogrenci/", _OgrenciDto.ApplicationUserId.ToString() + "." + removeFile.Type)))
-    //        {
-    //            File.Delete(Path.Combine(@"../UniLife.CommonUI/wwwroot/images/ogrenci/", _OgrenciDto.ApplicationUserId.ToString() + "." + removeFile.Type));
-    //        }
-    //    }
-    //}
-
-    //public void uploadFile(MouseEventArgs args)
-    //{
-    //    this.uploderObj.Upload(selectedFile);
-    //}
-    ////UPLOAD IMAGE ADN REMOVE END
 }
 
 <style>
@@ -981,178 +432,9 @@ else
         margin: 0 auto;
     }
 
-    /*.control_wrapper {
-            max-width: 505px;
-            margin: auto;
+    @@media (min-width: 576px) {
+        .form-inline label {
+            justify-content: unset;
         }
-
-        #uploadicon {
-            cursor: pointer;
-            top: 5px;
-            left: 20px;
-            position: relative;
-        }
-
-        .e-upload {
-            border: none;
-            margin-top: 10px;
-            width: 100%;
-        }
-
-        #drop {
-            font-size: 14px;
-        }
-
-        .e-bigger #drop {
-            font-size: 15px;
-        }
-
-        #dropArea {
-            border: 1px dashed #c3c3cc;
-            position: relative;
-            text-align: center;
-            padding: 20px 0 10px;
-        }
-
-            #dropArea .e-upload .e-upload-files {
-                text-align: initial;
-                border-top: none;
-            }
-
-            #dropArea .e-upload-files .e-file-delete-btn.e-icons,
-            #dropArea .e-upload-files .e-file-remove-btn.e-icons,
-            #dropArea .e-upload-files .e-file-abort-btn {
-                top: 120px;
-                background-color: white;
-                border-radius: 50%;
-                font-size: 12px;
-                left: 80px;
-            }
-
-            #dropArea .e-upload-files li .e-file-remove-btn.e-icons.e-upload-icon {
-                font-size: 14px;
-                left: 20px;
-            }
-
-            #dropArea .e-upload-files li:hover .e-icons {
-                visibility: visible;
-            }
-
-            #dropArea .e-upload-files li .e-icons {
-                visibility: hidden;
-            }
-
-        @@font-face {
-            font-family: 'Uploader_Icon';
-            src: url(data:application/x-font-ttf;charset=utf-8;base64,AAEAAAAKAIAAAwAgT1MvMj1tSfIAAAEoAAAAVmNtYXDnEOdVAAABiAAAADZnbHlmoZcPvgAAAcgAAABAaGVhZBLQTSUAAADQAAAANmhoZWEINQQDAAAArAAAACRobXR4CAAAAAAAAYAAAAAIbG9jYQAgAAAAAAHAAAAABm1heHABDgAdAAABCAAAACBuYW1lQySinQAAAggAAAIxcG9zdLfl0usAAAQ8AAAAMgABAAAEAAAAAFwEAAAAAAAD2AABAAAAAAAAAAAAAAAAAAAAAgABAAAAAQAA2vKJUF8PPPUACwQAAAAAANftBBgAAAAA1+0EGAAAAAAD2AP4AAAACAACAAAAAAAAAAEAAAACABEAAgAAAAAAAgAAAAoACgAAAP8AAAAAAAAAAQQAAZAABQAAAokCzAAAAI8CiQLMAAAB6wAyAQgAAAIABQMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUGZFZABA5wDnAAQAAAAAXAQAAAAAAAABAAAAAAAABAAAAAQAAAAAAAACAAAAAwAAABQAAwABAAAAFAAEACIAAAAEAAQAAQAA5wD//wAA5wD//wAAAAEABAAAAAEAAAAAAAAAIAAAAAIAAAAAA9gD+AAHABAAADchESMVITUjEzM3ETMRFzMBKAOwPvzMPp1mtUC1Zv7FCAF6vb0BO7X+EAHwtQE7AAAAABIA3gABAAAAAAAAAAEAAAABAAAAAAABAAgAAQABAAAAAAACAAcACQABAAAAAAADAAgAEAABAAAAAAAEAAgAGAABAAAAAAAFAAsAIAABAAAAAAAGAAgAKwABAAAAAAAKACwAMwABAAAAAAALABIAXwADAAEECQAAAAIAcQADAAEECQABABAAcwADAAEECQACAA4AgwADAAEECQADABAAkQADAAEECQAEABAAoQADAAEECQAFABYAsQADAAEECQAGABAAxwADAAEECQAKAFgA1wADAAEECQALACQBLyBVcGxvYWRlclJlZ3VsYXJVcGxvYWRlclVwbG9hZGVyVmVyc2lvbiAxLjBVcGxvYWRlckZvbnQgZ2VuZXJhdGVkIHVzaW5nIFN5bmNmdXNpb24gTWV0cm8gU3R1ZGlvd3d3LnN5bmNmdXNpb24uY29tACAAVQBwAGwAbwBhAGQAZQByAFIAZQBnAHUAbABhAHIAVQBwAGwAbwBhAGQAZQByAFUAcABsAG8AYQBkAGUAcgBWAGUAcgBzAGkAbwBuACAAMQAuADAAVQBwAGwAbwBhAGQAZQByAEYAbwBuAHQAIABnAGUAbgBlAHIAYQB0AGUAZAAgAHUAcwBpAG4AZwAgAFMAeQBuAGMAZgB1AHMAaQBvAG4AIABNAGUAdAByAG8AIABTAHQAdQBkAGkAbwB3AHcAdwAuAHMAeQBuAGMAZgB1AHMAaQBvAG4ALgBjAG8AbQAAAAACAAAAAAAAAAoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIBAgEDAAhVcGxvYWRlcgAAAAA=) format('truetype');
-            font-weight: normal;
-            font-style: normal;
-        }
-
-        #dropArea .e-upload .e-upload-files .e-icons.e-upload-icon {
-            font-family: 'Uploader_Icon';
-            speak: none;
-            font-size: 16px;
-            left: 20px;
-            font-style: normal;
-            font-weight: normal;
-            font-variant: normal;
-            text-transform: none;
-            line-height: 1;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-            #dropArea .e-upload .e-upload-files .e-icons.e-upload-icon::before {
-                content: '\e700';
-            }
-
-        #dropArea .e-upload .e-upload-files .e-icons:not(.e-uploaded):hover {
-            background-color: #e6e6e6;
-            border-color: #adadad;
-            color: #333;
-        }
-
-        #dropArea .e-upload .e-upload-files .e-upload-file-list {
-            border: 0;
-            display: inline-block;
-            width: 165px;
-        }
-
-        .upload-image {
-            width: 150px;
-            height: 150px;
-            display: inline-flex;
-            background-size: contain;
-            margin: 7px;
-            text-align: center;
-            line-height: 10;
-            border-radius: 5px;
-        }
-
-            .upload-image:after {
-                content: "";
-                position: absolute;
-                top: 6px;
-                left: 6px;
-                width: inherit;
-                height: inherit;
-                background: lightgray url('http://via.placeholder.com/300?text=Loading...') no-repeat center;
-                color: transparent;
-                border-radius: 5px;
-            }
-
-        div.file-name {
-            color: rgba(0, 0, 0, 0.87);
-            font-size: 14px;
-            padding: 3px 10px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            width: 90%;
-            white-space: nowrap;
-        }
-
-        div.file-size {
-            font-size: 13px;
-            padding: 3px 10px;
-            overflow: hidden;
-        }
-
-        .progressbar {
-            background: #ff4081;
-            border: none;
-            border-radius: 10px;
-            height: 4px;
-            margin-left: 7px;
-            width: 90%;
-            top: -60px;
-            position: relative;
-        }
-
-        #dropArea progress {
-            border: none;
-            background: #fff;
-        }
-
-        progress::-webkit-progress-bar {
-            border: none;
-            background-color: #ffffff;
-        }
-
-        .material progress::-moz-progress-bar {
-            border-radius: 2px;
-            background-color: #ff4081;
-        }
-
-        .material #dropArea span a {
-            color: #ff4081;
-        }
-
-        @@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-            #dropArea .e-upload .e-upload-files .e-file-remove-btn.e-icons, .e-bigger #dropArea .e-upload .e-upload-files .e-file-remove-btn.e-icons {
-                padding: 18px 25px 18px 12px;
-            }
-        }*/
-    /*Fileupload end*/
-
+    }
 </style>

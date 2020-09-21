@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.OData;
 using Microsoft.AspNet.OData.Routing;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,6 +48,7 @@ namespace UniLife.Server.Controllers
 
         [Microsoft.AspNet.OData.EnableQuery()]
         [HttpGet]
+        [Authorize(Roles = "Administrator,Personel")]
         public IEnumerable<OgrenciDersRaporDto> Get(bool TopKredi,bool TopAkts) 
         {
             //Get(int programId,int bolumId,int fakulteId) yapılırsa  http://localhost:53414/odata/OgrenciDersRapors?programId=1 şeklinde de querye giydirilebilir.

@@ -17,5 +17,6 @@ namespace UniLife.Server.Managers
         Task<ApiResponse> OgrencisSinifAtlat(ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds);
         Task<ApiResponse> SetOgrDurumToOgrencis(ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds);
         Task<ApiResponse> SinifAtlaTemizle(HedefKaynakDto hedefKaynakDto);
+        Task<ApiResponse> GetOgrInfos(string kullaniciId);
     }
 }

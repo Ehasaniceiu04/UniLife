@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using UniLife.Storage;
 
@@ -15,7 +16,7 @@ namespace UniLife.Server.Controllers
 
         [Microsoft.AspNet.OData.EnableQuery()]
         [HttpGet]
-        //[Authorize(Permissions.Ogrenci.Create)]
+        [Authorize]
         public IEnumerable<UniLife.Shared.DataModels.ProgramTur> Get()
         {
             return _applicationDbContext.ProgramTurs;

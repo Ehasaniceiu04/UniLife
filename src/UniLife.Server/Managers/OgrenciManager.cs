@@ -66,6 +66,9 @@ namespace UniLife.Server.Managers
             return new ApiResponse(Status200OK, "SinifAtlaTemizle done!");
         }
 
-        
+        public async Task<ApiResponse> GetOgrInfos(string kullaniciId)
+        {
+            return new ApiResponse(Status200OK, "Öğrenci bilgileri getirildi", await _ogrenciStore.GetOgrInfos(kullaniciId));
+        }
     }
 }

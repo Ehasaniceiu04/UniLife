@@ -66,18 +66,19 @@ namespace UniLife.Server.Controllers
         {
             if (ModelState.IsValid)
             {
+                string kullaniciId = User.GetSubjectId();
                 if (User.IsInRole("Administrator"))
                 {
                     return await _accountManager.ResetPassword(parameters);
                 }
-                else if(User.GetSubjectId() == parameters.UserId)
+                else if(kullaniciId == parameters.UserId)
                 {
-                    _logger.LogError($"{User.GetSubjectId()} Kullanıcısı, {parameters.UserId} id li kullanıcının şifresini değiştirdi. Şifre!!!.");
+                    _logger.LogError($"{kullaniciId} Kullanıcısı, {parameters.UserId} id li kullanıcının şifresini değiştirdi. Şifre!!!.");
                     return await _accountManager.ResetPassword(parameters);
                 }
                 else
                 {
-                    _logger.LogError($"{User.GetSubjectId()} Kullanıcısı, {parameters.UserId} id li kullanıcının şifresini değiştirmey çalıştı. Dikkat!!!.");
+                    _logger.LogError($"{kullaniciId} Kullanıcısı, {parameters.UserId} id li kullanıcının şifresini değiştirmey çalıştı. Dikkat!!!.");
                     return new ApiResponse(Status401Unauthorized, "Başka kullanıcıların şifresini değiştirme yetkiniz yok. Bu işlem adınıza loglanmıştır!");
                 }
                 
@@ -102,22 +103,22 @@ namespace UniLife.Server.Controllers
 
         // DELETE: api/Account/5
         [HttpPost("UpdateUser")]
-        [Authorize]
+        [Authorize(Roles = "Administrator,Personel")]
         public async Task<ApiResponse> UpdateUser(UserInfoDto userInfo)
         => ModelState.IsValid ? await _accountManager.UpdateUser(userInfo) : _invalidUserModel;
 
         [HttpPost("UpdateOgrenciUser")]
-        [Authorize]
+        [Authorize(Roles = "Administrator,Personel,Ogrenci")]
         public async Task<ApiResponse> UpdateOgrenciUser(OgrenciDto ogrenciDto)
         => ModelState.IsValid ? await _accountManager.UpdateOgrenciUser(ogrenciDto) : _invalidUserModel;
 
         [HttpPost("UpdateAkademisyenUser")]
-        [Authorize]
+        [Authorize(Roles = "Administrator,Personel,Akademisyen")]
         public async Task<ApiResponse> UpdateAkademisyenUser(AkademisyenDto akademisyenDto)
         => ModelState.IsValid ? await _accountManager.UpdateAkademisyenUser(akademisyenDto) : _invalidUserModel;
 
         [HttpPost("UpdatePersonelUser")]
-        [Authorize]
+        [Authorize(Roles = "Administrator,Personel")]
         public async Task<ApiResponse> UpdatePersonelUser(PersonelDto personelDto)
         => ModelState.IsValid ? await _accountManager.UpdatePersonelUser(personelDto) : _invalidUserModel;
 

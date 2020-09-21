@@ -133,6 +133,8 @@ else
         {
             fakulteId = (await appState.GetOgrenciState()).FakulteId;
             donemId = (await appState.GetDonemState()).Id;
+
+            await ReadAkademikTakvims();
         }
     }
 

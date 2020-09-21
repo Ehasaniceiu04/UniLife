@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using UniLife.Shared.AuthorizationDefinitions;
 using UniLife.Shared.DataModels;
 using UniLife.Storage;
 
@@ -16,7 +18,7 @@ namespace UniLife.Server.Controllers
 
         [Microsoft.AspNet.OData.EnableQuery(MaxExpansionDepth = 4)]
         [HttpGet]
-        //[Authorize(Permissions.Ogrenci.Create)]
+        [Authorize(Permissions.Mufredat.Read)]
         public IEnumerable<Mufredat> Get()
         {
             return _applicationDbContext.Mufredats;

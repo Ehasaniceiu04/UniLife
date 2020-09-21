@@ -199,6 +199,22 @@ namespace UniLife.Server.Controllers
             => ModelState.IsValid ?
                 await _ogrenciManager.SinifAtlaTemizle(hedefKaynakDto) :
                 new ApiResponse(Status400BadRequest, "Ogrenci Model is Invalid");
-        
+
+        [HttpGet]
+        [Authorize(Permissions.Ogrenci.Read)]
+        [Route("GetOgrInfos")]
+        public async Task<ApiResponse> GetOgrInfos()
+        {
+            if (ModelState.IsValid)
+            {
+                string kullaniciId = User.GetSubjectId();
+                return await _ogrenciManager.GetOgrInfos(kullaniciId);
+            }
+            else
+            {
+                return new ApiResponse(Status400BadRequest, "GetOgrInfos eksik var.");
+            }
+        }
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using UniLife.Shared.DataModels;
 using UniLife.Storage;
@@ -16,7 +17,7 @@ namespace UniLife.Server.Controllers
 
         [Microsoft.AspNet.OData.EnableQuery()]
         [HttpGet]
-        //[Authorize(Permissions.Ogrenci.Create)]
+        [Authorize]
         public IEnumerable<DersNeden> Get()
         {
             return _applicationDbContext.DersNedens;

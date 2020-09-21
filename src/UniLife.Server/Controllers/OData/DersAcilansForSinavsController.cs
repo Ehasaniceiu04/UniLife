@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UniLife.Shared.DataModels;
 using UniLife.Storage;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
+using UniLife.Shared.AuthorizationDefinitions;
 
 namespace UniLife.Server.Controllers
 {
@@ -18,7 +20,7 @@ namespace UniLife.Server.Controllers
 
         [Microsoft.AspNet.OData.EnableQuery()]
         [HttpGet]
-        //[Authorize(Permissions.Ogrenci.Create)]
+        [Authorize(Permissions.DersAcilan.Read)]
         public IEnumerable<DersAcilanForSinav> Get()
         {
             var daForSinav = from da in _applicationDbContext.DersAcilans
