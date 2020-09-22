@@ -78,7 +78,7 @@
         Tab.EnableTab(0, true);
         Tab.EnableTab(1, tabIndex > 0);
         Tab.EnableTab(2, tabIndex > 0);
-        Tab.EnableTab(3, tabIndex > 0);
+        //Tab.EnableTab(3, tabIndex > 0);
         Tab.EnableTab(4, tabIndex > 0);
         Tab.Select(tabIndex);
     }
@@ -115,10 +115,10 @@
             args.Cancel = true;
         }
 
-        //if (args.SelectedIndex == 3 && args.SelectingIndex!=3)
-        //{
-
-        //}
+        if (args.SelectedIndex == 3 && args.SelectingIndex != 3)
+        {
+            Tab.EnableTab(3, false);
+        }
     }
 }
 

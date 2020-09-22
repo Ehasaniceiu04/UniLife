@@ -24,8 +24,15 @@
     </GridColumns>
 </SfGrid>
 <div class="row">
-    <div class="col-12 text-right">
+    <div class="col-6 text-center">
         <Syncfusion.Blazor.Buttons.SfButton CssClass="center-block e-primary" OnClick="Yayinla">Yayinla</Syncfusion.Blazor.Buttons.SfButton>
+    </div>
+    <div class="col-6 text-center">
+        @if (_SinavDto.SinavTipId==2 || _SinavDto.SinavTipId == 3)
+        {
+            <Syncfusion.Blazor.Buttons.SfButton CssClass="center-block e-primary" OnClick="Degerlendir">Değerlendir</Syncfusion.Blazor.Buttons.SfButton>
+        }
+
     </div>
 </div>
 
@@ -174,6 +181,11 @@
         {
             matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
         }
+
+    }
+
+    async Task Degerlendir()
+    {
 
     }
 

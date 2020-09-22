@@ -136,7 +136,7 @@ namespace UniLife.Storage.Stores
 
         private static string GetDigerSinavsByText(List<OgrDigerSinavlar> derseKayitliOgrlerinTumSinavlari, Ogrenci o)
         {
-            return String.Join(" ", derseKayitliOgrlerinTumSinavlari.Where(y => y.OgrenciId == o.Id).Select(x => x.SinavTipAd + ":" + x.Not));
+            return String.Join(" ", derseKayitliOgrlerinTumSinavlari.Where(y => y.OgrenciId == o.Id).OrderBy(x=>x.SinavTipAd).Select(x => x.SinavTipAd + ":" + x.Not));
         }
 
         public async Task<List<KeyValueDto>> GetOgrenciSinavsByDers(int ogrenciId, int dersAcilanId)

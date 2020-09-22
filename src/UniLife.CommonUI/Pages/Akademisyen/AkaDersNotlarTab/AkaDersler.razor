@@ -17,15 +17,15 @@
 }
 else
 {
-    <SfDropDownList ID="DropDonem" @ref="DropDonem" ShowClearButton="true" TItem="DonemDto" CssClass="form-control-sm"
+    <SfDropDownList ID="DropDonem" @ref="DropDonem" ShowClearButton="true" Index="0" TItem="DonemDto" CssClass="form-control-sm"
                     TValue="int?" Placeholder="Dönem Seçimi..."
                     DataSource="@(donemDtos.OrderByDescending(x=>x.Yil).ThenBy(n => n.BasTarih))" @bind-Value="@(selectedDonemId)">
         <DropDownListEvents TValue="int?" ValueChange="DonemChange"></DropDownListEvents>
         <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
     </SfDropDownList>
 
-    <SfGrid ID="grdDersler" @ref="grdDersler" TValue="DersAcilanDto" AllowFiltering="true" Toolbar="@(Toolbaritems)" AllowPaging="true">
-        <SfDataManager Url="@($"odata/dersacilans?$expand=akademisyen($select=Ad,Id),donem($select=Ad,Id)&$select=Ad,Id,Kod&$filter=akademisyen/Id eq {akademisyenDto.Id} and donem/Id eq {selectedDonemId}")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+    <SfGrid ID="grdDersler" @ref="grdDersler" Query="@(new Query().Where("akademisyen/Id", "equal", akademisyenDto.Id).Where("donem/Id", "equal", selectedDonemId))" TValue="DersAcilanDto" AllowFiltering="true" Toolbar="@(Toolbaritems)" AllowPaging="true">
+        <SfDataManager Url="@(OdataQuery)" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
         <GridEvents TValue="DersAcilanDto" OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectedHandler"></GridEvents>
         @*<GridGroupSettings Columns="@Initial"></GridGroupSettings>*@
         <GridTemplates>
@@ -110,6 +110,11 @@ else
 
 @code{
 
+    string OdataQuery = "odata/dersacilans";
+    public Query totalQuery = new Query();//.Expand(new List<string> { "Akademisyen($select=Id,Ad)", "Donem($select=Id,Ad)" });
+
+
+
     bool isYoklamaShow;
     SfGrid<DersKayitDto> ogrGrid;
     string ogrGridOdata = "";
@@ -160,14 +165,23 @@ else
                     akademisyenDto = _AkademisyenDto;
                 }
                 var aktifDonem = await appState.GetDonemState();
-                gridOdata = $"odata/dersacilans?$expand=akademisyen($select=Ad,Id),donem($select=Ad,Id)&$select=Ad,Id,Kod&$filter=akademisyen/Id eq {akademisyenDto.Id} and donem/Id eq {aktifDonem.Id}";
+
+                //gridOdata = $"odata/dersacilans?$expand=akademisyen($select=Ad,Id),donem($select=Ad,Id)&$select=Ad,Id,Kod&$filter=akademisyen/Id eq {akademisyenDto.Id} and donem/Id eq {aktifDonem.Id}";
             }
             else
             {
-                gridOdata = $"odata/dersacilans?$filter=Id eq {SpesificDersAcilan}";
+                //gridOdata = $"odata/dersacilans?$filter=Id eq {SpesificDersAcilan}";
             }
 
             selectedDonemId = donemDtos.FirstOrDefault(x => x.Durum == true).Id;
+
+            //totalQuery = new Query()
+            //    .Where("akademisyen/Id", "equal", akademisyenDto.Id)
+            //    .Where("donem/Id", "equal", selectedDonemId);
+
+            //.Expand(new List<string> { "Akademisyen($select=Id,Ad)", "Donem($select=Id,Ad)" })
+
+
             StateHasChanged();
 
             //ApiResponseDto<List<AkademisyenDersDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<AkademisyenDersDto>>>("api/sinav/GetDersAcilanByAkademisyenId/" + akademisyenDto.Id);
@@ -216,7 +230,12 @@ else
     async Task DonemChange()
     {
         //gridOdata = $"odata/dersacilans?$expand=akademisyen($select=Ad,Id),donem($select=Ad,Id)&$select=Ad,Id,Kod&$filter=akademisyen/Id eq {akademisyenDto.Id} and donem/Id eq {selectedDonemId}";
+        //totalQuery = new Query()
+        //        .Where("akademisyen/Id", "equal", akademisyenDto.Id)
+        //        .Where("donem/Id", "equal", selectedDonemId);
+        await Task.Delay(1000);
         grdDersler.Refresh();
+        StateHasChanged();
     }
 
     private List<Object> Toolbaritems = new List<Object>() { "ExcelExport", "CsvExport", "PdfExport"
