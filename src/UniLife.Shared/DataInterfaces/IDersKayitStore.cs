@@ -15,5 +15,7 @@ namespace UniLife.Shared.DataInterfaces
         Task HedefKaynakOgrAktar(HedefKaynakDto hedefKaynakDto);
         Task HedefKaynakOgrDersKayit(HedefKaynakDto hedefKaynakDto);
         Task Onayla(List<int> ids);
+        Task Harflendir(int dersAcilanId);
+        Task<List<DersKayitOgrOrtalamaDto>> GetOgrDersHarfs(int dersAcilanId);
     }
 }

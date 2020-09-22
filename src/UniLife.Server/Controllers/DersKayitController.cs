@@ -164,7 +164,43 @@ namespace UniLife.Server.Controllers
                 return new ApiResponse(Status400BadRequest, "DersKayitDto Model is Invalid");
             }
         }
+
+        [HttpGet]
+        [Route("Harflendir/{dersAcilanId}")]
+        [Authorize(Permissions.DersKayit.Update)]
+        [Authorize(Roles = "Administrator,Personel,Akademisyen")]
+        public async Task<ApiResponse> Harflendir( int dersAcilanId)
+        {
+            if (ModelState.IsValid)
+            {
+                return await _dersKayitManager.Harflendir(dersAcilanId);
+            }
+            else
+            {
+                return new ApiResponse(Status400BadRequest, "DersKayitDto Model is Invalid");
+            }
+        }
+
+        [HttpGet]
+        [Route("GetOgrDersHarfs/{dersAcilanId}")]
+        [Authorize(Permissions.DersKayit.Update)]
+        [Authorize(Roles = "Administrator,Personel,Akademisyen")]
+        public async Task<ApiResponse> GetOgrDersHarfs(int dersAcilanId)
+        {
+            if (ModelState.IsValid)
+            {
+                return await _dersKayitManager.GetOgrDersHarfs(dersAcilanId);
+            }
+            else
+            {
+                return new ApiResponse(Status400BadRequest, "DersKayitDto Model is Invalid");
+            }
+        }
+
         
+
+
+
 
     }
 }

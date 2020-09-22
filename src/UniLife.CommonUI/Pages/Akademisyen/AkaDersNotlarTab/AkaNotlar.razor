@@ -28,7 +28,7 @@
         <Syncfusion.Blazor.Buttons.SfButton CssClass="center-block e-primary" OnClick="Yayinla">Yayinla</Syncfusion.Blazor.Buttons.SfButton>
     </div>
     <div class="col-6 text-center">
-        @if (_SinavDto.SinavTipId==2 || _SinavDto.SinavTipId == 3)
+        @if (_SinavDto.SinavTipId == 2 || _SinavDto.SinavTipId == 3)
         {
             <Syncfusion.Blazor.Buttons.SfButton CssClass="center-block e-primary" OnClick="Degerlendir">Değerlendir</Syncfusion.Blazor.Buttons.SfButton>
         }
@@ -187,6 +187,21 @@
     async Task Degerlendir()
     {
 
+        //ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/derskayit/Harflendir/"+ _SinavDto.DersAcilanId);
+
+        //try
+        //{
+        //    if (apiResponse.IsSuccessStatusCode)
+        //    {
+        //        matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+        //    }
+        //    else
+        //        matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
+        //}
+        //catch (Exception ex)
+        //{
+        //    matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
+        //}
     }
 
     public void QueryCellInfoHandler(QueryCellInfoEventArgs<SinavOgrNotlarDto> args)

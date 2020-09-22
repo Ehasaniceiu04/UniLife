@@ -1,0 +1,107 @@
+﻿@inject HttpClient Http;
+@inject IMatToaster matToaster
+@using UniLife.Shared.Dto.Definitions
+@using Syncfusion.Blazor.Navigations
+
+@attribute [Authorize(Roles = "Administrator,Personel,Akademisyen")]
+
+
+<legend>@_SinavDto.DersAcilanAd</legend>
+
+@*OnActionComplete="ActionCompletedHandler"*@
+<SfGrid ID="grdHarfler" @ref="grdHarfler" DataSource="@dersKayitOgrOrtalamaDtos" Toolbar="@(new List<string>() {"ExcelExport", "CsvExport", "PdfExport" })" AllowPaging="true">
+    @*<GridEvents TValue="DersKayitOgrOrtalamaDto" QueryCellInfo="QueryCellInfoHandler" OnBatchSave="OnBatchSaveHandler" OnActionBegin="OnActionBeginHandler"></GridEvents>*@
+    @*<GridEditSettings AllowEditing="true" Mode="EditMode.Batch"></GridEditSettings>*@
+    <GridColumns>
+        <GridColumn AllowEditing="false" Visible="false" Field=@nameof(DersKayitOgrOrtalamaDto.DersKayitId) HeaderText="DersKayitId" IsPrimaryKey="true"></GridColumn>
+        <GridColumn AllowEditing="false" Visible="false" Field=@nameof(DersKayitOgrOrtalamaDto.OgrenciId) HeaderText="OgrenciId"></GridColumn>
+        <GridColumn AllowEditing="false" Field=@nameof(DersKayitOgrOrtalamaDto.OgrenciNo) HeaderText="Öğrenci No"></GridColumn>
+        <GridColumn AllowEditing="false" Field=@nameof(DersKayitOgrOrtalamaDto.OgrenciAdSoyad) HeaderText="Adı Soyadı"></GridColumn>
+        <GridColumn AllowEditing="false" Field=@nameof(DersKayitOgrOrtalamaDto.OgrSinavlarText) HeaderText="Tüm Notları"></GridColumn>
+        <GridColumn Field=@nameof(DersKayitOgrOrtalamaDto.OgrOrt) HeaderText="Ort"></GridColumn>
+    </GridColumns>
+</SfGrid>
+<div class="row">
+    <div class="col-12 text-center">
+            <Syncfusion.Blazor.Buttons.SfButton CssClass="center-block e-primary" OnClick="Degerlendir">Değerlendir</Syncfusion.Blazor.Buttons.SfButton>
+
+    </div>
+</div>
+
+
+@code{
+
+
+    SfGrid<DersKayitOgrOrtalamaDto> grdHarfler;
+
+    List<DersKayitOgrOrtalamaDto> dersKayitOgrOrtalamaDtos;
+
+
+
+    //[Parameter]
+    //public AkademisyenSinavDto _AkademisyenSinavDto { get; set; }
+
+    [Parameter]
+    public SinavDto _SinavDto { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (true)
+        {
+            await GetHarfs();
+        }
+
+    }
+
+    async Task GetHarfs()
+    {
+        try
+        {
+
+            ApiResponseDto<List<DersKayitOgrOrtalamaDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<DersKayitOgrOrtalamaDto>>>("api/derskayit/GetOgrDersHarfs/" + _SinavDto.DersAcilanId);
+
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                dersKayitOgrOrtalamaDtos = apiResponse.Result;
+            }
+            else
+                matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
+        }
+    }
+
+
+    SinavOgrNotlarDto sinavOgrNotlarDtoOnceki = new SinavOgrNotlarDto();
+
+
+    async Task Degerlendir()
+    {
+
+        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/derskayit/Harflendir/"+ _SinavDto.DersAcilanId);
+
+        try
+        {
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+            }
+            else
+                matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
+        }
+    }
+
+    //public void QueryCellInfoHandler(QueryCellInfoEventArgs<SinavOgrNotlarDto> args)
+    //{
+    //    if (_SinavDto.IsYayinli)
+    //    {
+    //        args.Cell.AddStyle(new string[] { "background-color:#71a879" });
+    //    }
+    //}
+}

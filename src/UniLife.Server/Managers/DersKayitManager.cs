@@ -68,5 +68,16 @@ namespace UniLife.Server.Managers
             await _dersKayitStore.Onayla(ids);
             return new ApiResponse(Status200OK, "Kayıtlı dersler onaylandı.");
         }
+
+        public async Task<ApiResponse> Harflendir(int dersAcilanId)
+        {
+            await _dersKayitStore.Harflendir( dersAcilanId);
+            return new ApiResponse(Status200OK, "Öğrenci ders sonuçları harflendirildi.");
+        }
+
+        public async Task<ApiResponse> GetOgrDersHarfs(int dersAcilanId)
+        {
+            return new ApiResponse(Status200OK, "Öğrenci ders sonuçları harflendirildi.", await _dersKayitStore.GetOgrDersHarfs(dersAcilanId));
+        }
     }
 }

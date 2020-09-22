@@ -112,7 +112,7 @@ namespace UniLife.Storage.Stores
                                                               OgrenciId = sk.OgrenciId,
                                                               SinavTipAd = st.Ad,
                                                               Not = sk.OgrNot
-                                                          }).ToListAsync();
+                                                          }).AsNoTracking().ToListAsync();
 
 
             var ogrenciNotlar = from sk in _db.SinavKayits.Where(x => x.SinavId == sinavId)
@@ -131,7 +131,7 @@ namespace UniLife.Storage.Stores
 
 
 
-            return await ogrenciNotlar.ToListAsync();
+            return await ogrenciNotlar.AsNoTracking().ToListAsync();
         }
 
         private static string GetDigerSinavsByText(List<OgrDigerSinavlar> derseKayitliOgrlerinTumSinavlari, Ogrenci o)

@@ -23,10 +23,4 @@ namespace UniLife.Shared.Dto.Definitions
         public string OgrDigerSinavlarText { get; set; }
     }
 
-    public class OgrDigerSinavlar
-    {
-        public int OgrenciId { get; set; }
-        public string SinavTipAd { get; set; }
-        public double Not { get; set; }
-    }
 }
