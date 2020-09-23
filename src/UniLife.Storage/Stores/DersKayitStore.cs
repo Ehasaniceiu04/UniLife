@@ -260,60 +260,68 @@ namespace UniLife.Storage.Stores
                     normalBagilHesabaGirenler.Add(item);
                 }
             }
-
-            //Sinif Ortalaması
-            double OgrOrtalamaSum = 0;
-            foreach (var item in normalBagilHesabaGirenler)
+            if (normalBagilHesabaGirenler.Count > 0)
             {
+                double normalBagilHesabaGirenlerDouble = (double)normalBagilHesabaGirenler.Count;
 
-                var derseKayitliOgrlerinTumSinavlariButsuzOgrenci = derseKayitliOgrlerinTumSinavlariButsuz.Where(x => x.OgrenciId == item.OgrenciId);
-                foreach (var ogrencinot in derseKayitliOgrlerinTumSinavlariButsuzOgrenci)
+                //Sinif Ortalaması
+                double OgrOrtalamaSum = 0;
+                foreach (var item in normalBagilHesabaGirenler)
                 {
-                    if (derseKayitliOgrlerinTumSinavlariButsuzOgrenci.Select(x => x.MazeretiSinavKayitId).Contains(ogrencinot.SinavKayitId))
-                    {
 
-                    }
-                    else
+                    var derseKayitliOgrlerinTumSinavlariButsuzOgrenci = derseKayitliOgrlerinTumSinavlariButsuz.Where(x => x.OgrenciId == item.OgrenciId);
+                    foreach (var ogrencinot in derseKayitliOgrlerinTumSinavlariButsuzOgrenci)
                     {
-                        item.Ort = Math.Round(ogrencinot.Not * (ogrencinot.EtkiOran / 100), 2); // 15 üstü öğrencilerin ortalamaları burada giriliyor.
-                        OgrOrtalamaSum += ogrencinot.Not * (ogrencinot.EtkiOran / 100);
+                        if (derseKayitliOgrlerinTumSinavlariButsuzOgrenci.Select(x => x.MazeretiSinavKayitId).Contains(ogrencinot.SinavKayitId))
+                        {
+
+                        }
+                        else
+                        {
+                            item.Ort = Math.Round(ogrencinot.Not * (ogrencinot.EtkiOran / 100), 2); // 15 üstü öğrencilerin ortalamaları burada giriliyor.
+                            OgrOrtalamaSum += ogrencinot.Not * (ogrencinot.EtkiOran / 100);
+                        }
                     }
                 }
+
+                double bagilOrtalama = OgrOrtalamaSum / normalBagilHesabaGirenlerDouble;
+
+                //Standart Sapma
+
+                double XKareToplam = 0;
+                double XToplam = 0;
+
+                foreach (var item in normalBagilHesabaGirenler)
+                {
+                    XToplam += item.Ort;
+                    XKareToplam += Math.Pow(item.Ort, 2);
+                }
+
+                double kokIc = (normalBagilHesabaGirenlerDouble * XKareToplam) - Math.Pow(XToplam, 2);
+
+                double standartSapma = (1 / normalBagilHesabaGirenlerDouble) * Math.Sqrt(kokIc);
+
+
+                //TSkor from Z Puanı
+
+                foreach (var item in normalBagilHesabaGirenler)
+                {
+                    item.TSkor = 50 + 10 * ((item.Ort - bagilOrtalama) / standartSapma);
+                }
+
+
+                HesapKitap hesapKitap = new HesapKitap(bagilOrtalama);
+
+                List<DersKayit> harfliortalamaliDersKayits = hesapKitap.NormalBagilOrtalamaHarflendir(normalBagilHesabaGirenler);
+
+                harfliortalamaliDersKayits.AddRange(normalBagilHesabaGiremeyenler);
+
+                _db.DersKayits.UpdateRange(harfliortalamaliDersKayits);
             }
-
-            double bagilOrtalama = OgrOrtalamaSum / normalBagilHesabaGirenler.Count();
-
-            //Standart Sapma
-
-            double XKareToplam = 0;
-            double XToplam = 0;
-
-            foreach (var item in normalBagilHesabaGirenler)
+            else
             {
-                XToplam += item.Ort;
-                XKareToplam += Math.Pow(item.Ort, 2);
+                _db.DersKayits.UpdateRange(normalBagilHesabaGiremeyenler);
             }
-
-            double kokIc = (normalBagilHesabaGirenler.Count * XKareToplam) - Math.Pow(XToplam, 2);
-
-            double standartSapma = (1 / normalBagilHesabaGirenler.Count) * Math.Sqrt(kokIc);
-
-
-            //TSkor from Z Puanı
-
-            foreach (var item in normalBagilHesabaGirenler)
-            {
-                item.TSkor = 50 + 10 * ((item.Ort - bagilOrtalama) / standartSapma);
-            }
-
-
-            HesapKitap hesapKitap = new HesapKitap(bagilOrtalama);
-
-            List<DersKayit> harfliortalamaliDersKayits = hesapKitap.NormalBagilOrtalamaHarflendir(normalBagilHesabaGirenler);
-
-            harfliortalamaliDersKayits.AddRange(normalBagilHesabaGiremeyenler);
-
-            _db.DersKayits.UpdateRange(harfliortalamaliDersKayits);
 
             await _db.SaveChangesAsync(CancellationToken.None);
         }
@@ -405,37 +413,44 @@ namespace UniLife.Storage.Stores
                 }
             }
 
-
-            double OgrOrtalamaSum = 0;
-            foreach (var item in oransalBagilHesabaGirenler)
+            if (oransalBagilHesabaGirenler.Count > 0)
             {
+                double oransalBagilHesabaGirenlerDouble = (double)oransalBagilHesabaGirenler.Count;
 
-                var derseKayitliOgrlerinTumSinavlariButsuzOgrenci = derseKayitliOgrlerinTumSinavlariButsuz.Where(x => x.OgrenciId == item.OgrenciId);
-                foreach (var ogrencinot in derseKayitliOgrlerinTumSinavlariButsuzOgrenci)
+                double OgrOrtalamaSum = 0;
+                foreach (var item in oransalBagilHesabaGirenler)
                 {
-                    if (derseKayitliOgrlerinTumSinavlariButsuzOgrenci.Select(x => x.MazeretiSinavKayitId).Contains(ogrencinot.SinavKayitId))
+
+                    var derseKayitliOgrlerinTumSinavlariButsuzOgrenci = derseKayitliOgrlerinTumSinavlariButsuz.Where(x => x.OgrenciId == item.OgrenciId);
+                    foreach (var ogrencinot in derseKayitliOgrlerinTumSinavlariButsuzOgrenci)
                     {
+                        if (derseKayitliOgrlerinTumSinavlariButsuzOgrenci.Select(x => x.MazeretiSinavKayitId).Contains(ogrencinot.SinavKayitId))
+                        {
+
+                        }
+                        else
+                        {
+                            item.Ort = Math.Round(ogrencinot.Not * (ogrencinot.EtkiOran / 100), 2); // 15 üstü öğrencilerin ortalamaları burada giriliyor.
+                            OgrOrtalamaSum += ogrencinot.Not * (ogrencinot.EtkiOran / 100);
+                        }
 
                     }
-                    else
-                    {
-                        item.Ort = Math.Round(ogrencinot.Not * (ogrencinot.EtkiOran / 100), 2); // 15 üstü öğrencilerin ortalamaları burada giriliyor.
-                        OgrOrtalamaSum += ogrencinot.Not * (ogrencinot.EtkiOran / 100);
-                    }
-
                 }
+
+                double bagilOrtalama = OgrOrtalamaSum / oransalBagilHesabaGirenlerDouble;
+
+                HesapKitap hesapKitap = new HesapKitap(bagilOrtalama);
+
+                List<DersKayit> harfliortalamaliDersKayits = hesapKitap.OranBagilOrtalamaHarflendir(oransalBagilHesabaGirenler.OrderByDescending(x => x.Ort).ToList());
+
+                harfliortalamaliDersKayits.AddRange(oransalBagilHesabaGiremeyenler);
+
+                _db.DersKayits.UpdateRange(harfliortalamaliDersKayits);
             }
-
-            double bagilOrtalama = OgrOrtalamaSum / oransalBagilHesabaGirenler.Count();
-
-            HesapKitap hesapKitap = new HesapKitap(bagilOrtalama);
-
-            List<DersKayit> harfliortalamaliDersKayits = hesapKitap.OranBagilOrtalamaHarflendir(oransalBagilHesabaGirenler.OrderByDescending(x => x.Ort).ToList());
-
-            harfliortalamaliDersKayits.AddRange(oransalBagilHesabaGiremeyenler);
-
-            _db.DersKayits.UpdateRange(harfliortalamaliDersKayits);
-
+            else
+            {
+                _db.DersKayits.UpdateRange(oransalBagilHesabaGiremeyenler);
+            }
             await _db.SaveChangesAsync(CancellationToken.None);
         }
 
@@ -468,6 +483,8 @@ namespace UniLife.Storage.Stores
                                                OgrenciNo = o.OgrNo,
                                                DersAcilanId = dk.DersAcilanId,
                                                OgrOrt = dk.Ort,
+                                               HarfNot = dk.HarfNot,
+                                               IsGecti = dk.GecDurum,
                                                OgrSinavlarText = GetDigerSinavsByText(derseKayitliOgrlerinTumSinavlari, o)
                                            }).AsNoTracking().ToListAsync();
 

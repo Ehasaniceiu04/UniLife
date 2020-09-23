@@ -18,6 +18,8 @@ namespace UniLife.Shared.Dto.Definitions
         //public string DersAcilanAd { get; set; }
         public int DersAcilanId { get; set; }
         public double OgrOrt { get; set; }
+        public string HarfNot { get; set; }
+        public bool IsGecti { get; set; }
 
         public string OgrSinavlarText { get; set; }
     }

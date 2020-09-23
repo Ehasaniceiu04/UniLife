@@ -14,7 +14,7 @@ namespace UniLife.Shared.Dto.Definitions
         public int SinavTipId { get; set; }
         public int SinavTurId { get; set; }
         public long? MazeretiSinavKayitId { get; set; }
-        public int EtkiOran { get; set; }
+        public double EtkiOran { get; set; }
         public double Not { get; set; }
     }
 }
