@@ -222,7 +222,7 @@ namespace UniLife.Storage.Stores
                 }
                 HesapKitap hesapKitap = new HesapKitap();
 
-                DersNotHarfDto dersNotHarfDto = hesapKitap.OrtalamaHarflendir(Ortlama);
+                DersNotHarfDto dersNotHarfDto = hesapKitap.MutlakOrtalamaHarflendir(Ortlama);
 
 
                 var dersKayitExist = await _db.DersKayits.FirstOrDefaultAsync(x => x.DersAcilanId == ogrenciNotlarDto.DersId && x.OgrenciId == ogrenciNotlarDto.OgrenciId);
@@ -285,7 +285,7 @@ namespace UniLife.Storage.Stores
                 }
                 HesapKitap hesapKitap = new HesapKitap();
 
-                DersNotHarfDto dersNotHarfDto = hesapKitap.OrtalamaHarflendir(Ortlama);
+                DersNotHarfDto dersNotHarfDto = hesapKitap.MutlakOrtalamaHarflendir(Ortlama);
 
 
                 var dersKayitExist = await _db.DersKayits.FirstOrDefaultAsync(x => x.DersAcilanId == sinavOgrNotlarDto.DersId && x.OgrenciId == sinavOgrNotlarDto.OgrenciId);
