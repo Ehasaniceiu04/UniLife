@@ -160,7 +160,7 @@ namespace UniLife.Storage.Stores
 
         public async Task Harflendir(int dersAcilanId)
         {
-            HesapKitap hesapKitap = new HesapKitap();
+
 
             //kaçtane öğrenci derse kayıtlı. ama sınava kayıtlı olmayabilir dikkat.
             var dersKayitlari = await _db.DersKayits.Where(x => x.DersAcilanId == dersAcilanId).ToListAsync();
@@ -199,18 +199,92 @@ namespace UniLife.Storage.Stores
             #endregion
 
 
-            List<DersKayit> bagilHesabaGirenler = new List<DersKayit>();
+
 
             //Mutlak
             if (dersKayitlari.Count < 11 || Ortalama > 79)
             {
-                List<DerKayitHarfCapOrt> hesapOrtalamalar = new List<DerKayitHarfCapOrt>();
+                await Mutlak(dersKayitlari, derseKayitliOgrlerinTumSinavlariButsuz);
+            }
 
-                foreach (var item in dersKayitlari)
+            //Oransal Bağıl
+            else if (dersKayitlari.Count < 30)
+            {
+                await OransalBagil(dersKayitlari, derseKayitliOgrlerinTumSinavlariButsuz);
+            }
+
+            //Normal Bağıl
+            else if (30 <= dersKayitlari.Count)
+            {
+
+
+
+            }
+
+            //return kayitliOgrenciler;
+        }
+
+        private async Task Mutlak(List<DersKayit> dersKayitlari, List<OgrSinavSonucs> derseKayitliOgrlerinTumSinavlariButsuz)
+        {
+            HesapKitap hesapKitap = new HesapKitap();
+
+            List<DerKayitHarfCapOrt> hesapOrtalamalar = new List<DerKayitHarfCapOrt>();
+
+            foreach (var item in dersKayitlari)
+            {
+                double OgrOrtalama = 0;
+                var derseKayitliOgrlerinTumSinavlariButsuzOgrenci = derseKayitliOgrlerinTumSinavlariButsuz.Where(x => x.OgrenciId == item.OgrenciId);
+                //Burada bir örencinin bir dersi için 3-4 tane sınavı olabilir. Büt hariç.
+                foreach (var ogrencinot in derseKayitliOgrlerinTumSinavlariButsuzOgrenci)
                 {
-                    double OgrOrtalama = 0;
+                    if (derseKayitliOgrlerinTumSinavlariButsuzOgrenci.Select(x => x.MazeretiSinavKayitId).Contains(ogrencinot.SinavKayitId))
+                    {
+
+                    }
+                    else
+                    {
+                        OgrOrtalama += ogrencinot.Not * (ogrencinot.EtkiOran / 100);
+                    }
+                }
+
+                DersNotHarfDto dersNotHarfDto = hesapKitap.OrtalamaHarflendir(OgrOrtalama);
+                hesapOrtalamalar.Add(new DerKayitHarfCapOrt
+                {
+                    DersKayitId = item.Id,
+                    Carpan = dersNotHarfDto.carpan,
+                    Harf = dersNotHarfDto.harf,
+                    Ortalama = dersNotHarfDto.ort
+                });
+            }
+
+
+            var dersKayitExists = await _db.DersKayits.Where(x => hesapOrtalamalar.Select(y => y.DersKayitId).Contains(x.Id)).ToListAsync();
+            foreach (var item in dersKayitExists)
+            {
+                var denkgel = hesapOrtalamalar.FirstOrDefault(x => x.DersKayitId == item.Id);
+                item.Carpan = denkgel.Carpan;
+                item.HarfNot = denkgel.Harf;
+                item.Ort = Convert.ToInt32(denkgel.Ortalama);
+            }
+            _db.DersKayits.UpdateRange(dersKayitExists);
+
+            await _db.SaveChangesAsync(CancellationToken.None);
+        }
+
+        private async Task OransalBagil(List<DersKayit> dersKayitlari, List<OgrSinavSonucs> derseKayitliOgrlerinTumSinavlariButsuz)
+        {
+            List<DersKayit> oransalBagilHesabaGiremeyenler = new List<DersKayit>();
+            List<DersKayit> oransalBagilHesabaGirenler = new List<DersKayit>();
+
+            foreach (var item in dersKayitlari)
+            {
+                //final veya büt <15 ise  FF - hesaba katma
+                if (derseKayitliOgrlerinTumSinavlariButsuz.Any(x => x.OgrenciId == item.OgrenciId &&
+                                                             (x.SinavTipId == 2 && x.Not <= 15)))
+                {
+
+                    double tembelOgrOrtalama = 0;
                     var derseKayitliOgrlerinTumSinavlariButsuzOgrenci = derseKayitliOgrlerinTumSinavlariButsuz.Where(x => x.OgrenciId == item.OgrenciId);
-                    //Burada bir örencinin bir dersi için 3-4 tane sınavı olabilir. Büt hariç.
                     foreach (var ogrencinot in derseKayitliOgrlerinTumSinavlariButsuzOgrenci)
                     {
                         if (derseKayitliOgrlerinTumSinavlariButsuzOgrenci.Select(x => x.MazeretiSinavKayitId).Contains(ogrencinot.SinavKayitId))
@@ -219,66 +293,56 @@ namespace UniLife.Storage.Stores
                         }
                         else
                         {
-                            OgrOrtalama += ogrencinot.Not * (ogrencinot.EtkiOran / 100);
+                            tembelOgrOrtalama += ogrencinot.Not * (ogrencinot.EtkiOran / 100);
                         }
                     }
 
-                    DersNotHarfDto dersNotHarfDto = hesapKitap.OrtalamaHarflendir(OgrOrtalama);
-                    hesapOrtalamalar.Add(new DerKayitHarfCapOrt {
-                        DersKayitId= item.Id,
-                        Carpan = dersNotHarfDto.carpan,
-                        Harf= dersNotHarfDto.harf,
-                        Ortalama= dersNotHarfDto.ort
-                    });
+
+
+                    item.Carpan = 0;
+                    item.Ort = tembelOgrOrtalama;
+                    item.HarfNot = "FF";
+
+                    oransalBagilHesabaGiremeyenler.Add(item);
                 }
-
-
-                var dersKayitExists = await _db.DersKayits.Where(x=> hesapOrtalamalar.Select(y=>y.DersKayitId).Contains(x.Id)).ToListAsync();
-                foreach (var item in dersKayitExists)
+                else
                 {
-                    var denkgel = hesapOrtalamalar.FirstOrDefault(x => x.DersKayitId == item.Id);
-                    item.Carpan = denkgel.Carpan;
-                    item.HarfNot = denkgel.Harf;
-                    item.Ort = Convert.ToInt32(denkgel.Ortalama);
+                    oransalBagilHesabaGirenler.Add(item);
                 }
-                _db.DersKayits.UpdateRange(dersKayitExists);
-
-                await _db.SaveChangesAsync(CancellationToken.None);
-
-                return;
             }
 
-            //Oransal Bağıl
-            else if (dersKayitlari.Count < 30)
+
+            double OgrOrtalamaSum = 0;
+            foreach (var item in oransalBagilHesabaGirenler)
             {
-                foreach (var item in dersKayitlari)
+
+                var derseKayitliOgrlerinTumSinavlariButsuzOgrenci = derseKayitliOgrlerinTumSinavlariButsuz.Where(x => x.OgrenciId == item.OgrenciId);
+                foreach (var ogrencinot in derseKayitliOgrlerinTumSinavlariButsuzOgrenci)
                 {
-                    //final veya büt <50 ise direk FF
-                    if (derseKayitliOgrlerinTumSinavlari.Any(x => x.OgrenciId == item.OgrenciId &&
-                                                                 (x.SinavTipId == 2 && x.Not < 50) &&
-                                                                 (x.SinavTipId == 3 && x.Not < 50)))
+                    if (derseKayitliOgrlerinTumSinavlariButsuzOgrenci.Select(x => x.MazeretiSinavKayitId).Contains(ogrencinot.SinavKayitId))
                     {
-                        item.HarfNot = "FF";
+
                     }
+                    else
+                    {
+                        item.Ort = Math.Round(ogrencinot.Not * (ogrencinot.EtkiOran / 100), 2); // 15 üstü öğrencilerin ortalamaları burada giriliyor.
+                        OgrOrtalamaSum += ogrencinot.Not * (ogrencinot.EtkiOran / 100);
+                    }
+
                 }
             }
 
-            //Normal Bağıl
-            else if (30 <= dersKayitlari.Count)
-            {
-                foreach (var item in dersKayitlari)
-                {
-                    //final veya büt <50 ise direk FF
-                    if (derseKayitliOgrlerinTumSinavlari.Any(x => x.OgrenciId == item.OgrenciId &&
-                                                                 (x.SinavTipId == 2 && x.Not < 50) &&
-                                                                 (x.SinavTipId == 3 && x.Not < 50)))
-                    {
-                        item.HarfNot = "FF";
-                    }
-                }
-            }
+            double bagilOrtalama = OgrOrtalamaSum / oransalBagilHesabaGirenler.Count();
 
-            //return kayitliOgrenciler;
+            HesapKitap hesapKitap = new HesapKitap(bagilOrtalama);
+
+            List<DersKayit> harfliortalamaliDersKayits = hesapKitap.OranBagilOrtalamaHarflendir(oransalBagilHesabaGirenler.OrderByDescending(x => x.Ort).ToList());
+
+            harfliortalamaliDersKayits.AddRange(oransalBagilHesabaGiremeyenler);
+
+            _db.DersKayits.UpdateRange(harfliortalamaliDersKayits);
+
+            await _db.SaveChangesAsync(CancellationToken.None);
         }
 
         private static string GetDigerSinavsByText(List<OgrSinavSonucs> derseKayitliOgrlerinTumSinavlari, Ogrenci o)
