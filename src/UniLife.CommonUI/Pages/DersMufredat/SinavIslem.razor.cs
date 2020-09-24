@@ -454,7 +454,8 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 SinavKayitDto sinavKayitDto = new SinavKayitDto()
                 {
                     OgrenciId = args.RowData.Ogrenci.Id,
-                    SinavId = selectedSinavId
+                    SinavId = selectedSinavId,
+                    MazeretiSinavKayitId = SelectedSinav.MazeretiSinavId,
                 };
                 ApiResponseDto<SinavKayitDto> apiResponse = await Http.PostJsonAsync<ApiResponseDto<SinavKayitDto>>("api/SinavKayit", sinavKayitDto);
                 ogrenciSecDialogOpen = false;

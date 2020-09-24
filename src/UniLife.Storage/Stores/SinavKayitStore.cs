@@ -46,10 +46,17 @@ namespace UniLife.Storage.Stores
 
         public async Task<SinavKayit> Create(SinavKayitDto sinavKayitDto)
         {
+            if (sinavKayitDto.MazeretSinavId.HasValue)
+            {
+                var mazeretiSinavKayit = await _db.SinavKayits.FirstOrDefaultAsync(x => x.SinavId == sinavKayitDto.MazeretSinavId && x.OgrenciId == sinavKayitDto.OgrenciId);
+
+                sinavKayitDto.MazeretiSinavKayitId = mazeretiSinavKayit.Id;
+            }
             var sinavKayit = _autoMapper.Map<SinavKayitDto, SinavKayit>(sinavKayitDto);
             await _db.SinavKayits.AddAsync(sinavKayit);
             await _db.SaveChangesAsync(CancellationToken.None);
             return sinavKayit;
+
         }
 
         public async Task<SinavKayit> Update(SinavKayitDto sinavKayitDto)
@@ -136,7 +143,7 @@ namespace UniLife.Storage.Stores
 
         private static string GetDigerSinavsByText(List<OgrDigerSinavlar> derseKayitliOgrlerinTumSinavlari, Ogrenci o)
         {
-            return String.Join(" ", derseKayitliOgrlerinTumSinavlari.Where(y => y.OgrenciId == o.Id).OrderBy(x=>x.SinavTipAd).Select(x => x.SinavTipAd + ":" + x.Not));
+            return String.Join(" ", derseKayitliOgrlerinTumSinavlari.Where(y => y.OgrenciId == o.Id).OrderBy(x => x.SinavTipAd).Select(x => x.SinavTipAd + ":" + x.Not));
         }
 
         public async Task<List<KeyValueDto>> GetOgrenciSinavsByDers(int ogrenciId, int dersAcilanId)
@@ -312,12 +319,14 @@ namespace UniLife.Storage.Stores
 
             foreach (var item in existSinavKayits)
             {
-                var enteredSinavKayit= sinavKayitNotBatches.FirstOrDefault(x => x.SinavKayitId == item.Id);
+                var enteredSinavKayit = sinavKayitNotBatches.FirstOrDefault(x => x.SinavKayitId == item.Id);
                 item.OgrNot = enteredSinavKayit.OgrNot;
                 item.Katilim = enteredSinavKayit.Katilim;
             }
 
             await _db.SaveChangesAsync(CancellationToken.None);
         }
+
+
     }
 }

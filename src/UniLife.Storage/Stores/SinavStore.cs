@@ -75,7 +75,8 @@ namespace UniLife.Storage.Stores
                                        TarihIlan = s.TarihIlan,
                                        KisaAd = s.KisaAd,
                                        OgrCount = cCount,
-                                       IsYayinli = s.IsYayinli
+                                       IsYayinli = s.IsYayinli,
+                                       MazeretiSinavId = s.MazeretiSinavId
                                    }).ToListAsync();
 
 

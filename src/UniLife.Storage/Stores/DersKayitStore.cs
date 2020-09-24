@@ -710,7 +710,7 @@ namespace UniLife.Storage.Stores
             foreach (var item in dersKayitlari)
             {
                 //final veya büt <15 ise  FF - hesaba katma
-                if (derseKayitliOgrlerinTumSinavlariFinalsiz.Any(x => x.OgrenciId == item.OgrenciId &&
+                if (derseKayitliOgrlerinTumSinavlariButsuz.Any(x => x.OgrenciId == item.OgrenciId &&
                                                              (x.SinavTipId == (int)SinavTipEnum.But && x.Not <= 15)))
                 {
 
