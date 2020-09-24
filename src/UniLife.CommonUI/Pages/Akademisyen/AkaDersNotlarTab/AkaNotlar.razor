@@ -25,20 +25,42 @@
 </SfGrid>
 <div class="row">
     <div class="col-6 text-center">
-        <Syncfusion.Blazor.Buttons.SfButton CssClass="center-block e-primary" OnClick="Yayinla">Yayinla</Syncfusion.Blazor.Buttons.SfButton>
+        @*<Syncfusion.Blazor.Buttons.SfButton CssClass="center-block e-primary" OnClick="Yayinla">Yayinla</Syncfusion.Blazor.Buttons.SfButton>*@
     </div>
     <div class="col-6 text-center">
         @if (_SinavDto.SinavTipId == 2 || _SinavDto.SinavTipId == 3)
         {
-            <Syncfusion.Blazor.Buttons.SfButton CssClass="center-block e-primary" OnClick="Degerlendir">Değerlendir</Syncfusion.Blazor.Buttons.SfButton>
+            <Syncfusion.Blazor.Buttons.SfButton CssClass="center-block e-primary" OnClick="HarflendirmeSonucGoster">Harflendirme Sonuçlarını Listele</Syncfusion.Blazor.Buttons.SfButton>
         }
 
     </div>
 </div>
 
+@if (isHarflendirmeSonucGoster)
+{
+    <AkaHarflendir _SinavDto="_SinavDto"></AkaHarflendir>
+    <div class="row">
+        <div class="col-6 text-center">
+            
+        </div>
+        <div class="col-6 text-center">
+            @if (_SinavDto.SinavTipId == 2)
+            {
+                <Syncfusion.Blazor.Buttons.SfButton CssClass="center-block e-primary" OnClick="FinalHarflendir">Final Harflendir.</Syncfusion.Blazor.Buttons.SfButton>
+            }
+            else if (_SinavDto.SinavTipId == 3)
+            {
+                <Syncfusion.Blazor.Buttons.SfButton CssClass="center-block e-primary" OnClick="ButHarflendir">Büt Harflendir</Syncfusion.Blazor.Buttons.SfButton>
+            }
+            <Syncfusion.Blazor.Buttons.SfButton CssClass="center-block e-success" OnClick="Yayinla">Yayinla</Syncfusion.Blazor.Buttons.SfButton>
+        </div>
+    </div>
+}
+
 
 @code{
 
+    bool isHarflendirmeSonucGoster;
 
     SfGrid<SinavOgrNotlarDto> grdNotlar;
 
@@ -184,9 +206,13 @@
 
     }
 
-    async Task Degerlendir()
+    async Task HarflendirmeSonucGoster()
     {
 
+        isHarflendirmeSonucGoster = false;
+        StateHasChanged();
+        await Task.Delay(100);
+        isHarflendirmeSonucGoster = true;
         //ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/derskayit/Harflendir/"+ _SinavDto.DersAcilanId);
 
         //try
@@ -209,6 +235,47 @@
         if (_SinavDto.IsYayinli)
         {
             args.Cell.AddStyle(new string[] { "background-color:#71a879" });
+        }
+    }
+
+    async Task FinalHarflendir()
+    {
+
+        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/derskayit/Harflendir/" + _SinavDto.DersAcilanId);
+
+        try
+        {
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+                await HarflendirmeSonucGoster();
+            }
+            else
+                matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
+        }
+    }
+
+    async Task ButHarflendir()
+    {
+
+        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/derskayit/Harflendir/" + _SinavDto.DersAcilanId);
+
+        try
+        {
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+            }
+            else
+                matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
         }
     }
 }

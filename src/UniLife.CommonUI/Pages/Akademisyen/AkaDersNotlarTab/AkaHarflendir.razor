@@ -6,7 +6,7 @@
 @attribute [Authorize(Roles = "Administrator,Personel,Akademisyen")]
 
 
-<legend>@_SinavDto.DersAcilanAd</legend>
+<legend>@(_SinavDto.DersAcilanAd+" - Harflendirme - "+ (_SinavDto.IsYayinli?"(Yayınlı)":""))</legend>
 
 @*OnActionComplete="ActionCompletedHandler"*@
 <SfGrid ID="grdHarfler" @ref="grdHarfler" DataSource="@dersKayitOgrOrtalamaDtos" Toolbar="@(new List<string>() {"ExcelExport", "CsvExport", "PdfExport" })" AllowPaging="true">
@@ -23,12 +23,12 @@
         <GridColumn Field=@nameof(DersKayitOgrOrtalamaDto.IsGecti) HeaderText="Geçti"></GridColumn>
     </GridColumns>
 </SfGrid>
-<div class="row">
+@*<div class="row">
     <div class="col-12 text-center">
             <Syncfusion.Blazor.Buttons.SfButton CssClass="center-block e-primary" OnClick="Degerlendir">Değerlendir</Syncfusion.Blazor.Buttons.SfButton>
 
     </div>
-</div>
+</div>*@
 
 
 @code{
@@ -79,25 +79,25 @@
     SinavOgrNotlarDto sinavOgrNotlarDtoOnceki = new SinavOgrNotlarDto();
 
 
-    async Task Degerlendir()
-    {
+    //async Task Degerlendir()
+    //{
 
-        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/derskayit/Harflendir/"+ _SinavDto.DersAcilanId);
+    //    ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/derskayit/Harflendir/"+ _SinavDto.DersAcilanId);
 
-        try
-        {
-            if (apiResponse.IsSuccessStatusCode)
-            {
-                matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
-            }
-            else
-                matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
-        }
-        catch (Exception ex)
-        {
-            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
-        }
-    }
+    //    try
+    //    {
+    //        if (apiResponse.IsSuccessStatusCode)
+    //        {
+    //            matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+    //        }
+    //        else
+    //            matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
+    //    }
+    //}
 
     //public void QueryCellInfoHandler(QueryCellInfoEventArgs<SinavOgrNotlarDto> args)
     //{
