@@ -16,5 +16,6 @@ namespace UniLife.Shared.Dto.Definitions
         public long? MazeretiSinavKayitId { get; set; }
         public double EtkiOran { get; set; }
         public double Not { get; set; }
+        public int Katilim { get; set; }
     }
 }

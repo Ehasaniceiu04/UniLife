@@ -25,10 +25,13 @@
 </SfGrid>
 <div class="row">
     <div class="col-6 text-center">
-        @*<Syncfusion.Blazor.Buttons.SfButton CssClass="center-block e-primary" OnClick="Yayinla">Yayinla</Syncfusion.Blazor.Buttons.SfButton>*@
+        @if (_SinavDto.SinavTipId == (int)SinavTipEnum.Ara_Sinav)
+        {
+            <Syncfusion.Blazor.Buttons.SfButton CssClass="center-block e-primary" OnClick="Yayinla">Yayinla</Syncfusion.Blazor.Buttons.SfButton>
+        }
     </div>
     <div class="col-6 text-center">
-        @if (_SinavDto.SinavTipId == 2 || _SinavDto.SinavTipId == 3)
+        @if (_SinavDto.SinavTipId == (int)SinavTipEnum.Final || _SinavDto.SinavTipId == (int)SinavTipEnum.But)
         {
             <Syncfusion.Blazor.Buttons.SfButton CssClass="center-block e-primary" OnClick="HarflendirmeSonucGoster">Harflendirme Sonuçlarını Listele</Syncfusion.Blazor.Buttons.SfButton>
         }
@@ -41,7 +44,7 @@
     <AkaHarflendir _SinavDto="_SinavDto"></AkaHarflendir>
     <div class="row">
         <div class="col-6 text-center">
-            
+
         </div>
         <div class="col-6 text-center">
             @if (_SinavDto.SinavTipId == 2)
@@ -262,7 +265,7 @@
     async Task ButHarflendir()
     {
 
-        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/derskayit/Harflendir/" + _SinavDto.DersAcilanId);
+        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/derskayit/ButHarflendir/" + _SinavDto.DersAcilanId);
 
         try
         {

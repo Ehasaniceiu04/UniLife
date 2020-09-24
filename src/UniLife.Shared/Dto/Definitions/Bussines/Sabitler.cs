@@ -34,7 +34,7 @@ namespace UniLife.Shared.Dto.Definitions
         {
             new KeyValueDto() { Ad = "Katıldı", Id = 1 },
             new KeyValueDto() { Ad = "Katılmadı", Id = 2 },
-            new KeyValueDto() { Ad = "DEvamsız", Id = 3 }
+            new KeyValueDto() { Ad = "Devamsız", Id = 3 }
         };
     }
 }

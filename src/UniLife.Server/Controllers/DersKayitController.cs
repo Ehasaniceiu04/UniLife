@@ -182,6 +182,22 @@ namespace UniLife.Server.Controllers
         }
 
         [HttpGet]
+        [Route("ButHarflendir/{dersAcilanId}")]
+        [Authorize(Permissions.DersKayit.Update)]
+        [Authorize(Roles = "Administrator,Personel,Akademisyen")]
+        public async Task<ApiResponse> ButHarflendir(int dersAcilanId)
+        {
+            if (ModelState.IsValid)
+            {
+                return await _dersKayitManager.ButHarflendir(dersAcilanId);
+            }
+            else
+            {
+                return new ApiResponse(Status400BadRequest, "DersKayitDto Model is Invalid");
+            }
+        }
+
+        [HttpGet]
         [Route("GetOgrDersHarfs/{dersAcilanId}")]
         [Authorize(Permissions.DersKayit.Update)]
         [Authorize(Roles = "Administrator,Personel,Akademisyen")]

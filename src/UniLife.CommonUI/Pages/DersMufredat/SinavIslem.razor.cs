@@ -370,6 +370,14 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         }
 
+        async Task SinavGridRefresh()
+        {
+            var selectedDersAcilan = (await DersAcGrid.GetSelectedRecords()).FirstOrDefault();
+            
+
+            GetSinavsByDersAcilanId(selectedDersAcilan);
+        }
+
         async Task OgrenciGridRefresh(int sinavId)
         {
             ApiResponseDto<List<OgrenciDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDto>>>($"api/Ogrenci/GetOgrenciListBySinavId/{sinavId}").Result;
@@ -729,8 +737,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/sinav", mazeret);
             isMazeretConfirmDialogOpen = false;
 
-            SinavGrid.Refresh();
-            StateHasChanged();
+            SinavGridRefresh();
         }
 
         //public async Task TopluButOlustur()

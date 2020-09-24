@@ -99,6 +99,7 @@ else
                 <div class="row">
                     <div class="col-12">
                         <div class="form-row">
+
                             @*açılan ders grid OnRecordClick="OnSinavRecordClickHandler" *@
                             <SfGrid ID="SinavGrid" @ref="SinavGrid" DataSource="@SinavDtos.Where(x=>isShowSinavs).ToList()" TValue="SinavDto" Toolbar="@(Toolbaritems)" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
                                 <GridEvents RowSelected="RowSelectedHandlerSinav" OnActionComplete="ActionCompletedHandler" OnToolbarClick="ToolbarClickHandler" TValue="SinavDto"></GridEvents>
@@ -138,6 +139,7 @@ else
                                     <GridColumn Field=@nameof(SinavDto.SinavTurId) ValidationRules="@(new ValidationRules{ Required=true})" HeaderText="Türü" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@sinavTurDtos"></GridColumn>
                                     @*<GridColumn Field=@nameof(SinavDto.KisaAd) HeaderText="Kısa Ad"></GridColumn>*@
                                     @*<GridColumn Field=@nameof(SinavDto.SablonAd) HeaderText="Ad Şablon"></GridColumn>*@
+                                @*<GridColumn Visible="false" Field=@nameof(SinavDto.IsYayinli)></GridColumn>*@
                                     <GridColumn Field=@nameof(SinavDto.EtkiOran) HeaderText="%"></GridColumn>
                                     <GridColumn Field=@nameof(SinavDto.OgrCount) HeaderText="Ö.Sayı"></GridColumn>
 

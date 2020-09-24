@@ -30,7 +30,14 @@ namespace UniLife.Shared.Dto
     public enum SinavTipEnum
     {
         Ara_Sinav = 1,
-        Final = 2
+        Final = 2,
+        But=3
+    }
+    public enum SinavKatilimEnum
+    {
+        Katıldı=1,
+        Katılmadı=2,
+        Devamsız=3
     }
     public enum SinavDegerlendirmeTip
     {

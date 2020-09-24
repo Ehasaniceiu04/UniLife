@@ -28,28 +28,55 @@ namespace UniLife.Storage.Stores
         public async Task<List<SinavDto>> GetSinavListByAcilanDersId(int dersId)
         {
 
+            //var sinavList = await (from s in _db.Sinavs.Where(x => x.DersAcilanId == dersId)
+            //                            let cCount =
+            //                            (
+            //                              from c in _db.DersKayits
+            //                              where s.DersAcilanId == c.DersAcilanId
+            //                              select c
+            //                            ).Count()
+            //                            select new SinavDto
+            //                            {
+            //                                Id = s.Id,
+            //                                Ad = s.Ad,
+            //                                DersAcilanId = s.DersAcilanId,
+            //                                SinavTipId = s.SinavTipId,
+            //                                SinavTurId = s.SinavTurId,
+            //                                SablonAd = s.SablonAd,
+            //                                EtkiOran = s.EtkiOran,
+            //                                IsKilit = s.IsKilit,
+            //                                Tarih = s.Tarih,
+            //                                TarihIlan = s.TarihIlan,
+            //                                KisaAd = s.KisaAd,
+            //                                OgrCount = cCount,
+            //                                IsYayinli = s.IsYayinli
+            //                            }).ToListAsync();
+
+
+
             var sinavList = await (from s in _db.Sinavs.Where(x => x.DersAcilanId == dersId)
-                                        let cCount =
-                                        (
-                                          from c in _db.DersKayits
-                                          where s.DersAcilanId == c.DersAcilanId
-                                          select c
-                                        ).Count()
-                                        select new SinavDto
-                                        {
-                                            Id = s.Id,
-                                            Ad = s.Ad,
-                                            DersAcilanId = s.DersAcilanId,
-                                            SinavTipId = s.SinavTipId,
-                                            SinavTurId = s.SinavTurId,
-                                            SablonAd = s.SablonAd,
-                                            EtkiOran = s.EtkiOran,
-                                            IsKilit = s.IsKilit,
-                                            Tarih = s.Tarih,
-                                            TarihIlan = s.TarihIlan,
-                                            KisaAd = s.KisaAd,
-                                            OgrCount = cCount
-                                        }).ToListAsync();
+                                   let cCount =
+                                   (
+                                     from c in _db.SinavKayits
+                                     where s.Id == c.SinavId
+                                     select c
+                                   ).Count()
+                                   select new SinavDto
+                                   {
+                                       Id = s.Id,
+                                       Ad = s.Ad,
+                                       DersAcilanId = s.DersAcilanId,
+                                       SinavTipId = s.SinavTipId,
+                                       SinavTurId = s.SinavTurId,
+                                       SablonAd = s.SablonAd,
+                                       EtkiOran = s.EtkiOran,
+                                       IsKilit = s.IsKilit,
+                                       Tarih = s.Tarih,
+                                       TarihIlan = s.TarihIlan,
+                                       KisaAd = s.KisaAd,
+                                       OgrCount = cCount,
+                                       IsYayinli = s.IsYayinli
+                                   }).ToListAsync();
 
 
             //var ogrenciDto = await _autoMapper.ProjectTo<OgrenciDto>(_db.Ogrencis).FirstOrDefaultAsync(x => x.Id == id); //_db.Ogrencis.SingleOrDefaultAsync(t => t.Id == id);
@@ -82,6 +109,9 @@ namespace UniLife.Storage.Stores
                     break;
                 case (int)SinavTipEnum.Final:
                     islenecekAkademikTakvimKodu = 9;
+                    break;
+                case (int)SinavTipEnum.But:
+                    islenecekAkademikTakvimKodu = 10;
                     break;
                 default:
                     throw new DomainException("Sınav tipi anlaşılamadı");

@@ -79,5 +79,11 @@ namespace UniLife.Server.Managers
         {
             return new ApiResponse(Status200OK, "Öğrenci ders sonuçları harflendirildi.", await _dersKayitStore.GetOgrDersHarfs(dersAcilanId));
         }
+
+        public async Task<ApiResponse> ButHarflendir(int dersAcilanId)
+        {
+            await _dersKayitStore.ButHarflendir(dersAcilanId);
+            return new ApiResponse(Status200OK, "Öğrenci ders sonuçları harflendirildi.");
+        }
     }
 }
