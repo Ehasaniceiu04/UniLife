@@ -755,8 +755,6 @@ namespace UniLife.Storage.Stores
                 if (derseKayitliOgrlerinTumSinavlariFinalsizOgrenci.Any(x =>
                                                              (x.SinavTipId == (int)SinavTipEnum.But && x.Not <= 50)))
                 {
-
-
                     item.Carpan = 0;
                     item.Ort = OgrOrtalama;
                     item.HarfNot = "FF";
