@@ -17,6 +17,13 @@ namespace UniLife.Shared.Dto
         Bekleniyor = 0,
         Sonuçlandırıldı = 1
     }
+    public enum DersNedenEnum
+    {
+        Dönemsel=1,
+        Uzaktan_Eğitim=2,
+        Tez=3,
+        Staj=4
+    }
     public enum DersSonuc
     {
         Kaldı = 0,
