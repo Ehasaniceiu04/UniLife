@@ -64,6 +64,8 @@ namespace UniLife.Shared.Dto.Definitions
 
         public int? ODTekrar { get; set; }
         public int? ADKayit { get; set; }
+        public double? SinifOrtalamasi { get; set; }
+        public double? SinifStandartSapma { get; set; }
         public int TopKont { get; set; } = 990;
         public int BolDisKont { get; set; }
         public int AltKont { get; set; }
