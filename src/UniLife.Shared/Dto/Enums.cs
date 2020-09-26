@@ -38,7 +38,8 @@ namespace UniLife.Shared.Dto
     {
         Ara_Sinav = 1,
         Final = 2,
-        But=3
+        But=3,
+        Mazeret=4,
     }
     public enum SinavKatilimEnum
     {

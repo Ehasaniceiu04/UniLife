@@ -12,10 +12,10 @@ namespace UniLife.Shared.Dto.Definitions
         public string AdEn { get; set; }
         public string KisaAdEn { get; set; }
         public string OsymKod { get; set; }
-        public int OgrenimTurId { get; set; }
+        public int? OgrenimTurId { get; set; }
         public virtual OgrenimTurDto OgrenimTur { get; set; }
 
-        public int FakulteId { get; set; }
+        public int? FakulteId { get; set; }
         public virtual FakulteDto Fakulte { get; set; }
 
         public int OgrenimSure { get; set; }

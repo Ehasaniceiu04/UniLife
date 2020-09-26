@@ -4,29 +4,30 @@
 @using Syncfusion.Blazor.DropDowns
 @using System.Net
 @using Newtonsoft.Json
-
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Buttons
 
 @attribute [Authorize(Roles = "Administrator,Personel")]
 
 <ControlSection>
     <SfGrid @ref="BolumGrid" DataSource="@bolumDtos" Toolbar="@(new List<string>() { "Add"})" AllowSorting="true" AllowFiltering="true" AllowPaging="true" Width="100%">
-        <GridEvents OnActionComplete="ActionCompletedHandler" TValue="BolumDto"></GridEvents>
+        <GridEvents OnActionComplete="ActionCompletedHandler" OnActionBegin="OnActionBeginHandler" TValue="BolumDto"></GridEvents>
         <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
         <GridColumns>
-            <GridColumn Visible="false" Field=@nameof(BolumDto.Id) HeaderText="Bölüm ID" Edit="false" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(BolumDto.Id) HeaderText="Bölüm ID" Edit="false" AllowEditing="false" IsPrimaryKey="true"></GridColumn>
             <GridColumn Field=@nameof(BolumDto.FakulteId) HeaderText="Fakülte" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@fakulteDtos"></GridColumn>
-            <GridColumn Field=@nameof(BolumDto.Ad) HeaderText="Bölüm İsim" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
-            <GridColumn Field=@nameof(BolumDto.KisaAd) HeaderText="KisaAd" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
+            <GridColumn Field=@nameof(BolumDto.Ad) HeaderText="Bölüm İsim"></GridColumn>
+            <GridColumn Field=@nameof(BolumDto.KisaAd) HeaderText="KisaAd"></GridColumn>
             <GridColumn Field=@nameof(BolumDto.Kod) HeaderText="Kod"></GridColumn>
-            <GridColumn Visible="false" Field=@nameof(BolumDto.AdEn) HeaderText="AdEn"></GridColumn>
-            <GridColumn Visible="false" Field=@nameof(BolumDto.KisaAdEn) HeaderText="İng. K.Ad"></GridColumn>
-            <GridColumn Visible="false" Field=@nameof(BolumDto.OsymKod) HeaderText="OsymKod"></GridColumn>
+            <GridColumn Field=@nameof(BolumDto.AdEn) HeaderText="AdEn"></GridColumn>
+            <GridColumn Field=@nameof(BolumDto.KisaAdEn) HeaderText="İng. K.Ad"></GridColumn>
+            <GridColumn Field=@nameof(BolumDto.OsymKod) HeaderText="OsymKod"></GridColumn>
             <GridColumn Field=@nameof(BolumDto.OgrenimTurId) HeaderText="Ogrenim Tür" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@ogrenimTurDtos"></GridColumn>
             <GridColumn Field=@nameof(BolumDto.OgrenimSure) HeaderText="OgrenimSure"></GridColumn>
             <GridColumn Field=@nameof(BolumDto.Durum) EditType="EditType.BooleanEdit" HeaderText="Aktif"></GridColumn>
-            <GridColumn Visible="false" Field=@nameof(BolumDto.DiplomaAd) HeaderText="DiplomaAd"></GridColumn>
-            <GridColumn Visible="false" Field=@nameof(BolumDto.IsBologna) EditType="EditType.BooleanEdit" HeaderText="IsBologna"></GridColumn>
-            <GridColumn Visible="false" Field=@nameof(BolumDto.DiplomaAdEn) HeaderText="DiplomaAdEn"></GridColumn>
+            <GridColumn Field=@nameof(BolumDto.DiplomaAd) HeaderText="DiplomaAd"></GridColumn>
+            <GridColumn Field=@nameof(BolumDto.IsBologna) EditType="EditType.BooleanEdit" HeaderText="IsBologna"></GridColumn>
+            <GridColumn Field=@nameof(BolumDto.DiplomaAdEn) HeaderText="DiplomaAdEn"></GridColumn>
             <GridColumn>
                 <GridCommandColumns>
                     <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-edit", CssClass = "e-flat" })"></GridCommandColumn>
@@ -35,7 +36,6 @@
                     <GridCommandColumn Type="CommandButtonType.Cancel" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-cancel-icon", CssClass = "e-flat" })"></GridCommandColumn>
                 </GridCommandColumns>
             </GridColumn>
-
         </GridColumns>
     </SfGrid>
 </ControlSection>
@@ -46,24 +46,24 @@
 
     List<BolumDto> bolumDtos = new List<BolumDto>();
 
-    List<FakulteDto> fakulteDtos = new List<FakulteDto>();
-    List<OgrenimTurDto> ogrenimTurDtos = new List<OgrenimTurDto>();
+    List<KeyValueDto> fakulteDtos = new List<KeyValueDto>();
+    List<KeyValueDto> ogrenimTurDtos = new List<KeyValueDto>();
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        ReadBolums();
+        await ReadBolums();
 
-        ApiResponseDto apiResponse = Http.GetFromJsonAsync<ApiResponseDto>("api/fakulte").Result;
-        fakulteDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<FakulteDto[]>(apiResponse.Result.ToString()).ToList<FakulteDto>();
-        ApiResponseDto apiResponseOgrTur = Http.GetFromJsonAsync<ApiResponseDto>("api/ogrenimtur").Result;
-        ogrenimTurDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<OgrenimTurDto[]>(apiResponseOgrTur.Result.ToString()).ToList<OgrenimTurDto>();
+        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/fakulte");
+        fakulteDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<KeyValueDto[]>(apiResponse.Result.ToString()).ToList<KeyValueDto>();
+        ApiResponseDto apiResponseOgrTur = await Http.GetFromJsonAsync<ApiResponseDto>("api/ogrenimtur");
+        ogrenimTurDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<KeyValueDto[]>(apiResponseOgrTur.Result.ToString()).ToList<KeyValueDto>();
 
     }
 
-    void ReadBolums()
+    async Task ReadBolums()
     {
 
-        ApiResponseDto<List<BolumDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<BolumDto>>>("api/bolum").Result;
+        ApiResponseDto<List<BolumDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<BolumDto>>>("api/bolum");
 
         if (apiResponse.StatusCode == Status200OK)
         {
@@ -77,14 +77,14 @@
     }
 
 
-    //public async Task OnActionBeginHandler(ActionEventArgs<BolumDto> args)
-    //{
+    public async Task OnActionBeginHandler(ActionEventArgs<BolumDto> args)
+    {
 
-    //    //if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit || args.RequestType == Syncfusion.Blazor.Grids.Action.Add)
-    //    //{
-    //    //    await BolumGrid.ShowColumns("DiplomaAdEn");
-    //    //}
-    //}
+        //if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit || args.RequestType == Syncfusion.Blazor.Grids.Action.Add)
+        //{
+        //    await BolumGrid.ShowColumns("DiplomaAdEn");
+        //}
+    }
 
     public async Task ActionCompletedHandler(ActionEventArgs<BolumDto> args)
     {
@@ -92,29 +92,29 @@
         {
             if (args.Action == "Edit")
             {
-                Update(args.Data);
+                await Update(args.Data);
             }
             else if (args.Action == "Add")
             {
-                Create(args.Data);
+                await Create(args.Data);
             }
 
         }
         if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
         {
-            Delete(args.Data);
+            await Delete(args.Data);
         }
 
 
-        if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit || args.RequestType == Syncfusion.Blazor.Grids.Action.Add)
-        {
-            await BolumGrid.ShowColumns(new string[] { "DiplomaAdEn", "AdEn", "OsymKod", "DiplomaAd", "DiplomaAdEn", "IsBologna" });
-        }
+        //if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit || args.RequestType == Syncfusion.Blazor.Grids.Action.Add)
+        //{
+        //    await BolumGrid.ShowColumns(new string[] { "DiplomaAdEn", "AdEn", "OsymKod", "DiplomaAd", "DiplomaAdEn", "IsBologna" });
+        //}
 
-        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save || args.RequestType == Syncfusion.Blazor.Grids.Action.Cancel)
-        {
-            await BolumGrid.HideColumns(new string[] { "DiplomaAdEn", "AdEn", "OsymKod", "DiplomaAd", "DiplomaAdEn", "IsBologna" });
-        }
+        //if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save || args.RequestType == Syncfusion.Blazor.Grids.Action.Cancel)
+        //{
+        //    await BolumGrid.HideColumns(new string[] { "DiplomaAdEn", "AdEn", "OsymKod", "DiplomaAd", "DiplomaAdEn", "IsBologna" });
+        //}
     }
 
 
@@ -147,7 +147,7 @@
         }
     }
 
-    public async void Update(BolumDto bolumDto)
+    public async Task Update(BolumDto bolumDto)
     {
         //this updates the IsCompleted flag only
         try

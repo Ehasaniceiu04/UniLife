@@ -24,7 +24,7 @@ namespace UniLife.CommonUI.Pages.Akademisyen
         List<DerslikRezervDto> derslikRezervDtos { get; set; } = new List<DerslikRezervDto>();
 
         AkademisyenDto akademisyenDto;// = new AkademisyenDto();
-        bool isProgramOpen;
+        bool isDersProgramOpen;
 
         protected async override Task OnInitializedAsync()
         {
@@ -38,7 +38,7 @@ namespace UniLife.CommonUI.Pages.Akademisyen
                 else
                 {
                     await GetDersliksAndDerslikRezsByAkaId((int)akademisyenDto.Id);
-                    isProgramOpen = true;
+                    isDersProgramOpen = true;
                 }
                 
             }
@@ -58,12 +58,13 @@ namespace UniLife.CommonUI.Pages.Akademisyen
             //OData<DerslikDto> apiResponse = await Http.GetFromJsonAsync<OData<DerslikDto>>($"odata/dersliks?$filter=BinaId eq {binaId}");
             //derslikDtos = apiResponse.Value;
             //selectedDersliksByBina = derslikDtos.Select(x => x.Id).ToList();
+            
         }
 
         //async Task Asd()
         //{
         //    await ReadDersliksAndDerslikRezByMufredatId((int)ogrenciDto.MufredatId);
-        //    isProgramOpen = true;
+        //    isDersProgramOpen = true;
         //}
     }
 }

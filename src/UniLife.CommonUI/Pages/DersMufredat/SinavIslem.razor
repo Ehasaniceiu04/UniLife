@@ -167,8 +167,8 @@ else
                                     <GridColumn Visible="false" Field=@nameof(OgrenciDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
                                     <GridColumn Field=@nameof(OgrenciDto.Ad) HeaderText="Ad"></GridColumn>
                                     <GridColumn Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad"></GridColumn>
-                                    <GridColumn Field=@nameof(OgrenciDto.OgrNo) HeaderText="Soyad"></GridColumn>
-                                    <GridColumn Field=@nameof(OgrenciDto.TCKN) HeaderText="Soyad"></GridColumn>
+                                    <GridColumn Field=@nameof(OgrenciDto.OgrNo) HeaderText="Öğrenci No"></GridColumn>
+                                    <GridColumn Field=@nameof(OgrenciDto.TCKN) HeaderText="TCKN"></GridColumn>
                                     <GridColumn>
                                         <GridCommandColumns>
                                             <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-delete", CssClass = "e-flat" })"></GridCommandColumn>
@@ -192,10 +192,10 @@ else
     <Dialog Baslik="Öğrenci Listesi" @bind-isDialogOpen="@ogrenciSecDialogOpen">
         <div class="row">
             <SfGrid ID="SecmeliOgrenciGrid" @ref="SecmeliOgrenciGrid" TValue="DersKayitDto" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowFiltering="true">
-                <SfDataManager Url="@($"odata/derskayits?$expand=Ogrenci($select=Id,Ad,Soyad,Ogrno)&$filter=dersAcilanId eq {SelectedSinav.DersAcilanId}&$select=Id")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+                <SfDataManager Url="@($"odata/derskayits?$expand=Ogrenci($select=Id,Ad,Soyad,Ogrno)&$filter=dersAcilanId eq {SelectedSinav.DersAcilanId}&$select=Id,OgrenciId")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
                 <GridEvents TValue="DersKayitDto" CommandClicked="CommandClickHandlerSecmeliOgr"></GridEvents>
                 <GridColumns>
-                    <GridColumn Visible="false" Field="Ogrenci.Id" HeaderText="Ogrenci ID" IsPrimaryKey="true" TextAlign="TextAlign.Right"></GridColumn>
+                    <GridColumn Visible="false" Field=@nameof(DersKayitDto.Id) HeaderText="Ogrenci ID" IsPrimaryKey="true" TextAlign="TextAlign.Right"></GridColumn>
                     <GridColumn Field="Ogrenci.Ad" HeaderText="Ad"></GridColumn>
                     <GridColumn Field="Ogrenci.Soyad" HeaderText="Soyad"></GridColumn>
                     <GridColumn Field="Ogrenci.TCKN" HeaderText="TCKN"></GridColumn>

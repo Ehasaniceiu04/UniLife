@@ -10,6 +10,7 @@ namespace UniLife.Shared.Dto.Definitions
     {
         public int OgrenciId { get; set; }
         public string SinavTipAd { get; set; }
+        public int SinavTipId { get; set; }
         public double Not { get; set; }
     }
 }

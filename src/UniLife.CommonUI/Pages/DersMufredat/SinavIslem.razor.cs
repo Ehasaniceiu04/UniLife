@@ -191,7 +191,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
             if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
             {
-                sinavTipDtos = apiResponse.Result;
+                sinavTipDtos = apiResponse.Result.Where(x=>x.Id!=(int)SinavTipEnum.Mazeret).ToList();
             }
             else
             {
@@ -451,27 +451,35 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         {
             if (args.CommandColumn.Title == "Ogrenciyi Ekle")
             {
-                SinavKayitDto sinavKayitDto = new SinavKayitDto()
+                if (OgrenciDtos.Any(x=>x.Id == args.RowData.OgrenciId))
                 {
-                    OgrenciId = args.RowData.Ogrenci.Id,
-                    SinavId = selectedSinavId,
-                    MazeretiSinavKayitId = SelectedSinav.MazeretiSinavId,
-                };
-                ApiResponseDto<SinavKayitDto> apiResponse = await Http.PostJsonAsync<ApiResponseDto<SinavKayitDto>>("api/SinavKayit", sinavKayitDto);
-                ogrenciSecDialogOpen = false;
-
-                if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
-                {
-                    //args.RowData.SinavKayitId = apiResponse.Result.Id;
-                    //OgrenciDtos.Add(args.RowData);
-                    OgrenciGridRefresh(selectedSinavId);
-                    OgrenciGrid.Refresh();
-                    matToaster.Add(args.RowData.Ogrenci.Ad + " " + args.RowData.Ogrenci.Soyad, MatToastType.Success, "Öğrenci Kaydı gerçekleşti");
+                    dialogUyariText = "Bu öğrenci seçili sınava zaten ekli.";
+                    isUyariOpen = true;
                 }
                 else
                 {
-                    matToaster.Add(args.RowData.Ogrenci.Ad + " " + args.RowData.Ogrenci.Soyad + " : " + apiResponse.StatusCode, MatToastType.Danger, "Öğrenci sinava kayıt edilemedi");
-                }
+                    SinavKayitDto sinavKayitDto = new SinavKayitDto()
+                    {
+                        OgrenciId = args.RowData.Ogrenci.Id,
+                        SinavId = selectedSinavId,
+                        MazeretiSinavKayitId = SelectedSinav.MazeretiSinavId,
+                    };
+                    ApiResponseDto<SinavKayitDto> apiResponse = await Http.PostJsonAsync<ApiResponseDto<SinavKayitDto>>("api/SinavKayit", sinavKayitDto);
+                    ogrenciSecDialogOpen = false;
+
+                    if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
+                    {
+                        //args.RowData.SinavKayitId = apiResponse.Result.Id;
+                        //OgrenciDtos.Add(args.RowData);
+                        OgrenciGridRefresh(selectedSinavId);
+                        OgrenciGrid.Refresh();
+                        matToaster.Add(args.RowData.Ogrenci.Ad + " " + args.RowData.Ogrenci.Soyad, MatToastType.Success, "Öğrenci Kaydı gerçekleşti");
+                    }
+                    else
+                    {
+                        matToaster.Add(args.RowData.Ogrenci.Ad + " " + args.RowData.Ogrenci.Soyad + " : " + apiResponse.StatusCode, MatToastType.Danger, "Öğrenci sinava kayıt edilemedi");
+                    }
+                }                
             }
         }
 
@@ -561,8 +569,10 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 if (response.StatusCode == (System.Net.HttpStatusCode)Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
                 {
                     matToaster.Add("Öğrencinin Sınav kayıdı silinmiştir", MatToastType.Success);
-                    OgrenciDtos.Remove(ogrenciDto);
-                    OgrenciGrid.Refresh();
+                    //OgrenciDtos.Remove(ogrenciDto);
+                    //OgrenciGrid.Refresh();
+
+                    await OgrenciGridRefresh(selectedSinavId);
                 }
                 else
                 {
@@ -733,6 +743,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             mazeret.MazeretiSinavId = selectedSinavId;
             mazeret.Tarih = mazeretTarihi;
             mazeret.SinavTurId = (int)SinavTurEnum.Mazeret_Sinav;
+            mazeret.SinavTipId = (int)SinavTipEnum.Mazeret;
             mazeret.SablonAd = $"{SelectedSinav.SablonAd} Mazeret";
             mazeret.KisaAd = $"{SelectedSinav.KisaAd} Mazeret";
             ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/sinav", mazeret);
@@ -774,7 +785,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             totalQuery = new Query();
             //totalQuery.Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)" });
             //totalQuery.Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)", "Donem($select=Id,Ad)", "bolum($expand=fakulte($select=Ad,Id);$select=Ad,Id)" });
-
+            await Task.Delay(100);
 
             if (DonemId.HasValue)
             {
@@ -795,6 +806,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             }
 
             StateHasChanged();
+            await Task.Delay(100);
             DersAcGrid.Refresh();
 
 

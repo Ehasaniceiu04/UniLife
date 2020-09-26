@@ -10,16 +10,15 @@
 @attribute [Authorize(Roles = "Administrator,Personel,Akademisyen")]
 
 
-@if (derslikRezervDtos.Count < 1)
-{
-    <LoadingBackground ShowLogoBox="true">
-        <label>Sınav tarihleri henüz belli değil.</label>
-    </LoadingBackground>
-}
-else if (!isProgramOpen)
+@if (!isSinavTakvimOpen)
 {
     <LoadingBackground ShowLogoBox="true">
         <label>Sınavlar Yükleniyor.</label>
+    </LoadingBackground>
+}else if (derslikRezervDtos.Count < 1)
+{
+    <LoadingBackground ShowLogoBox="true">
+        <label>Sınav tarihleri henüz belli değil.</label>
     </LoadingBackground>
 }
 else

@@ -118,11 +118,13 @@ namespace UniLife.Storage.Stores
                                                           {
                                                               OgrenciId = sk.OgrenciId,
                                                               SinavTipAd = st.Ad,
+                                                              SinavTipId = s.SinavTipId,
                                                               Not = sk.OgrNot
                                                           }).AsNoTracking().ToListAsync();
 
 
             var ogrenciNotlar = from sk in _db.SinavKayits.Where(x => x.SinavId == sinavId)
+                                join s in _db.Sinavs on sk.SinavId equals s.Id
                                 join o in _db.Ogrencis on sk.OgrenciId equals o.Id
                                 select new SinavOgrNotlarDto
                                 {
@@ -133,7 +135,7 @@ namespace UniLife.Storage.Stores
                                     OgrenciNo = o.OgrNo,
                                     OgrNot = sk.OgrNot,
                                     Katilim = sk.Katilim,
-                                    OgrDigerSinavlarText = GetDigerSinavsByText(derseKayitliOgrlerinTumSinavlari, o)
+                                    OgrDigerSinavlarText = GetDigerSinavsByText(derseKayitliOgrlerinTumSinavlari, o,s.SinavTipId)
                                 };
 
 
@@ -141,9 +143,9 @@ namespace UniLife.Storage.Stores
             return await ogrenciNotlar.AsNoTracking().ToListAsync();
         }
 
-        private static string GetDigerSinavsByText(List<OgrDigerSinavlar> derseKayitliOgrlerinTumSinavlari, Ogrenci o)
+        private static string GetDigerSinavsByText(List<OgrDigerSinavlar> derseKayitliOgrlerinTumSinavlari, Ogrenci o,int sinavTipId)
         {
-            return String.Join(" ", derseKayitliOgrlerinTumSinavlari.Where(y => y.OgrenciId == o.Id).OrderBy(x => x.SinavTipAd).Select(x => x.SinavTipAd + ":" + x.Not));
+            return String.Join(" ", derseKayitliOgrlerinTumSinavlari.Where(y => y.OgrenciId == o.Id && y.SinavTipId != sinavTipId).OrderBy(x => x.SinavTipAd).Select(x => x.SinavTipAd + ":" + x.Not));
         }
 
         public async Task<List<KeyValueDto>> GetOgrenciSinavsByDers(int ogrenciId, int dersAcilanId)

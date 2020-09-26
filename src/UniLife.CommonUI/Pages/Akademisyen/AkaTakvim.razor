@@ -9,10 +9,15 @@
 
 @attribute [Authorize(Roles = "Administrator,Personel,Akademisyen")]
 
-@if (derslikDtos.Count < 1)
+@if (!isDersProgramOpen)
 {
     <LoadingBackground ShowLogoBox="true">
         <label>Takvim yükleniyor.</label>
+    </LoadingBackground>
+}else if (derslikDtos.Count < 1)
+{
+    <LoadingBackground ShowLogoBox="true">
+        <label>Henüz ders takvimi belirlenmedi.</label>
     </LoadingBackground>
 }
 else

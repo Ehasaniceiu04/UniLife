@@ -25,7 +25,7 @@ namespace UniLife.CommonUI.Pages.Akademisyen
         List<DerslikRezervDto> derslikRezervDtos { get; set; } = new List<DerslikRezervDto>();
 
         AkademisyenDto akademisyenDto;// = new AkademisyenDto();
-        bool isProgramOpen;
+        bool isSinavTakvimOpen;
 
         protected async override Task OnInitializedAsync()
         {
@@ -39,7 +39,7 @@ namespace UniLife.CommonUI.Pages.Akademisyen
                 else
                 {
                     await GetDersliksAndDerslikRezsByAkaId((int)akademisyenDto.Id);
-                    isProgramOpen = true;
+                    isSinavTakvimOpen = true;
                 }
             }
             catch (Exception ex)

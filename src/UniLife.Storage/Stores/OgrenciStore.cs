@@ -87,6 +87,7 @@ namespace UniLife.Storage.Stores
                                      {
                                          Ad = o.Ad,
                                          Soyad = o.Soyad,
+                                         Id = o.Id,
                                          OgrNo = o.OgrNo,
                                          TCKN = o.TCKN,
                                          SinavKayitId = sk.Id
