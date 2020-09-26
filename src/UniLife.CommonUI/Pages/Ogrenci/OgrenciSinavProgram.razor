@@ -7,16 +7,17 @@
 @using Syncfusion.Blazor.Inputs
 @attribute [Authorize(Roles = "Administrator,Personel,Ogrenci")]
 
-@if (derslikRezervDtos.Count < 1)
+
+@if (!isProgramOpen)
 {
     <LoadingBackground ShowLogoBox="true">
-        <label>Sınav tarihleri henüz belli değil.</label>
+        <label>Sınav Programı Yükleniyor.</label>
     </LoadingBackground>
 }
-else if (!isProgramOpen)
+else if (derslikRezervDtos.Count < 1)
 {
     <LoadingBackground ShowLogoBox="true">
-        <label>Sınavlar Yükleniyor.</label>
+        <label>Sınav Programı henüz belli değil.</label>
     </LoadingBackground>
 }
 else

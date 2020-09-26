@@ -24,7 +24,7 @@ namespace UniLife.CommonUI.Pages.Ogrenci
         List<DerslikRezervDto> derslikRezervDtos { get; set; } = new List<DerslikRezervDto>();
 
         OgrenciDto ogrenciDto;// = new OgrenciDto();
-        bool isProgramOpen;
+        bool isDersProgramOpen;
 
         protected async override Task OnInitializedAsync()
         {
@@ -42,7 +42,7 @@ namespace UniLife.CommonUI.Pages.Ogrenci
             }
 
             await ReadDersliksAndDerslikRezByMufredatId((int)ogrenciDto.MufredatId,ogrenciDto.Id);
-            isProgramOpen = true;
+            
         }
 
         async Task ReadDersliksAndDerslikRezByMufredatId(int mufredatId, int ogrenciId)
@@ -53,6 +53,7 @@ namespace UniLife.CommonUI.Pages.Ogrenci
             //OData<DerslikDto> apiResponse = await Http.GetFromJsonAsync<OData<DerslikDto>>($"odata/dersliks?$filter=BinaId eq {binaId}");
             //derslikDtos = apiResponse.Value;
             //selectedDersliksByBina = derslikDtos.Select(x => x.Id).ToList();
+            isDersProgramOpen = true;
         }
 
         //async Task Asd()

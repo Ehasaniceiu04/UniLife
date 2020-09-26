@@ -8,7 +8,7 @@
 @attribute [Authorize(Roles = "Administrator,Personel")]
 
 <ControlSection>
-    <SfGrid @ref="DonemGrid" DataSource="@donemDtos" Toolbar="@(new List<string>() { "Add"})" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
+    <SfGrid @ref="DonemGrid" DataSource="@donemDtos" Toolbar="@(new List<string>() { "Add"})" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowResizing="true">
         <GridEvents OnActionComplete="ActionCompletedHandler" TValue="DonemDto"></GridEvents>
         <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
         <GridColumns>

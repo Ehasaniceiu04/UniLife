@@ -7,7 +7,7 @@
 @attribute [Authorize(Roles = "Administrator,Personel")]
 
 <ControlSection>
-    <SfGrid @ref="SinavKriterGrid" DataSource="@sinavKriterDtos" Toolbar="@(new List<string>() { "Add"})" AllowSorting="true" AllowFiltering="true" AllowPaging="true" Width="100%">
+    <SfGrid @ref="SinavKriterGrid" DataSource="@sinavKriterDtos" Toolbar="@(new List<string>() { "Add"})" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowResizing="true" Width="100%">
         <GridEvents OnActionComplete="ActionCompletedHandler" TValue="SinavKriterDto"></GridEvents>
         <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
         <GridColumns>

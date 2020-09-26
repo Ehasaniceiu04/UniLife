@@ -8,10 +8,16 @@
 
 @attribute [Authorize(Roles = "Administrator,Personel,Ogrenci")]
 
-@if (!isProgramOpen)
+@if (!isDersProgramOpen)
 {
     <LoadingBackground ShowLogoBox="true">
-        <label>Program Yükleniyor.</label>
+        <label>Ders Programı Yükleniyor.</label>
+    </LoadingBackground>
+}
+else if (derslikRezervDtos.Count < 1)
+{
+    <LoadingBackground ShowLogoBox="true">
+        <label>Ders programı henüz belirlenmedi.</label>
     </LoadingBackground>
 }
 else

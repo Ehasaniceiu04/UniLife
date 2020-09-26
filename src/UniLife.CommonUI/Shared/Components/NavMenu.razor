@@ -550,8 +550,8 @@
             </MatNavItem>
         }*@
 
-    @*@if (!IsLoggedIn)
-    {*@
+    @if (!IsLoggedIn || user.IsInRole(UserRoles.Personel.ToString()))
+    {
         <MatNavSubMenu Class="asagiBos">
             <MatNavSubMenuHeader>
                 <MatNavItem AllowSelection="false">
@@ -579,7 +579,7 @@
                 </MatNavItem>
             </MatNavSubMenuList>
         </MatNavSubMenu>
-    @*}*@
+    }
 
 </MatNavMenu>
 

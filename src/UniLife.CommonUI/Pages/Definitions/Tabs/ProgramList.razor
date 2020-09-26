@@ -16,7 +16,7 @@
                    @bind-FakulteId=@(filterFakulteId)></FakBolPrg>
     </div>
 
-    <SfGrid @ref="ProgramGrid" Height="400px" DataSource="@programDtos.Where(x=>filterFakulteId==null ? true : x.FakulteId==filterFakulteId).ToList()" Toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Update", "Cancel" })" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
+    <SfGrid @ref="ProgramGrid" Height="400px" DataSource="@programDtos.Where(x=>filterFakulteId==null ? true : x.FakulteId==filterFakulteId).ToList()" Toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Update", "Cancel" })" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowResizing="true">
         <GridEvents OnActionComplete="ActionCompletedHandler" TValue="ProgramDto"></GridEvents>
         @*<GridGroupSettings ShowDropArea="false" Columns="@Initial"></GridGroupSettings>*@
         <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.CheckBox"></GridFilterSettings>
@@ -41,7 +41,7 @@
                                     <label class="col-sm-2 col-form-label" for="KisaAdEn">KisaAdEn</label>
                                     <SfTextBox ID="KisaAdEn" CssClass=" col-sm-10 pb-1" @bind-Value="@(programInfo.KisaAdEn)"></SfTextBox>
                                     <label class="col-sm-2 col-form-label" for="Kod">Kod</label>
-                                    <SfNumericTextBox ID="Kod" CssClass=" col-sm-10" @bind-Value="@(programInfo.Kod)"></SfNumericTextBox>
+                                    <SfTextBox ID="Kod" CssClass=" col-sm-10" @bind-Value="@(programInfo.Kod)"></SfTextBox>
 
                                 </div>
                             </div>
@@ -143,7 +143,6 @@
     </SfGrid>
 </ControlSection>
 
-<SfButton OnClick="asdf" Content="asdf"></SfButton>
 
 @code{
 
@@ -298,10 +297,6 @@
         }
     }
 
-    public async Task asdf()
-    {
-        StateHasChanged();
-    }
 
 }
 

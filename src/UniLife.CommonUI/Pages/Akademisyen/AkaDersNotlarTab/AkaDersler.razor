@@ -24,7 +24,7 @@ else
         <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
     </SfDropDownList>
 
-    <SfGrid ID="grdDersler" @ref="grdDersler" Query="@(new Query().Where("akademisyen/Id", "equal", akademisyenDto.Id).Where("donem/Id", "equal", selectedDonemId))" TValue="DersAcilanDto" AllowFiltering="true" Toolbar="@(Toolbaritems)" AllowPaging="true">
+    <SfGrid ID="grdDersler" @ref="grdDersler" Query="@(new Query().Where("akademisyen/Id", "equal", akademisyenDto.Id).Where("donem/Id", "equal", selectedDonemId))" TValue="DersAcilanDto" AllowFiltering="true" AllowResizing="true" Toolbar="@(Toolbaritems)" AllowPaging="true">
         <SfDataManager Url="@(OdataQuery)" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
         <GridEvents TValue="DersAcilanDto" OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectedHandler"></GridEvents>
         @*<GridGroupSettings Columns="@Initial"></GridGroupSettings>*@
@@ -38,7 +38,7 @@ else
                 <div style="padding:20px">
                     <SfGrid ID="grdSinavlar" @ref="grdSinavlar" TValue="SinavDto">
                         <SfDataManager Url="@($"odata/sinavs?$filter=DersAcilanId eq {expDersAcilan.Id}&$expand=SinavTip,SinavTur")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
-                        <GridEvents TValue="SinavDto" CommandClicked="CommandClickHandlerSinav"></GridEvents>
+                        <GridEvents TValue="SinavDto" QueryCellInfo="QueryCellInfoHandler" CommandClicked="CommandClickHandlerSinav"></GridEvents>
                         <GridColumns>
                             <GridColumn Visible="false" Field=@nameof(SinavDto.Id) HeaderText="Id" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
                             <GridColumn Field=@nameof(SinavDto.Ad) HeaderText="Sinav"></GridColumn>
@@ -258,6 +258,27 @@ else
     public async Task RowSelectedHandler(Syncfusion.Blazor.Grids.RowSelectEventArgs<DersAcilanDto> args)
     {
         seciliDers = args.Data;
+    }
+
+    public void QueryCellInfoHandler(QueryCellInfoEventArgs<SinavDto> args)
+    {
+        if (args.Data.SinavTipId == (int)SinavTipEnum.Ara_Sinav)
+        {
+            args.Cell.AddStyle(new string[] { "background-color:#ebdc88" });
+        }
+        else if (args.Data.SinavTipId == (int)SinavTipEnum.Mazeret)
+        {
+            args.Cell.AddStyle(new string[] { "background-color:#ff8095" });
+        }
+        else if (args.Data.SinavTipId == (int)SinavTipEnum.Final)
+        {
+            args.Cell.AddStyle(new string[] { "background-color:#99ffca" });
+        }
+        else if(args.Data.SinavTipId == (int)SinavTipEnum.But)
+        {
+            args.Cell.AddStyle(new string[] { "background-color:#6eff7f" });
+        }
+
     }
 
 }
