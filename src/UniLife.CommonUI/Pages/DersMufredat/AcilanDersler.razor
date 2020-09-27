@@ -16,9 +16,9 @@
 <ControlSection>
     <div class="row pb-2 card">
         <div class="col-sm-7">
-            <FakBolPrg @bind-ProgramId="programId"
-                       @bind-BolumId="bolumId"
-                       @bind-FakulteId="fakulteId"
+            <FakBolPrg @bind-ProgramId="ProgramId"
+                       @bind-BolumId="BolumId"
+                       @bind-FakulteId="FakulteId"
                        ProgramPlaceHolder=" "
                        ProgramShow="true"></FakBolPrg>
         </div>
@@ -28,7 +28,7 @@
                 <div class="col-sm-10">
                     <SfDropDownList ID="DropDonem" @ref="DropDonem" ShowClearButton="true" TValue="int?" TItem="DonemDto" Placeholder="Dönem seçiniz..."
                                     Query="@donemQuery"
-                                    @bind-Value="@donemId">
+                                    @bind-Value="@DonemId">
                         <SfDataManager Url="odata/donems" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
                         <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                     </SfDropDownList>
@@ -45,7 +45,7 @@
         </div>
     </div>
 
-    <SfGrid @ref="DersAcilanGrid" Query="@totalQuery" TValue="DersAcilanDto" AllowSorting="true" AllowExcelExport="true" AllowPdfExport="true" AllowPaging="true" AllowFiltering="true" Toolbar="@(new List<string>() {  "Add","PdfExport","ExcelExport","ColumnChooser","Kayıtlı Öğrenciler" })" ShowColumnChooser="true">
+    <SfGrid @ref="DersAcilanGrid" Query="@totalQuery" TValue="DersAcilanDto" AllowSorting="true" AllowResizing="true" AllowExcelExport="true" AllowPdfExport="true" AllowPaging="true" AllowFiltering="true" Toolbar="@(new List<string>() {  "Add","PdfExport","ExcelExport","ColumnChooser","Kayıtlı Öğrenciler" })" ShowColumnChooser="true">
         <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
         <GridEvents RowSelecting="OnRowSelecting" OnToolbarClick="ToolbarClickHandler" OnActionComplete="ActionCompletedHandler" OnActionBegin="OnActionBeginHandler" CommandClicked="CommandClickHandler" TValue="DersAcilanDto"></GridEvents>
         <GridPageSettings PageCount="5" PageSizes="new int[]{ 5, 10, 50, 100,10000}"></GridPageSettings>
@@ -236,7 +236,7 @@
         <GridColumns>
             <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Açılan Ders ID" Edit="false" AllowEditing="false" TextAlign="TextAlign.Left"></GridColumn>
             <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kod"></GridColumn>
-            <GridColumn FilterSettings="@(new FilterSettings{ Operator = Operator.Contains })" Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Ad" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
+            <GridColumn AutoFit="true" FilterSettings="@(new FilterSettings{ Operator = Operator.Contains })" Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Ad" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
             @*<GridColumn Field=@nameof(DersAcilanDto.Kredi) HeaderText="T+U TODO"></GridColumn>*@
             <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kredi) HeaderText="Kredi"></GridColumn>
             <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Akts) HeaderText="Akts"></GridColumn>

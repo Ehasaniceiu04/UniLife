@@ -23,10 +23,51 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         [Inject]
         public MatBlazor.IMatToaster matToaster { get; set; }
 
-        int? programId;
-        int? bolumId;
-        int? fakulteId;
-        int? donemId;
+        int? _programId;
+        public int? ProgramId
+        {
+            get => _programId;
+            set
+            {
+                Refresh();
+                if (_programId == value) return;
+                _programId = value;
+            }
+        }
+        int? _bolumId;
+        public int? BolumId
+        {
+            get => _bolumId;
+            set
+            {
+                Refresh();
+                if (_bolumId == value) return;
+                _bolumId = value;
+            }
+        }
+        int? _fakulteId;
+        public int? FakulteId
+        {
+            get => _fakulteId;
+            set
+            {
+                Refresh();
+                if (_fakulteId == value) return;
+                _fakulteId = value;
+            }
+        }
+
+        int? _donemId;
+        public int? DonemId
+        {
+            get => _donemId;
+            set
+            {
+                Refresh();
+                if (_donemId == value) return;
+                _donemId = value;
+            }
+        }
 
         int? tempProgramId;
         int? tempBolumId;
@@ -276,28 +317,30 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         async Task Refresh()
         {
             totalQuery = new Query();
+            await Task.Delay(100);
             //totalQuery.Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)" });
             totalQuery.Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)", "Donem($select=Id,Ad)", "bolum($expand=fakulte($select=Ad,Id);$select=Ad,Id)" });
 
 
-            if (donemId.HasValue)
+            if (DonemId.HasValue)
             {
-                totalQuery.Where("donemId", "equal", donemId);
+                totalQuery.Where("donemId", "equal", DonemId);
             }
 
-            if (programId.HasValue)
+            if (ProgramId.HasValue)
             {
-                totalQuery.Where("programId", "equal", programId);
+                totalQuery.Where("programId", "equal", ProgramId);
             }
-            else if (bolumId.HasValue)
+            else if (BolumId.HasValue)
             {
-                totalQuery.Where("bolumId", "equal", bolumId);
+                totalQuery.Where("bolumId", "equal", BolumId);
             }
-            else if (fakulteId.HasValue)
+            else if (FakulteId.HasValue)
             {
-                totalQuery.Where("bolum/fakulteId", "equal", fakulteId);
+                totalQuery.Where("fakulteId", "equal", FakulteId);
             }
-
+            StateHasChanged();
+            await Task.Delay(100);
             DersAcilanGrid.Refresh();
 
 
