@@ -64,6 +64,7 @@ namespace UniLife.Shared.DataModels
         public string BilgNotu { get; set; }
         public bool MultiUni { get; set; }
         public string IlaveDonem { get; set; }
+        public int CapYan { get; set; }=1;
 
         public virtual ICollection<DersKayit> DersKayits{ get; set; }
 

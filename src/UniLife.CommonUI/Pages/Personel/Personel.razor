@@ -5,67 +5,125 @@
 
 @using Syncfusion.Blazor.Cards
 
+@inject IJSRuntime jsRuntime
+
 @attribute [Authorize(Roles = "Administrator,Personel")]
 
 <Divider4></Divider4>
-<div class="divider"><span></span><span>Genel Duyurular</span><span></span></div>
-
-@if (true)
-{
-    <p>Genel duyuru yok.</p>
-}
 
 
-<Divider4></Divider4>
-<div class="divider"><span></span><span>Yöksis Duyuruları</span><span></span></div>
 
-<div class="control-section">
-    <div class="row" style="padding-top: 0px;">
-        <div class="col-md-4 col-sm-12">
-            <SfCard ID="birinci">
-                <CardContent Content="A creator of online tutorials for Microsoft technologies, your controls helped to provide a rich user experience. I wanted a look and feel like a Windows Store app." />
-                <CardHeader Title="Jono Walker" SubTitle="Prof. Dr" ImageUrl="_content/UniLife.CommonUI/images/logo.png" />
-            </SfCard>
-        </div>
-        <div class="col-md-4 col-sm-12">
-            <SfCard ID="ikşinci">
-                <CardContent Content="An excellent toolset and a great support team. I’ve been using Syncfusion’s products for a couple of years, and they save me a lot of time on development." />
-                <CardHeader Title="Oswaldo Diaz" SubTitle="Doc." ImageUrl="_content/UniLife.CommonUI/images/logo.png" />
-            </SfCard>
-        </div>
-        <div class="col-md-4 col-sm-12">
-            <SfCard ID="üçüncü">
-                <CardContent Content="An excellent toolset and a great support team. I’ve been using Syncfusion’s products for a couple of years, and they save me a lot of time on development." />
-                <CardHeader Title="Oswaldo Diaz" SubTitle="Araştırma görevlisi" ImageUrl="_content/UniLife.CommonUI/images/logo.png" />
-            </SfCard>
-        </div>
-        <div class="col-md-4 col-sm-12">
-            <SfCard ID="dördüncü" @onclick="Ahmet">
-                <CardContent Content="An excellent toolset and a great support team. I’ve been using Syncfusion’s products for a couple of years, and they save me a lot of time on development." />
-                <CardHeader Title="Oswaldo Diaz" SubTitle="Okutman" ImageUrl="_content/UniLife.CommonUI/images/logo.png" />
+<div class="row" style="padding-top: 0px;">
+    <div class="col-md-6 col-sm-12">
+        <div class="divider"><span></span><span>Yöksis Haberler</span><span></span></div>
+        <SfCard ID="birinci">
+            <CardContent Content="Yükseköğretim Kurulu (YÖK) bünyesinde çeşitli üniversitelerimizin farklı disiplinlerinden gelen uzaktan öğretim alanında uzman akademisyenlerin katılımıyla “Uzaktan Öğretim Politikaları Komisyonu" />
+            <CardHeader Title="YÖK Bünyesinde “Uzaktan Öğretim Politikaları Komisyonu” Oluşturuldu" SubTitle="(17.09.2020)" ImageUrl="_content/UniLife.CommonUI/images/logo.png">
                 <CardFooter>
                     <CardFooterContent>
-                        <SfButton CssClass="e-btn e-outline e-primary">Detay</SfButton>
+                        <SfButton OnClick="@(()=> { NavigateToNewTab("https://www.yok.gov.tr/Sayfalar/Haberler/2020/uzaktan-egitim-politikalari-komisyonu-kuruldu.aspx"); })" CssClass="e-btn e-outline e-primary">Detay</SfButton>
                     </CardFooterContent>
                 </CardFooter>
-            </SfCard>
-        </div>
-        <div class="col-md-4 col-sm-12">
-            <SfCard ID="HugeImage" Orientation="CardOrientation.Vertical">
-                @*<CardImage Image="_content/UniLife.CommonUI/images/logo.png" />*@
-                <CardHeader Title="Harrisburg Keith" SubTitle="Sub Title " />
-                <CardContent Content="Hi, I'm creative graphic design for print, new media based in Edenbridge" />
+            </CardHeader>
+        </SfCard>
+        <SfCard ID="ikşinci">
+            <CardContent Content="Akademide kadro kullanılmasında hedefin sadece istihdam sağlamak olmadığı, kamu yararı çerçevesinde bunun ancak bir sonuç olması gerektiği ortadadır. Konunun bir yönü, üniversitelerimizin vizyonu ..." />
+            <CardHeader Title="Geleceğin Bilim İnsanları İçin 'YÖK-GELECEK PROJESİ'" SubTitle="(09.09.2020)" ImageUrl="_content/UniLife.CommonUI/images/logo.png">
                 <CardFooter>
                     <CardFooterContent>
-                        <SfButton CssClass="e-btn e-outline e-primary">FOLLOW US</SfButton>
+                        <SfButton OnClick="@(()=> { NavigateToNewTab("https://www.yok.gov.tr/Sayfalar/Haberler/2020/yok-gelecek-projesi.aspx"); })" CssClass="e-btn e-outline e-primary">Detay</SfButton>
                     </CardFooterContent>
                 </CardFooter>
-            </SfCard>
-        </div>
-
+            </CardHeader>
+        </SfCard>
+        <SfCard ID="üçüncü">
+            <CardContent Content="Yükseköğretim Kurulu (YÖK) verilerine göre, 627 bin 532 üniversite öğrencisinin kaydını elektronik kayıt (e-kayıt) üzerinden dijital ortamda yaptırmasıyla yaklaşık 400 milyon lira tasarruf sağlanırken..." />
+            <CardHeader Title="YÖK'ün E-Kayıt Hizmeti ile Yaklaşık 400 Milyon Lira Tasarruf Sağlandı" SubTitle="(10.09.2020)" ImageUrl="_content/UniLife.CommonUI/images/logo.png">
+                <CardFooter>
+                    <CardFooterContent>
+                        <SfButton OnClick="@(()=> { NavigateToNewTab("https://www.yok.gov.tr/Sayfalar/Haberler/2020/yok-un-e-kayit-hizmeti-ile-tasarruf.aspx"); })" CssClass="e-btn e-outline e-primary">Detay</SfButton>
+                    </CardFooterContent>
+                </CardFooter>
+            </CardHeader>
+        </SfCard>
+    </div>
+    <div class="col-md-6 col-sm-12">
+        <div class="divider"><span></span><span>Yöksis Duyurular</span><span></span></div>
+        <SfCard ID="dorduncu">
+            <CardContent Content="Birleşik Krallık Hükümeti Dışişleri, Milletler Topluluğu ve Kalkınma Bakanlığı ile ortak kuruluşlar tarafından finanse edilen Chevening Bursları kapsamında, 2021/2022 yılı yüksek lisans bursu için başvuru alınmaktadır." />
+            <CardHeader Title="Birleşik Krallık Hükümeti Burs Duyurusu" SubTitle="(23.09.2020)" ImageUrl="_content/UniLife.CommonUI/images/logo.png">
+                <CardFooter>
+                    <CardFooterContent>
+                        <SfButton OnClick="@(()=> { NavigateToNewTab("https://www.yok.gov.tr/Sayfalar/DuyuruDetay.aspx?did=1025"); })" CssClass="e-btn e-outline e-primary">Detay</SfButton>
+                    </CardFooterContent>
+                </CardFooter>
+            </CardHeader>
+        </SfCard>
+        <SfCard ID="besinci">
+            <CardContent Content="657 sayılı Kanunun 4/B maddesi uyarınca istihdam edilmek üzere sözleşmeli uzman alınacaktır. İlana ilişkin detaylar için... " />
+            <CardHeader Title="Yükseköğretim Kurulu Başkanlığı Sözleşmeli Uzman Personel Alım İlanı" SubTitle="(25.09.2020)" ImageUrl="_content/UniLife.CommonUI/images/logo.png">
+                <CardFooter>
+                    <CardFooterContent>
+                        <SfButton OnClick="@(()=> { NavigateToNewTab("https://www.yok.gov.tr/Sayfalar/DuyuruDetay.aspx?did=1027"); })" CssClass="e-btn e-outline e-primary">Detay</SfButton>
+                    </CardFooterContent>
+                </CardFooter>
+            </CardHeader>
+        </SfCard>
+        <SfCard>
+            <CardContent Content="İslamabad COMSATS Üniversitesi (eski COMSATS Enformasyon Teknolojileri Enstitüsü), 2021 ilkbahar dönemi için, İslam İşbirliği Teşkilatı (İİT) Eğitim Değişim Programı kapsamında, İİT üyesi ülkelerin..." />
+            <CardHeader Title="İslamabad COMSATS Üniversitesi Yüksek Lisans ve Doktora Burs Programı" SubTitle="(21.09.2020)" ImageUrl="_content/UniLife.CommonUI/images/logo.png">
+                <CardFooter>
+                    <CardFooterContent>
+                        <SfButton OnClick="@(()=> { NavigateToNewTab("https://www.yok.gov.tr/Sayfalar/DuyuruDetay.aspx?did=1024"); })" CssClass="e-btn e-outline e-primary">Detay</SfButton>
+                    </CardFooterContent>
+                </CardFooter>
+            </CardHeader>
+        </SfCard>
     </div>
 </div>
 
+
+<div class="divider"><span></span><span>Personel Duyuruları</span><span></span></div>
+
+@if (true)
+{
+    <div class="row" style="padding-top: 0px;">
+        <div class="col-md-6 col-sm-12">
+            <SfCard>
+                <CardContent Content="Ders kayıtları ve danışman onayları 28 Eylül -2 Ekim 2020 tarihleri arasında yapılacaktır." />
+                <CardHeader Title="Kayıt Yenileme İşlemleri" SubTitle="(27.09.2020)" ImageUrl="_content/UniLife.CommonUI/images/logo.png">
+                    <CardFooter>
+                        <CardFooterContent>
+                            <SfButton OnClick="@(()=> { NavigateToNewTab("https://www.yok.gov.tr/Sayfalar/DuyuruDetay.aspx?did=1025"); })" CssClass="e-btn e-outline e-primary">Detay</SfButton>
+                        </CardFooterContent>
+                    </CardFooter>
+                </CardHeader>
+            </SfCard>
+            <SfCard >
+                <CardContent Content="Yüzden on uygulama ilkelerinde değişiklik yapılmıştır." />
+                <CardHeader Title="Yüzde On Esasları" SubTitle="(25.09.2020)" ImageUrl="_content/UniLife.CommonUI/images/logo.png">
+                    <CardFooter>
+                        <CardFooterContent>
+                            <SfButton OnClick="@(()=> { NavigateToNewTab("https://www.yok.gov.tr/Sayfalar/DuyuruDetay.aspx?did=1027"); })" CssClass="e-btn e-outline e-primary">Detay</SfButton>
+                        </CardFooterContent>
+                    </CardFooter>
+                </CardHeader>
+            </SfCard>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <SfCard>
+                <CardContent Content="Yatay geçiş başvuru kontrollerinin 05 Ekim 2020 tarihine kadar tamamlanması gerekmektedir." />
+                <CardHeader Title="Yatay Geçiş Kontrolleri" SubTitle="(25.09.2020)" ImageUrl="_content/UniLife.CommonUI/images/logo.png">
+                    <CardFooter>
+                        <CardFooterContent>
+                            <SfButton OnClick="@(()=> { NavigateToNewTab("https://www.yok.gov.tr/Sayfalar/DuyuruDetay.aspx?did=1027"); })" CssClass="e-btn e-outline e-primary">Detay</SfButton>
+                        </CardFooterContent>
+                    </CardFooter>
+                </CardHeader>
+            </SfCard>
+        </div>
+    </div>
+}
 
 @code{
     public string Visible { get; set; } = "visible";//"hidden";
@@ -73,16 +131,16 @@
     public int Columns = 4;
     public double AspectRatio = 2;//100 / 85;
 
-    async Task Ahmet()
+    public async Task NavigateToNewTab(string url)
     {
-
+        await jsRuntime.InvokeAsync<object>("open", url, "_blank");
     }
 }
 
 <style>
 
     .row {
-        width: 85%;
+        /*width: 85%;*/
         margin: auto;
         padding-top: 5%;
     }

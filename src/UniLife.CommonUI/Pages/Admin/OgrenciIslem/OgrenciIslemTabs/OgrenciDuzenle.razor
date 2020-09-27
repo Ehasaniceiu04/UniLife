@@ -102,64 +102,65 @@ else
                                 <div class="form-row form-group form-inline ">
                                     <label class="col-sm-2" for="DropKayitNeden">Kayıt Neden:</label>
                                     <SfDropDownList ID="DropKayitNeden" @ref="DropKayitNeden" TItem="KayitNedenDto" CssClass="col-sm-4 pb-1"
-                                                    TValue="int?" PopupHeight="230px" PopupWidth="400px" Placeholder="Kayıt Neden"
+                                                    TValue="int?" PopupHeight="230px" PopupWidth="500px"
                                                     @bind-Value="@_OgrenciDto.KayitNedenId" DataSource="@kayitNedenDtos">
                                         <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                                     </SfDropDownList>
                                     <label class="col-sm-2" for="KayTarih">Kayıt Tarihi:</label>
-                                    <SfDatePicker ID="KayTarih" TValue="DateTime?" @bind-Value="@_OgrenciDto.KayitTarih" CssClass="col-sm-4 pb-1" Placeholder="Kayıt Tarihi"></SfDatePicker>
+                                    <SfDatePicker ID="KayTarih" TValue="DateTime?" @bind-Value="@_OgrenciDto.KayitTarih" CssClass="col-sm-4 pb-1"></SfDatePicker>
                                     <label class="col-sm-2" for="ogrDurum">Öğrenim Durum:</label>
                                     <SfDropDownList ID="DropOgrenimDurum" @ref="DropOgrenimDurum" TItem="OgrenimDurumDto" CssClass="col-sm-4 pb-1"
-                                                    TValue="int?" PopupHeight="230px" Placeholder="Bölüm"
+                                                    TValue="int?" PopupHeight="230px" PopupWidth="500px"
                                                     @bind-Value="@_OgrenciDto.OgrenimDurumId" DataSource="@ogrenimDurumDtos">
                                         <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                                     </SfDropDownList>
                                     <label class="col-sm-2" for="AyrTarih">Ayrılma Tarihi:</label>
-                                    <SfDatePicker ID="AyrTarih" TValue="DateTime?" @bind-Value="@_OgrenciDto.AyrilTarih" CssClass="col-sm-4 pb-1" Placeholder="Ayrılma Tarihi"></SfDatePicker>
+                                    <SfDatePicker ID="AyrTarih" TValue="DateTime?" @bind-Value="@_OgrenciDto.AyrilTarih" CssClass="col-sm-4 pb-1"></SfDatePicker>
 
                                     @*<label class="col-sm-2" for="ogrentip">Öğrenim Türü:</label>
-                                        <SfDropDownList ID="DropOgrenimTur" @ref="DropOgrenimTur" TItem="OgrenimTurDto" CssClass="col-sm-4 pb-1"
-                                                        TValue="int?" PopupHeight="230px" Placeholder="Bölüm"
-                                                        @bind-Value="@_OgrenciDto.OgrenimTurId" DataSource="@ogrenimTurDtos">
-                                            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                                        </SfDropDownList>*@
+        <SfDropDownList ID="DropOgrenimTur" @ref="DropOgrenimTur" TItem="OgrenimTurDto" CssClass="col-sm-4 pb-1"
+                        TValue="int?" PopupHeight="230px" Placeholder="Bölüm"
+                        @bind-Value="@_OgrenciDto.OgrenimTurId" DataSource="@ogrenimTurDtos">
+            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+        </SfDropDownList>*@
                                     @*<label class="col-sm-2" for="notsis">Not Sistemi:</label>
-                                        <SfDropDownList ID="notsis" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
-                                            <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
-                                            <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
-                                        </SfDropDownList>*@
+        <SfDropDownList ID="notsis" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
+            <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
+            <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
+        </SfDropDownList>*@
                                     @*<label class="col-sm-2" for="ogrtip">Öğrenci Tipi:</label>
-                                        <SfDropDownList ID="ogrtip" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
-                                            <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
-                                            <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
-                                        </SfDropDownList>*@
+        <SfDropDownList ID="ogrtip" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
+            <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
+            <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
+        </SfDropDownList>*@
                                     @*<label class="col-sm-2" for="orthestip">Ort. Hesap Tip:</label>
-                                        <SfDropDownList ID="orthestip" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
-                                            <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
-                                            <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
-                                        </SfDropDownList>*@
+        <SfDropDownList ID="orthestip" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
+            <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
+            <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
+        </SfDropDownList>*@
                                     @*<label class="col-sm-2" for="derskayislemtur">Ders Kayıt İşlem Türü:</label>
-                                        <SfDropDownList ID="derskayislemtur" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
-                                            <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
-                                            <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
-                                        </SfDropDownList>*@
+        <SfDropDownList ID="derskayislemtur" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
+            <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
+            <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
+        </SfDropDownList>*@
                                     @*<label class="col-sm-2" for="anaProNeden">Ana Program Okuma Nedeni:</label>
-                                        <SfDropDownList ID="anaProNeden" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
-                                            <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
-                                            <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
-                                        </SfDropDownList>*@
+        <SfDropDownList ID="anaProNeden" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
+            <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
+            <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
+        </SfDropDownList>*@
                                     <label class="col-sm-2" for="danis">Danışmanı:</label>
 
                                     <SfButton ID="danis" IconCss="e-icons e-Resource" EnableRtl="true" OnClick="AkademisyenAta" CssClass="e-flat col-sm-4" IsPrimary="true">@(string.IsNullOrWhiteSpace(danismanAd) ?"Ekle": danismanAd)</SfButton>
 
                                     @*<label class="col-sm-2" for="digDanisman">Diğer Danışman:</label>
-                                        <SfTextBox ID="digDanisman" CssClass="col-sm-4"></SfTextBox>*@
-                                    <label class="col-sm-2" for="capYan">Çap Yandal Durum:</label>
-                                    <SfDropDownList ID="capYan" TItem="GameFields" CssClass="col-sm-4 pb-1" TValue="string" PopupHeight="230px" Placeholder="Öğrenim Durumu" @bind-Value="@DropVal" DataSource="@Games">
-                                        <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
-                                        <DropDownListFieldSettings Text="Text" Value="ID"></DropDownListFieldSettings>
+        <SfTextBox ID="digDanisman" CssClass="col-sm-4"></SfTextBox>*@
+                                    <label class="col-sm-2" for="CapYan">Çap Yandal Durum:</label>
+                                    <SfDropDownList ID="CapYan" TItem="KeyValueDto" CssClass="col-sm-4 pb-1"
+                                                    TValue="int?" PopupHeight="230px"
+                                                    @bind-Value="@_OgrenciDto.CapYan" DataSource="@Sabitler.CapYandal">
+                                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                                     </SfDropDownList>
-                                    <label class="col-sm-4" for="capYan">İkinci üniversite var mı?</label>
+                                    <label class="col-sm-4">İkinci üniversite var mı?</label>
                                     <SfCheckBox CssClass="col-sm-2" @bind-Checked="@_OgrenciDto.MultiUni"></SfCheckBox>
                                 </div>
                                 <div class="form-row">
@@ -292,30 +293,6 @@ else
         }
     }
 
-    private string textValue { get; set; }
-    public class GameFields
-    {
-        public string ID { get; set; }
-        public string Text { get; set; }
-    }
-    private List<GameFields> Games = new List<GameFields>() {
-        new GameFields(){ ID= "Game1", Text= "American Football" },
-        new GameFields(){ ID= "Game2", Text= "Badminton" },
-        new GameFields(){ ID= "Game3", Text= "Basketball" },
-        new GameFields(){ ID= "Game4", Text= "Cricket" },
-        new GameFields(){ ID= "Game5", Text= "Football" },
-        new GameFields(){ ID= "Game6", Text= "Golf" },
-        new GameFields(){ ID= "Game7", Text= "Hockey" },
-        new GameFields(){ ID= "Game8", Text= "Rugby"},
-        new GameFields(){ ID= "Game9", Text= "Snooker" },
-        new GameFields(){ ID= "Game10", Text= "Tennis"},
-     };
-    public string DropVal;
-    public string ChangeValue { get; set; } = "Basketball";
-    public void OnChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<string> args)
-    {
-        var asd = args;
-    }
 
     //Sonradan doldurulacak dropdownlar
     [Parameter]

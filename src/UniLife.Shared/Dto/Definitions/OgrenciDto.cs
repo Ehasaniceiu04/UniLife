@@ -71,6 +71,8 @@ namespace UniLife.Shared.Dto.Definitions
         public string BilgNotu { get; set; }
         public bool MultiUni { get; set; }
         public string IlaveDonem { get; set; }
+        public int? CapYan { get; set; } = 1;
+
         //from UserInfoDTO
         public bool IsAuthenticated { get; set; }
 
