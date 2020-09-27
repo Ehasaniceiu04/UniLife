@@ -686,6 +686,7 @@ namespace UniLife.Server
             builder.EntitySet<OgrenimTur>("OgrenimTurs");
             builder.EntitySet<DersAcilanForSinav>("DersAcilansForSinavs");
             builder.EntitySet<DersAcilanForSinav>("DersAcilansExt");
+            builder.EntitySet<ApiLogItem>("ApiLogItems");
 
             return builder.GetEdmModel();
         }

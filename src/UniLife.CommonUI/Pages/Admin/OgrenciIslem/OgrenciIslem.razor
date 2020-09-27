@@ -4,6 +4,7 @@
 @using UniLife.Shared.Dto.Definitions
 @inject Microsoft.AspNetCore.Components.NavigationManager UriHelper
 @using Syncfusion.Blazor.Buttons
+@inject AppState appState
 @attribute [Authorize(Roles = "Administrator,Personel")]
 
 @if (OgrSelected)
@@ -14,8 +15,9 @@
             <table class="table" style="margin-bottom: 0px;">
                 <colgroup>
                     <col width="25%">
-                    <col width="45%">
-                    <col width="30%">
+                    <col width="25%">
+                    <col width="25%">
+                    <col width="25%">
                 </colgroup>
                 <tbody style="font-size: 13px;">
                     <tr>
@@ -24,10 +26,13 @@
                             <img class="photo" src="@UriHelper.ToAbsoluteUri($"/_content/UniLife.CommonUI/images/ogrenci/{_OgrenciDto.ApplicationUserId.ToString()}.png")" alt="@_OgrenciDto.Id" />
                         </td>
                         <td>
-                            <span style="font-weight: 500;">Ad Soyad: </span> @_OgrenciDto.Ad @_OgrenciDto.Soyad
+                            <span style="font-weight: 500;">Ad Soyad: </span> @($"{_OgrenciDto.Ad} {_OgrenciDto.Soyad}")
                         </td>
                         <td>
-                            <span style="font-weight: 500;">Gereken Toplam Ücret: </span> @_OgrenciDto.GerekenTopUcret
+                            <span style="font-weight: 500;">Öğrenci No: </span> @_OgrenciDto.OgrNo
+                        </td>
+                        <td>
+                            <span style="font-weight: 500;">Öğrenim Durum: </span> @(_OgrenciDto.Durum?"Aktif":"")
                         </td>
                     </tr>
                     <tr>
@@ -35,24 +40,24 @@
                             <span style="font-weight: 500;">Kayıt Tarih: </span> @(_OgrenciDto.KayitTarih==null?"":_OgrenciDto.KayitTarih.Value.ToShortDateString())
                         </td>
                         <td>
-                            <span style="font-weight: 500;">Ödenen Toplam Ücret: </span> @_OgrenciDto.OdenenTopUcret
+                            <span style="font-weight: 500;">Fakülte: </span> @appState.OgrenciTempState.FakulteAdi
+                        </td>
+                        <td>
+                            <span style="font-weight: 500;">TCKN: </span> @_OgrenciDto.TCKN
                         </td>
                     </tr>
                     <tr>
+                    </tr>
+                    <tr>
                         <td>
-                            <span style="font-weight: 500;">Bağlı Müfredat: </span> @_OgrenciDto.MufredatAdi
+                            <span style="font-weight: 500;">Bağlı Müfredat: </span> @appState.OgrenciTempState.MufredatAdi
+                        </td>
+                        <td>
+                            <span style="font-weight: 500;">Program: </span> @appState.OgrenciTempState.ProgramAdi
                         </td>
                         <td>
                             <span style="font-weight: 500;">Genel Bakiye: </span> @_OgrenciDto.GenelBakiye
                         </td>
-                        @*<td rowspan="4">
-                                <SfDropDownList ID="DropDonemTip" @ref="DropDonemTip" TItem="DonemTipDto" CssClass="col-sm-10 pb-1"
-                                                TValue="int?" PopupHeight="230px" @bind-Value="aktifdonemTipId"
-                                                DataSource="@donemTipDtos">
-                                    <DropDownListEvents TValue="int?" ValueChange="AcilanDersleriYenile"></DropDownListEvents>
-                                    <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                                </SfDropDownList>
-                            </td>*@
                     </tr>
 
                 </tbody>

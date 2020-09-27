@@ -6,6 +6,7 @@
 @using Syncfusion.Blazor.Inputs
 @using Syncfusion.Blazor.Buttons
 @inject IJSRuntime JsRuntime
+@inject AppState appState
 
 @attribute [Authorize(Roles = "Administrator,Personel")]
 
@@ -74,6 +75,7 @@
             if (apiResponse.StatusCode == Status200OK)
             {
                 _OgrenciDto = apiResponse.Result;
+                appState.OgrenciTempState = _OgrenciDto;
             }
             else
             {
