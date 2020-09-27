@@ -28,6 +28,14 @@
             </TabItem>
             <TabItem>
                 <ChildContent>
+                    <TabHeader Text="Danışmanlık Öğrencileri"></TabHeader>
+                </ChildContent>
+                <ContentTemplate>
+                    <AkademisyenDanismanlik _AkademisyenDto="_AkademisyenDto"></AkademisyenDanismanlik>
+                </ContentTemplate>
+            </TabItem>
+            <TabItem>
+                <ChildContent>
                     <TabHeader Text="Verilen Dersler"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
@@ -42,14 +50,7 @@
                     <AkaNotlar _SinavDto="_SinavDto"></AkaNotlar>
                 </ContentTemplate>
             </TabItem>
-            <TabItem>
-                <ChildContent>
-                    <TabHeader Text="Danışmanlık Öğrencileri"></TabHeader>
-                </ChildContent>
-                <ContentTemplate>
-                    <AkademisyenDanismanlik _AkademisyenDto="_AkademisyenDto"></AkademisyenDanismanlik>
-                </ContentTemplate>
-            </TabItem>
+
         </TabItems>
     </SfTab>
 </div>
@@ -66,8 +67,8 @@
     public void SinavToNotlar(SinavDto sinavDto)
     {
         _SinavDto = sinavDto;
-        TabDegis(3);
-        Tab.HideTab(3, false);
+        TabDegis(4);
+        Tab.HideTab(4, false);
     }
     [Parameter]
     public int SpesificDersAcilan { get; set; } = 0;
@@ -78,8 +79,8 @@
         Tab.EnableTab(0, true);
         Tab.EnableTab(1, tabIndex > 0);
         Tab.EnableTab(2, tabIndex > 0);
-        //Tab.EnableTab(3, tabIndex > 0);
-        Tab.EnableTab(4, tabIndex > 0);
+        Tab.EnableTab(3, tabIndex > 0);
+        //Tab.EnableTab(4, tabIndex > 0);
         Tab.Select(tabIndex);
     }
 
@@ -115,9 +116,9 @@
             args.Cancel = true;
         }
 
-        if (args.SelectedIndex == 3 && args.SelectingIndex != 3)
+        if (args.SelectedIndex == 4 && args.SelectingIndex != 4)
         {
-            Tab.EnableTab(3, false);
+            Tab.EnableTab(4, false);
         }
     }
 }

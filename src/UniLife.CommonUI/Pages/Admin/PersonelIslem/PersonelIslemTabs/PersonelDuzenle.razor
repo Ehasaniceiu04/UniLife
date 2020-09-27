@@ -28,8 +28,8 @@
                     <div class="row">
                         <div class="col-sm-12 col-md-6">
                             <div class="form-row form-group form-inline ">
-                                <label class="col-sm-2" for="OgrtNo">Personel NO:</label>
-                                <SfTextBox @bind-Value="@(_PersonelDto.PersNo)" ID="PersNo" CssClass="col-sm-4"></SfTextBox>
+                                <label class="col-sm-2" for="PersNo">Personel NO:</label>
+                                <SfNumericTextBox @bind-Value="@(_PersonelDto.PersNo)"  Enabled="false" ID="PersNo" CssClass="col-sm-4"></SfNumericTextBox>
                                 <label class="col-sm-2" for="DosNo">Dosya NO:</label>
                                 <SfTextBox ID="DosNo" CssClass="col-sm-2"></SfTextBox>
                                 <SfCheckBox Label="Durum" CssClass="col-sm-1" @bind-Checked="@_PersonelDto.Durum"></SfCheckBox>

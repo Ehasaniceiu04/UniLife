@@ -17,7 +17,7 @@ namespace UniLife.Shared.DataModels
         public string Ad { get; set; }
         public string Soyad { get; set; }
 
-        public string OgrtNo { get; set; }
+        public long AkaNo { get; set; }
 
         [MaxLength(11)]
         public string TCKN { get; set; }

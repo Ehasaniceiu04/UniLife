@@ -29,5 +29,17 @@ namespace UniLife.Storage.Stores
 
             return _autoMapper.Map<AkademisyenDto>(await akaQuery.FirstOrDefaultAsync());
         }
+        public async Task<long> GetLastAkaNo()
+        {
+            try
+            {
+                return await _db.Akademisyens.MaxAsync(x => x.AkaNo);
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+
+        }
     }
 }

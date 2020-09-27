@@ -15,14 +15,14 @@ namespace UniLife.Shared.Dto.Definitions
         public string Ad { get; set; }
         public string Soyad { get; set; }
 
-        public string OgrtNo { get; set; }
+        public long AkaNo { get; set; }
 
         [Required]
         [MaxLength(11)]
         public string TCKN { get; set; }
 
         public string Eimg { get; set; }
-        public bool Durum { get; set; }
+        public bool Durum { get; set; } = true;
         public DateTime? KayitTarih { get; set; }
         public DateTime? AyrilTarih { get; set; }
         public int? FakulteId { get; set; }

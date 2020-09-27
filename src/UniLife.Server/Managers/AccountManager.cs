@@ -19,6 +19,7 @@ using Microsoft.EntityFrameworkCore;
 using UniLife.Shared.Dto.Definitions;
 using UniLife.Shared.DataInterfaces;
 using UniLife.Shared.Dto;
+using MimeKit.Cryptography;
 
 namespace UniLife.Server.Managers
 {
@@ -329,7 +330,7 @@ namespace UniLife.Server.Managers
 
             if (user == null)
             {
-                _logger.LogInformation("Bu kullanıcı mevcut değil: {0}", akademisyenDto.OgrtNo);
+                _logger.LogInformation("Bu kullanıcı mevcut değil: {0}", akademisyenDto.AkaNo.ToString());
                 return new ApiResponse(Status404NotFound, "User does not exist");
             }
 
@@ -676,11 +677,11 @@ namespace UniLife.Server.Managers
             {
                 Guid possibleUserId = Guid.NewGuid();
 
-
+                akademisyenDto.AkaNo = await GenerateAkaNo();
 
                 var user = new ApplicationUser
                 {
-                    UserName = akademisyenDto.OgrtNo,
+                    UserName = akademisyenDto.AkaNo.ToString(),
                     FirstName = akademisyenDto.Ad,
                     LastName = akademisyenDto.Soyad,
                     FullName = akademisyenDto.Ad + " " + akademisyenDto.Soyad,
@@ -699,7 +700,7 @@ namespace UniLife.Server.Managers
                 {
                     var claimsResult = _userManager.AddClaimsAsync(user, new Claim[]{
                         new Claim(Policies.IsUser, string.Empty),
-                        new Claim(JwtClaimTypes.Name, akademisyenDto.OgrtNo),
+                        new Claim(JwtClaimTypes.Name, akademisyenDto.AkaNo.ToString()),
                         new Claim(JwtClaimTypes.Email, akademisyenDto.Email),
                         new Claim(JwtClaimTypes.EmailVerified, "false", ClaimValueTypes.Boolean)
                     }).Result;
@@ -721,7 +722,7 @@ namespace UniLife.Server.Managers
 
 
 
-                //Role - Here we tie the new user to the "User" role
+                //Role - Here we tie the new Akademisyen to the "Akademisyen" role
                 await _userManager.AddToRoleAsync(user, "Akademisyen");
 
 
@@ -771,7 +772,7 @@ namespace UniLife.Server.Managers
                 {
                     ApplicationUserId = user.Id,
                     IsAuthenticated = false,
-                    OgrtNo = user.UserName,
+                    AkaNo = akademisyenDto.AkaNo,// user.UserName,
                     Email = user.Email,
                     Ad = user.FirstName,
                     Soyad = user.LastName,
@@ -789,6 +790,32 @@ namespace UniLife.Server.Managers
             }
         }
 
+        private async Task<long> GenerateAkaNo()
+        {
+            var sonAkaNo =await _akademisyenStore.GetLastAkaNo();
+            if (sonAkaNo != 0)
+            {
+                return sonAkaNo + 1;
+            }
+            else
+            {
+                throw new DomainException(description: "En son akademisyen bulunamadı.");
+            }
+        }
+
+        private async Task<long> GeneratePersNo()
+        {
+            var sonPersNo = await _personelStore.GetLastPersNo();
+            if (sonPersNo != 0)
+            {
+                return sonPersNo + 1;
+            }
+            else
+            {
+                throw new DomainException(description: "En son personel bulunamadı.");
+            }
+        }
+
 
         public async Task<ApiResponse> CreatePersonel(PersonelDto personelDto)
         {
@@ -796,11 +823,11 @@ namespace UniLife.Server.Managers
             {
                 Guid possibleUserId = Guid.NewGuid();
 
-
+                personelDto.PersNo = await GeneratePersNo();
 
                 var user = new ApplicationUser
                 {
-                    UserName = personelDto.PersNo,
+                    UserName = personelDto.PersNo.ToString(),
                     FirstName = personelDto.Ad,
                     LastName = personelDto.Soyad,
                     FullName = personelDto.Ad + " " + personelDto.Soyad,
@@ -819,7 +846,7 @@ namespace UniLife.Server.Managers
                 {
                     var claimsResult = _userManager.AddClaimsAsync(user, new Claim[]{
                         new Claim(Policies.IsUser, string.Empty),
-                        new Claim(JwtClaimTypes.Name, personelDto.PersNo),
+                        new Claim(JwtClaimTypes.Name, personelDto.PersNo.ToString()),
                         new Claim(JwtClaimTypes.Email, personelDto.Email),
                         new Claim(JwtClaimTypes.EmailVerified, "false", ClaimValueTypes.Boolean)
                     }).Result;
@@ -891,7 +918,7 @@ namespace UniLife.Server.Managers
                 {
                     ApplicationUserId = user.Id,
                     IsAuthenticated = false,
-                    PersNo = user.UserName,
+                    PersNo = personelDto.PersNo,// user.UserName,
                     Email = user.Email,
                     Ad = user.FirstName,
                     Soyad = user.LastName,

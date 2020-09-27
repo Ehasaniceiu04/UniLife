@@ -31,7 +31,7 @@
                 <div class="server-action-menu">
                     <div class="form-row form-group form-inline ">
                         <label class="col-sm-2" for="OgrtNo">Akademisyen NO:</label>
-                        <SfTextBox @bind-Value="@_AkademisyenDto.OgrtNo" ID="OgrtNo" CssClass="col-sm-4"></SfTextBox>
+                        <SfNumericTextBox Enabled="false" @bind-Value="@_AkademisyenDto.AkaNo" ID="OgrtNo" CssClass="col-sm-4"></SfNumericTextBox>
                         <label class="col-sm-2" for="durum">Durum:</label>
                         <SfCheckBox CssClass="col-sm-4" @bind-Checked="@_AkademisyenDto.Durum"></SfCheckBox>
                         <label class="col-sm-2" for="TCKN">TCKN:</label>
