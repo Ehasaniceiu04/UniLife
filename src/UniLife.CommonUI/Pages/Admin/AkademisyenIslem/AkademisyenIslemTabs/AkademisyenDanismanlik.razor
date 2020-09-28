@@ -12,11 +12,11 @@
         <GridColumn Field=@nameof(OgrenciDto.Ad) HeaderText="Ad"></GridColumn>
         <GridColumn Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad"></GridColumn>
         <GridColumn Field=@nameof(OgrenciDto.OgrNo) HeaderText="OgrNo"></GridColumn>
-        <GridColumn>
+        @*<GridColumn>
             <GridCommandColumns>
                 <GridCommandColumn Type="CommandButtonType.None" Title="Ders Kayıt Onayı" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat",Content="Ders Onay " })"></GridCommandColumn>
             </GridCommandColumns>
-        </GridColumn>
+        </GridColumn>*@
     </GridColumns>
 </SfGrid>
 
@@ -29,3 +29,10 @@
 
 
 }
+
+<style>
+    .e-DoubleArrowRight:before {
+        content: '\e7bb';
+        color: #3ec9e8;
+    }
+</style>

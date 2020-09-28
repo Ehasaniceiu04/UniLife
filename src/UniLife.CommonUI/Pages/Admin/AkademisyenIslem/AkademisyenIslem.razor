@@ -3,6 +3,8 @@
 @using UniLife.CommonUI.Pages.Admin.AkademisyenIslem.AkademisyenIslemTabs
 @using UniLife.Shared.Dto.Definitions
 @using UniLife.CommonUI.Pages.Akademisyen.AkaDersNotlarTab
+@using Syncfusion.Blazor.Buttons
+
 @*@attribute [Authorize(Policy = Policies.IsAdmin)]*@
 @attribute [Authorize(Roles = "Administrator,Personel")]
 
@@ -39,22 +41,31 @@
                     <TabHeader Text="Verilen Dersler"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
-                    <AkaDersler SpesificDersAcilan="SpesificDersAcilan" SinavToNotlar="SinavToNotlar" _AkademisyenDto="_AkademisyenDto"></AkaDersler>
+                    <AkademisyenDersNot SpesificDersAcilan="SpesificDersAcilan" _AkademisyenDto="_AkademisyenDto"></AkademisyenDersNot>
                 </ContentTemplate>
             </TabItem>
-            <TabItem Visible="@(AkaSelected)">
-                <ChildContent>
-                    <TabHeader Text="Sınav Öğrenci Notları"></TabHeader>
-                </ChildContent>
-                <ContentTemplate>
-                    <AkaNotlar _SinavDto="_SinavDto"></AkaNotlar>
-                </ContentTemplate>
-            </TabItem>
+            @*<TabItem Visible="@(AkaSelected)">
+            <ChildContent>
+                <TabHeader Text="Verilen Dersler"></TabHeader>
+            </ChildContent>
+            <ContentTemplate>
+                <AkaDersler SpesificDersAcilan="SpesificDersAcilan" SinavToNotlar="SinavToNotlar" _AkademisyenDto="_AkademisyenDto"></AkaDersler>
+            </ContentTemplate>
+        </TabItem>
+        <TabItem Visible="@(AkaSelected)">
+            <ChildContent>
+                <TabHeader Text="Sınav Öğrenci Notları"></TabHeader>
+            </ChildContent>
+            <ContentTemplate>
+                <AkaNotlar _SinavDto="_SinavDto"></AkaNotlar>
+            </ContentTemplate>
+        </TabItem>*@
 
         </TabItems>
     </SfTab>
 </div>
 
+<SfButton IconCss="e-icons e-DoubleArrowLeft" EnableRtl="true" OnClick="@(() => { AkaSelected = false; })" CssClass="e-flat col-sm-2 e-outline azkenar"></SfButton>
 
 
 
@@ -69,8 +80,6 @@
     public void SinavToNotlar(SinavDto sinavDto)
     {
         _SinavDto = sinavDto;
-        TabDegis(4);
-        Tab.HideTab(4, false);
     }
     [Parameter]
     public int SpesificDersAcilan { get; set; } = 0;
@@ -79,7 +88,7 @@
     public void TabDegis(int tabIndex)
     {
         Tab.Select(tabIndex);
-        AkaSelected = false;
+        //AkaSelected = false;
     }
 
     public void AkademisyenToBilgiler(AkademisyenDto akademisyenDto)
@@ -123,10 +132,6 @@
             args.Cancel = true;
         }
 
-        if (args.SelectedIndex == 4 && args.SelectingIndex != 4)
-        {
-            Tab.HideTab(4, true);
-        }
     }
 }
 
@@ -153,5 +158,10 @@
 
     .e-tab .e-tab-header:not(.e-vertical) .e-toolbar-item.e-active {
         border-bottom: 1px solid #69e0f0;
+    }
+
+    .e-DoubleArrowLeft:before {
+        content: '\e7ba';
+        color: #12a37c;
     }
 </style>

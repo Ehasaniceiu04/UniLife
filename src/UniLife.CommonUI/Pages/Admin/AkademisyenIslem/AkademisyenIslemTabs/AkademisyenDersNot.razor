@@ -1,14 +1,11 @@
-﻿@page "/akademisyen/DersNot"
-@page "/akademisyen/DersNot/{SpesificDersAcilan:int}"
-@using Syncfusion.Blazor.Navigations
+﻿@using Syncfusion.Blazor.Navigations
 @using UniLife.CommonUI.Pages.Akademisyen.AkaDersNotlarTab
 @using UniLife.Shared.Dto.Definitions
 
 @attribute [Authorize(Roles = "Administrator,Personel,Akademisyen")]
-
 @*sınavları listeleyecez
     seçilen sınavın öğrencilerini açacak notlar girilecek.*@
-
+<br />
 <div class="control-section e-tab-section">
     <SfTab @ref="DersNotTab" LoadOn="ContentLoad.Dynamic">
         @*Selected="OnTabSelected" Selecting="OnTabSelecting"*@
@@ -16,15 +13,15 @@
         <TabItems>
             <TabItem>
                 <ChildContent>
-                    <TabHeader Text="Dersler"></TabHeader>
+                    <TabHeader Text="Akademisyenin Verdiği Dersler"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
-                    <AkaDersler SpesificDersAcilan="SpesificDersAcilan" SinavToNotlar="SinavToNotlar"></AkaDersler>
+                    <AkaDersler SpesificDersAcilan="SpesificDersAcilan" SinavToNotlar="SinavToNotlar" _AkademisyenDto="_AkademisyenDto"></AkaDersler>
                 </ContentTemplate>
             </TabItem>
             <TabItem>
                 <ChildContent>
-                    <TabHeader Text="Öğrenci Notları"></TabHeader>
+                    <TabHeader Text="Seçilen Sınavın Öğrenci Notları"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
                     <AkaNotlar _SinavDto="_SinavDto"></AkaNotlar>
@@ -41,7 +38,8 @@
     [Parameter]
     public int SpesificDersAcilan { get; set; } = 0;
 
-    //AkademisyenSinavDto _AkademisyenSinavDto;
+    [Parameter]
+    public AkademisyenDto _AkademisyenDto { get; set; } = new AkademisyenDto();
 
     SinavDto _SinavDto;
 
