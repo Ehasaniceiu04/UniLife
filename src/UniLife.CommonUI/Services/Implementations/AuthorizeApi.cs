@@ -109,7 +109,7 @@ namespace UniLife.CommonUI.Services.Implementations
                         await _jsRuntime.InvokeVoidAsync("jsInterops.deleteCookieSon");
 
                     }
-                    await _jsRuntime.InvokeVoidAsync("jsInterops.refreshPage");
+                    //await _jsRuntime.InvokeVoidAsync("jsInterops.refreshPage");
                 }
 #endif
 

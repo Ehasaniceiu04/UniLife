@@ -4,6 +4,8 @@
 @using UniLife.CommonUI.Pages.Personel
 @using UniLife.CommonUI.Pages.Admin
 @using UniLife.CommonUI.Pages.Umum
+@inject NavigationManager navigationManager
+@inject AppState appState
 
 
 
@@ -29,10 +31,6 @@
     {
         <Dashboard2></Dashboard2>
     }
-
-
-
-
 
     <MatSnackbar @bind-IsOpen="@lazySnackbarIsOpen">
         <MatSnackbarContent>Uni-life öğrenci bilgi sistemine hoş geldiniz. <a href="https://www.google.com/" target="_blank">Uni-life</a>.</MatSnackbarContent>
@@ -65,6 +63,17 @@
         {
             this.lazySnackbarIsOpen = true;
         });
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+        {
+            if (appState.UserNavigationLoadRole == UserRoles.Anonim.ToString())
+            {
+                navigationManager.NavigateTo("/account/login");
+            }
+        }
     }
 
     public void Dispose()

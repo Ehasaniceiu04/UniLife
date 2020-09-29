@@ -80,7 +80,8 @@ namespace UniLife.Shared.Dto
         Administrator,
         Personel,
         Akademisyen,
-        Ogrenci
+        Ogrenci,
+        Anonim
     }
 
 

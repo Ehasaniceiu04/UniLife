@@ -76,6 +76,7 @@
         console.log(mesaj);
     },
     refreshPage: function () {
-        window.location = " "; // TO REFRESH THE PAGE
+        console.log("refreshPage");
+        window.location = "/account/login"; // TO REFRESH THE PAGE
     }
 }

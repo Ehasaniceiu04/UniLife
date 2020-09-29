@@ -1,66 +1,66 @@
 ﻿
-    <Router AppAssembly="typeof(App).Assembly">
-        <Found Context="routeData">
-            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
-                <NotAuthorized>
-                    <div class="login-container">
-                        <LoadingBackground ShowLogoBox="true">
-                            <div class="login-body">
-                                <label>Bu sayfaya erişm yetkiniz yok.</label><br />
-                                <MatButton Link="/" Raised="true">Ana Sayfa</MatButton>
-                            </div>
-
-                        </LoadingBackground>
-                    </div>
-                    @*<RedirectToLogin></RedirectToLogin>*@
-                </NotAuthorized>
-            </AuthorizeRouteView>
-        </Found>
-        <NotFound>
-            <CascadingAuthenticationState>
-                <LayoutView Layout="typeof(MainLayout)">
+<Router AppAssembly="typeof(App).Assembly">
+    <Found Context="routeData">
+        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+            <NotAuthorized>
+                <div class="login-container">
                     <LoadingBackground ShowLogoBox="true">
                         <div class="login-body">
-                            <h1>Sayfa bulunamadı</h1>
-                            <label>Aradığınız sayfayı bulamadık.<br />Lütfen doğru adresi girdiğinize emin olun.</label><br />
+                            <label>Bu sayfaya erişim yetkiniz yok.</label><br />
                             <MatButton Link="/" Raised="true">Ana Sayfa</MatButton>
                         </div>
+
                     </LoadingBackground>
-                </LayoutView>
-            </CascadingAuthenticationState>
-        </NotFound>
-    </Router>
-    <MatToastContainer />
+                </div>
+                @*<RedirectToLogin></RedirectToLogin>*@
+            </NotAuthorized>
+        </AuthorizeRouteView>
+    </Found>
+    <NotFound>
+        <CascadingAuthenticationState>
+            <LayoutView Layout="typeof(MainLayout)">
+                <LoadingBackground ShowLogoBox="true">
+                    <div class="login-body">
+                        <h1>Sayfa bulunamadı</h1>
+                        <label>Aradığınız sayfayı bulamadık.<br />Lütfen doğru adresi girdiğinize emin olun.</label><br />
+                        <MatButton Link="/" Raised="true">Ana Sayfa</MatButton>
+                    </div>
+                </LoadingBackground>
+            </LayoutView>
+        </CascadingAuthenticationState>
+    </NotFound>
+</Router>
+<MatToastContainer />
 
-    @code
+@code
 {
-        [Inject] HttpClient _httpClient { get; set; }
-        [Inject] NavigationManager _navigationManager { get; set; }
+    [Inject] HttpClient _httpClient { get; set; }
+    [Inject] NavigationManager _navigationManager { get; set; }
 
 #if ServerSideBlazor
-        [Inject] IHttpContextAccessor _http { get; set; }
+    [Inject] IHttpContextAccessor _http { get; set; }
 #endif
 
-        protected override async Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        _httpClient.BaseAddress = new Uri(_navigationManager.BaseUri);
+
+#if ServerSideBlazor
+        // likely user refreshed page, we need to grab the cookies if they exist and pass it to the HttpClient for this request
+        if (_http != null && _http.HttpContext != null && _http.HttpContext.Request.Cookies.Any())
         {
-            await base.OnInitializedAsync();
+            var cks = new List<string>();
 
-            _httpClient.BaseAddress = new Uri(_navigationManager.BaseUri);
-
-#if ServerSideBlazor
-            // likely user refreshed page, we need to grab the cookies if they exist and pass it to the HttpClient for this request
-            if (_http != null && _http.HttpContext != null && _http.HttpContext.Request.Cookies.Any())
+            foreach (var cookie in _http.HttpContext.Request.Cookies)
             {
-                var cks = new List<string>();
-
-                foreach (var cookie in _http.HttpContext.Request.Cookies)
-                {
-                    cks.Add($"{cookie.Key}={cookie.Value}");
-                }
-
-                _httpClient.DefaultRequestHeaders.Add("Cookie", String.Join(';', cks));
+                cks.Add($"{cookie.Key}={cookie.Value}");
             }
-#endif
-        }
 
+            _httpClient.DefaultRequestHeaders.Add("Cookie", String.Join(';', cks));
+        }
+#endif
     }
+
+}

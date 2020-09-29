@@ -35,11 +35,21 @@
                         <GridEvents TValue="DersAcilanDto" QueryCellInfo="QueryCellInfoAcilanHandler" CommandClicked="CommandClickHandler"></GridEvents>
                         <GridColumns>
                             <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+
+
+                            <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kodu"></GridColumn>
+                            <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Adı"></GridColumn>
+                            <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Zorunlu) HeaderText="Zorunlu" DisplayAsCheckBox="true"></GridColumn>
+                            <GridColumn Field=@nameof(DersAcilanDto.Kredi) HeaderText="Kredi"></GridColumn>
+                            <GridColumn Field=@nameof(DersAcilanDto.Akts) HeaderText="Akts"></GridColumn>
+                            <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
+                            <GridColumn Field=@nameof(DersAcilanDto.ODTekrar) HeaderText="Önceki Dönemler Tekrar Durumu"></GridColumn>
+                            <GridColumn Field=@nameof(DersAcilanDto.ADKayit) HeaderText="Aktif Dönem Kayıt Durumu"></GridColumn>
                             @if (!isOnayli)
                             {
                                 <GridColumn HeaderText="Kayıt" Width="75">
                                     <GridCommandColumns>
-                                        <GridCommandColumn Type="CommandButtonType.None" Title="Kayıt Ol" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowDown", CssClass="e-flat" })"></GridCommandColumn>
+                                        <GridCommandColumn Type="CommandButtonType.None" Title="Kayıt" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowDown", CssClass="e-flat" })"></GridCommandColumn>
                                         @*<GridCommandColumn Type="CommandButtonType.None" Title="Seçmeli Al" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-StrokeColor", CssClass="e-flat" })"></GridCommandColumn>*@
                                     </GridCommandColumns>
                                 </GridColumn>
@@ -56,16 +66,6 @@
                                     </Template>
                                 </GridColumn>
                             }
-
-
-                            <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kodu"></GridColumn>
-                            <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Adı"></GridColumn>
-                            <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Zorunlu) HeaderText="Zorunlu" DisplayAsCheckBox="true"></GridColumn>
-                            <GridColumn Field=@nameof(DersAcilanDto.Kredi) HeaderText="Kredi"></GridColumn>
-                            <GridColumn Field=@nameof(DersAcilanDto.Akts) HeaderText="Akts"></GridColumn>
-                            <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
-                            <GridColumn Field=@nameof(DersAcilanDto.ODTekrar) HeaderText="Önceki Dönemler Tekrar Durumu"></GridColumn>
-                            <GridColumn Field=@nameof(DersAcilanDto.ADKayit) HeaderText="Aktif Dönem Kayıt Durumu"></GridColumn>
                         </GridColumns>
                     </SfGrid>
                 }
@@ -127,6 +127,14 @@
 
                         <GridColumns>
                             <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+                            <GridColumn Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kodu"></GridColumn>
+                            <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Adı"></GridColumn>
+                            <GridColumn Visible="false" Field=@nameof(DersAcilanDto.YerineSecilenId) HeaderText="Yerine id"></GridColumn>
+                            <GridColumn Field=@nameof(DersAcilanDto.Zorunlu) DisplayAsCheckBox="true" HeaderText="Zorunlu"></GridColumn>
+                            <GridColumn Field=@nameof(DersAcilanDto.Kredi) Format="N2" HeaderText="Kredi"></GridColumn>
+                            <GridColumn Field=@nameof(DersAcilanDto.Akts) Format="N2" HeaderText="Akts"></GridColumn>
+                            <GridColumn Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
+                            <GridColumn Field=@nameof(DersAcilanDto.YerineSecilenAd) HeaderText="Yerine Ders"></GridColumn>
                             @if (!isOnayli)
                             {
                                 <GridColumn HeaderText="Kaldır" Width="75">
@@ -135,14 +143,6 @@
                                     </GridCommandColumns>
                                 </GridColumn>
                             }
-                            <GridColumn Field=@nameof(DersAcilanDto.YerineSecilenAd) HeaderText="Yerine Ders"></GridColumn>
-                            <GridColumn Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kodu"></GridColumn>
-                            <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Adı"></GridColumn>
-                            <GridColumn Visible="false" Field=@nameof(DersAcilanDto.YerineSecilenId) HeaderText="Yerine id"></GridColumn>
-                            <GridColumn Field=@nameof(DersAcilanDto.Zorunlu) DisplayAsCheckBox="true" HeaderText="Zorunlu"></GridColumn>
-                            <GridColumn Field=@nameof(DersAcilanDto.Kredi) Format="N2" HeaderText="Kredi"></GridColumn>
-                            <GridColumn Field=@nameof(DersAcilanDto.Akts) Format="N2" HeaderText="Akts"></GridColumn>
-                            <GridColumn Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
 
                         </GridColumns>
                     </SfGrid>
@@ -172,7 +172,7 @@
                     </SfProgressButton>
                 </div>
             }
-            else if (appState.UserNavigationLoadRole == UserRoles.Personel.ToString())
+            else /*if (appState.UserNavigationLoadRole == UserRoles.Personel.ToString())*/
             {
                 <div class="col-6 text-center">
                     <SfProgressButton Content="Onay Kaldır" OnClick="OnayKaldir" CssClass="center-block e-primary">

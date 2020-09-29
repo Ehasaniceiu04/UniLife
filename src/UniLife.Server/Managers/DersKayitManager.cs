@@ -68,6 +68,11 @@ namespace UniLife.Server.Managers
             await _dersKayitStore.Onayla(ids);
             return new ApiResponse(Status200OK, "Kayıtlı dersler onaylandı.");
         }
+        public async Task<ApiResponse> OnayKaldir(List<int> ids)
+        {
+            await _dersKayitStore.OnayKaldir(ids);
+            return new ApiResponse(Status200OK, "Kayıtlı derslerin onayı kaldırıldı.");
+        }
 
         public async Task<ApiResponse> Harflendir(int dersAcilanId)
         {
@@ -85,5 +90,7 @@ namespace UniLife.Server.Managers
             await _dersKayitStore.ButHarflendir(dersAcilanId);
             return new ApiResponse(Status200OK, "Öğrenci ders sonuçları harflendirildi.");
         }
+
+        
     }
 }

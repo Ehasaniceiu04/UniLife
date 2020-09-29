@@ -165,6 +165,24 @@ namespace UniLife.Server.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("OnayKaldir")]
+        [Authorize(Permissions.DersKayit.Update)]
+        [Authorize(Roles = "Administrator,Personel,Akademisyen")]
+        public async Task<ApiResponse> OnayKaldir([FromBody] List<int> Ids)
+        {
+            if (ModelState.IsValid)
+            {
+                return await _dersKayitManager.OnayKaldir(Ids);
+            }
+            else
+            {
+                return new ApiResponse(Status400BadRequest, "DersKayitDto Model is Invalid");
+            }
+        }
+
+        
+
         [HttpGet]
         [Route("Harflendir/{dersAcilanId}")]
         [Authorize(Permissions.DersKayit.Update)]

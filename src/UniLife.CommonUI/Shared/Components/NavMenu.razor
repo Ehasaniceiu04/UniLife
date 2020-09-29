@@ -605,19 +605,23 @@
         {
             // Perform some action only available to users in the 'admin' role
             //Console.WriteLine("Administrator");
-            //appState.UserNavigationLoadRole = UserRoles.Administrator.ToString();
+            appState.UserNavigationLoadRole = UserRoles.Administrator.ToString();
         }
         if (user.IsInRole(UserRoles.Personel.ToString()))
         {
             appState.UserNavigationLoadRole = UserRoles.Personel.ToString();
         }
-        if (user.IsInRole(UserRoles.Akademisyen.ToString()))
+        else if (user.IsInRole(UserRoles.Akademisyen.ToString()))
         {
             appState.UserNavigationLoadRole = UserRoles.Akademisyen.ToString();
         }
-        if (user.IsInRole(UserRoles.Ogrenci.ToString()))
+        else if (user.IsInRole(UserRoles.Ogrenci.ToString()))
         {
             appState.UserNavigationLoadRole = UserRoles.Ogrenci.ToString();
+        }
+        else
+        {
+            appState.UserNavigationLoadRole = UserRoles.Anonim.ToString();
         }
     }
 

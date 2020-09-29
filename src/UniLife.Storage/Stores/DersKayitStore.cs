@@ -129,6 +129,14 @@ namespace UniLife.Storage.Stores
             await _db.SaveChangesAsync(CancellationToken.None);
         }
 
+        public async Task OnayKaldir(List<int> ids)
+        {
+            var kayitliDersler = _db.DersKayits.Where(x => ids.Contains(x.Id));
+            await kayitliDersler.ForEachAsync(x => { x.IsOnayli = false; });
+
+            await _db.SaveChangesAsync(CancellationToken.None);
+        }
+
         public async Task<int> PutUpdateOgrencisDersKayits(PutUpdateOgrencisDersKayitsDto putUpdateOgrencisDersKayitsDto)
         {
 

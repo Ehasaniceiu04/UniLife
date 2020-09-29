@@ -332,7 +332,18 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs.DersKayitTa
 
         async Task OnayKaldir()
         {
-            //TODO
+            var kayitliDersler = await DersKayitGrid.GetCurrentViewRecords();
+            ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/DersKayit/OnayKaldir", kayitliDersler.Select(x => x.DersKayitId));
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success, "Onay kaldırıldı.");
+                isOnayli = false;
+                DersAcilanGrid.Refresh();
+                StateHasChanged();
+                DersKayitGrid.Refresh();
+            }
+            else
+                matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
         }
     }
 }
