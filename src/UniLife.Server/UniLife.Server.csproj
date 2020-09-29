@@ -23,6 +23,8 @@
     <DockerfileBuildArguments>--build-arg BUILD_CONFIG='$(Configuration)'</DockerfileBuildArguments>
 
     <Configurations>Debug_CSB;Debug_SSB;Release_CSB;Release_SSB</Configurations>
+
+    <UserSecretsId>043fe2fa-1b3f-4efe-8d70-55626519dc8b</UserSecretsId>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_CSB|AnyCPU'">
@@ -96,7 +98,7 @@
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0-dev-00876" />
     <PackageReference Include="MailKit" Version="2.7.0" />
     <PackageReference Include="Serilog.Sinks.MSSqlServer" Version="5.4.0" />
-    <PackageReference Include="Syncfusion.Blazor" Version="18.2.0.59" />
+    <PackageReference Include="Syncfusion.Blazor" Version="18.2.0.57" />
     <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="18.2.0.58" />
   </ItemGroup>
 

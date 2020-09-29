@@ -28,7 +28,7 @@
             <GridColumn Field=@nameof(BolumDto.DiplomaAd) HeaderText="DiplomaAd"></GridColumn>
             <GridColumn Field=@nameof(BolumDto.IsBologna) EditType="EditType.BooleanEdit" HeaderText="IsBologna"></GridColumn>
             <GridColumn Field=@nameof(BolumDto.DiplomaAdEn) HeaderText="DiplomaAdEn"></GridColumn>
-            <GridColumn Field=@nameof(BolumDto.Id) Width="100">
+            <GridColumn Width="100">
                 <GridCommandColumns>
                     <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-edit", CssClass = "e-flat" })"></GridCommandColumn>
                     <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-delete", CssClass = "e-flat" })"></GridCommandColumn>

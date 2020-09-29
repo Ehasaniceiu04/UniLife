@@ -235,9 +235,9 @@ namespace UniLife.Storage.Stores
 
 
             var normalDersler = await (from d in _db.Derss.Where(x => x.MufredatId == ogrenci.MufredatId
-                                                      && x.Sinif == pageSinif
-                                                      && x.Durum == true
-                                                      && x.DonemTipId == donem.DonemTipId)
+                                                              && x.Sinif == pageSinif
+                                                              && x.Durum == true
+                                                              && x.DonemTipId == donem.DonemTipId)
                                        join da in _db.DersAcilans.Where(x => ustMufredatIds.Contains(x.MufredatId)
                                                                           && x.Sinif == pageSinif
                                                                           && x.DonemId == pageDonemId) on d.Kod equals da.Kod
@@ -557,69 +557,88 @@ namespace UniLife.Storage.Stores
             await _db.SaveChangesAsync(CancellationToken.None);
         }
 
+        //public async Task<List<OgrenciDerslerDto>> GetDersSonucByOgrenciId(int ogrenciId)
+        //{
+        //    var dersSonucs = await (from dk in _db.DersKayits.Where(x => x.OgrenciId == ogrenciId)
+        //                            join da in _db.DersAcilans on dk.DersAcilanId equals da.Id
+        //                            join d in _db.Donems on da.DonemId equals d.Id
+        //                            select new OgrenciDerslerDto
+        //                            {
+        //                                OgrenciId = dk.OgrenciId,
+        //                                DersAcilanId = da.Id,
+        //                                Sube = da.Sube,
+        //                                DersKod = da.Kod,
+        //                                DersAd = da.Ad,
+        //                                SonucDurum = ((DersSonucDurum)dk.SonucDurum).ToString(),
+        //                                Ort = dk.Ort,
+        //                                HarfNot = dk.HarfNot,
+        //                                Carpan = dk.Carpan,
+        //                                Durumu = ((DersSonuc)dk.Sonuc).ToString(),
+        //                                Sinif = da.Sinif,
+        //                                Donem = d.Ad,
+        //                                IsZorunlu = da.Zorunlu,
+        //                                Kredi = da.Kredi,
+        //                                Akts = da.Akts,
+        //                                AkademisyenId = da.AkademisyenId
+        //                            }).ToListAsync();
+
+        //    var sinavSonucs = await (from sk in _db.SinavKayits.Where(x => x.OgrenciId == ogrenciId)
+        //                             join s in _db.Sinavs on sk.SinavId equals s.Id
+        //                             select new DersNotHesaplamaDto
+        //                             {
+        //                                 Id = s.Id,
+        //                                 DersAcilanId = s.DersAcilanId,
+        //                                 SinavAd = s.Ad,
+        //                                 OgrNot = sk.OgrNot,
+        //                                 SEtkiOran = s.EtkiOran,
+        //                                 MazeretiSinavKayitId = sk.MazeretiSinavKayitId,
+        //                                 MazeretiSinavId = s.MazeretiSinavId
+        //                             }).ToListAsync();
+
+        //    foreach (var item in dersSonucs)
+        //    {
+        //        var dersOgrencisSinavs = sinavSonucs.Where(x => x.DersAcilanId == item.DersAcilanId);
+
+        //        item.SinavNotlari = String.Join(" ", dersOgrencisSinavs.Select(x => x.SinavAd + ":" + x.OgrNot));
+        //    }
+
+        //    return _autoMapper.Map<List<OgrenciDerslerDto>>(dersSonucs);
+        //}
+
         public async Task<List<OgrenciDerslerDto>> GetDersSonucByOgrenciId(int ogrenciId)
         {
-            var dersSonucs = await (from dk in _db.DersKayits.Where(x => x.OgrenciId == ogrenciId)
-                                    join da in _db.DersAcilans on dk.DersAcilanId equals da.Id
+            var ogrenci = await _db.Ogrencis.FirstOrDefaultAsync(x => x.Id == ogrenciId);
+
+            var dersSonucs = await (from der in _db.Derss.Where(x => x.MufredatId == ogrenci.MufredatId
+                                                              && x.Durum == true)
+                                    join da in _db.DersAcilans on der.Id equals da.DersId
+                                    into ps
+                                    from da in ps.DefaultIfEmpty()
+                                    join dk in _db.DersKayits.Where(x => x.OgrenciId == ogrenciId) on da.Id equals dk.DersAcilanId
+                                    into ps2
+                                    from dk in ps2.DefaultIfEmpty()
                                     join d in _db.Donems on da.DonemId equals d.Id
                                     select new OgrenciDerslerDto
                                     {
-                                        OgrenciId = dk.OgrenciId,
+                                        OgrenciId = ogrenciId,
                                         DersAcilanId = da.Id,
                                         Sube = da.Sube,
-                                        DersKod = da.Kod,
-                                        DersAd = da.Ad,
-                                        SonucDurum = ((DersSonucDurum)dk.SonucDurum).ToString(),
+                                        DersKod = da.Kod??der.Kod,
+                                        DersAd = da.Ad??der.Ad,
+                                        //SonucDurum = ((DersSonucDurum)dk.SonucDurum).ToString(),
                                         Ort = dk.Ort,
                                         HarfNot = dk.HarfNot,
-                                        Carpan = dk.Carpan,
+                                        //Carpan = dk.Carpan,
                                         Durumu = ((DersSonuc)dk.Sonuc).ToString(),
                                         Sinif = da.Sinif,
-                                        Donem = d.Ad,
+                                        Donem = d.DonemTipAd,
                                         IsZorunlu = da.Zorunlu,
                                         Kredi = da.Kredi,
                                         Akts = da.Akts,
                                         AkademisyenId = da.AkademisyenId
                                     }).ToListAsync();
 
-            var sinavSonucs = await (from sk in _db.SinavKayits.Where(x => x.OgrenciId == ogrenciId)
-                                     join s in _db.Sinavs on sk.SinavId equals s.Id
-                                     select new DersNotHesaplamaDto
-                                     {
-                                         Id = s.Id,
-                                         DersAcilanId = s.DersAcilanId,
-                                         SinavAd = s.Ad,
-                                         OgrNot = sk.OgrNot,
-                                         SEtkiOran = s.EtkiOran,
-                                         MazeretiSinavKayitId = sk.MazeretiSinavKayitId,
-                                         MazeretiSinavId = s.MazeretiSinavId
-                                     }).ToListAsync();
-
-            foreach (var item in dersSonucs)
-            {
-                var dersOgrencisSinavs = sinavSonucs.Where(x => x.DersAcilanId == item.DersAcilanId);
-
-                item.SinavNotlari = String.Join(" ", dersOgrencisSinavs.Select(x => x.SinavAd + ":" + x.OgrNot));
-
-                //foreach (var sinavSonuc in dersOgrencisSinavs)
-                //{
-                //    //if (dersOgrencisSinavs.Any(x => x.MazeretiSinavKayitId == sinavSonuc.MazeretiSinavKayitId))
-                //    // Yani: Bu sinav Kayidinin ID'si başka bir sınav kayıdında MazeretiSinavKayitId olarak kayıtlımı?
-                //    if (dersOgrencisSinavs.Any(x => x.MazeretiSinavId == sinavSonuc.MazeretiSinavId))
-                //    {
-
-                //    }
-                //    else
-                //    {
-                //        item.Ort += sinavSonuc.OgrNot * (sinavSonuc.SEtkiOran / 100);
-                //    }
-
-                //}
-
-            }
-
-            return _autoMapper.Map<List<OgrenciDerslerDto>>(dersSonucs);
-            //return null;
+            return dersSonucs;
         }
 
         public async Task<List<DersAcilanDto>> GetDersAcilansByMufredat(int mufredatId, int donemId)
