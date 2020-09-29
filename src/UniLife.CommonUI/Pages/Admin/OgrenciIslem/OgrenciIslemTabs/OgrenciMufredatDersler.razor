@@ -122,7 +122,7 @@ else
         try
         {
             _OgrenciDto = await appState.GetOgrenciState();
-            ApiResponseDto<List<OgrenciDerslerDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDerslerDto>>>("api/dersAcilan/GetDersSonucByOgrenciId/" + _OgrenciDto.Id);
+            ApiResponseDto<List<OgrenciDerslerDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDerslerDto>>>("api/dersAcilan/GetMufredatDersByOgrenciId/" + _OgrenciDto.Id);
 
             if (apiResponse.IsSuccessStatusCode)
             {

@@ -95,7 +95,7 @@
         {
             var returnUrl =
                   navigationManager.ToBaseRelativePath(navigationManager.Uri);
-            navigationManager.NavigateTo($"/account/Login/{returnUrl}", forceLoad: false);
+            navigationManager.NavigateTo($"/account/Login/{returnUrl}", forceLoad: true);
         }
         [CascadingParameter]
         Task<AuthenticationState> authenticationStateTask { get; set; }

@@ -9,7 +9,7 @@
 @attribute [Authorize(Roles = "Administrator,Personel,Akademisyen")]
 
 
-@if (donemDtos == null)
+@if (selectedDonemId == null)
 {
     <LoadingBackground ShowLogoBox="true">
         <label>Dersler Yükleniyor...</label>
@@ -175,27 +175,9 @@ else
 
             selectedDonemId = donemDtos.FirstOrDefault(x => x.Durum == true).Id;
 
-            //totalQuery = new Query()
-            //    .Where("akademisyen/Id", "equal", akademisyenDto.Id)
-            //    .Where("donem/Id", "equal", selectedDonemId);
-
-            //.Expand(new List<string> { "Akademisyen($select=Id,Ad)", "Donem($select=Id,Ad)" })
 
 
             StateHasChanged();
-
-            //ApiResponseDto<List<AkademisyenDersDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<AkademisyenDersDto>>>("api/sinav/GetDersAcilanByAkademisyenId/" + akademisyenDto.Id);
-
-            //if (apiResponse.IsSuccessStatusCode)
-            //{
-            //    matToaster.Add($"Sinav bilgileri getirildi.", MatToastType.Success);
-            //    //AkademisyenSinavDtos = apiResponse.Result;
-            //}
-            //else
-            //{
-            //    //AkademisyenSinavDtos = new List<AkademisyenSinavDto>();
-            //    matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
-            //}
         }
         catch (Exception ex)
         {

@@ -661,6 +661,7 @@ namespace UniLife.Server
             getOgrdersOptional.ReturnsCollectionFromEntitySet<Ogrenci>("Ogrencis");
 
             builder.EntitySet<UniLife.Shared.Dto.Definitions.OgrenciDersRaporDto>("OgrenciDersRapors");
+            builder.EntitySet<OgrenciOnay>("GetOgrenciForDanisman");
             builder.EntitySet<Bolum>("Bolums");
             builder.EntitySet<DersAcilan>("DersAcilans");
             builder.EntitySet<Fakulte>("Fakultes");

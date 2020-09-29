@@ -173,11 +173,21 @@ namespace UniLife.Server.Controllers
 
         [HttpGet]
         [Authorize(Permissions.DersAcilan.Read)]
-        [Route("GetDersSonucByOgrenciId/{ogrenciId}")]
-        public async Task<ApiResponse> GetDersSonucByOgrenciId(int ogrenciId)
+        [Route("GetMufredatDersByOgrenciId/{ogrenciId}")]
+        public async Task<ApiResponse> GetMufredatDersByOgrenciId(int ogrenciId)
             => ModelState.IsValid ?
-                    await _dersAcilanManager.GetDersSonucByOgrenciId(ogrenciId) :
+                    await _dersAcilanManager.GetMufredatDersByOgrenciId(ogrenciId) :
                     new ApiResponse(Status400BadRequest, "DersAcilan Model is Invalid");
+
+
+        [HttpGet]
+        [Authorize(Permissions.DersAcilan.Read)]
+        [Route("GetDonemDersByOgrenciId/{ogrenciId}")]
+        public async Task<ApiResponse> GetDonemDersByOgrenciId(int ogrenciId)
+            => ModelState.IsValid ?
+                    await _dersAcilanManager.GetDonemDersByOgrenciId(ogrenciId) :
+                    new ApiResponse(Status400BadRequest, "DersAcilan Model is Invalid");
+        
 
         [HttpGet]
         [Authorize(Permissions.DersAcilan.Read)]

@@ -1,4 +1,5 @@
-﻿@page "/akademisyen/Danismanlik"
+﻿
+@page "/akademisyen/Danismanlik"
 
 @inject HttpClient Http;
 @inject IMatToaster matToaster
@@ -6,6 +7,7 @@
 @using Syncfusion.Blazor.Navigations
 @using Syncfusion.Blazor.Data
 @using UniLife.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs
+@using UniLife.Shared.DataModels
 @inject AppState appState
 
 @attribute [Authorize(Roles = "Administrator,Personel,Akademisyen")]
@@ -22,14 +24,16 @@
                 </ChildContent>
                 <ContentTemplate>
 
-                    <SfGrid ID="grdOgr" @ref="grdOgr" TValue="OgrenciDto" Toolbar="@(Toolbaritems)" AllowPaging="true">
-                        <SfDataManager Url="odata/ogrencis/GetForDanisman" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
-                        <GridEvents TValue="OgrenciDto" OnToolbarClick="ToolbarClickHandler" CommandClicked="CommandClickHandler"></GridEvents>
+                    <SfGrid ID="grdOgr" @ref="grdOgr" TValue="OgrenciOnay" Toolbar="@(Toolbaritems)" AllowPaging="true">
+                        <SfDataManager Url="odata/GetOgrenciForDanisman" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+                        <GridEvents TValue="OgrenciOnay"  QueryCellInfo="QueryCellInfoHandler" OnToolbarClick="ToolbarClickHandler" CommandClicked="CommandClickHandler"></GridEvents>
                         <GridColumns>
-                            <GridColumn Visible="false" Field=@nameof(OgrenciDto.Id) HeaderText="Id" AllowEditing="false" IsPrimaryKey="true"></GridColumn>
-                            <GridColumn Field=@nameof(OgrenciDto.Ad) HeaderText="Ad"></GridColumn>
-                            <GridColumn Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad"></GridColumn>
-                            <GridColumn Field=@nameof(OgrenciDto.OgrNo) HeaderText="OgrNo"></GridColumn>
+                            <GridColumn Visible="false" Field=@nameof(OgrenciOnay.Id) HeaderText="Id" AllowEditing="false" IsPrimaryKey="true"></GridColumn>
+                            <GridColumn Field=@nameof(OgrenciOnay.Ad) HeaderText="Ad"></GridColumn>
+                            <GridColumn Field=@nameof(OgrenciOnay.Soyad) HeaderText="Soyad"></GridColumn>
+                            <GridColumn Field=@nameof(OgrenciOnay.OgrNo) HeaderText="OgrNo"></GridColumn>
+                            <GridColumn Field=@nameof(OgrenciOnay.TCKN) HeaderText="TCKN"></GridColumn>
+                            <GridColumn Field=@nameof(OgrenciOnay.DersKayitOnayli) DisplayAsCheckBox="true" HeaderText="Onayli"></GridColumn>
                             <GridColumn>
                                 <GridCommandColumns>
                                     <GridCommandColumn Type="CommandButtonType.None" Title="Ders Kayıt Onayı" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat",Content="Ders Onay " })"></GridCommandColumn>
@@ -40,7 +44,7 @@
 
                 </ContentTemplate>
             </TabItem>
-            <TabItem>
+            <TabItem Visible="OgrenciSelected">
                 <ChildContent>
                     <TabHeader Text="Öğrenci Ders Onay"></TabHeader>
                 </ChildContent>
@@ -56,12 +60,14 @@
 
 @code{
 
+    bool OgrenciSelected = false;
+
     public OgrenciDto _OgrenciDto { get; set; } = new OgrenciDto();
 
     SfTab DanismanTab;
 
 
-    SfGrid<OgrenciDto> grdOgr;
+    SfGrid<OgrenciOnay> grdOgr;
 
     //string gridOdata = "odata/ogrencis/GetForDanisman";
 
@@ -81,29 +87,37 @@
         }
     }
 
-    public void CommandClickHandler(CommandClickEventArgs<OgrenciDto> args)
+    public async Task CommandClickHandler(CommandClickEventArgs<OgrenciOnay> args)
     {
         if (args.CommandColumn.Title == "Ders Kayıt Onayı")
         {
-            _OgrenciDto = args.RowData;
-            appState.OgrenciState = args.RowData;
 
-            DanismanTab.HideTab(1, false);
-            DanismanTab.EnableTab(1, true);
-            DanismanTab.Select(1);
+            try
+            {
+                ApiResponseDto<OgrenciDto> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<OgrenciDto>>($"api/ogrenci/{args.RowData.Id}");
 
-            //_OgrenciDto = args.RowData;
-            //appState.OgrenciState = _OgrenciDto;
-            //OgrenciToAkademik.InvokeAsync(_OgrenciDto);
+                if (apiResponse.IsSuccessStatusCode)
+                {
+                    _OgrenciDto = apiResponse.Result;
+                    appState.OgrenciState = _OgrenciDto;
+
+                    OgrenciSelected=true;
+                }
+                else
+                    matToaster.Add(apiResponse.Message, MatToastType.Danger, "Öğrenci bilgileri alınamadı!");
+            }
+            catch (Exception ex)
+            {
+                matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Öğrenci bilgileri alınırken hata oluştu!");
+            }
+
 
         }
     }
 
     public void TabCreate()
     {
-        DanismanTab.EnableTab(0, true);
-        DanismanTab.EnableTab(1, false);
-        DanismanTab.HideTab(1, true);
+
     }
     public void OnTabSelecting(SelectingEventArgs args)
     {
@@ -113,9 +127,18 @@
         }
         if (args.SelectedIndex == 0)
         {
-            DanismanTab.EnableTab(1, false);
-            DanismanTab.HideTab(1, true);
+            OgrenciSelected = false;
         }
+    }
+
+    public void QueryCellInfoHandler(QueryCellInfoEventArgs<OgrenciOnay> args)
+    {
+        if (!args.Data.DersKayitOnayli)
+        {
+            args.Cell.AddStyle(new string[] { "background-color:#eba9a9" });
+        }
+
+
     }
 }
 
