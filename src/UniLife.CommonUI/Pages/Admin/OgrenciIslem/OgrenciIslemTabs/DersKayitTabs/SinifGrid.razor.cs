@@ -134,7 +134,7 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs.DersKayitTa
 
 
 
-            if (args.CommandColumn.Title == "Kayıt Ol")
+            if (args.CommandColumn.Title == "Kayıt")
             {
 
                 if (args.RowData.Durum == false)
