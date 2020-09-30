@@ -46,7 +46,10 @@ else
     <div class="row">
         <div class="col-sm-12 col-md-12 pb-4" style="padding-left: 0px;padding-right: 0px;">
             <div class="server-action-menu card">
-
+                @*@if (true)
+	{
+		 
+	}*@
                 @*OnRecordClick="OnRecordClickHandler" Toolbar="@(ToolbarDersitems)" OnToolbarClick="ToolbarDersClickHandler" *@
                 <SfGrid ID="DersAcGrid" @ref="DersAcGrid" Query="@totalQuery" TValue="DersAcilanForSinav" RowHeight="20" AllowSorting="true" AllowFiltering="true" AllowSelection="true" AllowPaging="true" AllowExcelExport="true" AllowResizing="true" AllowPdfExport="true">
                     <GridEvents RowSelected="RowSelectedHandler" TValue="DersAcilanForSinav" CommandClicked="CommandClickHandler"></GridEvents>

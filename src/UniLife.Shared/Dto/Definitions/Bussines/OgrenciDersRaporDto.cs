@@ -19,6 +19,6 @@ namespace UniLife.Shared.Dto.Definitions
         public int ProgramId { get; set; }
         public int BolumId { get; set; }
         public int FakulteId { get; set; }
-        public int Sinif { get; set; }
+        public int? Sinif { get; set; }
     }
 }

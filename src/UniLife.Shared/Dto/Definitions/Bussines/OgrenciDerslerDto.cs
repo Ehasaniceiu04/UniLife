@@ -11,6 +11,7 @@ namespace UniLife.Shared.Dto.Definitions
     {
         public int OgrenciId { get; set; }
         public int DersAcilanId { get; set; }
+        public int DersId { get; set; }
         public int Sube { get; set; }
         public string DersKod { get; set; }
         public string DersAd { get; set; }
@@ -19,7 +20,7 @@ namespace UniLife.Shared.Dto.Definitions
         public string HarfNot { get; set; }
         public string Durumu { get; set; }
         public string SinavNotlari { get; set; }
-        public int Sinif { get; set; }
+        public int? Sinif { get; set; }
         public string Donem { get; set; }
         public bool IsZorunlu { get; set; }
         public double Kredi { get; set; }

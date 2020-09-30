@@ -25,7 +25,18 @@ namespace UniLife.Storage.Stores
 
             _db.DersKancas.RemoveRange(silinecekKancas);
 
-            _db.DersKancas.Add(new DersKanca { AktifMufredatDersId = dersKancaDto.AktifMufredatDersId, PasifMufredatDersId = dersKancaDto.PasifMufredatDersId });
+            _db.DersKancas.Add(new DersKanca { 
+                AktifMufredatDersId = dersKancaDto.AktifMufredatDersId, 
+                PasifMufredatDersId = dersKancaDto.PasifMufredatDersId,
+                PasifMufredatAkts = dersKancaDto.PasifMufredatAkts,
+                PasifMufredatKredi=dersKancaDto.PasifMufredatKredi,
+                PasifMufredatDersAd =dersKancaDto.PasifMufredatDersAd,
+                PasifMufredatDersKod = dersKancaDto.PasifMufredatDersKod,
+                AktifMufredatAkts = dersKancaDto.AktifMufredatAkts,
+                AktifMufredatKredi = dersKancaDto.AktifMufredatKredi,
+                AktifMufredatDersAd = dersKancaDto.AktifMufredatDersAd,
+                AktifMufredatDersKod = dersKancaDto.AktifMufredatDersKod
+            });
 
             var kancalananDers = await _db.Derss.FirstOrDefaultAsync(x => x.Id == dersKancaDto.AktifMufredatDersId);
 

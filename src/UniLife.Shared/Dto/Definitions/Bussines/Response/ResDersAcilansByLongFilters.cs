@@ -20,7 +20,7 @@ namespace UniLife.Shared.Dto.Definitions
         }
         public double Kredi { get; set; }
         public int Akts { get; set; }
-        public int Sinif { get; set; }
+        public int? Sinif { get; set; }
         public int Kont { get; set; }
         public int Kayit { get; set; }
         public string Kon

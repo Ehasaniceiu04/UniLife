@@ -319,7 +319,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             totalQuery = new Query();
             await Task.Delay(100);
             //totalQuery.Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)" });
-            totalQuery.Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)", "Donem($select=Id,Ad)", "bolum($expand=fakulte($select=Ad,Id);$select=Ad,Id)", "dersKayits($select=Id,Ad)" });
+            totalQuery.Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)", "Donem($select=Id,Ad)", "bolum($expand=fakulte($select=Ad,Id);$select=Ad,Id)"});
 
 
             if (DonemId.HasValue)

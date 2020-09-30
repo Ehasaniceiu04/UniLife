@@ -18,7 +18,7 @@ namespace UniLife.Shared.Dto.Definitions
         public double OgrNot { get; set; }
 
         public string Donem { get; set; }
-        public int Sinif { get; set; }
+        public int? Sinif { get; set; }
 
     }
 }

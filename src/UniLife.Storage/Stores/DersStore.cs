@@ -98,7 +98,7 @@ namespace UniLife.Storage.Stores
                         where
                             (dersFilterDto.MufredatSecilen.Contains(55555) ? dersFilterDto.MufredatSecenektekiler.Contains(ders.MufredatId) : dersFilterDto.MufredatSecilen.Contains(ders.MufredatId))
                             && (m.Aktif == dersFilterDto.IsActive) && (m.Aktif == dersFilterDto.IsIntibak)//TODO : intibak ve aktif konusu konuslacak
-                            && (dersFilterDto.SinifSecilen.Contains(ders.Sinif))
+                            && (dersFilterDto.SinifSecilen.Contains((int)ders.Sinif))
                             //&& (ders.DonemId == dersFilterDto.DonemSecilen)  //model değişti, DonemTipId olmalı
                             && (string.IsNullOrWhiteSpace(dersFilterDto.DersAd) ? true : ders.Ad.Contains(dersFilterDto.DersAd))
                             && (string.IsNullOrWhiteSpace(dersFilterDto.DersKod) ? true : ders.Kod.Contains(dersFilterDto.DersKod))

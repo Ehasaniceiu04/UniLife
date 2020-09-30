@@ -12,7 +12,7 @@ namespace UniLife.Shared.Dto.Definitions
         public string DersAd { get; set; }
         public string SinavTip{ get; set; }
         public string Donem { get; set; }
-        public int Sinif { get; set; }
+        public int? Sinif { get; set; }
 
     }
 }

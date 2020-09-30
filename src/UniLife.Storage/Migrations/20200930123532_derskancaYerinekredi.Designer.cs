@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using UniLife.Storage;
@@ -9,9 +10,10 @@ using UniLife.Storage;
 namespace UniLife.Storage.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200930123532_derskancaYerinekredi")]
+    partial class derskancaYerinekredi
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1056,20 +1058,8 @@ namespace UniLife.Storage.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int>("AktifMufredatAkts")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("AktifMufredatDersAd")
-                        .HasColumnType("text");
-
                     b.Property<int>("AktifMufredatDersId")
                         .HasColumnType("integer");
-
-                    b.Property<string>("AktifMufredatDersKod")
-                        .HasColumnType("text");
-
-                    b.Property<double>("AktifMufredatKredi")
-                        .HasColumnType("double precision");
 
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uuid");

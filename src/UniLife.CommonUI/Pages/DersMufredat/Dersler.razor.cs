@@ -52,6 +52,9 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         bool yerineDersDialogOpen;
         static int? yerineExistProgramId;
         string yerineDersKod;
+        string yerineDersAd;
+        double yerineDersKredi;
+        int yerineDersAkts;
         int yerineDersId;
         int sonMufredatId;
 
@@ -212,10 +215,10 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                     if (!apiResponse.IsError)
                     {
                         matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
-                        if (dersDto.Durum==false)
+                        if (dersDto.Durum == false)
                         {
                             yerineDersDialogOpen = true;
-                        }                        
+                        }
                         return true;
                     }
                     else
@@ -283,7 +286,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         {
             if (args.CommandColumn.Title == "Dersi Ac")
             {
-                if (args.RowData.Durum==false)
+                if (args.RowData.Durum == false)
                 {
                     dialogUyariText = "Bu ders aktif değil.";
                     isUyariOpen = true;
@@ -322,6 +325,9 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 yerineExistProgramId = args.RowData.ProgramId;
                 yerineDersKod = args.RowData.Kod;
                 yerineDersId = args.RowData.Id;
+                yerineDersAd = args.RowData.Ad;
+                yerineDersAkts = args.RowData.Akts ?? 0;
+                yerineDersKredi = args.RowData.Kredi;
             }
 
 
@@ -336,7 +342,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                     //ApiResponseDto<MufredatDto> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<MufredatDto>>($"api/Mufredat/GetLastMufredatByProgramId/{yerineExistProgramId}").Result;
                     //sonMufredatId = apiResponse.Result.Id;
 
-                    
+
                 }
                 else if ((bool)args.Value == true && yerineDersId != 0)
                 {
@@ -347,7 +353,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                     }
                     else
                         matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
-                }                
+                }
             }
             catch (Exception ex)
             {
@@ -380,7 +386,15 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                     DersKancaDto dersKancaDto = new DersKancaDto()
                     {
                         AktifMufredatDersId = args.RowData.Id,
-                        PasifMufredatDersId = yerineDersId
+                        PasifMufredatDersId = yerineDersId,
+                        PasifMufredatAkts = yerineDersAkts,
+                        PasifMufredatDersAd = yerineDersAd,
+                        PasifMufredatDersKod = yerineDersKod,
+                        PasifMufredatKredi = yerineDersKredi,
+                        AktifMufredatAkts = (int)args.RowData.Akts,
+                        AktifMufredatDersAd = args.RowData.Ad,
+                        AktifMufredatDersKod = args.RowData.Kod,
+                        AktifMufredatKredi = args.RowData.Kredi
                     };
 
 

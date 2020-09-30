@@ -35,7 +35,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         public SfGrid<OgrenciDto> OgrGrid;
 
-        public SfGrid<DersAcilanDto> dersAcGrid;
+        public SfGrid<DersAcilanDto> dersAcGrid=new SfGrid<DersAcilanDto>();
 
         List<DersAcilanDto> dersAcilanDtos = new List<DersAcilanDto>();
 
@@ -133,9 +133,9 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             get => _mufredatId2;
             set
             {
-                HedefChange();
-                if (_mufredatId2 == value) return;
-                _mufredatId2 = value;
+
+                if (_mufredatId2 == value) { HedefChange(); return;  }
+                _mufredatId2 = value; StateHasChanged(); HedefChange();
             }
         }
 

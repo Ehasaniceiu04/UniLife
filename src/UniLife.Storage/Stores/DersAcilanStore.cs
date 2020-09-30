@@ -62,7 +62,7 @@ namespace UniLife.Storage.Stores
 
                 if (dersAcDto.RefProgramSecilen == 55555 && dersAcDto.AcProgramSecilen != 55555)
                 {
-                    acilacakDersler = from d in _db.Derss.Where(x => dersAcDto.DersAcIds.Contains(x.Id) && dersAcDto.AcSinifSecilenler.Contains(x.Sinif))
+                    acilacakDersler = from d in _db.Derss.Where(x => dersAcDto.DersAcIds.Contains(x.Id) && dersAcDto.AcSinifSecilenler.Contains((int)x.Sinif))
                                       join m in _db.Mufredats on d.MufredatId equals m.Id
                                       join p in _db.Programs.Where(y => dersAcDto.AcProgramSecilen == y.Id) on m.ProgramId equals p.Id
                                       select new DersAcilan
@@ -89,7 +89,7 @@ namespace UniLife.Storage.Stores
                 }
                 else if (dersAcDto.RefProgramSecilen != 55555 && dersAcDto.AcProgramSecilen == 55555)
                 {
-                    acilacakDersler = from d in _db.Derss.Where(x => dersAcDto.DersAcIds.Contains(x.Id) && dersAcDto.AcSinifSecilenler.Contains(x.Sinif))
+                    acilacakDersler = from d in _db.Derss.Where(x => dersAcDto.DersAcIds.Contains(x.Id) && dersAcDto.AcSinifSecilenler.Contains((int)x.Sinif))
                                       join m in _db.Mufredats on d.MufredatId equals m.Id
                                       join p in _db.Programs.Where(y => dersAcDto.RefProgramSecilen == y.Id) on m.ProgramId equals p.Id
                                       select new DersAcilan
@@ -116,7 +116,7 @@ namespace UniLife.Storage.Stores
                 }
                 else if (dersAcDto.RefProgramSecilen == 55555 && dersAcDto.AcProgramSecilen == 55555)
                 {
-                    acilacakDersler = from d in _db.Derss.Where(x => dersAcDto.DersAcIds.Contains(x.Id) && dersAcDto.AcSinifSecilenler.Contains(x.Sinif))
+                    acilacakDersler = from d in _db.Derss.Where(x => dersAcDto.DersAcIds.Contains(x.Id) && dersAcDto.AcSinifSecilenler.Contains((int)x.Sinif))
                                       join m in _db.Mufredats on d.MufredatId equals m.Id
                                       join p in _db.Programs.Where(y => dersAcDto.AcProgramSecenektekiler.Contains(y.Id)) on m.ProgramId equals p.Id
                                       select new DersAcilan
@@ -143,7 +143,7 @@ namespace UniLife.Storage.Stores
                 }
                 else if (dersAcDto.RefProgramSecilen != 55555 && dersAcDto.AcProgramSecilen != 55555)
                 {
-                    acilacakDersler = from d in _db.Derss.Where(x => dersAcDto.DersAcIds.Contains(x.Id) && dersAcDto.AcSinifSecilenler.Contains(x.Sinif))
+                    acilacakDersler = from d in _db.Derss.Where(x => dersAcDto.DersAcIds.Contains(x.Id) && dersAcDto.AcSinifSecilenler.Contains((int)x.Sinif))
                                       select new DersAcilan
                                       {
                                           Ad = d.Ad,
@@ -207,7 +207,7 @@ namespace UniLife.Storage.Stores
                                   //join p in _db.Programs on d.ProgramId equals p.Id
                               where
                                   (dersAcilanFilterDto.ProgramSecilen.Contains(55555) ? dersAcilanFilterDto.ProgramSecenektekiler.Contains(d.ProgramId) : dersAcilanFilterDto.ProgramSecilen.Contains(d.ProgramId))
-                                  && (dersAcilanFilterDto.SinifSecilen == null ? true : (dersAcilanFilterDto.SinifSecilen.Contains(d.Sinif)))
+                                  && (dersAcilanFilterDto.SinifSecilen == null ? true : (dersAcilanFilterDto.SinifSecilen.Contains((int)d.Sinif)))
                                   && (dersAcilanFilterDto.DonemSecilen == 0 ? true : (d.DonemId == dersAcilanFilterDto.DonemSecilen))
                                   && (string.IsNullOrWhiteSpace(dersAcilanFilterDto.DersAd) ? true : d.Ad.Contains(dersAcilanFilterDto.DersAd))
                                   && (string.IsNullOrWhiteSpace(dersAcilanFilterDto.DersKod) ? true : d.Kod.Contains(dersAcilanFilterDto.DersKod))
@@ -231,7 +231,7 @@ namespace UniLife.Storage.Stores
             //                                          && x.Durum == true
             //                                          && x.DonemTipId == donem.DonemTipId)).ToListAsync();
 
-            
+
 
 
             var normalDersler = await (from d in _db.Derss.Where(x => x.MufredatId == ogrenci.MufredatId
@@ -251,8 +251,8 @@ namespace UniLife.Storage.Stores
                                            Kod = da != null ? da.Kod : d.Kod,
                                            Zorunlu = da != null ? da.Zorunlu : true,
                                            Kredi = da != null ? da.Kredi : d.Kredi,
-                                           Akts = da != null ? da.Akts:d.Akts,
-                                           Sinif = da != null ? da.Sinif:d.Sinif,
+                                           Akts = da != null ? da.Akts : d.Akts,
+                                           Sinif = da != null ? da.Sinif : d.Sinif,
                                            ODTekrar = da.ODTekrar,
                                            ADKayit = da.ADKayit,
                                            Durum = da != null ? true : false,
@@ -609,34 +609,52 @@ namespace UniLife.Storage.Stores
         {
             var ogrenci = await _db.Ogrencis.FirstOrDefaultAsync(x => x.Id == ogrenciId);
 
-            var dersSonucs = await (from der in _db.Derss.Where(x => x.MufredatId == ogrenci.MufredatId
-                                                              && x.Durum == true)
-                                    join da in _db.DersAcilans on der.Id equals da.DersId
-                                    into ps
+            //var dersSonucs = await (from der in _db.Derss.Where(x => x.MufredatId == ogrenci.MufredatId && x.Durum == true)
+            var dersSonucs = await (from der in _db.Derss.Where(x => x.MufredatId == ogrenci.MufredatId)
+                                    join dkan in _db.DersKancas on der.Id equals dkan.PasifMufredatDersId into pkanca
+                                    from dkan in pkanca.DefaultIfEmpty()
+                                    join da in _db.DersAcilans on der.Id equals da.DersId into ps
                                     from da in ps.DefaultIfEmpty()
-                                    join dk in _db.DersKayits.Where(x => x.OgrenciId == ogrenciId) on da.Id equals dk.DersAcilanId
-                                    into ps2
+                                    join dk in _db.DersKayits.Where(x => x.OgrenciId == ogrenciId) on da.Id equals dk.DersAcilanId into ps2
                                     from dk in ps2.DefaultIfEmpty()
-                                    join d in _db.Donems on da.DonemId equals d.Id
+                                    join d in _db.DonemTips on der.DonemTipId equals d.Id
                                     select new OgrenciDerslerDto
                                     {
                                         OgrenciId = ogrenciId,
                                         DersAcilanId = da.Id,
+                                        DersId = der.Id,
                                         Sube = da.Sube,
-                                        DersKod = da.Kod??der.Kod,
-                                        DersAd = da.Ad??der.Ad,
+                                        DersKod = dkan == null ? (da.Kod ?? der.Kod) : $"{der.Kod}({dkan.AktifMufredatDersKod})",
+                                        DersAd = dkan == null ? (da.Ad ?? der.Ad) : $"{der.Ad}({dkan.AktifMufredatDersAd})",
                                         //SonucDurum = ((DersSonucDurum)dk.SonucDurum).ToString(),
                                         Ort = dk.Ort,
                                         HarfNot = dk.HarfNot,
                                         //Carpan = dk.Carpan,
                                         Durumu = ((DersSonuc)dk.Sonuc).ToString(),
-                                        Sinif = da.Sinif,
-                                        Donem = d.DonemTipAd,
-                                        IsZorunlu = da.Zorunlu,
-                                        Kredi = da.Kredi,
-                                        Akts = da.Akts,
+                                        Sinif = da.Sinif ?? der.Sinif,
+                                        Donem = d.Ad,
+                                        IsZorunlu = der.Zorunlu,
+                                        Kredi = da == null ? der.Kredi : da.Kredi,
+                                        Akts = da == null ? der.Akts : da.Akts,
                                         AkademisyenId = da.AkademisyenId
                                     }).ToListAsync();
+
+
+            //var kancaliDersler = await (from d in _db.Derss.Where(x => x.MufredatId == ogrenci.MufredatId && x.Durum == false)
+            //                            join dk in _db.DersKancas on d.Id equals dk.PasifMufredatDersId
+            //                            join da in _db.DersAcilans on dk.AktifMufredatDersId equals da.DersId
+            //                            select new DersAcilanDto
+            //                            {
+            //                                Id = da.Id,
+            //                                Ad = da.Ad,
+            //                                Kod = da.Kod + "(" + d.Kod + ")",
+            //                                Zorunlu = da.Zorunlu,
+            //                                Kredi = da.Kredi,
+            //                                Akts = da.Akts,
+            //                                Sinif = da.Sinif,
+            //                                ODTekrar = da.ODTekrar,
+            //                                ADKayit = da.ADKayit,
+            //                            }).ToListAsync();
 
             return dersSonucs;
         }
@@ -675,16 +693,21 @@ namespace UniLife.Storage.Stores
         {
             var mufredat = await _db.Mufredats.FirstOrDefaultAsync(x => x.Id == mufredatId);
 
-            var mufredatdersKods = await _db.Derss.Where(x => x.MufredatId == mufredatId).Select(x=>x.Kod).ToListAsync();
+            var mufredatders = await _db.Derss.Where(x => x.MufredatId == mufredatId).ToListAsync();
+
+            var kancaliDersKodlar = await _db.DersKancas.Where(x => mufredatders.Select(x => x.Id).Contains(x.PasifMufredatDersId)).Select(x => x.AktifMufredatDersKod).ToListAsync();
 
             var ustMufredatIds = await _db.Mufredats.Where(x => x.Yil >= mufredat.Yil && x.ProgramId == mufredat.ProgramId).Select(x => x.Id).ToListAsync();
 
-            var donemdeMufredatProgramininAcilanDersleri
-                =await _db.DersAcilans.Where(x => x.DonemId == donemId
-                                           && ustMufredatIds.Contains(x.MufredatId)
-                                           && mufredatdersKods.Contains(x.Kod)).ToListAsync();
+            var mufredatdersKods = mufredatders.Select(x => x.Kod).ToList();
+            mufredatdersKods.AddRange(kancaliDersKodlar);
 
-            donemdeMufredatProgramininAcilanDersleri.ForEach(x => { x.Mufredat = null; });
+            var donemdeMufredatProgramininAcilanDersleri
+                = await _db.DersAcilans.Where(x => x.DonemId == donemId
+                                            && ustMufredatIds.Contains(x.MufredatId)
+                                            && mufredatdersKods.Contains(x.Kod)).ToListAsync();
+
+            donemdeMufredatProgramininAcilanDersleri.ForEach(x => { x.Mufredat = null; x.Ders = null; });
 
             return _autoMapper.Map<List<DersAcilanDto>>(donemdeMufredatProgramininAcilanDersleri);
         }

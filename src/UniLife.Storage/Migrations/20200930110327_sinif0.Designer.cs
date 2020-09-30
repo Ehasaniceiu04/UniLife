@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using UniLife.Storage;
@@ -9,9 +10,10 @@ using UniLife.Storage;
 namespace UniLife.Storage.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200930110327_sinif0")]
+    partial class sinif0
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1056,20 +1058,8 @@ namespace UniLife.Storage.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int>("AktifMufredatAkts")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("AktifMufredatDersAd")
-                        .HasColumnType("text");
-
                     b.Property<int>("AktifMufredatDersId")
                         .HasColumnType("integer");
-
-                    b.Property<string>("AktifMufredatDersKod")
-                        .HasColumnType("text");
-
-                    b.Property<double>("AktifMufredatKredi")
-                        .HasColumnType("double precision");
 
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uuid");
@@ -1090,20 +1080,8 @@ namespace UniLife.Storage.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<int>("PasifMufredatAkts")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("PasifMufredatDersAd")
-                        .HasColumnType("text");
-
                     b.Property<int>("PasifMufredatDersId")
                         .HasColumnType("integer");
-
-                    b.Property<string>("PasifMufredatDersKod")
-                        .HasColumnType("text");
-
-                    b.Property<double>("PasifMufredatKredi")
-                        .HasColumnType("double precision");
 
                     b.HasKey("Id");
 

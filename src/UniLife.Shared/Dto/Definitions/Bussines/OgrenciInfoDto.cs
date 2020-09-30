@@ -22,7 +22,7 @@ namespace UniLife.Shared.Dto.Definitions
         public string Tckn { get; set; }
         public string Ad { get; set; }
         public string Email { get; set; }
-        public int Sinif { get; set; }
+        public int? Sinif { get; set; }
         public string IlaveDonem { get; set; }
         public string KayitNedenAd { get; set; }
         public string OgrenimDurumAd { get; set; }

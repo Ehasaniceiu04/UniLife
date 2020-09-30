@@ -44,7 +44,7 @@
 
                 </ContentTemplate>
             </TabItem>
-            <TabItem Visible="OgrenciSelected">
+            <TabItem>
                 <ChildContent>
                     <TabHeader Text="Öğrenci Ders Onay"></TabHeader>
                 </ChildContent>
@@ -87,21 +87,23 @@
         }
     }
 
-    public async Task CommandClickHandler(CommandClickEventArgs<OgrenciOnay> args)
+    public void CommandClickHandler(CommandClickEventArgs<OgrenciOnay> args)
     {
         if (args.CommandColumn.Title == "Ders Kayıt Onayı")
         {
 
             try
             {
-                ApiResponseDto<OgrenciDto> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<OgrenciDto>>($"api/ogrenci/{args.RowData.Id}");
+                ApiResponseDto<OgrenciDto> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<OgrenciDto>>($"api/ogrenci/{args.RowData.Id}").Result;
 
                 if (apiResponse.IsSuccessStatusCode)
                 {
                     _OgrenciDto = apiResponse.Result;
                     appState.OgrenciState = _OgrenciDto;
 
-                    OgrenciSelected=true;
+
+                    DanismanTab.HideTab(1, false);
+                    DanismanTab.Select(1);
                 }
                 else
                     matToaster.Add(apiResponse.Message, MatToastType.Danger, "Öğrenci bilgileri alınamadı!");
@@ -117,7 +119,7 @@
 
     public void TabCreate()
     {
-
+        DanismanTab.HideTab(1, true);
     }
     public void OnTabSelecting(SelectingEventArgs args)
     {
@@ -125,9 +127,9 @@
         {
             args.Cancel = true;
         }
-        if (args.SelectedIndex == 0)
+        if (args.SelectingIndex == 0 && args.PreviousIndex == 1)
         {
-            OgrenciSelected = false;
+            DanismanTab.HideTab(1, true);
         }
     }
 

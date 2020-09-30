@@ -55,7 +55,7 @@ namespace UniLife.Shared.DataModels
         public string AskerDurum { get; set; }
         public DateTime KayitTarih { get; set; }
         public DateTime? AyrilTarih { get; set; }
-        public int Sinif { get; set; }
+        public int? Sinif { get; set; }
         public decimal GerekenTopUcret { get; set; }
         public decimal OdenenTopUcret { get; set; }
         public decimal GenelBakiye { get; set; }
