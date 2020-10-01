@@ -51,7 +51,7 @@ namespace UniLife.Shared.Dto.Definitions
         //public virtual OgrenimTurDto OgrenimTur { get; set; }
         public bool Durum { get; set; } = true;
 
-        [Required(ErrorMessage = "Danişman bilgisi zorunludur")]
+        //[Required(ErrorMessage = "Danişman bilgisi zorunludur")]
         public int? DanismanId { get; set; }
         public virtual AkademisyenDto Danisman { get; set; }
 

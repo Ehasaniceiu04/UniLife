@@ -7,7 +7,7 @@
 @inject AppState appState
 @attribute [Authorize(Roles = "Administrator,Personel")]
 
-@if (OgrSelected)
+@if (appState.OgrenciState != null)
 {
 
     <div class="card">
@@ -22,28 +22,28 @@
                 <tbody style="font-size: 13px;">
                     <tr>
                         <td rowspan="4" style="text-align: center;">
-                            <SfButton IconCss="e-icons e-DoubleArrowLeft" EnableRtl="true" OnClick="@(() => { OgrSelected = false; })" CssClass="e-flat col-sm-2 e-outline azkenar"></SfButton>
-                            <img class="photo" src="@UriHelper.ToAbsoluteUri($"/_content/UniLife.CommonUI/images/ogrenci/{_OgrenciDto.ApplicationUserId.ToString()}.png")" alt="@_OgrenciDto.Id" />
+                            <SfButton IconCss="e-icons e-DoubleArrowLeft" EnableRtl="true" OnClick="@(() => { appState.OgrenciState = null; })" CssClass="e-flat col-sm-2 e-outline azkenar"></SfButton>
+                            <img class="photo" src="@UriHelper.ToAbsoluteUri($"/_content/UniLife.CommonUI/images/ogrenci/{appState.OgrenciState.ApplicationUserId.ToString()}.png")" alt="@_OgrenciDto.Id" />
                         </td>
                         <td>
-                            <span style="font-weight: 500;">Ad Soyad: </span> @($"{_OgrenciDto.Ad} {_OgrenciDto.Soyad}")
+                            <span style="font-weight: 500;">Ad Soyad: </span> @($"{appState.OgrenciState.Ad} {appState.OgrenciState.Soyad}")
                         </td>
                         <td>
-                            <span style="font-weight: 500;">Öğrenci No: </span> @_OgrenciDto.OgrNo
+                            <span style="font-weight: 500;">Öğrenci No: </span> @appState.OgrenciState.OgrNo
                         </td>
                         <td>
-                            <span style="font-weight: 500;">Öğrenim Durum: </span> @(_OgrenciDto.Durum?"Aktif":"")
+                            <span style="font-weight: 500;">Öğrenim Durum: </span> @(appState.OgrenciState.Durum?"Aktif":"")
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <span style="font-weight: 500;">Kayıt Tarih: </span> @(_OgrenciDto.KayitTarih==null?"":_OgrenciDto.KayitTarih.Value.ToShortDateString())
+                            <span style="font-weight: 500;">Kayıt Tarih: </span> @(appState.OgrenciState.KayitTarih==null?"": appState.OgrenciState.KayitTarih.Value.ToShortDateString())
                         </td>
                         <td>
                             <span style="font-weight: 500;">Fakülte: </span> @(appState.OgrenciTempState!=null ? appState.OgrenciTempState.FakulteAdi :"")
                         </td>
                         <td>
-                            <span style="font-weight: 500;">TCKN: </span> @_OgrenciDto.TCKN
+                            <span style="font-weight: 500;">TCKN: </span> @appState.OgrenciState.TCKN
                         </td>
                     </tr>
                     <tr>
@@ -56,7 +56,7 @@
                             <span style="font-weight: 500;">Program: </span> @(appState.OgrenciTempState!=null?appState.OgrenciTempState.ProgramAdi:"")
                         </td>
                         <td>
-                            <span style="font-weight: 500;">Genel Bakiye: </span> @_OgrenciDto.GenelBakiye
+                            <span style="font-weight: 500;">Genel Bakiye: </span> @appState.OgrenciState.GenelBakiye
                         </td>
                     </tr>
 
@@ -72,7 +72,7 @@
         @*Selected="OnTabSelected" Selecting="OnTabSelecting"*@
         <TabEvents Selected="OnTabSelected" Created="TabCreate" Selecting="OnTabSelecting"></TabEvents>
         <TabItems>
-            <TabItem Visible="@(!OgrSelected)">
+            <TabItem Visible="@(appState.OgrenciState==null)">
                 <ChildContent>
                     <TabHeader Text="Öğrenciler"></TabHeader>
                 </ChildContent>
@@ -80,23 +80,23 @@
                     <Ogrenciler OgrenciToAkademik="OgrenciToAkademik"></Ogrenciler>
                 </ContentTemplate>
             </TabItem>
-            <TabItem Visible="@(OgrSelected)">
+            <TabItem Visible="@(appState.OgrenciState!=null)">
                 <ChildContent>
                     <TabHeader Text="Akademik Bilgiler"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
-                    <OgrenciDuzenle AkademikToOgrenci="TabDegis" _OgrenciDto="_OgrenciDto"></OgrenciDuzenle>
+                    <OgrenciDuzenle AkademikToOgrenci="TabDegis" _OgrenciDto="@(appState.OgrenciState)"></OgrenciDuzenle>
                 </ContentTemplate>
             </TabItem>
-            <TabItem Visible="@(OgrSelected)">
+            <TabItem Visible="@(appState.OgrenciState!=null)">
                 <ChildContent>
                     <TabHeader Text="Ders Kayıt"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
-                    <DersKayit _OgrenciDto="_OgrenciDto"></DersKayit>
+                    <DersKayit _OgrenciDto="@(appState.OgrenciState)"></DersKayit>
                 </ContentTemplate>
             </TabItem>
-            <TabItem Visible="@(OgrSelected)">
+            <TabItem Visible="@(appState.OgrenciState!=null)">
                 <ChildContent>
                     <TabHeader Text="Müfredat Dersleri"></TabHeader>
                 </ChildContent>
@@ -104,7 +104,7 @@
                     <OgrenciMufredatDersler></OgrenciMufredatDersler>
                 </ContentTemplate>
             </TabItem>
-            <TabItem Visible="@(OgrSelected)">
+            <TabItem Visible="@(appState.OgrenciState!=null)">
                 <ChildContent>
                     <TabHeader Text="Dönem Bilgileri"></TabHeader>
                 </ChildContent>
@@ -112,12 +112,12 @@
                     <OgrenciDonemDersler></OgrenciDonemDersler>
                 </ContentTemplate>
             </TabItem>
-            <TabItem Visible="@(OgrSelected)">
+            <TabItem Visible="@(appState.OgrenciState!=null)">
                 <ChildContent>
                     <TabHeader Text="Dosyalar"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
-                    <OgrenciDosya _OgrenciDto="_OgrenciDto"></OgrenciDosya>
+                    <OgrenciDosya _OgrenciDto="@(appState.OgrenciState)"></OgrenciDosya>
                 </ContentTemplate>
             </TabItem>
             @*<TabItem Visible="@(OgrSelected)">
@@ -128,52 +128,52 @@
                         <OgrenciNotlar></OgrenciNotlar>
                     </ContentTemplate>
                 </TabItem>*@
-            <TabItem Visible="@(OgrSelected)">
+            <TabItem Visible="@(appState.OgrenciState!=null)">
                 <ChildContent>
                     <TabHeader Text="Nûfus Bilgileri"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
-                    <OgrenciNufus _OgrenciDto="_OgrenciDto"></OgrenciNufus>
+                    <OgrenciNufus _OgrenciDto="@(appState.OgrenciState)"></OgrenciNufus>
                 </ContentTemplate>
             </TabItem>
-            <TabItem Visible="@(OgrSelected)">
+            <TabItem Visible="@(appState.OgrenciState!=null)">
                 <ChildContent>
                     <TabHeader Text="Askerlik Bilgileri"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
-                    <OgrenciAskerlik _OgrenciDto="_OgrenciDto"></OgrenciAskerlik>
+                    <OgrenciAskerlik _OgrenciDto="@(appState.OgrenciState)"></OgrenciAskerlik>
                 </ContentTemplate>
             </TabItem>
-            <TabItem Visible="@(OgrSelected)">
+            <TabItem Visible="@(appState.OgrenciState!=null)">
                 <ChildContent>
                     <TabHeader Text="Ösym Bilgileri"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
-                    <OgrenciOsym _OgrenciDto="_OgrenciDto"></OgrenciOsym>
+                    <OgrenciOsym _OgrenciDto="@(appState.OgrenciState)"></OgrenciOsym>
                 </ContentTemplate>
             </TabItem>
-            <TabItem Visible="@(OgrSelected)">
+            <TabItem Visible="@(appState.OgrenciState!=null)">
                 <ChildContent>
                     <TabHeader Text="Harç Bilgileri ?"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
-                    <OgrenciHarc _OgrenciDto="_OgrenciDto"></OgrenciHarc>
+                    <OgrenciHarc _OgrenciDto="@(appState.OgrenciState)"></OgrenciHarc>
                 </ContentTemplate>
             </TabItem>
-            <TabItem Visible="@(OgrSelected)">
+            <TabItem Visible="@(appState.OgrenciState!=null)">
                 <ChildContent>
                     <TabHeader Text="Burs Başarı"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
-                    <OgrenciBursBasari _OgrenciDto="_OgrenciDto"></OgrenciBursBasari>
+                    <OgrenciBursBasari _OgrenciDto="@(appState.OgrenciState)"></OgrenciBursBasari>
                 </ContentTemplate>
             </TabItem>
-            <TabItem Visible="@(OgrSelected)">
+            <TabItem Visible="@(appState.OgrenciState!=null)">
                 <ChildContent>
                     <TabHeader Text="Diğer Bilgiler" IconCss="e-icons e-Menu" IconPosition="right"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
-                    <OgrenciDiger _OgrenciDto="_OgrenciDto"></OgrenciDiger>
+                    <OgrenciDiger _OgrenciDto="@(appState.OgrenciState)"></OgrenciDiger>
                 </ContentTemplate>
             </TabItem>
         </TabItems>
@@ -185,7 +185,7 @@
 
 @code{
 
-    bool OgrSelected = false;
+    //bool OgrSelected = false;
 
     SfTab Tab;
     public OgrenciDto _OgrenciDto { get; set; } = new OgrenciDto();
@@ -204,7 +204,7 @@
         //Tab.HideTab(8, !(tabIndex > 0));
         //Tab.HideTab(9, !(tabIndex > 0));
         Tab.Select(tabIndex);
-        OgrSelected = false;
+        //OgrSelected = false;
     }
 
     public void OgrenciToAkademik(OgrenciDto ogrenciDto)
@@ -213,7 +213,7 @@
         _OgrenciDto = ogrenciDto;
 
         TabDegis(1);
-        OgrSelected = true;
+        //OgrSelected = true;
     }
 
     public void TabCreate()
@@ -249,7 +249,8 @@
     {
         if (args.Name == "Öğrenciler")
         {
-            OgrSelected = false;
+            //OgrSelected = false;
+            appState.OgrenciState = null;
         }
     }
     public void OnTabSelecting(SelectingEventArgs args)

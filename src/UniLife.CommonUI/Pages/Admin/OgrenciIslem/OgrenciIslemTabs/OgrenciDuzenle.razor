@@ -12,6 +12,7 @@
 @using System.IO;
 @inject AppState appState
 @inject IJSRuntime JSRuntime;
+@using System.ComponentModel.DataAnnotations;
 
 @attribute [Authorize(Roles = "Administrator,Personel")]
 
@@ -38,8 +39,6 @@ else
                                 <div class="form-row form-group form-inline ">
                                     <label class="col-sm-2" for="OgrNo">Öğrenci NO:</label>
                                     <SfNumericTextBox @bind-Value="@_OgrenciDto.OgrNo" Enabled="false" ID="OgrNo" CssClass="col-sm-4"></SfNumericTextBox>
-                                    @*<label class="col-sm-2" for="DosNo">Dosya NO:</label>
-                        <SfTextBox ID="DosNo"  CssClass="col-sm-2"></SfTextBox>*@
                                     <label class="col-sm-2" for="durum">Durum:</label>
                                     <SfCheckBox ID="durum" CssClass="col-sm-4" @bind-Checked="@_OgrenciDto.Durum"></SfCheckBox>
                                     <label class="col-sm-2" for="TCKN">TCKN:</label>
@@ -141,23 +140,23 @@ else
                                         </SfUploader>
 
                                         @*<SfUploader @ref="uploderObj" ID="UploadFiles" MinFileSize=1000 MaxFileSize=1500000 AllowedExtensions=".png,.jpeg,jpg">
-                                <UploaderEvents ValueChange="onChange" OnRemove="onRemove"></UploaderEvents>
-                                <UploaderTemplates>
-                                    <Template>
-                                        <span class="wrapper">
-                                            <img class="upload-image" alt="Image"
-                                                 src="@(files.Count >0 ? files.Where(item=>item.Name == context.Name)?.FirstOrDefault()?.Path : string.Empty)">
-                                        </span>
-                                        <div class="name file-name" title="@(context.Name)">@(context.Name)</div>
-                                        <div class="file-size">@(context.Size)</div>
-                                        <span class="e-icons e-file-remove-btn remove" id="removeIcon" title="Remove"></span>
-                                        <span class="e-upload-icon e-icons e-file-remove-btn" title="Upload" id="iconUpload"></span>
-                                    </Template>
-                                </UploaderTemplates>
-                                <UploaderFiles>
-                                    <UploaderUploadedFiles Name="@(_OgrenciDto.ApplicationUserId.ToString())" Size=12000 Type="png"></UploaderUploadedFiles>
-                                </UploaderFiles>
-                            </SfUploader>*@
+                                                <UploaderEvents ValueChange="onChange" OnRemove="onRemove"></UploaderEvents>
+                                                <UploaderTemplates>
+                                                    <Template>
+                                                        <span class="wrapper">
+                                                            <img class="upload-image" alt="Image"
+                                                                 src="@(files.Count >0 ? files.Where(item=>item.Name == context.Name)?.FirstOrDefault()?.Path : string.Empty)">
+                                                        </span>
+                                                        <div class="name file-name" title="@(context.Name)">@(context.Name)</div>
+                                                        <div class="file-size">@(context.Size)</div>
+                                                        <span class="e-icons e-file-remove-btn remove" id="removeIcon" title="Remove"></span>
+                                                        <span class="e-upload-icon e-icons e-file-remove-btn" title="Upload" id="iconUpload"></span>
+                                                    </Template>
+                                                </UploaderTemplates>
+                                                <UploaderFiles>
+                                                    <UploaderUploadedFiles Name="@(_OgrenciDto.ApplicationUserId.ToString())" Size=12000 Type="png"></UploaderUploadedFiles>
+                                                </UploaderFiles>
+                                            </SfUploader>*@
                                     </div>
                                 </div>
                             </div>
@@ -177,46 +176,46 @@ else
                 </EditForm>
 
                 <!--<div class="row">
-        <div class="col-sm-12 col-md-6">
+                <div class="col-sm-12 col-md-6">
 
-        </div>
-        <div class="col-sm-12 col-md-6">
-            <div class="control_wrapper">
-                <div id="dropArea" style="height: auto; overflow: auto">
-                    <p>Resim Ekleyiniz. maks: 1.5 MB</p>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <div class="control_wrapper">
+                        <div id="dropArea" style="height: auto; overflow: auto">
+                            <p>Resim Ekleyiniz. maks: 1.5 MB</p>
 
-                    <SfUploader ID="UploadFiles" AutoUpload="false" DropArea=".control-fluid" MinFileSize=1000 MaxFileSize=1500000 AllowedExtensions=".png,.jpeg,jpg">
-                        <UploaderEvents ValueChange="OnChangeUpload" OnRemove="onRemove"></UploaderEvents>-->
+                            <SfUploader ID="UploadFiles" AutoUpload="false" DropArea=".control-fluid" MinFileSize=1000 MaxFileSize=1500000 AllowedExtensions=".png,.jpeg,jpg">
+                                <UploaderEvents ValueChange="OnChangeUpload" OnRemove="onRemove"></UploaderEvents>-->
                 @*<UploaderAsyncSettings SaveUrl="http://localhost:53414/services/api/uploadbox/Save" RemoveUrl="https://aspnetmvc.syncfusion.com/services/api/uploadbox/Remove"></UploaderAsyncSettings>*@
                 <!--<UploaderFiles>
-            <UploaderUploadedFiles Name="@(_OgrenciDto.ApplicationUserId.ToString())" Size=12000 Type="png"></UploaderUploadedFiles>
-        </UploaderFiles>
-    </SfUploader>-->
+                        <UploaderUploadedFiles Name="@(_OgrenciDto.ApplicationUserId.ToString())" Size=12000 Type="png"></UploaderUploadedFiles>
+                    </UploaderFiles>
+                </SfUploader>-->
                 @*<SfUploader @ref="uploderObj" ID="UploadFiles" MinFileSize=1000 MaxFileSize=1500000 AllowedExtensions=".png,.jpeg,jpg">
-            <UploaderEvents ValueChange="onChange" OnRemove="onRemove"></UploaderEvents>
-            <UploaderTemplates>
-                <Template>
-                    <span class="wrapper">
-                        <img class="upload-image" alt="Image"
-                             src="@(files.Count >0 ? files.Where(item=>item.Name == context.Name)?.FirstOrDefault()?.Path : string.Empty)">
-                    </span>
-                    <div class="name file-name" title="@(context.Name)">@(context.Name)</div>
-                    <div class="file-size">@(context.Size)</div>
-                    <span class="e-icons e-file-remove-btn remove" id="removeIcon" title="Remove"></span>
-                    <span class="e-upload-icon e-icons e-file-remove-btn" title="Upload" id="iconUpload"></span>
-                </Template>
-            </UploaderTemplates>
-            <UploaderFiles>
-                <UploaderUploadedFiles Name="@(_OgrenciDto.ApplicationUserId.ToString())" Size=12000 Type="png"></UploaderUploadedFiles>
-            </UploaderFiles>
-        </SfUploader>*@
+                        <UploaderEvents ValueChange="onChange" OnRemove="onRemove"></UploaderEvents>
+                        <UploaderTemplates>
+                            <Template>
+                                <span class="wrapper">
+                                    <img class="upload-image" alt="Image"
+                                         src="@(files.Count >0 ? files.Where(item=>item.Name == context.Name)?.FirstOrDefault()?.Path : string.Empty)">
+                                </span>
+                                <div class="name file-name" title="@(context.Name)">@(context.Name)</div>
+                                <div class="file-size">@(context.Size)</div>
+                                <span class="e-icons e-file-remove-btn remove" id="removeIcon" title="Remove"></span>
+                                <span class="e-upload-icon e-icons e-file-remove-btn" title="Upload" id="iconUpload"></span>
+                            </Template>
+                        </UploaderTemplates>
+                        <UploaderFiles>
+                            <UploaderUploadedFiles Name="@(_OgrenciDto.ApplicationUserId.ToString())" Size=12000 Type="png"></UploaderUploadedFiles>
+                        </UploaderFiles>
+                    </SfUploader>*@
                 <!--</div>
-            </div>
-        </div>
-    </div>-->
+                        </div>
+                    </div>
+                </div>-->
 
 
-                
+
 
 
             </div>
@@ -258,7 +257,7 @@ else
 
     //Sonradan doldurulacak dropdownlar
     [Parameter]
-    public OgrenciDto _OgrenciDto { get; set; } = new OgrenciDto();
+    public OgrenciDto _OgrenciDto { get; set; }// = new OgrenciDto();
 
 
     SfDropDownList<int?, FakulteDto> DropFakulte;
@@ -323,9 +322,16 @@ else
 
     bool isInitializingFinised;
 
+    protected override Task OnParametersSetAsync()
+    {
+        _OgrenciDto = appState.OgrenciState ?? new OgrenciDto();
+        return base.OnParametersSetAsync();
+    }
+
     //protected override void OnInitialized()
     protected override async Task OnInitializedAsync()
     {
+        _OgrenciDto = appState.OgrenciState ?? new OgrenciDto();
         //EC = new EditContext(_OgrenciDto);
         danismanAd = "";
 
