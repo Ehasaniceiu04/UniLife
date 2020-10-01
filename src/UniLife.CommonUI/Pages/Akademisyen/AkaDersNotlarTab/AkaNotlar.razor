@@ -47,11 +47,11 @@
 
         </div>
         <div class="col-6 text-center">
-            @if (_SinavDto.SinavTipId == 2)
+            @if (_SinavDto.SinavTipId == (int)SinavTipEnum.Final)
             {
                 <Syncfusion.Blazor.Buttons.SfButton CssClass="center-block e-primary" OnClick="FinalHarflendir">Final Harflendir.</Syncfusion.Blazor.Buttons.SfButton>
             }
-            else if (_SinavDto.SinavTipId == 3)
+            else if (_SinavDto.SinavTipId == (int)SinavTipEnum.But)
             {
                 <Syncfusion.Blazor.Buttons.SfButton CssClass="center-block e-primary" OnClick="ButHarflendir">Büt Harflendir</Syncfusion.Blazor.Buttons.SfButton>
             }

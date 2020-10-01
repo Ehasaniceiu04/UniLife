@@ -40,7 +40,7 @@
                             <span style="font-weight: 500;">Kayıt Tarih: </span> @(_OgrenciDto.KayitTarih==null?"":_OgrenciDto.KayitTarih.Value.ToShortDateString())
                         </td>
                         <td>
-                            <span style="font-weight: 500;">Fakülte: </span> @appState.OgrenciTempState.FakulteAdi
+                            <span style="font-weight: 500;">Fakülte: </span> @(appState.OgrenciTempState!=null ? appState.OgrenciTempState.FakulteAdi :"")
                         </td>
                         <td>
                             <span style="font-weight: 500;">TCKN: </span> @_OgrenciDto.TCKN
@@ -50,10 +50,10 @@
                     </tr>
                     <tr>
                         <td>
-                            <span style="font-weight: 500;">Bağlı Müfredat: </span> @appState.OgrenciTempState.MufredatAdi
+                            <span style="font-weight: 500;">Bağlı Müfredat: </span> @(appState.OgrenciTempState != null ? appState.OgrenciTempState.MufredatAdi:"")
                         </td>
                         <td>
-                            <span style="font-weight: 500;">Program: </span> @appState.OgrenciTempState.ProgramAdi
+                            <span style="font-weight: 500;">Program: </span> @(appState.OgrenciTempState!=null?appState.OgrenciTempState.ProgramAdi:"")
                         </td>
                         <td>
                             <span style="font-weight: 500;">Genel Bakiye: </span> @_OgrenciDto.GenelBakiye

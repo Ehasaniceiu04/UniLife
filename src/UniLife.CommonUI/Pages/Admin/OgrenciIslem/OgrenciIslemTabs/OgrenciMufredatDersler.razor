@@ -19,7 +19,7 @@ else
 {
 
 
-    <SfGrid ID="grdDersler" @ref="grdDersler" DataSource="@ogrenciDerslerDtos" AllowGrouping="true" Toolbar="@(new List<string>() {"ExcelExport", "CsvExport", "PdfExport" })">
+    <SfGrid ID="grdDersler" @ref="grdDersler" DataSource="@ogrenciDerslerDtos" AllowGrouping="true" AllowSorting="true" Toolbar="@(new List<string>() {"ExcelExport", "CsvExport", "PdfExport" })">
         <GridEvents TValue="OgrenciDerslerDto" QueryCellInfo="QueryCellInfoHandler" CommandClicked="CommandClickHandler"></GridEvents>
         <GridGroupSettings ShowDropArea="false" Columns="@Initial"></GridGroupSettings>
         @*<GridAggregates>
@@ -41,6 +41,13 @@ else
                     </GridAggregateColumns>
                 </GridAggregate>
             </GridAggregates>*@
+        <GridSortSettings>
+            <GridSortColumns>
+                <GridSortColumn Field="Sinif" Direction="SortDirection.Ascending"></GridSortColumn>
+                <GridSortColumn Field="Donem" Direction="SortDirection.Descending"></GridSortColumn>
+                <GridSortColumn Field="DersKod" Direction="SortDirection.Ascending"></GridSortColumn>
+            </GridSortColumns>
+        </GridSortSettings>
         <GridColumns>
             <GridColumn Visible="false" Field=@nameof(OgrenciDerslerDto.DersId) HeaderText="DersId" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
             <GridColumn Visible="false" Field=@nameof(OgrenciDerslerDto.AkademisyenId) HeaderText="AkademisyenId"></GridColumn>
@@ -58,10 +65,10 @@ else
             <GridColumn AutoFit="true" Field=@nameof(OgrenciDerslerDto.Kredi) HeaderText="Krd"></GridColumn>
             <GridColumn Field=@nameof(OgrenciDerslerDto.Akts) HeaderText="Akts"></GridColumn>
             @*<GridColumn>
-                    <GridCommandColumns>
-                        <GridCommandColumn Type="CommandButtonType.None" Title="Öğrenci Dersleri" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
-                    </GridCommandColumns>
-                </GridColumn>*@
+            <GridCommandColumns>
+                <GridCommandColumn Type="CommandButtonType.None" Title="Öğrenci Dersleri" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
+            </GridCommandColumns>
+        </GridColumn>*@
         </GridColumns>
         <GridGroupSettings Columns=@Template>
             <CaptionTemplate>
