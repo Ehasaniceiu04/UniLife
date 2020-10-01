@@ -153,7 +153,11 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             await ReadSinavTip();
             await ReadSinavTur();
 
+        }
 
+        protected override Task OnAfterRenderAsync(bool firstRender)
+        {
+            return base.OnAfterRenderAsync(firstRender);
         }
 
         async Task ReadFakultes()
@@ -178,6 +182,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
             {
                 donemDtos = apiResponse.Result;
+                DonemId = donemDtos.FirstOrDefault(x => x.Durum == true).Id;
             }
             else
             {

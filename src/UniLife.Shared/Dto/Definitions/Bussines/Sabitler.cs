@@ -43,5 +43,22 @@ namespace UniLife.Shared.Dto.Definitions
             new KeyValueDto() { Ad = "Cap", Id = 2 },
             new KeyValueDto() { Ad = "Yandal", Id = 3 }
         };
+
+        public static List<HarfGecBas> HarfGecBasList { get; } = new List<HarfGecBas>
+        {
+            new HarfGecBas() { Carpan= 4, Harf="AA",Basari="Başarılı",IsGecti=true},
+            new HarfGecBas() { Carpan= 3.5, Harf="BA",Basari="Başarılı",IsGecti=true},
+            new HarfGecBas() { Carpan= 3, Harf="BB",Basari="Başarılı",IsGecti=true},
+            new HarfGecBas() { Carpan= 2.5, Harf="CB",Basari="Başarılı",IsGecti=true},
+            new HarfGecBas() { Carpan= 2, Harf="CC",Basari="Başarılı",IsGecti=true},
+            new HarfGecBas() { Carpan= 1.5, Harf="DC",Basari="Başarılı",IsGecti=true},
+            new HarfGecBas() { Carpan= 1, Harf="DD",Basari="",IsGecti=null},
+            new HarfGecBas() { Carpan= 0, Harf="FF",Basari="Başarılı",IsGecti=false},
+            new HarfGecBas() { Carpan= 0, Harf="DZ",Basari="Başarılı",IsGecti=false},
+            new HarfGecBas() { Carpan= 0, Harf="MU",Basari="Başarılı",IsGecti=true},
+            new HarfGecBas() { Carpan= 0, Harf="BL",Basari="Başarılı",IsGecti=true},
+            new HarfGecBas() { Carpan= 0, Harf="BZ",Basari="Başarılı",IsGecti=false}
+
+        };
     }
 }
