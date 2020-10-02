@@ -26,6 +26,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\UniLife.Shared\UniLife.Shared.csproj" />
+      <ProjectReference Include="..\UniLife.Vendor\UniLife.Vendor.csproj" />
     </ItemGroup>
 
     <ItemGroup>

@@ -450,6 +450,7 @@ namespace UniLife.Server
             services.AddTransient<IDersKancaManager, DersKancaManager>();
             services.AddTransient<IOgrBursBasariManager, OgrBursBasariManager>();
             services.AddTransient<IKampusManager, KampusManager>();
+            services.AddTransient<IYokManager, YokManager>();
 
             //Automapper to map DTO to Models https://www.c-sharpcorner.com/UploadFile/1492b1/crud-operations-using-automapper-in-mvc-application/
             var automapperConfig = new MapperConfiguration(configuration =>
