@@ -13,7 +13,8 @@
         <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
         <GridColumns>
             <GridColumn Visible="false" Field=@nameof(BinaDto.Id) HeaderText="Bina ID" Edit="false" AllowEditing="false" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
-            <GridColumn Field=@nameof(BinaDto.Ad) HeaderText="Bina İsim" Width="170"></GridColumn>
+            <GridColumn Field=@nameof(BinaDto.KampusId) HeaderText="Kampus" EditType="EditType.DropDownEdit" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@kampusDtos"></GridColumn>
+            <GridColumn Field=@nameof(BinaDto.Ad) HeaderText="Bina İsim"></GridColumn>
             <GridColumn Width="150">
                 <GridCommandColumns>
                     <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-edit", CssClass = "e-flat" })"></GridCommandColumn>
@@ -38,11 +39,12 @@
     SfGrid<BinaDto> BinaGrid;
 
     List<BinaDto> binaDtos = new List<BinaDto>();
-
+    List<KampusDto> kampusDtos = new List<KampusDto>();
 
     protected override void OnInitialized()
     {
         ReadBinas();
+        ReadKampus();
     }
 
     void ReadBinas()
@@ -51,12 +53,25 @@
 
         if (apiResponse.StatusCode == Status200OK)
         {
-            matToaster.Add(apiResponse.Message, MatToastType.Success, "Binaler getirildi");
+            matToaster.Add(apiResponse.Message, MatToastType.Success, "Binalar getirildi");
             binaDtos = apiResponse.Result;
         }
         else
         {
             matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Bina bilgisi getirilirken hata oluştu!");
+        }
+    }
+    void ReadKampus()
+    {
+        ApiResponseDto<List<KampusDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<KampusDto>>>("api/kampus").Result;
+
+        if (apiResponse.StatusCode == Status200OK)
+        {
+            kampusDtos = apiResponse.Result;
+        }
+        else
+        {
+            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "kampüs bilgisi getirilirken hata oluştu!");
         }
     }
 

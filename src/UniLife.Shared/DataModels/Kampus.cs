@@ -1,4 +1,5 @@
-﻿using UniLife.Shared.DataInterfaces;
+﻿using System.Collections.Generic;
+using UniLife.Shared.DataInterfaces;
 
 namespace UniLife.Shared.DataModels
 {
@@ -8,5 +9,8 @@ namespace UniLife.Shared.DataModels
         public string Il { get; set; }
         public string Ilce { get; set; }
         public string Adres { get; set; }
+
+        public virtual ICollection<Bina> Binas { get; set; }
+        public virtual ICollection<Program> Programs { get; set; }
     }
 }

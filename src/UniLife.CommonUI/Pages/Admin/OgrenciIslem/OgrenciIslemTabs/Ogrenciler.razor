@@ -296,6 +296,8 @@
 
     async Task AddNew()
     {
+        appState.OgrenciState = new OgrenciDto();
+        appState.OgrenciTempState = new OgrenciDto();
         await OgrenciToAkademik.InvokeAsync(new OgrenciDto());
     }
     public void OnTabSelecting(SelectingEventArgs args)

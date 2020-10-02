@@ -106,7 +106,7 @@ else
                 </GridAggregate>*@
         </GridAggregates>
         @*QueryCellInfo="QueryCellInfoHandler"*@
-        <GridEvents CommandClicked="CommandClickHandler" OnActionComplete="ActionCompletedHandler" TValue="DersDto"></GridEvents>
+        <GridEvents QueryCellInfo="QueryCellInfoHandler" CommandClicked="CommandClickHandler" OnActionComplete="ActionCompletedHandler" TValue="DersDto"></GridEvents>
         <GridEditSettings Dialog="DialogParams" ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
             <Template>
                 @{
@@ -255,7 +255,8 @@ else
                                     <SfCheckBox ID="durum" @onchange="onChange" @bind-Checked="@(dersDtoContext.Durum)"></SfCheckBox>
                                 </div>
                                 <div class="col-sm-6"></div>
-                                <label class="col-sm-4">@(string.IsNullOrWhiteSpace(dersDtoContext.KancalananDersAd) ? "":$"Bağlı old. ders : {dersDtoContext.KancalananDersAd}")</label>
+                                @*<label class="col-sm-4">@((string.IsNullOrWhiteSpace(dersDtoContext.KancalananDersAd) && dersDtoContext.Durum) ? "":$"Bağlı old. ders : {dersDtoContext.KancalananDersAd}")</label>*@
+                                <label class="col-sm-4">@(dersDtoContext.Durum ? "":$"Bağlı old. ders : {dersDtoContext.KancalananDersAd}")</label>
                             </div>
                             @if (isOpsCoklama)
                             {
@@ -286,7 +287,14 @@ else
         <GridColumns>
             <GridColumn Visible="false" Field=@nameof(DersDto.Id) HeaderText="Fakülte ID" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
             <GridColumn AutoFit="true" Field=@nameof(DersDto.Ad) HeaderText="Ders Ad" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
-            <GridColumn AutoFit="true" Field=@nameof(DersDto.Kod) HeaderText="Ders Kod" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
+            <GridColumn AutoFit="true" Field=@nameof(DersDto.Kod) HeaderText="Ders Kod" ValidationRules="@(new ValidationRules{ Required=true})">
+                <Template>
+                    @{
+                        var dersInfo = context as DersDto;
+                        @(string.IsNullOrWhiteSpace(dersInfo.KancalananDersKod) ?dersInfo.Kod: $"{dersInfo.Kod}({dersInfo.KancalananDersKod})")
+                    }
+                </Template>
+            </GridColumn>
 
             @*<GridColumn Field=@nameof(DersDto.KisaAd) HeaderText="KisaAd" Width="170"></GridColumn>*@
 
@@ -398,7 +406,7 @@ else
         text-transform: uppercase;
     }
     .e-grid .e-altrow {
-        background-color: #fffbd7;
+        background-color: #fafafa;
     }
 
 </style>

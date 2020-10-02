@@ -40,5 +40,18 @@ namespace UniLife.Shared.Dto.Definitions
         public string SecmeliKodu { get; set; }
         public int? Sinif { get; set; }
         public string KancalananDersAd { get; set; }
+
+        private string kancalananDersKod;
+        public string KancalananDersKod {
+            get {
+                if (Durum)
+                {
+                    return null;
+                }
+                else
+                  return kancalananDersKod;
+            }
+            set { kancalananDersKod = value; }
+        }
     }
 }

@@ -9,7 +9,8 @@ namespace UniLife.Shared.DataModels
         [Required]
         [MaxLength(300)]
         public string Ad { get; set; }
-
+        public int? KampusId { get; set; }
+        public virtual Kampus Kampus{ get; set; }
 
         public virtual ICollection<Derslik> Dersliks{ get; set; }
     }

@@ -79,6 +79,13 @@
                                         <SfDataManager Url="odata/programturs" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
                                         <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                                     </SfDropDownList>
+                                    <label class="col-sm-3 col-form-label" for="Kampus">Kampus</label>
+                                    <SfDropDownList ID="Kampus" CssClass=" col-sm-9" TValue="int?" TItem="KampusDto"
+                                                    Query="@programTurQuery"
+                                                    @bind-Value="@programInfo.KampusId">
+                                        <SfDataManager Url="odata/kampuss" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
+                                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                                    </SfDropDownList>
                                 </div>
                             </div>
                         </div>
@@ -101,9 +108,9 @@
                                     </SfDropDownList>
                                     <label class="col-sm-3 col-form-label" for="Yerleske">Yerleşke</label>
                                     <SfTextBox ID="Yerleske" CssClass=" col-sm-9" @bind-Value="@(programInfo.Yerleske)"></SfTextBox>
-                                    <SfCheckBox Label="Hazırlık" CssClass="col-sm-3" @bind-Checked="@(programInfo.IsHazirlik)"></SfCheckBox>
-                                    <SfCheckBox Label="Staj" CssClass="col-sm-3" @bind-Checked="@(programInfo.StajDurum)"></SfCheckBox>
-                                    <SfCheckBox Label="Durum" CssClass="col-sm-3" @bind-Checked="@(programInfo.Durum)"></SfCheckBox>
+                                    <SfCheckBox Label="Hazırlık var mı?" CssClass="col-sm-3" @bind-Checked="@(programInfo.IsHazirlik)"></SfCheckBox>
+                                    <SfCheckBox Label="Staj var mı?" CssClass="col-sm-3" @bind-Checked="@(programInfo.StajDurum)"></SfCheckBox>
+                                    <SfCheckBox Label="Aktif mi?" CssClass="col-sm-3" @bind-Checked="@(programInfo.Durum)"></SfCheckBox>
                                     <SfCheckBox Label="Yillik" CssClass="col-sm-3" @bind-Checked="@(programInfo.Yillik)"></SfCheckBox>
                                 </div>
                             </div>

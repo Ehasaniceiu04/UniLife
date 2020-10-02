@@ -8,6 +8,8 @@ namespace UniLife.Shared.Dto.Definitions
         [Required]
         [MaxLength(300)]
         public string Ad { get; set; }
+        public int? KampusId { get; set; }
+        public virtual KampusDto Kampus { get; set; }
         public virtual ICollection<DerslikDto> Dersliks { get; set; }
     }
 }

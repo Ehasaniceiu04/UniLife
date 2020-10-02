@@ -82,12 +82,47 @@ namespace UniLife.Storage.Stores
 
         public async Task<List<DersDto>> GetDersByMufredatId(int mufredatId)
         {
-            var derss = await _db.Derss.Where(t => t.MufredatId == mufredatId).ToListAsync();
+            //var derss = await _db.Derss.Where(t => t.MufredatId == mufredatId).ToListAsync();
+
+            var derss = await (from d in _db.Derss.Where(t => t.MufredatId == mufredatId)
+                              join dk in _db.DersKancas on d.Id equals dk.PasifMufredatDersId into ps
+                              from dk in ps.DefaultIfEmpty()
+                              select new DersDto
+                              {
+                                  Id=d.Id,
+                                  Ad=d.Ad,
+                                  //Kod = dk==null? d.Kod: $"{d.Kod}({dk.AktifMufredatDersKod})",
+                                  Kod = d.Kod,
+                                  DonemTipId = d.DonemTipId,
+                                  Akts =d.Akts,
+                                  OptikKod =d.OptikKod,
+                                  AdEn=d.AdEn,
+                                  UygSaat=d.UygSaat,
+                                  LabSaat=d.LabSaat,
+                                  TeoSaat=d.TeoSaat,
+                                  Kredi=d.Kredi,
+                                  DersNedenId=d.DersNedenId,
+                                  KancalananDersAd=d.KancalananDersAd,
+                                  DersDilId=d.DersDilId,
+                                  Durum=d.Durum,
+                                  Zorunlu=d.Zorunlu,
+                                  SecmeliKodu=d.SecmeliKodu,
+                                  Sinif =d.Sinif,
+                                  AktifDonemdeAcik=d.AktifDonemdeAcik,
+                                  BolumId=d.BolumId,
+                                  FakulteId=d.FakulteId,
+                                  KisaAd=d.KisaAd,
+                                  MufredatId=d.MufredatId,
+                                  ProgramId=d.ProgramId,
+                                  KancalananDersKod=dk.AktifMufredatDersKod
+                              }).ToListAsync();
+
 
             if (derss == null)
                 throw new InvalidDataException($"Unable to find Ders with mufredatId: {mufredatId}");
 
-            return _autoMapper.Map<List<DersDto>>(derss);
+            //return _autoMapper.Map<List<DersDto>>(derss);
+            return derss;
         }
 
         [System.Obsolete("Dönem dersleri ekranı daha kullanılmıyor. buda lazım değil.")]
@@ -191,22 +226,19 @@ namespace UniLife.Storage.Stores
 
         public async Task DeleteExistKancas(int dersId)
         {
-            //Virgüllü mantık
-            ////var kancaliDersler = await _db.Derss.Where(x => x.EskiMufBagliDersId.Contains("," + dersId + ",")).ToListAsync();
+            using (var context = _db.Context.Database.BeginTransaction())
+            {
+                var ders = await _db.Derss.FirstOrDefaultAsync(x => x.Id == dersId);
+                ders.KancalananDersAd = null;
+                _db.Derss.Update(ders);
 
-            ////foreach (var item in kancaliDersler)
-            ////{
-            ////    item.EskiMufBagliDersId = item.EskiMufBagliDersId.Replace($",{dersId},","");
-            ////}
+                var kancasDelete = await _db.DersKancas.Where(x => x.PasifMufredatDersId == dersId).ToListAsync();
+                _db.DersKancas.RemoveRange(kancasDelete);
 
-            ////await _db.SaveChangesAsync(CancellationToken.None);
-            ///
-            (await _db.Derss.FirstOrDefaultAsync(x => x.Id == dersId)).KancalananDersAd = null;
+                await _db.SaveChangesAsync(CancellationToken.None);
 
-
-            var kancasDelete = await _db.DersKancas.Where(x => x.PasifMufredatDersId == dersId).ToListAsync();
-            _db.DersKancas.RemoveRange(kancasDelete);
-            await _db.SaveChangesAsync(CancellationToken.None);
+                context.Commit();
+            }
         }
     }
 }

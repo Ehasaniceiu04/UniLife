@@ -14,7 +14,8 @@ namespace UniLife.Shared.Dto.Definitions
 
         public int? ProgramTurId { get; set; }
         public virtual ProgramTurDto ProgramTur { get; set; }
-
+        public int? KampusId { get; set; }
+        public virtual KampusDto Kampus { get; set; }
         public string Kod { get; set; }
         public string AdEn { get; set; }
         public string KisaAd { get; set; }
