@@ -451,6 +451,7 @@ namespace UniLife.Server
             services.AddTransient<IOgrBursBasariManager, OgrBursBasariManager>();
             services.AddTransient<IKampusManager, KampusManager>();
             services.AddTransient<IYokManager, YokManager>();
+            services.AddTransient<IPersonelTaskManager, PersonelTaskManager>();
 
             //Automapper to map DTO to Models https://www.c-sharpcorner.com/UploadFile/1492b1/crud-operations-using-automapper-in-mvc-application/
             var automapperConfig = new MapperConfiguration(configuration =>
@@ -690,6 +691,7 @@ namespace UniLife.Server
             builder.EntitySet<DersAcilanForSinav>("DersAcilansExt");
             builder.EntitySet<ApiLogItem>("ApiLogItems");
             builder.EntitySet<Kampus>("Kampuss");
+            builder.EntitySet<PersonelTask>("PersonelTasks");
 
             return builder.GetEdmModel();
         }

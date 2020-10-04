@@ -24,12 +24,15 @@ namespace UniLife.Storage.Stores
         }
 
 
-        Task<bool> IYokStore.AskerlikErtelemeTalepGonder()
+        public async Task<bool> AskerlikErtelemeTalepGonder()
         {
+            YokRest yokRest = new YokRest();
             YokSoap yokSoap = new YokSoap();
             try
             {
-                var asd= yokSoap.AskerlikErtelemeTalepGonder();
+                var asd=await yokRest.AskerlikErtelemeTalepGonder();
+
+                var zxc =await yokSoap.EgitimBilgisiOgrenci();
 
             }
             catch (System.Exception ex)
@@ -37,7 +40,7 @@ namespace UniLife.Storage.Stores
                 throw;
             }
             
-            return null;
+            return false;
         }
     }
 }

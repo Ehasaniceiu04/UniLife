@@ -1,0 +1,60 @@
+﻿@using Syncfusion.Blazor.Schedule
+@using UniLife.Shared.Dto.Definitions
+@using Syncfusion.Blazor.Data
+
+@using UniLife.Shared.DataModels
+
+@attribute [Authorize(Roles = "Administrator,Personel")]
+
+@if (personelTaskDtos == null)
+{
+    <LoadingBackground ShowLogoBox="true">
+        <label>Personel planlama yükleniyor.</label>
+    </LoadingBackground>
+}
+else
+{
+    <div class="col-lg-12 control-section">
+        <div class="schedule-wrapper">
+            <SfSchedule @ref="PersonelTaskSche" TValue="PersonelTaskDto" Width="100%" Height="510px" @bind-SelectedDate="@CurrentDate">
+                <ScheduleViews>
+                    <ScheduleView Option="View.MonthAgenda"></ScheduleView>
+                </ScheduleViews>
+                <ScheduleEventSettings DataSource="@personelTaskDtos"></ScheduleEventSettings>
+                <ScheduleEvents TValue="PersonelTaskDto" ActionCompleted="@OnActionCompleted"></ScheduleEvents>
+            </SfSchedule>
+
+
+            @*<SfSchedule TValue="PersonelTask" Width="100%" Height="510px">
+                    <ScheduleViews>
+                        <ScheduleView Option="View.MonthAgenda"></ScheduleView>
+                    </ScheduleViews>
+                    <ScheduleEventSettings DataSource="@personelTaskDtos"></ScheduleEventSettings>
+                    <ScheduleEvents TValue="PersonelTask">
+                        <SfDataManager Url="odata/PersonelTasks" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+                    </ScheduleEvents>
+                </SfSchedule>*@
+
+            @*İnsert yanlış query generate ediyor.*@
+            @*<SfSchedule TValue="PersonelTask" Height="550px">
+                    <ScheduleViews>
+                        <ScheduleView Option="View.MonthAgenda"></ScheduleView>
+                    </ScheduleViews>
+                    <ScheduleEventSettings TValue="PersonelTask">
+                        <SfDataManager Url="@schQuery" CrossDomain="true" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+                    </ScheduleEventSettings>
+                    <ScheduleEvents TValue="PersonelTask" ActionCompleted="@OnActionCompleted"></ScheduleEvents>
+                </SfSchedule>*@
+        </div>
+    </div>
+    @*custom code start*@
+    <style>
+        @@media (min-width: 481px) {
+            /*Küçük gelmesi için*/
+            /*.schedule-wrapper {
+            margin: 0 25%;
+        }*/
+        }
+    </style>
+    @*custom code end*@
+}

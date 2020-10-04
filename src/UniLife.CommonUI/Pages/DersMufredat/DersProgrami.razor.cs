@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Syncfusion.Blazor.Data;
 using Syncfusion.Blazor.DropDowns;
 using Syncfusion.Blazor.Schedule;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Json;
@@ -406,6 +407,9 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         {
             if (args.RequestType == "eventCreated")
             {
+                int selectedId = args.AddedRecords[0].Id;
+                args.AddedRecords[0].Id = 0;
+
                 if (!isSinav)
                 {
                     args.AddedRecords[0].DersAcilanId = SelectedDersAcilanGridRow.Id;
@@ -420,21 +424,32 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                     args.AddedRecords[0].IsSinav = isSinav;
                 }
 
-                ApiResponseDto<DerslikRezervDto> apiResponse = await Http.PostJsonAsync<ApiResponseDto<DerslikRezervDto>>("api/derslikrezerv", args.AddedRecords.FirstOrDefault());
-                if (apiResponse.StatusCode == StatusCodes.Status200OK)
+
+
+                try
                 {
-                    matToaster.Add(apiResponse.Message, MatToastType.Success);
-                    DersProgramSche.Refresh();
-                    //derslikRezervDtos.FirstOrDefault(x => x.Id == 0).Id = apiResponse.Result.Id;
-                    //DersProgramSche.Refresh();
-                    //dersAcilanDtos.FirstOrDefault(x => x.Id == 0).Id = apiResponse.Result.Id;
-                    //DersAcilanGrid.Refresh();
+                    ApiResponseDto<DerslikRezervDto> apiResponse = await Http.PostJsonAsync<ApiResponseDto<DerslikRezervDto>>("api/derslikrezerv", args.AddedRecords.FirstOrDefault());
+
+                    if (apiResponse.IsSuccessStatusCode)
+                    {
+                        matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+                        DersProgramSche.Refresh();
+                        derslikRezervDtos.FirstOrDefault(x => x.Id == selectedId).Id = apiResponse.Result.Id;
+                        DersProgramSche.Refresh();
+                        //dersAcilanDtos.FirstOrDefault(x => x.Id == 0).Id = apiResponse.Result.Id;
+                        //DersAcilanGrid.Refresh();
+                    }
+                    else
+                    {
+                        matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Rezervasyon oluşturma hatası!");
+                        //dersAcilanDtos.Remove(dersAcilanDto);
+                        //DersAcilanGrid.Refresh();
+                    }
+                    
                 }
-                else
+                catch (Exception ex)
                 {
-                    //dersAcilanDtos.Remove(dersAcilanDto);
-                    //DersAcilanGrid.Refresh();
-                    matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Rezervasyon oluşturma hatası!");
+                    matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
                 }
             }
             else if (args.RequestType == "eventChanged")

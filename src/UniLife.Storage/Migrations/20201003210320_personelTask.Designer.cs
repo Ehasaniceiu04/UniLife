@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using UniLife.Storage;
@@ -9,9 +10,10 @@ using UniLife.Storage;
 namespace UniLife.Storage.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201003210320_personelTask")]
+    partial class personelTask
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2776,73 +2778,6 @@ namespace UniLife.Storage.Migrations
                     b.HasIndex("ApplicationUserId");
 
                     b.ToTable("Personels");
-                });
-
-            modelBuilder.Entity("UniLife.Shared.DataModels.PersonelTask", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("CategoryColor")
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp without time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("EndTime")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("EndTimezone")
-                        .HasColumnType("text");
-
-                    b.Property<bool?>("IsAllDay")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Location")
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("ModifiedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("ModifiedOn")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp without time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.Property<string>("RecurrenceException")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("RecurrenceID")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("RecurrenceRule")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("StartTimezone")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Subject")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PersonelTasks");
                 });
 
             modelBuilder.Entity("UniLife.Shared.DataModels.Program", b =>
