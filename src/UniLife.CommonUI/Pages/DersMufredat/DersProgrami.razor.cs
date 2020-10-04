@@ -601,7 +601,10 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             }
 
         }
-        
+
+
 
     }
+
+    
 }

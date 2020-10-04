@@ -154,7 +154,7 @@
                     @*OnPopupOpen="@OnPopupOpen" OnCellDoubleClick="OnCellDoubleClick" OnActionBegin="OnActionBegin"*@
                     <ScheduleEvents TValue="DerslikRezervDto" ActionCompleted="@OnActionCompleted"
                                     OnPopupOpen="@OnPopupOpen" OnActionBegin="@OnActionBegin" OnResizeStart="OnAppointmentResize"></ScheduleEvents>
-                    <ScheduleEventSettings DataSource="@derslikRezervDtos">
+                    <ScheduleEventSettings DataSource="@derslikRezervDtos" AllowAdding="true" AllowDeleting="true" AllowEditing="true">
                         <ScheduleField>
                             <FieldSubject Title="Yerleştirilen Ders" Name="Subject" Default=" "></FieldSubject>
                             <FieldLocation Title="Source" Name="Location"></FieldLocation>
