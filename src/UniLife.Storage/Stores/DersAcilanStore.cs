@@ -608,9 +608,12 @@ namespace UniLife.Storage.Stores
         public async Task<List<OgrenciDerslerDto>> GetMufredatDersByOgrenciId(int ogrenciId)
         {
             var ogrenci = await _db.Ogrencis.FirstOrDefaultAsync(x => x.Id == ogrenciId);
+            var mufredat = await _db.Mufredats.FirstOrDefaultAsync(x => x.Id == ogrenci.MufredatId);
+            var ustMufredatIds = await _db.Mufredats.Where(x => x.Yil >= mufredat.Yil && x.ProgramId == mufredat.ProgramId).Select(x => x.Id).ToListAsync();
 
             //var dersSonucs = await (from der in _db.Derss.Where(x => x.MufredatId == ogrenci.MufredatId && x.Durum == true)
-            var dersSonucs = await (from der in _db.Derss.Where(x => x.MufredatId == ogrenci.MufredatId)
+            var dersSonucs = await (from der in _db.Derss
+                                    join muf in _db.Mufredats on der.MufredatId equals muf.Id
                                     join dkan in _db.DersKancas on der.Id equals dkan.PasifMufredatDersId into pkanca
                                     from dkan in pkanca.DefaultIfEmpty()
                                     join da in _db.DersAcilans on der.Id equals da.DersId into ps
@@ -618,6 +621,7 @@ namespace UniLife.Storage.Stores
                                     join dk in _db.DersKayits.Where(x => x.OgrenciId == ogrenciId) on da.Id equals dk.DersAcilanId into ps2
                                     from dk in ps2.DefaultIfEmpty()
                                     join d in _db.DonemTips on der.DonemTipId equals d.Id
+                                    where ustMufredatIds.Contains(muf.Id)
                                     select new OgrenciDerslerDto
                                     {
                                         OgrenciId = ogrenciId,
@@ -626,13 +630,15 @@ namespace UniLife.Storage.Stores
                                         Sube = da.Sube,
                                         DersKod = dkan == null ? (da.Kod ?? der.Kod) : $"{der.Kod}({dkan.AktifMufredatDersKod})",
                                         DersAd = dkan == null ? (da.Ad ?? der.Ad) : $"{der.Ad}({dkan.AktifMufredatDersAd})",
-                                        //SonucDurum = ((DersSonucDurum)dk.SonucDurum).ToString(),
+                                        SonucDurum = ((DersSonucDurum)dk.SonucDurum).ToString(),
+                                        GecDurum = dk.GecDurum,
                                         Ort = dk.Ort,
                                         HarfNot = dk.HarfNot,
                                         //Carpan = dk.Carpan,
                                         Durumu = ((DersSonuc)dk.Sonuc).ToString(),
                                         Sinif = da.Sinif ?? der.Sinif,
                                         Donem = d.Ad,
+                                        MufredatYil = muf.Yil,
                                         IsZorunlu = der.Zorunlu,
                                         Kredi = da == null ? der.Kredi : da.Kredi,
                                         Akts = da == null ? der.Akts : da.Akts,
@@ -656,7 +662,26 @@ namespace UniLife.Storage.Stores
             //                                ADKayit = da.ADKayit,
             //                            }).ToListAsync();
 
-            return dersSonucs;
+            List<OgrenciDerslerDto> resultList = new List<OgrenciDerslerDto>();
+
+            foreach (var item in dersSonucs.DistinctBy(x=>x.DersKod))
+            {
+                var sameKodDerses = dersSonucs.Where(x => x.DersKod == item.DersKod).ToList();
+                OgrenciDerslerDto gecilmisVarsa = sameKodDerses.FirstOrDefault(x => x.GecDurum == true);
+
+                resultList.Add(sameKodDerses.OrderByDescending(x=>x.Ort).ThenBy(x => x.HarfNot).ThenByDescending(x => x.MufredatYil).FirstOrDefault());
+
+                //if (gecilmisVarsa != null)
+                //{
+                //    resultList.Add(gecilmisVarsa);
+                //}
+                //else
+                //{
+                //    resultList.Add(sameKodDerses.OrderByDescending(x => x.MufredatYil).FirstOrDefault());
+                //}
+            }
+
+            return resultList;
         }
 
         public async Task<List<OgrenciDerslerDto>> GetDonemDersByOgrenciId(int ogrenciId)

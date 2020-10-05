@@ -15,15 +15,15 @@
 
 <div class="card">
     <div class="col-sm-7">
-        <FakBolPrg @bind-FakulteId="filterFakulteId"
-                   @bind-BolumId="filterBolumId"
-                   @bind-ProgramId="filterProgramId"
+        <FakBolPrg @bind-FakulteId="FilterFakulteId"
+                   @bind-BolumId="FilterBolumId"
+                   @bind-ProgramId="FilterProgramId"
                    ProgramPlaceHolder=" "
                    ProgramShow="true"></FakBolPrg>
     </div>
-    <div class="col-sm-5">
+    @*<div class="col-sm-5">
         <SfButton OnClick="Refresh" CssClass="e-success col-sm-12 form-control-sm">Bul / Yenile</SfButton>
-    </div>
+    </div>*@
 </div>
 @*QueryCellInfo="QueryCellInfoHandler" RowSelecting="OnRowSelecting" *@
 <SfGrid @ref="MufredatGrid" ID="MufredatGrid" TValue="MufredatDto" Query="@totalQuery" ShowColumnChooser="true" AllowResizing="true" AllowSorting="true" AllowFiltering="true" AllowPaging="true" Toolbar="Toolbaritems"

@@ -29,9 +29,17 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             get => _programId;
             set
             {
-                Refresh();
-                if (_programId == value) return;
-                _programId = value;
+                if (_programId == value)
+                {
+                    Refresh();
+                    return;
+                }
+                else
+                {
+                    _programId = value;
+                    Refresh();
+                }
+
             }
         }
         int? _bolumId;
@@ -40,9 +48,16 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             get => _bolumId;
             set
             {
-                Refresh();
-                if (_bolumId == value) return;
-                _bolumId = value;
+                if (_bolumId == value)
+                {
+                    Refresh();
+                    return;
+                }
+                else
+                {
+                    _bolumId = value;
+                    Refresh();
+                }
             }
         }
         int? _fakulteId;
@@ -51,9 +66,16 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             get => _fakulteId;
             set
             {
-                Refresh();
-                if (_fakulteId == value) return;
-                _fakulteId = value;
+                if (_fakulteId == value)
+                {
+                    Refresh();
+                    return;
+                }
+                else
+                {
+                    _fakulteId = value;
+                    Refresh();
+                }
             }
         }
 
@@ -63,9 +85,17 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             get => _donemId;
             set
             {
-                Refresh();
-                if (_donemId == value) return;
-                _donemId = value;
+                if (_donemId == value)
+                {
+                    Refresh();
+                    return;
+                }
+                else
+                {
+                    _donemId = value;
+                    Refresh();
+                }
+
             }
         }
 
@@ -73,19 +103,19 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         int? tempBolumId;
         int? tempFakulteId;
 
-        string OdataQuery = "odata/dersacilans";
+        string OdataQuery= "odata/dersacilans";
         //string OdataQuery = "odata/DersAcilansExt";
 
         //public Query totalQuery = new Query().Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)", "Donem($select=Id,Ad)", "Bolum($select=Id,Ad)", "Fakulte($select=Id,Ad)" });
-        public Query totalQuery = new Query().Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)", "Donem($select=Id,Ad)", "bolum($expand=fakulte($select=Ad,Id);$select=Ad,Id)" });
-        
+        public Query totalQuery;//= new Query().Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)", "Donem($select=Id,Ad)", "bolum($expand=fakulte($select=Ad,Id);$select=Ad,Id)" });
+
 
         bool akademisyenDialogOpen;
         SfGrid<AkademisyenDto> AkademisyenGrid;
 
         bool programDialogOpen;
         bool isProgramSecildi;
-
+        bool isGridVisible;
 
         Syncfusion.Blazor.Grids.SfGrid<DersAcilanDto> DersAcilanGrid;
 
@@ -136,6 +166,11 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 //startswith
                 DersAcilanGrid.FilterByColumn("ProgramId", "equal", 1);
             }
+        }
+
+        protected override async Task OnInitializedAsync()
+        {
+            DonemId = (await appState.GetDonemState()).Id;
         }
 
         public async Task OnActionBeginHandler(ActionEventArgs<DersAcilanDto> args)
@@ -316,10 +351,9 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         async Task Refresh()
         {
-            totalQuery = new Query();
-            await Task.Delay(100);
+            //await Task.Delay(100);
+            totalQuery = new Query().Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)", "Donem($select=Id,Ad)", "bolum($expand=fakulte($select=Ad,Id);$select=Ad,Id)" }); ;
             //totalQuery.Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)" });
-            totalQuery.Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)", "Donem($select=Id,Ad)", "bolum($expand=fakulte($select=Ad,Id);$select=Ad,Id)"});
 
 
             if (DonemId.HasValue)
@@ -339,11 +373,12 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             {
                 totalQuery.Where("fakulteId", "equal", FakulteId);
             }
+            isGridVisible = true;
             StateHasChanged();
             await Task.Delay(100);
             DersAcilanGrid.Refresh();
 
-
+            
         }
 
         public async Task CommandClickHandlerAkademisyen(Syncfusion.Blazor.Grids.CommandClickEventArgs<AkademisyenDto> args)
@@ -420,7 +455,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         private void OnChange(Syncfusion.Blazor.Buttons.ChangeEventArgs<bool> args)
         {
-            
+
         }
     }
 }

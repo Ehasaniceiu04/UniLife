@@ -30,9 +30,39 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         //int? bolumId;
         //int? programId;
 
-        int? filterFakulteId;
-        int? filterBolumId;
-        int? filterProgramId;
+        int? _filterFakulteId;
+        public int? FilterFakulteId
+        {
+            get => _filterFakulteId;
+            set
+            {
+                Refresh();
+                if (_filterFakulteId == value) return;
+                _filterFakulteId = value;
+            }
+        }
+        int? _filterBolumId;
+        public int? FilterBolumId
+        {
+            get => _filterBolumId;
+            set
+            {
+                Refresh();
+                if (_filterBolumId == value) return;
+                _filterBolumId = value;
+            }
+        }
+        int? _filterProgramId;
+        public int? FilterProgramId
+        {
+            get => _filterProgramId;
+            set
+            {
+                Refresh();
+                if (_filterProgramId == value) return;
+                _filterProgramId = value;
+            }
+        }
 
         int? ProgramValueHolder;
 
@@ -418,21 +448,22 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         {
             totalQuery = new Query().AddParams("$expand", "program($expand=bolum($expand=fakulte($select=Ad,Id);$select=Ad,Id);$select=Ad,Id)");
 
-            if (filterProgramId.HasValue)
+            if (FilterProgramId.HasValue)
             {
-                totalQuery.Where("programId", "equal", filterProgramId);
+                totalQuery.Where("programId", "equal", FilterProgramId);
             }
-            else if (filterBolumId.HasValue)
+            else if (FilterBolumId.HasValue)
             {
-                totalQuery.Where("program/bolumId", "equal", filterBolumId);
+                totalQuery.Where("program/bolumId", "equal", FilterBolumId);
             }
-            else if (filterFakulteId.HasValue)
+            else if (FilterFakulteId.HasValue)
             {
-                totalQuery.Where("program/bolum/fakulteId", "equal", filterFakulteId);
+                totalQuery.Where("program/bolum/fakulteId", "equal", FilterFakulteId);
             }
 
-
-            //isGridVisible = true;
+            StateHasChanged();
+            await Task.Delay(100);
+            MufredatGrid.Refresh();
 
 
         }

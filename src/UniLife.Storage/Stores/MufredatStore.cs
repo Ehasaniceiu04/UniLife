@@ -293,42 +293,119 @@ namespace UniLife.Storage.Stores
 
                     var beraberSeçilenAktifMufredat = OpeningMufredatList.FirstOrDefault(x => x.Aktif == true && x.ProgramId == mufredat.ProgramId);
 
+                    Mufredat ayniProgramSonPasifMufredat=null;
+                    if (beraberSeçilenAktifMufredat == null)
+                    {
+                        var ayniProgramPasifMufredats = OpeningMufredatList.Where(x => x.ProgramId == mufredat.ProgramId);
+                        if (ayniProgramPasifMufredats.Count()>0)
+                        {
+                            ayniProgramSonPasifMufredat = ayniProgramPasifMufredats.OrderByDescending(x => x.Yil).FirstOrDefault();
+                        }
+                    }
+
                     var acilmisAktifMufredatDersKodlari = _db.DersAcilans.Where(x => x.DonemId == aktifDonem.Id && x.ProgramId == mufredat.ProgramId).Select(x => x.Kod);
 
                     foreach (var ders in mufredat.Derss)
                     {
                         if (reqEntityIdWithOtherEntitiesIds.EntityId == ders.DonemTipId && ders.Durum == true)
                         {
-                            if (!(beraberSeçilenAktifMufredat !=null && beraberSeçilenAktifMufredat.Derss.Any(x => x.Kod == ders.Kod)) && !acilmisAktifMufredatDersKodlari.Any(x => x == ders.Kod))
+                            if (ayniProgramSonPasifMufredat==null)
                             {
-                                DersAcilan dersAcilan = new DersAcilan
+                                if (!beraberSeçilenAktifMufredat.Derss.Any(x => x.Kod == ders.Kod) && !acilmisAktifMufredatDersKodlari.Any(x => x == ders.Kod))
                                 {
-                                    Ad = ders.Ad,
-                                    AdEn = ders.AdEn,
-                                    Akts = ders.Akts,
-                                    BolumId = ders.BolumId,
-                                    DersId = ders.Id,
-                                    KisaAd = ders.KisaAd,
-                                    Kod = ders.Kod,
-                                    Kredi = ders.Kredi,
-                                    LabSaat = ders.LabSaat,
-                                    MufredatId = ders.MufredatId,
-                                    OptikKod = ders.OptikKod,
-                                    ProgramId = ders.ProgramId,
-                                    SecmeliKodu = ders.SecmeliKodu,
-                                    Sinif = ders.Sinif,
-                                    DersNedenId = ders.DersNedenId,
-                                    DersDilId = ders.DersDilId,
-                                    DonemId = aktifDonem.Id, // Todo : burada sadece aktif döneme açmak yerine başka dönemlere açma seçeneği istenebilir.
-                                                             //Durum = ders.Durum, //ders açılandan bu alanın henuz bir anlamı yok.
-                                    FakulteId = ders.FakulteId,
-                                    TeoSaat = ders.TeoSaat,
-                                    UygSaat = ders.UygSaat,
-                                    Zorunlu = ders.Zorunlu,
-                                    //EskiMufBagliDersId = ders.EskiMufBagliDersId
-                                };
-                                dersAcilans.Add(dersAcilan);
+                                    DersAcilan dersAcilan = new DersAcilan
+                                    {
+                                        Ad = ders.Ad,
+                                        AdEn = ders.AdEn,
+                                        Akts = ders.Akts,
+                                        BolumId = ders.BolumId,
+                                        DersId = ders.Id,
+                                        KisaAd = ders.KisaAd,
+                                        Kod = ders.Kod,
+                                        Kredi = ders.Kredi,
+                                        LabSaat = ders.LabSaat,
+                                        MufredatId = ders.MufredatId,
+                                        OptikKod = ders.OptikKod,
+                                        ProgramId = ders.ProgramId,
+                                        SecmeliKodu = ders.SecmeliKodu,
+                                        Sinif = ders.Sinif,
+                                        DersNedenId = ders.DersNedenId,
+                                        DersDilId = ders.DersDilId,
+                                        DonemId = aktifDonem.Id, // Todo : burada sadece aktif döneme açmak yerine başka dönemlere açma seçeneği istenebilir.
+                                                                 //Durum = ders.Durum, //ders açılandan bu alanın henuz bir anlamı yok.
+                                        FakulteId = ders.FakulteId,
+                                        TeoSaat = ders.TeoSaat,
+                                        UygSaat = ders.UygSaat,
+                                        Zorunlu = ders.Zorunlu,
+                                        //EskiMufBagliDersId = ders.EskiMufBagliDersId
+                                    };
+                                    dersAcilans.Add(dersAcilan);
+                                }
                             }
+                            else
+                            {
+                                if (ders.MufredatId == ayniProgramSonPasifMufredat.Id)
+                                {
+                                    DersAcilan dersAcilan = new DersAcilan
+                                    {
+                                        Ad = ders.Ad,
+                                        AdEn = ders.AdEn,
+                                        Akts = ders.Akts,
+                                        BolumId = ders.BolumId,
+                                        DersId = ders.Id,
+                                        KisaAd = ders.KisaAd,
+                                        Kod = ders.Kod,
+                                        Kredi = ders.Kredi,
+                                        LabSaat = ders.LabSaat,
+                                        MufredatId = ders.MufredatId,
+                                        OptikKod = ders.OptikKod,
+                                        ProgramId = ders.ProgramId,
+                                        SecmeliKodu = ders.SecmeliKodu,
+                                        Sinif = ders.Sinif,
+                                        DersNedenId = ders.DersNedenId,
+                                        DersDilId = ders.DersDilId,
+                                        DonemId = aktifDonem.Id, // Todo : burada sadece aktif döneme açmak yerine başka dönemlere açma seçeneği istenebilir.
+                                                                 //Durum = ders.Durum, //ders açılandan bu alanın henuz bir anlamı yok.
+                                        FakulteId = ders.FakulteId,
+                                        TeoSaat = ders.TeoSaat,
+                                        UygSaat = ders.UygSaat,
+                                        Zorunlu = ders.Zorunlu,
+                                        //EskiMufBagliDersId = ders.EskiMufBagliDersId
+                                    };
+                                    dersAcilans.Add(dersAcilan);
+                                }
+                                else if(!ayniProgramSonPasifMufredat.Derss.Any(x => x.Kod == ders.Kod) && !acilmisAktifMufredatDersKodlari.Any(x => x == ders.Kod))
+                                {
+                                    DersAcilan dersAcilan = new DersAcilan
+                                    {
+                                        Ad = ders.Ad,
+                                        AdEn = ders.AdEn,
+                                        Akts = ders.Akts,
+                                        BolumId = ders.BolumId,
+                                        DersId = ders.Id,
+                                        KisaAd = ders.KisaAd,
+                                        Kod = ders.Kod,
+                                        Kredi = ders.Kredi,
+                                        LabSaat = ders.LabSaat,
+                                        MufredatId = ders.MufredatId,
+                                        OptikKod = ders.OptikKod,
+                                        ProgramId = ders.ProgramId,
+                                        SecmeliKodu = ders.SecmeliKodu,
+                                        Sinif = ders.Sinif,
+                                        DersNedenId = ders.DersNedenId,
+                                        DersDilId = ders.DersDilId,
+                                        DonemId = aktifDonem.Id, // Todo : burada sadece aktif döneme açmak yerine başka dönemlere açma seçeneği istenebilir.
+                                                                 //Durum = ders.Durum, //ders açılandan bu alanın henuz bir anlamı yok.
+                                        FakulteId = ders.FakulteId,
+                                        TeoSaat = ders.TeoSaat,
+                                        UygSaat = ders.UygSaat,
+                                        Zorunlu = ders.Zorunlu,
+                                        //EskiMufBagliDersId = ders.EskiMufBagliDersId
+                                    };
+                                    dersAcilans.Add(dersAcilan);
+                                }
+                            }
+                            
                         }
                     }
                 }

@@ -22,11 +22,12 @@ namespace UniLife.Shared.Dto.Definitions
         public string SinavNotlari { get; set; }
         public int? Sinif { get; set; }
         public string Donem { get; set; }
+        public int MufredatYil { get; set; }
         public bool IsZorunlu { get; set; }
         public double Kredi { get; set; }
         public int Akts { get; set; }
         public int? AkademisyenId { get; set; }
         public double Carpan { get; set; }
-
+        public bool GecDurum { get; set; }
     }
 }
