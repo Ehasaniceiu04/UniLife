@@ -29,7 +29,10 @@
     </SfTab>
 </div>
 
-<SfButton IconCss="e-icons e-DoubleArrowLeft" Content="Farklı Personel Seç" EnableRtl="true" OnClick="@(() => { PersSelected = false; })" CssClass="e-flat col-sm-2 e-outline azkenar"></SfButton>
+@if (PersSelected)
+{
+    <SfButton IconCss="e-icons e-DoubleArrowLeft" Content="Farklı Personel Seç" EnableRtl="true" OnClick="@(() => { PersSelected = false; })" CssClass="e-flat col-sm-2 e-outline azkenar"></SfButton>
+}
 
 
 @code{

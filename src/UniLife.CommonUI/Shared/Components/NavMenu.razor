@@ -85,9 +85,9 @@
                 </MatNavSubMenuHeader>
                 <MatNavSubMenuList>
                     @if (user == null ? false : (user.HasClaim("permission", Permissions.DersKayit.Read) &&
-   user.HasClaim("permission", Permissions.DersKayit.Create) &&
-   user.HasClaim("permission", Permissions.DersKayit.Update) &&
-   user.HasClaim("permission", Permissions.DersKayit.Delete)))
+user.HasClaim("permission", Permissions.DersKayit.Create) &&
+user.HasClaim("permission", Permissions.DersKayit.Update) &&
+user.HasClaim("permission", Permissions.DersKayit.Delete)))
                     {
                         <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/dersKayit").AbsoluteUri">
                             <MatIcon>business</MatIcon> <span class="miniHover">Ders Kayıt</span>
@@ -145,267 +145,380 @@
 
 
     @*Personel*@
-    <AuthorizeView Roles="Personel" Context="AuthorizeContext">
+    <AuthorizeView Context="AuthorizeContext">
         <Authorized>
-            <MatNavSubMenu>
-                <MatNavSubMenuHeader>
-                    <MatNavItem AllowSelection="false">
-                        <MatIcon>stars</MatIcon><span class="miniHover">Üniversite Tanımlamaları</span>
-                    </MatNavItem>
-                </MatNavSubMenuHeader>
-                <MatNavSubMenuList>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("tanimlar").AbsoluteUri">
-                        <MatIcon>business</MatIcon> <span class="miniHover">Akademik Tanımlamalar</span>
-                    </MatNavItem>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("yoktanimlar").AbsoluteUri">
-                        <MatIcon>screen_share</MatIcon> <span class="miniHover">YÖKSİS Tanımlamaları</span>
-                    </MatNavItem>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("lokasyon_tanimlar").AbsoluteUri">
-                        <MatIcon>screen_share</MatIcon> <span class="miniHover">Kampüs ve Birim Tanımlamaları</span>
-                    </MatNavItem>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("digerTanimlar").AbsoluteUri">
-                        <MatIcon>screen_share</MatIcon> <span class="miniHover">Diger Tanimlar</span>
-                    </MatNavItem>
-                    
-                </MatNavSubMenuList>
-            </MatNavSubMenu>
+            @if (user.HasClaim("permission", Permissions.Menu.DersVeMufredat))
+            {
+                <MatNavSubMenu>
+                    <MatNavSubMenuHeader>
+                        <MatNavItem AllowSelection="false">
+                            <MatIcon>stars</MatIcon><span class="miniHover">Üniversite Tanımlamaları</span>
+                        </MatNavItem>
+                    </MatNavSubMenuHeader>
+                    <MatNavSubMenuList>
+                        @if (user.HasClaim("permission", Permissions.Menu.AkadeTanim))
+                        {
+                            <MatNavItem Href="@navigationManager.ToAbsoluteUri("tanimlar").AbsoluteUri">
+                                <MatIcon>business</MatIcon> <span class="miniHover">Akademik Tanımlamalar</span>
+                            </MatNavItem>
+                        }
+                        @if (user.HasClaim("permission", Permissions.Menu.YoksisTanim))
+                        {
+                            <MatNavItem Href="@navigationManager.ToAbsoluteUri("yoktanimlar").AbsoluteUri">
+                                <MatIcon>screen_share</MatIcon> <span class="miniHover">YÖKSİS Tanımlamaları</span>
+                            </MatNavItem>
+                        }
+                        @if (user.HasClaim("permission", Permissions.Menu.KampusBirimTanim))
+                        {
+                            <MatNavItem Href="@navigationManager.ToAbsoluteUri("lokasyon_tanimlar").AbsoluteUri">
+                                <MatIcon>screen_share</MatIcon> <span class="miniHover">Kampüs ve Birim Tanımlamaları</span>
+                            </MatNavItem>
+                        }
+                        @if (user.HasClaim("permission", Permissions.Menu.DigerTanim))
+                        {
+                            <MatNavItem Href="@navigationManager.ToAbsoluteUri("digerTanimlar").AbsoluteUri">
+                                <MatIcon>screen_share</MatIcon> <span class="miniHover">Diger Tanimlar</span>
+                            </MatNavItem>
+                        }
+                    </MatNavSubMenuList>
+                </MatNavSubMenu>
+            }
+        </Authorized>
+    </AuthorizeView>
+
+    @*Personel*@
+    <AuthorizeView Context="AuthorizeContext">
+        <Authorized>
+            @if (user.HasClaim("permission", Permissions.Menu.DersVeMufredat))
+            {
+                <MatNavSubMenu>
+                    <MatNavSubMenuHeader>
+                        <MatNavItem AllowSelection="false">
+                            <MatIcon>stars</MatIcon><span class="miniHover">Ders Ve Müfredat</span>
+                        </MatNavItem>
+                    </MatNavSubMenuHeader>
+                    <MatNavSubMenuList>
+                        @if (user.HasClaim("permission", Permissions.Menu.Mufredat))
+                        {
+                            <MatNavItem Href="@navigationManager.ToAbsoluteUri("MufredatTab").AbsoluteUri">
+                                <MatIcon>touch_app</MatIcon> <span class="miniHover">Müfredat</span>
+                            </MatNavItem>
+                        }
+                        @if (user.HasClaim("permission", Permissions.Menu.DonemDers))
+                        {
+                            <MatNavItem Href="@navigationManager.ToAbsoluteUri("donemdersleri").AbsoluteUri">
+                                <MatIcon>screen_share</MatIcon> <span class="miniHover">Dönem Dersleri</span>
+                            </MatNavItem>
+                        }
+                        @if (user.HasClaim("permission", Permissions.Menu.Sube))
+                        {
+                            <MatNavItem Href="@navigationManager.ToAbsoluteUri("sube").AbsoluteUri">
+                                <MatIcon>screen_share</MatIcon> <span class="miniHover">Şubelendirme</span>
+                            </MatNavItem>
+                        }
+                        @if (user.HasClaim("permission", Permissions.Menu.DersProgram))
+                        {
+                            <MatNavItem Href="@navigationManager.ToAbsoluteUri("ders_programi").AbsoluteUri">
+                                <MatIcon>screen_share</MatIcon> <span class="miniHover">Ders Programı Planlama</span>
+                            </MatNavItem>
+                        }
+                    </MatNavSubMenuList>
+                </MatNavSubMenu>
+            }
         </Authorized>
     </AuthorizeView>
 
 
     @*Personel*@
-    <AuthorizeView Roles="Personel" Context="AuthorizeContext">
+    <AuthorizeView Context="AuthorizeContext">
         <Authorized>
-            <MatNavSubMenu>
-                <MatNavSubMenuHeader>
-                    <MatNavItem AllowSelection="false">
-                        <MatIcon>stars</MatIcon><span class="miniHover">Ders Ve Müfredat</span>
-                    </MatNavItem>
-                </MatNavSubMenuHeader>
-                <MatNavSubMenuList>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("MufredatTab").AbsoluteUri">
-                        <MatIcon>touch_app</MatIcon> <span class="miniHover">Müfredat</span>
-                    </MatNavItem>
-                    @*<MatNavItem Href="@navigationManager.ToAbsoluteUri("donemdersleri").AbsoluteUri">
-                            <MatIcon>screen_share</MatIcon> <span class="miniHover">Dönem Dersleri</span>
-                        </MatNavItem>*@
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("donemdersleri").AbsoluteUri">
-                        <MatIcon>screen_share</MatIcon> <span class="miniHover">Dönem Dersleri</span>
-                    </MatNavItem>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("sube").AbsoluteUri">
-                        <MatIcon>screen_share</MatIcon> <span class="miniHover">Şubelendirme</span>
-                    </MatNavItem>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("ders_programi").AbsoluteUri">
-                        <MatIcon>screen_share</MatIcon> <span class="miniHover">Ders Programı Planlama</span>
-                    </MatNavItem>
-                    @*<MatNavItem Href="@navigationManager.ToAbsoluteUri("Sinavlar").AbsoluteUri">
-                        <MatIcon>screen_share</MatIcon> <span class="miniHover">Sınav ve Not</span>
-                    </MatNavItem>*@
-                    
+            @if (user.HasClaim("permission", Permissions.Menu.SinavVeNot))
+            {
+                <MatNavSubMenu>
+                    <MatNavSubMenuHeader>
+                        <MatNavItem AllowSelection="false">
+                            <MatIcon>stars</MatIcon><span class="miniHover">Sınav Ve Not</span>
+                        </MatNavItem>
+                    </MatNavSubMenuHeader>
+                    <MatNavSubMenuList>
+                        @if (user.HasClaim("permission", Permissions.Menu.SinavIslemleri))
+                        {
+                            <MatNavItem Href="@navigationManager.ToAbsoluteUri("SinavIslem").AbsoluteUri">
+                                <MatIcon>screen_share</MatIcon> <span class="miniHover">Sınav İşlemleri</span>
+                            </MatNavItem>
+                        }
+                        @if (user.HasClaim("permission", Permissions.Menu.SinavListesi))
+                        {
+                            <MatNavItem Href="@navigationManager.ToAbsoluteUri("SinavList").AbsoluteUri">
+                                <MatIcon>touch_app</MatIcon> <span class="miniHover">Sinav Listesi</span>
+                            </MatNavItem>
+                        }
 
-                </MatNavSubMenuList>
-            </MatNavSubMenu>
+
+
+                    </MatNavSubMenuList>
+                </MatNavSubMenu>
+            }
+
         </Authorized>
     </AuthorizeView>
 
 
     @*Personel*@
-    <AuthorizeView Roles="Personel" Context="AuthorizeContext">
+    <AuthorizeView Context="AuthorizeContext">
         <Authorized>
-            <MatNavSubMenu>
-                <MatNavSubMenuHeader>
-                    <MatNavItem AllowSelection="false">
-                        <MatIcon>stars</MatIcon><span class="miniHover">Sınav Ve Not</span>
-                    </MatNavItem>
-                </MatNavSubMenuHeader>
-                <MatNavSubMenuList>
-
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("SinavIslem").AbsoluteUri">
-                        <MatIcon>screen_share</MatIcon> <span class="miniHover">Sınav İşlemleri</span>
-                    </MatNavItem>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("SinavList").AbsoluteUri">
-                        <MatIcon>touch_app</MatIcon> <span class="miniHover">Sinav Listesi</span>
-                    </MatNavItem>
-
-                </MatNavSubMenuList>
-            </MatNavSubMenu>
-        </Authorized>
-    </AuthorizeView>
-
-
-    @*Personel*@
-    <AuthorizeView Roles="Personel" Context="AuthorizeContext">
-        <Authorized>
-            <MatNavSubMenu>
-                <MatNavSubMenuHeader>
-                    <MatNavItem AllowSelection="false">
-                        <MatIcon>stars</MatIcon><span class="miniHover">Öğrenci İşlemleri</span>
-                    </MatNavItem>
-                </MatNavSubMenuHeader>
-                <MatNavSubMenuList>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("/admin/ogrenci_islem").AbsoluteUri">
-                        <MatIcon>supervisor_account</MatIcon> <span class="miniHover">Öğrenciler</span>
-                    </MatNavItem>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/ogrenci_toplu_atama").AbsoluteUri">
-                        <MatIcon>screen_share</MatIcon> <span class="miniHover">Toplu Atama</span>
-                    </MatNavItem>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/sinif_atlatma").AbsoluteUri">
-                        <MatIcon>screen_share</MatIcon> <span class="miniHover">Sınıf Atlatma</span>
-                    </MatNavItem>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("admin/Ogrenci_Ders_Aktarim").AbsoluteUri">
-                        <MatIcon>screen_share</MatIcon> <span class="miniHover">Ders Aktarım</span>
-                    </MatNavItem>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("admin/Ogrenci_Toplu_Ders_Kayit").AbsoluteUri">
-                        <MatIcon>screen_share</MatIcon> <span class="miniHover">Toplu Ders Kayıt</span>
-                    </MatNavItem>
-
-                </MatNavSubMenuList>
-            </MatNavSubMenu>
+            @if (user.HasClaim("permission", Permissions.Menu.OgrenciIslem))
+            {
+                <MatNavSubMenu>
+                    <MatNavSubMenuHeader>
+                        <MatNavItem AllowSelection="false">
+                            <MatIcon>stars</MatIcon><span class="miniHover">Öğrenci İşlemleri</span>
+                        </MatNavItem>
+                    </MatNavSubMenuHeader>
+                    <MatNavSubMenuList>
+                        @if (user.HasClaim("permission", Permissions.Menu.Ogrenciler))
+                        {
+                            <MatNavItem Href="@navigationManager.ToAbsoluteUri("/admin/ogrenci_islem").AbsoluteUri">
+                                <MatIcon>supervisor_account</MatIcon> <span class="miniHover">Öğrenciler</span>
+                            </MatNavItem>
+                        }
+                        @if (user.HasClaim("permission", Permissions.Menu.TopluAtama))
+                        {
+                            <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/ogrenci_toplu_atama").AbsoluteUri">
+                                <MatIcon>screen_share</MatIcon> <span class="miniHover">Toplu Atama</span>
+                            </MatNavItem>
+                        }
+                        @if (user.HasClaim("permission", Permissions.Menu.SinifAtlatma))
+                        {
+                            <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/sinif_atlatma").AbsoluteUri">
+                                <MatIcon>screen_share</MatIcon> <span class="miniHover">Sınıf Atlatma</span>
+                            </MatNavItem>
+                        }
+                        @if (user.HasClaim("permission", Permissions.Menu.DersAktarim))
+                        {
+                            <MatNavItem Href="@navigationManager.ToAbsoluteUri("admin/Ogrenci_Ders_Aktarim").AbsoluteUri">
+                                <MatIcon>screen_share</MatIcon> <span class="miniHover">Ders Aktarım</span>
+                            </MatNavItem>
+                        }
+                        @if (user.HasClaim("permission", Permissions.Menu.TopDersKayit))
+                        {
+                            <MatNavItem Href="@navigationManager.ToAbsoluteUri("admin/Ogrenci_Toplu_Ders_Kayit").AbsoluteUri">
+                                <MatIcon>screen_share</MatIcon> <span class="miniHover">Toplu Ders Kayıt</span>
+                            </MatNavItem>
+                        }
+                    </MatNavSubMenuList>
+                </MatNavSubMenu>
+            }
         </Authorized>
     </AuthorizeView>
 
 
 
-    <AuthorizeView Roles="Personel" Context="AuthorizeContext">
+    <AuthorizeView Context="AuthorizeContext">
         <Authorized>
-            
             @*Todo*@
-            <MatNavItem Href="@navigationManager.ToAbsoluteUri("/admin/ogrenci_islem").AbsoluteUri">
-                <MatIcon>supervisor_account</MatIcon> <span class="miniHover">E-Kayıt İşlemleri</span>
-            </MatNavItem>
-
-            <MatNavItem Href="@navigationManager.ToAbsoluteUri("/admin/akademisyen_islem").AbsoluteUri">
-                <MatIcon>supervisor_account</MatIcon> <span class="miniHover">Akademisyen İşlemleri</span>
-            </MatNavItem>
-            <MatNavItem Href="@navigationManager.ToAbsoluteUri("/admin/personel_islem").AbsoluteUri">
-                <MatIcon>supervisor_account</MatIcon> <span class="miniHover">İdari Personel İşlemleri</span>
-            </MatNavItem>
+            @if (user.HasClaim("permission", Permissions.Menu.EKayit))
+            {
+                <MatNavItem Href="@navigationManager.ToAbsoluteUri("/admin/ogrenci_islem").AbsoluteUri">
+                    <MatIcon>supervisor_account</MatIcon> <span class="miniHover">E-Kayıt İşlemleri</span>
+                </MatNavItem>
+            }
+            @if (user.HasClaim("permission", Permissions.Menu.AkadeIslem))
+            {
+                <MatNavItem Href="@navigationManager.ToAbsoluteUri("/admin/akademisyen_islem").AbsoluteUri">
+                    <MatIcon>supervisor_account</MatIcon> <span class="miniHover">Akademisyen İşlemleri</span>
+                </MatNavItem>
+            }
+            @if (user.HasClaim("permission", Permissions.Menu.PersonelIslem))
+            {
+                <MatNavItem Href="@navigationManager.ToAbsoluteUri("/admin/personel_islem").AbsoluteUri">
+                    <MatIcon>supervisor_account</MatIcon> <span class="miniHover">İdari Personel İşlemleri</span>
+                </MatNavItem>
+            }
         </Authorized>
     </AuthorizeView>
 
     @*Personel*@
-    <AuthorizeView Roles="Personel" Context="AuthorizeContext">
+    <AuthorizeView Context="AuthorizeContext">
         <Authorized>
-            <MatNavSubMenu>
-                <MatNavSubMenuHeader>
-                    <MatNavItem AllowSelection="false">
-                        <MatIcon>stars</MatIcon><span class="miniHover">Rapor ve İstatistik</span>
-                    </MatNavItem>
-                </MatNavSubMenuHeader>
-                <MatNavSubMenuList>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci_rapor").AbsoluteUri">
-                        <MatIcon>touch_app</MatIcon> <span class="miniHover">OgrenciRapor</span>
-                    </MatNavItem>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci_ders_rapor").AbsoluteUri">
-                        <MatIcon>touch_app</MatIcon> <span class="miniHover">OgrenciDersRapor</span>
-                    </MatNavItem>
-                </MatNavSubMenuList>
-            </MatNavSubMenu>
+            @if (user.HasClaim("permission", Permissions.Menu.RaporVeIstatistik))
+            {
+                <MatNavSubMenu>
+                    <MatNavSubMenuHeader>
+                        <MatNavItem AllowSelection="false">
+                            <MatIcon>stars</MatIcon><span class="miniHover">Rapor ve İstatistik</span>
+                        </MatNavItem>
+                    </MatNavSubMenuHeader>
+                    <MatNavSubMenuList>
+                        @if (user.HasClaim("permission", Permissions.Menu.RaporOgrenci))
+                        {
+                            <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci_rapor").AbsoluteUri">
+                                <MatIcon>touch_app</MatIcon> <span class="miniHover">OgrenciRapor</span>
+                            </MatNavItem>
+                        }
+                        @if (user.HasClaim("permission", Permissions.Menu.RaporOgrDers))
+                        {
+                            <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci_ders_rapor").AbsoluteUri">
+                                <MatIcon>touch_app</MatIcon> <span class="miniHover">OgrenciDersRapor</span>
+                            </MatNavItem>
+                        }
+                    </MatNavSubMenuList>
+                </MatNavSubMenu>
+            }
         </Authorized>
     </AuthorizeView>
 
     @*Personel*@
-    <AuthorizeView Roles="Personel" Context="AuthorizeContext">
+    <AuthorizeView Context="AuthorizeContext">
         <Authorized>
-            <MatNavSubMenu>
-                <MatNavSubMenuHeader>
-                    <MatNavItem AllowSelection="false">
-                        <MatIcon>stars</MatIcon><span class="miniHover">Diploma ve Mezuniyet</span>
-                    </MatNavItem>
-                </MatNavSubMenuHeader>
-                <MatNavSubMenuList>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri(" ").AbsoluteUri">
-                        <MatIcon>touch_app</MatIcon> <span class="miniHover">Diploma</span>
-                    </MatNavItem>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri(" ").AbsoluteUri">
-                        <MatIcon>touch_app</MatIcon> <span class="miniHover">Mezuniyet</span>
-                    </MatNavItem>
-                </MatNavSubMenuList>
-            </MatNavSubMenu>
+            @if (user.HasClaim("permission", Permissions.Menu.DiplomaVeMezuniyet))
+            {
+                <MatNavSubMenu>
+                    <MatNavSubMenuHeader>
+                        <MatNavItem AllowSelection="false">
+                            <MatIcon>stars</MatIcon><span class="miniHover">Diploma ve Mezuniyet</span>
+                        </MatNavItem>
+                    </MatNavSubMenuHeader>
+                    <MatNavSubMenuList>
+                        @if (user.HasClaim("permission", Permissions.Menu.Diploma))
+                        {
+                            <MatNavItem Href="@navigationManager.ToAbsoluteUri(" ").AbsoluteUri">
+                                <MatIcon>touch_app</MatIcon> <span class="miniHover">Diploma</span>
+                            </MatNavItem>
+                        }
+                        @if (user.HasClaim("permission", Permissions.Menu.Mezuniyet))
+                        {
+                            <MatNavItem Href="@navigationManager.ToAbsoluteUri(" ").AbsoluteUri">
+                                <MatIcon>touch_app</MatIcon> <span class="miniHover">Mezuniyet</span>
+                            </MatNavItem>
+                        }
+                    </MatNavSubMenuList>
+                </MatNavSubMenu>
+            }
+
         </Authorized>
     </AuthorizeView>
 
     @*Personel*@
-    <AuthorizeView Roles="Personel" Context="AuthorizeContext">
+    <AuthorizeView Context="AuthorizeContext">
         <Authorized>
-            <MatNavSubMenu>
-                <MatNavSubMenuHeader>
-                    <MatNavItem AllowSelection="false">
-                        <MatIcon>stars</MatIcon><span class="miniHover">Paydaş Kurum İşlemleri</span>
-                    </MatNavItem>
-                </MatNavSubMenuHeader>
-                <MatNavSubMenuList>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri(" ").AbsoluteUri">
-                        <MatIcon>touch_app</MatIcon> <span class="miniHover">Paydaş işlemler</span>
-                    </MatNavItem>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri(" ").AbsoluteUri">
-                        <MatIcon>touch_app</MatIcon> <span class="miniHover">Kurum İşlemleri</span>
-                    </MatNavItem>
-                </MatNavSubMenuList>
-            </MatNavSubMenu>
+            @if (user.HasClaim("permission", Permissions.Menu.PaydasKurum))
+            {
+                <MatNavSubMenu>
+                    <MatNavSubMenuHeader>
+                        <MatNavItem AllowSelection="false">
+                            <MatIcon>stars</MatIcon><span class="miniHover">Paydaş Kurum İşlemleri</span>
+                        </MatNavItem>
+                    </MatNavSubMenuHeader>
+                    <MatNavSubMenuList>
+                        @if (user.HasClaim("permission", Permissions.Menu.Paydas))
+                        {
+                            <MatNavItem Href="@navigationManager.ToAbsoluteUri(" ").AbsoluteUri">
+                                <MatIcon>touch_app</MatIcon> <span class="miniHover">Paydaş işlemler</span>
+                            </MatNavItem>
+                        }
+                        @if (user.HasClaim("permission", Permissions.Menu.Kurum))
+                        {
+                            <MatNavItem Href="@navigationManager.ToAbsoluteUri(" ").AbsoluteUri">
+                                <MatIcon>touch_app</MatIcon> <span class="miniHover">Kurum İşlemleri</span>
+                            </MatNavItem>
+                        }
+
+
+                    </MatNavSubMenuList>
+                </MatNavSubMenu>
+            }
         </Authorized>
     </AuthorizeView>
 
     @*Personel*@
-    <AuthorizeView Roles="Personel" Context="AuthorizeContext">
+    <AuthorizeView Context="AuthorizeContext">
         <Authorized>
-            <MatNavSubMenu>
-                <MatNavSubMenuHeader>
-                    <MatNavItem AllowSelection="false">
-                        <MatIcon>stars</MatIcon><span class="miniHover">AKTS TYYÇ Kataloğu</span>
-                    </MatNavItem>
-                </MatNavSubMenuHeader>
-                <MatNavSubMenuList>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri(" ").AbsoluteUri">
-                        <MatIcon>touch_app</MatIcon> <span class="miniHover">Akts işlemler</span>
-                    </MatNavItem>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri(" ").AbsoluteUri">
-                        <MatIcon>touch_app</MatIcon> <span class="miniHover">TYYÇ İşlemleri</span>
-                    </MatNavItem>
-                </MatNavSubMenuList>
-            </MatNavSubMenu>
+            @if (user.HasClaim("permission", Permissions.Menu.AktsTyyc))
+            {
+                <MatNavSubMenu>
+                    <MatNavSubMenuHeader>
+                        <MatNavItem AllowSelection="false">
+                            <MatIcon>stars</MatIcon><span class="miniHover">AKTS TYYÇ Kataloğu</span>
+                        </MatNavItem>
+                    </MatNavSubMenuHeader>
+                    <MatNavSubMenuList>
+                        @if (user.HasClaim("permission", Permissions.Menu.Akts))
+                        {
+                            <MatNavItem Href="@navigationManager.ToAbsoluteUri(" ").AbsoluteUri">
+                                <MatIcon>touch_app</MatIcon> <span class="miniHover">Akts işlemler</span>
+                            </MatNavItem>
+                        }
+                        @if (user.HasClaim("permission", Permissions.Menu.Tyyc))
+                        {
+                            <MatNavItem Href="@navigationManager.ToAbsoluteUri(" ").AbsoluteUri">
+                                <MatIcon>touch_app</MatIcon> <span class="miniHover">TYYÇ İşlemleri</span>
+                            </MatNavItem>
+                        }
+                    </MatNavSubMenuList>
+                </MatNavSubMenu>
+            }
+
         </Authorized>
     </AuthorizeView>
 
     @*Personel*@
-    <AuthorizeView Roles="Personel" Context="AuthorizeContext">
+    <AuthorizeView Context="AuthorizeContext">
         <Authorized>
-            <MatNavSubMenu>
-                <MatNavSubMenuHeader>
-                    <MatNavItem AllowSelection="false">
-                        <MatIcon>stars</MatIcon><span class="miniHover">Uzaktan Eğitim İşlemleri</span>
-                    </MatNavItem>
-                </MatNavSubMenuHeader>
-                <MatNavSubMenuList>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri(" ").AbsoluteUri">
-                        <MatIcon>touch_app</MatIcon> <span class="miniHover">Bağlantılar</span>
-                    </MatNavItem>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri(" ").AbsoluteUri">
-                        <MatIcon>touch_app</MatIcon> <span class="miniHover">Ayarlar</span>
-                    </MatNavItem>
-                </MatNavSubMenuList>
-            </MatNavSubMenu>
+            @if (user.HasClaim("permission", Permissions.Menu.UzakEgitim))
+            {
+                <MatNavSubMenu>
+                    <MatNavSubMenuHeader>
+                        <MatNavItem AllowSelection="false">
+                            <MatIcon>stars</MatIcon><span class="miniHover">Uzaktan Eğitim İşlemleri</span>
+                        </MatNavItem>
+                    </MatNavSubMenuHeader>
+                    <MatNavSubMenuList>
+                        @if (user.HasClaim("permission", Permissions.Menu.Baglantilar))
+                        {
+                            <MatNavItem Href="@navigationManager.ToAbsoluteUri(" ").AbsoluteUri">
+                                <MatIcon>touch_app</MatIcon> <span class="miniHover">Bağlantılar</span>
+                            </MatNavItem>
+                        }
+                        @if (user.HasClaim("permission", Permissions.Menu.Ayarlar))
+                        {
+                            <MatNavItem Href="@navigationManager.ToAbsoluteUri(" ").AbsoluteUri">
+                                <MatIcon>touch_app</MatIcon> <span class="miniHover">Ayarlar</span>
+                            </MatNavItem>
+                        }
+                    </MatNavSubMenuList>
+                </MatNavSubMenu>
+            }
         </Authorized>
     </AuthorizeView>
 
     @*Personel*@
-    <AuthorizeView Roles="Personel" Context="AuthorizeContext">
+    <AuthorizeView Context="AuthorizeContext">
         <Authorized>
-            <MatNavSubMenu>
-                <MatNavSubMenuHeader>
-                    <MatNavItem AllowSelection="false">
-                        <MatIcon>stars</MatIcon><span class="miniHover">Değişim Programı İşlemleri</span>
-                    </MatNavItem>
-                </MatNavSubMenuHeader>
-                <MatNavSubMenuList>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri(" ").AbsoluteUri">
-                        <MatIcon>touch_app</MatIcon> <span class="miniHover">Başvurular</span>
-                    </MatNavItem>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri(" ").AbsoluteUri">
-                        <MatIcon>touch_app</MatIcon> <span class="miniHover">Programlar</span>
-                    </MatNavItem>
-                </MatNavSubMenuList>
-            </MatNavSubMenu>
+            @if (user.HasClaim("permission", Permissions.Menu.DegProgram))
+            {
+                <MatNavSubMenu>
+                    <MatNavSubMenuHeader>
+                        <MatNavItem AllowSelection="false">
+                            <MatIcon>stars</MatIcon><span class="miniHover">Değişim Programı İşlemleri</span>
+                        </MatNavItem>
+                    </MatNavSubMenuHeader>
+                    <MatNavSubMenuList>
+                        @if (user.HasClaim("permission", Permissions.Menu.Basvuru))
+                        {
+                            <MatNavItem Href="@navigationManager.ToAbsoluteUri(" ").AbsoluteUri">
+                                <MatIcon>touch_app</MatIcon> <span class="miniHover">Başvurular</span>
+                            </MatNavItem>
+                        }
+                        @if (user.HasClaim("permission", Permissions.Menu.Programlar))
+                        {
+                            <MatNavItem Href="@navigationManager.ToAbsoluteUri(" ").AbsoluteUri">
+                                <MatIcon>touch_app</MatIcon> <span class="miniHover">Programlar</span>
+                            </MatNavItem>
+                        }
+                    </MatNavSubMenuList>
+                </MatNavSubMenu>
+            }            
         </Authorized>
     </AuthorizeView>
 
@@ -533,8 +646,8 @@
                         <MatIcon>change_history</MatIcon> <span class="miniHover">Api Audit Logları</span>
                     </MatNavItem>
                     @*<MatNavItem Href="@navigationManager.ToAbsoluteUri("admin/dBlogViewer").AbsoluteUri">
-                        <MatIcon>notes</MatIcon> <span class="miniHover">DB Logları </span>
-                    </MatNavItem>*@
+                            <MatIcon>notes</MatIcon> <span class="miniHover">DB Logları </span>
+                        </MatNavItem>*@
                 </MatNavSubMenuList>
             </MatNavSubMenu>
         </Authorized>

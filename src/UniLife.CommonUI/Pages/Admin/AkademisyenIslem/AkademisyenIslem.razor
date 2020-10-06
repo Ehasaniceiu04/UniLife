@@ -45,27 +45,29 @@
                 </ContentTemplate>
             </TabItem>
             @*<TabItem Visible="@(AkaSelected)">
-            <ChildContent>
-                <TabHeader Text="Verilen Dersler"></TabHeader>
-            </ChildContent>
-            <ContentTemplate>
-                <AkaDersler SpesificDersAcilan="SpesificDersAcilan" SinavToNotlar="SinavToNotlar" _AkademisyenDto="_AkademisyenDto"></AkaDersler>
-            </ContentTemplate>
-        </TabItem>
-        <TabItem Visible="@(AkaSelected)">
-            <ChildContent>
-                <TabHeader Text="Sınav Öğrenci Notları"></TabHeader>
-            </ChildContent>
-            <ContentTemplate>
-                <AkaNotlar _SinavDto="_SinavDto"></AkaNotlar>
-            </ContentTemplate>
-        </TabItem>*@
+                    <ChildContent>
+                        <TabHeader Text="Verilen Dersler"></TabHeader>
+                    </ChildContent>
+                    <ContentTemplate>
+                        <AkaDersler SpesificDersAcilan="SpesificDersAcilan" SinavToNotlar="SinavToNotlar" _AkademisyenDto="_AkademisyenDto"></AkaDersler>
+                    </ContentTemplate>
+                </TabItem>
+                <TabItem Visible="@(AkaSelected)">
+                    <ChildContent>
+                        <TabHeader Text="Sınav Öğrenci Notları"></TabHeader>
+                    </ChildContent>
+                    <ContentTemplate>
+                        <AkaNotlar _SinavDto="_SinavDto"></AkaNotlar>
+                    </ContentTemplate>
+                </TabItem>*@
 
         </TabItems>
     </SfTab>
 </div>
-
-<SfButton IconCss="e-icons e-DoubleArrowLeft" Content="Farklı Akademisyen Seç" EnableRtl="true" OnClick="@(() => { AkaSelected = false; })" CssClass="e-flat col-sm-2 e-outline azkenar"></SfButton>
+@if (AkaSelected)
+{
+    <SfButton IconCss="e-icons e-DoubleArrowLeft" Content="Farklı Akademisyen Seç" EnableRtl="true" OnClick="@(() => { AkaSelected = false; })" CssClass="e-flat col-sm-2 e-outline azkenar"></SfButton>
+}
 
 
 

@@ -211,6 +211,104 @@ namespace UniLife.Shared.AuthorizationDefinitions
             public const string Delete = nameof(Universite) + "." + nameof(Actions.Delete);
         }
 
+        public static class Menu
+        {
+            [Description("Üniversite Tanımlamaları")]
+            public const string UnivTanimlar = nameof(Menu) + ".ÜniversiteTanimlamaları";
+            [Description("Akademik Tanimlamalar")]
+            public const string AkadeTanim = nameof(Menu) + ".AkademikTanimlamalar";
+            [Description("Yöksis Tanimlamalar")]
+            public const string YoksisTanim = nameof(Menu) + ".YöksisTanimlamalar";
+            [Description("Kampüs ve Birim Tanimlamalar")]
+            public const string KampusBirimTanim = nameof(Menu) + ".KampüsveBirimTanimlamalar";
+            [Description("Diğer Tanimlamalar")]
+            public const string DigerTanim = nameof(Menu) + ".DiğerTanimlamalar";
+
+            [Description("Ders ve Müfredat")]
+            public const string DersVeMufredat = nameof(Menu) + ".DersVeMufredat";
+            [Description("Müfredat")]
+            public const string Mufredat = nameof(Menu) + ".Müfredat";
+            [Description("DönemDersleri")]
+            public const string DonemDers = nameof(Menu) + ".DönemDersleri";
+            [Description("Şubelendirme")]
+            public const string Sube = nameof(Menu) + ".Şubelendirme";
+            [Description("Ders Programı Planlama")]
+            public const string DersProgram = nameof(Menu) + ".DersProgramıPlanlama";
+
+            [Description("Sinav ve Not")]
+            public const string SinavVeNot = nameof(Menu) + ".SinavVeNot";
+            [Description("Sinav İşlemleri")]
+            public const string SinavIslemleri = nameof(Menu) + ".Sinavİşlemleri";
+            [Description("Sinav Listesi")]
+            public const string SinavListesi = nameof(Menu) + ".SinavListesi";
+
+            [Description("Öğrenci İşlemleri")]
+            public const string OgrenciIslem = nameof(Menu) + ".Öğrenciİşlemleri";
+            [Description("Öğrenciler")]
+            public const string Ogrenciler = nameof(Menu) + ".Öğrenciler";
+            [Description("Toplu Atama")]
+            public const string TopluAtama = nameof(Menu) + ".TopluAtama";
+            [Description("Sınıf Atlatma")]
+            public const string SinifAtlatma = nameof(Menu) + ".SınıfAtlatma";
+            [Description("Ders Aktarım")]
+            public const string DersAktarim= nameof(Menu) + ".DersAktarım";
+            [Description("Toplu Ders Kayıt")]
+            public const string TopDersKayit = nameof(Menu) + ".TopluDersKayıt";
+
+            [Description("E-Kayıt")]
+            public const string EKayit = nameof(Menu) + ".E-Kayıt";
+            [Description("Akademisyen İşlemleri")]
+            public const string AkadeIslem = nameof(Menu) + ".Akademisyenİşlemleri";
+            [Description("İdari Personel İşlem")]
+            public const string PersonelIslem = nameof(Menu) + ".İdariPersonelİşlem";
+
+            [Description("Rapor Ve İstatistik")]
+            public const string RaporVeIstatistik = nameof(Menu) + ".RaporVeİstatistik";
+            [Description("Rapor Öğrenci")]
+            public const string RaporOgrenci = nameof(Menu) + ".RaporÖğrenci";
+            [Description("Rapor ÖğrenciDers")]
+            public const string RaporOgrDers = nameof(Menu) + ".RaporÖğrenciDers";
+
+            [Description("Diploma Ve Mezuniyet")]
+            public const string DiplomaVeMezuniyet = nameof(Menu) + ".DiplomaVeMezuniyet";
+            [Description("Diploma")]
+            public const string Diploma = nameof(Menu) + ".Diploma";
+            [Description("Mezuniyet")]
+            public const string Mezuniyet = nameof(Menu) + ".Mezuniyet";
+
+            [Description("Paydaş Kurum İşlem")]
+            public const string PaydasKurum = nameof(Menu) + ".PaydaşKurumİşlem";
+            [Description("Paydaş İşlem")]
+            public const string Paydas= nameof(Menu) + ".Paydaşİşlem";
+            [Description("Kurum İşlem")]
+            public const string Kurum = nameof(Menu) + ".Kurumİşlem";
+
+            [Description("Akts Tyyç Katoloğu")]
+            public const string AktsTyyc= nameof(Menu) + ".AktsTyyçKatoloğu";
+            [Description("Akts")]
+            public const string Akts= nameof(Menu) + ".Akts";
+            [Description("Tyyç")]
+            public const string Tyyc = nameof(Menu) + ".Tyyç";
+
+            [Description("Uzaktan Eğitim")]
+            public const string UzakEgitim = nameof(Menu) + ".UzaktanEğitim";
+            [Description("Bağlantılar")]
+            public const string Baglantilar = nameof(Menu) + ".Bağlantılar";
+            [Description("Ayarlar")]
+            public const string Ayarlar = nameof(Menu) + ".Ayarlar";
+            
+            [Description("Değişim Programı")]
+            public const string DegProgram= nameof(Menu) + ".Değişim Programı";
+            [Description("Başvurular")]
+            public const string Basvuru= nameof(Menu) + ".Başvurular";
+            [Description("Programlar")]
+            public const string Programlar = nameof(Menu) + ".Programlar";
+
+
+        }
+
+
+
         public static class Todo
         {
             [Description("Create a new ToDo")]
