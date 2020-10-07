@@ -1,8 +1,12 @@
 ﻿@using UniLife.Shared.Dto.Definitions
+@using UniLife.Shared.Dto.Account
 @inject HttpClient Http
 @inject IMatToaster matToaster
 @using Syncfusion.Blazor.SplitButtons
+@using Syncfusion.Blazor.Inputs
 @attribute [Authorize(Roles = "Administrator")]
+@inject NavigationManager navigationManager
+
 
 <MatChipSet>
     @foreach (var role in roleSelections.OrderBy(x => x.Name))
@@ -10,11 +14,104 @@
         <MatChip Label="@role.Name" LeadingIcon="@( (role.IsSelected) ? "done" : "")" @onclick="@(()=>UpdateUserRoleLocal(role))" />
     }
 </MatChipSet>
-<SfProgressButton OnClick="UpdateUserRolesAsync" Content="Rolleri Kaydet" CssClass="center-block e-primary">
-    <ProgressButtonSpinSettings Position="SpinPosition.Center"></ProgressButtonSpinSettings>
-</SfProgressButton>
+
+<AuthorizeView Policy="@Policies.IsAdmin" Context="AuthorizeContext">
+    <Authorized>
+        <SfProgressButton OnClick="UpdateUserRolesAsync" Content="Rolleri Kaydet" CssClass="center-block e-primary">
+            <ProgressButtonSpinSettings Position="SpinPosition.Center"></ProgressButtonSpinSettings>
+        </SfProgressButton>
+    </Authorized>
+    <NotAuthorized>
+        <SfProgressButton Disabled="true" Content="Rolleri Kaydet" CssClass="center-block e-primary">
+            <ProgressButtonSpinSettings Position="SpinPosition.Center"></ProgressButtonSpinSettings>
+        </SfProgressButton>
+    </NotAuthorized>
+</AuthorizeView>
+
+<AuthorizeView Policy="@Policies.IsAdmin" Context="AuthorizeContext">
+    <Authorized>
+        <MatIconButton Icon="edit" OnClick="@(OpenEditDialog)"></MatIconButton>
+    </Authorized>
+    <NotAuthorized>
+        <MatIconButton Icon="edit" Disabled="true"></MatIconButton>
+    </NotAuthorized>
+</AuthorizeView>
+
+<MatIconButton Icon="rotate_right" OnClick="@(() => OpenResetPasswordDialog(_PersonelDto.Ad +" "+ _PersonelDto.Soyad, _PersonelDto.ApplicationUserId))"></MatIconButton>
+
+<AuthorizeView Policy="@Policies.IsAdmin" Context="AuthorizeContext">
+    <Authorized>
+        <MatIconButton Icon="delete" OnClick="@(OpenDeleteDialog)"></MatIconButton>
+    </Authorized>
+    <NotAuthorized>
+        <MatIconButton Icon="delete" Disabled="true"></MatIconButton>
+    </NotAuthorized>
+</AuthorizeView>
+
+<MatDialog @bind-IsOpen="@resetPasswordDialogOpen">
+    <MatDialogTitle>Belirtilen kullanıcı için elle şifre değiştiriliyor: @registerParameters.UserName</MatDialogTitle>
+    <MatDialogContent>
+        <EditForm Model="@registerParameters" OnValidSubmit="@ResetUserPasswordAsync">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <fieldset>
+                <div class="form-group">
+                    @*<SfTextBox @bind-Value="@registerParameters.Password" CssClass="e-icons e-input-eye" FloatLabelType="Syncfusion.Blazor.Inputs.FloatLabelType.Auto" Placeholder="Şifre" Type="InputType.Password"></SfTextBox>*@
+                    <MatTextField @bind-Value="@registerParameters.Password" Label="Şifre" Icon="lock_outline" IconTrailing="true" FullWidth="true" Required="true" Type="password"></MatTextField>
+                </div>
+                <div class="form-group">
+                    <MatTextField @bind-Value="@registerParameters.PasswordConfirm" Label="Şifre onay" Icon="lock_outline" IconTrailing="true" FullWidth="true" Required="true" Type="password"></MatTextField>
+                </div>
+            </fieldset>
+        </EditForm>
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="@(e => { resetPasswordDialogOpen = false; })">Cancel</MatButton>
+        <MatButton OnClick="@ResetUserPasswordAsync">Reset User Password</MatButton>
+    </MatDialogActions>
+</MatDialog>
+
+<MatDialog @bind-IsOpen="@deleteUserDialogOpen" Style="z-index:100">
+    <MatDialogTitle><MatIcon Icon="warning"></MatIcon> Confirm Delete</MatDialogTitle>
+    <MatDialogContent>
+        "@user.UserName" numaralı personel silinecek onaylıyor musunuz?
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="@(e => { deleteUserDialogOpen = false; })">Cancel</MatButton>
+        <MatButton OnClick="@(() => DeleteUserAsync(_PersonelDto.Id))">Delete</MatButton>
+    </MatDialogActions>
+</MatDialog>
+
+
+<MatDialog @bind-IsOpen="@editDialogOpen">
+    <MatDialogTitle>Edit User</MatDialogTitle>
+    <MatDialogContent>
+        <EditForm Model="@user" OnValidSubmit="@UpdateUserAsync">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <fieldset>
+                <div class="form-group">
+                    <MatTextField @bind-Value="@user.UserName" Label="User Name" Icon="person" IconTrailing="true" FullWidth="true" Required="true"></MatTextField>
+                </div>
+                <div class="form-group">
+                    <MatTextField @bind-Value="@user.Email" Label="Email" Icon="mail_outline" IconTrailing="true" FullWidth="true" Required="true" Type="mail"></MatTextField>
+                </div>
+            </fieldset>
+        </EditForm>
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="@CancelChanges">Cancel</MatButton>
+        <MatButton OnClick="@UpdateUserAsync">Update User</MatButton>
+    </MatDialogActions>
+</MatDialog>
+
 
 @code{
+
+    bool resetPasswordDialogOpen = false;
+    bool deleteUserDialogOpen = false;
+    bool editDialogOpen = false;
+
     [Parameter]
     public PersonelDto _PersonelDto { get; set; }
 
@@ -110,4 +207,124 @@
             //_PersonelDto.ClearState();
         }
     }
+
+    public UserInfoDto user { get; set; } = new UserInfoDto(); // Holds user being actively modified or created
+    RegisterDto registerParameters { get; set; } = new RegisterDto();
+    public void OpenResetPasswordDialog(/*UserInfoDto userInfo,*/ string userName, Guid userId)
+    {
+        //if (userInfo.UserId == userId)
+        //{
+        // reusing the registerParameters and User objects
+        registerParameters = new RegisterDto();  // reset object
+        registerParameters.UserName = userName;
+        user.UserId = userId;
+        resetPasswordDialogOpen = true;
+        //}
+        //else
+        //{
+        //    matToaster.Add("Bu işlemi yapmaya yetkiniz bulunmamaktadır!", MatToastType.Danger, "Dikkat!!!");
+        //}
+    }
+
+
+    public void OpenDeleteDialog()
+    {
+        deleteUserDialogOpen = true;
+    }
+
+
+    public async Task ResetUserPasswordAsync()
+    {
+        try
+        {
+            if (registerParameters.Password != registerParameters.PasswordConfirm)
+            {
+                matToaster.Add("Passwords Must Match", MatToastType.Warning);
+            }
+            else
+            {
+                var apiResponse = await Http.PostJsonAsync<ApiResponseDto>($"api/Account/AdminUserPasswordReset/{user.UserId}", registerParameters.Password);
+
+                if (apiResponse.IsSuccessStatusCode)
+                    matToaster.Add("Password Reset", MatToastType.Success, apiResponse.Message);
+                else
+                    matToaster.Add(apiResponse.Message, MatToastType.Danger);
+
+                resetPasswordDialogOpen = false;
+            }
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Password Reset Error");
+        }
+    }
+
+    public async Task DeleteUserAsync(int personelId)
+    {
+        try
+        {
+            //var response = await Http.DeleteAsync($"api/Account/{userId}");
+            var responsePersonel = await Http.DeleteAsync($"api/personel/{personelId}");
+            //response.IsSuccessStatusCode &&
+            if (responsePersonel.IsSuccessStatusCode)
+            {
+                matToaster.Add("User Deleted", MatToastType.Success);
+
+                navigationManager.NavigateTo("admin/personel_islem", true);
+                deleteUserDialogOpen = false;
+                StateHasChanged();
+            }
+            else
+            {
+                matToaster.Add("Öğrenci silerken hata oluştu Admine haber verin!.", MatToastType.Danger, "Hata");
+            };
+
+
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "User Delete Error");
+        }
+    }
+
+    public void OpenEditDialog()
+    {
+        editDialogOpen = true;
+    }
+
+
+    public async Task UpdateUserAsync()
+    {
+        try
+        {
+
+            var apiResponse = await Http.PutJsonAsync<ApiResponseDto>("api/Account", user);
+
+            if (apiResponse.IsSuccessStatusCode)
+                matToaster.Add("Kullanıcı Güncellendi", MatToastType.Success);
+            else
+            {
+                matToaster.Add("Hata!", MatToastType.Danger, apiResponse.StatusCode.ToString());
+                user.RestoreState();
+            }
+
+            editDialogOpen = false;
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Kullanıcı güncelleme hatası!");
+        }
+        finally
+        {
+            user.ClearState();
+        }
+    }
+
+    public void CancelChanges()
+    {
+        user.RestoreState();
+        editDialogOpen = false;
+    }
+
+
 }

@@ -14,13 +14,31 @@
         <MatChip Label="@role.Name" LeadingIcon="@( (role.IsSelected) ? "done" : "")" @onclick="@(()=>UpdateUserRoleLocal(role))" />
     }
 </MatChipSet>
-<SfProgressButton OnClick="UpdateUserRolesAsync" Content="Rolleri Kaydet" CssClass="center-block e-primary">
-    <ProgressButtonSpinSettings Position="SpinPosition.Center"></ProgressButtonSpinSettings>
-</SfProgressButton>
+
+<AuthorizeView Policy="@Policies.IsAdmin" Context="AuthorizeContext">
+    <Authorized>
+        <SfProgressButton OnClick="UpdateUserRolesAsync" Content="Rolleri Kaydet" CssClass="center-block e-primary">
+            <ProgressButtonSpinSettings Position="SpinPosition.Center"></ProgressButtonSpinSettings>
+        </SfProgressButton>
+    </Authorized>
+    <NotAuthorized>
+        <SfProgressButton Disabled="true" Content="Rolleri Kaydet" CssClass="center-block e-primary">
+            <ProgressButtonSpinSettings Position="SpinPosition.Center"></ProgressButtonSpinSettings>
+        </SfProgressButton>
+    </NotAuthorized>
+</AuthorizeView>
+
 
 <MatIconButton Icon="rotate_right" OnClick="@(() => OpenResetPasswordDialog(_OgrenciDto.Ad +" "+ _OgrenciDto.Soyad, _OgrenciDto.ApplicationUserId))"></MatIconButton>
 
-<MatIconButton Icon="delete" OnClick="@(OpenDeleteDialog)"></MatIconButton>
+<AuthorizeView Policy="@Policies.IsAdmin" Context="AuthorizeContext">
+    <Authorized>
+        <MatIconButton Icon="delete" OnClick="@(OpenDeleteDialog)"></MatIconButton>
+    </Authorized>
+    <NotAuthorized>
+        <MatIconButton Icon="delete" Disabled="true"></MatIconButton>
+    </NotAuthorized>
+</AuthorizeView>
 
 
 <MatDialog @bind-IsOpen="@resetPasswordDialogOpen">

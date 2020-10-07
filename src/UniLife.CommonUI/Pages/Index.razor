@@ -69,7 +69,7 @@
     {
         if (!firstRender)
         {
-            if (appState.UserNavigationLoadRole == UserRoles.Anonim.ToString())
+            if (appState.UserNavigationLoadRole == null)
             {
                 navigationManager.NavigateTo("/account/login");
             }
