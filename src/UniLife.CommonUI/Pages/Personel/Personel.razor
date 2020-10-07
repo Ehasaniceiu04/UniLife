@@ -11,10 +11,16 @@
 
 <Divider4></Divider4>
 
-<PersonelProgram></PersonelProgram>
+
 @*<Deneme></Deneme>*@
 
 <div class="row" style="padding-top: 0px;">
+    <div class="col-md-6 col-sm-12">
+        <PersonelProgram></PersonelProgram>
+    </div>
+    <div class="col-md-6 col-sm-12">
+        <PersonelGraph></PersonelGraph>
+    </div>
     <div class="col-md-6 col-sm-12">
         <div class="divider"><span></span><span>Yöksis Haberler</span><span></span></div>
         <SfCard ID="birinci">
@@ -100,7 +106,7 @@
                     </CardFooter>
                 </CardHeader>
             </SfCard>
-            <SfCard >
+            <SfCard>
                 <CardContent Content="Yüzden on uygulama ilkelerinde değişiklik yapılmıştır." />
                 <CardHeader Title="Yüzde On Esasları" SubTitle="(25.09.2020)" ImageUrl="_content/UniLife.CommonUI/images/logo.png">
                     <CardFooter>
@@ -136,6 +142,7 @@
     {
         await jsRuntime.InvokeAsync<object>("open", url, "_blank");
     }
+
 }
 
 <style>
@@ -266,4 +273,9 @@
     .e-dashboardlayout.e-control.e-responsive {
         z-index: 1;
     }
+
+   /* .card {
+        margin-right: unset;
+        margin-top: unset;
+    }*/
 </style>

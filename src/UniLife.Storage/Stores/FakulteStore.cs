@@ -71,5 +71,22 @@ namespace UniLife.Storage.Stores
             _db.Fakultes.Remove(fakulte);
             await _db.SaveChangesAsync(CancellationToken.None);
         }
+
+        public async Task<List<ChartData>> GetOgrCountOfFakultesGYear()
+        {
+            var result = await (from f in _db.Fakultes
+                                join o in _db.Ogrencis on f.Id equals o.FakulteId
+                                group o by new { f.Ad, o.KayitTarih.Year }
+                                into grp
+                                select new ChartData
+                                {
+                                    FakulteAd = grp.Key.Ad,
+                                    Yil = grp.Key.Year.ToString(),
+                                    Miktar = grp.Count()
+                                }).ToListAsync();
+
+            return result;
+
+        }
     }
 }

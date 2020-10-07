@@ -1,47 +1,117 @@
 ﻿@page "/deneme"
-@page "/scheduler/month-agenda-view"
-@using Syncfusion.Blazor.Schedule
+@using Syncfusion.Blazor.Layouts
+@using Syncfusion.Blazor.Buttons
 @inherits SampleBaseComponent;
-<div class="col-lg-12 control-section">
-    <div class="schedule-wrapper">
-        <SfSchedule TValue="ScheduleData.FifaEventsData" Width="100%" Height="510px" @bind-SelectedDate="@CurrentDate">
-            <ScheduleViews>
-                <ScheduleView Option="View.MonthAgenda"></ScheduleView>
-            </ScheduleViews>
-            <ScheduleEventSettings DataSource="@DataSource"></ScheduleEventSettings>
-            <ScheduleEvents TValue="ScheduleData.FifaEventsData" ActionCompleted="@OnActionCompleted"></ScheduleEvents>
-        </SfSchedule>
+@using Syncfusion.Blazor.Schedule
+
+<div class="control-section" id="target">
+    <div style="padding:5px;text-align: right;">
+        <SfButton CssClass="e-btn e-info" Content="Add Panel" @onclick="AddClick"></SfButton>
     </div>
+    <SfDashboardLayout @ref="dashboardObject" Columns="5" AllowResizing="true">
+        <ChildContent>
+            <div id="one" class="e-panel" data-row="0" data-col="0" data-sizeX="1" data-sizeY="1">
+                <div class="e-panel-container">
+                    <div class="col-lg-12 control-section">
+                        <div class="schedule-wrapper">
+                            <SfSchedule TValue="ScheduleData.FifaEventsData" Width="100%" Height="510px" @bind-SelectedDate="@CurrentDate">
+                                <ScheduleViews>
+                                    <ScheduleView Option="View.MonthAgenda"></ScheduleView>
+                                </ScheduleViews>
+                                <ScheduleEventSettings DataSource="@DataSource"></ScheduleEventSettings>
+                            </SfSchedule>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="two" class="e-panel" data-row="1" data-col="0" data-sizeX="1" data-sizeY="2">
+                <div class="e-panel-container">
+                    <div class="text-align">1</div>
+                </div>
+            </div>
+            <div id="three" class="e-panel" data-row="0" data-col="1" data-sizeX="2" data-sizeY="2">
+                <div class="e-panel-container">
+                    <div class="text-align">2</div>
+                </div>
+            </div>
+            <div id="four" class="e-panel" data-row="2" data-col="1" data-sizeX="1" data-sizeY="1">
+                <div class="e-panel-container">
+                    <div class="text-align">3</div>
+                </div>
+            </div>
+            <div id="five" class="e-panel" data-row="2" data-col="2" data-sizeX="2" data-sizeY="1">
+                <div class="e-panel-container">
+                    <div class="text-align">4</div>
+                </div>
+            </div>
+            <div id="six" class="e-panel" data-row="0" data-col="3" data-sizeX="1" data-sizeY="1">
+                <div class="e-panel-container">
+                    <div class="text-align">5</div>
+                </div>
+            </div>
+            <div id="seven" class="e-panel" data-row="1" data-col="3" data-sizeX="1" data-sizeY="1">
+                <div class="e-panel-container">
+                    <div class="text-align">6</div>
+                </div>
+            </div>
+            <div id="eight" class="e-panel" data-row="0" data-col="4" data-sizeX="1" data-sizeY="3">
+                <div class="e-panel-container">
+                    <div class="text-align">7</div>
+                </div>
+            </div>
+        </ChildContent>
+    </SfDashboardLayout>
 </div>
-@*custom code start*@
-<style>
-    @@media (min-width: 481px) {
+@code {
 
-        /*Küçük gelmesi için*/
-        /*.schedule-wrapper {
-            margin: 0 25%;
-        }*/
-
-    }
-</style>
-@*custom code end*@
-@code{
     private DateTime CurrentDate = new DateTime(2020, 1, 22);
     public List<ScheduleData.FifaEventsData> DataSource = new ScheduleData().GetFifaEventsData();
 
-    public async Task OnActionCompleted(Syncfusion.Blazor.Schedule.ActionEventArgs<ScheduleData.FifaEventsData> args)
+    SfDashboardLayout dashboardObject;
+    public int Count = 8;
+    public void AddClick(EventArgs args)
     {
-        if (args.RequestType == "eventCreated")
+        string ContentValue = this.Count.ToString();
+        PanelModel panel = new PanelModel
         {
-
-        }
-        else if (args.RequestType == "eventChanged")
-        {
-
-        }
-        else if (args.RequestType == "eventRemoved")
-        {
-
-        }
-    }
+            Id = this.Count.ToString() + "_layout",
+            SizeX = 1,
+            SizeY = 1,
+            Col = 0,
+            Row = 0,
+            Content =@<div class='text-align'> @ContentValue </div>
+                };
+                dashboardObject.AddPanel(panel);
+                this.Count = this.Count + 1;
+            }
 }
+<style>
+    .e-dashboardlayout {
+        padding: 10px;
+    }
+
+        .e-dashboardlayout.e-control .e-panel:hover span {
+            display: block;
+        }
+
+        .e-dashboardlayout .e-panel .e-panel-container .text-align {
+            vertical-align: middle;
+            font-weight: 600;
+            font-size: 20px;
+            text-align: center;
+        }
+
+    .e-template-icon {
+        padding: 10px;
+        float: right;
+        display: none;
+    }
+
+    .text-align {
+        line-height: 160px;
+    }
+
+    .sb-demo-section .container-fluid {
+        background: #E5E5E5;
+    }
+</style>

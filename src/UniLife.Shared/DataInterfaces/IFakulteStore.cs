@@ -17,5 +17,6 @@ namespace UniLife.Shared.DataInterfaces
         Task<Fakulte> Update(FakulteDto fakulteDto);
 
         Task DeleteById(int id);
+        Task<List<ChartData>> GetOgrCountOfFakultesGYear();
     }
 }

@@ -14,9 +14,10 @@
 }
 else
 {
-    <div class="col-lg-12 control-section">
+    <div class="e-card">
         <div class="schedule-wrapper">
-            <SfSchedule @ref="PersonelTaskSche" TValue="PersonelTaskDto" FirstDayOfWeek="1" Width="100%" Height="510px" @bind-SelectedDate="@CurrentDate">
+            <div class='header text-center' style="color: royalblue; font-size: medium;">Aylık İş Planlaması</div>
+            <SfSchedule @ref="PersonelTaskSche" TValue="PersonelTaskDto" FirstDayOfWeek="1" Width="100%" Height="450px" @bind-SelectedDate="@CurrentDate">
                 <ScheduleViews>
                     <ScheduleView Option="View.MonthAgenda"></ScheduleView>
                 </ScheduleViews>
@@ -26,41 +27,34 @@ else
 
 
             @*<SfSchedule TValue="PersonelTask" Width="100%" Height="510px">
-                    <ScheduleViews>
-                        <ScheduleView Option="View.MonthAgenda"></ScheduleView>
-                    </ScheduleViews>
-                    <ScheduleEventSettings DataSource="@personelTaskDtos"></ScheduleEventSettings>
-                    <ScheduleEvents TValue="PersonelTask">
-                        <SfDataManager Url="odata/PersonelTasks" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
-                    </ScheduleEvents>
-                </SfSchedule>*@
+            <ScheduleViews>
+                <ScheduleView Option="View.MonthAgenda"></ScheduleView>
+            </ScheduleViews>
+            <ScheduleEventSettings DataSource="@personelTaskDtos"></ScheduleEventSettings>
+            <ScheduleEvents TValue="PersonelTask">
+                <SfDataManager Url="odata/PersonelTasks" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+            </ScheduleEvents>
+        </SfSchedule>*@
 
             @*İnsert yanlış query generate ediyor.*@
             @*<SfSchedule TValue="PersonelTask" Height="550px">
-                    <ScheduleViews>
-                        <ScheduleView Option="View.MonthAgenda"></ScheduleView>
-                    </ScheduleViews>
-                    <ScheduleEventSettings TValue="PersonelTask">
-                        <SfDataManager Url="@schQuery" CrossDomain="true" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
-                    </ScheduleEventSettings>
-                    <ScheduleEvents TValue="PersonelTask" ActionCompleted="@OnActionCompleted"></ScheduleEvents>
-                </SfSchedule>*@
+            <ScheduleViews>
+                <ScheduleView Option="View.MonthAgenda"></ScheduleView>
+            </ScheduleViews>
+            <ScheduleEventSettings TValue="PersonelTask">
+                <SfDataManager Url="@schQuery" CrossDomain="true" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+            </ScheduleEventSettings>
+            <ScheduleEvents TValue="PersonelTask" ActionCompleted="@OnActionCompleted"></ScheduleEvents>
+        </SfSchedule>*@
         </div>
     </div>
     @*custom code start*@
-    <style>
+    @*<style>
         @@media (min-width: 481px) {
-            /*Küçük gelmesi için*/
-            /*.schedule-wrapper {
-            margin: 0 25%;
-        }*/
+            .schedule-wrapper {
+                margin: 0 50% 0 0;
+            }
         }
-
-        .custom-class.e-schedule .e-vertical-view .e-all-day-appointment-wrapper .e-appointment,
-        .custom-class.e-schedule .e-vertical-view .e-day-wrapper .e-appointment,
-        .custom-class.e-schedule .e-month-view .e-appointment {
-            background: green;
-        }
-    </style>
+    </style>*@
     @*custom code end*@
 }

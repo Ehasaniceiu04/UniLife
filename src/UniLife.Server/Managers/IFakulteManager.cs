@@ -11,5 +11,6 @@ namespace UniLife.Server.Managers
         Task<ApiResponse> Create(FakulteDto fakulteDto);
         Task<ApiResponse> Update(FakulteDto fakulteDto);
         Task<ApiResponse> Delete(int id);
+        Task<ApiResponse> GetOgrCountOfFakultesGYear();
     }
 }

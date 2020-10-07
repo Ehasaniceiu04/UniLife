@@ -42,5 +42,10 @@ namespace UniLife.Server.Managers
             await _fakulteStore.DeleteById(id);
             return new ApiResponse(Status200OK, "Soft Delete FakulteDto");
         }
+
+        public async Task<ApiResponse> GetOgrCountOfFakultesGYear()
+        {
+            return new ApiResponse(Status200OK, "Retrieved FakulteDtos", await _fakulteStore.GetOgrCountOfFakultesGYear());
+        }
     }
 }

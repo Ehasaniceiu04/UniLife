@@ -1,0 +1,100 @@
+﻿@using Syncfusion.Blazor.Charts
+@using UniLife.Shared.Dto.Definitions
+
+@inject IMatToaster matToaster
+@*@using UniLife.Shared.Extensions*@
+@inject System.Net.Http.HttpClient Http
+
+<div class="e-card" style="height:100%; width:100%;">
+    @if (KumulativeDataSource == null)
+    {
+        <LoadingBackground ShowLogoBox="true">
+            <label>Öğrenci İstatistiği Yükleniyor.</label>
+        </LoadingBackground>
+    }
+    else
+    {
+        <div class='header text-center' style="color: royalblue; font-size: medium;">Yıllara göre öğrenci kayıtları</div>
+        <SfChart ID="chart1" @ref="chartObj" Width="100%" Height="100%">
+            <ChartPrimaryXAxis ValueType="Syncfusion.Blazor.Charts.ValueType.Category"></ChartPrimaryXAxis>
+            <ChartSeriesCollection>
+                @foreach (string item in KumulativeDataSource.Select(x => x.FakulteAd).Distinct())
+                {
+                    <ChartSeries DataSource="@KumulativeDataSource.Where(x=>x.FakulteAd == item)" Name="@item" XName="Yil" YName="Miktar" Type="ChartSeriesType.StackingColumn">
+                    </ChartSeries>
+                }
+                @*<ChartSeries DataSource="@DataSourceM" Name="Mühendislik" XName="Yil" YName="Miktar" Type="ChartSeriesType.StackingColumn">
+                    </ChartSeries>
+                    <ChartSeries DataSource="@DataSourceT" Name="Tıp" XName="Yil" YName="Miktar" Type="ChartSeriesType.StackingColumn">
+                    </ChartSeries>
+                    <ChartSeries DataSource="@DataSourceS" Name="Spor" XName="Yil" YName="Miktar" Type="ChartSeriesType.StackingColumn">
+                    </ChartSeries>*@
+            </ChartSeriesCollection>
+        </SfChart>
+    }
+
+</div>
+
+@code{
+    SfChart chartObj;
+
+    //    public List<ChartData> DataSourceM = new List<ChartData>
+    //{
+    //        new ChartData {Miktar = 1, Yil= "2012"},
+    //        new ChartData {Miktar = 2, Yil= "2013"},
+    //        new ChartData {Miktar = 5, Yil= "2014"},
+    //        new ChartData {Miktar = 3, Yil= "2015"},
+    //        };
+    //    public List<ChartData> DataSourceT = new List<ChartData>
+    //{
+    //        new ChartData {Miktar = 2, Yil= "2012"},
+    //        new ChartData {Miktar = 10, Yil= "2013"},
+    //        new ChartData {Miktar = 20, Yil= "2014"},
+    //        new ChartData {Miktar = 4, Yil= "2015"},
+    //        };
+    //    public List<ChartData> DataSourceS = new List<ChartData>
+    //{
+    //        new ChartData {Miktar = 5, Yil= "2012"},
+    //        new ChartData {Miktar = 2, Yil= "2013"},
+    //        new ChartData {Miktar = 10, Yil= "2014"},
+    //        new ChartData {Miktar = 23, Yil= "2015"},
+    //        };
+
+    public List<ChartData> KumulativeDataSource;  //= new List<ChartData>();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await Task.Delay(3000); // simulate the async operations
+        //this.chartObj.Refresh();
+    }
+
+
+    //protected override async Task OnInitialized()
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            if (KumulativeDataSource==null)
+            {
+                ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/fakulte/GetOgrCountOfFakultesGYear");
+
+                if (apiResponse.IsSuccessStatusCode)
+                {
+                    //KumulativeDataSource = apiResponse.Result;
+                    KumulativeDataSource = Newtonsoft.Json.JsonConvert.DeserializeObject<ChartData[]>(apiResponse.Result.ToString()).ToList<ChartData>();
+                }
+                else
+                    matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
+            }
+
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
+        }
+
+    }
+
+
+
+}

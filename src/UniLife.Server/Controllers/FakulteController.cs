@@ -56,5 +56,13 @@ namespace UniLife.Server.Controllers
         [Authorize(Permissions.Fakulte.Delete)]
         public async Task<ApiResponse> Delete(int id)
             => await _fakulteManager.Delete(id);
+
+        // GET: api/Fakulte
+        [HttpGet]
+        [Authorize(Permissions.Fakulte.Create)]
+        [Route("GetOgrCountOfFakultesGYear")]
+        public async Task<ApiResponse> GetOgrCountOfFakultesGYear()
+            => await _fakulteManager.GetOgrCountOfFakultesGYear();
+        
     }
 }
