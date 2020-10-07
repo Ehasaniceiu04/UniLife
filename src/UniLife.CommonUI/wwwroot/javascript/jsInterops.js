@@ -54,6 +54,9 @@
         //Üstteki olmazsa buna gelecen denemedik daha!
         var cookies = document.cookie.split("; ");
         for (var c = 0; c < cookies.length; c++) {
+            if (cookies[c].includes("Culture")) {
+                continue;
+            }
             var d = window.location.hostname.split(".");
             while (d.length > 0) {
                 var cookieBase = encodeURIComponent(cookies[c].split(";")[0].split("=")[0]) + '=; expires=Thu, 01-Jan-1970 00:00:01 GMT; domain=' + d.join('.') + ' ;path=';
