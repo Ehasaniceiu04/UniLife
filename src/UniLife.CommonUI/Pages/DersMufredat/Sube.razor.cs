@@ -1,5 +1,6 @@
 ﻿using MatBlazor;
 using Microsoft.AspNetCore.Components;
+using Syncfusion.Blazor.Data;
 using Syncfusion.Blazor.DropDowns;
 using Syncfusion.Blazor.Navigations;
 using System;
@@ -102,6 +103,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         private List<Object> Toolbaritems = new List<Object>() { new ItemModel() { Text = "Şubeleri Temizle", TooltipText = "Click", Id = "SubeTemizle" } };
 
+        public Query donemQuery = new Query().Select(new List<string> { "Id", "Ad" }).RequiresCount();
         //protected override void OnInitialized()
         //{
 
@@ -111,6 +113,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         {
             await ReadFakultes();
             await ReadDonems();
+            _dersAcilanDto.DonemId = (await appState.GetDonemState()).Id;
         }
 
         async Task ReadFakultes()
@@ -239,8 +242,17 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             //    matToaster.Add("", MatToastType.Danger, "Bölüm getirilirken hata oluştu!");
             //}
 
-            SubelendirAllow = false;
-            await GetDersAcilansByFilters();
+            if (_dersAcilanDto.ProgramId==null)
+            {
+                dialogUyariText = "Program seçimi yapmalısınız.";
+                isUyariOpen = true;
+            }
+            else
+            {
+                SubelendirAllow = false;
+                await GetDersAcilansByFilters();
+            }
+            
         }
 
 
@@ -263,6 +275,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             {
                 DersAcDtos = apiResponse.Result;
                 DersAcGrid.Refresh();
+                StateHasChanged();
             }
             else
             {

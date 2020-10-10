@@ -6,6 +6,7 @@
 @using Syncfusion.Blazor.Inputs
 @using Syncfusion.Blazor.Calendars
 @using Syncfusion.Blazor.Data
+@inject AppState appState
 
 @attribute [Authorize(Roles = "Administrator,Personel")]
 
@@ -14,7 +15,7 @@
         <div class="server-action-menu">
             <div class="row">
                 <div class="col-sm-12 text-center">
-                    <p>Açılan Dersler</p>
+                    <p>Dönem Dersleri</p>
                 </div>
             </div>
             <div class="row pb-2">
@@ -22,7 +23,7 @@
                     <div class="form-row">
                         @*açılan ders filtre*@
                         <label class="col-sm-2" for="DropDonem">Dönem:</label>
-                        <SfDropDownList ID="DropDonem" @ref="DropDonem" ShowClearButton="true" TItem="DonemDto" CssClass="col-sm-10 pb-1"
+                        <SfDropDownList ID="DropDonem" @ref="DropDonem" TItem="DonemDto" CssClass="col-sm-10 pb-1"
                                         TValue="int?" PopupHeight="230px" Placeholder="Dönem Seçiniz"
                                         @bind-Value="@_dersAcilanDto.DonemId" DataSource="@donemDtos">
                             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
@@ -47,9 +48,6 @@
                                         @bind-Value="@_dersAcilanDto.ProgramId" DataSource="@programDtos">
                             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                         </SfDropDownList>
-                        <label class="col-sm-2" for="Kod">Ders Kod:</label>
-                        <SfTextBox ID="Kod" CssClass="form-control col-sm-3 pb-1" @bind-Value="@(_dersAcilanDto.Kod)"></SfTextBox>
-
                         <SfButton OnClick="Refresh" CssClass="e-success col-sm-3">Yenile</SfButton>
                     </div>
                 </div>
@@ -273,8 +271,8 @@
         max-width: none;
         width: 70%;
     }
+
     .e-grid .e-altrow {
         background-color: #fafafa;
     }
-
 </style>
