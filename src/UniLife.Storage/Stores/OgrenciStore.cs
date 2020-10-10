@@ -274,5 +274,32 @@ namespace UniLife.Storage.Stores
                           }).FirstOrDefaultAsync();
 
         }
+
+        public async Task<OgrenciBelgesiDto> GetOgrenciBelgesi(int id)
+        {
+            var result = from o in _db.Ogrencis
+                         join f in _db.Fakultes on o.FakulteId equals f.Id
+                         join b in _db.Bolums on o.BolumId equals b.Id
+                         join kn in _db.KayitNedens on o.KayitNedenId equals kn.Id
+                         join n in _db.Nufuss on o.ApplicationUserId equals n.ApplicationUserId into ps
+                         from n in ps.DefaultIfEmpty()
+                         where o.Id == id
+                         select new OgrenciBelgesiDto
+                         {
+                             AppUserId = o.ApplicationUserId,
+                             AdSoyad = o.Ad+" "+o.Soyad,
+                             BabaAd=n.BabaAd,
+                             BolumAd = b.Ad,
+                             DogumTarih = n.DogumTarih,
+                             DogumYer = n.DogumYer,
+                             FakulteAd=f.Ad,
+                             KayitNeden = kn.Ad,
+                             KayitTarih = o.KayitTarih,
+                             OgrNo = o.OgrNo,
+                             Sinif = o.Sinif==null?"Sınıf bilgisi yok": o.Sinif.ToString(),
+                             TCKN = o.TCKN
+                         };
+            return await result.FirstOrDefaultAsync();
+        }
     }
 }

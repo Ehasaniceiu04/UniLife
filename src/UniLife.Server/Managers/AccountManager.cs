@@ -1288,7 +1288,8 @@ namespace UniLife.Server.Managers
                         LastName = user.LastName,
                         UserId = user.Id,
                         //Optionally: filter the claims you want to expose to the client
-                        ExposedClaims = userClaimsPrincipal.Claims.Select(c => new KeyValuePair<string, string>(c.Type, c.Value)).ToList(),
+                        //Permissionlardan sadece menü olanları aldık.
+                        ExposedClaims = userClaimsPrincipal.Claims.Where(x=>(x.Type.Contains("permission") ? x.Value.Contains("Menu."):true)).Select(c => new KeyValuePair<string, string>(c.Type, c.Value)).ToList(),
                         Roles = ((ClaimsIdentity)userClaimsPrincipal.Identity).Claims
                                 .Where(c => c.Type == "role")
                                 .Select(c => c.Value).ToList()

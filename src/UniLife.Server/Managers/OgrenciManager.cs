@@ -70,5 +70,10 @@ namespace UniLife.Server.Managers
         {
             return new ApiResponse(Status200OK, "Öğrenci bilgileri getirildi", await _ogrenciStore.GetOgrInfos(kullaniciId));
         }
+
+        public async Task<ApiResponse> GetOgrenciBelgesi(int id)
+        {
+            return new ApiResponse(Status200OK, "Retrieved OgrenciDto", await _ogrenciStore.GetOgrenciBelgesi(id));
+        }
     }
 }

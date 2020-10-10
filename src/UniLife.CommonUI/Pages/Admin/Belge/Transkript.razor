@@ -1,0 +1,132 @@
+﻿@page "/Transkript/{ogrId:int}"
+
+@inject HttpClient Http;
+@using UniLife.Shared.Dto.Definitions
+@inject IMatToaster matToaster
+@inject AppState appState
+@using UniLife.CommonUI.Pages.Akademisyen.AkaDersNotlarTab
+@inject NavigationManager navigationManager
+@attribute [Authorize(Roles = "Administrator,Personel,Ogrenci")]
+
+@layout BelgeLayout
+@attribute [Authorize]
+
+
+<style>
+    @@-ms-viewport {
+        width: device-width;
+    }
+
+    /*A4Cozum 1*/
+    body {
+        height: 842px;
+        width: 595px;
+        /* to centre page on screen*/
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /*A4 Cozum2*/
+    /*@@media print {
+        body{
+            width: 21cm;
+            height: 29.7cm;
+            margin: 30mm 45mm 30mm 45mm;*/
+    /* change the margins as you want them to be. */
+    /*}*/
+    }
+</style>
+
+@if (ogrenciDerslerDtos == null)
+{
+
+    <LoadingBackground ShowLogoBox="true">
+        <label>Transkript Yükleniyor...</label>
+    </LoadingBackground>
+}
+else
+{
+    <SfGrid @ref="grdDersler" DataSource="@ogrenciDerslerDtos" AllowGrouping="true">
+        <GridEvents TValue="OgrenciDerslerDto" QueryCellInfo="QueryCellInfoHandler"></GridEvents>
+        <GridGroupSettings ShowDropArea="false" Columns="@Initial"></GridGroupSettings>
+
+        <GridSortSettings>
+            <GridSortColumns>
+                <GridSortColumn Field="Sinif" Direction="SortDirection.Ascending"></GridSortColumn>
+                <GridSortColumn Field="Donem" Direction="SortDirection.Descending"></GridSortColumn>
+                <GridSortColumn Field="DersKod" Direction="SortDirection.Ascending"></GridSortColumn>
+            </GridSortColumns>
+        </GridSortSettings>
+        <GridColumns>
+            <GridColumn Visible="false" Field=@nameof(OgrenciDerslerDto.DersId) HeaderText="DersId" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="140"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(OgrenciDerslerDto.AkademisyenId) HeaderText="AkademisyenId"></GridColumn>
+            <GridColumn AutoFit="true" Field=@nameof(OgrenciDerslerDto.DersKod) HeaderText="DersKod"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciDerslerDto.DersAd) HeaderText="DersAd"></GridColumn>
+
+            <GridColumn AutoFit="true" Field=@nameof(OgrenciDerslerDto.Ort) HeaderText="Ort"></GridColumn>
+            <GridColumn AutoFit="true" Field=@nameof(OgrenciDerslerDto.HarfNot) HeaderText="Harf"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciDerslerDto.Durumu) HeaderText="Durumu"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciDerslerDto.Sinif) HeaderText="Sinif"></GridColumn>
+            <GridColumn Field=@nameof(OgrenciDerslerDto.Donem) HeaderText="Donem"></GridColumn>
+            <GridColumn AutoFit="true" Field=@nameof(OgrenciDerslerDto.IsZorunlu) DisplayAsCheckBox="true" HeaderText="Z"></GridColumn>
+            <GridColumn AutoFit="true" Field=@nameof(OgrenciDerslerDto.Kredi) HeaderText="Krd"></GridColumn>
+            <GridColumn AutoFit="true"Field=@nameof(OgrenciDerslerDto.Akts) HeaderText="Akts"></GridColumn>
+        </GridColumns>
+        <GridGroupSettings Columns=@Template>
+            <CaptionTemplate>
+                @{
+                    var sinifContext = (context as CaptionTemplateContext);
+                    if (sinifContext.Field == "Sinif")
+                    {
+                        <div><b>@sinifContext.Field : @sinifContext.Key</b></div>
+                    }
+                    else
+                    {
+                        <div><b>@sinifContext.Key</b></div>
+                    }
+                }
+            </CaptionTemplate>
+        </GridGroupSettings>
+    </SfGrid>
+}
+
+
+@code{
+
+    
+    [Parameter]
+    public int ogrId { get; set; }
+
+    string[] Initial = (new string[] { "Sinif", "Donem" });
+    string[] Template = (new string[] { "Sinif", "Donem" });
+
+    SfGrid<OgrenciDerslerDto> grdDersler;
+    List<OgrenciDerslerDto> ogrenciDerslerDtos;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            ApiResponseDto<List<OgrenciDerslerDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDerslerDto>>>("api/dersAcilan/GetMufredatDersByOgrenciId/" + ogrId);
+
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                ogrenciDerslerDtos = apiResponse.Result;
+            }
+            else
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
+            }
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
+        }
+    }
+
+    public void QueryCellInfoHandler(QueryCellInfoEventArgs<OgrenciDerslerDto> args)
+    {
+        args.Cell.AddStyle(new string[] { "background-color:#eac1c1" });
+
+    }
+}

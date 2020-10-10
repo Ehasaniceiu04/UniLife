@@ -2,7 +2,7 @@
 @using UniLife.Shared.Dto.Definitions
 @inject IMatToaster matToaster
 
-@attribute [Authorize(Roles = "Administrator,Personel")]
+@attribute [Authorize(Permissions.Menu.KampusBirimTanim)]
 
 
 @using System.Net

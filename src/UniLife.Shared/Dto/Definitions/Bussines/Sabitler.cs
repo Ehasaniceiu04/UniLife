@@ -60,5 +60,6 @@ namespace UniLife.Shared.Dto.Definitions
             new HarfGecBas() { Carpan= 0, Harf="BZ",Basari="Başarılı",IsGecti=false}
 
         };
+
     }
 }

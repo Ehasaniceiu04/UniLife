@@ -113,8 +113,8 @@
         if (isNewTab)
         {
             //await JsRuntime.InvokeAsync<object>("open", new object[] { $"{UriHelper.BaseUri}/{selectedBelgeTip}", "_blank" });
-            await JsRuntime.InvokeVoidAsync("jsInterops.belgePrint", $"{UriHelper.BaseUri}{selectedBelgeTip}");
-
+            await JsRuntime.InvokeVoidAsync("jsInterops.belgePrint", $"{UriHelper.BaseUri}{selectedBelgeTip}/{_OgrenciDto.Id}");
+            await Task.Delay(1000);
             //window.print()
         }
         else

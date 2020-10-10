@@ -17,6 +17,9 @@ namespace UniLife.Shared.DataModels
         public int IlId{ get; set; }
 
         public virtual Il Il { get; set; }
+        public DateTime DogumTarih { get; set; }
+        public string DogumYer { get; set; }
+        public string BabaAd { get; set; }
 
         public string Ilce { get; set; }
         public string Telefon { get; set; }

@@ -216,5 +216,20 @@ namespace UniLife.Server.Controllers
             }
         }
 
+        
+        [HttpGet]
+        [Route("GetOgrenciBelgesi/{id}")]
+        [Authorize(Permissions.Ogrenci.Update)]
+        public async Task<ApiResponse> GetOgrenciBelgesi(int id)
+        {
+            if (ModelState.IsValid)
+            {
+                 return await _ogrenciManager.GetOgrenciBelgesi(id);
+            }
+            else
+            {
+                return new ApiResponse(Status400BadRequest, "Öğrenci bilgilerinde eksik var.");
+            }
+        }
     }
 }

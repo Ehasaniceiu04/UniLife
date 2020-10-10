@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using UniLife.Storage;
@@ -9,9 +10,10 @@ using UniLife.Storage;
 namespace UniLife.Storage.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201008231505_baba")]
+    partial class baba
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1962,9 +1964,6 @@ namespace UniLife.Storage.Migrations
                     b.Property<Guid>("ApplicationUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("BabaAd")
-                        .HasColumnType("text");
-
                     b.Property<string>("Banka")
                         .HasColumnType("text");
 
@@ -1975,12 +1974,6 @@ namespace UniLife.Storage.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp without time zone")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.Property<DateTime>("DogumTarih")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("DogumYer")
-                        .HasColumnType("text");
 
                     b.Property<string>("HesapNo")
                         .HasColumnType("text");
@@ -2374,6 +2367,9 @@ namespace UniLife.Storage.Migrations
 
                     b.Property<DateTime?>("AyrilTarih")
                         .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("BabaAd")
+                        .HasColumnType("text");
 
                     b.Property<string>("BilgNotu")
                         .HasColumnType("text");
