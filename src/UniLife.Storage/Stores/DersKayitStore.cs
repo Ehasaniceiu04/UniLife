@@ -294,13 +294,12 @@ namespace UniLife.Storage.Stores
                         }
 
                     }
-
+                    item.Ort = tekOgrenciOrtalama;
                     if (tekOgrenciOrtalama < 40) // ortalaması 40 altı olanlar bağıl hesaba dahil ancak hesaptan sonra FF lemek üzere kayıt edildi.
                     {
                         item.Carpan = 0;
                         item.HarfNot = "FF";
                         item.GecDurum = false;
-                        item.Ort = tekOgrenciOrtalama;
                         KirkAltiOrtalamalilar.Add(item);
                     }
                 }
@@ -796,6 +795,7 @@ namespace UniLife.Storage.Stores
                     {
                         item.HarfNot = ayniOrtalamaliDersKayit.HarfNot;
                         item.Carpan = ayniOrtalamaliDersKayit.Carpan;
+                        item.GecDurum = ayniOrtalamaliDersKayit.GecDurum;
                     }
 
 
@@ -806,16 +806,19 @@ namespace UniLife.Storage.Stores
                         {
                             item.HarfNot = orderedfinalHesapliDersKayitlari[i + 1].HarfNot;
                             item.Carpan = orderedfinalHesapliDersKayitlari[i + 1].Carpan;
+                            item.GecDurum = orderedfinalHesapliDersKayitlari[i + 1].GecDurum;
                         }
                         else if (orderedfinalHesapliDersKayitlari[i].Ort > item.Ort)
                         {
                             item.HarfNot = orderedfinalHesapliDersKayitlari[i].HarfNot;
                             item.Carpan = orderedfinalHesapliDersKayitlari[i].Carpan;
+                            item.GecDurum = orderedfinalHesapliDersKayitlari[i].GecDurum;
                         }
                         else if (item.Ort > orderedfinalHesapliDersKayitlari[i + 1].Ort)
                         {
                             item.HarfNot = orderedfinalHesapliDersKayitlari[i + 1].HarfNot;
                             item.Carpan = orderedfinalHesapliDersKayitlari[i + 1].Carpan;
+                            item.GecDurum = orderedfinalHesapliDersKayitlari[i + 1].GecDurum;
                         }
                     }
                 }

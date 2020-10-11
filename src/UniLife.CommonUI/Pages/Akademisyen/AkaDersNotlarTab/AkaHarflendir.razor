@@ -41,7 +41,28 @@
         <GridColumn AllowEditing="false" Field=@nameof(DersKayitOgrOrtalamaDto.OgrSinavlarText) HeaderText="Tüm Notları"></GridColumn>
         <GridColumn Field=@nameof(DersKayitOgrOrtalamaDto.OgrOrt) HeaderText="Ort"></GridColumn>
         <GridColumn Field=@nameof(DersKayitOgrOrtalamaDto.HarfNot) HeaderText="Harf"></GridColumn>
-        <GridColumn Field=@nameof(DersKayitOgrOrtalamaDto.IsGecti) HeaderText="Geçti"></GridColumn>
+        <GridColumn Field=@nameof(DersKayitOgrOrtalamaDto.IsGecti) HeaderText="Sonuç">
+            <Template>
+                @{
+                    DersKayitOgrOrtalamaDto dersOgrInfo = (context as DersKayitOgrOrtalamaDto);
+                    if (dersOgrInfo.IsGecti)
+                    {
+                        <span>Geçti</span>
+                    }
+                    else
+                    {
+                        if (dersOgrInfo.HarfNot=="DC")
+                        {
+
+                        }
+                        else
+                        {
+                            <span>Kaldı</span>
+                        }
+                    }
+                }
+            </Template>
+        </GridColumn>
     </GridColumns>
 </SfGrid>
 @*<div class="row">
