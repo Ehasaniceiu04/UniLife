@@ -178,7 +178,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         }
 
 
-        private void FakulteToBolum(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
+        private void FakulteToBolum(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?, KeyValueDto> args)
         {
             bolumDtos = new List<KeyValueDto>();
             programDtos = new List<KeyValueDto>();
@@ -218,7 +218,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             _dersAcilanDto.Sinif = DropSinif.Value;
         }
 
-        private void BolumToProgram(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
+        private void BolumToProgram(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?, KeyValueDto> args)
         {
             programDtos = new List<KeyValueDto>();
             _dersAcilanDto.ProgramId = null;
@@ -350,7 +350,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 if (apiResponse.StatusCode == StatusCodes.Status200OK)
                 {
                     matToaster.Add(apiResponse.Message, MatToastType.Success);
-                    DersProgramSche.Refresh();
+                    await DersProgramSche.RefreshEvents();//.Refresh();
                     //derslikRezervDtos.FirstOrDefault(x => x.Id == 0).Id = apiResponse.Result.Id;
                     //DersProgramSche.Refresh();
                     //dersAcilanDtos.FirstOrDefault(x => x.Id == 0).Id = apiResponse.Result.Id;
@@ -421,7 +421,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         //    //isBinaSelected = true;
         //    //StateHasChanged();
         //}
-        public async Task BinaOnChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
+        public async Task BinaOnChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?, BinaDto> args)
         {
             await ReadDersliks((int)args.Value);
             if (selectedDersliksByBina.Count > 0)

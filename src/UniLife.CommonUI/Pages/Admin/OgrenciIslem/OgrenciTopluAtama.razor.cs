@@ -205,7 +205,7 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem
             }
         }
 
-        private void FakulteToBolum(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
+        private void FakulteToBolum(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?, KeyValueDto> args)
         {
             bolumDtos = new List<KeyValueDto>();
             programDtos = new List<KeyValueDto>();
@@ -222,7 +222,7 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem
             StateHasChanged();
             isTopGridVisible = false;
         }
-        private void BolumToProgram(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
+        private void BolumToProgram(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?, KeyValueDto> args)
         {
             programDtos = new List<KeyValueDto>();
             reqOgrTopAtaDto.ProgramId = null;
@@ -238,7 +238,7 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem
             //StateHasChanged();
             isTopGridVisible = false;
         }
-        private void ValChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
+        private void ValChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?, KeyValueDto> args)
         {
             //isTopGridVisible = false;
             Refresh();
@@ -335,13 +335,13 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem
 
 
 
-        private void onSinifChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
+        private void onSinifChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?, SinifDto> args)
         {
             reqOgrTopAtaDto.Sinif = args.Value;
             //isTopGridVisible = false;
             Refresh();
         }
-        private void onCinsChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
+        private void onCinsChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?, KeyValueDto> args)
         {
             reqOgrTopAtaDto.Cinsiyet = args.Value;
             //isTopGridVisible = false;

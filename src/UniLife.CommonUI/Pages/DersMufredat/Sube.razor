@@ -32,14 +32,14 @@
                         <SfDropDownList ID="DropFakulte" @ref="DropFakulte" ShowClearButton="true" TItem="KeyValueDto" CssClass="col-sm-10 pb-1"
                                         TValue="int?" PopupHeight="230px" Placeholder="Fakülte Seçiniz"
                                         @bind-Value="@_dersAcilanDto.FakulteId" DataSource="@fakulteDtos">
-                            <DropDownListEvents TValue="int?" ValueChange="FakulteToBolum"></DropDownListEvents>
+                            <DropDownListEvents TItem="KeyValueDto" TValue="int?" ValueChange="FakulteToBolum"></DropDownListEvents>
                             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                         </SfDropDownList>
                         <label class="col-sm-2" for="DropBolum">Bolum:</label>
                         <SfDropDownList ID="DropBolum" @ref="DropBolum" ShowClearButton="true" TItem="KeyValueDto" CssClass="col-sm-10 pb-1"
                                         TValue="int?" PopupHeight="230px" Placeholder="Bölüm Seçiniz"
                                         @bind-Value="@_dersAcilanDto.BolumId" DataSource="@bolumDtos">
-                            <DropDownListEvents TValue="int?" ValueChange="BolumToProgram"></DropDownListEvents>
+                            <DropDownListEvents TItem="KeyValueDto" TValue="int?" ValueChange="BolumToProgram"></DropDownListEvents>
                             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                         </SfDropDownList>
                         <label class="col-sm-2" for="DropProgram">Program:</label>
@@ -61,7 +61,7 @@
                         <SfGrid ID="DersAcGrid" @ref="DersAcGrid" DataSource="@DersAcDtos" RowHeight="20" AllowSorting="true" AllowSelection="true" AllowFiltering="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
                             @*OnRecordClick="OnRecordClickHandler" RowDeselected="RowDeselectedHandler" OnToolbarClick="ToolbarClickHandler" CommandClicked="CommandClickHandler" *@
                             <GridEvents RowSelected="RowSelectedHandler" TValue="SubeDersAcilanDto"></GridEvents>
-                            <GridSelectionSettings EnableToggle="false" Type="SelectionType.Single"></GridSelectionSettings>
+                            <GridSelectionSettings EnableToggle="false" Type="Syncfusion.Blazor.Grids.SelectionType.Single"></GridSelectionSettings>
                             <GridColumns>
                                 @*<GridColumn Visible="false" Field=@nameof(SubeDersAcilanDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>*@
                                 <GridColumn AutoFit="true" Field=@nameof(SubeDersAcilanDto.Kod) HeaderText="Ders Kodu"></GridColumn>
@@ -150,7 +150,7 @@
                     @*OnActionBegin="OnActionBeginHandlerOgrenci"*@
                     <SfGrid ID="OgrenciGrid" @ref="OgrenciGrid" DataSource="@OgrenciDtos" Toolbar="@(new List<string>() { "Add"})" RowHeight="20" AllowSorting="true" AllowFiltering="true">
                         <GridEvents OnActionComplete="ActionCompletedHandlerOgrenci" TValue="OgrenciDto"></GridEvents>
-                        <GridSelectionSettings CellSelectionMode="CellSelectionMode.BoxWithBorder" CheckboxOnly="true" Type="SelectionType.Multiple" PersistSelection="true"></GridSelectionSettings>
+                        <GridSelectionSettings CellSelectionMode="CellSelectionMode.BoxWithBorder" CheckboxOnly="true" Type="Syncfusion.Blazor.Grids.SelectionType.Multiple" PersistSelection="true"></GridSelectionSettings>
                         <GridColumns>
                             <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
                             <GridColumn Visible="false" Field=@nameof(OgrenciDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>

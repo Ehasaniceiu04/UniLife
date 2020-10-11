@@ -50,9 +50,9 @@ namespace UniLife.CommonUI.Pages.Personel
                     if (apiResponse.IsSuccessStatusCode)
                     {
                         matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
-                        PersonelTaskSche.Refresh();
+                        await PersonelTaskSche.RefreshEvents();//.Refresh();
                         personelTaskDtos.FirstOrDefault(x => x.Id == selectedId).Id = apiResponse.Result.Id;
-                        PersonelTaskSche.Refresh();
+                        PersonelTaskSche.RefreshEvents();//.Refresh();
                         //dersAcilanDtos.FirstOrDefault(x => x.Id == 0).Id = apiResponse.Result.Id;
                         //DersAcilanGrid.Refresh();
                     }

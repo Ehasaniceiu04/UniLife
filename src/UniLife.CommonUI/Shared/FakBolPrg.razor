@@ -9,7 +9,7 @@
         <SfDropDownList @ref="DropFakulte" ShowClearButton="true" TItem="KeyValueDto" CssClass="form-control-sm"
                         TValue="int?" PopupHeight="230px"
                         @bind-Value="@FakulteId" DataSource="@fakulteDtos">
-            <DropDownListEvents TValue="int?" ValueChange="FakulteToBolum"></DropDownListEvents>
+            <DropDownListEvents TItem="KeyValueDto" TValue="int?" ValueChange="FakulteToBolum"></DropDownListEvents>
             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
         </SfDropDownList>
     </div>
@@ -20,7 +20,7 @@
         <SfDropDownList @ref="DropBolum" ShowClearButton="true" TItem="KeyValueDto" CssClass="form-control-sm"
                         TValue="int?" PopupHeight="230px"
                         @bind-Value="@BolumId" DataSource="@bolumDtos">
-            <DropDownListEvents TValue="int?" ValueChange="BolumToProgram"></DropDownListEvents>
+            <DropDownListEvents TItem="KeyValueDto" TValue="int?" ValueChange="BolumToProgram"></DropDownListEvents>
             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
         </SfDropDownList>
     </div>
@@ -33,7 +33,7 @@
             <SfDropDownList @ref="DropProgram" ShowClearButton="true" TItem="KeyValueDto" CssClass="form-control-sm"
                             TValue="int?" PopupHeight="230px" Placeholder="@(ProgramPlaceHolder)"
                             @bind-Value="@ProgramId" DataSource="@programDtos">
-                <DropDownListEvents TValue="int?" ValueChange="ProgramToMufredat"></DropDownListEvents>
+                <DropDownListEvents TItem="KeyValueDto" TValue="int?" ValueChange="ProgramToMufredat"></DropDownListEvents>
                 <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
             </SfDropDownList>
         </div>

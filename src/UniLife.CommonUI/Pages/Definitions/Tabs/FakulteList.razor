@@ -75,7 +75,7 @@ else
                                             <label class="col-sm-2 col-form-label" for="Universite">Universite</label>
                                             <SfDropDownList ID="Universite" CssClass="col-sm-10" @bind-Value="@(fakulteInfo.UniversiteId)" TValue="int?" TItem="UniversiteDto" Index="0" DataSource="universiteDtos">
                                                 <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
-                                                <DropDownListEvents TValue="int?"></DropDownListEvents>
+                                                @*<DropDownListEvents TValue="int?"></DropDownListEvents>*@
                                             </SfDropDownList>
                                             <label class="col-sm-2 col-form-label" for="OgrenimTur">Öğrenim Tür</label>
                                             <SfDropDownList ID="OgrenimTur" CssClass="col-sm-10" @bind-Value="@(fakulteInfo.OgrenimTurId)" TValue="int?" TItem="OgrenimTurDto" Index="0" DataSource="ogrenimTurDtos">

@@ -20,7 +20,7 @@ else
     <SfDropDownList ID="DropDonem" @ref="DropDonem" ShowClearButton="true" Index="0" TItem="DonemDto" CssClass="form-control-sm"
                     TValue="int?" Placeholder="Dönem Seçimi..."
                     DataSource="@(donemDtos.OrderByDescending(x=>x.Yil).ThenBy(n => n.BasTarih))" @bind-Value="@(selectedDonemId)">
-        <DropDownListEvents TValue="int?" ValueChange="DonemChange"></DropDownListEvents>
+        <DropDownListEvents TItem="DonemDto" TValue="int?" ValueChange="DonemChange"></DropDownListEvents>
         <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
     </SfDropDownList>
 

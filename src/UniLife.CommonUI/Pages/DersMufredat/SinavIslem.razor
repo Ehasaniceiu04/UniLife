@@ -51,7 +51,7 @@ else
                     @*OnRecordClick="OnRecordClickHandler" Toolbar="@(ToolbarDersitems)" OnToolbarClick="ToolbarDersClickHandler" *@
                     <SfGrid ID="DersAcGrid" @ref="DersAcGrid" Query="@totalQuery" TValue="DersAcilanForSinav" RowHeight="20" AllowSorting="true" AllowFiltering="true" AllowSelection="true" AllowPaging="true" AllowExcelExport="true" AllowResizing="true" AllowPdfExport="true">
                         <GridEvents RowSelected="RowSelectedHandler" TValue="DersAcilanForSinav" CommandClicked="CommandClickHandler"></GridEvents>
-                        <GridSelectionSettings CellSelectionMode="CellSelectionMode.BoxWithBorder" CheckboxOnly="true" Type="SelectionType.Multiple" PersistSelection="true"></GridSelectionSettings>
+                        <GridSelectionSettings CellSelectionMode="CellSelectionMode.BoxWithBorder" CheckboxOnly="true" Type="Syncfusion.Blazor.Grids.SelectionType.Multiple" PersistSelection="true"></GridSelectionSettings>
                         <GridPageSettings PageCount="5" PageSizes="new int[]{ 5, 10, 50, 100,10000}"></GridPageSettings>
                         <SfDataManager Url="@("odata/DersAcilansForSinavs")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
                         @*<SfDataManager Url="@("odata/dersacilans?$expand=derskayits,akademisyen")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>*@

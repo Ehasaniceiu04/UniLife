@@ -26,7 +26,8 @@ namespace UniLife.Client
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
 
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MjgzMTIyQDMxMzgyZTMyMmUzMElrS3Z6YXN4bUo3RTJESVhIeWRXMEZXa0pSc2NIaVN2d0kvM0F5YXRQNlU9");
+            //Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MjgzMTIyQDMxMzgyZTMyMmUzMElrS3Z6YXN4bUo3RTJESVhIeWRXMEZXa0pSc2NIaVN2d0kvM0F5YXRQNlU9");
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MzMyNDQzQDMxMzgyZTMzMmUzMG5TOG5VWXBtOXdzTjhjV0lNZ253eXArNXlBWlhyZFBqL2ZSWTR1Yk92UVE9");
             builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
             builder.Services.AddAuthorizationCore(config =>

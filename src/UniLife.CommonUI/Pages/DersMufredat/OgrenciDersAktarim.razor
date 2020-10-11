@@ -32,7 +32,7 @@
                             <SfDropDownList @ref="DropSinif" TItem="SinifDto"
                                             TValue="int?" ShowClearButton="true"
                                             DataSource="@(Sabitler.SinifDtos)" @bind-Value="@Sinif">
-                                <DropDownListEvents TValue="int?" ValueChange="KaynakChange"></DropDownListEvents>
+                                <DropDownListEvents TItem="SinifDto" TValue="int?" ValueChange="KaynakChange"></DropDownListEvents>
                                 <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                             </SfDropDownList>
                         </div>
@@ -41,7 +41,7 @@
                             <SfDropDownList @ref="DropDonem" ShowClearButton="true" TValue="int?" TItem="KeyValueDto" Placeholder="Dönem seçiniz..."
                                             Query="@donemQuery"
                                             @bind-Value="@DonemId">
-                                <DropDownListEvents TValue="int?" ValueChange="KaynakChange"></DropDownListEvents>
+                                <DropDownListEvents TItem="KeyValueDto" TValue="int?" ValueChange="KaynakChange"></DropDownListEvents>
                                 <SfDataManager Url="odata/donems" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
                                 <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                             </SfDropDownList>
@@ -56,7 +56,7 @@
                                 @*Query="@dersQuery"*@
                                 <SfDropDownList @ref="DropDers" ShowClearButton="true" TValue="int?" TItem="KeyValueDto" Placeholder="Dönem seçiniz..."
                                                 @bind-Value="@dersId">
-                                    <DropDownListEvents TValue="int?" ValueChange="KaynakChange"></DropDownListEvents>
+                                    <DropDownListEvents TItem="KeyValueDto" TValue="int?" ValueChange="KaynakChange"></DropDownListEvents>
                                     <SfDataManager Url="@($"odata/dersacilans?$filter=programId eq {ProgramId}")" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=false></SfDataManager>
                                     <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                                 </SfDropDownList>
@@ -119,7 +119,7 @@
                             <SfDropDownList @ref="DropSinif2" TItem="SinifDto"
                                             TValue="int?" ShowClearButton="true"
                                             DataSource="@(Sabitler.SinifDtos)" @bind-Value="@sinif2">
-                                <DropDownListEvents TValue="int?" ValueChange="HedefChange"></DropDownListEvents>
+                                <DropDownListEvents TItem="SinifDto" TValue="int?" ValueChange="HedefChange"></DropDownListEvents>
                                 <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                             </SfDropDownList>
                         </div>
@@ -128,7 +128,7 @@
                             <SfDropDownList @ref="DropDonem2" ShowClearButton="true" TValue="int?" TItem="KeyValueDto" Placeholder="Dönem seçiniz..."
                                             Query="@donemQuery"
                                             @bind-Value="@donemId2">
-                                <DropDownListEvents TValue="int?" ValueChange="HedefChange"></DropDownListEvents>
+                                <DropDownListEvents TItem="KeyValueDto" TValue="int?" ValueChange="HedefChange"></DropDownListEvents>
                                 <SfDataManager Url="odata/donems" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
                                 <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                             </SfDropDownList>
@@ -142,7 +142,7 @@
                                 <SfDropDownList @ref="DropDers2" ShowClearButton="true" TValue="int?" TItem="KeyValueDto" Placeholder="Ders seçiniz..."
                                                 Query="@ders2Query"
                                                 @bind-Value="@dersId2">
-                                    <DropDownListEvents TValue="int?" ValueChange="HedefChange"></DropDownListEvents>
+                                    <DropDownListEvents TItem="KeyValueDto" TValue="int?" ValueChange="HedefChange"></DropDownListEvents>
                                     <SfDataManager Url="@($"odata/dersacilans?$filter=programId eq {ProgramId2}")" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
                                     <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                                 </SfDropDownList>
