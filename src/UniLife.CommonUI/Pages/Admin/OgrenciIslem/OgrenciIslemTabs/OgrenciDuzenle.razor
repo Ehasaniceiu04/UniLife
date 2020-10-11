@@ -55,21 +55,21 @@ else
                                     <SfDropDownList ID="DropFakulte" @ref="DropFakulte" TItem="FakulteDto" CssClass="col-sm-10 pb-1"
                                                     TValue="int?" PopupHeight="230px" Placeholder="Fakülte Seçiniz"
                                                     @bind-Value="@_OgrenciDto.FakulteId" DataSource="@fakulteDtos">
-                                        <DropDownListEvents TItem="FakulteDto" TValue="int?" ValueChange="FakulteToBolum"></DropDownListEvents>
+                                        <DropDownListEvents TValue="int?" ValueChange="FakulteToBolum"></DropDownListEvents>
                                         <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                                     </SfDropDownList>
                                     <label class="col-sm-2" for="DropBolum">Bolum:</label>
                                     <SfDropDownList ID="DropBolum" @ref="DropBolum" TItem="BolumDto" CssClass="col-sm-10 pb-1"
                                                     TValue="int?" PopupHeight="230px" Placeholder="Bölüm Seçiniz"
                                                     @bind-Value="@_OgrenciDto.BolumId" DataSource="@bolumDtos">
-                                        <DropDownListEvents TItem="BolumDto" TValue="int?" ValueChange="BolumToProgram"></DropDownListEvents>
+                                        <DropDownListEvents TValue="int?" ValueChange="BolumToProgram"></DropDownListEvents>
                                         <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                                     </SfDropDownList>
                                     <label class="col-sm-2" for="DropProgram">Program:</label>
                                     <SfDropDownList ID="DropProgram" @ref="DropProgram" TItem="ProgramDto" CssClass="col-sm-10 pb-1"
                                                     TValue="int?" PopupHeight="230px" Placeholder="Program Seçiniz"
                                                     @bind-Value="@_OgrenciDto.ProgramId" DataSource="@programDtos">
-                                        <DropDownListEvents TItem="ProgramDto" TValue="int?" ValueChange="ProgramToMufredat"></DropDownListEvents>
+                                        <DropDownListEvents TValue="int?" ValueChange="ProgramToMufredat"></DropDownListEvents>
                                         <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                                     </SfDropDownList>
                                     <label class="col-sm-2" for="DropMufredat">Mufredat:</label>
@@ -393,7 +393,7 @@ else
 
 
 
-    private void FakulteToBolum(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?, FakulteDto> args)
+    private void FakulteToBolum(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
     {
         bolumDtos = new List<BolumDto>();
         programDtos = new List<ProgramDto>();
@@ -441,7 +441,7 @@ else
         }
     }
 
-    private void BolumToProgram(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?, BolumDto> args)
+    private void BolumToProgram(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
     {
         programDtos = new List<ProgramDto>();
         mufredatDtos = new List<MufredatDto>();
@@ -484,7 +484,7 @@ else
         }
     }
 
-    private void ProgramToMufredat(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?, ProgramDto> args)
+    private void ProgramToMufredat(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
     {
         mufredatDtos = new List<MufredatDto>();
         _OgrenciDto.MufredatId = null;

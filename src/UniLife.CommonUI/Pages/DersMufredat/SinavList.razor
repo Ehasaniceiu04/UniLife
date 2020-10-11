@@ -23,7 +23,7 @@
                 <SfDropDownList @ref="DropSinif" TItem="SinifDto"
                                 TValue="int?" ShowClearButton="true"
                                 DataSource="@(Sabitler.SinifDtos)" @bind-Value="@sinif">
-                    <DropDownListEvents TItem="SinifDto" TValue="int?" ValueChange="KaynakChange"></DropDownListEvents>
+                    <DropDownListEvents TValue="int?" ValueChange="KaynakChange"></DropDownListEvents>
                     <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                 </SfDropDownList>
             </div>
@@ -32,7 +32,7 @@
                 <SfDropDownList @ref="DropDonem" ShowClearButton="true" TValue="int?" TItem="KeyValueDto" Placeholder="Dönem seçiniz..."
                                 Query="@donemQuery"
                                 @bind-Value="@donemId">
-                    <DropDownListEvents TItem="KeyValueDto" TValue="int?" ValueChange="KaynakChange"></DropDownListEvents>
+                    <DropDownListEvents TValue="int?" ValueChange="KaynakChange"></DropDownListEvents>
                     <SfDataManager Url="odata/donems" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
                     <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                 </SfDropDownList>

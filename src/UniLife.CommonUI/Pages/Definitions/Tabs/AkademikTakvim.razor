@@ -21,7 +21,7 @@
                                 TValue="int?" PopupHeight="230px" Placeholder="Dönem Seçiniz"
                                 @bind-Value="@donemId" DataSource="@donemDtos.OrderByDescending(x=>x.Durum).ThenBy(x=>x.Yil)">
                     <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                    @*<DropDownListEvents TItem="int?" TValue="int?" ValueChange="DonemChange"></DropDownListEvents>*@
+                    <DropDownListEvents TValue="int?" ValueChange="DonemChange"></DropDownListEvents>
                 </SfDropDownList>
             </div>
             <label for="DropFakulte" class="col-sm-1 col-form-label-sm">Fakülte</label>
@@ -29,7 +29,7 @@
                 <SfDropDownList ID="DropFakulte" @ref="DropFakulte" ShowClearButton="true" TItem="KeyValueDto"
                                 TValue="int?" PopupHeight="230px" Placeholder="Fakülte Seçiniz"
                                 @bind-Value="@fakulteId" DataSource="@fakulteDtos">
-                    @*<DropDownListEvents TItem="int?" TValue="int?" ValueChange="FakChange"></DropDownListEvents>*@
+                    <DropDownListEvents TValue="int?" ValueChange="FakChange"></DropDownListEvents>
                     <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                 </SfDropDownList>
             </div>
@@ -266,16 +266,16 @@ else
         //}
     }
 
-    //private void DonemChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
-    //{
-    //    //ReadAkademikTakvims();
-    //    //AkademikTakvimGrid.Refresh();
-    //}
-    //private void FakChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
-    //{
-    //    //ReadAkademikTakvims();
-    //    //AkademikTakvimGrid.Refresh();
-    //}
+    private void DonemChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
+    {
+        //ReadAkademikTakvims();
+        //AkademikTakvimGrid.Refresh();
+    }
+    private void FakChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
+    {
+        //ReadAkademikTakvims();
+        //AkademikTakvimGrid.Refresh();
+    }
 
     public async Task CommandClickHandler(Syncfusion.Blazor.Grids.CommandClickEventArgs<AkademikTakvimDto> args)
     {

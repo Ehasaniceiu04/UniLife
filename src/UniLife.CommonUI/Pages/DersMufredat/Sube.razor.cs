@@ -146,7 +146,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         }
 
 
-        private void FakulteToBolum(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?, KeyValueDto> args)
+        private void FakulteToBolum(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
         {
             bolumDtos = new List<KeyValueDto>();
             programDtos = new List<KeyValueDto>();
@@ -163,7 +163,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             StateHasChanged();
         }
 
-        private void BolumToProgram(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?, KeyValueDto> args)
+        private void BolumToProgram(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
         {
             programDtos = new List<KeyValueDto>();
             _dersAcilanDto.ProgramId = null;
@@ -274,9 +274,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
             {
                 DersAcDtos = apiResponse.Result;
-                //await Task.Delay(1000);
-                //DersAcGrid.Refresh();
-                //await Task.Delay(1000);
+                DersAcGrid.Refresh();
                 StateHasChanged();
             }
             else

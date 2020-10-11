@@ -43,7 +43,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         List<KeyValueDto> fakulteDtos = new List<KeyValueDto>();
         List<KeyValueDto> bolumDtos = new List<KeyValueDto>();
         List<KeyValueDto> programDtos = new List<KeyValueDto>();
-        List<BinaDto> binaDtos; //= new List<BinaDto>();
+        List<BinaDto> binaDtos = new List<BinaDto>();
 
         List<SinifDto> sinifDtos = new List<SinifDto>
         {
@@ -188,7 +188,6 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
             {
                 binaDtos = apiResponse.Result;
-                StateHasChanged();
             }
             else
             {
@@ -434,9 +433,9 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                     if (apiResponse.IsSuccessStatusCode)
                     {
                         matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
-                        DersProgramSche.RefreshEvents(); //Refresh();
+                        DersProgramSche.Refresh();
                         derslikRezervDtos.FirstOrDefault(x => x.Id == selectedId).Id = apiResponse.Result.Id;
-                        DersProgramSche.RefreshEvents();//Refresh();
+                        DersProgramSche.Refresh();
                         //dersAcilanDtos.FirstOrDefault(x => x.Id == 0).Id = apiResponse.Result.Id;
                         //DersAcilanGrid.Refresh();
                     }
@@ -530,7 +529,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         //    //isBinaSelected = true;
         //    //StateHasChanged();
         //}
-        public async Task BinaOnChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?, BinaDto> args)
+        public async Task BinaOnChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
         {
             await ReadDersliks((int)args.Value);
             if (selectedDersliksByBina.Count > 0)

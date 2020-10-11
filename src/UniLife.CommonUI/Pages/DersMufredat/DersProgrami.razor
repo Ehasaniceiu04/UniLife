@@ -47,7 +47,7 @@
             <div class="row pb-2 bg-light text-dark">
                 <SfGrid ID="DersAcGrid" @ref="DersAcGrid" Query="@totalQuery" TValue="DersAcilanDto" RowHeight="20" AllowSorting="true" AllowSelection="true" AllowFiltering="true" AllowPaging="true">
                     <GridEvents RowSelected="RowSelectedHandler" TValue="DersAcilanDto" CommandClicked="CommandClickHandler"></GridEvents>
-                    <GridSelectionSettings EnableToggle="false" Type="Syncfusion.Blazor.Grids.SelectionType.Single"></GridSelectionSettings>
+                    <GridSelectionSettings EnableToggle="false" Type="SelectionType.Single"></GridSelectionSettings>
                     <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
                     <GridColumns>
                         <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) IsIdentity="true" IsPrimaryKey="true"></GridColumn>
@@ -78,7 +78,7 @@
             <div class="row pb-2 bg-light text-dark">
                 <SfGrid ID="SinavGrid" @ref="SinavGrid" Query="@totalSinavQuery" TValue="SinavDto" RowHeight="20" AllowSorting="true" AllowSelection="true" AllowFiltering="true" AllowPaging="true">
                     <GridEvents RowSelected="RowSelectedHandlerSinav" TValue="SinavDto" CommandClicked="CommandClickHandlerSinav"></GridEvents>
-                    <GridSelectionSettings EnableToggle="false" Type="Syncfusion.Blazor.Grids.SelectionType.Single"></GridSelectionSettings>
+                    <GridSelectionSettings EnableToggle="false" Type="SelectionType.Single"></GridSelectionSettings>
                     <SfDataManager Url="@OdataSinavQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
                     <GridColumns>
                         <GridColumn Visible="false" Field=@nameof(SinavDto.Id) IsIdentity="true" IsPrimaryKey="true"></GridColumn>
@@ -106,7 +106,7 @@
                     <div class="col-sm-5">
                         <SfDropDownList ID="DropBina" @ref="DropBina" TItem="BinaDto" CssClass="form-control-sm"
                                         TValue="int?" PopupHeight="430px" DataSource="@binaDtos" Placeholder="Ders programını görüntülemek/düzenlemek için bina seçiniz">
-                            <DropDownListEvents TItem="BinaDto" TValue="int?" ValueChange="BinaOnChange"> </DropDownListEvents>
+                            <DropDownListEvents TValue="int?" ValueChange="BinaOnChange"> </DropDownListEvents>
                             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                         </SfDropDownList>
                     </div>
@@ -137,12 +137,12 @@
                     </ScheduleViews>
                     <ScheduleGroup EnableCompactView="false" Resources="@GroupData"></ScheduleGroup>
                     <ScheduleResources>
-                        <ScheduleResource TItem="DerslikDto" TValue="DerslikDto" DataSource="@derslikDtos" Field="DerslikId" Title="Derslik" Name="MeetingRoomzx" TextField="Ad" IdField="Id" ColorField="Color" AllowMultiple="true"></ScheduleResource>
+                        <ScheduleResource TValue="DerslikDto" DataSource="@derslikDtos" Field="DerslikId" Title="Derslik" Name="MeetingRoomzx" TextField="Ad" IdField="Id" ColorField="Color" AllowMultiple="true"></ScheduleResource>
                     </ScheduleResources>
                     <ScheduleTemplates>
                         <ResourceHeaderTemplate>
                             @{
-                                DerslikDto contextDerslik = ((context as TemplateContext).ResourceData as DerslikDto);
+                                DerslikDto contextDerslik = ((context as DerslikRezervDto).ResourceData as DerslikDto);
                             }
                             <div class='template-wrap'>
                                 <div class="room-name">@(contextDerslik.Ad)</div>

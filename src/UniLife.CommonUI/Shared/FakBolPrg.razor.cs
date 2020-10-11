@@ -96,17 +96,14 @@ namespace UniLife.CommonUI.Shared
         [Parameter]
         public EventCallback<int?> MufredatIdChanged { get; set; }
 
-        [Parameter]
-        public EventCallback AfterChangeMethod { get; set; }
-
         protected async override Task OnInitializedAsync()
         {
             await ReadFakultes();
-            if (BolumId != null && FakulteId != null)
+            if (BolumId !=null && FakulteId!=null)
             {
                 await ReadBolums(FakulteId);
             }
-            if (ProgramId != null && BolumId != null)
+            if (ProgramId !=null && BolumId !=null)
             {
                 await ReadPrograms(BolumId);
             }
@@ -126,16 +123,12 @@ namespace UniLife.CommonUI.Shared
             }
         }
 
-        private async Task FakulteToBolum(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?, KeyValueDto> args)
+        private async Task FakulteToBolum(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
         {
             bolumDtos = new List<KeyValueDto>();
             programDtos = new List<KeyValueDto>();
-            mufredatDtos = new List<KeyValueDto>();
             BolumId = null;
             ProgramId = null;
-            MufredatId = null;
-
-            await AfterChangeMethod.InvokeAsync(null);
             //if (reqOgrTopAtaDto.Id == 0)
             //{
             await ReadBolums(args.Value);
@@ -147,59 +140,47 @@ namespace UniLife.CommonUI.Shared
             StateHasChanged();
         }
 
-        private async Task BolumToProgram(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?, KeyValueDto> args)
+        private async Task BolumToProgram(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
         {
             programDtos = new List<KeyValueDto>();
-            mufredatDtos = new List<KeyValueDto>();
             ProgramId = null;
-            MufredatId = null;
-            if (BolumId.HasValue)
-            {
-                await AfterChangeMethod.InvokeAsync(null);
-            }
 
             await ReadPrograms(args.Value);
 
         }
 
-        private async Task ProgramToMufredat(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?, KeyValueDto> args)
+        private async Task ProgramToMufredat(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
         {
             mufredatDtos = new List<KeyValueDto>();
             MufredatId = null;
-            if (ProgramId.HasValue)
-            {
-                await AfterChangeMethod.InvokeAsync(null);
-            }
 
             await ReadMufredats(args.Value);
 
         }
 
-
+        
 
         async Task ReadBolums(int? fakulteId)
         {
             OData<KeyValueDto> apiResponse;
             //apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<BolumDto>>>("api/bolum/GetBolumByFakulteIds/" + string.Join(',', fakulteId));
-            if (fakulteId.HasValue)
-            {
-                apiResponse = await Http.GetFromJsonAsync<OData<KeyValueDto>>($"odata/bolums?$filter=FakulteId eq {fakulteId}&select=Id,Ad");
+            apiResponse = await Http.GetFromJsonAsync<OData<KeyValueDto>>($"odata/bolums?$filter=FakulteId eq {fakulteId}&select=Id,Ad");
 
-                if (apiResponse.Value.Count != 0)
-                {
-                    bolumDtos = apiResponse.Value;
-                    StateHasChanged();
-                }
-                else
-                {
-                    matToaster.Add("", MatToastType.Danger, "Bölüm getirilirken hata oluştu!");
-                }
+
+            if (apiResponse.Value.Count != 0)
+            {
+                bolumDtos = apiResponse.Value;
+                StateHasChanged();
+            }
+            else
+            {
+                matToaster.Add("", MatToastType.Danger, "Bölüm getirilirken hata oluştu!");
             }
         }
 
         async Task ReadPrograms(int? bolumId)
         {
-            if (ProgramShow&& bolumId.HasValue)
+            if (ProgramShow)
             {
                 OData<KeyValueDto> apiResponse;
                 apiResponse = await Http.GetFromJsonAsync<OData<KeyValueDto>>($"odata/programs?$filter=BolumId eq {bolumId}&select=Id,Ad");
@@ -214,12 +195,12 @@ namespace UniLife.CommonUI.Shared
                     matToaster.Add("", MatToastType.Danger, "Program getirilirken hata oluştu!");
                 }
             }
-
+            
         }
 
         async Task ReadMufredats(int? programId)
         {
-            if (MufredatShow&& programId.HasValue)
+            if (MufredatShow)
             {
                 OData<KeyValueDto> apiResponse;
                 apiResponse = await Http.GetFromJsonAsync<OData<KeyValueDto>>($"odata/mufredats?$filter=ProgramId eq {programId}&select=Id,Ad");
@@ -234,9 +215,9 @@ namespace UniLife.CommonUI.Shared
                     matToaster.Add("", MatToastType.Danger, "Mufredat getirilirken hata oluştu!");
                 }
             }
-
+            
         }
 
-
+        
     }
 }
