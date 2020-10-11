@@ -15,7 +15,7 @@ namespace UniLife.Server.Managers
         Task<ApiResponse> ByZorunlu(bool isZorunlu);
         Task<ApiResponse> PostDersAcilansByFilters(SinavDersAcDto sinavDersAcDto);
         Task<ApiResponse> PostCreateNewSubesAndUpdateOgrenciSubes(SubeDersAcilanOgrenciCreateDto subeDersAcilanOgrenciCreateDto);
-        Task<ApiResponse> GetDersAcilanSubelerByDersKod(string dersKod);
+        Task<ApiResponse> GetDersAcilanSubelerByDersKod(string dersKod,int donemId,int programId);
         Task<ApiResponse> GetDersAcilanSpecByDersAcId(int dersAcilanId);
         Task<ApiResponse> UpdateDersAcilanAkademsiyen(int dersAcilanId, int akademisyenId);
         Task<ApiResponse> DersAcilansByLongFilters(ReqDersAcilansByLongFilters reqDersAcilansByLongFilters);

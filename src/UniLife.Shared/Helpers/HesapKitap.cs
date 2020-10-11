@@ -114,6 +114,7 @@ namespace UniLife.Shared.Helpers
                     {
                         ortalamayaGoreSiraliDersKayitlar[i].HarfNot = item.harf;
                         ortalamayaGoreSiraliDersKayitlar[i].Carpan = item.carpan;
+                        ortalamayaGoreSiraliDersKayitlar[i].GecDurum = item.gecti;
                     }
                 }
 
@@ -121,8 +122,12 @@ namespace UniLife.Shared.Helpers
                 //Eğer varsa onların harf notunuda bir üste, kendi bulunuduğu harfe çekiyoruz.
                 foreach (var item in harflendirmeList)
                 {
-                    double harfGurubununMinOrtalamasi = ortalamayaGoreSiraliDersKayitlar.Where(x => x.HarfNot == item.harf).Min(x => x.Ort);
-                    ortalamayaGoreSiraliDersKayitlar.Where(x => x.Ort == harfGurubununMinOrtalamasi).ToList().ForEach(x => { x.HarfNot = item.harf; });
+                    var harfGurubunu = ortalamayaGoreSiraliDersKayitlar.Where(x => x.HarfNot == item.harf);
+                    if (harfGurubunu.Count() > 0)
+                    {
+                        var harfGurubununMinOrtalamasi = harfGurubunu.Min(x => x.Ort);
+                        ortalamayaGoreSiraliDersKayitlar.Where(x => x.Ort == harfGurubununMinOrtalamasi).ToList().ForEach(x => { x.HarfNot = item.harf; });
+                    }
                 }
 
                 return ortalamayaGoreSiraliDersKayitlar;

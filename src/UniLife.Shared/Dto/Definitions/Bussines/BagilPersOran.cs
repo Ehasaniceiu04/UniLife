@@ -11,5 +11,6 @@ namespace UniLife.Shared.Dto.Definitions
         public string harf { get; set; }
         public double persOgr { get; set; }
         public double carpan { get; set; }
+        public bool gecti { get; set; }
     }
 }

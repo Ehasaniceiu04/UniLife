@@ -510,9 +510,9 @@ namespace UniLife.Storage.Stores
             }
         }
 
-        public async Task<List<DersAcilanDto>> GetDersAcilanSubelerByDersKod(string dersKod)
+        public async Task<List<DersAcilanDto>> GetDersAcilanSubelerByDersKod(string dersKod,int donemId,int programId)
         {
-            var dersAcilans = from d in _db.DersAcilans.Where(x => x.Kod == dersKod).Include(x => x.Akademisyen)
+            var dersAcilans = from d in _db.DersAcilans.Where(x => x.Kod == dersKod && x.DonemId == donemId&& x.ProgramId== programId).Include(x => x.Akademisyen)
                               let cCount = d.DersKayits.Count()
                               select new DersAcilanDto
                               {

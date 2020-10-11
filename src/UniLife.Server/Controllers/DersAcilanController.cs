@@ -56,10 +56,10 @@ namespace UniLife.Server.Controllers
 
         [HttpGet]
         [Authorize(Permissions.DersAcilan.Read)]
-        [Route("GetDersAcilanSubelerByDersKod/{dersKod}")]
-        public async Task<ApiResponse> GetDersAcilanSubelerByDersKod(string dersKod)
+        [Route("GetDersAcilanSubelerByDersKod/{dersKod}/{donemId}/{programId}")]
+        public async Task<ApiResponse> GetDersAcilanSubelerByDersKod(string dersKod,int donemId,int programId)
             => ModelState.IsValid ?
-                await _dersAcilanManager.GetDersAcilanSubelerByDersKod(dersKod) :
+                await _dersAcilanManager.GetDersAcilanSubelerByDersKod(dersKod, donemId, programId) :
                 new ApiResponse(Status400BadRequest, "DersAcilan Model is Invalid");
 
 

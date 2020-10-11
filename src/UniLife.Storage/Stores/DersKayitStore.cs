@@ -505,7 +505,7 @@ namespace UniLife.Storage.Stores
 
                         }
                     }
-
+                    item.Ort = tekOgrenciOrtalama;
                     if (tekOgrenciOrtalama < 40) // ortalaması 40 altı olanlar bağıl hesaba dahil ancak hesaptan sonra FF lemek üzere kayıt edildi.
                     {
                         item.Carpan = 0;

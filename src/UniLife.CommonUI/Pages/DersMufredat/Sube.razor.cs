@@ -274,7 +274,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
             {
                 DersAcDtos = apiResponse.Result;
-                DersAcGrid.Refresh();
+                //DersAcGrid.Refresh();
                 StateHasChanged();
             }
             else
@@ -333,7 +333,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         private async Task<List<DersAcilanDto>> GetDersAcilanSubelerByDersKod(string dersKod)
         {
-            ApiResponseDto<List<DersAcilanDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<DersAcilanDto>>>($"api/dersacilan/GetDersAcilanSubelerByDersKod/{dersKod}");
+            ApiResponseDto<List<DersAcilanDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<DersAcilanDto>>>($"api/dersacilan/GetDersAcilanSubelerByDersKod/{dersKod}/{_dersAcilanDto.DonemId}/{_dersAcilanDto.ProgramId}");
             if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
             {
                 return apiResponse.Result;
