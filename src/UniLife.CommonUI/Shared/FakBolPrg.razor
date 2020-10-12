@@ -7,7 +7,7 @@
     <label for="DropFakulte" class="col-sm-2 col-form-label-sm">Fakülte</label>
     <div class="col-sm-10">
         <SfDropDownList @ref="DropFakulte" ShowClearButton="true" TItem="KeyValueDto" CssClass="form-control-sm"
-                        TValue="int?" PopupHeight="230px"
+                        TValue="int?" PopupHeight="230px" Placeholder="@(FakultePlaceHolder)"
                         @bind-Value="@FakulteId" DataSource="@fakulteDtos">
             <DropDownListEvents TValue="int?" ValueChange="FakulteToBolum"></DropDownListEvents>
             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
@@ -18,7 +18,7 @@
     <label for="DropBolum" class="col-sm-2 col-form-label-sm">Bölüm</label>
     <div class="col-sm-10">
         <SfDropDownList @ref="DropBolum" ShowClearButton="true" TItem="KeyValueDto" CssClass="form-control-sm"
-                        TValue="int?" PopupHeight="230px"
+                        TValue="int?" PopupHeight="230px" Placeholder="@(BolumPlaceHolder)"
                         @bind-Value="@BolumId" DataSource="@bolumDtos">
             <DropDownListEvents TValue="int?" ValueChange="BolumToProgram"></DropDownListEvents>
             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>

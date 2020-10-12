@@ -12,7 +12,7 @@ namespace UniLife.Shared.Dto.Definitions
         public int Yil { get; set; }
         public string KisaAd { get; set; }
         public string AdEn { get; set; }
-        public DateTime BasTarih { get; set; }
+        public DateTime? BasTarih { get; set; }
         public DateTime? BitTarih { get; set; }
         public int Durum { get; set; }
         public bool Aktif { get; set; } = true;

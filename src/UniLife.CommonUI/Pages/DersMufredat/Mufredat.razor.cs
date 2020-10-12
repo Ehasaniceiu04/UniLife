@@ -67,6 +67,8 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         int? ProgramValueHolder;
 
         string plazceHolderProgramAd = "";
+        string plazceHolderBolumAd = "";
+        string plazceHolderFakulteAd = "";
 
         string OdataQuery = "odata/Mufredats";
         //public Query totalQuery = new Query().AddParams("$expand", "program($select=Id,Ad)");
@@ -82,7 +84,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         //bool multiDialogOpen = false;
 
-        private DialogSettings DialogParams = new DialogSettings { MinHeight = "400px", Width = "900px" };
+        private DialogSettings DialogParams = new DialogSettings { MinHeight = "400px", Width = "900px"};
 
         bool isUyariOpen;
         string dialogUyariText="";
@@ -97,6 +99,8 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         bool mufredatAcDialogOpen;
 
         bool isOpsCoklama;
+
+        MufredatDto gridModelMufredatInfo = new MufredatDto();
 
         public async Task MultiplyRecord()
         {
@@ -216,12 +220,16 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         [Parameter]
         public EventCallback<int> TabDegis { get; set; }
 
-
+        //int? tempFak;
+        //int? tempBol;
+        //int? tempProg;
         public async Task OnActionBeginHandler(Syncfusion.Blazor.Grids.ActionEventArgs<MufredatDto> args)
         {
             if (args.RequestType == Syncfusion.Blazor.Grids.Action.Add)
             {
                 plazceHolderProgramAd = "";
+                plazceHolderBolumAd = "";
+                plazceHolderFakulteAd = "";
                 ProgramValueHolder = null;
                 //fakulteId = null;
                 //bolumId = null;
@@ -232,6 +240,17 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 //fakulteId = null;
                 //bolumId = null;
                 plazceHolderProgramAd = args.Data.Program.Ad; // ((UniLife.Shared.Dto.Definitions.ProgramDto)args.ForeignKeyData.Values.FirstOrDefault().FirstOrDefault()).Ad;
+                plazceHolderBolumAd = args.Data.Program.Bolum.Ad;
+                plazceHolderFakulteAd = args.Data.Program.Bolum.Fakulte.Ad;
+
+                gridModelMufredatInfo.ProgramId = args.Data.Program.Id;
+                //tempFak = args.Data.Program.Bolum.Fakulte.Id;
+                //tempBol = args.Data.Program.Bolum.Id;
+                //tempProg = args.Data.Program.Id;
+                //gridModelMufredatInfo.BolumId = args.Data.Program.Bolum.Id;
+                //gridModelMufredatInfo.FakulteId = args.Data.Program.Bolum.Fakulte.Id;
+
+                await Task.Delay(100);
 
             }
             else if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
@@ -261,6 +280,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             }
             else if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
             {
+                args.Data.Program = null;
                 if (args.Action == "Edit")
                 {
                     if (!args.Data.ProgramId.HasValue)
@@ -466,6 +486,25 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             MufredatGrid.Refresh();
 
 
+        }
+
+        public string GetHeader(MufredatDto Value)
+        {
+            if (Value.Id == 0)
+            {
+                return "Yeni Müfredat Ekle";
+            }
+            else
+            {
+                if (isOpsCoklama)
+                {
+                    return $"{Value.Ad.ToString()} Müfredatını Çokla!";
+                }
+                else
+                {
+                    return $"{Value.Ad.ToString()} Müfredatını Düzenle";
+                }                
+            }
         }
 
     }

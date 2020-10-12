@@ -106,8 +106,8 @@
                                         <SfDataManager Url="odata/dersdils" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
                                         <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                                     </SfDropDownList>
-                                    <label class="col-sm-3 col-form-label" for="Yerleske">Yerleşke</label>
-                                    <SfTextBox ID="Yerleske" CssClass=" col-sm-9" @bind-Value="@(programInfo.Yerleske)"></SfTextBox>
+                                    @*<label class="col-sm-3 col-form-label" for="Yerleske">Yerleşke</label>
+                                    <SfTextBox ID="Yerleske" CssClass=" col-sm-9" @bind-Value="@(programInfo.Yerleske)"></SfTextBox>*@
                                     <SfCheckBox Label="Hazırlık var mı?" CssClass="col-sm-3" @bind-Checked="@(programInfo.IsHazirlik)"></SfCheckBox>
                                     <SfCheckBox Label="Staj var mı?" CssClass="col-sm-3" @bind-Checked="@(programInfo.StajDurum)"></SfCheckBox>
                                     <SfCheckBox Label="Aktif mi?" CssClass="col-sm-3" @bind-Checked="@(programInfo.Durum)"></SfCheckBox>
@@ -144,7 +144,7 @@
             <GridColumn Visible="false" Field=@nameof(ProgramDto.DiplomaAdEn) HeaderText="DiplomaAd İng."></GridColumn>
             <GridColumn Visible="false" Field=@nameof(ProgramDto.Dil) HeaderText="Dil"></GridColumn>
             <GridColumn Visible="false" Field=@nameof(ProgramDto.Yillik) DisplayAsCheckBox="true" HeaderText="Yillik"></GridColumn>
-            <GridColumn Visible="false" Field=@nameof(ProgramDto.Yerleske) HeaderText="Yerleske"></GridColumn>
+            @*<GridColumn Visible="false" Field=@nameof(ProgramDto.Yerleske) HeaderText="Yerleske"></GridColumn>*@
             <GridColumn Visible="false" Field=@nameof(ProgramDto.YoksisDurum) DisplayAsCheckBox="true" HeaderText="YoksisDurum"></GridColumn>
         </GridColumns>
     </SfGrid>

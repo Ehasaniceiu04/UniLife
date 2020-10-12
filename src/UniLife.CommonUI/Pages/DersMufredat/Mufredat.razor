@@ -36,46 +36,66 @@
     <GridEditSettings Dialog="DialogParams" ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
         <Template>
             @{
-                MufredatDto mufredatInfo = (context as MufredatDto);
+                gridModelMufredatInfo = (context as MufredatDto);
+                //gridModelMufredatInfo.FakulteId = tempFak;
+                //Task.Delay(1000);
+                //StateHasChanged();
                 <div class="row pb-2 bg-light text-dark">
                     <div class="col-sm-12 col-md-4">
-                        <FakBolPrg @bind-FakulteId="@(mufredatInfo.FakulteId)"
-                                   @bind-BolumId="@(mufredatInfo.BolumId)"
-                                   @bind-ProgramId="@(mufredatInfo.ProgramId)"
+                        @*<FakBolPrg @bind-FakulteId="@(gridModelMufredatInfo.FakulteId)"
+                        @bind-BolumId="@(gridModelMufredatInfo.BolumId)"
+                        @bind-ProgramId="@(gridModelMufredatInfo.ProgramId)"
+                        ProgramShow="true"></FakBolPrg>*@
+
+                        <FakBolPrg @bind-FakulteId="@(gridModelMufredatInfo.FakulteId)"
+                                   @bind-BolumId="@(gridModelMufredatInfo.BolumId)"
+                                   @bind-ProgramId="@(gridModelMufredatInfo.ProgramId)"
                                    ProgramPlaceHolder="@(plazceHolderProgramAd)"
+                                   BolumPlaceHolder="@(plazceHolderBolumAd)"
+                                   FakultePlaceHolder="@(plazceHolderFakulteAd)"
                                    ProgramShow="true"></FakBolPrg>
                     </div>
                     <div class="col-sm-12 col-md-8">
                         <div class="form-group row">
                             <label for="Ad" class="col-sm-2 col-form-label-sm">Müfredat Ad</label>
                             <div class="col-sm-4">
-                                <SfTextBox ID="Ad" Placeholder="Müfredat Ad" CssClass="form-control-sm" @bind-Value="@(mufredatInfo.Ad)"></SfTextBox>
+                                <SfTextBox ID="Ad" Placeholder="Müfredat Ad" CssClass="form-control-sm" @bind-Value="@(gridModelMufredatInfo.Ad)"></SfTextBox>
                             </div>
                             <label for="Yil" class="col-sm-2 col-form-label-sm">Yil</label>
                             <div class="col-sm-4">
-                                <SfNumericTextBox ID="Yil" Placeholder="Yil" CssClass="form-control-sm" @bind-Value="@(mufredatInfo.Yil)"></SfNumericTextBox>
+                                <SfNumericTextBox ID="Yil" Placeholder="Yil" CssClass="form-control-sm" @bind-Value="@(gridModelMufredatInfo.Yil)"></SfNumericTextBox>
                             </div>
                         </div>
                         <div class="form-group  row">
                             <label for="BasTarih" class="col-sm-2 col-form-label-sm">BasTarih</label>
                             <div class="col-sm-4">
-                                <SfDatePicker ID="BasTarih" @bind-Value="@mufredatInfo.BasTarih" Placeholder="Kayıt Tarihi"></SfDatePicker>
+                                <SfDatePicker ID="BasTarih" @bind-Value="@gridModelMufredatInfo.BasTarih" Placeholder="Kayıt Tarihi"></SfDatePicker>
                             </div>
                         </div>
                         <div class="form-group  row">
                             <label for="KararTarih" class="col-sm-2 col-form-label-sm">Karar Tarih</label>
                             <div class="col-sm-4">
-                                <SfDatePicker ID="KararTarih" @bind-Value="@mufredatInfo.KararTarih" Placeholder="Karar Tarihi"></SfDatePicker>
+                                <SfDatePicker ID="KararTarih" @bind-Value="@gridModelMufredatInfo.KararTarih" Placeholder="Karar Tarihi"></SfDatePicker>
                             </div>
                             <div class="col-sm-6">
-                                <SfCheckBox Label="Aktif" @bind-Checked="@mufredatInfo.Aktif"></SfCheckBox>
+                                <SfCheckBox Label="Aktif" @bind-Checked="@gridModelMufredatInfo.Aktif"></SfCheckBox>
                             </div>
 
                         </div>
                     </div>
                 </div>
+                //Task.Delay(100);
+                //gridModelMufredatInfo.BolumId = tempBol;
+                //Task.Delay(100);
+                //gridModelMufredatInfo.ProgramId = tempProg;
             }
         </Template>
+        <HeaderTemplate>
+            @{
+                var text = GetHeader((context as MufredatDto));
+                <span>@text</span>
+            }
+        </HeaderTemplate>
     </GridEditSettings>
     <GridSortSettings>
         <GridSortColumns>

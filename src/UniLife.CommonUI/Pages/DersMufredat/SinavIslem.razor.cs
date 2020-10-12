@@ -390,13 +390,15 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             {
                 OgrenciDtos = apiResponse.Result;
                 matToaster.Add(apiResponse.Message, MatToastType.Success, "Sınava tabi öğrenicler getirildi");
-                OgrGridShow = false;
-                await Task.Delay(100);
+                //OgrGridShow = false;
+                //await Task.Delay(100);
 
-                OgrenciGrid.Refresh();
+                //OgrenciGrid.Refresh();
 
-                base.InvokeAsync(StateHasChanged);
-                OgrGridShow = true;
+                //base.InvokeAsync(StateHasChanged);
+                //OgrGridShow = true;
+
+                StateHasChanged();
 
             }
             else
@@ -496,7 +498,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
             {
                 SinavDtos = apiResponse.Result;
-                SinavGrid.Refresh();
+                //SinavGrid.Refresh();
                 SelectedDersAcilans = new List<DersAcilanForSinav> { dersAcilanDto };
                 OgrenciGridTemizle();
                 if (SinavDtos.Count < 1)
@@ -507,8 +509,9 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 {
                     isShowSinavs = true;
                 }
-                SinavGrid.Refresh();
-                SinavGrid.Refresh();
+                //SinavGrid.Refresh();
+                //SinavGrid.Refresh();
+                StateHasChanged();
             }
             else
             {
@@ -520,7 +523,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         public void OgrenciGridTemizle()
         {
             OgrenciDtos = new List<OgrenciDto>();
-            OgrenciGrid.Refresh();
+            //OgrenciGrid.Refresh();
         }
 
         public void ActionCompletedHandler(Syncfusion.Blazor.Grids.ActionEventArgs<SinavDto> args)
