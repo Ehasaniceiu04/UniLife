@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using UniLife.Server.Middleware.Wrappers;
+using UniLife.Shared;
 using UniLife.Shared.DataInterfaces;
 using UniLife.Shared.DataModels;
 using UniLife.Shared.Dto.Definitions;
@@ -12,10 +14,11 @@ namespace UniLife.Server.Managers
     {
 
         private readonly IDersKayitStore _dersKayitStore;
-        public DersKayitManager(IDersKayitStore dersKayitStore) : base(dersKayitStore)
+        private readonly ILogger<AccountManager> _logger;
+        public DersKayitManager(IDersKayitStore dersKayitStore, ILogger<AccountManager> logger) : base(dersKayitStore)
         {
             _dersKayitStore = dersKayitStore;
-
+            _logger = logger;
         }
 
         public async Task<ApiResponse> DeleteByOgrId_DersId(int ogrenciId, int dersId)
@@ -76,8 +79,16 @@ namespace UniLife.Server.Managers
 
         public async Task<ApiResponse> Harflendir(int dersAcilanId)
         {
-            await _dersKayitStore.Harflendir( dersAcilanId);
-            return new ApiResponse(Status200OK, "Öğrenci ders sonuçları harflendirildi.");
+            try
+            {
+                await _dersKayitStore.Harflendir(dersAcilanId);
+                return new ApiResponse(Status200OK, "Öğrenci ders sonuçları harflendirildi.");
+            }
+            catch (DomainException ex)
+            {
+                _logger.LogError("Harflendirme hatası: {0}, {1}", ex.Description, ex.Message);
+                return new ApiResponse(Status400BadRequest, $"Harflendirme hatası: {ex.Description} ");
+            }
         }
 
         public async Task<ApiResponse> GetOgrDersHarfs(int dersAcilanId)
@@ -91,6 +102,6 @@ namespace UniLife.Server.Managers
             return new ApiResponse(Status200OK, "Öğrenci ders sonuçları harflendirildi.");
         }
 
-        
+
     }
 }

@@ -9,7 +9,7 @@
 <legend>@_SinavDto.DersAcilanAd</legend>
 
 @*OnActionComplete="ActionCompletedHandler"*@
-<SfGrid ID="grdNotlar" @ref="grdNotlar" DataSource="@sinavOgrNotlarDtos" Toolbar="@(new List<string>() {"Update", "Cancel", "ExcelExport", "CsvExport", "PdfExport" })" AllowPaging="true">
+<SfGrid ID="grdNotlar" @ref="grdNotlar" DataSource="@sinavOgrNotlarDtos" Toolbar="@(new List<string>() {"Update", "Cancel", "ExcelExport", "CsvExport", "PdfExport" })">
     <GridEvents TValue="SinavOgrNotlarDto" QueryCellInfo="QueryCellInfoHandler" OnBatchSave="OnBatchSaveHandler" OnActionBegin="OnActionBeginHandler"></GridEvents>
     <GridEditSettings AllowEditing="true" Mode="EditMode.Batch"></GridEditSettings>
     <GridColumns>
@@ -250,7 +250,6 @@
         {
             if (apiResponse.IsSuccessStatusCode)
             {
-                matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
                 await HarflendirmeSonucGoster();
             }
             else
@@ -271,7 +270,7 @@
         {
             if (apiResponse.IsSuccessStatusCode)
             {
-                matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+                await HarflendirmeSonucGoster();
             }
             else
                 matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");

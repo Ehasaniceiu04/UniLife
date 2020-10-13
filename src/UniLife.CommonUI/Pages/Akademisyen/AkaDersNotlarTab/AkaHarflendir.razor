@@ -11,10 +11,9 @@
 <legend>@(_SinavDto.DersAcilanAd+" - Harflendirme - "+ (_SinavDto.IsYayinli?"(Yayınlı)":""))</legend>
 
 @*OnActionComplete="ActionCompletedHandler"*@
-<SfGrid ID="grdHarfler" @ref="grdHarfler" DataSource="@dersKayitOgrOrtalamaDtos" Toolbar="@(new List<string>() {"ExcelExport", "CsvExport", "PdfExport" })" AllowPaging="true" AllowFiltering="true" AllowSorting="true" AllowResizing="true">
+<SfGrid ID="grdHarfler" @ref="grdHarfler" DataSource="@dersKayitOgrOrtalamaDtos" Toolbar="@(new List<string>() {"ExcelExport", "CsvExport", "PdfExport" })" AllowFiltering="true" AllowSorting="true" AllowResizing="true">
     @*<GridEvents TValue="DersKayitOgrOrtalamaDto" QueryCellInfo="QueryCellInfoHandler" OnBatchSave="OnBatchSaveHandler" OnActionBegin="OnActionBeginHandler"></GridEvents>*@
     <GridEvents TValue="DersKayitOgrOrtalamaDto" QueryCellInfo="QueryCellInfoHandler"></GridEvents>
-    <GridPageSettings PageCount="100" PageSizes="new int[]{ 5, 10, 50, 100,10000}"></GridPageSettings>
     <GridEditSettings AllowEditing="true" Mode="EditMode.Dialog">
         <Template>
             @{

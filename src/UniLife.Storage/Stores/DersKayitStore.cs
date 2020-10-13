@@ -616,7 +616,7 @@ namespace UniLife.Storage.Stores
             var dersAcilan = await _db.DersAcilans.FirstOrDefaultAsync(x => x.Id == dersAcilanId);
 
             //kaçtane öğrenci derse kayıtlı. ama sınava kayıtlı olmayabilir dikkat.
-            var dersKayitlari = await _db.DersKayits.Where(x => x.DersAcilanId == dersAcilanId).ToListAsync();
+            var dersKayitlari = await _db.DersKayits.Where(x => x.DersAcilanId == dersAcilanId).AsNoTracking().ToListAsync();
 
             //ara sınav fina büt mazeret ayrı kayıtlar olarak geliyor.
             var derseKayitliOgrlerinTumSinavlari = await (from s in _db.Sinavs.Where(x => x.DersAcilanId == dersAcilanId)
@@ -666,9 +666,7 @@ namespace UniLife.Storage.Stores
             //Oransal Bağıl
             else if (dersKayitlari.Count < 30)
             {
-                await OransalBagilBut(dersKayitlari.Where(x => x.HarfNot == "FF" || x.HarfNot == "GR" || x.HarfNot == "DD" || x.HarfNot == "DC").ToList()
-                                    , dersKayitlari.Where(x => x.HarfNot != "GR").ToList()
-                                    , derseKayitliOgrlerinTumSinavlariFinalsiz);
+                await OransalBagilBut(dersKayitlari, derseKayitliOgrlerinTumSinavlariFinalsiz);
             }
 
             //Normal Bağıl
@@ -754,10 +752,14 @@ namespace UniLife.Storage.Stores
             await _db.SaveChangesAsync(CancellationToken.None);
         }
 
-        private async Task OransalBagilBut(List<DersKayit> buteGirebilenDersKayitlari, List<DersKayit> finalHesapliDersKayitlari, List<OgrSinavSonucs> derseKayitliOgrlerinTumSinavlariFinalsiz)
+        private async Task OransalBagilBut(List<DersKayit> TumNotlar, List<OgrSinavSonucs> derseKayitliOgrlerinTumSinavlariFinalsiz)
         {
             List<DersKayit> buttenKalanDersKayits = new List<DersKayit>();
             List<DersKayit> buttenHarflenenDersKayits = new List<DersKayit>();
+
+            var buteGirebilenDersKayitlari = TumNotlar.Where(x => x.HarfNot == "FF" || x.HarfNot == "GR" || x.HarfNot == "DD" || x.HarfNot == "DC").ToList();
+            var finalHesapliDersKayitlari = TumNotlar.Where(x => x.HarfNot != "GR").ToList().DeepClone();
+            //var eskiHesap = finalHesapliDersKayitlari;
 
             foreach (var item in buteGirebilenDersKayitlari)
             {
@@ -792,7 +794,7 @@ namespace UniLife.Storage.Stores
 
                 //büt <50 ise  FF 
                 if (derseKayitliOgrlerinTumSinavlariFinalsizOgrenci.Any(x =>
-                                                             (x.SinavTipId == (int)SinavTipEnum.But && x.Not <= 50)))
+                                                             (x.SinavTipId == (int)SinavTipEnum.But && x.Not < 50)))
                 {
                     item.Carpan = 0;
                     item.Ort = OgrOrtalama;
@@ -819,38 +821,41 @@ namespace UniLife.Storage.Stores
             {
                 var orderedfinalHesapliDersKayitlari = finalHesapliDersKayitlari.OrderBy(x => x.Ort).ToList();
 
-                foreach (var item in buttenHarflenenDersKayits)
+                foreach (var butHarfdersKayit in buttenHarflenenDersKayits)
                 {
-                    var ayniOrtalamaliDersKayit = finalHesapliDersKayitlari.FirstOrDefault(x => x.Ort == item.Ort);
+                    var ayniOrtalamaliDersKayit = finalHesapliDersKayitlari.FirstOrDefault(x => x.Ort == butHarfdersKayit.Ort);
 
                     if (ayniOrtalamaliDersKayit != null)
                     {
-                        item.HarfNot = ayniOrtalamaliDersKayit.HarfNot;
-                        item.Carpan = ayniOrtalamaliDersKayit.Carpan;
-                        item.GecDurum = ayniOrtalamaliDersKayit.GecDurum;
+                        butHarfdersKayit.HarfNot = ayniOrtalamaliDersKayit.HarfNot;
+                        butHarfdersKayit.Carpan = ayniOrtalamaliDersKayit.Carpan;
+                        butHarfdersKayit.GecDurum = ayniOrtalamaliDersKayit.GecDurum;
                     }
 
 
 
                     for (int i = 0; i < orderedfinalHesapliDersKayitlari.Count - 1; i++)
                     {
-                        if (orderedfinalHesapliDersKayitlari[i].Ort < item.Ort && item.Ort < orderedfinalHesapliDersKayitlari[i + 1].Ort)
+                        if (orderedfinalHesapliDersKayitlari[i].Ort < butHarfdersKayit.Ort && butHarfdersKayit.Ort < orderedfinalHesapliDersKayitlari[i + 1].Ort)
                         {
-                            item.HarfNot = orderedfinalHesapliDersKayitlari[i + 1].HarfNot;
-                            item.Carpan = orderedfinalHesapliDersKayitlari[i + 1].Carpan;
-                            item.GecDurum = orderedfinalHesapliDersKayitlari[i + 1].GecDurum;
+                            butHarfdersKayit.HarfNot = orderedfinalHesapliDersKayitlari[i + 1].HarfNot;
+                            butHarfdersKayit.Carpan = orderedfinalHesapliDersKayitlari[i + 1].Carpan;
+                            butHarfdersKayit.GecDurum = orderedfinalHesapliDersKayitlari[i + 1].GecDurum;
+                            break;
                         }
-                        else if (orderedfinalHesapliDersKayitlari[i].Ort > item.Ort)
+                        else if (orderedfinalHesapliDersKayitlari[i].Ort > butHarfdersKayit.Ort)
                         {
-                            item.HarfNot = orderedfinalHesapliDersKayitlari[i].HarfNot;
-                            item.Carpan = orderedfinalHesapliDersKayitlari[i].Carpan;
-                            item.GecDurum = orderedfinalHesapliDersKayitlari[i].GecDurum;
+                            butHarfdersKayit.HarfNot = orderedfinalHesapliDersKayitlari[i].HarfNot;
+                            butHarfdersKayit.Carpan = orderedfinalHesapliDersKayitlari[i].Carpan;
+                            butHarfdersKayit.GecDurum = orderedfinalHesapliDersKayitlari[i].GecDurum;
+                            break;
                         }
-                        else if (item.Ort > orderedfinalHesapliDersKayitlari[i + 1].Ort)
+                        else if (butHarfdersKayit.Ort > orderedfinalHesapliDersKayitlari[i + 1].Ort)
                         {
-                            item.HarfNot = orderedfinalHesapliDersKayitlari[i + 1].HarfNot;
-                            item.Carpan = orderedfinalHesapliDersKayitlari[i + 1].Carpan;
-                            item.GecDurum = orderedfinalHesapliDersKayitlari[i + 1].GecDurum;
+                            butHarfdersKayit.HarfNot = orderedfinalHesapliDersKayitlari[i + 1].HarfNot;
+                            butHarfdersKayit.Carpan = orderedfinalHesapliDersKayitlari[i + 1].Carpan;
+                            butHarfdersKayit.GecDurum = orderedfinalHesapliDersKayitlari[i + 1].GecDurum;
+                            continue;
                         }
                     }
                 }
@@ -899,7 +904,7 @@ namespace UniLife.Storage.Stores
 
                 //büt <50 ise  FF
                 if (derseKayitliOgrlerinTumSinavlariFinalsizOgrenci.Any(x =>
-                                                             (x.SinavTipId == (int)SinavTipEnum.But && x.Not <= 50)))
+                                                             (x.SinavTipId == (int)SinavTipEnum.But && x.Not < 50)))
                 {
                     item.Carpan = 0;
                     item.Ort = OgrOrtalama;

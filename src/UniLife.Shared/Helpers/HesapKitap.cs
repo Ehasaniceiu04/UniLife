@@ -112,9 +112,12 @@ namespace UniLife.Shared.Helpers
 
                     for (; i < yuvarlakHarfOgrSayisi; i++) //Hesaplanan öğrenci sayısı kadar sıralı listemizi harflendirdik.
                     {
-                        ortalamayaGoreSiraliDersKayitlar[i].HarfNot = item.harf;
-                        ortalamayaGoreSiraliDersKayitlar[i].Carpan = item.carpan;
-                        ortalamayaGoreSiraliDersKayitlar[i].GecDurum = item.gecti;
+                        if (ortalamayaGoreSiraliDersKayitlar.Count()>= yuvarlakHarfOgrSayisi)
+                        {
+                            ortalamayaGoreSiraliDersKayitlar[i].HarfNot = item.harf;
+                            ortalamayaGoreSiraliDersKayitlar[i].Carpan = item.carpan;
+                            ortalamayaGoreSiraliDersKayitlar[i].GecDurum = item.gecti;
+                        }
                     }
                 }
 
