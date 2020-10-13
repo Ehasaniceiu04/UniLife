@@ -108,7 +108,7 @@ else
                                 <GridEditSettings Dialog="DialogParams" ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
                                     <Template>
                                         @{
-                                            SinavDto sinavInfo = (context as SinavDto);
+                                            sinavInfo = (context as SinavDto);
                                         }
 
 
@@ -116,15 +116,16 @@ else
                                             <div class="col-12 pb-2">
                                                 <div class="form-row">
                                                     <label class="col-md-3 col-form-label" for="SinavTipId">Sinav Tip</label>
-                                                    <SfDropDownList ID="SinavTipId" CssClass="form-control col-sm-9" @bind-Value="@(sinavInfo.SinavTipId)" TValue="int" TItem="SinavTipDto" Index="0" DataSource="@sinavTipDtos">
+                                                    <SfDropDownList @ref="sinavTipDrop" ID="SinavTipId" CssClass="form-control col-sm-9" @bind-Value="@(sinavInfo.SinavTipId)" TValue="int" TItem="SinavTipDto" Index="0" DataSource="@sinavTipDtos">
                                                         <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
+                                                        <DropDownListEvents TValue="int?" ValueChange="SinavTipHandler"></DropDownListEvents>
                                                     </SfDropDownList>
                                                     <label class="col-md-3 col-form-label" for="SinavTurId">Sinav Tur</label>
                                                     <SfDropDownList Enabled="false" ID="SinavTurId" CssClass="form-control col-sm-9" @bind-Value="@(sinavInfo.SinavTurId)" TValue="int" TItem="SinavTurDto" Index="0" DataSource="@sinavTurDtos">
                                                         <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
                                                     </SfDropDownList>
                                                     <label class="col-md-3 col-form-label" for="EtkiOran">EtkiOran (%)</label>
-                                                    <SfNumericTextBox CssClass="form-control col-sm-9" ID="EtkiOran" Min="0" Max="100" @bind-Value="@(sinavInfo.EtkiOran)" TValue="int?" Format=n0></SfNumericTextBox>
+                                                    <SfNumericTextBox Enabled="@butEnabled" CssClass="form-control col-sm-9" ID="EtkiOran" Min="0" Max="100" @bind-Value="@(sinavInfo.EtkiOran)" TValue="int?" Format=n0></SfNumericTextBox>
                                                     @*<label class="col-md-3 col-form-label" for="Tarih">Zaman</label>
                                                         <SfDateTimePicker CssClass="form-control col-sm-9" ID="Tarih" TValue="DateTime?" @bind-Value="@(sinavInfo.Tarih)" Placeholder="Lütfen bir tarih seçiniz."></SfDateTimePicker>*@
                                                 </div>

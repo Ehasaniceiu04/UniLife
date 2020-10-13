@@ -196,7 +196,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
             if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
             {
-                sinavTipDtos = apiResponse.Result.Where(x=>x.Id!=(int)SinavTipEnum.Mazeret).ToList();
+                sinavTipDtos = apiResponse.Result.Where(x => x.Id != (int)SinavTipEnum.Mazeret).ToList();
             }
             else
             {
@@ -378,7 +378,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         async Task SinavGridRefresh()
         {
             var selectedDersAcilan = (await DersAcGrid.GetSelectedRecords()).FirstOrDefault();
-            
+
 
             GetSinavsByDersAcilanId(selectedDersAcilan);
         }
@@ -458,7 +458,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         {
             if (args.CommandColumn.Title == "Ogrenciyi Ekle")
             {
-                if (OgrenciDtos.Any(x=>x.Id == args.RowData.OgrenciId))
+                if (OgrenciDtos.Any(x => x.Id == args.RowData.OgrenciId))
                 {
                     dialogUyariText = "Bu öğrenci seçili sınava zaten ekli.";
                     isUyariOpen = true;
@@ -486,7 +486,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                     {
                         matToaster.Add(args.RowData.Ogrenci.Ad + " " + args.RowData.Ogrenci.Soyad + " : " + apiResponse.StatusCode, MatToastType.Danger, "Öğrenci sinava kayıt edilemedi");
                     }
-                }                
+                }
             }
         }
 
@@ -526,8 +526,10 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             //OgrenciGrid.Refresh();
         }
 
+        
         public void ActionCompletedHandler(Syncfusion.Blazor.Grids.ActionEventArgs<SinavDto> args)
         {
+            butEnabled = true;
             if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
             {
 
@@ -818,6 +820,30 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             DersAcGrid.Refresh();
 
 
+        }
+
+
+        SfDropDownList<int, SinavTipDto> sinavTipDrop;
+        SinavDto sinavInfo = new SinavDto();
+        bool butEnabled = true;
+        async Task SinavTipHandler(ChangeEventArgs<int?> args)
+        {
+            
+            if (args.Value == (int?)SinavTipEnum.But)
+            {
+                SinavDto selectedSinavTip = SinavDtos.FirstOrDefault(x => x.SinavTipId == (int)SinavTipEnum.Final);
+                if (selectedSinavTip == null)
+                {
+                    dialogUyariText = "Büt oluşturmak için dersin bir finalinin olması lazım.";
+                    isUyariOpen = true;
+                    await sinavTipDrop.Clear();
+                }
+                else
+                {
+                    butEnabled = false;
+                    sinavInfo.EtkiOran = selectedSinavTip.EtkiOran;
+                }
+            }
         }
     }
 }
