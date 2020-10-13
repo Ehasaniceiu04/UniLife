@@ -484,6 +484,8 @@ namespace UniLife.Storage.Stores
                 double oransalBagilHesabaGirenlerDouble = (double)oransalBagilHesabaGirenler.Count;
 
                 List<DersKayit> KirkAltiOrtalamalilar = new List<DersKayit>();
+                List<DersKayit> ElliAltiFinaller = new List<DersKayit>();
+                
 
                 double OgrOrtalamaSum = 0;
                 foreach (var item in oransalBagilHesabaGirenler)
@@ -505,12 +507,23 @@ namespace UniLife.Storage.Stores
                         }
                     }
                     item.Ort = tekOgrenciOrtalama;
+
+                    var finalSinavi = derseKayitliOgrlerinTumSinavlariButsuzOgrenci.FirstOrDefault(x => x.SinavTipId == 2);
+
+                    if (finalSinavi != null && finalSinavi.Not < 50)
+                    {
+                        item.Carpan = 0;
+                        item.HarfNot = "FF";
+                        item.GecDurum = false;
+                        ElliAltiFinaller.Add(item);
+                    }
+
+
                     if (tekOgrenciOrtalama < 40) // ortalaması 40 altı olanlar bağıl hesaba dahil ancak hesaptan sonra FF lemek üzere kayıt edildi.
                     {
                         item.Carpan = 0;
                         item.HarfNot = "FF";
                         item.GecDurum = false;
-                        item.Ort = tekOgrenciOrtalama;
 
                         KirkAltiOrtalamalilar.Add(item);
                     }
@@ -530,9 +543,22 @@ namespace UniLife.Storage.Stores
                     DersKayit kirkAlti = KirkAltiOrtalamalilar.FirstOrDefault(x => x.Id == item.Id);
                     if (kirkAlti != null)
                     {
-                        item.Carpan = kirkAlti.Carpan;
-                        item.HarfNot = kirkAlti.HarfNot;
-                        item.GecDurum = kirkAlti.GecDurum;
+                        item.Carpan = 0;
+                        item.HarfNot = "FF";
+                        item.GecDurum = false;
+                    }
+                }
+
+                //50 altı
+                //YUkarıda FF ledik ancak bağıl yüzünden 50 altı final FF üstü çıkabilir . burada bir daha FF liyoruız.
+                foreach (var item in harfliortalamaliDersKayits)
+                {
+                    DersKayit ellialti = ElliAltiFinaller.FirstOrDefault(x => x.Id == item.Id);
+                    if (ellialti != null)
+                    {
+                        item.Carpan = 0;
+                        item.HarfNot = "FF";
+                        item.GecDurum = false;
                     }
                 }
 
@@ -741,10 +767,15 @@ namespace UniLife.Storage.Stores
                 var derseKayitliOgrlerinTumSinavlariFinalsizOgrenci = derseKayitliOgrlerinTumSinavlariFinalsiz.Where(x => x.OgrenciId == item.OgrenciId);
 
                 //Büte katılmadıysa işlemlerin finale göre kalması lazım.
-                if (derseKayitliOgrlerinTumSinavlariFinalsizOgrenci.FirstOrDefault(x => x.SinavTipId == (int)SinavTipEnum.But).Katilim == (int)SinavKatilimEnum.Katılmadı)
+                var butSinavi= derseKayitliOgrlerinTumSinavlariFinalsizOgrenci.FirstOrDefault(x => x.SinavTipId == (int)SinavTipEnum.But);
+                if (butSinavi==null || butSinavi.Katilim == (int)SinavKatilimEnum.Katılmadı)
                 {
                     continue;
                 }
+                //if (derseKayitliOgrlerinTumSinavlariFinalsizOgrenci.FirstOrDefault(x => x.SinavTipId == (int)SinavTipEnum.But).Katilim == (int)SinavKatilimEnum.Katılmadı)
+                //{
+                    
+                //}
 
                 foreach (var ogrencinot in derseKayitliOgrlerinTumSinavlariFinalsizOgrenci)
                 {
@@ -757,6 +788,7 @@ namespace UniLife.Storage.Stores
                         OgrOrtalama += ogrencinot.Not * (ogrencinot.EtkiOran / 100);
                     }
                 }
+                item.Ort = OgrOrtalama;
 
                 //büt <50 ise  FF 
                 if (derseKayitliOgrlerinTumSinavlariFinalsizOgrenci.Any(x =>

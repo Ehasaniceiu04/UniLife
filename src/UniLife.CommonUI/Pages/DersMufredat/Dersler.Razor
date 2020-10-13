@@ -36,7 +36,7 @@ else
 {
     @*DataSource="@dersDtos.Where(x => donemId.HasValue ? x.DonemId == donemId : true).ToList()"*@
 
-    <SfGrid ShowColumnChooser="true" @ref="DersGrid" DataSource="@dersDtos" Dialog="DialogParams" Toolbar="@(new List<string>() { "Add","ColumnChooser" })" AllowSorting="true" AllowGrouping="true" AllowFiltering="true" ColumnMenuItems=@MenuItems ShowColumnMenu="true" Width="100%">
+    <SfGrid ShowColumnChooser="true" @ref="DersGrid" DataSource="@dersDtos" Toolbar="@(new List<string>() { "Add","ColumnChooser" })" AllowSorting="true" AllowGrouping="true" AllowFiltering="true" ColumnMenuItems=@MenuItems ShowColumnMenu="true" Width="100%">
         @*<SfDataManager AdaptorInstance="@typeof(CustomAdaptor)" Adaptor="Adaptors.CustomAdaptor"></SfDataManager>*@
         <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.FilterBar"></GridFilterSettings>
         <GridPageSettings PageCount="5" PageSizes="new int[]{ 5, 10, 50, 100,10000}"></GridPageSettings>

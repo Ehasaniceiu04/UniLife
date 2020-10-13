@@ -28,6 +28,7 @@ else
         <SfDataManager Url="@(OdataQuery)" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
         <GridEvents TValue="DersAcilanDto" OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectedHandler"></GridEvents>
         @*<GridGroupSettings Columns="@Initial"></GridGroupSettings>*@
+        <GridPageSettings PageCount="100" PageSizes="new int[]{ 5, 10, 50, 100,10000}"></GridPageSettings>
         <GridTemplates>
             <DetailTemplate>
                 @{
@@ -63,20 +64,20 @@ else
             <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Ad"></GridColumn>
             <GridColumn Field="Donem.Ad" HeaderText="Donem"></GridColumn>
             @*<GridColumn>
-                    <GridCommandColumns>
-                        <GridCommandColumn Type="CommandButtonType.None" Title="Ders Sınavları" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
-                    </GridCommandColumns>
-                </GridColumn>*@
+                <GridCommandColumns>
+                    <GridCommandColumn Type="CommandButtonType.None" Title="Ders Sınavları" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
+                </GridCommandColumns>
+            </GridColumn>*@
         </GridColumns>
         @*<GridGroupSettings Columns=@Template>
-                <CaptionTemplate>
-                    @{
-                        var donemContext = (context as CaptionTemplateContext);
-                        <div><b>@donemContext.Key</b></div>
-                    }
+            <CaptionTemplate>
+                @{
+                    var donemContext = (context as CaptionTemplateContext);
+                    <div><b>@donemContext.Key</b></div>
+                }
 
-                </CaptionTemplate>
-            </GridGroupSettings>*@
+            </CaptionTemplate>
+        </GridGroupSettings>*@
     </SfGrid>
 
     @if (isYoklamaShow)

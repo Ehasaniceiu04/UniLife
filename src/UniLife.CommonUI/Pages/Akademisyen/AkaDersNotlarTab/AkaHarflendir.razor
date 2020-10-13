@@ -11,8 +11,10 @@
 <legend>@(_SinavDto.DersAcilanAd+" - Harflendirme - "+ (_SinavDto.IsYayinli?"(Yayınlı)":""))</legend>
 
 @*OnActionComplete="ActionCompletedHandler"*@
-<SfGrid ID="grdHarfler" @ref="grdHarfler" DataSource="@dersKayitOgrOrtalamaDtos" Toolbar="@(new List<string>() {"ExcelExport", "CsvExport", "PdfExport" })" AllowPaging="true">
+<SfGrid ID="grdHarfler" @ref="grdHarfler" DataSource="@dersKayitOgrOrtalamaDtos" Toolbar="@(new List<string>() {"ExcelExport", "CsvExport", "PdfExport" })" AllowPaging="true" AllowFiltering="true" AllowSorting="true" AllowResizing="true">
     @*<GridEvents TValue="DersKayitOgrOrtalamaDto" QueryCellInfo="QueryCellInfoHandler" OnBatchSave="OnBatchSaveHandler" OnActionBegin="OnActionBeginHandler"></GridEvents>*@
+    <GridEvents TValue="DersKayitOgrOrtalamaDto" QueryCellInfo="QueryCellInfoHandler"></GridEvents>
+    <GridPageSettings PageCount="100" PageSizes="new int[]{ 5, 10, 50, 100,10000}"></GridPageSettings>
     <GridEditSettings AllowEditing="true" Mode="EditMode.Dialog">
         <Template>
             @{
@@ -33,14 +35,19 @@
 
         </Template>
     </GridEditSettings>
+    <GridSortSettings>
+        <GridSortColumns>
+            <GridSortColumn Field="OgrOrt" Direction="SortDirection.Descending"></GridSortColumn>
+        </GridSortColumns>
+    </GridSortSettings>
     <GridColumns>
-        <GridColumn AllowEditing="false" Visible="false" Field=@nameof(DersKayitOgrOrtalamaDto.DersKayitId) HeaderText="DersKayitId" IsPrimaryKey="true"></GridColumn>
-        <GridColumn AllowEditing="false" Visible="false" Field=@nameof(DersKayitOgrOrtalamaDto.OgrenciId) HeaderText="OgrenciId"></GridColumn>
-        <GridColumn AllowEditing="false" Field=@nameof(DersKayitOgrOrtalamaDto.OgrenciNo) HeaderText="Öğrenci No"></GridColumn>
-        <GridColumn AllowEditing="false" Field=@nameof(DersKayitOgrOrtalamaDto.OgrenciAdSoyad) HeaderText="Adı Soyadı"></GridColumn>
-        <GridColumn AllowEditing="false" Field=@nameof(DersKayitOgrOrtalamaDto.OgrSinavlarText) HeaderText="Tüm Notları"></GridColumn>
-        <GridColumn Field=@nameof(DersKayitOgrOrtalamaDto.OgrOrt) HeaderText="Ort"></GridColumn>
-        <GridColumn Field=@nameof(DersKayitOgrOrtalamaDto.HarfNot) HeaderText="Harf"></GridColumn>
+        <GridColumn AutoFit="true" AllowEditing="false" Visible="false" Field=@nameof(DersKayitOgrOrtalamaDto.DersKayitId) HeaderText="DersKayitId" IsPrimaryKey="true"></GridColumn>
+        <GridColumn AutoFit="true" AllowEditing="false" Visible="false" Field=@nameof(DersKayitOgrOrtalamaDto.OgrenciId) HeaderText="OgrenciId"></GridColumn>
+        <GridColumn AutoFit="true" AllowEditing="false" Field=@nameof(DersKayitOgrOrtalamaDto.OgrenciNo) HeaderText="Öğrenci No"></GridColumn>
+        <GridColumn AutoFit="true" AllowEditing="false" Field=@nameof(DersKayitOgrOrtalamaDto.OgrenciAdSoyad) HeaderText="Adı Soyadı"></GridColumn>
+        <GridColumn AutoFit="true" AllowEditing="false" Field=@nameof(DersKayitOgrOrtalamaDto.OgrSinavlarText) HeaderText="Tüm Notları"></GridColumn>
+        <GridColumn AutoFit="true" Field=@nameof(DersKayitOgrOrtalamaDto.OgrOrt) HeaderText="Ort"></GridColumn>
+        <GridColumn AutoFit="true" Field=@nameof(DersKayitOgrOrtalamaDto.HarfNot) HeaderText="Harf"></GridColumn>
         <GridColumn Field=@nameof(DersKayitOgrOrtalamaDto.IsGecti) HeaderText="Sonuç">
             <Template>
                 @{
@@ -51,7 +58,7 @@
                     }
                     else
                     {
-                        if (dersOgrInfo.HarfNot=="DC")
+                        if (dersOgrInfo.HarfNot == "DC")
                         {
 
                         }
@@ -114,6 +121,13 @@
         catch (Exception ex)
         {
             matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
+        }
+    }
+    public void QueryCellInfoHandler(QueryCellInfoEventArgs<DersKayitOgrOrtalamaDto> args)
+    {
+        if (args.Data.OgrSinavlarText.Contains("Büt"))
+        {
+            args.Cell.AddStyle(new string[] { "background-color:#d6a7eb" });
         }
     }
 

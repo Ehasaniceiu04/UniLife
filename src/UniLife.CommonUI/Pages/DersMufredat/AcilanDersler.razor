@@ -48,11 +48,11 @@
     @if (DonemId.HasValue && isGridVisible)
     {
 
-        <SfGrid @ref="DersAcilanGrid" Query="@totalQuery" TValue="DersAcilanDto" AllowSorting="true" AllowResizing="true" AllowExcelExport="true" AllowPdfExport="true" AllowPaging="true" AllowFiltering="true" Toolbar="@(new List<string>() {  "Add","PdfExport","ExcelExport","ColumnChooser","Kayıtlı Öğrenciler" })" ShowColumnChooser="true">
+        <SfGrid PrintMode="PrintMode.CurrentPage" @ref="DersAcilanGrid" Query="@totalQuery" TValue="DersAcilanDto" AllowSorting="true" AllowResizing="true" AllowExcelExport="true" AllowPdfExport="true" AllowPaging="true" AllowFiltering="true" Toolbar="@(new List<string>() {  "Add","PdfExport","ExcelExport","ColumnChooser","Kayıtlı Öğrenciler" })" ShowColumnChooser="true">
             <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
             <GridEvents RowSelecting="OnRowSelecting" OnToolbarClick="ToolbarClickHandler" OnActionComplete="ActionCompletedHandler" OnActionBegin="OnActionBeginHandler" CommandClicked="CommandClickHandler" TValue="DersAcilanDto"></GridEvents>
             <GridPageSettings PageCount="5" PageSizes="new int[]{ 5, 10, 50, 100,10000}"></GridPageSettings>
-            @*<GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.CheckBox"></GridFilterSettings>*@
+            <GridFilterSettings Mode="FilterBarMode.Immediate" ImmediateModeDelay="1500"></GridFilterSettings>
             <GridEditSettings Dialog="DialogParams" ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
                 <Template>
                     @{
