@@ -259,7 +259,7 @@ namespace UniLife.Storage.Stores
                     var finalSinavi = derseKayitliOgrlerinTumSinavlariButsuzOgrenci.FirstOrDefault(x => x.SinavTipId == 2);
 
                     item.Carpan = 0;
-                    item.Ort = tembelOgrOrtalama;
+                    item.Ort = Math.Round( tembelOgrOrtalama,2);
                     item.HarfNot = finalSinavi.Katilim == (int)SinavKatilimEnum.Katılmadı ? "GR" : "FF";
                     item.GecDurum = false;
 
@@ -294,7 +294,7 @@ namespace UniLife.Storage.Stores
                         }
 
                     }
-                    item.Ort = tekOgrenciOrtalama;
+                    item.Ort = Math.Round(tekOgrenciOrtalama,2);
                     if (tekOgrenciOrtalama < 40) // ortalaması 40 altı olanlar bağıl hesaba dahil ancak hesaptan sonra FF lemek üzere kayıt edildi.
                     {
                         item.Carpan = 0;
@@ -403,7 +403,8 @@ namespace UniLife.Storage.Stores
                         DersKayitId = item.Id,
                         Carpan = 0,
                         Harf = finalSinavi.Katilim == (int)SinavKatilimEnum.Katılmadı ? "GR" : "FF",
-                        Ortalama = OgrOrtalama
+                        Ortalama = OgrOrtalama,
+                        GecDurum = false
                     });
 
                 }
@@ -415,7 +416,8 @@ namespace UniLife.Storage.Stores
                         DersKayitId = item.Id,
                         Carpan = dersNotHarfDto.carpan,
                         Harf = dersNotHarfDto.harf,
-                        Ortalama = dersNotHarfDto.ort
+                        Ortalama = dersNotHarfDto.ort,
+                        GecDurum = dersNotHarfDto.gecti
                     });
                 }
 
@@ -430,6 +432,7 @@ namespace UniLife.Storage.Stores
                 item.Carpan = denkgel.Carpan;
                 item.HarfNot = denkgel.Harf;
                 item.Ort = Convert.ToInt32(denkgel.Ortalama);
+                item.GecDurum = denkgel.GecDurum;
             }
 
 
@@ -467,7 +470,7 @@ namespace UniLife.Storage.Stores
                     var finalSinavi = derseKayitliOgrlerinTumSinavlariButsuzOgrenci.FirstOrDefault(x => x.SinavTipId == 2);
 
                     item.Carpan = 0;
-                    item.Ort = tembelOgrOrtalama;
+                    item.Ort = Math.Round(tembelOgrOrtalama,2);
                     item.HarfNot = finalSinavi.Katilim == (int)SinavKatilimEnum.Katılmadı ? "GR" : "FF";
                     item.GecDurum = false;
 
@@ -506,7 +509,7 @@ namespace UniLife.Storage.Stores
 
                         }
                     }
-                    item.Ort = tekOgrenciOrtalama;
+                    item.Ort = Math.Round( tekOgrenciOrtalama,2);
 
                     var finalSinavi = derseKayitliOgrlerinTumSinavlariButsuzOgrenci.FirstOrDefault(x => x.SinavTipId == 2);
 
@@ -743,7 +746,7 @@ namespace UniLife.Storage.Stores
                 var denkgel = hesapOrtalamalar.FirstOrDefault(x => x.DersKayitId == item.Id);
                 item.Carpan = denkgel.Carpan;
                 item.HarfNot = denkgel.Harf;
-                item.Ort = Convert.ToInt32(denkgel.Ortalama);
+                item.Ort = Math.Round(denkgel.Ortalama,2);
             }
 
 
@@ -790,7 +793,7 @@ namespace UniLife.Storage.Stores
                         OgrOrtalama += ogrencinot.Not * (ogrencinot.EtkiOran / 100);
                     }
                 }
-                item.Ort = OgrOrtalama;
+                item.Ort = Math.Round(OgrOrtalama,2);
 
                 //büt <50 ise  FF 
                 if (derseKayitliOgrlerinTumSinavlariFinalsizOgrenci.Any(x =>
@@ -902,12 +905,14 @@ namespace UniLife.Storage.Stores
                     }
                 }
 
+
+                item.Ort = OgrOrtalama;
                 //büt <50 ise  FF
                 if (derseKayitliOgrlerinTumSinavlariFinalsizOgrenci.Any(x =>
                                                              (x.SinavTipId == (int)SinavTipEnum.But && x.Not < 50)))
                 {
                     item.Carpan = 0;
-                    item.Ort = OgrOrtalama;
+                    
                     item.HarfNot = "FF";
                     item.GecDurum = false;
 
@@ -918,7 +923,6 @@ namespace UniLife.Storage.Stores
                     item.Carpan = 0;
                     item.HarfNot = "FF";
                     item.GecDurum = false;
-                    item.Ort = OgrOrtalama;
 
                     normalBagilButKalanlar.Add(item);
                 }

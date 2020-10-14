@@ -50,7 +50,7 @@
         <GridEvents TValue="SinavDto" OnToolbarClick="ToolbarClickHandler"></GridEvents>
         <GridPageSettings PageCount="5" PageSizes="new int[]{ 5, 10, 50, 100,10000}"></GridPageSettings>
         <GridSelectionSettings Type="SelectionType.Multiple" CheckboxOnly="true"></GridSelectionSettings>
-        <GridEditSettings AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
+        <GridEditSettings ShowDeleteConfirmDialog="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
             <Template>
                 @{
                     SinavDto sinavInfo = (context as SinavDto);

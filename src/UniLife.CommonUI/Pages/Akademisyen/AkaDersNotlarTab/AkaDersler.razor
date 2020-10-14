@@ -204,7 +204,7 @@ else
     {
         if (args.CommandColumn.Title == "Sınava Git")
         {
-            args.RowData.DersAcilanAd = expDersAcilan.Ad + " - " + args.RowData.SinavTip.Ad;
+            args.RowData.DersAcilanAd = expDersAcilan.Ad + " - "+ expDersAcilan.Kod + " - " + args.RowData.SinavTip.Ad;
             SinavToNotlar.InvokeAsync(args.RowData);
         }
     }
@@ -247,19 +247,19 @@ else
     {
         if (args.Data.SinavTipId == (int)SinavTipEnum.Ara_Sinav)
         {
-            args.Cell.AddStyle(new string[] { "background-color:#ebdc88" });
+            args.Cell.AddStyle(new string[] { "background-color:#ebdc881c" });
         }
         else if (args.Data.SinavTipId == (int)SinavTipEnum.Mazeret)
         {
-            args.Cell.AddStyle(new string[] { "background-color:#ff8095" });
+            args.Cell.AddStyle(new string[] { "background-color:#ebdc881c" });
         }
         else if (args.Data.SinavTipId == (int)SinavTipEnum.Final)
         {
-            args.Cell.AddStyle(new string[] { "background-color:#99ffca" });
+            args.Cell.AddStyle(new string[] { "background-color:#99fff654" });
         }
         else if(args.Data.SinavTipId == (int)SinavTipEnum.But)
         {
-            args.Cell.AddStyle(new string[] { "background-color:#6eff7f" });
+            args.Cell.AddStyle(new string[] { "background-color:#f72b2b1c" });
         }
 
     }

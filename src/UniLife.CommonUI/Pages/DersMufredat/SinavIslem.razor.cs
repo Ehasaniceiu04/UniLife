@@ -554,12 +554,19 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         }
 
 
+        string ogrenciAddOdata;
         public void OnActionBeginHandlerOgrenci(Syncfusion.Blazor.Grids.ActionEventArgs<OgrenciDto> args)
         {
+            ogrenciAddOdata = $"odata/derskayits?$expand=Ogrenci($select=Id,Ad,Soyad,Ogrno)&$filter=dersAcilanId eq {SelectedSinav.DersAcilanId}&$select=Id,OgrenciId";
             if (args.RequestType == Syncfusion.Blazor.Grids.Action.Add)
             {
+                if (SelectedSinav.SinavTipId == (int)SinavTipEnum.But)
+                {
+                    ogrenciAddOdata = $"odata/derskayits?$expand=Ogrenci($select=Id,Ad,Soyad,Ogrno)&$filter=dersAcilanId eq {SelectedSinav.DersAcilanId} and (GecDurum eq false or HarfNot eq 'DC')&$select=Id,OgrenciId";
+                }
                 args.Cancel = true;
                 ogrenciSecDialogOpen = true;
+                
             }
         }
 

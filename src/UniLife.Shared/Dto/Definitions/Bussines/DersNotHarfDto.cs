@@ -13,5 +13,6 @@ namespace UniLife.Shared.Dto.Definitions
         public int cok { get; set; }
         public double carpan{ get; set; }
         public double ort { get; set; }
+        public bool gecti { get; set; }
     }
 }

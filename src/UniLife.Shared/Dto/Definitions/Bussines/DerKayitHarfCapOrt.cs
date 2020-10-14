@@ -12,5 +12,6 @@ namespace UniLife.Shared.Dto.Definitions
         public string Harf { get; set; }
         public double Carpan { get; set; }
         public double Ortalama { get; set; }
+        public bool GecDurum { get; set; }
     }
 }

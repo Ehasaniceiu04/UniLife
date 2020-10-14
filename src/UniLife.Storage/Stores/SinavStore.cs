@@ -146,12 +146,28 @@ namespace UniLife.Storage.Stores
                 List<SinavKayit> sinavKayits = new List<SinavKayit>();
                 foreach (var dkItems in item.DersKayits)
                 {
-                    SinavKayit sinavKayit = new SinavKayit()
+                    if (sinavDto.SinavTipId == (int)SinavTipEnum.But)
                     {
-                        OgrenciId=dkItems.OgrenciId,
-                        SinavId =item.Id
-                    };
-                    sinavKayits.Add(sinavKayit);
+                        if (dkItems.GecDurum == false || dkItems.HarfNot == "DC")
+                        {
+                            SinavKayit sinavKayit = new SinavKayit()
+                            {
+                                OgrenciId = dkItems.OgrenciId,
+                                SinavId = item.Id
+                            };
+                            sinavKayits.Add(sinavKayit);
+                        }
+                    }
+                    else
+                    {
+                        SinavKayit sinavKayit = new SinavKayit()
+                        {
+                            OgrenciId = dkItems.OgrenciId,
+                            SinavId = item.Id
+                        };
+                        sinavKayits.Add(sinavKayit);
+                    }
+                                       
                 }
 
                 sinav.SinavKayits = sinavKayits;

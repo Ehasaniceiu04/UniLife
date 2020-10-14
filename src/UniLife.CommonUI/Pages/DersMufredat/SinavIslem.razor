@@ -195,7 +195,7 @@ else
     <Dialog Baslik="Öğrenci Listesi" @bind-isDialogOpen="@ogrenciSecDialogOpen">
         <div class="row">
             <SfGrid ID="SecmeliOgrenciGrid" @ref="SecmeliOgrenciGrid" TValue="DersKayitDto" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowFiltering="true">
-                <SfDataManager Url="@($"odata/derskayits?$expand=Ogrenci($select=Id,Ad,Soyad,Ogrno)&$filter=dersAcilanId eq {SelectedSinav.DersAcilanId}&$select=Id,OgrenciId")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+                <SfDataManager Url="@(ogrenciAddOdata)" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
                 <GridEvents TValue="DersKayitDto" CommandClicked="CommandClickHandlerSecmeliOgr"></GridEvents>
                 <GridColumns>
                     <GridColumn Visible="false" Field=@nameof(DersKayitDto.Id) HeaderText="Ogrenci ID" IsPrimaryKey="true" TextAlign="TextAlign.Right"></GridColumn>
