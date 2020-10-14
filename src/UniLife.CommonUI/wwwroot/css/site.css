@@ -354,6 +354,7 @@ app {
 
 .mdc-drawer .mdc-list-item--selected {
     border-left: solid 3px rgba(255, 255, 255, .5);
+    /*background-color:royalblue;*/
 }
 
     .mdc-drawer .mdc-list-item--selected::before {

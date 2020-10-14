@@ -28,6 +28,7 @@ namespace UniLife.Shared.Dto.Definitions
         public DateTime? Tarih { get; set; }
         public bool TarihIlan { get; set; }
         public string KisaAd { get; set; }
+        public string HarfYontem { get; set; }
 
         public int OgrCount { get; set; }
         public int? MazeretiSinavId { get; set; } //Bu sadece bazı öğrenciler için gerçekleşiyor.

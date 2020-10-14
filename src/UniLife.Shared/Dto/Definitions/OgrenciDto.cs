@@ -25,6 +25,7 @@ namespace UniLife.Shared.Dto.Definitions
         //[MaxLength(11)]
         //[MinLength(11)]
         [Required(ErrorMessage = "TCKN bilgisi zorunludur")]
+        [RegularExpression("([0-9]+)",ErrorMessage ="TCKN Sadece rakamlardan oluşmalıdır.")]
         public string TCKN { get; set; }
 
         [Required(ErrorMessage = "Fakulte bilgisi zorunludur")]

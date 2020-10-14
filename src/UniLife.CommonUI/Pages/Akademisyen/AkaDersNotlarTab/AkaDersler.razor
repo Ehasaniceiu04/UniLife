@@ -47,6 +47,7 @@ else
                             <GridColumn Field="SinavTur.Ad" HeaderText="Sınav Tür"></GridColumn>
                             <GridColumn Field=@nameof(SinavDto.EtkiOran) HeaderText="EtkiOran"></GridColumn>
                             <GridColumn Field=@nameof(SinavDto.Tarih) HeaderText="Tarih"></GridColumn>
+                            <GridColumn Visible="false" Field=@nameof(SinavDto.HarfYontem) HeaderText="Yontem"></GridColumn>
                             <GridColumn>
                                 <GridCommandColumns>
                                     <GridCommandColumn Type="CommandButtonType.None" Title="Sınava Git" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>

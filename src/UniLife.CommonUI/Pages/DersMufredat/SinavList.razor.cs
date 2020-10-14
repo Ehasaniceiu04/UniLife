@@ -80,26 +80,6 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
             }
         }
-        int? _filterMufredatId;
-        public int? FilterMufredatId
-        {
-            get => _filterMufredatId;
-            set
-            {
-                if (_filterMufredatId == value)
-                {
-                    KaynakChange();
-                    return;
-                }
-                else
-                {
-                    _filterMufredatId = value;
-                    KaynakChange();
-                }
-
-            }
-        }
-
         int? sinif;
         int? donemId;
 
@@ -108,7 +88,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         public Query donemQuery = new Query().Select(new List<string> { "Id", "Ad" }).RequiresCount();
 
-        public Query totalQuery = new Query().Expand(new List<string> { "Dersacilan($expand=Program($select=Ad,Id);$select=Ad,Id,Kod)", "SinavTur($select=Ad,Id)" });
+        public Query totalQuery = new Query().Expand(new List<string> { "Dersacilan($expand=Program($select=Ad,Id);$select=Ad,Id,Kod)", "SinavTip($select=Ad,Id)" });
         string OdataQuery = "odata/sinavs";
 
         Syncfusion.Blazor.Grids.SfGrid<SinavDto> sinavGrid;
@@ -126,7 +106,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         async Task Refresh()
         {
-            totalQuery = new Query().Expand(new List<string> { "Dersacilan($expand=Program($select=Ad,Id);$select=Ad,Id,Kod)" });
+            totalQuery = new Query().Expand(new List<string> { "Dersacilan($expand=Program($select=Ad,Id);$select=Ad,Id,Kod)", "SinavTip($select=Ad,Id)" });
             
             if (donemId.HasValue)
             {
@@ -137,11 +117,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 totalQuery.Where("Dersacilan/sinif", "equal", sinif);
             }
 
-            if (FilterMufredatId.HasValue)
-            {
-                totalQuery.Where("Dersacilan/mufredatId", "equal", FilterMufredatId);
-            }
-            else if (FilterProgramId.HasValue)
+            if (FilterProgramId.HasValue)
             {
                 totalQuery.Where("Dersacilan/programId", "equal", FilterProgramId);
             }

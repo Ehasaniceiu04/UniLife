@@ -8,7 +8,7 @@
 @attribute [Authorize(Roles = "Administrator,Personel,Akademisyen")]
 
 
-<legend>@(_SinavDto.DersAcilanAd+" - Harflendirme - "+ (_SinavDto.IsYayinli?"(Yayınlı)":""))</legend>
+<legend>@($"{_SinavDto.DersAcilanAd} Harflendirme {(string.IsNullOrWhiteSpace(_SinavDto.HarfYontem)?"Yapılmadı": _SinavDto.HarfYontem+" Yapıldı")} {(_SinavDto.IsYayinli?"(Yayınlı)":"")}")</legend>
 
 @*OnActionComplete="ActionCompletedHandler"*@
 <SfGrid ID="grdHarfler" @ref="grdHarfler" DataSource="@dersKayitOgrOrtalamaDtos" Toolbar="@(new List<string>() {"ExcelExport", "CsvExport", "PdfExport" })" AllowFiltering="true" AllowSorting="true" AllowResizing="true">

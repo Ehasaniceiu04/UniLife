@@ -186,7 +186,8 @@ namespace UniLife.Storage.Stores
                                                               SinavTipId = st.Id,
                                                               MazeretiSinavKayitId = sk.MazeretiSinavKayitId,
                                                               Not = sk.OgrNot,
-                                                              EtkiOran = s.EtkiOran
+                                                              EtkiOran = s.EtkiOran,
+                                                              SinavId = s.Id
                                                           }).AsNoTracking().ToListAsync();
 
             var derseKayitliOgrlerinTumSinavlariButsuz = derseKayitliOgrlerinTumSinavlari.Where(x => x.SinavTipId != 3).ToList();
@@ -365,7 +366,9 @@ namespace UniLife.Storage.Stores
                 _db.DersKayits.UpdateRange(normalBagilHesabaGiremeyenler);
             }
 
-
+            Sinav sinav = await _db.Sinavs.FirstOrDefaultAsync(x => x.Id == derseKayitliOgrlerinTumSinavlariButsuz.FirstOrDefault(y => y.SinavTipId == (int)SinavTipEnum.Final).SinavId);
+            sinav.HarfYontem = "Normal Bağıl";
+            _db.Sinavs.Update(sinav);
 
             await _db.SaveChangesAsync(CancellationToken.None);
         }
@@ -437,7 +440,9 @@ namespace UniLife.Storage.Stores
 
 
             _db.DersKayits.UpdateRange(dersKayitExists);
-
+            Sinav sinav = await _db.Sinavs.FirstOrDefaultAsync(x => x.Id == derseKayitliOgrlerinTumSinavlariButsuz.FirstOrDefault(y => y.SinavTipId == (int)SinavTipEnum.Final).SinavId);
+            sinav.HarfYontem = "Mutlak";
+            _db.Sinavs.Update(sinav);
             await _db.SaveChangesAsync(CancellationToken.None);
         }
 
@@ -574,6 +579,9 @@ namespace UniLife.Storage.Stores
             {
                 _db.DersKayits.UpdateRange(oransalBagilHesabaGiremeyenler);
             }
+            Sinav sinav = await _db.Sinavs.FirstOrDefaultAsync(x => x.Id == derseKayitliOgrlerinTumSinavlariButsuz.FirstOrDefault(y=>y.SinavTipId == (int)SinavTipEnum.Final).SinavId);
+            sinav.HarfYontem = "Oransal Bağıl";
+            _db.Sinavs.Update(sinav);
             await _db.SaveChangesAsync(CancellationToken.None);
         }
 

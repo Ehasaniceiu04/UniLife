@@ -115,7 +115,7 @@ namespace UniLife.CommonUI.Shared
         }
         async Task ReadFakultes()
         {
-            OData<KeyValueDto> apiResponse = await Http.GetFromJsonAsync<OData<KeyValueDto>>($"odata/fakultes?$select=Id,Ad");
+            OData<KeyValueDto> apiResponse = await Http.GetFromJsonAsync<OData<KeyValueDto>>($"odata/fakultes?$select=Id,Ad&$orderby=Ad");
 
             if (apiResponse.Value.Count != 0)
             {
@@ -169,7 +169,7 @@ namespace UniLife.CommonUI.Shared
         {
             OData<KeyValueDto> apiResponse;
             //apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<BolumDto>>>("api/bolum/GetBolumByFakulteIds/" + string.Join(',', fakulteId));
-            apiResponse = await Http.GetFromJsonAsync<OData<KeyValueDto>>($"odata/bolums?$filter=FakulteId eq {fakulteId}&select=Id,Ad");
+            apiResponse = await Http.GetFromJsonAsync<OData<KeyValueDto>>($"odata/bolums?$filter=FakulteId eq {fakulteId}&select=Id,Ad&$orderby=Ad");
 
 
             if (apiResponse.Value.Count != 0)
@@ -188,7 +188,7 @@ namespace UniLife.CommonUI.Shared
             if (ProgramShow)
             {
                 OData<KeyValueDto> apiResponse;
-                apiResponse = await Http.GetFromJsonAsync<OData<KeyValueDto>>($"odata/programs?$filter=BolumId eq {bolumId}&select=Id,Ad");
+                apiResponse = await Http.GetFromJsonAsync<OData<KeyValueDto>>($"odata/programs?$filter=BolumId eq {bolumId}&select=Id,Ad&$orderby=Ad");
 
                 if (apiResponse.Value != null)
                 {
@@ -208,7 +208,7 @@ namespace UniLife.CommonUI.Shared
             if (MufredatShow)
             {
                 OData<KeyValueDto> apiResponse;
-                apiResponse = await Http.GetFromJsonAsync<OData<KeyValueDto>>($"odata/mufredats?$filter=ProgramId eq {programId}&select=Id,Ad");
+                apiResponse = await Http.GetFromJsonAsync<OData<KeyValueDto>>($"odata/mufredats?$filter=ProgramId eq {programId}&select=Id,Ad&$orderby=Ad");
 
                 if (apiResponse.Value != null)
                 {

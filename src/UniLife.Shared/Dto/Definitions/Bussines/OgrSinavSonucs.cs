@@ -17,5 +17,6 @@ namespace UniLife.Shared.Dto.Definitions
         public double EtkiOran { get; set; }
         public double Not { get; set; }
         public int Katilim { get; set; }
+        public int SinavId { get; set; }
     }
 }
