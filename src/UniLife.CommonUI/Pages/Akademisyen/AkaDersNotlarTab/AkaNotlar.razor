@@ -212,6 +212,7 @@
     async Task HarflendirmeSonucGoster()
     {
 
+
         isHarflendirmeSonucGoster = false;
         StateHasChanged();
         await Task.Delay(100);
@@ -251,6 +252,10 @@
             if (apiResponse.IsSuccessStatusCode)
             {
                 await HarflendirmeSonucGoster();
+
+                ApiResponseDto<SinavDto> apiResponseYontem = await Http.GetFromJsonAsync<ApiResponseDto<SinavDto>>("api/sinav/" + _SinavDto.Id);
+                var birFinalOrBut = apiResponseYontem.Result;
+                _SinavDto.HarfYontem = birFinalOrBut.HarfYontem;
             }
             else
                 matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");

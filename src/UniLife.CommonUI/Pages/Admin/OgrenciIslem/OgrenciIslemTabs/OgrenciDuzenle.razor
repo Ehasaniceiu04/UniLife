@@ -646,7 +646,7 @@ else
 
         if (apiResponse.StatusCode == Status200OK)
         {
-            ogrenimDurumDtos = apiResponse.Result;
+            ogrenimDurumDtos = apiResponse.Result.OrderBy(x=>x.Ad).ToList();
 
         }
         else
@@ -660,7 +660,7 @@ else
 
         if (apiResponse.StatusCode == Status200OK)
         {
-            ogrenimTurDtos = apiResponse.Result;
+            ogrenimTurDtos = apiResponse.Result.OrderBy(x => x.Ad).ToList();
 
         }
         else

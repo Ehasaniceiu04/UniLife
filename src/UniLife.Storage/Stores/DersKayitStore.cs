@@ -366,7 +366,8 @@ namespace UniLife.Storage.Stores
                 _db.DersKayits.UpdateRange(normalBagilHesabaGiremeyenler);
             }
 
-            Sinav sinav = await _db.Sinavs.FirstOrDefaultAsync(x => x.Id == derseKayitliOgrlerinTumSinavlariButsuz.FirstOrDefault(y => y.SinavTipId == (int)SinavTipEnum.Final).SinavId);
+            var birFinalKayidi = derseKayitliOgrlerinTumSinavlariButsuz.FirstOrDefault(y => y.SinavTipId == (int)SinavTipEnum.Final);
+            Sinav sinav = await _db.Sinavs.FirstOrDefaultAsync(x => x.Id == birFinalKayidi.SinavId);
             sinav.HarfYontem = "Normal Bağıl";
             _db.Sinavs.Update(sinav);
 
@@ -440,7 +441,8 @@ namespace UniLife.Storage.Stores
 
 
             _db.DersKayits.UpdateRange(dersKayitExists);
-            Sinav sinav = await _db.Sinavs.FirstOrDefaultAsync(x => x.Id == derseKayitliOgrlerinTumSinavlariButsuz.FirstOrDefault(y => y.SinavTipId == (int)SinavTipEnum.Final).SinavId);
+            var birFinalKayidi = derseKayitliOgrlerinTumSinavlariButsuz.FirstOrDefault(y => y.SinavTipId == (int)SinavTipEnum.Final);
+            Sinav sinav = await _db.Sinavs.FirstOrDefaultAsync(x => x.Id == birFinalKayidi.SinavId);
             sinav.HarfYontem = "Mutlak";
             _db.Sinavs.Update(sinav);
             await _db.SaveChangesAsync(CancellationToken.None);
@@ -579,7 +581,8 @@ namespace UniLife.Storage.Stores
             {
                 _db.DersKayits.UpdateRange(oransalBagilHesabaGiremeyenler);
             }
-            Sinav sinav = await _db.Sinavs.FirstOrDefaultAsync(x => x.Id == derseKayitliOgrlerinTumSinavlariButsuz.FirstOrDefault(y=>y.SinavTipId == (int)SinavTipEnum.Final).SinavId);
+            var birFinalKayidi = derseKayitliOgrlerinTumSinavlariButsuz.FirstOrDefault(y => y.SinavTipId == (int)SinavTipEnum.Final);
+            Sinav sinav = await _db.Sinavs.FirstOrDefaultAsync(x => x.Id == birFinalKayidi.SinavId);
             sinav.HarfYontem = "Oransal Bağıl";
             _db.Sinavs.Update(sinav);
             await _db.SaveChangesAsync(CancellationToken.None);
@@ -759,6 +762,10 @@ namespace UniLife.Storage.Stores
 
 
             _db.DersKayits.UpdateRange(dersKayitExists);
+            var birButKayidi = derseKayitliOgrlerinTumSinavlariFinalsiz.FirstOrDefault(y => y.SinavTipId == (int)SinavTipEnum.But);
+            Sinav sinav = await _db.Sinavs.FirstOrDefaultAsync(x => x.Id == birButKayidi.SinavId);
+            sinav.HarfYontem = "Mutlak";
+            _db.Sinavs.Update(sinav);
 
             await _db.SaveChangesAsync(CancellationToken.None);
         }
@@ -880,6 +887,10 @@ namespace UniLife.Storage.Stores
             {
                 _db.DersKayits.UpdateRange(buttenKalanDersKayits);
             }
+            var birButKayidi = derseKayitliOgrlerinTumSinavlariFinalsiz.FirstOrDefault(y => y.SinavTipId == (int)SinavTipEnum.But);
+            Sinav sinav = await _db.Sinavs.FirstOrDefaultAsync(x => x.Id == birButKayidi.SinavId);
+            sinav.HarfYontem = "Oransal Bağıl";
+            _db.Sinavs.Update(sinav);
             await _db.SaveChangesAsync(CancellationToken.None);
         }
 
@@ -976,6 +987,10 @@ namespace UniLife.Storage.Stores
             {
                 _db.DersKayits.UpdateRange(normalBagilButHarfliler);
             }
+            var birButKayidi = derseKayitliOgrlerinTumSinavlariFinalsiz.FirstOrDefault(y => y.SinavTipId == (int)SinavTipEnum.But);
+            Sinav sinav = await _db.Sinavs.FirstOrDefaultAsync(x => x.Id == birButKayidi.SinavId);
+            sinav.HarfYontem = "Normal Bağıl";
+            _db.Sinavs.Update(sinav);
 
             await _db.SaveChangesAsync(CancellationToken.None);
         }
