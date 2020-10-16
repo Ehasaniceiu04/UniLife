@@ -319,7 +319,7 @@ user.HasClaim("permission", Permissions.DersKayit.Delete)))
             @*Todo*@
             @if (user.HasClaim("permission", Permissions.Menu.EKayit))
             {
-                <MatNavItem Href="@navigationManager.ToAbsoluteUri("/admin/ogrenci_islem").AbsoluteUri">
+                <MatNavItem Href="@navigationManager.ToAbsoluteUri("/EKayit").AbsoluteUri">
                     <MatIcon>supervisor_account</MatIcon> <span class="miniHover">E-Kayıt İşlemleri</span>
                 </MatNavItem>
             }

@@ -10,6 +10,8 @@
 @inject HttpClient Http;
 @using Syncfusion.Blazor.DropDowns;
 @using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Data
+
 
 @attribute [Authorize(Roles = "Administrator,Personel,Ogrenci,Akademisyen")]
 @*<Divider />
@@ -27,10 +29,17 @@ else
 {
     <div class="row">
         <div class="col-sm-12 text-center">
-            @foreach (var item in donemDtos)
+            @*@foreach (var item in donemDtos)
             {
                 <SfRadioButton Label="@item.Ad" Name="donemRadio" Value="@item.Id.ToString()" ValueChange="@OnDonemChange" TChecked="string" @bind-Checked="@(seciliDonemId)"></SfRadioButton>
-            }
+            }*@
+            <SfDropDownList ID="DropDonem" @ref="DropDonem" TValue="int?" TItem="DonemDto" CssClass="col-sm-4 azassa" Placeholder="Dönem seçiniz..."
+                            Query="@donemQuery"
+                            @bind-Value="@seciliDonemId">
+                <SfDataManager Url="odata/donems?$orderby=Yil desc, DonemTipId" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
+                <DropDownListEvents TValue="int?" ValueChange="OnDonemChange"></DropDownListEvents>
+                <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+            </SfDropDownList>
         </div>
     </div>
     <br />
@@ -38,6 +47,10 @@ else
 
         <SfTab @ref="Tab" HeaderPlacement="HeaderPosition.Left" SelectedItem="@selectedItem" LoadOn="ContentLoad.Demand">
             <TabEvents Selecting="OnTabSelecting"></TabEvents>
+            <TabAnimationSettings>
+                <TabAnimationPrevious Effect="@(AnimationEffect.SlideTopIn)"></TabAnimationPrevious>
+                <TabAnimationNext Effect="@(AnimationEffect.SlideBottomIn)"></TabAnimationNext>
+            </TabAnimationSettings>
             <TabItems>
                 @if (ogrenciProgramSure >= 1)
                 {
@@ -221,7 +234,9 @@ else
 
 
 @code{
-    string seciliDonemId = "";
+    
+
+    int? seciliDonemId;
 
     public bool IsChecked { get; set; } = true;
 
@@ -241,6 +256,9 @@ else
     public string PreviousEffect { get; set; }
     public string NextEffect { get; set; }
 
+    SfDropDownList<int?, DonemDto> DropDonem;
+    public Query donemQuery = new Query().Select(new List<string> { "Id", "Ad" }).RequiresCount();
+
     //protected override async Task OnInitializedAsync()
     //{
     //    _OgrenciDto = appState.OgrenciState;
@@ -257,7 +275,7 @@ else
         }
 
         GetDonems();
-        seciliDonemId = donemDtos.FirstOrDefault(x => x.Durum == true).Id.ToString();
+        seciliDonemId = donemDtos.FirstOrDefault(x => x.Durum == true).Id;
         //GetAcilanDerssByMufredat();
         SetOgrenciProgramSure();
         SetMufredatAd();
@@ -275,10 +293,10 @@ else
 
     int selectedItem;
 
-    private void OnDonemChange(Syncfusion.Blazor.Buttons.ChangeArgs<string> args)
+    private void OnDonemChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
     {
         IsChecked = !IsChecked;
-        appState.DersKayitDonemIdState = Convert.ToInt32(seciliDonemId);//await donemRadio.GetSelectedValue());
+        appState.DersKayitDonemIdState = (int)seciliDonemId;//await donemRadio.GetSelectedValue());
     }
 
     //public async void onDonemChange()
@@ -374,5 +392,10 @@ else
     .table td, .table th {
         padding-top: 10px;
         padding-bottom: 0px;
+    }
+
+    .azassa {
+        margin-top: 5px;
+        background-color: #d4b5b5;
     }
 </style>
