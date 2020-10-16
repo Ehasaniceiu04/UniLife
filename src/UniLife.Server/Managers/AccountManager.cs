@@ -535,13 +535,13 @@ namespace UniLife.Server.Managers
                     }).Result;
                 }
 
-
+                Ogrenci ogrCreateResult;
                 try
                 {
                     //Öğrenci Kaydı ekleme
                     ogrenciDto.ApplicationUserId = possibleUserId;
                     //ogrenciDto.SinitAtYil = (await _donemStore.GetWhere(x => x.Durum == true)).FirstOrDefault().Yil;
-                    Ogrenci ogrCreateResult = await _ogrenciStore.Create(ogrenciDto);
+                    ogrCreateResult = await _ogrenciStore.Create(ogrenciDto);
                 }
                 catch (Exception ex)
                 {
@@ -600,6 +600,7 @@ namespace UniLife.Server.Managers
 
                 var ogrenciDto1 = new OgrenciDto
                 {
+                    Id = ogrCreateResult.Id,
                     ApplicationUserId = user.Id,
                     IsAuthenticated = false,
                     OgrNo = ogrenciDto.OgrNo,//user.UserName,
@@ -610,6 +611,7 @@ namespace UniLife.Server.Managers
                     //ExposedClaims = user.Claims.ToDictionary(c => c.Type, c => c.Value),
                     Roles = new List<string> { "Ogrenci" }
                 };
+
 
                 return new ApiResponse(Status200OK, "Yeni öğrenci kullanıcı oluşturuldu", ogrenciDto1);
             }

@@ -567,10 +567,13 @@ else
                 {
 
                     _OgrenciDto.OgrNo = Newtonsoft.Json.JsonConvert.DeserializeObject<OgrenciDto>(apiResponse.Result.ToString()).OgrNo;
-
+                    _OgrenciDto.ApplicationUserId = Newtonsoft.Json.JsonConvert.DeserializeObject<OgrenciDto>(apiResponse.Result.ToString()).ApplicationUserId;
+                    _OgrenciDto.Id = Newtonsoft.Json.JsonConvert.DeserializeObject<OgrenciDto>(apiResponse.Result.ToString()).Id;
                     matToaster.Add(apiResponse.Message, MatToastType.Success);
 
                     //await GoBackOgrenci();
+
+
                     appState.OgrenciState = _OgrenciDto;
                 }
                 else
