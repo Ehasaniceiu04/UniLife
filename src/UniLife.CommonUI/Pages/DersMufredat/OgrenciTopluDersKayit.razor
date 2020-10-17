@@ -117,21 +117,21 @@
             @if (MufredatId2.HasValue)
             {
                 //Query = "@totalQueryDers"
-        <SfGrid ID="dersAcGrid" @ref="dersAcGrid" DataSource="dersAcilanDtos" TValue="DersAcilanDto" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
-            @*OnActionFailure="ActionFailureHandler" DetailDataBound="DetailDataBound"  OnActionBegin="ActionBeginHandler" DetailDataBound="DetailDataBound" RowDataBound="RowBound"*@
-            @*<SfDataManager Url="@OdataQueryDers" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>*@
-            <GridEvents TValue="DersAcilanDto"></GridEvents>
-            <GridPageSettings PageCount="5" PageSizes="new int[]{ 5, 10, 50, 100,10000}"></GridPageSettings>
-            @*<GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.Excel"></GridFilterSettings>*@
-            <GridColumns>
-                <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
-                <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
-                <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Ad"> </GridColumn>
-                <GridColumn Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kod"></GridColumn>
-                <GridColumn Field=@nameof(DersAcilanDto.Kredi) HeaderText="Kredi"></GridColumn>
-                <GridColumn Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sınıf"></GridColumn>
-            </GridColumns>
-        </SfGrid>
+                <SfGrid ID="dersAcGrid" @ref="dersAcGrid" DataSource="dersAcilanDtos" TValue="DersAcilanDto" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
+                    @*OnActionFailure="ActionFailureHandler" DetailDataBound="DetailDataBound"  OnActionBegin="ActionBeginHandler" DetailDataBound="DetailDataBound" RowDataBound="RowBound"*@
+                    @*<SfDataManager Url="@OdataQueryDers" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>*@
+                    <GridEvents TValue="DersAcilanDto"></GridEvents>
+                    <GridPageSettings PageCount="5" PageSizes="new int[]{ 5, 10, 50, 100,10000}"></GridPageSettings>
+                    @*<GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.Excel"></GridFilterSettings>*@
+                    <GridColumns>
+                        <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
+                        <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+                        <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Ad"> </GridColumn>
+                        <GridColumn Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kod"></GridColumn>
+                        <GridColumn Field=@nameof(DersAcilanDto.Kredi) HeaderText="Kredi"></GridColumn>
+                        <GridColumn Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sınıf"></GridColumn>
+                    </GridColumns>
+                </SfGrid>
             }
         </div>
     </div>
@@ -227,8 +227,8 @@
     .col-form-label-sm {
         padding-bottom: unset;
     }
+
     .e-grid .e-altrow {
         background-color: #fafafa;
     }
-
 </style>
