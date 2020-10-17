@@ -308,7 +308,7 @@ else
         </SfTab>
 
 
-        <div class="row">
+        @*<div class="row">
             @if (appState.UserNavigationLoadRole == UserRoles.Ogrenci.ToString() || UserRoles.Personel.ToString() == appState.UserNavigationLoadRole)
             {
                 @if (!isOnayli)
@@ -330,7 +330,7 @@ else
                         </SfProgressButton>
                     </div>
                 }
-                else /*if (appState.UserNavigationLoadRole == UserRoles.Personel.ToString())*/
+                else
                 {
                     <div class="col-6 text-center">
                         <SfProgressButton Content="Onay Kaldır" OnClick="OnayKaldir" CssClass="center-block e-primary">
@@ -340,7 +340,7 @@ else
                 }
             }
 
-        </div>
+        </div>*@
     </div>
 }
 

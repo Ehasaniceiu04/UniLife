@@ -601,7 +601,7 @@ namespace UniLife.Server
             else
             {
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                //app.UseHsts(); //HSTS Middleware (UseHsts) to send HTTP Strict Transport Security Protocol (HSTS) headers to clients.
+                app.UseHsts(); //HSTS Middleware (UseHsts) to send HTTP Strict Transport Security Protocol (HSTS) headers to clients.
             }
 
             //app.UseHttpsRedirection();
@@ -619,9 +619,23 @@ namespace UniLife.Server
             //Must be AFTER the Auth middleware to get the User/Identity info
             app.UseMiddleware<UserSessionMiddleware>();
 
-            // NSwag
-            app.UseOpenApi();
-            app.UseSwaggerUi3();
+            //// NSwag
+            //app.UseOpenApi();
+            //app.UseSwaggerUi3();
+
+
+            #region Guenlik icin
+            //https://medium.com/@elifbayrakdar/net-core-security-headers-3e1a831ceef5
+            app.Use(async (context, next) =>
+            {
+                context.Response.Headers.Add("X-Xss-Protection", "1; mode=block");
+
+                context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
+
+                context.Response.Headers.Add("X-Frame-Options", "SAMEORIGIN");
+                await next();
+            });
+            #endregion
 
             app.UseEndpoints(endpoints =>
             {
