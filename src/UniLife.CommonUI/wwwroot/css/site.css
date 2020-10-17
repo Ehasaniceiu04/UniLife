@@ -446,6 +446,12 @@ app {
 .mdc-top-app-bar--fixed-adjust {
     padding-top: 0 !important;
     overflow: hidden;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
 }
 
 .drawer-footer {

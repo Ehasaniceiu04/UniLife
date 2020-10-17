@@ -23,7 +23,7 @@
             </footer>
         </MatDrawer>
         <MatDrawerContent>
-            <MatAppBarContainer>
+            <MatAppBarContainer Style="display: flex; flex-direction: column; min-height: 100vh;">
                 <MatAppBar Fixed="true">
                     <MatAppBarRow>
                         <MatAppBarSection>
@@ -70,8 +70,8 @@
                 </MatAppBar>
                 <MatAppBarContent>
                     <Breadcrumbs RootLinkTitle="Home"></Breadcrumbs>
-                    <div id="main-page">
-                        <section class="container-fluid">
+                    @*<div id="main-page">*@
+                        <section class="container-fluid" style="flex:1;">
                             @Body
                         </section>
                         <footer class="page-footer">
@@ -79,7 +79,7 @@
                                 © 2020 <a href="/about">Uni-Life</a> Versiyon 1.0.5
                             </div>
                         </footer>
-                    </div>
+                    @*</div>*@
                 </MatAppBarContent>
             </MatAppBarContainer>
         </MatDrawerContent>
