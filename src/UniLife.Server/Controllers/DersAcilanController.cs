@@ -40,10 +40,10 @@ namespace UniLife.Server.Controllers
         [Obsolete("öğrencinin kayıtlı olduğu dersleri sınıf componentinden çekersen kullanabilirsin. Biz parenttan yolluyoruz.")]
         [HttpGet]
         [Authorize(Permissions.DersAcilan.Read)]
-        [Route("GetKayitliDerssByOgrenciId/{ogrenciId}/{sinif}/{donemId}")]
-        public async Task<ApiResponse> GetKayitliDerssByOgrenciId(int ogrenciId,int sinif,int donemId)
+        [Route("GetKayitliDerssByOgrenciId/{ogrenciId}/{donemId}")]
+        public async Task<ApiResponse> GetKayitliDerssByOgrenciId(int ogrenciId,int donemId)
             => ModelState.IsValid ?
-                await _dersAcilanManager.GetKayitliDerssByOgrenciId(ogrenciId, sinif, donemId) :
+                await _dersAcilanManager.GetKayitliDerssByOgrenciId(ogrenciId, donemId) :
                 new ApiResponse(Status400BadRequest, "DersAcilan Model is Invalid");
 
         [HttpGet]

@@ -7,10 +7,11 @@
 @inject AppState appState
 @using Syncfusion.Blazor.Navigations
 @using UniLife.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs.DersKayitTabs
-@inject HttpClient Http;
+
 @using Syncfusion.Blazor.DropDowns;
 @using Syncfusion.Blazor.Buttons
 @using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.SplitButtons
 
 
 @attribute [Authorize(Roles = "Administrator,Personel,Ogrenci,Akademisyen")]
@@ -30,9 +31,9 @@ else
     <div class="row">
         <div class="col-sm-12 text-center">
             @*@foreach (var item in donemDtos)
-            {
-                <SfRadioButton Label="@item.Ad" Name="donemRadio" Value="@item.Id.ToString()" ValueChange="@OnDonemChange" TChecked="string" @bind-Checked="@(seciliDonemId)"></SfRadioButton>
-            }*@
+                {
+                    <SfRadioButton Label="@item.Ad" Name="donemRadio" Value="@item.Id.ToString()" ValueChange="@OnDonemChange" TChecked="string" @bind-Checked="@(seciliDonemId)"></SfRadioButton>
+                }*@
             <SfDropDownList ID="DropDonem" @ref="DropDonem" TValue="int?" TItem="DonemDto" CssClass="col-sm-4 azassa" Placeholder="Dönem seçiniz..."
                             Query="@donemQuery"
                             @bind-Value="@seciliDonemId">
@@ -44,12 +45,91 @@ else
     </div>
     <br />
     <div class="card">
+        <div class="server-action-menu">
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <legend>Kayıt Olunan Dersler @(isOnayli?"(Onaylı)":string.Empty)</legend>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 col-md-12">
+                    @if (DersKayitDtos == null)
+                    {
+
+                        <LoadingBackground ShowLogoBox="true">
+                            <label>Kayıtlı Dersler Yükleniyor...</label>
+                        </LoadingBackground>
+                    }
+                    else
+                    {
+
+                        <SfGrid ID="DersKayitGrid" @ref="DersKayitGrid" DataSource="@DersKayitDtos" Toolbar="Toolbaritems" AllowSorting="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
+                            <GridEvents TValue="DersAcilanDto" OnToolbarClick="ToolbarClickHandler" QueryCellInfo="QueryCellInfoHandler" CommandClicked="CommandClickHandlerKayit"></GridEvents>
+                            <GridAggregates>
+                                <GridAggregate>
+                                    <GridAggregateColumns>
+                                        <GridAggregateColumn Field=@nameof(DersAcilanDto.Akts) Type="AggregateType.Sum" Format="N2">
+                                            <FooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>Toplam: @aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </FooterTemplate>
+                                        </GridAggregateColumn>
+                                        <GridAggregateColumn Field=@nameof(DersAcilanDto.Kredi) Type="AggregateType.Sum" Format="N2">
+                                            <FooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>Toplam: @aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </FooterTemplate>
+                                        </GridAggregateColumn>
+                                    </GridAggregateColumns>
+                                </GridAggregate>
+                            </GridAggregates>
+
+                            <GridColumns>
+                                <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+                                <GridColumn Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kodu"></GridColumn>
+                                <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Adı"></GridColumn>
+                                <GridColumn Visible="false" Field=@nameof(DersAcilanDto.YerineSecilenId) HeaderText="Yerine id"></GridColumn>
+                                <GridColumn Field=@nameof(DersAcilanDto.Zorunlu) DisplayAsCheckBox="true" HeaderText="Zorunlu"></GridColumn>
+                                <GridColumn Field=@nameof(DersAcilanDto.Kredi) Format="N2" HeaderText="Kredi"></GridColumn>
+                                <GridColumn Field=@nameof(DersAcilanDto.Akts) Format="N2" HeaderText="Akts"></GridColumn>
+                                <GridColumn Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
+                                <GridColumn Field=@nameof(DersAcilanDto.YerineSecilenAd) HeaderText="Yerine Ders"></GridColumn>
+                                @if (!isOnayli)
+                                {
+                                    <GridColumn HeaderText="Kaldır" Width="75">
+                                        <GridCommandColumns>
+                                            <GridCommandColumn Type="CommandButtonType.None" Title="Kayıt Kaldır" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-Close", CssClass="e-flat" })"></GridCommandColumn>
+                                        </GridCommandColumns>
+                                    </GridColumn>
+                                }
+
+                            </GridColumns>
+                        </SfGrid>
+                    }
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
 
         <SfTab @ref="Tab" HeaderPlacement="HeaderPosition.Left" SelectedItem="@selectedItem" LoadOn="ContentLoad.Demand">
             <TabEvents Selecting="OnTabSelecting"></TabEvents>
             <TabAnimationSettings>
-                <TabAnimationPrevious Effect="@(AnimationEffect.SlideTopIn)"></TabAnimationPrevious>
-                <TabAnimationNext Effect="@(AnimationEffect.SlideBottomIn)"></TabAnimationNext>
+                <TabAnimationPrevious Effect="@(Syncfusion.Blazor.AnimationEffect.SlideTopIn)"></TabAnimationPrevious>
+                <TabAnimationNext Effect="@(Syncfusion.Blazor.AnimationEffect.SlideBottomIn)"></TabAnimationNext>
             </TabAnimationSettings>
             <TabItems>
                 @if (ogrenciProgramSure >= 1)
@@ -61,11 +141,11 @@ else
                         <ContentTemplate>
                             @if (IsChecked)
                             {
-                                <SinifGrid Sinif="1"></SinifGrid>
+                                <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="1"></SinifGrid>
                             }
                             else
                             {
-                                <SinifGrid Sinif="1"></SinifGrid>
+                                <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="1"></SinifGrid>
                             }
                         </ContentTemplate>
                     </TabItem>
@@ -79,11 +159,11 @@ else
                         <ContentTemplate>
                             @if (IsChecked)
                             {
-                                <SinifGrid Sinif="2"></SinifGrid>
+                                <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="2"></SinifGrid>
                             }
                             else
                             {
-                                <SinifGrid Sinif="2"></SinifGrid>
+                                <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="2"></SinifGrid>
                             }
 
                         </ContentTemplate>
@@ -99,11 +179,11 @@ else
 
                             @if (IsChecked)
                             {
-                                <SinifGrid Sinif="3"></SinifGrid>
+                                <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="3"></SinifGrid>
                             }
                             else
                             {
-                                <SinifGrid Sinif="3"></SinifGrid>
+                                <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="3"></SinifGrid>
                             }
                         </ContentTemplate>
                     </TabItem>
@@ -118,11 +198,11 @@ else
 
                             @if (IsChecked)
                             {
-                                <SinifGrid Sinif="4"></SinifGrid>
+                                <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="4"></SinifGrid>
                             }
                             else
                             {
-                                <SinifGrid Sinif="4"></SinifGrid>
+                                <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="4"></SinifGrid>
                             }
                         </ContentTemplate>
                     </TabItem>
@@ -137,11 +217,11 @@ else
 
                             @if (IsChecked)
                             {
-                                <SinifGrid Sinif="5"></SinifGrid>
+                                <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="5"></SinifGrid>
                             }
                             else
                             {
-                                <SinifGrid Sinif="5"></SinifGrid>
+                                <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="5"></SinifGrid>
                             }
                         </ContentTemplate>
                     </TabItem>
@@ -156,11 +236,11 @@ else
 
                             @if (IsChecked)
                             {
-                                <SinifGrid Sinif="6"></SinifGrid>
+                                <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="6"></SinifGrid>
                             }
                             else
                             {
-                                <SinifGrid Sinif="6"></SinifGrid>
+                                <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="6"></SinifGrid>
                             }
                         </ContentTemplate>
                     </TabItem>
@@ -175,11 +255,11 @@ else
 
                             @if (IsChecked)
                             {
-                                <SinifGrid Sinif="7"></SinifGrid>
+                                <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="7"></SinifGrid>
                             }
                             else
                             {
-                                <SinifGrid Sinif="7"></SinifGrid>
+                                <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="7"></SinifGrid>
                             }
                         </ContentTemplate>
                     </TabItem>
@@ -194,11 +274,11 @@ else
 
                             @if (IsChecked)
                             {
-                                <SinifGrid Sinif="8"></SinifGrid>
+                                <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="8"></SinifGrid>
                             }
                             else
                             {
-                                <SinifGrid Sinif="8"></SinifGrid>
+                                <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="8"></SinifGrid>
                             }
                         </ContentTemplate>
                     </TabItem>
@@ -213,11 +293,11 @@ else
 
                             @if (IsChecked)
                             {
-                                <SinifGrid Sinif="9"></SinifGrid>
+                                <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="9"></SinifGrid>
                             }
                             else
                             {
-                                <SinifGrid Sinif="9"></SinifGrid>
+                                <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="9"></SinifGrid>
                             }
                         </ContentTemplate>
                     </TabItem>
@@ -226,148 +306,53 @@ else
 
             </TabItems>
         </SfTab>
+
+
+        <div class="row">
+            @if (appState.UserNavigationLoadRole == UserRoles.Ogrenci.ToString() || UserRoles.Personel.ToString() == appState.UserNavigationLoadRole)
+            {
+                @if (!isOnayli)
+                {
+                    <div class="col-6 text-center">
+                        <SfProgressButton Content="Eklenen Derslere Kayıt Ol" OnClick="KayıtOl" CssClass="center-block e-primary">
+                            <ProgressButtonSpinSettings Position="SpinPosition.Center"></ProgressButtonSpinSettings>
+                        </SfProgressButton>
+                    </div>
+                }
+            }
+            @if (appState.UserNavigationLoadRole == UserRoles.Personel.ToString() || UserRoles.Akademisyen.ToString() == appState.UserNavigationLoadRole)
+            {
+                @if (!isOnayli)
+                {
+                    <div class="col-6 text-center">
+                        <SfProgressButton Content="Onayla" OnClick="Onayla" CssClass="center-block e-primary">
+                            <ProgressButtonSpinSettings Position="SpinPosition.Center"></ProgressButtonSpinSettings>
+                        </SfProgressButton>
+                    </div>
+                }
+                else /*if (appState.UserNavigationLoadRole == UserRoles.Personel.ToString())*/
+                {
+                    <div class="col-6 text-center">
+                        <SfProgressButton Content="Onay Kaldır" OnClick="OnayKaldir" CssClass="center-block e-primary">
+                            <ProgressButtonSpinSettings Position="SpinPosition.Center"></ProgressButtonSpinSettings>
+                        </SfProgressButton>
+                    </div>
+                }
+            }
+
+        </div>
     </div>
 }
 
 
 
+<Dialog Baslik="Ders mevcut" @bind-isDialogOpen="@dialog">
+    <p>@dialogText</p>
+</Dialog>
 
 
 @code{
-    
 
-    int? seciliDonemId;
-
-    public bool IsChecked { get; set; } = true;
-
-    List<DonemDto> donemDtos = new List<DonemDto>();
-    //SfRadioButton<string> donemRadio = new SfRadioButton<string>();
-
-
-    [Parameter]
-    public OgrenciDto _OgrenciDto { get; set; }
-
-    int ogrenciProgramSure;
-    List<DersAcilanDto> ListDersAcilan = new List<DersAcilanDto>();
-    List<DersAcilanDto> DersKayitDtos = new List<DersAcilanDto>();
-
-
-    SfTab Tab;
-    public string PreviousEffect { get; set; }
-    public string NextEffect { get; set; }
-
-    SfDropDownList<int?, DonemDto> DropDonem;
-    public Query donemQuery = new Query().Select(new List<string> { "Id", "Ad" }).RequiresCount();
-
-    //protected override async Task OnInitializedAsync()
-    //{
-    //    _OgrenciDto = appState.OgrenciState;
-    //    await GetMufredatAcilanDerss();
-    //    await SetOgrenciProgramSure();
-    //}
-
-    //protected override void OnInitialized()
-    protected override async Task OnInitializedAsync()
-    {
-        if (_OgrenciDto == null)
-        {
-            _OgrenciDto = await appState.GetOgrenciState();
-        }
-
-        GetDonems();
-        seciliDonemId = donemDtos.FirstOrDefault(x => x.Durum == true).Id;
-        //GetAcilanDerssByMufredat();
-        SetOgrenciProgramSure();
-        SetMufredatAd();
-
-    }
-
-    void GetDonems()
-    {
-        ApiResponseDto<List<DonemDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<DonemDto>>>("api/donem/current").Result;
-        donemDtos = apiResponse.Result;
-
-        appState.DersKayitDonemIdState = donemDtos.FirstOrDefault(x => x.Durum).Id;
-    }
-
-
-    int selectedItem;
-
-    private void OnDonemChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
-    {
-        IsChecked = !IsChecked;
-        appState.DersKayitDonemIdState = (int)seciliDonemId;//await donemRadio.GetSelectedValue());
-    }
-
-    //public async void onDonemChange()
-    //{
-    //    IsChecked = !IsChecked;
-    //    appState.DersKayitDonemIdState = Convert.ToInt32(seciliDonemId);//await donemRadio.GetSelectedValue());
-    //    //this.NextEffect = "FadeZoomIn";
-    //    //Tab.Refresh();
-    //    //if (Tab.SelectedItem == 0)
-    //    //{
-    //    //    await Tab.Select(Tab.SelectedItem + 1);
-    //    //    await Tab.Select(Tab.SelectedItem - 1);
-    //    //}
-    //    //else
-    //    //{
-    //    //    await Tab.Select(Tab.SelectedItem - 1);
-    //    //    await Tab.Select(Tab.SelectedItem + 1);
-    //    //}
-
-    //    //this.NextEffect = "SlideRightIn";
-    //}
-
-
-
-    void AcilanDersleriYenile()
-    {
-
-    }
-
-
-    //void GetAcilanDerssByMufredat()
-    //{
-    //    ApiResponseDto<List<DersAcilanDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<DersAcilanDto>>>($"api/dersacilan/GetAcilanDersByMufredatId/{_OgrenciDto.MufredatId}").Result;
-    //    ListDersAcilan = apiResponse.Result;
-
-    //    ApiResponseDto<List<DersAcilanDto>> apiResponseKayitli = Http.GetFromJsonAsync<ApiResponseDto<List<DersAcilanDto>>>($"api/dersAcilan/GetKayitliDerssByOgrenciIdDonemId/{_OgrenciDto.Id}/{appState.DersKayitDonemIdState}").Result;
-    //    DersKayitDtos = apiResponseKayitli.Result;
-    //}
-
-    void SetOgrenciProgramSure()
-    {
-        ApiResponseDto<ProgramDto> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<ProgramDto>>($"api/program/{_OgrenciDto.ProgramId}").Result;
-        ogrenciProgramSure = apiResponse.Result.NormalSure;
-    }
-
-    void SetMufredatAd()
-    {
-        ApiResponseDto<MufredatDto> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<MufredatDto>>($"api/mufredat/{_OgrenciDto.MufredatId}").Result;
-        _OgrenciDto.MufredatAdi = apiResponse.Result.Ad;
-    }
-
-
-    //async Task GetMufredatAcilanDerss()
-    //{
-    //    ApiResponseDto<List<DersAcilanDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<DersAcilanDto>>>($"api/dersacilan/GetAcilanDersByMufredatId/{_OgrenciDto.MufredatId}");
-    //    ListDersAcilan = apiResponse.Result;
-    //}
-
-    //async Task SetOgrenciProgramSure()
-    //{
-    //    ApiResponseDto<ProgramDto> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<ProgramDto>>($"api/program/{_OgrenciDto.ProgramId}");
-    //    ogrenciProgramSure = apiResponse.Result.NormalSure;
-    //}
-
-    public void OnTabSelecting(SelectingEventArgs args)
-    {
-        if (args.IsSwiped)
-        {
-            args.Cancel = true;
-        }
-    }
 }
 
 
@@ -397,5 +382,11 @@ else
     .azassa {
         margin-top: 5px;
         background-color: #d4b5b5;
+    }
+
+
+    .e-Close:before {
+        content: '\e745';
+        color: #ff6d4d;
     }
 </style>

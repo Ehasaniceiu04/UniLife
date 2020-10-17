@@ -27,15 +27,8 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs.DersKayitTa
         List<DersAcilanDto> SecmeliDerslerDtos = new List<DersAcilanDto>();
         SfGrid<DersAcilanDto> SecmeliDersGrid;
 
-        bool isOnayli;
-        public void QueryCellInfoHandler(QueryCellInfoEventArgs<DersAcilanDto> args)
-        {
-            if (!string.IsNullOrWhiteSpace(args.Data.YerineSecilenAd))
-            {
-                args.Cell.AddClass(new string[] { "below-35" });
-                args.Cell.AddStyle(new string[] { "background-color:#cfe388" });
-            }
-        }
+        
+        
         public void QueryCellInfoAcilanHandler(QueryCellInfoEventArgs<DersAcilanDto> args)
         {
             if (!args.Data.Durum)
@@ -52,50 +45,31 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs.DersKayitTa
 
 
         SfGrid<DersAcilanDto> DersAcilanGrid;
-        SfGrid<DersAcilanDto> DersKayitGrid;
+        
 
         [Parameter]
         public int Sinif { get; set; }
         public List<DersAcilanDto> DersAcilanDtos { get; set; } = new List<DersAcilanDto>();
 
-        //[Parameter]
-        public List<DersAcilanDto> DersKayitDtos { get; set; }// = new List<DersAcilanDto>();
 
         bool dialog;
         string dialogText = "";
 
 
+        [Parameter]
+        public EventCallback<DersAcilanDto> DersKayitCallBack { get; set; }
+        [Parameter]
+        public bool IsOnayli { get; set; }
 
 
         protected override void OnInitialized()
         {
-            ReadKayitli();
+            
             ReadAcilan();
         }
 
 
-        void ReadKayitli()
-        {
-            try
-            {
-                ApiResponseDto<List<DersAcilanDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<DersAcilanDto>>>($"api/dersAcilan/GetKayitliDerssByOgrenciId/{appState.OgrenciState.Id}/{Sinif}/{appState.DersKayitDonemIdState}").Result;
-
-                if (apiResponse.IsSuccessStatusCode)
-                {
-                    DersKayitDtos = apiResponse.Result.OrderBy(x => x.Kod).ToList();
-                    if (DersKayitDtos.Any(x=>x.IsOnayli))
-                    {
-                        isOnayli = true;
-                    }
-                }
-                else
-                    matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
-            }
-            catch (Exception ex)
-            {
-                matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
-            }
-        }
+        
 
         void ReadAcilan()
         {
@@ -105,15 +79,7 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs.DersKayitTa
 
                 if (apiResponse.IsSuccessStatusCode)
                 {
-                    //apiResponse.Result=apiResponse.Result.Where(x => DersKayitDtos.Select(x => x.Kod).Contains(x.Kod)).ToList().ForEach(x => { x.Kayitta = true; });
                     DersAcilanDtos = apiResponse.Result.OrderBy(x => x.Kod).ToList();
-                    //foreach (var item in DersAcilanDtos)
-                    //{
-                    //    if (DersKayitDtos.Any(x=>x.Kod == item.Kod))
-                    //    {
-                    //        item.Kayitta = true;
-                    //    }
-                    //}
                 }
                 else
                     matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
@@ -126,7 +92,7 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs.DersKayitTa
         }
 
 
-        public void CommandClickHandler(CommandClickEventArgs<DersAcilanDto> args)
+        public async Task CommandClickHandler(CommandClickEventArgs<DersAcilanDto> args)
         {
             // oka bastıkmı varsa zaten uyarı veriyoruz onu vermeye devam edecek
             // eğer atma başrılı olursa üsttegi giridn satırı boyayacaz
@@ -144,28 +110,27 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs.DersKayitTa
                     return;
                 }
 
-                if (DersKayitDtos.Any(x => x.Id == args.RowData.Id))
-                {
-                    dialog = true;
-                    dialogText = $"'{args.RowData.Kod}' kodlu, '{args.RowData.Ad}' isimli ders zaten ekli!";
-                }
-                else
-                {
-                    DersKayitDtos.Add(args.RowData);
-                    DersKayitGrid.Refresh();
-                }
+                //if (DersKayitDtos.Any(x => x.Id == args.RowData.Id))
+                //{
+                //    dialog = true;
+                //    dialogText = $"'{args.RowData.Kod}' kodlu, '{args.RowData.Ad}' isimli ders zaten ekli!";
+                //}
+                //else
+                //{
+                    await DersKayitCallBack.InvokeAsync(args.RowData);
+                //}
             }
 
             if (args.CommandColumn.Title == "Seçmeli Al")
             {
-                if (DersKayitDtos.Any(x => x.Id == args.RowData.Id))
-                {
-                    dialog = true;
-                    dialogText = $"{args.RowData.Kod} kodlu, {args.RowData.Ad} isimli ders yerine seçim zaten yapılmış!";
-                }
-                else
-                {
-                    secmeliDersDialogOpen = true;
+                //if (DersKayitDtos.Any(x => x.Id == args.RowData.Id))
+                //{
+                //    dialog = true;
+                //    dialogText = $"{args.RowData.Kod} kodlu, {args.RowData.Ad} isimli ders yerine seçim zaten yapılmış!";
+                //}
+                //else
+                //{
+                    
                     //Modal içinde girden seçmeli ders seçtiriyoruz.
                     //ApiResponseDto<List<DersAcilanDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<DersAcilanDto>>>($"api/dersAcilan/ByZorunlu/{false}").Result;
 
@@ -177,7 +142,8 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs.DersKayitTa
                         item.YerineSecilenAd = args.RowData.Ad;
                         item.YerineSecilenId = args.RowData.Id;
                     }
-                }
+                secmeliDersDialogOpen = true;
+                //}
             }
             //DersKayitGrid.Refresh();
 
@@ -186,13 +152,13 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs.DersKayitTa
 
         public async Task CommandClickSecmeliAl(DersAcilanDto args)
         {
-            if (DersKayitDtos.Any(x => x.Id == args.Id))
-            {
-                dialog = true;
-                dialogText = $"{args.Kod} kodlu, {args.Ad} isimli ders yerine seçim zaten yapılmış!";
-            }
-            else
-            {
+            //if (DersKayitDtos.Any(x => x.Id == args.Id))
+            //{
+            //    dialog = true;
+            //    dialogText = $"{args.Kod} kodlu, {args.Ad} isimli ders yerine seçim zaten yapılmış!";
+            //}
+            //else
+            //{
                 try
                 {
                     secmeliDersDialogOpen = true;
@@ -230,7 +196,7 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs.DersKayitTa
                 //    item.YerineSecilenAd = args.Ad;
                 //    item.YerineSecilenId = args.Id;
                 //}
-            }
+            //}
 
         }
 
@@ -239,111 +205,20 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs.DersKayitTa
             secmeliDersDialogOpen = false;
             if (args.CommandColumn.Title == "Kayıt Ol Secmeli")
             {
-                DersKayitDtos.Add(args.RowData);
-                DersKayitGrid.Refresh();
+                await DersKayitCallBack.InvokeAsync(args.RowData);
             }
         }
 
 
 
-        public async Task CommandClickHandlerKayit(CommandClickEventArgs<DersAcilanDto> args)
-        {
-            if (args.CommandColumn.Title == "Kayıt Kaldır")
-            {
-                try
-                {
-                    var response = await Http.DeleteAsync($"api/DersKayit/DeleteByOgrId_DersId/{appState.OgrenciState.Id}/{args.RowData.Id}");
-
-
-                    if (response.StatusCode == (System.Net.HttpStatusCode)Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
-                    {
-                        matToaster.Add("Ders kayıdı kaldırıldı", MatToastType.Success);
-                        DersKayitDtos.RemoveAll(x => x.Id == args.RowData.Id);
-                        DersKayitGrid.Refresh();
-                        StateHasChanged();
-                        matToaster.Add("İşlem başarılı.", MatToastType.Success);
-                    }
-                    else
-                        matToaster.Add("İşlem başarısız!", MatToastType.Danger);
-                }
-                catch (Exception ex)
-                {
-                    matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
-                }
-            }
-        }
+       
 
 
 
-        async Task KayıtOl()
-        {
+        
 
-            try
-            {
-                List<DersKayitDto> ogrenciDersKayitDtos = new List<DersKayitDto>();
-                foreach (var item in DersKayitDtos)
-                {
-                    ogrenciDersKayitDtos.Add(new DersKayitDto { DersAcilanId = item.Id, OgrenciId = appState.OgrenciState.Id, DersYerineSecilenId = item.YerineSecilenId ?? item.Id, DersYerineSecilenAd = item.YerineSecilenAd });
-                }
+        
 
-                ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/DersKayit/OgrenciKayitToDerss", ogrenciDersKayitDtos);
-
-
-                if (apiResponse.IsSuccessStatusCode)
-                {
-                    matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
-                    DersKayitGrid.Refresh();
-                    StateHasChanged();
-                }
-                else
-                    matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
-            }
-            catch (Exception ex)
-            {
-                matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
-            }
-        }
-
-        async Task Onayla()
-        {
-            //Kayıt olunan derslistesini al onayını ver.
-            try
-            {
-                var kayitliDersler = await DersKayitGrid.GetCurrentViewRecords();
-
-                ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/DersKayit/Onayla", kayitliDersler.Select(x=>x.DersKayitId));
-                if (apiResponse.IsSuccessStatusCode)
-                {
-                    matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
-                    isOnayli = true;
-                    DersAcilanGrid.Refresh();
-                    StateHasChanged();
-                    DersKayitGrid.Refresh();
-                }
-                else
-                    matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
-            }
-            catch (Exception ex)
-            {
-                matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
-            }
-
-        }
-
-        async Task OnayKaldir()
-        {
-            var kayitliDersler = await DersKayitGrid.GetCurrentViewRecords();
-            ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/DersKayit/OnayKaldir", kayitliDersler.Select(x => x.DersKayitId));
-            if (apiResponse.IsSuccessStatusCode)
-            {
-                matToaster.Add(apiResponse.Message, MatToastType.Success, "Onay kaldırıldı.");
-                isOnayli = false;
-                DersAcilanGrid.Refresh();
-                StateHasChanged();
-                DersKayitGrid.Refresh();
-            }
-            else
-                matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
-        }
+        
     }
 }

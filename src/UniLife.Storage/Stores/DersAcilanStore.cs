@@ -418,9 +418,9 @@ namespace UniLife.Storage.Stores
         }
 
 
-        public async Task<List<DersAcilanDto>> GetKayitliDerssByOgrenciId(int ogrenciId, int sinif, int donemId)
+        public async Task<List<DersAcilanDto>> GetKayitliDerssByOgrenciId(int ogrenciId, int donemId)
         {
-            var dersAcilans = from a in _db.DersAcilans.Where(x => x.Sinif == sinif && x.DonemId == donemId)
+            var dersAcilans = from a in _db.DersAcilans.Where(x => x.DonemId == donemId)
                               join k in _db.DersKayits.Where(x => x.OgrenciId == ogrenciId) on a.Id equals k.DersAcilanId
                               select new DersAcilanDto
                               {

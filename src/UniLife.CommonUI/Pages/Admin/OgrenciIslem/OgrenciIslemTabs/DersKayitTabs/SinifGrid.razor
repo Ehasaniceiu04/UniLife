@@ -1,8 +1,5 @@
 ﻿@using UniLife.Shared.Dto.Definitions
-@using Syncfusion.Blazor.SplitButtons
 @using Syncfusion.Blazor.Buttons
-@using UniLife.CommonUI.Extensions
-@using UniLife.Shared.Dto.Definitions.Bussines
 @inject AppState appState
 
 @attribute [Authorize(Roles = "Administrator,Personel,Ogrenci,Akademisyen")]
@@ -11,7 +8,6 @@
 
 <Divider5></Divider5>
 
-<ControlSection>
     <div class="server-action-menu" style="padding-top: 10px;">
         <div class="row">
             <div class="col-sm-12 text-center">
@@ -45,14 +41,8 @@
                             <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
                             <GridColumn Field=@nameof(DersAcilanDto.ODTekrar) HeaderText="Önceki Dönemler Tekrar Durumu"></GridColumn>
                             <GridColumn Field=@nameof(DersAcilanDto.ADKayit) HeaderText="Aktif Dönem Kayıt Durumu"></GridColumn>
-                            @if (!isOnayli)
+                            @if (!IsOnayli)
                             {
-                                <GridColumn HeaderText="Kayıt" Width="75">
-                                    <GridCommandColumns>
-                                        <GridCommandColumn Type="CommandButtonType.None" Title="Kayıt" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowDown", CssClass="e-flat" })"></GridCommandColumn>
-                                        @*<GridCommandColumn Type="CommandButtonType.None" Title="Seçmeli Al" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-StrokeColor", CssClass="e-flat" })"></GridCommandColumn>*@
-                                    </GridCommandColumns>
-                                </GridColumn>
                                 <GridColumn HeaderText="Seçmeli">
                                     <Template>
                                         @{
@@ -65,125 +55,25 @@
                                         }
                                     </Template>
                                 </GridColumn>
-                            }
-                        </GridColumns>
-                    </SfGrid>
-                }
-
-            </div>
-
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="astrodivider"><div class="astrodividermask"></div><span><i>&#10038;</i></span></div>
-    </div>
-    <div class="server-action-menu">
-        <div class="row">
-            <div class="col-sm-12 text-center">
-                <legend>Kayıt Olunan Dersler @(isOnayli?"(Onaylı)":string.Empty)</legend>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12 col-md-12">
-                @if (DersKayitDtos == null)
-                {
-
-                    <LoadingBackground ShowLogoBox="true">
-                        <label>Kayıtlı Dersler Yükleniyor...</label>
-                    </LoadingBackground>
-                }
-                else
-                {
-
-                    <SfGrid ID="DersKayitGrid" @ref="DersKayitGrid" DataSource="@DersKayitDtos" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
-                        <GridEvents TValue="DersAcilanDto" QueryCellInfo="QueryCellInfoHandler" CommandClicked="CommandClickHandlerKayit"></GridEvents>
-                        <GridAggregates>
-                            <GridAggregate>
-                                <GridAggregateColumns>
-                                    <GridAggregateColumn Field=@nameof(DersAcilanDto.Akts) Type="AggregateType.Sum" Format="N2">
-                                        <FooterTemplate>
-                                            @{
-                                                var aggregate = (context as AggregateTemplateContext);
-                                                <div>
-                                                    <p>Toplam: @aggregate.Sum</p>
-                                                </div>
-                                            }
-                                        </FooterTemplate>
-                                    </GridAggregateColumn>
-                                    <GridAggregateColumn Field=@nameof(DersAcilanDto.Kredi) Type="AggregateType.Sum" Format="N2">
-                                        <FooterTemplate>
-                                            @{
-                                                var aggregate = (context as AggregateTemplateContext);
-                                                <div>
-                                                    <p>Toplam: @aggregate.Sum</p>
-                                                </div>
-                                            }
-                                        </FooterTemplate>
-                                    </GridAggregateColumn>
-                                </GridAggregateColumns>
-                            </GridAggregate>
-                        </GridAggregates>
-
-                        <GridColumns>
-                            <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
-                            <GridColumn Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kodu"></GridColumn>
-                            <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Adı"></GridColumn>
-                            <GridColumn Visible="false" Field=@nameof(DersAcilanDto.YerineSecilenId) HeaderText="Yerine id"></GridColumn>
-                            <GridColumn Field=@nameof(DersAcilanDto.Zorunlu) DisplayAsCheckBox="true" HeaderText="Zorunlu"></GridColumn>
-                            <GridColumn Field=@nameof(DersAcilanDto.Kredi) Format="N2" HeaderText="Kredi"></GridColumn>
-                            <GridColumn Field=@nameof(DersAcilanDto.Akts) Format="N2" HeaderText="Akts"></GridColumn>
-                            <GridColumn Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
-                            <GridColumn Field=@nameof(DersAcilanDto.YerineSecilenAd) HeaderText="Yerine Ders"></GridColumn>
-                            @if (!isOnayli)
-                            {
-                                <GridColumn HeaderText="Kaldır" Width="75">
+                                <GridColumn HeaderText="Kayıt" Width="75">
                                     <GridCommandColumns>
-                                        <GridCommandColumn Type="CommandButtonType.None" Title="Kayıt Kaldır" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowUP", CssClass="e-flat" })"></GridCommandColumn>
+                                        <GridCommandColumn Type="CommandButtonType.None" Title="Kayıt" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowUP", CssClass="e-flat" })"></GridCommandColumn>
+                                        @*<GridCommandColumn Type="CommandButtonType.None" Title="Seçmeli Al" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-StrokeColor", CssClass="e-flat" })"></GridCommandColumn>*@
                                     </GridCommandColumns>
                                 </GridColumn>
                             }
-
                         </GridColumns>
                     </SfGrid>
                 }
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        @if (appState.UserNavigationLoadRole == UserRoles.Ogrenci.ToString() || UserRoles.Personel.ToString() == appState.UserNavigationLoadRole)
-        {
-            @if (!isOnayli)
-            {
-                <div class="col-6 text-center">
-                    <SfProgressButton Content="Eklenen Derslere Kayıt Ol" OnClick="KayıtOl" CssClass="center-block e-primary">
-                        <ProgressButtonSpinSettings Position="SpinPosition.Center"></ProgressButtonSpinSettings>
-                    </SfProgressButton>
-                </div>
-            }
-        }
-        @if (appState.UserNavigationLoadRole == UserRoles.Personel.ToString() || UserRoles.Akademisyen.ToString() == appState.UserNavigationLoadRole)
-        {
-            @if (!isOnayli)
-            {
-                <div class="col-6 text-center">
-                    <SfProgressButton Content="Onayla" OnClick="Onayla" CssClass="center-block e-primary">
-                        <ProgressButtonSpinSettings Position="SpinPosition.Center"></ProgressButtonSpinSettings>
-                    </SfProgressButton>
-                </div>
-            }
-            else /*if (appState.UserNavigationLoadRole == UserRoles.Personel.ToString())*/
-            {
-                <div class="col-6 text-center">
-                    <SfProgressButton Content="Onay Kaldır" OnClick="OnayKaldir" CssClass="center-block e-primary">
-                        <ProgressButtonSpinSettings Position="SpinPosition.Center"></ProgressButtonSpinSettings>
-                    </SfProgressButton>
-                </div>
-            }
-        }
 
+            </div>
+
+        </div>
+    <div class="row">
+        <div class="astrodivider"><div class="astrodividermask"></div><span><i>&#10038;</i></span></div>
     </div>
-</ControlSection>
+    </div>
+
 
 
 
@@ -191,7 +81,8 @@
     <p>@dialogText</p>
 </Dialog>
 
-
+@if (secmeliDersDialogOpen)
+	{
 <Dialog Baslik="Seçmeli Dersler" @bind-isDialogOpen="@secmeliDersDialogOpen">
     <div class="row">
         <SfGrid ID="SecmeliDersGrid" @ref="SecmeliDersGrid" DataSource="@SecmeliDerslerDtos" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowFiltering="true">
@@ -218,6 +109,8 @@
     </div>
 
 </Dialog>
+	}
+
 
 
 <style>
@@ -227,11 +120,6 @@
         background-repeat: repeat;
         border-radius: 10px;
         padding: 5px;
-    }
-
-    .e-DoubleArrowDown:before {
-        content: '\e7bf';
-        color: #3ec9e8;
     }
 
     .e-DoubleArrowUP:before {
