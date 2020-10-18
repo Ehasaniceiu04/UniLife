@@ -100,7 +100,8 @@ namespace UniLife.Storage.Stores
                         {
                             DersAcilanId = dersAcId,
                             OgrenciId = ogrenciId,
-                            DersYerineSecilenId = dersAcId
+                            DersYerineSecilenId = dersAcId,
+                            IsOnayli=true
                         });
                     }
                 }

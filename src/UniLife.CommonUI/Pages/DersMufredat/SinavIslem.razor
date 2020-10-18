@@ -194,9 +194,10 @@ else
 {
     <Dialog Baslik="Öğrenci Listesi" @bind-isDialogOpen="@ogrenciSecDialogOpen">
         <div class="row">
-            <SfGrid ID="SecmeliOgrenciGrid" @ref="SecmeliOgrenciGrid" TValue="DersKayitDto" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowFiltering="true">
+            <SfGrid ID="SecmeliOgrenciGrid" Query="@totalQueryOgr" @ref="SecmeliOgrenciGrid" TValue="DersKayitDto" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowFiltering="true">
                 <SfDataManager Url="@(ogrenciAddOdata)" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
                 <GridEvents TValue="DersKayitDto" CommandClicked="CommandClickHandlerSecmeliOgr"></GridEvents>
+                <GridFilterSettings Mode="FilterBarMode.Immediate" ImmediateModeDelay="300"></GridFilterSettings>
                 <GridColumns>
                     <GridColumn Visible="false" Field=@nameof(DersKayitDto.Id) HeaderText="Ogrenci ID" IsPrimaryKey="true" TextAlign="TextAlign.Right"></GridColumn>
                     <GridColumn Field="Ogrenci.Ad" HeaderText="Ad"></GridColumn>

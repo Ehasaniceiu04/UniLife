@@ -145,6 +145,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         }
         public Query totalQuery;// = new Query().Expand(new List<string> { "program($select=Id,Ad)" });
 
+        public Query totalQueryOgr;
 
         protected async override Task OnInitializedAsync()
         {
@@ -557,9 +558,14 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         string ogrenciAddOdata;
         public void OnActionBeginHandlerOgrenci(Syncfusion.Blazor.Grids.ActionEventArgs<OgrenciDto> args)
         {
-            ogrenciAddOdata = $"odata/derskayits?$expand=Ogrenci($select=Id,Ad,Soyad,Ogrno)&$filter=dersAcilanId eq {SelectedSinav.DersAcilanId}&$select=Id,OgrenciId";
+            
+
+
             if (args.RequestType == Syncfusion.Blazor.Grids.Action.Add)
             {
+                ogrenciAddOdata = $"odata/derskayits?$expand=Ogrenci($select=Id,Ad,Soyad,Ogrno)&$select=Id,OgrenciId";
+                totalQueryOgr = new Query();
+                totalQueryOgr.Where("dersAcilanId", "equal", SelectedSinav.DersAcilanId);
                 if (SelectedSinav.SinavTipId == (int)SinavTipEnum.But)
                 {
                     ogrenciAddOdata = $"odata/derskayits?$expand=Ogrenci($select=Id,Ad,Soyad,Ogrno)&$filter=dersAcilanId eq {SelectedSinav.DersAcilanId} and (GecDurum eq false or HarfNot eq 'DC')&$select=Id,OgrenciId";

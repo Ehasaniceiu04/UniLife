@@ -201,7 +201,7 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs
                 if (apiResponse.IsSuccessStatusCode)
                 {
                     DersKayitDtos = apiResponse.Result.OrderBy(x => x.Kod).ToList();
-                    if (DersKayitDtos.Any(x => x.IsOnayli))
+                    if (!DersKayitDtos.Any(x => x.IsOnayli==false))
                     {
                         isOnayli = true;
                     }
