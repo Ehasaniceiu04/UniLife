@@ -102,7 +102,7 @@
 </div>
 
 
-<SfGrid ID="OgrGrid" @ref="OgrGrid" Query="@totalQuery" TValue="OgrenciDto" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
+<SfGrid ID="OgrGrid" @ref="OgrGrid" Query="@totalQuery" TValue="OgrenciDto" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowSelection="false">
     @*OnActionFailure="ActionFailureHandler" DetailDataBound="DetailDataBound"  OnActionBegin="ActionBeginHandler" DetailDataBound="DetailDataBound" RowDataBound="RowBound"*@
     <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
     <GridEvents TValue="OgrenciDto" DetailDataBound="DetailDataBound" DataBound="DataBound" OnActionBegin="ActionBeginHandler" OnActionComplete="ActionCompletedHandler"></GridEvents>
@@ -625,7 +625,7 @@
         background-color: #0078d6;
     }
 
-  /*  #Emptext {
+    /*  #Emptext {
         top: -12px;
         left: 41px;
         position: relative;
@@ -815,7 +815,24 @@
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
     }
+
     .e-accordion .e-acrdn-item .e-acrdn-header {
         background-color: lightcyan;
     }
+
+
+    /*Satır başı çıbıkları renklendirme falan begin*/
+    .e-grid .e-icon-gdownarrow {
+        font-size: 20px;
+        color: orangered;
+    }
+
+    .e-grid .e-icon-grightarrow {
+        font-size: unset;
+        color: #0ea798;
+    }
+    .e-detailrow {
+        background-color: #0087ff1f;
+    }
+    /*Satır başı çıbıkları renklendirme falan end*/
 </style>
