@@ -22,7 +22,7 @@ namespace UniLife.Shared.DataInterfaces
         Task Cokla(int id);
         Task<List<Mufredat>> GetMufredatByProgramIds(string[] programIds);
         Task<MufredatStateDto> GetMufredatState(int mufredatId);
-        Task CreateDersAcilansByMufredatIds(ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds);
+        Task<IEnumerable<string>> CreateDersAcilansByMufredatIds(ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds);
         Task<MufredatDto> GetLastMufredatByProgramId(int programId);
         Task CoklaModified(MufredatDto mufredatDto);
     }

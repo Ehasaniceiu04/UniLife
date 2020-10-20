@@ -36,9 +36,12 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             get => _filterFakulteId;
             set
             {
-                Refresh();
                 if (_filterFakulteId == value) return;
-                _filterFakulteId = value;
+                else
+                {
+                    _filterFakulteId = value;
+                    Refresh();
+                }
             }
         }
         int? _filterBolumId;
@@ -47,9 +50,12 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             get => _filterBolumId;
             set
             {
-                Refresh();
                 if (_filterBolumId == value) return;
-                _filterBolumId = value;
+                else
+                {
+                    _filterBolumId = value;
+                    Refresh();
+                }
             }
         }
         int? _filterProgramId;
@@ -58,9 +64,12 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             get => _filterProgramId;
             set
             {
-                Refresh();
                 if (_filterProgramId == value) return;
-                _filterProgramId = value;
+                else
+                {
+                    _filterProgramId = value;
+                    Refresh();
+                } 
             }
         }
 
@@ -88,6 +97,9 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         bool isUyariOpen;
         string dialogUyariText="";
+
+        bool isUyariDiziOpen;
+        IEnumerable<string> dialogUyariDizi=null;
 
         //List<DonemDto> donemDtos = new List<DonemDto>();
         //SfDropDownList<int?, DonemDto> DropDonem;
@@ -163,6 +175,8 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds = new ReqEntityIdWithOtherEntitiesIds();
                 reqEntityIdWithOtherEntitiesIds.EntityId = (int)AçilacakMufredatlarınSecilenDonemTipIdsi;
                 reqEntityIdWithOtherEntitiesIds.OtherEntityIds = (await MufredatGrid.GetSelectedRecords()).Select(x => x.Id).ToList();
+                reqEntityIdWithOtherEntitiesIds.Other2EntityIds = (await MufredatGrid.GetSelectedRecords()).Select(x => (int)x.ProgramId).Distinct().ToList();
+                
                 mufredatAcDialogOpen = false;
 
                 if (reqEntityIdWithOtherEntitiesIds.OtherEntityIds.Count()<1)
@@ -172,13 +186,18 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                     return;
                 }
 
-                ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/mufredat/CreateDersAcilansByMufredatIds", reqEntityIdWithOtherEntitiesIds);
+                ApiResponseDto<IEnumerable<string>> apiResponse = await Http.PostJsonAsync<ApiResponseDto<IEnumerable<string>>>("api/mufredat/CreateDersAcilansByMufredatIds", reqEntityIdWithOtherEntitiesIds);
 
 
                 if (apiResponse.IsSuccessStatusCode)
-                {
-                    matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+                {                    
                     MufredatGrid.Refresh();
+                    matToaster.Add(apiResponse.Message, MatToastType.Success, "Seçili müfredatların dersleri açılmıştır.");
+                    if (apiResponse.Result.Count()>0)
+                    {
+                        dialogUyariDizi = apiResponse.Result.Distinct();
+                        isUyariDiziOpen = true;
+                    }
                 }
                 else
                     matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");

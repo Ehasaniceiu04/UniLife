@@ -72,8 +72,8 @@ namespace UniLife.Server.Managers
 
         public async Task<ApiResponse> CreateDersAcilansByMufredatIds(ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds)
         {
-            await _mufredatStore.CreateDersAcilansByMufredatIds(reqEntityIdWithOtherEntitiesIds);
-            return new ApiResponse(Status200OK, "Seçili müfredatların dersleri açıldı.");
+            var zatenAcikKodlar= await _mufredatStore.CreateDersAcilansByMufredatIds(reqEntityIdWithOtherEntitiesIds);
+            return new ApiResponse(Status200OK, "Seçili müfredatların dersleri açıldı.", zatenAcikKodlar);
 
         }
 

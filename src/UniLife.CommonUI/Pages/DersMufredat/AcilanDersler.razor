@@ -52,7 +52,7 @@
             <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
             <GridEvents RowSelecting="OnRowSelecting" OnToolbarClick="ToolbarClickHandler" OnActionComplete="ActionCompletedHandler" OnActionBegin="OnActionBeginHandler" CommandClicked="CommandClickHandler" TValue="DersAcilanDto"></GridEvents>
             <GridPageSettings PageCount="5" PageSizes="new int[]{ 5, 10, 50, 100,10000}"></GridPageSettings>
-            <GridFilterSettings Mode="FilterBarMode.Immediate" ImmediateModeDelay="1500"></GridFilterSettings>
+            <GridFilterSettings Mode="FilterBarMode.Immediate" ImmediateModeDelay="300"></GridFilterSettings>
             <GridEditSettings Dialog="DialogParams" ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
                 <Template>
                     @{

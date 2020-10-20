@@ -22,8 +22,8 @@
                    ProgramShow="true"></FakBolPrg>
     </div>
     @*<div class="col-sm-5">
-        <SfButton OnClick="Refresh" CssClass="e-success col-sm-12 form-control-sm">Bul / Yenile</SfButton>
-    </div>*@
+            <SfButton OnClick="Refresh" CssClass="e-success col-sm-12 form-control-sm">Bul / Yenile</SfButton>
+        </div>*@
 </div>
 @*QueryCellInfo="QueryCellInfoHandler" RowSelecting="OnRowSelecting" *@
 <SfGrid @ref="MufredatGrid" ID="MufredatGrid" TValue="MufredatDto" Query="@totalQuery" ShowColumnChooser="true" AllowResizing="true" AllowSorting="true" AllowFiltering="true" AllowPaging="true" Toolbar="Toolbaritems"
@@ -43,9 +43,9 @@
                 <div class="row pb-2 bg-light text-dark">
                     <div class="col-sm-12 col-md-4">
                         @*<FakBolPrg @bind-FakulteId="@(gridModelMufredatInfo.FakulteId)"
-                        @bind-BolumId="@(gridModelMufredatInfo.BolumId)"
-                        @bind-ProgramId="@(gridModelMufredatInfo.ProgramId)"
-                        ProgramShow="true"></FakBolPrg>*@
+                            @bind-BolumId="@(gridModelMufredatInfo.BolumId)"
+                            @bind-ProgramId="@(gridModelMufredatInfo.ProgramId)"
+                            ProgramShow="true"></FakBolPrg>*@
 
                         <FakBolPrg @bind-FakulteId="@(gridModelMufredatInfo.FakulteId)"
                                    @bind-BolumId="@(gridModelMufredatInfo.BolumId)"
@@ -138,10 +138,24 @@
             <MatButton OnClick="@MultiplyRecord">Çokla</MatButton>
         </MatDialogActions>
     </MatDialog>*@
+@if (isUyariOpen)
+{
+    <Dialog Baslik="Uyarı!" @bind-isDialogOpen="@isUyariOpen">
+        <p>@dialogUyariText</p>
+    </Dialog>
+}
 
-<Dialog Baslik="Uyarı!" @bind-isDialogOpen="@isUyariOpen">
-    <p>@dialogUyariText</p>
-</Dialog>
+@if (isUyariDiziOpen)
+{
+    <Dialog Baslik="Uyarı!" @bind-isDialogOpen="@isUyariDiziOpen">
+        <p style="color: red;">Aşağıdaki kodlarla, bu dönem içerisinde açılmış dersler var. Tekrar açılmaları engellendi! </p>
+        @foreach (var item in dialogUyariDizi)
+        {
+            <p>@item</p>
+        }
+    </Dialog>
+}
+
 
 <MatDialog Id="MufredatAcDialog" @bind-IsOpen="@mufredatAcDialogOpen" Style="z-index:100">
     <MatDialogTitle><MatIcon Icon="warning"></MatIcon>Dönem Seçimi</MatDialogTitle>
@@ -206,8 +220,12 @@
         /*font-size: 0.65rem;*/
         font-size: .775rem;
     }
+
     .e-grid .e-altrow {
         background-color: #fafafa;
     }
 
+    #MufredatGrid {
+        min-height: 430px;
+    }
 </style>

@@ -10,5 +10,6 @@ namespace UniLife.Shared.Dto.Definitions
     {
         public int EntityId { get; set; }
         public List<int> OtherEntityIds { get; set; }
+        public List<int> Other2EntityIds { get; set; }
     }
 }

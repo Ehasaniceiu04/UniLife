@@ -7,7 +7,7 @@
 
 
 <div class="control-section e-tab-section card">
-    <SfTab @ref="Tab" CssClass="BlazorTab" LoadOn="ContentLoad.Dynamic">
+    <SfTab @ref="Tab" CssClass="BlazorTab" LoadOn="ContentLoad.Demand">
         @*Selected="OnTabSelected" Selecting="OnTabSelecting"*@
         <TabEvents Created="TabCreate" Selecting="OnTabSelecting"></TabEvents>
         <TabItems>
@@ -19,14 +19,6 @@
                     <Mufredat TabDegis="TabDegis"></Mufredat>
                 </ContentTemplate>
             </TabItem>
-            @*<TabItem>
-                    <ChildContent>
-                        <TabHeader Text="Bağlı Ders Oluştur"></TabHeader>
-                    </ChildContent>
-                    <ContentTemplate>
-                        <BagliDersOlustur TabDegis="TabDegis"></BagliDersOlustur>
-                    </ContentTemplate>
-                </TabItem>*@
             <TabItem>
                 <ChildContent>
                     <TabHeader Text="Bağlı Dersler"></TabHeader>
@@ -35,6 +27,14 @@
                     <Dersler TabDegis="TabDegis"></Dersler>
                 </ContentTemplate>
             </TabItem>
+            @*<TabItem>
+                    <ChildContent>
+                        <TabHeader Text="Bağlı Ders Oluştur"></TabHeader>
+                    </ChildContent>
+                    <ContentTemplate>
+                        <BagliDersOlustur TabDegis="TabDegis"></BagliDersOlustur>
+                    </ContentTemplate>
+                </TabItem>*@
         </TabItems>
     </SfTab>
 </div>

@@ -167,9 +167,9 @@ namespace UniLife.Storage.Stores
             return await mufredatState.FirstOrDefaultAsync();
         }
 
-        public async Task CreateDersAcilansByMufredatIds(ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds)
+        public async Task<IEnumerable<string>> CreateDersAcilansByMufredatIds(ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds)
         {
-            var mufredatDerss = await _db.Derss.Where(x => reqEntityIdWithOtherEntitiesIds.EntityId == x.DonemTipId && reqEntityIdWithOtherEntitiesIds.OtherEntityIds.Contains(x.MufredatId) && x.Durum == true).ToListAsync();
+            //var mufredatDerss = await _db.Derss.Where(x => reqEntityIdWithOtherEntitiesIds.EntityId == x.DonemTipId && reqEntityIdWithOtherEntitiesIds.OtherEntityIds.Contains(x.MufredatId) && x.Durum == true).ToListAsync();
 
             #region RAWDEL
             //RAW delete hard yapıyor.. tehlikeli.
@@ -192,8 +192,11 @@ namespace UniLife.Storage.Stores
 
             var aktifDonem = await _db.Donems.FirstOrDefaultAsync(x => x.Durum == true);
 
-            var dumpDersAcilans = _db.DersAcilans.Where(x => aktifDonem.Id == x.DonemId && reqEntityIdWithOtherEntitiesIds.OtherEntityIds.Contains(x.MufredatId)).ToList(); //bunlar yeniden geldiği için silinecek.
+            var alReadyOpenDersAcilans = _db.DersAcilans.Where(x => aktifDonem.Id == x.DonemId && reqEntityIdWithOtherEntitiesIds.Other2EntityIds.Contains(x.ProgramId)).ToList(); //bunlar zaten açılmış işlem yapılamaz. diğerleri açıldıktan sonra bunları uyarı olarak geri dönüyoruz.
+            //var alReadyOpenDersAcilansKods = alReadyOpenDersAcilans.Select(x => x.Kod);
+            //var alReadyOpenDersAcilansIds = alReadyOpenDersAcilans.Select(x => x.Id);
             List<DersAcilan> dersAcilans = new List<DersAcilan>();
+            List<Ders> dersAcilansAlreadyExist = new List<Ders>();
 
 
 
@@ -254,6 +257,11 @@ namespace UniLife.Storage.Stores
                 {
                     foreach (var ders in mufredat.Derss)
                     {
+                        if (alReadyOpenDersAcilans.Any(x=>x.Kod== ders.Kod && x.ProgramId == ders.ProgramId))
+                        {
+                            dersAcilansAlreadyExist.Add(ders);
+                            continue;
+                        }
                         if (reqEntityIdWithOtherEntitiesIds.EntityId == ders.DonemTipId && ders.Durum == true)
                         {
                             DersAcilan dersAcilan = new DersAcilan
@@ -307,6 +315,11 @@ namespace UniLife.Storage.Stores
 
                     foreach (var ders in mufredat.Derss)
                     {
+                        if (alReadyOpenDersAcilans.Any(x => x.Kod == ders.Kod && x.ProgramId == ders.ProgramId))
+                        {
+                            dersAcilansAlreadyExist.Add(ders);
+                            continue;
+                        }
                         if (reqEntityIdWithOtherEntitiesIds.EntityId == ders.DonemTipId && ders.Durum == true)
                         {
                             if (ayniProgramSonPasifMufredat==null)
@@ -415,7 +428,7 @@ namespace UniLife.Storage.Stores
 
 
 
-            _db.DersAcilans.RemoveRange(dumpDersAcilans); //aynı dersacilan varsa sil
+            //_db.DersAcilans.RemoveRange(dumpDersAcilans); //aynı dersacilan varsa sil
             //_db.Derss.UpdateRange(mufredatDerss); // açilan dersler in durumunu 1 yap.
 
 
@@ -431,7 +444,7 @@ namespace UniLife.Storage.Stores
 
 
 
-
+            return dersAcilansAlreadyExist.Select(x=>x.Kod);
 
 
 
