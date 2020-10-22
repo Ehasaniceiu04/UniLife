@@ -27,25 +27,25 @@
                     </MatNavItem>
                 </MatNavSubMenuHeader>
                 <MatNavSubMenuList>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/Ders_Programi").AbsoluteUri">
+                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci_Ders_Programi").AbsoluteUri">
                         <MatIcon>business</MatIcon> <span class="miniHover">Ders Programı</span>
                     </MatNavItem>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/Sinav_Takvimi").AbsoluteUri">
+                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci_Sinav_Takvimi").AbsoluteUri">
                         <MatIcon>business</MatIcon> <span class="miniHover">Sinav Programı</span>
                     </MatNavItem>
                     <MatNavItem Href="@navigationManager.ToAbsoluteUri("akademikTakvim").AbsoluteUri">
                         <MatIcon>business</MatIcon> <span class="miniHover">Akademik Takvim</span>
                     </MatNavItem>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/Harc").AbsoluteUri">
+                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci_harc").AbsoluteUri">
                         <MatIcon>business</MatIcon> <span class="miniHover">Harç Bilgileri</span>
                     </MatNavItem>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/staj").AbsoluteUri">
+                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci_staj").AbsoluteUri">
                         <MatIcon>business</MatIcon> <span class="miniHover">Staj bilgileri</span>
                     </MatNavItem>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/hazirlik").AbsoluteUri">
+                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci_hazirlik").AbsoluteUri">
                         <MatIcon>business</MatIcon> <span class="miniHover">Hazırlık bilgileri</span>
                     </MatNavItem>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/alDers").AbsoluteUri">
+                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci_alDers").AbsoluteUri">
                         <MatIcon>screen_share</MatIcon> <span class="miniHover">Alınan Dersler</span>
                     </MatNavItem>
 
@@ -58,7 +58,7 @@
     @*Ogrenci*@
     <AuthorizeView Roles="Ogrenci" Context="AuthorizeContext">
         <Authorized>
-            <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/Mufredat_Dersleri").AbsoluteUri">
+            <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci_Mufredat_Dersleri").AbsoluteUri">
                 <MatIcon>stars</MatIcon> <span class="miniHover">Müfredat Dersleri</span>
             </MatNavItem>
         </Authorized>
@@ -67,7 +67,7 @@
     @*Ogrenci*@
     <AuthorizeView Roles="Ogrenci" Context="AuthorizeContext">
         <Authorized>
-            <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/Donem_Dersleri").AbsoluteUri">
+            <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci_Donem_Dersleri").AbsoluteUri">
                 <MatIcon>stars</MatIcon> <span class="miniHover">Dönem Dersleri</span>
             </MatNavItem>
         </Authorized>
@@ -89,7 +89,7 @@ user.HasClaim("permission", Permissions.DersKayit.Create) &&
 user.HasClaim("permission", Permissions.DersKayit.Update) &&
 user.HasClaim("permission", Permissions.DersKayit.Delete)))
                     {
-                        <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/dersKayit").AbsoluteUri">
+                        <MatNavItem Href="@navigationManager.ToAbsoluteUri("Ogrenci_derskayit").AbsoluteUri">
                             <MatIcon>business</MatIcon> <span class="miniHover">Ders Kayıt</span>
                         </MatNavItem>
                     }
@@ -100,10 +100,10 @@ user.HasClaim("permission", Permissions.DersKayit.Delete)))
                         </MatNavItem>
                     }
 
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/notListe").AbsoluteUri">
+                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci_notListe").AbsoluteUri">
                         <MatIcon>screen_share</MatIcon> <span class="miniHover">Not Listesi</span>
                     </MatNavItem>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/Transkript").AbsoluteUri">
+                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci_Transkript").AbsoluteUri">
                         <MatIcon>screen_share</MatIcon> <span class="miniHover">Transkript</span>
                     </MatNavItem>
 
@@ -123,13 +123,13 @@ user.HasClaim("permission", Permissions.DersKayit.Delete)))
                 </MatNavSubMenuHeader>
                 <MatNavSubMenuList>
 
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/Bilgi").AbsoluteUri">
+                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci_Bilgi").AbsoluteUri">
                         <MatIcon>business</MatIcon> <span class="miniHover">Özlük Bilgi</span>
                     </MatNavItem>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/mesaj").AbsoluteUri">
+                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci_mesaj").AbsoluteUri">
                         <MatIcon>business</MatIcon> <span class="miniHover">Gelen Mesajlar</span>
                     </MatNavItem>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/belgetalep").AbsoluteUri">
+                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci_belgetalep").AbsoluteUri">
                         <MatIcon>business</MatIcon> <span class="miniHover">Belge Talebi</span>
                     </MatNavItem>
 
@@ -278,25 +278,25 @@ user.HasClaim("permission", Permissions.DersKayit.Delete)))
                     <MatNavSubMenuList>
                         @if (user.HasClaim("permission", Permissions.Menu.Ogrenciler))
                         {
-                            <MatNavItem Href="@navigationManager.ToAbsoluteUri("/admin/ogrenci_islem").AbsoluteUri">
+                            <MatNavItem Href="@navigationManager.ToAbsoluteUri("admin_ogrenci_islem").AbsoluteUri">
                                 <MatIcon>supervisor_account</MatIcon> <span class="miniHover">Öğrenciler</span>
                             </MatNavItem>
                         }
                         @if (user.HasClaim("permission", Permissions.Menu.TopluAtama))
                         {
-                            <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/ogrenci_toplu_atama").AbsoluteUri">
+                            <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci_toplu_atama").AbsoluteUri">
                                 <MatIcon>screen_share</MatIcon> <span class="miniHover">Toplu Atama</span>
                             </MatNavItem>
                         }
                         @if (user.HasClaim("permission", Permissions.Menu.SinifAtlatma))
                         {
-                            <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci/sinif_atlatma").AbsoluteUri">
+                            <MatNavItem Href="@navigationManager.ToAbsoluteUri("ogrenci_sinif_atlatma").AbsoluteUri">
                                 <MatIcon>screen_share</MatIcon> <span class="miniHover">Sınıf Atlatma</span>
                             </MatNavItem>
                         }
                         @if (user.HasClaim("permission", Permissions.Menu.DersAktarim))
                         {
-                            <MatNavItem Href="@navigationManager.ToAbsoluteUri("admin/Ogrenci_Ders_Aktarim").AbsoluteUri">
+                            <MatNavItem Href="@navigationManager.ToAbsoluteUri("Ogrenci_Ders_Aktarim").AbsoluteUri">
                                 <MatIcon>screen_share</MatIcon> <span class="miniHover">Ders Aktarım</span>
                             </MatNavItem>
                         }
@@ -325,13 +325,13 @@ user.HasClaim("permission", Permissions.DersKayit.Delete)))
             }
             @if (user.HasClaim("permission", Permissions.Menu.AkadeIslem))
             {
-                <MatNavItem Href="@navigationManager.ToAbsoluteUri("/admin/akademisyen_islem").AbsoluteUri">
+                <MatNavItem Href="@navigationManager.ToAbsoluteUri("/akademisyen_islem").AbsoluteUri">
                     <MatIcon>supervisor_account</MatIcon> <span class="miniHover">Akademisyen İşlemleri</span>
                 </MatNavItem>
             }
             @if (user.HasClaim("permission", Permissions.Menu.PersonelIslem))
             {
-                <MatNavItem Href="@navigationManager.ToAbsoluteUri("/admin/personel_islem").AbsoluteUri">
+                <MatNavItem Href="@navigationManager.ToAbsoluteUri("/personel_islem").AbsoluteUri">
                     <MatIcon>supervisor_account</MatIcon> <span class="miniHover">İdari Personel İşlemleri</span>
                 </MatNavItem>
             }
@@ -525,7 +525,7 @@ user.HasClaim("permission", Permissions.DersKayit.Delete)))
     @*Akademisyen*@
     <AuthorizeView Roles="Akademisyen" Context="AuthorizeContext">
         <Authorized>
-            <MatNavItem Href="@navigationManager.ToAbsoluteUri("akademisyen/DersNot").AbsoluteUri" NavLinkMatch="NavLinkMatch.All">
+            <MatNavItem Href="@navigationManager.ToAbsoluteUri("akademisyen_DersNot").AbsoluteUri" NavLinkMatch="NavLinkMatch.All">
                 <MatIcon>stars</MatIcon> <span class="miniHover">Not İşlemleri</span>
             </MatNavItem>
         </Authorized>
@@ -534,7 +534,7 @@ user.HasClaim("permission", Permissions.DersKayit.Delete)))
     @*Akademisyen*@
     <AuthorizeView Roles="Akademisyen" Context="AuthorizeContext">
         <Authorized>
-            <MatNavItem Href="@navigationManager.ToAbsoluteUri("akademisyen/Ders_Programı").AbsoluteUri">
+            <MatNavItem Href="@navigationManager.ToAbsoluteUri("akademisyen_Ders_Programı").AbsoluteUri">
                 <MatIcon>stars</MatIcon> <span class="miniHover">Ders Takvim</span>
             </MatNavItem>
         </Authorized>
@@ -542,7 +542,7 @@ user.HasClaim("permission", Permissions.DersKayit.Delete)))
     @*Akademisyen*@
     <AuthorizeView Roles="Akademisyen" Context="AuthorizeContext">
         <Authorized>
-            <MatNavItem Href="@navigationManager.ToAbsoluteUri("akademisyen/Sinav_Takvimi").AbsoluteUri">
+            <MatNavItem Href="@navigationManager.ToAbsoluteUri("akademisyen_Sinav_Takvimi").AbsoluteUri">
                 <MatIcon>stars</MatIcon> <span class="miniHover">Sınav Takvim</span>
             </MatNavItem>
         </Authorized>
@@ -551,7 +551,7 @@ user.HasClaim("permission", Permissions.DersKayit.Delete)))
     @*Akademisyen*@
     <AuthorizeView Roles="Akademisyen" Context="AuthorizeContext">
         <Authorized>
-            <MatNavItem Href="@navigationManager.ToAbsoluteUri("akademisyen/Danismanlik").AbsoluteUri">
+            <MatNavItem Href="@navigationManager.ToAbsoluteUri("akademisyen_Danismanlik").AbsoluteUri">
                 <MatIcon>stars</MatIcon> <span class="miniHover">Danışmanlık</span>
             </MatNavItem>
         </Authorized>
@@ -560,7 +560,7 @@ user.HasClaim("permission", Permissions.DersKayit.Delete)))
     @*Akademisyen*@
     <AuthorizeView Roles="Akademisyen" Context="AuthorizeContext">
         <Authorized>
-            <MatNavItem Href="@navigationManager.ToAbsoluteUri("akademisyen/stajNot").AbsoluteUri">
+            <MatNavItem Href="@navigationManager.ToAbsoluteUri("akademisyen_stajNot").AbsoluteUri">
                 <MatIcon>stars</MatIcon> <span class="miniHover">Staj Not Girişi</span>
             </MatNavItem>
         </Authorized>
@@ -569,7 +569,7 @@ user.HasClaim("permission", Permissions.DersKayit.Delete)))
     @*Akademisyen*@
     <AuthorizeView Roles="Akademisyen" Context="AuthorizeContext">
         <Authorized>
-            <MatNavItem Href="@navigationManager.ToAbsoluteUri("akademisyen/bilgi").AbsoluteUri">
+            <MatNavItem Href="@navigationManager.ToAbsoluteUri("akademisyen_bilgi").AbsoluteUri">
                 <MatIcon>stars</MatIcon> <span class="miniHover">Akademik Bilgiler</span>
             </MatNavItem>
         </Authorized>
@@ -620,43 +620,43 @@ user.HasClaim("permission", Permissions.DersKayit.Delete)))
         </AuthorizeView>*@
 
 
-    <AuthorizeView Policy="@Policies.IsAdmin" Context="AuthorizeContext">
-        <Authorized>
-            <MatNavSubMenu>
-                <MatNavSubMenuHeader>
-                    <MatNavItem AllowSelection="false">
-                        <MatIcon>settings_applications</MatIcon> <span class="miniHover">Otomasyon Yönetimi</span>
-                    </MatNavItem>
-                </MatNavSubMenuHeader>
-                <MatNavSubMenuList>
-
-                    @*<MatNavItem Href="@navigationManager.ToAbsoluteUri("/admin/ogrislem").AbsoluteUri">
-                            <MatIcon>supervisor_account</MatIcon> <span class="miniHover">Ogr İşlem</span>
-                        </MatNavItem>*@
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("admin/users").AbsoluteUri">
-                        <MatIcon>supervisor_account</MatIcon> <span class="miniHover">Kullanıcılar</span>
-                    </MatNavItem>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("admin/roles").AbsoluteUri">
-                        <MatIcon>supervisor_account</MatIcon> <span class="miniHover">Roller</span>
-                    </MatNavItem>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("admin/Settings").AbsoluteUri">
-                        <MatIcon>supervisor_account</MatIcon> <span class="miniHover">Seçenekler</span>
-                    </MatNavItem>
-                    <MatNavItem Href="@navigationManager.ToAbsoluteUri("admin/blazor_middlware_audit").AbsoluteUri">
-                        <MatIcon>change_history</MatIcon> <span class="miniHover">Api Audit Logları</span>
-                    </MatNavItem>
-                    @*<MatNavItem Href="@navigationManager.ToAbsoluteUri("admin/dBlogViewer").AbsoluteUri">
-                            <MatIcon>notes</MatIcon> <span class="miniHover">DB Logları </span>
-                        </MatNavItem>*@
-                </MatNavSubMenuList>
-            </MatNavSubMenu>
-        </Authorized>
-        @*<NotAuthorized>
-                <MatNavItem Href="@navigationManager.ToAbsoluteUri("admin/users").AbsoluteUri" Disabled="true">
-                    <MatIcon>supervisor_account</MatIcon> <span class="miniHover">Admin</span>
+<AuthorizeView Policy="@Policies.IsAdmin" Context="AuthorizeContext">
+    <Authorized>
+        <MatNavSubMenu>
+            <MatNavSubMenuHeader>
+                <MatNavItem AllowSelection="false">
+                    <MatIcon>settings_applications</MatIcon> <span class="miniHover">Otomasyon Yönetimi</span>
                 </MatNavItem>
-            </NotAuthorized>*@
-    </AuthorizeView>
+            </MatNavSubMenuHeader>
+            <MatNavSubMenuList>
+
+                @*<MatNavItem Href="@navigationManager.ToAbsoluteUri("/admin/ogrislem").AbsoluteUri">
+                        <MatIcon>supervisor_account</MatIcon> <span class="miniHover">Ogr İşlem</span>
+                    </MatNavItem>*@
+                <MatNavItem Href="@navigationManager.ToAbsoluteUri("admin_users").AbsoluteUri">
+                    <MatIcon>supervisor_account</MatIcon> <span class="miniHover">Kullanıcılar</span>
+                </MatNavItem>
+                <MatNavItem Href="@navigationManager.ToAbsoluteUri("admin_roles").AbsoluteUri">
+                    <MatIcon>supervisor_account</MatIcon> <span class="miniHover">Roller</span>
+                </MatNavItem>
+                <MatNavItem Href="@navigationManager.ToAbsoluteUri("admin_Settings").AbsoluteUri">
+                    <MatIcon>supervisor_account</MatIcon> <span class="miniHover">Seçenekler</span>
+                </MatNavItem>
+                <MatNavItem Href="@navigationManager.ToAbsoluteUri("admin_blazor_middlware_audit").AbsoluteUri">
+                    <MatIcon>change_history</MatIcon> <span class="miniHover">Api Audit Logları</span>
+                </MatNavItem>
+                @*<MatNavItem Href="@navigationManager.ToAbsoluteUri("admin/dBlogViewer").AbsoluteUri">
+                        <MatIcon>notes</MatIcon> <span class="miniHover">DB Logları </span>
+                    </MatNavItem>*@
+            </MatNavSubMenuList>
+        </MatNavSubMenu>
+    </Authorized>
+    @*<NotAuthorized>
+            <MatNavItem Href="@navigationManager.ToAbsoluteUri("admin_users").AbsoluteUri" Disabled="true">
+                <MatIcon>supervisor_account</MatIcon> <span class="miniHover">Admin</span>
+            </MatNavItem>
+        </NotAuthorized>*@
+</AuthorizeView>
 
 
     @*@if (user == null ? false : user.HasClaim("permission", "Akademisyen.Update"))
