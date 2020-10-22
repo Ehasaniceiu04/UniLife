@@ -283,6 +283,10 @@ namespace UniLife.Server.Managers
         }
         public async Task<ApiResponse> UpdateOgrenciUser(OgrenciDto ogrenciDto)
         {
+            ogrenciDto.Bolum = null;
+            ogrenciDto.Fakulte = null;
+            ogrenciDto.Program = null;
+
             var user = await _userManager.FindByIdAsync(ogrenciDto.ApplicationUserId.ToString());
 
             if (user == null)

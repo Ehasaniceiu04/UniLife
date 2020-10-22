@@ -46,10 +46,10 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs
                 ApiResponseDto apiTez = await Http.GetFromJsonAsync<ApiResponseDto>($"api/ogrtez/getwhere/{_OgrenciDto.Id}");
 
                 gecisDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<OgrGecisDto[]>(apiGecis.Result.ToString()).ToList<OgrGecisDto>(); 
-                cezaDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<OgrCezaDto[]>(apiGecis.Result.ToString()).ToList<OgrCezaDto>(); 
-                dondurDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<OgrDondurDto[]>(apiGecis.Result.ToString()).ToList<OgrDondurDto>();
-                stajDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<OgrStajDto[]>(apiGecis.Result.ToString()).ToList<OgrStajDto>();
-                tezDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<OgrTezDto[]>(apiGecis.Result.ToString()).ToList<OgrTezDto>();
+                cezaDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<OgrCezaDto[]>(apiCeza.Result.ToString()).ToList<OgrCezaDto>(); 
+                dondurDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<OgrDondurDto[]>(apiDondur.Result.ToString()).ToList<OgrDondurDto>();
+                stajDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<OgrStajDto[]>(apiStaj.Result.ToString()).ToList<OgrStajDto>();
+                tezDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<OgrTezDto[]>(apiTez.Result.ToString()).ToList<OgrTezDto>();
             }
             catch (Exception ex)
             {

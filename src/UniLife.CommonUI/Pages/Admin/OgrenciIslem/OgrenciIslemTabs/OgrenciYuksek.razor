@@ -1,0 +1,141 @@
+﻿@using UniLife.Shared.Dto.Definitions
+@using UniLife.Shared.DataModels
+@inject Microsoft.AspNetCore.Components.NavigationManager UriHelper
+@inject IMatToaster matToaster
+@inject HttpClient Http
+@using Syncfusion.Blazor.Data 
+
+<SfGrid @ref="TezGrid" DataSource="@tezDtos" Toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Update", "Cancel" })" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
+    <GridEvents OnActionComplete="ActionCompletedTez" TValue="OgrTezDto"></GridEvents>
+    <GridEditSettings ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
+    <GridColumns>
+        <GridColumn Visible="false" Field=@nameof(OgrTez.Id) HeaderText="Id" AllowAdding="false" AllowEditing="false" IsPrimaryKey="true"></GridColumn>
+        <GridColumn Visible="false" Field=@nameof(OgrTez.OgrenciId)></GridColumn>
+        <GridColumn Field=@nameof(OgrTez.TezKonu) HeaderText="Tez Konu"></GridColumn>
+        <GridColumn Field=@nameof(OgrTez.TezBilgi) HeaderText="Tez Bilgi"></GridColumn>
+        <GridColumn Field=@nameof(OgrTez.Basarili) DisplayAsCheckBox="true" HeaderText="Başarı"></GridColumn>
+        <GridColumn Field=@nameof(OgrTez.TezTarih) EditType="EditType.DatePickerEdit" HeaderText="Tez Tarih"></GridColumn>
+        <GridForeignColumn TValue="AkademisyenDto" Field="@nameof(OgrTez.DanismanId)" HeaderText="Danışman" ForeignKeyField="Id" ForeignKeyValue="Ad" Width="150">
+            <SfDataManager Url="odata/akademisyens" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain="true"></SfDataManager>
+        </GridForeignColumn>
+    </GridColumns>
+</SfGrid>
+
+@code{
+
+    SfGrid<OgrTezDto> TezGrid;
+
+    List<OgrTezDto> tezDtos = new List<OgrTezDto>();
+
+    [Parameter]
+    public OgrenciDto _OgrenciDto { get; set; } = new OgrenciDto();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+
+            ApiResponseDto apiTez = await Http.GetFromJsonAsync<ApiResponseDto>($"api/ogrtez/getwhere/{_OgrenciDto.Id}");
+
+            tezDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<OgrTezDto[]>(apiTez.Result.ToString()).ToList<OgrTezDto>();
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
+        }
+    }
+
+
+
+    public async Task ActionCompletedTez(ActionEventArgs<OgrTezDto> args)
+    {
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+        {
+            if (args.Action == "Edit")
+            {
+                await UpdateTez(args.Data);
+                TezGrid.Refresh();
+            }
+            else if (args.Action == "Add")
+            {
+                await CreateTez(args.Data);
+                TezGrid.Refresh();
+            }
+
+        }
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
+        {
+            await DeleteTez(args.Data);
+        }
+    }
+
+    public async Task CreateTez(OgrTezDto ogrTezDto)
+    {
+        try
+        {
+            ogrTezDto.OgrenciId = _OgrenciDto.Id;
+            ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/ogrTez", ogrTezDto);
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+            }
+            else
+            {
+                tezDtos.Remove(ogrTezDto);
+                TezGrid.Refresh();
+                matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
+            }
+        }
+        catch (Exception ex)
+        {
+            tezDtos.Remove(ogrTezDto);
+            TezGrid.Refresh();
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
+        }
+    }
+
+    public async Task UpdateTez(OgrTezDto ogrTezDto)
+    {
+        try
+        {
+            ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>
+                ("api/ogrtez", ogrTezDto);
+
+            if (!apiResponse.IsError)
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+            }
+            else
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
+                //update failed gridi boz !
+            }
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
+            //update failed gridi boz !
+        }
+    }
+
+    public async Task DeleteTez(OgrTezDto ogrTezDto)
+    {
+        try
+        {
+            var response = await Http.DeleteAsync("api/ogrTez/" + ogrTezDto.Id);
+            if (response.StatusCode == (System.Net.HttpStatusCode)Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
+            {
+                matToaster.Add("", MatToastType.Success, "İşlem başarılı.");
+                tezDtos.Remove(ogrTezDto);
+            }
+            else
+            {
+                matToaster.Add("", MatToastType.Danger, "Hata oluştu!");
+            }
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
+        }
+    }
+}

@@ -121,13 +121,13 @@
                 </ContentTemplate>
             </TabItem>
             @*<TabItem Visible="@(OgrSelected)">
-                    <ChildContent>
-                        <TabHeader Text="Notlar"></TabHeader>
-                    </ChildContent>
-                    <ContentTemplate>
-                        <OgrenciNotlar></OgrenciNotlar>
-                    </ContentTemplate>
-                </TabItem>*@
+            <ChildContent>
+                <TabHeader Text="Notlar"></TabHeader>
+            </ChildContent>
+            <ContentTemplate>
+                <OgrenciNotlar></OgrenciNotlar>
+            </ContentTemplate>
+        </TabItem>*@
             <TabItem Visible="@(appState.OgrenciState!=null)">
                 <ChildContent>
                     <TabHeader Text="Nûfus Bilgileri"></TabHeader>
@@ -152,6 +152,22 @@
                     <OgrenciOsym _OgrenciDto="@(appState.OgrenciState)"></OgrenciOsym>
                 </ContentTemplate>
             </TabItem>
+            @if (appState.OgrenciState != null)
+            {
+                if (appState.OgrenciState.Fakulte.OgrenimTurId == (int)OgrenimTurEnum.Doktora
+                   || appState.OgrenciState.Fakulte.OgrenimTurId == (int)OgrenimTurEnum.Yüksek_Lisans
+                   || appState.OgrenciState.Fakulte.OgrenimTurId == (int)OgrenimTurEnum.Tezsiz_Yüksek_Lisans)
+                {
+                    <TabItem>
+                        <ChildContent>
+                            <TabHeader Text="Yüksek Lisans"></TabHeader>
+                        </ChildContent>
+                        <ContentTemplate>
+                            <OgrenciYuksek _OgrenciDto="@(appState.OgrenciState)"></OgrenciYuksek>
+                        </ContentTemplate>
+                    </TabItem>
+                }
+            }
             <TabItem Visible="@(appState.OgrenciState!=null)">
                 <ChildContent>
                     <TabHeader Text="Harç Bilgileri ?"></TabHeader>

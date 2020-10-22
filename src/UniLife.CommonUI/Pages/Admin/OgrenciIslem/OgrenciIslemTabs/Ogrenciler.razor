@@ -330,7 +330,10 @@
 
     async Task DeepDetail(OgrenciDto ogrenciDto)
     {
+        ApiResponseDto<FakulteDto> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<FakulteDto>>($"api/fakulte/{ogrenciDto.FakulteId}");
+
         _OgrenciDto = ogrenciDto;
+        _OgrenciDto.Fakulte = apiResponse.Result;
         appState.OgrenciState = _OgrenciDto;
         await OgrenciToAkademik.InvokeAsync(_OgrenciDto);
     }

@@ -13,8 +13,15 @@ namespace UniLife.Shared.DataModels
 
         public virtual Ogrenci Ogrenci{ get; set; }
 
-        //Tez
+        [MaxLength(1000,ErrorMessage ="1000 karakterden fazla olmaz.")]
         public string TezKonu { get; set; }
+        [MaxLength(100, ErrorMessage = "100 karakterden fazla olmaz.")]
+        public string TezBilgi { get; set; }
+
+        [System.ComponentModel.DataAnnotations.Schema.ForeignKey("Danisman")]
+        public int? DanismanId { get; set; }
+        public virtual Akademisyen Danisman { get; set; }
+        public bool Basarili { get; set; }
         public DateTime? TezTarih { get; set; }
     }
 }

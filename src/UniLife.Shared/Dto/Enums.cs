@@ -72,6 +72,14 @@ namespace UniLife.Shared.Dto
         Mutlak = 1,
         Bağıl = 2
     }
+    public enum OgrenimTurEnum
+    {
+        Doktora = 1,
+        Lisans = 2,
+        Ön_Lisans = 3,
+        Tezsiz_Yüksek_Lisans=4,
+        Yüksek_Lisans = 5
+    }
 
 
 
