@@ -21,7 +21,7 @@ namespace UniLife.Shared.DataInterfaces
         Task UpdateDersAcilanAkademsiyen(int dersAcilanId, int akademisyenId);
         Task<List<ResDersAcilansByLongFilters>> DersAcilansByLongFilters(ReqDersAcilansByLongFilters reqDersAcilansByLongFilters);
         Task<List<OgrenciDerslerDto>> GetMufredatDersByOgrenciId(int ogrenciId);
-        Task<List<DersAcilanDto>> GetDersAcilansByMufredat(int mufredatId, int donemId);
+        Task<List<DersAcilanDto>> GetDersAcilansByMufredat(int mufredatId, int donemId,int? sinif);
         Task<List<OgrenciDerslerDto>> GetDonemDersByOgrenciId(int ogrenciId);
     }
 }

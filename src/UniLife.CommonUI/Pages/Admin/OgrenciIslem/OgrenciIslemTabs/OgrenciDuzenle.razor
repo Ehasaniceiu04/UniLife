@@ -81,7 +81,7 @@ else
                                     <label class="col-sm-2" for="DropSinif">Sınıf:</label>
                                     <SfDropDownList ID="DropSinif" @ref="DropSinif" TItem="SinifDto" CssClass="col-sm-10 pb-1"
                                                     TValue="int?" PopupHeight="230px" Placeholder="Sınıf Seçiniz"
-                                                    @bind-Value="@_OgrenciDto.Sinif" DataSource="@sinifDtos">
+                                                    @bind-Value="@_OgrenciDto.Sinif" DataSource="@Sabitler.SinifDtos">
                                         <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                                     </SfDropDownList>
                                     <label class="col-sm-2" for="ilDonem">ilave Dönem:</label>
@@ -213,19 +213,19 @@ else
     List<OgrenimDurumDto> ogrenimDurumDtos = new List<OgrenimDurumDto>();
     List<OgrenimTurDto> ogrenimTurDtos = new List<OgrenimTurDto>();
 
-    List<SinifDto> sinifDtos = new List<SinifDto>
-{
-            new SinifDto() { Ad = "0", Id = 0 },
-            new SinifDto() { Ad = "1", Id = 1 },
-            new SinifDto() { Ad = "2", Id = 2 },
-            new SinifDto() { Ad = "3", Id = 3 },
-            new SinifDto() { Ad = "4", Id = 4 },
-            new SinifDto() { Ad = "5", Id = 5 },
-            new SinifDto() { Ad = "6", Id = 6 },
-            new SinifDto() { Ad = "7", Id = 7 },
-            new SinifDto() { Ad = "8", Id = 8 },
-            new SinifDto() { Ad = "9", Id = 9 },
-};
+    //    List<SinifDto> sinifDtos = new List<SinifDto>
+    //{
+    //            new SinifDto() { Ad = "0", Id = 0 },
+    //            new SinifDto() { Ad = "1", Id = 1 },
+    //            new SinifDto() { Ad = "2", Id = 2 },
+    //            new SinifDto() { Ad = "3", Id = 3 },
+    //            new SinifDto() { Ad = "4", Id = 4 },
+    //            new SinifDto() { Ad = "5", Id = 5 },
+    //            new SinifDto() { Ad = "6", Id = 6 },
+    //            new SinifDto() { Ad = "7", Id = 7 },
+    //            new SinifDto() { Ad = "8", Id = 8 },
+    //            new SinifDto() { Ad = "9", Id = 9 },
+    //};
 
 
 

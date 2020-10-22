@@ -714,7 +714,7 @@ namespace UniLife.Storage.Stores
             return dersSonucs;
         }
 
-        public async Task<List<DersAcilanDto>> GetDersAcilansByMufredat(int mufredatId, int donemId)
+        public async Task<List<DersAcilanDto>> GetDersAcilansByMufredat(int mufredatId, int donemId, int? sinif)
         {
             var mufredat = await _db.Mufredats.FirstOrDefaultAsync(x => x.Id == mufredatId);
 
@@ -730,7 +730,8 @@ namespace UniLife.Storage.Stores
             var donemdeMufredatProgramininAcilanDersleri
                 = await _db.DersAcilans.Where(x => x.DonemId == donemId
                                             && ustMufredatIds.Contains(x.MufredatId)
-                                            && mufredatdersKods.Contains(x.Kod)).ToListAsync();
+                                            && mufredatdersKods.Contains(x.Kod)
+                                            && (sinif == null ? true : x.Sinif == sinif)).ToListAsync();
 
             donemdeMufredatProgramininAcilanDersleri.ForEach(x => { x.Mufredat = null; x.Ders = null; });
 

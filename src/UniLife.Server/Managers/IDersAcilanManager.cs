@@ -20,7 +20,7 @@ namespace UniLife.Server.Managers
         Task<ApiResponse> UpdateDersAcilanAkademsiyen(int dersAcilanId, int akademisyenId);
         Task<ApiResponse> DersAcilansByLongFilters(ReqDersAcilansByLongFilters reqDersAcilansByLongFilters);
         Task<ApiResponse> GetMufredatDersByOgrenciId(int ogrenciId);
-        Task<ApiResponse> GetDersAcilansByMufredat(int mufredatId, int donemId);
+        Task<ApiResponse> GetDersAcilansByMufredat(int mufredatId, int donemId,int? sinif);
         Task<ApiResponse> GetDonemDersByOgrenciId(int ogrenciId);
     }
 }

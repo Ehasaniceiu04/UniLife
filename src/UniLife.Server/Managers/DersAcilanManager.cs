@@ -97,9 +97,9 @@ namespace UniLife.Server.Managers
             return new ApiResponse(Status200OK, "Selected DersAcilanDto", dersSonucs);
         }
 
-        public async Task<ApiResponse> GetDersAcilansByMufredat(int mufredatId, int donemId)
+        public async Task<ApiResponse> GetDersAcilansByMufredat(int mufredatId, int donemId,int? sinif)
         {
-            var dersSonucs = await _dersAcilanStore.GetDersAcilansByMufredat(mufredatId, donemId);
+            var dersSonucs = await _dersAcilanStore.GetDersAcilansByMufredat(mufredatId, donemId, sinif);
             return new ApiResponse(Status200OK, "Selected DersAcilanDto", dersSonucs);
         }
 

@@ -90,6 +90,20 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 _mufredatId = value;
             }
         }
+
+        int? _sinif;
+        public int? Sinif
+        {
+            get => _sinif;
+            set
+            {
+                Sinif2 = value;
+                KaynakChange();
+                if (_sinif == value) return;
+                _sinif = value;
+            }
+        }
+
         public DateTime? StartValue { get; set; }
         public DateTime? EndValue { get; set; }
 
@@ -133,9 +147,19 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             get => _mufredatId2;
             set
             {
-
-                if (_mufredatId2 == value) { HedefChange(); return;  }
+                if (_mufredatId2 == value) { return;  }
                 _mufredatId2 = value; StateHasChanged(); HedefChange();
+            }
+        }
+
+        int? _sinif2;
+        public int? Sinif2
+        {
+            get => _sinif2;
+            set
+            {
+                if (_sinif2 == value) { return; }
+                _sinif2 = value; StateHasChanged(); HedefChange();
             }
         }
 
@@ -213,6 +237,10 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             {
                 totalQuery.Where("kayitNedenId", "equal", kayitNeden);
             }
+            if (Sinif.HasValue)
+            {
+                totalQuery.Where("Sinif", "equal", Sinif);
+            }
 
             if (MufredatId.HasValue)
             {
@@ -233,10 +261,14 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         }
         async Task RefreshHedef()
         {
-            ApiResponseDto<List<DersAcilanDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<DersAcilanDto>>>($"api/DersAcilan/GetDersAcilansByMufredat/{MufredatId2}/{donemId}").Result;
+            if (MufredatId2.HasValue && donemId.HasValue)
+            {
+                ApiResponseDto<List<DersAcilanDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<DersAcilanDto>>>($"api/DersAcilan/GetDersAcilansByMufredat/{MufredatId2}/{donemId}/{Sinif2}").Result;
 
-            dersAcilanDtos = apiResponse.Result;
-            dersAcGrid.Refresh();
+                dersAcilanDtos = apiResponse.Result;
+                dersAcGrid.Refresh();
+            }
+            
             //totalQueryDers = new Query();
 
             //if (donemId.HasValue)
