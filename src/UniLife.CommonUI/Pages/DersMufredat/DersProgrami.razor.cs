@@ -106,9 +106,10 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         public Query totalQuery = new Query().Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)", "Donem($select=Id,Ad)", "bolum($expand=fakulte($select=Ad,Id);$select=Ad,Id)" }); //, "bolum($expand=fakulte($select=Ad,Id);$select=Ad,Id)"
 
         string OdataSinavQuery = "odata/sinavs";
-        public Query totalSinavQuery = new Query().Expand(new List<string> { "DersAcilan($expand=program($select=Ad,Id),akademisyen($select=Ad,Id),fakulte($select=Ad,Id);$select=Ad,Id)" });
+        public Query totalSinavQuery = new Query().Expand(new List<string> { "DersAcilan($expand=program($select=Ad,Id),akademisyen($select=Ad,Id),fakulte($select=Ad,Id);$select=Ad,Kod,Id,DonemId)", "SinavTip($select=Ad,Id)" });
 
-
+        bool sadeceYillik;
+        string yillikStyle;
 
         protected async override Task OnInitializedAsync()
         {
@@ -118,6 +119,8 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             await ReadFakultes();
             await ReadDonems();
             await ReadBinas();
+
+            donemId = (await appState.GetDonemState()).Id;
         }
         async Task ReadDersliks(int binaId)
         {
@@ -433,9 +436,10 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                     if (apiResponse.IsSuccessStatusCode)
                     {
                         matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
-                        DersProgramSche.Refresh();
+                        //DersProgramSche.Refresh();
+                        //StateHasChanged();
+                        //DersProgramSche.Refresh();
                         derslikRezervDtos.FirstOrDefault(x => x.Id == selectedId).Id = apiResponse.Result.Id;
-                        DersProgramSche.Refresh();
                         //dersAcilanDtos.FirstOrDefault(x => x.Id == 0).Id = apiResponse.Result.Id;
                         //DersAcilanGrid.Refresh();
                     }
@@ -555,10 +559,13 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             //totalQuery.Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)" });
             totalQuery.Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)", "Donem($select=Id,Ad)", "bolum($expand=fakulte($select=Ad,Id);$select=Ad,Id)" }); //, "bolum($expand=fakulte($select=Ad,Id);$select=Ad,Id)"
 
-
-            if (donemId.HasValue)
+            if (sadeceYillik == false)
             {
                 totalQuery.Where("donemId", "equal", donemId);
+            }
+            else
+            {
+                totalQuery.Where("IsYillik", "equal", sadeceYillik);
             }
 
             if (programId.HasValue)
@@ -579,30 +586,48 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         {
             totalSinavQuery = new Query();
             //totalQuery.Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)" });
-            //totalSinavQuery.Expand(new List<string> { "bolum($expand=fakulte($select=Ad,Id);$select=Ad,Id)" }); //, "bolum($expand=fakulte($select=Ad,Id);$select=Ad,Id)"
-            totalSinavQuery.Expand(new List<string> { "DersAcilan($expand=program($select=Ad,Id),akademisyen($select=Ad,Id),fakulte($select=Ad,Id);$select=Ad,Id)" });
+            totalSinavQuery.Expand(new List<string> { "SinavTip($select=Ad,Id)" }); //, "bolum($expand=fakulte($select=Ad,Id);$select=Ad,Id)"
+            totalSinavQuery.Expand(new List<string> { "DersAcilan($expand=program($select=Ad,Id),akademisyen($select=Ad,Id),fakulte($select=Ad,Id);$select=Ad,Kod,Id,DonemId)", "SinavTip($select=Ad,Id)" });
 
-            if (donemId.HasValue)
+            if (sadeceYillik == false)
             {
-                totalQuery.Where("donemId", "equal", donemId);
+                totalSinavQuery.Where("DersAcilan/DonemId", "equal", donemId);
+            }
+            else
+            { 
+                totalSinavQuery.Where("DersAcilan/IsYillik", "equal", sadeceYillik);
             }
 
             if (programId.HasValue)
             {
-                totalQuery.Where("programId", "equal", programId);
+                totalSinavQuery.Where("programId", "equal", programId);
             }
             else if (bolumId.HasValue)
             {
-                totalQuery.Where("bolumId", "equal", bolumId);
+                totalSinavQuery.Where("bolumId", "equal", bolumId);
             }
             else if (fakulteId.HasValue)
             {
-                totalQuery.Where("fakulteId", "equal", fakulteId);
+                totalSinavQuery.Where("fakulteId", "equal", fakulteId);
             }
 
+            await Task.Delay(100);
+            SinavGrid.Refresh();
+            StateHasChanged();
         }
 
-
+        private async Task OnChangeSadeceYillik(Syncfusion.Blazor.Buttons.ChangeEventArgs<bool> args)
+        {
+            if (args.Checked)
+            {
+                yillikStyle = "color:red";
+            }
+            else
+            {
+                yillikStyle = "";
+            }
+            await Refresh();
+        }
 
     }
 

@@ -80,6 +80,12 @@ namespace UniLife.Shared.Dto
         Tezsiz_Yüksek_Lisans=4,
         Yüksek_Lisans = 5
     }
+    public enum DonemTipEnum
+    {
+        Güz_Dönemi = 1,
+        Bahar_Dönemi = 2,
+        Yaz_Dönemi = 3
+    }
 
 
 

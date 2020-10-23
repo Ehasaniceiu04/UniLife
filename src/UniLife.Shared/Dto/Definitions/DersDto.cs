@@ -40,6 +40,7 @@ namespace UniLife.Shared.Dto.Definitions
         public string SecmeliKodu { get; set; }
         public int? Sinif { get; set; }
         public string KancalananDersAd { get; set; }
+        public bool IsYillik { get; set; } = false;
 
         private string kancalananDersKod;
         public string KancalananDersKod {

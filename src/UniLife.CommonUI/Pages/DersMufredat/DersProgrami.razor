@@ -29,6 +29,10 @@
                             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                         </SfDropDownList>
                     </div>
+                    <label for="sadeceYillik" class="col-sm-5" style="@yillikStyle">Sadece yıllık dersler</label>
+                    <div class="col-sm-7">
+                        <SfCheckBox ID="sadeceYillik" @bind-Checked="@sadeceYillik" TChecked="bool" ValueChange="@OnChangeSadeceYillik"></SfCheckBox>
+                    </div>
                 </div>
                 @if (!isSinav)
                 {
@@ -86,6 +90,7 @@
                         <GridColumn AutoFit="true" Field="DersAcilan.Program.Ad" HeaderText="Program"></GridColumn>
                         <GridColumn AutoFit="true" Field="DersAcilan.Kod" HeaderText="Ders Kod"></GridColumn>
                         <GridColumn AutoFit="true" Field="DersAcilan.Ad" HeaderText="Ders Ad"></GridColumn>
+                        <GridColumn AutoFit="true" Field="SinavTip.Ad" HeaderText="Sinav Tip"></GridColumn>
                         <GridColumn Visible="false" Field="DersAcilan.Id" HeaderText="Ders Id"></GridColumn>
                         <GridColumn AutoFit="true" Field="DersAcilan.Akademisyen.Ad" HeaderText="Akademisyen"></GridColumn>
                         <GridColumn Field=@nameof(SinavDto.Tarih) HeaderText="Tarih"></GridColumn>

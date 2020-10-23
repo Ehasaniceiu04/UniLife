@@ -68,6 +68,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         DersDto dersDtoContext;
 
+        bool isShowYillik;
         protected override void OnInitialized()
         {
             ReadDerss();
@@ -102,8 +103,27 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         }
 
 
+        public async void ActionBeginHandler(ActionEventArgs<DersDto> args)
+        {
+            if (args.Data !=null && args.Data.DonemTipId == (int)DonemTipEnum.Güz_Dönemi)
+            {
+                isShowYillik = true;
+            }
+            else
+            {
+                isShowYillik = false;
+            }
+        }
+
         public async void ActionCompletedHandler(ActionEventArgs<DersDto> args)
         {
+
+            
+
+            if (args.RequestType == Syncfusion.Blazor.Grids.Action.Refresh)
+            {
+                dersDtoContext.IsYillik = false;
+            }
             if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
             {
                 dersiAktifledi = null;
@@ -126,8 +146,8 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                     args.Cancel = true;
                     await DersGrid.CloseEdit();
                     isOpsCoklama = false;
-                    
-                    
+
+
                 }
                 else if (args.Action == "Add")
                 {
@@ -211,8 +231,8 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 }
                 else
                 {
-                    
-                    
+
+
 
                     ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>
                     ("api/ders", dersDto);
@@ -386,7 +406,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             {
                 matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Bağlı dersleri silerken oluştu!");
             }
-            
+
         }
 
         async Task CommandClickHandlerDers(Syncfusion.Blazor.Grids.CommandClickEventArgs<DersDto> args)
@@ -483,8 +503,21 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             {
                 args.Cell.AddStyle(new string[] { "background-color:#f2ab96" });
             }
-            
 
+
+        }
+
+
+        private void OnDonemTipValueChage(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
+        {
+            if ((int)DonemTipEnum.Güz_Dönemi == args.Value)
+            {
+                isShowYillik = true;
+            }
+            else
+            {
+                isShowYillik = false;
+            }
         }
 
 

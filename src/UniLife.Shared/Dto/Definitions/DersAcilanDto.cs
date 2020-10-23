@@ -61,6 +61,7 @@ namespace UniLife.Shared.Dto.Definitions
         public int? YerineSecilenId { get; set; }
         public string YerineSecilenAd { get; set; }
         public int? Sinif { get; set; }
+        public bool IsYillik { get; set; } = false;
 
         public int? ODTekrar { get; set; }
         public int? ADKayit { get; set; }

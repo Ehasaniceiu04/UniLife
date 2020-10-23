@@ -51,6 +51,7 @@ namespace UniLife.Shared.DataModels
         public bool Zorunlu { get; set; }
         public string SecmeliKodu { get; set; }
         public int? Sinif { get; set; }
+        public bool IsYillik { get; set; }
 
         public int? ODTekrar { get; set; }
         public int? ADKayit { get; set; }

@@ -106,7 +106,7 @@ else
                 </GridAggregate>*@
         </GridAggregates>
         @*QueryCellInfo="QueryCellInfoHandler"*@
-        <GridEvents QueryCellInfo="QueryCellInfoHandler" CommandClicked="CommandClickHandler" OnActionComplete="ActionCompletedHandler" TValue="DersDto"></GridEvents>
+        <GridEvents QueryCellInfo="QueryCellInfoHandler" CommandClicked="CommandClickHandler" OnActionBegin="ActionBeginHandler" OnActionComplete="ActionCompletedHandler" TValue="DersDto"></GridEvents>
         <GridEditSettings Dialog="DialogParams" ShowDeleteConfirmDialog="true" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
             <Template>
                 @{
@@ -159,6 +159,7 @@ else
                                 <div class="col-sm-10">
                                     <SfDropDownList ID="DonemTipId" @bind-Value="@(dersDtoContext.DonemTipId)" TValue="int?" TItem="DonemTipDto" Index="0" DataSource="donemTipDtos">
                                         <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
+                                        <DropDownListEvents TValue="int?" ValueChange="OnDonemTipValueChage"></DropDownListEvents>
                                     </SfDropDownList>
                                 </div>
                             </div>
@@ -196,20 +197,20 @@ else
 
 
                                 @*<label for="GecmeNotu" class="col-sm-2 col-form-label">Geçme Notu</label>
-                                    <div class="col-sm-4">
-                                        <SfNumericTextBox ID="GecmeNotu"  @bind-Value="@(dersDto.GecmeNotu)"></SfNumericTextBox>
-                                    </div>*@
+            <div class="col-sm-4">
+                <SfNumericTextBox ID="GecmeNotu"  @bind-Value="@(dersDto.GecmeNotu)"></SfNumericTextBox>
+            </div>*@
                             </div>
                             @*<div class="form-group row">
-                                    <label for="OptikKod" class="col-sm-2 col-form-label">OptikKod</label>
-                                    <div class="col-sm-4">
-                                        <SfTextBox ID="OptikKod" @bind-Value="@(dersDto.OptikKod)"></SfTextBox>
-                                    </div>
-                                    <label for="UygSaat" class="col-sm-2 col-form-label">Uyg.Saat</label>
-                                    <div class="col-sm-4">
-                                        <SfNumericTextBox ID="UygSaat" @bind-Value="@(dersDto.UygSaat)"></SfNumericTextBox>
-                                    </div>
-                                </div>*@
+            <label for="OptikKod" class="col-sm-2 col-form-label">OptikKod</label>
+            <div class="col-sm-4">
+                <SfTextBox ID="OptikKod" @bind-Value="@(dersDto.OptikKod)"></SfTextBox>
+            </div>
+            <label for="UygSaat" class="col-sm-2 col-form-label">Uyg.Saat</label>
+            <div class="col-sm-4">
+                <SfNumericTextBox ID="UygSaat" @bind-Value="@(dersDto.UygSaat)"></SfNumericTextBox>
+            </div>
+        </div>*@
                             <div class="form-group row">
 
                                 <label for="LabSaat" class="col-sm-2 col-form-label">Lab.Saat</label>
@@ -258,6 +259,16 @@ else
                                 @*<label class="col-sm-4">@((string.IsNullOrWhiteSpace(dersDtoContext.KancalananDersAd) && dersDtoContext.Durum) ? "":$"Bağlı old. ders : {dersDtoContext.KancalananDersAd}")</label>*@
                                 <label class="col-sm-4">@(dersDtoContext.Durum ? "":$"Bağlı old. ders : {dersDtoContext.KancalananDersAd}")</label>
                             </div>
+                            @if (isShowYillik)
+	                        {
+                                <div class="form-group row">
+                                    <label for="IsYillik" class="col-sm-2 col-form-label">Yıllık</label>
+                                    <div class="col-sm-4">
+                                        <SfCheckBox ID="IsYillik" @bind-Checked="@(dersDtoContext.IsYillik)"></SfCheckBox>
+                                    </div>
+                                </div>
+	                        }
+                            
                             @if (isOpsCoklama)
                             {
                                 <div style="background-color: antiquewhite;" class="card">

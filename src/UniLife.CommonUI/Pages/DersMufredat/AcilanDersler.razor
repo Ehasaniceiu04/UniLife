@@ -1,7 +1,5 @@
 ﻿@page "/donemdersleri"
-@*@inject HttpClient Http;*@
 @using UniLife.Shared.Dto.Definitions
-@*@inject IMatToaster matToaster*@
 @using Syncfusion.Blazor.DropDowns
 @using System.Net
 @using Newtonsoft.Json
@@ -27,7 +25,7 @@
             <div class="form-group row">
                 <label for="DropFakulte" class="col-sm-2 col-form-label-sm">Dönem</label>
                 <div class="col-sm-10">
-                    <SfDropDownList ID="DropDonem" @ref="DropDonem" TValue="int?" TItem="DonemDto" Placeholder="Dönem seçiniz..."
+                    <SfDropDownList Enabled="@(!sadeceYillik)" ID="DropDonem" @ref="DropDonem" TValue="int?" TItem="DonemDto" Placeholder="Dönem seçiniz..."
                                     Query="@donemQuery"
                                     @bind-Value="@DonemId">
                         <SfDataManager Url="odata/donems?$orderby=Yil desc, DonemTipId" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
@@ -36,9 +34,13 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label for="KayOgr" class="col-sm-3">Kayıtlı Öğrenci Sayısı</label>
-                <div class="col-sm-9">
-                    <SfCheckBox @bind-Checked="@isShowKayOgrSay" TChecked="bool" ValueChange="@OnChange"></SfCheckBox>
+                <label for="KayOgr" class="col-sm-5">Kayıtlı Öğrenci Sayısı</label>
+                <div class="col-sm-7">
+                    <SfCheckBox @bind-Checked="@isShowKayOgrSay" TChecked="bool" ValueChange="@OnChangeOrgSayi"></SfCheckBox>
+                </div>
+                <label for="sadeceYillik" class="col-sm-5" style="@yillikStyle">Sadece yıllık dersler</label>
+                <div class="col-sm-7">
+                    <SfCheckBox ID="sadeceYillik" @bind-Checked="@sadeceYillik" TChecked="bool" ValueChange="@OnChangeSadeceYillik"></SfCheckBox>
                 </div>
             </div>
             <SfButton OnClick="Refresh" CssClass="e-success col-sm-12 form-control-sm">Bul / Yenile</SfButton>
@@ -167,7 +169,6 @@
                             </div>
 
                             <div class="col-md-3">
-                                @*<FakBolPrg></FakBolPrg>*@
                                 <SfButton OnClick="@(()=>programDialogOpen =true)" CssClass="e-success col-sm-12 form-control-sm">Program Ata</SfButton>
 
                                 @if (dAcilanContext.Program != null)
@@ -193,6 +194,10 @@
                                             <SfDataManager Url="odata/donems?$orderby=Yil desc, DonemTipId" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
                                             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                                         </SfDropDownList>
+                                    </div>
+                                    <label for="yillik" class="col-sm-8">Sadece yıllık dersler</label>
+                                    <div class="col-sm-4">
+                                        <SfCheckBox ID="yillik" @bind-Checked="@dAcilanContext.IsYillik" TChecked="bool" CssClass="color:red"></SfCheckBox>
                                     </div>
                                 </div>
 
@@ -249,7 +254,7 @@
                         @{
                             var dersAcilanContext = (context as DersAcilanDto);
 
-                            <p>@(dersAcilanContext.AltKont + "-"+dersAcilanContext.BolDisKont+"-"+ dersAcilanContext.TopKont)</p>
+                            @(dersAcilanContext.AltKont + "-"+dersAcilanContext.BolDisKont+"-"+ dersAcilanContext.TopKont)
                         }
                     </Template>
                 </GridColumn>

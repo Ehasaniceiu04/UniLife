@@ -13,6 +13,7 @@ using Syncfusion.Blazor.Grids;
 using UniLife.CommonUI.Extensions;
 using Syncfusion.Blazor.Data;
 using Syncfusion.Blazor.DropDowns;
+using System.Drawing;
 
 namespace UniLife.CommonUI.Pages.DersMufredat
 {
@@ -155,18 +156,20 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         string dialogUyariText;
 
         bool isShowKayOgrSay;
-        public void Change(@Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
-        {
-            if (args.Value == null)
-            {
-                DersAcilanGrid.ClearFiltering();
-            }
-            else
-            {
-                //startswith
-                DersAcilanGrid.FilterByColumn("ProgramId", "equal", 1);
-            }
-        }
+        bool sadeceYillik;
+        string yillikStyle;
+        //public void Change(@Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
+        //{
+        //    if (args.Value == null)
+        //    {
+        //        DersAcilanGrid.ClearFiltering();
+        //    }
+        //    else
+        //    {
+        //        //startswith
+        //        DersAcilanGrid.FilterByColumn("ProgramId", "equal", 1);
+        //    }
+        //}
 
         protected override async Task OnInitializedAsync()
         {
@@ -356,9 +359,13 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             //totalQuery.Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)" });
 
 
-            if (DonemId.HasValue)
+            if (sadeceYillik==false)
             {
                 totalQuery.Where("donemId", "equal", DonemId);
+            }
+            else
+            {
+                totalQuery.Where("IsYillik", "equal", sadeceYillik);
             }
 
             if (ProgramId.HasValue)
@@ -453,9 +460,22 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         //    DersAcilanGrid.ClearFiltering("Zorunlu");
         //}
 
-        private void OnChange(Syncfusion.Blazor.Buttons.ChangeEventArgs<bool> args)
+        private async Task OnChangeSadeceYillik(Syncfusion.Blazor.Buttons.ChangeEventArgs<bool> args)
+        {
+            if (args.Checked)
+            {
+                yillikStyle = "color:red";
+            }
+            else
+            {
+                yillikStyle = "";
+            }
+            await Refresh();
+        }
+        private void OnChangeOrgSayi(Syncfusion.Blazor.Buttons.ChangeEventArgs<bool> args)
         {
 
         }
+        
     }
 }
