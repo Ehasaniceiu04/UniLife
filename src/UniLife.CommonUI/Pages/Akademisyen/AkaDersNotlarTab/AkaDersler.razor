@@ -5,6 +5,7 @@
 @using Syncfusion.Blazor.Data
 @using Syncfusion.Blazor.DropDowns
 @using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Buttons
 
 @attribute [Authorize(Roles = "Administrator,Personel,Akademisyen")]
 
@@ -17,14 +18,29 @@
 }
 else
 {
-    <SfDropDownList ID="DropDonem" @ref="DropDonem" ShowClearButton="true" Index="0" TItem="DonemDto" CssClass="form-control-sm"
+    @*<SfDropDownList ID="DropDonem" @ref="DropDonem" ShowClearButton="true" Index="0" TItem="DonemDto" CssClass="form-control-sm"
                     TValue="int?" Placeholder="Dönem Seçimi..."
                     DataSource="@(donemDtos.OrderByDescending(x=>x.Yil).ThenBy(n => n.BasTarih))" @bind-Value="@(selectedDonemId)">
         <DropDownListEvents TValue="int?" ValueChange="DonemChange"></DropDownListEvents>
         <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-    </SfDropDownList>
+    </SfDropDownList>*@
+    <div class="form-group row">
+        <label for="DropFakulte" class="col-sm-1 col-form-label-sm">Dönem :</label>
+        <div class="col-sm-6">
+            <SfDropDownList Enabled="@(!sadeceYillik)" ID="DropDonem" @ref="DropDonem" TValue="int?" TItem="DonemDto" Placeholder="Dönem seçiniz..."
+                            Query="@donemQuery"
+                            @bind-Value="@selectedDonemId">
+                <SfDataManager Url="odata/donems?$orderby=Yil desc, DonemTipId" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
+                <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+            </SfDropDownList>
+        </div>
+        @*<label for="yillik" class="col-sm-3" style="@yillikStyle">Sadece yıllık dersler</label>*@
+        <div class="col-sm-5">
+            <SfCheckBox ID="yillik" Label="Sadece yıllık dersler" CssClass="yillikStyle" LabelPosition="LabelPosition.Before" @bind-Checked="@sadeceYillik" TChecked="bool"></SfCheckBox>
+        </div>
+    </div>
 
-    <SfGrid ID="grdDersler" @ref="grdDersler" Query="@(new Query().Where("akademisyen/Id", "equal", akademisyenDto.Id).Where("donem/Id", "equal", selectedDonemId))" TValue="DersAcilanDto" AllowFiltering="true" AllowResizing="true" Toolbar="@(Toolbaritems)" AllowPaging="true">
+    <SfGrid ID="grdDersler" @ref="grdDersler" Query="@(new Query().Where("akademisyen/Id", "equal", akademisyenDto.Id).Where(sadeceYillik? new WhereFilter() { Field ="IsYillik",Operator="equal",value=sadeceYillik}:new WhereFilter() { Field ="DonemId",Operator="equal",value=selectedDonemId}))" TValue="DersAcilanDto" AllowFiltering="true" AllowResizing="true" Toolbar="@(Toolbaritems)" AllowPaging="true">
         <SfDataManager Url="@(OdataQuery)" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
         <GridEvents TValue="DersAcilanDto" OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectedHandler"></GridEvents>
         @*<GridGroupSettings Columns="@Initial"></GridGroupSettings>*@
@@ -65,20 +81,20 @@ else
             <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Ad"></GridColumn>
             <GridColumn Field="Donem.Ad" HeaderText="Donem"></GridColumn>
             @*<GridColumn>
-                <GridCommandColumns>
-                    <GridCommandColumn Type="CommandButtonType.None" Title="Ders Sınavları" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
-                </GridCommandColumns>
-            </GridColumn>*@
+                    <GridCommandColumns>
+                        <GridCommandColumn Type="CommandButtonType.None" Title="Ders Sınavları" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
+                    </GridCommandColumns>
+                </GridColumn>*@
         </GridColumns>
         @*<GridGroupSettings Columns=@Template>
-            <CaptionTemplate>
-                @{
-                    var donemContext = (context as CaptionTemplateContext);
-                    <div><b>@donemContext.Key</b></div>
-                }
+                <CaptionTemplate>
+                    @{
+                        var donemContext = (context as CaptionTemplateContext);
+                        <div><b>@donemContext.Key</b></div>
+                    }
 
-            </CaptionTemplate>
-        </GridGroupSettings>*@
+                </CaptionTemplate>
+            </GridGroupSettings>*@
     </SfGrid>
 
     @if (isYoklamaShow)
@@ -111,6 +127,10 @@ else
 
 
 @code{
+
+    public Query donemQuery = new Query().Select(new List<string> { "Id", "Ad" }).RequiresCount();
+    bool sadeceYillik;
+    string yillikStyle;
 
     string OdataQuery = "odata/dersacilans";
     public Query totalQuery = new Query();//.Expand(new List<string> { "Akademisyen($select=Id,Ad)", "Donem($select=Id,Ad)" });
@@ -175,9 +195,9 @@ else
                 //gridOdata = $"odata/dersacilans?$filter=Id eq {SpesificDersAcilan}";
             }
 
-            selectedDonemId = donemDtos.FirstOrDefault(x => x.Durum == true).Id;
+            //selectedDonemId = donemDtos.FirstOrDefault(x => x.Durum == true).Id;
 
-
+            selectedDonemId = (await appState.GetDonemState()).Id;
 
             StateHasChanged();
         }
@@ -205,7 +225,7 @@ else
     {
         if (args.CommandColumn.Title == "Sınava Git")
         {
-            args.RowData.DersAcilanAd = expDersAcilan.Ad + " - "+ expDersAcilan.Kod + " - " + args.RowData.SinavTip.Ad;
+            args.RowData.DersAcilanAd = expDersAcilan.Ad + " - " + expDersAcilan.Kod + " - " + args.RowData.SinavTip.Ad;
             SinavToNotlar.InvokeAsync(args.RowData);
         }
     }
@@ -258,7 +278,7 @@ else
         {
             args.Cell.AddStyle(new string[] { "background-color:#99fff654" });
         }
-        else if(args.Data.SinavTipId == (int)SinavTipEnum.But)
+        else if (args.Data.SinavTipId == (int)SinavTipEnum.But)
         {
             args.Cell.AddStyle(new string[] { "background-color:#f72b2b1c" });
         }

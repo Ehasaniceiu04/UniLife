@@ -84,6 +84,11 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs
             SetMufredatAd();
             ReadKayitli();
 
+            await ArrangeToolbar();
+        }
+
+        async Task ArrangeToolbar()
+        {
             Toolbaritems = new List<object>();
             if (appState.UserNavigationLoadRole == UserRoles.Ogrenci.ToString() || UserRoles.Personel.ToString() == appState.UserNavigationLoadRole)
             {
@@ -201,7 +206,7 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs
                 if (apiResponse.IsSuccessStatusCode)
                 {
                     DersKayitDtos = apiResponse.Result.OrderBy(x => x.Kod).ToList();
-                    if (!DersKayitDtos.Any(x => x.IsOnayli==false))
+                    if (DersKayitDtos.Count()>0 && !DersKayitDtos.Any(x => x.IsOnayli==false))
                     {
                         isOnayli = true;
                     }
@@ -339,10 +344,16 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs
             else if (args.Item.Id == "DersOnay")
             {
                 await Onayla();
+                IsChecked = !IsChecked;
+                //StateHasChanged();
+                await ArrangeToolbar();
             }
             else if (args.Item.Id == "OnayKaldır")
             {
                 await OnayKaldir();
+                IsChecked = !IsChecked;
+                //StateHasChanged();
+                await ArrangeToolbar();
             }
         }
     }

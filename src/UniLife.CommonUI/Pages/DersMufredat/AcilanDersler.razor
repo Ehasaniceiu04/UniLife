@@ -38,9 +38,9 @@
                 <div class="col-sm-7">
                     <SfCheckBox @bind-Checked="@isShowKayOgrSay" TChecked="bool" ValueChange="@OnChangeOrgSayi"></SfCheckBox>
                 </div>
-                <label for="sadeceYillik" class="col-sm-5" style="@yillikStyle">Sadece yıllık dersler</label>
+                <label for="yillik" class="col-sm-5" style="@yillikStyle">Yıllık</label>
                 <div class="col-sm-7">
-                    <SfCheckBox ID="sadeceYillik" @bind-Checked="@sadeceYillik" TChecked="bool" ValueChange="@OnChangeSadeceYillik"></SfCheckBox>
+                    <SfCheckBox ID="yillik" @bind-Checked="@sadeceYillik" TChecked="bool" ValueChange="@OnChangeSadeceYillik"></SfCheckBox>
                 </div>
             </div>
             <SfButton OnClick="Refresh" CssClass="e-success col-sm-12 form-control-sm">Bul / Yenile</SfButton>

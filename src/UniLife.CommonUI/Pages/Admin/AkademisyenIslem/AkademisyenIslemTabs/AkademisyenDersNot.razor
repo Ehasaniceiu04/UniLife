@@ -11,7 +11,7 @@
         @*Selected="OnTabSelected" Selecting="OnTabSelecting"*@
         <TabEvents Created="TabCreate" Selecting="OnTabSelecting"></TabEvents>
         <TabItems>
-            <TabItem>
+            <TabItem CssClass="altTab">
                 <ChildContent>
                     <TabHeader Text="Akademisyenin Verdiği Dersler"></TabHeader>
                 </ChildContent>
@@ -19,7 +19,7 @@
                     <AkaDersler SpesificDersAcilan="SpesificDersAcilan" SinavToNotlar="SinavToNotlar" _AkademisyenDto="_AkademisyenDto"></AkaDersler>
                 </ContentTemplate>
             </TabItem>
-            <TabItem>
+            <TabItem  CssClass="altTab">
                 <ChildContent>
                     <TabHeader Text="Seçilen Sınavın Öğrenci Notları"></TabHeader>
                 </ChildContent>
@@ -91,3 +91,10 @@
         DersNotTab.Select(tabIndex);
     }
 }
+
+<style>
+    .altTab.e-active {
+        background-color: #69f0b8bd !important;
+    }
+    
+</style>
