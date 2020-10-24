@@ -4,6 +4,9 @@
 @using UniLife.Shared.Dto.Definitions
 @using Syncfusion.Blazor.DropDowns
 @using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Buttons
+@inject AppState appState
+
 
 @attribute [Authorize(Roles = "Administrator,Personel")]
 
@@ -20,20 +23,24 @@
             <div class="col-sm-9">
                 <SfDropDownList @ref="DropSinif" TItem="SinifDto"
                                 TValue="int?" ShowClearButton="true"
-                                DataSource="@(Sabitler.SinifDtos)" @bind-Value="@sinif">
+                                DataSource="@(Sabitler.SinifDtos)" @bind-Value="@Sinif">
                     <DropDownListEvents TValue="int?" ValueChange="KaynakChange"></DropDownListEvents>
                     <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                 </SfDropDownList>
             </div>
             <label for="DropDonem" class="col-sm-3">Dönem</label>
             <div class="col-sm-9">
-                <SfDropDownList @ref="DropDonem" ShowClearButton="true" TValue="int?" TItem="KeyValueDto" Placeholder="Dönem seçiniz..."
+                <SfDropDownList @ref="DropDonem" TValue="int?" TItem="KeyValueDto" Placeholder="Dönem seçiniz..."
                                 Query="@donemQuery"
-                                @bind-Value="@donemId">
+                                @bind-Value="@DonemId">
                     <DropDownListEvents TValue="int?" ValueChange="KaynakChange"></DropDownListEvents>
                     <SfDataManager Url="odata/donems" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
                     <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                 </SfDropDownList>
+            </div>
+            <label for="sadeceYillik" class="col-sm-5" style="@yillikStyle">Sadece yıllık dersler</label>
+            <div class="col-sm-7">
+                <SfCheckBox ID="sadeceYillik" @bind-Checked="@sadeceYillik" TChecked="bool" ValueChange="@OnChangeSadeceYillik"></SfCheckBox>
             </div>
         </div>
     </div>
@@ -102,8 +109,8 @@
         /*font-size: 0.65rem;*/
         /*font-size: .775rem;*/
     }
+
     .e-grid .e-altrow {
         background-color: #fafafa;
     }
-
 </style>

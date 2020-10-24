@@ -7,6 +7,7 @@
 @using Syncfusion.Blazor.Calendars
 @using Syncfusion.Blazor.Data
 @using UniLife.Shared.DataModels
+@inject AppState appState
 
 @attribute [Authorize(Roles = "Administrator,Personel")]
 
@@ -38,6 +39,10 @@ else
                         <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                     </SfDropDownList>
                 </div>
+                <label for="sadeceYillik" class="col-sm-5" style="@yillikStyle">Sadece yıllık dersler</label>
+                <div class="col-sm-7">
+                    <SfCheckBox ID="sadeceYillik" @bind-Checked="@sadeceYillik" TChecked="bool" ValueChange="@OnChangeSadeceYillik"></SfCheckBox>
+                </div>
             </div>
             <SfButton OnClick="Refresh" CssClass="e-success col-sm-12 form-control-sm">Bul / Yenile</SfButton>
 
@@ -47,31 +52,31 @@ else
         <div class="col-sm-12 col-md-12 pb-4" style="padding-left: 0px;padding-right: 0px;">
             <div class="server-action-menu card">
                 @*@if (DonemId.HasValue)
-                {*@
-                    @*OnRecordClick="OnRecordClickHandler" Toolbar="@(ToolbarDersitems)" OnToolbarClick="ToolbarDersClickHandler" *@
-                    <SfGrid ID="DersAcGrid" @ref="DersAcGrid" Query="@totalQuery" TValue="DersAcilanForSinav" RowHeight="20" AllowSorting="true" AllowFiltering="true" AllowSelection="true" AllowPaging="true" AllowExcelExport="true" AllowResizing="true" AllowPdfExport="true">
-                        <GridEvents RowSelected="RowSelectedHandler" TValue="DersAcilanForSinav" CommandClicked="CommandClickHandler"></GridEvents>
-                        <GridSelectionSettings CellSelectionMode="CellSelectionMode.BoxWithBorder" CheckboxOnly="true" Type="SelectionType.Multiple" PersistSelection="true"></GridSelectionSettings>
-                        <GridPageSettings PageCount="5" PageSizes="new int[]{ 5, 10, 50, 100,10000}"></GridPageSettings>
-                        <SfDataManager Url="@("odata/DersAcilansForSinavs")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
-                        @*<SfDataManager Url="@("odata/dersacilans?$expand=derskayits,akademisyen")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>*@
-                        <GridColumns>
-                            <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
-                            <GridColumn Visible="false" Field=@nameof(DersAcilanForSinav.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
-                            <GridColumn AutoFit="true" Field=@nameof(DersAcilanForSinav.Kod) HeaderText="Ders Kodu"></GridColumn>
-                            <GridColumn Field=@nameof(DersAcilanForSinav.Ad) HeaderText="Ders Adı"></GridColumn>
-                            <GridColumn Field="AkademisyenAd" HeaderText="Akademisyen"></GridColumn>
-                            <GridColumn AutoFit="true" Field=@nameof(DersAcilanForSinav.Sinif) HeaderText="Sinif"></GridColumn>
-                            <GridColumn AutoFit="true" Field=@nameof(DersAcilanForSinav.Zorunlu) DisplayAsCheckBox="true" HeaderText="Z"></GridColumn>
-                            <GridColumn AutoFit="true" Field=@nameof(DersAcilanForSinav.DersKayitCount) HeaderText="Ö.Sayı"></GridColumn>
-                            @*<GridColumn Field="DersKayits@odata.count" HeaderText="Ö.Sayı"></GridColumn>*@
-                            <GridColumn>
-                                <GridCommandColumns>
-                                    <GridCommandColumn Type="CommandButtonType.None" Title="Tanımlı Sınavlar" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowDown", CssClass="e-flat" })"></GridCommandColumn>
-                                </GridCommandColumns>
-                            </GridColumn>
-                        </GridColumns>
-                    </SfGrid>
+                    {*@
+                @*OnRecordClick="OnRecordClickHandler" Toolbar="@(ToolbarDersitems)" OnToolbarClick="ToolbarDersClickHandler" *@
+                <SfGrid ID="DersAcGrid" @ref="DersAcGrid" Query="@totalQuery" TValue="DersAcilanForSinav" RowHeight="20" AllowSorting="true" AllowFiltering="true" AllowSelection="true" AllowPaging="true" AllowExcelExport="true" AllowResizing="true" AllowPdfExport="true">
+                    <GridEvents RowSelected="RowSelectedHandler" TValue="DersAcilanForSinav" CommandClicked="CommandClickHandler"></GridEvents>
+                    <GridSelectionSettings CellSelectionMode="CellSelectionMode.BoxWithBorder" CheckboxOnly="true" Type="SelectionType.Multiple" PersistSelection="true"></GridSelectionSettings>
+                    <GridPageSettings PageCount="5" PageSizes="new int[]{ 5, 10, 50, 100,10000}"></GridPageSettings>
+                    <SfDataManager Url="@("odata/DersAcilansForSinavs")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+                    @*<SfDataManager Url="@("odata/dersacilans?$expand=derskayits,akademisyen")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>*@
+                    <GridColumns>
+                        <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
+                        <GridColumn Visible="false" Field=@nameof(DersAcilanForSinav.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+                        <GridColumn AutoFit="true" Field=@nameof(DersAcilanForSinav.Kod) HeaderText="Ders Kodu"></GridColumn>
+                        <GridColumn Field=@nameof(DersAcilanForSinav.Ad) HeaderText="Ders Adı"></GridColumn>
+                        <GridColumn Field="AkademisyenAd" HeaderText="Akademisyen"></GridColumn>
+                        <GridColumn AutoFit="true" Field=@nameof(DersAcilanForSinav.Sinif) HeaderText="Sinif"></GridColumn>
+                        <GridColumn AutoFit="true" Field=@nameof(DersAcilanForSinav.Zorunlu) DisplayAsCheckBox="true" HeaderText="Z"></GridColumn>
+                        <GridColumn AutoFit="true" Field=@nameof(DersAcilanForSinav.DersKayitCount) HeaderText="Ö.Sayı"></GridColumn>
+                        @*<GridColumn Field="DersKayits@odata.count" HeaderText="Ö.Sayı"></GridColumn>*@
+                        <GridColumn>
+                            <GridCommandColumns>
+                                <GridCommandColumn Type="CommandButtonType.None" Title="Tanımlı Sınavlar" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowDown", CssClass="e-flat" })"></GridCommandColumn>
+                            </GridCommandColumns>
+                        </GridColumn>
+                    </GridColumns>
+                </SfGrid>
                 @*}*@
                 @*<SfButton OnClick="TopluButOlustur" CssClass="e-success">Seçilen Derslerin Bütlerini Oluştur.</SfButton>*@
                 @*<input type="button" @onclick="Remove" value="remove" />*@

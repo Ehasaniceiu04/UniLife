@@ -28,37 +28,17 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
 
         SfDropDownList<int?, DonemDto> DropDonem;
-        SfDropDownList<int?, KeyValueDto> DropFakulte;
-        SfDropDownList<int?, KeyValueDto> DropBolum;
-        SfDropDownList<int?, KeyValueDto> DropProgram;
         SfDropDownList<int?, SinifDto> DropSinif;
 
 
 
         List<DonemDto> donemDtos = new List<DonemDto>();
-        List<KeyValueDto> fakulteDtos = new List<KeyValueDto>();
-        List<KeyValueDto> bolumDtos = new List<KeyValueDto>();
-        List<KeyValueDto> programDtos = new List<KeyValueDto>();
 
         List<SinavTipDto> sinavTipDtos = new List<SinavTipDto>();
         List<SinavTurDto> sinavTurDtos = new List<SinavTurDto>();
 
         List<SinavDto> mazeretSinavDtos = new List<SinavDto>();
 
-
-        List<SinifDto> sinifDtos = new List<SinifDto>
-{
-            new SinifDto() { Ad = "0", Id = 0 },
-            new SinifDto() { Ad = "1", Id = 1 },
-            new SinifDto() { Ad = "2", Id = 2 },
-            new SinifDto() { Ad = "3", Id = 3 },
-            new SinifDto() { Ad = "4", Id = 4 },
-            new SinifDto() { Ad = "5", Id = 5 },
-            new SinifDto() { Ad = "6", Id = 6 },
-            new SinifDto() { Ad = "7", Id = 7 },
-            new SinifDto() { Ad = "8", Id = 8 },
-            new SinifDto() { Ad = "9", Id = 9 },
-};
 
 
         Syncfusion.Blazor.Grids.SfGrid<DersAcilanForSinav> DersAcGrid;
@@ -147,13 +127,16 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         public Query totalQueryOgr;
 
+        bool sadeceYillik;
+        string yillikStyle;
+
         protected async override Task OnInitializedAsync()
         {
-            await ReadFakultes();
             await ReadDonems();
             await ReadSinavTip();
             await ReadSinavTur();
 
+            DonemId = (await appState.GetDonemState()).Id;
         }
 
         protected override Task OnAfterRenderAsync(bool firstRender)
@@ -161,20 +144,6 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             return base.OnAfterRenderAsync(firstRender);
         }
 
-        async Task ReadFakultes()
-        {
-            OData<KeyValueDto> apiResponse = await Http.GetFromJsonAsync<OData<KeyValueDto>>($"odata/fakultes?$select=Id,Ad");
-
-            if (apiResponse.Value.Count != 0)
-            {
-                fakulteDtos = apiResponse.Value;
-                StateHasChanged();
-            }
-            else
-            {
-                matToaster.Add("", MatToastType.Danger, "fakulte getirilirken hata oluştu!");
-            }
-        }
 
         async Task ReadDonems()
         {
@@ -220,138 +189,17 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         }
 
 
-
-        private void FakulteToBolum(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
-        {
-            bolumDtos = new List<KeyValueDto>();
-            programDtos = new List<KeyValueDto>();
-            _dersAcilanDto.BolumId = null;
-            _dersAcilanDto.ProgramId = null;
-            if (_dersAcilanDto.Id == 0)
-            {
-                ReadBolums(args.Value).ConfigureAwait(true);
-            }
-            else
-            {
-                ReadBolums(_dersAcilanDto.FakulteId).ConfigureAwait(true);
-            }
-            StateHasChanged();
-        }
-
-        private void BolumToProgram(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
-        {
-            programDtos = new List<KeyValueDto>();
-            _dersAcilanDto.ProgramId = null;
-            if (_dersAcilanDto.Id == 0)
-            {
-
-                ReadPrograms(args.Value).ConfigureAwait(true);
-            }
-            else
-            {
-                ReadPrograms(_dersAcilanDto.BolumId).ConfigureAwait(true);
-            }
-            //StateHasChanged();
-        }
-
-        async Task ReadBolums(int? fakulteId)
-        {
-            OData<KeyValueDto> apiResponse;
-            //apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<BolumDto>>>("api/bolum/GetBolumByFakulteIds/" + string.Join(',', fakulteId));
-            apiResponse = await Http.GetFromJsonAsync<OData<KeyValueDto>>($"odata/bolums?$filter=FakulteId eq {fakulteId}&select=Id,Ad");
-
-
-            if (apiResponse.Value.Count != 0)
-            {
-                bolumDtos = apiResponse.Value;
-                StateHasChanged();
-            }
-            else
-            {
-                matToaster.Add("", MatToastType.Danger, "Bölüm getirilirken hata oluştu!");
-            }
-        }
-
-        async Task ReadPrograms(int? bolumId)
-        {
-            OData<KeyValueDto> apiResponse;
-            //apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<BolumDto>>>("api/bolum/GetBolumByFakulteIds/" + string.Join(',', fakulteId));
-            apiResponse = await Http.GetFromJsonAsync<OData<KeyValueDto>>($"odata/programs?$filter=BolumId eq {bolumId}&select=Id,Ad");
-
-
-            if (apiResponse.Value != null)
-            {
-                programDtos = apiResponse.Value;
-                StateHasChanged();
-            }
-            else
-            {
-                matToaster.Add("", MatToastType.Danger, "Bölüm getirilirken hata oluştu!");
-            }
-        }
         void SinifChange()
         {
             _dersAcilanDto.Sinif = DropSinif.Value;
         }
 
-        //async Task Refresh()
-        //{
-
-        //    await GetDersAcilansByFilters();
-        //}
-
-
-        //private async Task GetDersAcilansByFilters()
-        //{
-        //    SinavDersAcDto sinavDersAcDto = new SinavDersAcDto
-        //    {
-        //        donemId = _dersAcilanDto.DonemId,
-        //        programId = _dersAcilanDto.ProgramId,
-        //        sinif = _dersAcilanDto.Sinif,
-        //        dersKodu = _dersAcilanDto.Kod
-        //    };
-
-        //    //var reqURL = $"api/DersAcilan/GetDersAcilansByFilters/{_dersAcilanDto.DonemId ?? 0}/{_dersAcilanDto.ProgramId ?? 0}/{_dersAcilanDto.Sinif ?? 0}/{_dersAcilanDto.Kod ?? ""}";
-
-
-
-        //    ApiResponseDto<List<DersAcilanDto>> apiResponse = await Http.PostJsonAsync<ApiResponseDto<List<DersAcilanDto>>>("api/DersAcilan/PostDersAcilansByFilters", sinavDersAcDto);
-        //    if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
-        //    {
-        //        DersAcGrid.Refresh();
-        //    }
-        //    else
-        //    {
-        //        matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Açılan Derslerin bilgisi getirilirken hata oluştu");
-        //    }
-
-        //    await SinavGridTemizle();
-        //}
 
         async Task SinavGridTemizle()
         {
             SinavDtos = new List<SinavDto>();
             SinavGrid.Refresh();
         }
-
-        //public double clickedRowIndex { get; set; }
-        //public async Task OnRecordClickHandler(Syncfusion.Blazor.Grids.RecordClickEventArgs<DersAcilanDto> args)
-        //{
-        //    clickedRowIndex = args.RowIndex;
-        //}
-
-        //public async Task OnSinavRecordClickHandler(Syncfusion.Blazor.Grids.RecordClickEventArgs<SinavDto> args)
-        //{
-        //    ApiResponseDto<List<OgrenciDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDto>>>($"api/Ogrenci/GetOgrenciListBySinavId/{args.RowData.Id}").Result;
-        //    if (apiResponse.Result.Count > 1)
-        //    {
-        //        OgrenciDtos = apiResponse.Result;
-        //    }
-        //    else
-        //    {
-        //        matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Sınava tabi öğrenicler getirilirken hata oluştu.");
-        //    }
-        //}
 
 
         public async Task RowSelectedHandlerSinav(Syncfusion.Blazor.Grids.RowSelectEventArgs<SinavDto> args)
@@ -361,16 +209,6 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             selectedSinavId = args.Data.Id;
             if (selectedSinavId != 0)
             {
-                //ApiResponseDto<List<OgrenciDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDto>>>($"api/Ogrenci/GetOgrenciListBySinavId/{args.Data.Id}").Result;
-                //if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
-                //{
-                //    OgrenciDtos = apiResponse.Result;
-                //    matToaster.Add(apiResponse.Message, MatToastType.Success, "Sınava tabi öğrenicler getirildi");
-                //}
-                //else
-                //{
-                //    matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Sınava tabi öğrenicler getirilirken hata oluştu.");
-                //}
                 await OgrenciGridRefresh(args.Data.Id);
             }
 
@@ -447,8 +285,6 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         async Task Remove()
         {
             SinavDtos = new List<SinavDto>();
-            //SinavGrid.CurrentViewData = null;
-            //SinavGrid.DataSource = null;
             isShowSinavs = false;
             SinavGrid.Refresh();
             isShowSinavs = true;
@@ -499,7 +335,6 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             if (apiResponse.StatusCode == Microsoft.AspNetCore.Http.StatusCodes.Status200OK)
             {
                 SinavDtos = apiResponse.Result;
-                //SinavGrid.Refresh();
                 SelectedDersAcilans = new List<DersAcilanForSinav> { dersAcilanDto };
                 OgrenciGridTemizle();
                 if (SinavDtos.Count < 1)
@@ -510,8 +345,6 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 {
                     isShowSinavs = true;
                 }
-                //SinavGrid.Refresh();
-                //SinavGrid.Refresh();
                 StateHasChanged();
             }
             else
@@ -810,9 +643,13 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             //totalQuery.Expand(new List<string> { "program($select=Id,Ad)", "Akademisyen($select=Id,Ad)", "Donem($select=Id,Ad)", "bolum($expand=fakulte($select=Ad,Id);$select=Ad,Id)" });
             await Task.Delay(100);
 
-            if (DonemId.HasValue)
+            if (sadeceYillik == false)
             {
                 totalQuery.Where("donemId", "equal", DonemId);
+            }
+            else
+            {
+                totalQuery.Where("IsYillik", "equal", sadeceYillik);
             }
 
             if (ProgramId.HasValue)
@@ -857,6 +694,19 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                     sinavInfo.EtkiOran = selectedSinavTip.EtkiOran;
                 }
             }
+        }
+
+        private async Task OnChangeSadeceYillik(Syncfusion.Blazor.Buttons.ChangeEventArgs<bool> args)
+        {
+            if (args.Checked)
+            {
+                yillikStyle = "color:red";
+            }
+            else
+            {
+                yillikStyle = "";
+            }
+            await Refresh();
         }
     }
 }

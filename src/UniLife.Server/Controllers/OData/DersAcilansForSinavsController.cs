@@ -39,7 +39,8 @@ namespace UniLife.Server.Controllers
                                  ProgramId = da.ProgramId,
                                  FakulteId = da.FakulteId,
                                  BolumId =da.BolumId,
-                                 DonemId = da.DonemId
+                                 DonemId = da.DonemId,
+                                 IsYillik = da.IsYillik
                              };
             return daForSinav;
 

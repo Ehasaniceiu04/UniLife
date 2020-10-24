@@ -80,8 +80,42 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
             }
         }
-        int? sinif;
-        int? donemId;
+        int? _sinif;
+        public int? Sinif
+        {
+            get => _sinif;
+            set
+            {
+                if (_sinif == value)
+                {
+                    return;
+                }
+                else
+                {
+                    _sinif = value;
+                    KaynakChange();
+                }
+
+            }
+        }
+        int? _donemId;
+        public int? DonemId
+        {
+            get => _donemId;
+            set
+            {
+                if (_donemId == value)
+                {
+                    return;
+                }
+                else
+                {
+                    _donemId = value;
+                    KaynakChange();
+                }
+
+            }
+        }
 
         SfDropDownList<int?, SinifDto> DropSinif;
         SfDropDownList<int?, KeyValueDto> DropDonem;
@@ -94,6 +128,15 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         Syncfusion.Blazor.Grids.SfGrid<SinavDto> sinavGrid;
 
         bool kaynakVisible = true;
+
+        bool sadeceYillik;
+        string yillikStyle;
+
+        protected async override Task OnInitializedAsync()
+        {
+            DonemId = (await appState.GetDonemState()).Id;
+        }
+
         async Task KaynakChange()
         {
             
@@ -107,14 +150,19 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         async Task Refresh()
         {
             totalQuery = new Query().Expand(new List<string> { "Dersacilan($expand=Program($select=Ad,Id);$select=Ad,Id,Kod)", "SinavTip($select=Ad,Id)" });
-            
-            if (donemId.HasValue)
+
+            if (sadeceYillik == false)
             {
-                totalQuery.Where("Dersacilan/donemId", "equal", donemId);
+                totalQuery.Where("Dersacilan/donemId", "equal", DonemId);
             }
-            if (sinif.HasValue)
+            else
             {
-                totalQuery.Where("Dersacilan/sinif", "equal", sinif);
+                totalQuery.Where("Dersacilan/IsYillik", "equal", sadeceYillik);
+            }
+
+            if (Sinif.HasValue)
+            {
+                totalQuery.Where("Dersacilan/sinif", "equal", Sinif);
             }
 
             if (FilterProgramId.HasValue)
@@ -159,6 +207,19 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 
                 
             }
+        }
+
+        private async Task OnChangeSadeceYillik(Syncfusion.Blazor.Buttons.ChangeEventArgs<bool> args)
+        {
+            if (args.Checked)
+            {
+                yillikStyle = "color:red";
+            }
+            else
+            {
+                yillikStyle = "";
+            }
+            await Refresh();
         }
 
         //public async Task ActionCompletedHandler(ActionEventArgs<SinavDto> args)
