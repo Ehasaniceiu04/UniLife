@@ -1,0 +1,41 @@
+﻿<MatDialog @bind-IsOpen="@isDialogOpen" Style="z-index:999999999">
+    <MatDialogTitle><MatIcon Icon="warning"></MatIcon> @Baslik</MatDialogTitle>
+    <MatDialogContent>
+        @ChildContent
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="@(e => { ActionTrigger.InvokeAsync(null); isDialogOpen = false;})">@ActionName</MatButton>
+        <MatButton OnClick="@(e => { isDialogOpen = false;})">Kapat</MatButton>
+    </MatDialogActions>
+</MatDialog>
+
+@code{
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public string Baslik { get; set; }
+
+    [Parameter]
+    public string ActionName { get; set; }
+
+    private bool _value;
+
+    [Parameter]
+    public bool isDialogOpen
+    {
+        get => _value;
+        set
+        {
+            if (_value == value) return;
+            _value = value;
+            isDialogOpenChanged.InvokeAsync(value);
+        }
+    }
+
+    [Parameter]
+    public EventCallback<bool> isDialogOpenChanged { get; set; }
+
+    [Parameter]
+    public EventCallback<object> ActionTrigger { get; set; }
+}

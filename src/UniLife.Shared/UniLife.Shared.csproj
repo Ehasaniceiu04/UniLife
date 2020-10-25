@@ -76,7 +76,7 @@
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\SfResources.resx">
 		<Generator>PublicResXFileCodeGenerator</Generator>
-		<LastGenOutput>Resources\SfResources.Designer.cs</LastGenOutput>
+		<LastGenOutput>SfResources.Designer.cs</LastGenOutput>
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\SfResources.tr.resx">

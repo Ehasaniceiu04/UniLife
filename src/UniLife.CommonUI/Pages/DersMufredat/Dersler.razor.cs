@@ -36,7 +36,6 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
 
         //List<DonemDto> donemDtos = new List<DonemDto>();
-        List<DonemTipDto> donemTipDtos = new List<DonemTipDto>();
 
         public string[] MenuItems = new string[] { "Group", "Ungroup", "ColumnChooser", "Filter" };
 
@@ -66,7 +65,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         SfTextBox DialogKod;
 
-        DersDto dersDtoContext;
+        DersDto dersDtoContext=new DersDto();
 
         bool isShowYillik;
         protected override void OnInitialized()
@@ -76,8 +75,6 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             //ApiResponseDto<List<DonemDto>> apiResponseDonem = Http.GetFromJsonAsync<ApiResponseDto<List<DonemDto>>>("api/donem/current").Result;
             //donemDtos = apiResponseDonem.Result;
 
-            ApiResponseDto<List<DonemTipDto>> apiResponseDonem = Http.GetFromJsonAsync<ApiResponseDto<List<DonemTipDto>>>("api/donemtip").Result;
-            donemTipDtos = apiResponseDonem.Result;
 
         }
 
@@ -117,15 +114,12 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         public async void ActionCompletedHandler(ActionEventArgs<DersDto> args)
         {
-
-            
-
-            if (args.RequestType == Syncfusion.Blazor.Grids.Action.Refresh)
-            {
-                dersDtoContext.IsYillik = false;
-            }
             if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
             {
+                if (!args.Data.IsYillik)
+                {
+                    dersDtoContext.IsYillik = false;
+                }
                 dersiAktifledi = null;
             }
             if (args.RequestType == Syncfusion.Blazor.Grids.Action.Cancel)

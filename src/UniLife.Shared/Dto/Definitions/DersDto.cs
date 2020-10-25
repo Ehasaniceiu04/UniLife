@@ -4,12 +4,15 @@ namespace UniLife.Shared.Dto.Definitions
 {
     public class DersDto : EntityDto<int>
     {
+        [Required]
         public string Ad { get; set; }
+        [Required]
         public string Kod { get; set; }
 
         //public int? DonemId { get; set; }
         //public virtual DonemDto Donem { get; set; }
 
+        [Required]
         public int? DonemTipId { get; set; }
         public virtual DonemTipDto DonemTip { get; set; }
 
@@ -26,6 +29,7 @@ namespace UniLife.Shared.Dto.Definitions
         public int? DersDilId { get; set; }
         public virtual DersDilDto DersDil { get; set; }
         public string KisaAd { get; set; }
+        [Required]
         public int? Akts { get; set; }
         public string OptikKod { get; set; }
         public string AdEn { get; set; }
@@ -38,6 +42,7 @@ namespace UniLife.Shared.Dto.Definitions
         public bool AktifDonemdeAcik { get; set; }
         
         public string SecmeliKodu { get; set; }
+        [Required]
         public int? Sinif { get; set; }
         public string KancalananDersAd { get; set; }
         public bool IsYillik { get; set; } = false;

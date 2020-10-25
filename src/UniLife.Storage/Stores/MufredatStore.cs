@@ -288,6 +288,7 @@ namespace UniLife.Storage.Stores
                                 TeoSaat = ders.TeoSaat,
                                 UygSaat = ders.UygSaat,
                                 Zorunlu = ders.Zorunlu,
+                                IsYillik = ders.IsYillik
                                 //EskiMufBagliDersId = ders.EskiMufBagliDersId
                             };
                             dersAcilans.Add(dersAcilan);
@@ -350,6 +351,7 @@ namespace UniLife.Storage.Stores
                                         TeoSaat = ders.TeoSaat,
                                         UygSaat = ders.UygSaat,
                                         Zorunlu = ders.Zorunlu,
+                                        IsYillik = ders.IsYillik
                                         //EskiMufBagliDersId = ders.EskiMufBagliDersId
                                     };
                                     dersAcilans.Add(dersAcilan);
@@ -383,6 +385,7 @@ namespace UniLife.Storage.Stores
                                         TeoSaat = ders.TeoSaat,
                                         UygSaat = ders.UygSaat,
                                         Zorunlu = ders.Zorunlu,
+                                        IsYillik = ders.IsYillik
                                         //EskiMufBagliDersId = ders.EskiMufBagliDersId
                                     };
                                     dersAcilans.Add(dersAcilan);
@@ -413,6 +416,7 @@ namespace UniLife.Storage.Stores
                                         TeoSaat = ders.TeoSaat,
                                         UygSaat = ders.UygSaat,
                                         Zorunlu = ders.Zorunlu,
+                                        IsYillik = ders.IsYillik
                                         //EskiMufBagliDersId = ders.EskiMufBagliDersId
                                     };
                                     dersAcilans.Add(dersAcilan);

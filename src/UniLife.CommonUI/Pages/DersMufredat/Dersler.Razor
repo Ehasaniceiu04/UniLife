@@ -145,6 +145,14 @@ else
                                 <div class="col-sm-4">
                                     <SfNumericTextBox ID="Sinif" @bind-Value="@(dersDtoContext.Sinif)"></SfNumericTextBox>
                                 </div>
+                                <label class="col-md-2 col-form-label" for="DropAltKotaUyg">Ders Neden</label>
+                                <div class="col-sm-4">
+                                    <SfDropDownList TValue="int?" TItem="DersNedenDto" Index="0" Placeholder="Neden seçiniz..."
+                                                    @bind-Value="@dersDtoContext.DersNedenId">
+                                        <SfDataManager Url="odata/dersnedens" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
+                                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                                    </SfDropDownList>
+                                </div>
                             </div>
                             @*<div class="form-group row">
                                     <label for="DonemId" class="col-sm-2 col-form-label">Dönem</label>
@@ -157,22 +165,13 @@ else
                             <div class="form-group row">
                                 <label for="DonemTipId" class="col-sm-2 col-form-label">Dönem Tip</label>
                                 <div class="col-sm-10">
-                                    <SfDropDownList ID="DonemTipId" @bind-Value="@(dersDtoContext.DonemTipId)" TValue="int?" TItem="DonemTipDto" Index="0" DataSource="donemTipDtos">
+                                    <SfDropDownList ID="DonemTipId" @bind-Value="@(dersDtoContext.DonemTipId)" TValue="int?" TItem="KeyValueDto" Index="0" DataSource="@Sabitler.DonemTipDtos">
                                         <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
                                         <DropDownListEvents TValue="int?" ValueChange="OnDonemTipValueChage"></DropDownListEvents>
                                     </SfDropDownList>
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <label class="col-md-2 col-form-label" for="DropAltKotaUyg">Ders Neden</label>
-                                <div class="col-sm-10">
-                                    <SfDropDownList TValue="int?" TItem="DersNedenDto" Placeholder="Neden seçiniz..."
-                                                    @bind-Value="@dersDtoContext.DersNedenId">
-                                        <SfDataManager Url="odata/dersnedens" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
-                                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                                    </SfDropDownList>
-                                </div>
-                            </div>
+                         
                             @*<div class="form-group row">
                                     <label for="Durum" class="col-sm-2 col-form-label">Durum</label>
                                     <div class="col-sm-4">
@@ -311,7 +310,7 @@ else
 
             @*<GridColumn Field=@nameof(DersDto.MufredatId) HeaderText="Müfredat" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="mufredatDtos" Width="150"></GridColumn>*@
             @*<GridColumn Field=@nameof(DersDto.DonemId) HeaderText="Dönem" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@donemDtos"></GridColumn>*@
-            <GridColumn AutoFit="true" Field=@nameof(DersDto.DonemTipId) HeaderText="Dönem Tip" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@donemTipDtos"></GridColumn>
+            <GridColumn AutoFit="true" Field=@nameof(DersDto.DonemTipId) HeaderText="Dönem Tip" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@Sabitler.DonemTipDtos"></GridColumn>
             <GridColumn AutoFit="true" Field=@nameof(DersDto.Akts) HeaderText="Akts"></GridColumn>
             <GridColumn Visible="false" Field=@nameof(DersDto.OptikKod) HeaderText="OptikKod"></GridColumn>
             <GridColumn Visible="false" Field=@nameof(DersDto.AdEn) HeaderText="AdEn"></GridColumn>
@@ -323,10 +322,11 @@ else
             <GridColumn Visible="false" Field=@nameof(DersDto.KancalananDersAd) HeaderText="KancalananDersAd"></GridColumn>
             <GridColumn Visible="false" Field=@nameof(DersDto.DersDilId) HeaderText="DersDilId"></GridColumn>
             <GridColumn AutoFit="true" Field=@nameof(DersDto.Durum) HeaderText="Durum" DisplayAsCheckBox="true"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(DersDto.IsYillik) HeaderText="IsYillik" DisplayAsCheckBox="true"></GridColumn>
             <GridColumn AutoFit="true" Field=@nameof(DersDto.Zorunlu) HeaderText="Zorunlu" DisplayAsCheckBox="true"></GridColumn>
             @*<GridColumn Visible="false" Field=@nameof(DersDto.AktifDonemdeAcik) HeaderText="AktifDonemdeAcik" DisplayAsCheckBox="true"></GridColumn>*@
             <GridColumn AutoFit="true" Field=@nameof(DersDto.SecmeliKodu) HeaderText="SecmeliKodu"></GridColumn>
-            <GridColumn AutoFit="true" Field=@nameof(DersDto.Sinif) HeaderText="Sinif"></GridColumn>
+            <GridColumn AutoFit="true" Field=@nameof(DersDto.Sinif) HeaderText="Sinif" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
             <GridColumn Width="178">
                 <GridCommandColumns>
                     <GridCommandColumn Type="CommandButtonType.None" Title="Dersi Ac" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-SendToBack", CssClass="e-flat" })"></GridCommandColumn>
@@ -419,6 +419,10 @@ else
 
     .e-grid .e-altrow {
         background-color: #fafafa;
+    }
+
+    .card {
+        display: unset;
     }
 
 </style>

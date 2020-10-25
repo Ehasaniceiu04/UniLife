@@ -132,6 +132,12 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         bool sadeceYillik;
         string yillikStyle;
 
+
+        private List<Object> Toolbaritems = new List<Object>() { "Edit", "Delete", "ExcelExport", "CsvExport", "PdfExport" };
+
+        bool isUyariOpen;
+        string dialogUyariText;
+
         protected async override Task OnInitializedAsync()
         {
             DonemId = (await appState.GetDonemState()).Id;
@@ -185,27 +191,29 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         {
             if (args.Item.Id.Contains("delete"))
             {
-                try
-                {
-                    var selectedSinavs = await sinavGrid.GetSelectedRecords();
-                    ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>
-                            ("api/sinav/BulkDelete", new IntEnumarableDto { Ids = selectedSinavs.Select(x => x.Id) });
-                    if (apiResponse.IsSuccessStatusCode)
-                    {
-                        sinavGrid.Refresh();
-                        matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
-                    }
-                    else
-                        matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
-                }
-                catch (Exception ex)
-                {
-                    matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
-                }
+                isUyariOpen = true;
+                dialogUyariText = "Seçili sınavlar silinecek, emin misiniz?";
+            }
+        }
 
-
-                
-                
+        async Task RemoveSinavs()
+        {
+            try
+            {
+                var selectedSinavs = await sinavGrid.GetSelectedRecords();
+                ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>
+                        ("api/sinav/BulkDelete", new IntEnumarableDto { Ids = selectedSinavs.Select(x => x.Id) });
+                if (apiResponse.IsSuccessStatusCode)
+                {
+                    sinavGrid.Refresh();
+                    matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+                }
+                else
+                    matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
+            }
+            catch (Exception ex)
+            {
+                matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
             }
         }
 

@@ -55,7 +55,7 @@
         <GridEvents TValue="SinavDto" OnToolbarClick="ToolbarClickHandler"></GridEvents>
         <GridPageSettings PageCount="5" PageSizes="new int[]{ 5, 10, 50, 100,10000}"></GridPageSettings>
         <GridSelectionSettings Type="SelectionType.Multiple" CheckboxOnly="true"></GridSelectionSettings>
-        <GridEditSettings ShowDeleteConfirmDialog="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
+        <GridEditSettings AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
             <Template>
                 @{
                     SinavDto sinavInfo = (context as SinavDto);
@@ -67,8 +67,8 @@
             <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
             <GridColumn Visible="false" Field=@nameof(SinavDto.Id) HeaderText="Id" AllowEditing="false" IsPrimaryKey="true"></GridColumn>
             <GridColumn AutoFit="true" Field="SinavTip.Ad" HeaderText="Sinav Tip"></GridColumn>
-            <GridColumn AutoFit="true" Field="DersAcilan.Kod" HeaderText="Ders Kod"></GridColumn>
-            <GridColumn AutoFit="true" Field="DersAcilan.Ad" HeaderText="Ders Ad"></GridColumn>
+            <GridColumn AutoFit="true" Field="DersAcilan.Kod" FilterSettings="@(new FilterSettings{ Operator = Operator.StartsWith })" HeaderText="Ders Kod"></GridColumn>
+            <GridColumn AutoFit="true" Field="DersAcilan.Ad" FilterSettings="@(new FilterSettings{ Operator = Operator.Contains })" HeaderText="Ders Ad"></GridColumn>
             <GridColumn AutoFit="true" Field="DersAcilan.Program.Ad" HeaderText="Program"></GridColumn>
             <GridColumn AutoFit="true" Field=@nameof(SinavDto.EtkiOran) HeaderText="EtkiOran"></GridColumn>
             <GridColumn Field="@nameof(SinavDto.Tarih)" HeaderText="Sınav Tarih"></GridColumn>
@@ -76,20 +76,14 @@
     </SfGrid>
 }
 
-
-@code{
-
-    [Parameter]
-    public AkademisyenDto _AkademisyenDto { get; set; } = new AkademisyenDto();
-
-    private List<Object> Toolbaritems = new List<Object>() { "Edit", "Delete", "ExcelExport", "CsvExport", "PdfExport" };
-
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
-    }
-
+@if (isUyariOpen)
+{
+    <DialogAction Baslik="Uyarı!" ActionName="Sil" ActionTrigger="@RemoveSinavs" @bind-isDialogOpen="@isUyariOpen">
+        <p>@dialogUyariText</p>
+    </DialogAction>
 }
+
+
 
 <style>
     .card {

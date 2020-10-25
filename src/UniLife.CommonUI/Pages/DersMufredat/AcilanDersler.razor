@@ -38,9 +38,9 @@
                 <div class="col-sm-7">
                     <SfCheckBox @bind-Checked="@isShowKayOgrSay" TChecked="bool" ValueChange="@OnChangeOrgSayi"></SfCheckBox>
                 </div>
-                <label for="yillik" class="col-sm-5" style="@yillikStyle">Yıllık</label>
+                <label for="sadeceYillik" class="col-sm-5" style="@yillikStyle">Sadece Yıllık Dersler</label>
                 <div class="col-sm-7">
-                    <SfCheckBox ID="yillik" @bind-Checked="@sadeceYillik" TChecked="bool" ValueChange="@OnChangeSadeceYillik"></SfCheckBox>
+                    <SfCheckBox ID="sadeceYillik" @bind-Checked="@sadeceYillik" TChecked="bool" ValueChange="@OnChangeSadeceYillik"></SfCheckBox>
                 </div>
             </div>
             <SfButton OnClick="Refresh" CssClass="e-success col-sm-12 form-control-sm">Bul / Yenile</SfButton>
@@ -195,7 +195,7 @@
                                             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                                         </SfDropDownList>
                                     </div>
-                                    <label for="yillik" class="col-sm-8">Sadece yıllık dersler</label>
+                                    <label for="yillik" class="col-sm-8">Yıllık</label>
                                     <div class="col-sm-4">
                                         <SfCheckBox ID="yillik" @bind-Checked="@dAcilanContext.IsYillik" TChecked="bool" CssClass="color:red"></SfCheckBox>
                                     </div>
@@ -243,7 +243,7 @@
             </GridSortSettings>
             <GridColumns>
                 <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Açılan Ders ID" Edit="false" AllowEditing="false" TextAlign="TextAlign.Left"></GridColumn>
-                <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kod"></GridColumn>
+                <GridColumn AutoFit="true" FilterSettings="@(new FilterSettings{ Operator = Operator.StartsWith })" Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kod"></GridColumn>
                 <GridColumn AutoFit="true" FilterSettings="@(new FilterSettings{ Operator = Operator.Contains })" Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Ad" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
                 @*<GridColumn Field=@nameof(DersAcilanDto.Kredi) HeaderText="T+U TODO"></GridColumn>*@
                 <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kredi) HeaderText="Kredi"></GridColumn>

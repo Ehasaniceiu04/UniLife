@@ -142,7 +142,7 @@
     <value>Uygulamak</value>
   </data>
   <data name="DateRangePicker_CancelText" xml:space="preserve">
-    <value>İptal etmek</value>
+    <value>İptal et</value>
   </data>
   <data name="DateRangePicker_CustomRange" xml:space="preserve">
     <value>Özel Aralık</value>
@@ -208,7 +208,7 @@
     <value>Araştır...</value>
   </data>
   <data name="Uploader_Cancel" xml:space="preserve">
-    <value>İptal etmek</value>
+    <value>İptal et</value>
   </data>
   <data name="Uploader_Clear" xml:space="preserve">
     <value>Açık</value>
@@ -393,7 +393,7 @@
   <data name="FileManager_Descending" xml:space="preserve">
     <value>Azalan</value>
   </data>
-   <data name="FileManager_None" xml:space="preserve">
+  <data name="FileManager_None" xml:space="preserve">
      <value>Yok</value>
   </data>
   <data name="FileManager_ViewLargeIcons" xml:space="preserve">
@@ -409,7 +409,7 @@
     <value>tamam</value>
   </data>
   <data name="FileManager_ButtonCancel" xml:space="preserve">
-    <value>İptal etmek</value>
+    <value>İptal et</value>
   </data>
   <data name="FileManager_ButtonYes" xml:space="preserve">
     <value>Evet</value>
@@ -421,7 +421,7 @@
     <value>Oluşturmak</value>
   </data>
   <data name="FileManager_ButtonSave" xml:space="preserve">
-    <value>Kayıt etmek</value>
+    <value>Kayıt et</value>
   </data>
   <data name="FileManager_HeaderNewFolder" xml:space="preserve">
     <value>Klasör</value>
@@ -592,7 +592,7 @@
     <value>Altında</value>
   </data>
   <data name="Gantt_Cancel" xml:space="preserve">
-    <value>İptal etmek</value>
+    <value>İptal et</value>
   </data>
   <data name="Gantt_Child" xml:space="preserve">
     <value>Çocuk</value>
@@ -724,10 +724,10 @@
     <value>Doğru görev etiketi</value>
   </data>
   <data name="Gantt_Save" xml:space="preserve">
-    <value>Kayıt etmek</value>
+    <value>Kayıt et</value>
   </data>
   <data name="Gantt_SaveButton" xml:space="preserve">
-    <value>Kayıt etmek</value>
+    <value>Kayıt et</value>
   </data>
   <data name="Gantt_Search" xml:space="preserve">
     <value>Arama</value>
@@ -808,7 +808,7 @@
     <value>Uygulamak</value>
   </data>
   <data name="ColorPicker_Cancel" xml:space="preserve">
-    <value>İptal etmek</value>
+    <value>İptal et</value>
   </data>
   <data name="ColorPicker_ModeSwitcher" xml:space="preserve">
     <value>Anahtar Modu</value>
@@ -931,7 +931,7 @@
     <value>İfade oluşturmak için alanları sürükleyip bırakın. Ve, mevcut hesaplanan alanları düzenlemek istiyorsanız! Bunu sadece 'Hesaplanan Üyeler' altındaki alanı seçerek başarabilirsiniz.</value>
   </data>
   <data name="PivotFieldList_Cancel" xml:space="preserve">
-    <value>İptal etmek</value>
+    <value>İptal et</value>
   </data>
   <data name="PivotFieldList_ChooseFieldMessage" xml:space="preserve">
     <value>Alan seçin</value>
@@ -1402,7 +1402,7 @@
     <value>İfade oluşturmak için alanları sürükleyip bırakın. Ve, mevcut hesaplanan alanları düzenlemek istiyorsanız! Sonra bunu sadece 'Hesaplanan Üyeler' altındaki alanı seçerek başarabilirsiniz.</value>
   </data>
   <data name="PivotView_Cancel" xml:space="preserve">
-    <value>İptal etmek</value>
+    <value>İptal et</value>
   </data>
   <data name="PivotView_Chart" xml:space="preserve">
     <value>Grafik</value>
@@ -2131,10 +2131,10 @@
     <value>Kapat</value>
   </data>
   <data name="InPlaceEditor_Save" xml:space="preserve">
-    <value>Kayıt etmek</value>
+    <value>Kayıt et</value>
   </data>
   <data name="InPlaceEditor_Cancel" xml:space="preserve">
-    <value>İptal etmek</value>
+    <value>İptal et</value>
   </data>
   <data name="InPlaceEditor_LoadingText" xml:space="preserve">
     <value>Yükleniyor...</value>
@@ -2173,13 +2173,13 @@
     <value>Bu kartı silmek istediğinizden emin misiniz?</value>
   </data>
   <data name="Kanban_Save" xml:space="preserve">
-    <value>Kayıt etmek</value>
+    <value>Kayıt et</value>
   </data>
   <data name="Kanban_Delete" xml:space="preserve">
     <value>Sil</value>
   </data>
   <data name="Kanban_Cancel" xml:space="preserve">
-    <value>İptal etmek</value>
+    <value>İptal et</value>
   </data>
   <data name="Kanban_Yes" xml:space="preserve">
     <value>Evet</value>
@@ -2362,7 +2362,7 @@
     <value>Ekle</value>
   </data>
   <data name="RichTextEditor_DialogCancel" xml:space="preserve">
-    <value>İptal etmek</value>
+    <value>İptal et</value>
   </data>
   <data name="RichTextEditor_DialogUpdate" xml:space="preserve">
     <value>Güncelleme</value>
@@ -2566,7 +2566,7 @@
     <value>tamam</value>
   </data>
   <data name="RichTextEditor_PasteDialogCancel" xml:space="preserve">
-    <value>İptal etmek</value>
+    <value>İptal et</value>
   </data>
   <data name="Diagram_BringToFront" xml:space="preserve">
     <value>Öne getirmek</value>
@@ -2644,7 +2644,7 @@
     <value>Düzenle</value>
   </data>
   <data name="Grid_Cancel" xml:space="preserve">
-    <value>İptal etmek</value>
+    <value>İptal et</value>
   </data>
   <data name="Grid_Update" xml:space="preserve">
     <value>Güncelleme</value>
@@ -2674,7 +2674,7 @@
     <value>Sütunlar</value>
   </data>
   <data name="Grid_Save" xml:space="preserve">
-    <value>Kayıt etmek</value>
+    <value>Kayıt et</value>
   </data>
   <data name="Grid_Item" xml:space="preserve">
     <value>madde</value>
@@ -2689,13 +2689,13 @@
     <value>Silme işlemi için kayıt seçilmedi</value>
   </data>
   <data name="Grid_SaveButton" xml:space="preserve">
-    <value>Kayıt etmek</value>
+    <value>Kayıt et</value>
   </data>
   <data name="Grid_OKButton" xml:space="preserve">
     <value>tamam</value>
   </data>
   <data name="Grid_CancelButton" xml:space="preserve">
-    <value>İptal etmek</value>
+    <value>İptal et</value>
   </data>
   <data name="Grid_EditFormTitle" xml:space="preserve">
     <value>Ayrıntıları</value>
@@ -3025,10 +3025,10 @@
     <value>Etkinlikler engellenen zaman aralığında planlanamaz.</value>
   </data>
   <data name="Schedule_Cancel" xml:space="preserve">
-    <value>İptal etmek</value>
+    <value>İptal et</value>
   </data>
   <data name="Schedule_CancelButton" xml:space="preserve">
-    <value>İptal etmek</value>
+    <value>İptal et</value>
   </data>
   <data name="Schedule_Close" xml:space="preserve">
     <value>Kapat</value>
@@ -3157,10 +3157,10 @@
     <value>Aynı olayda iki olay aynı günde gerçekleşemez.</value>
   </data>
   <data name="Schedule_Save" xml:space="preserve">
-    <value>Kayıt etmek</value>
+    <value>Kayıt et</value>
   </data>
   <data name="Schedule_SaveButton" xml:space="preserve">
-    <value>Kayıt etmek</value>
+    <value>Kayıt et</value>
   </data>
   <data name="Schedule_SelectedItems" xml:space="preserve">
     <value>Seçilen öğeler</value>
@@ -3225,14 +3225,14 @@
   <data name="Schedule_Yes" xml:space="preserve">
     <value>Evet</value>
   </data>
-<data name="Tab_CloseButtonTitle" xml:space="preserve">
+  <data name="Tab_CloseButtonTitle" xml:space="preserve">
     <value>Kapat</value>
 </data>
-<data name="PdfViewer" xml:space="preserve">
+  <data name="PdfViewer" xml:space="preserve">
     <value> PDF Görüntüleyici </value>
   </data>
   <data name="PdfViewer_Cancel" xml:space="preserve">
-    <value> İptal etmek </value>
+    <value> İptal et</value>
   </data>
   <data name="PdfViewer_DownloadFile" xml:space="preserve">
     <value> Dosyayı indir </value>
@@ -3664,7 +3664,7 @@
     <value>Tamam</value>
   </data>
   <data name="DocumentEditor_Cancel" xml:space="preserve">
-    <value>İptal etmek</value>
+    <value>İptal et</value>
   </data>
   <data name="DocumentEditor_Size" xml:space="preserve">
     <value>Boyut</value>
@@ -4177,7 +4177,7 @@
     <value>Biçim Türü</value>
   </data>
   <data name="DocumentEditor_Save" xml:space="preserve">
-    <value>Kayıt etmek</value>
+    <value>Kayıt et</value>
   </data>
   <data name="DocumentEditor_Navigation" xml:space="preserve">
     <value>navigasyon</value>
@@ -4873,7 +4873,7 @@
     <value>Güncelleme</value>
   </data>
   <data name="DocumentEditorContainer_Cancel" xml:space="preserve">
-    <value>İptal etmek</value>
+    <value>İptal et</value>
   </data>
   <data name="DocumentEditorContainer_Insert" xml:space="preserve">
     <value>Ekle</value>

@@ -114,6 +114,7 @@ namespace UniLife.Storage.Stores
                                   KisaAd=d.KisaAd,
                                   MufredatId=d.MufredatId,
                                   ProgramId=d.ProgramId,
+                                  IsYillik = d.IsYillik,
                                   KancalananDersKod=dk.AktifMufredatDersKod
                               }).ToListAsync();
 

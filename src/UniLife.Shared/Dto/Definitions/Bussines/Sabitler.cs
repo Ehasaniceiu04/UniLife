@@ -61,5 +61,12 @@ namespace UniLife.Shared.Dto.Definitions
 
         };
 
+        public static List<KeyValueDto> DonemTipDtos { get; } = new List<KeyValueDto>
+        {
+            new KeyValueDto() { Ad = "Güz Dönemi", Id = 1 },
+            new KeyValueDto() { Ad = "Bahar Dönemi", Id = 2 },
+            new KeyValueDto() { Ad = "Yaz Dönemi", Id = 3 }
+        };
+
     }
 }

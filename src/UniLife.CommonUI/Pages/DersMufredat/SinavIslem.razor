@@ -63,8 +63,8 @@ else
                     <GridColumns>
                         <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
                         <GridColumn Visible="false" Field=@nameof(DersAcilanForSinav.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
-                        <GridColumn AutoFit="true" Field=@nameof(DersAcilanForSinav.Kod) HeaderText="Ders Kodu"></GridColumn>
-                        <GridColumn Field=@nameof(DersAcilanForSinav.Ad) HeaderText="Ders Adı"></GridColumn>
+                        <GridColumn AutoFit="true" Field=@nameof(DersAcilanForSinav.Kod) FilterSettings="@(new FilterSettings{ Operator = Operator.Contains })" HeaderText="Ders Kodu"></GridColumn>
+                        <GridColumn Field=@nameof(DersAcilanForSinav.Ad)  FilterSettings="@(new FilterSettings{ Operator = Operator.Contains })" HeaderText="Ders Adı"></GridColumn>
                         <GridColumn Field="AkademisyenAd" HeaderText="Akademisyen"></GridColumn>
                         <GridColumn AutoFit="true" Field=@nameof(DersAcilanForSinav.Sinif) HeaderText="Sinif"></GridColumn>
                         <GridColumn AutoFit="true" Field=@nameof(DersAcilanForSinav.Zorunlu) DisplayAsCheckBox="true" HeaderText="Z"></GridColumn>

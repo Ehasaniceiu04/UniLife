@@ -182,7 +182,7 @@
                 }
             </Template>
         </GridColumn>
-        <GridColumn Field=@nameof(OgrenciDto.OgrNo) HeaderText="Öğrenci No"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.OgrNo) HeaderText="Öğrenci No" FilterSettings="@(new FilterSettings{ Operator = Operator.StartsWith })"></GridColumn>
         <GridColumn Field=@nameof(OgrenciDto.Ad) HeaderText="Ad" FilterSettings="@(new FilterSettings{ Operator = Operator.Contains })"> </GridColumn>
         <GridColumn Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad" FilterSettings="@(new FilterSettings{ Operator = Operator.Contains })"></GridColumn>
         <GridColumn Field="Program.Ad" HeaderText="Program" Visible="@(isAccordExpanded)" FilterSettings="@(new FilterSettings{ Operator = Operator.Contains })"></GridColumn>
