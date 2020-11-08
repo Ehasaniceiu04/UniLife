@@ -18,6 +18,8 @@ namespace UniLife.Server.Managers
         Task<ApiResponse> Onayla(List<int> ids);
         Task<ApiResponse> OnayKaldir(List<int> ids);
         Task<ApiResponse> Harflendir( int dersAcilanId);
+        Task<ApiResponse> KurulHarflendir(int dersAcilanId);
+
         Task<ApiResponse> GetOgrDersHarfs(int dersAcilanId);
         Task<ApiResponse> ButHarflendir(int dersAcilanId);
         

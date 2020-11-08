@@ -7,7 +7,7 @@
     seçilen sınavın öğrencilerini açacak notlar girilecek.*@
 <br />
 <div class="control-section e-tab-section">
-    <SfTab @ref="DersNotTab" LoadOn="ContentLoad.Dynamic">
+    <SfTab @ref="DersNotTab" LoadOn="ContentLoad.Demand">
         @*Selected="OnTabSelected" Selecting="OnTabSelecting"*@
         <TabEvents Created="TabCreate" Selecting="OnTabSelecting"></TabEvents>
         <TabItems>
@@ -24,7 +24,14 @@
                     <TabHeader Text="Seçilen Sınavın Öğrenci Notları"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
-                    <AkaNotlar _SinavDto="_SinavDto"></AkaNotlar>
+                    @if (forReRender)
+                    {
+                        <AkaNotlar _SinavDto="_SinavDto" _DersAcilanDto="_DersAcilanDto"></AkaNotlar>
+                    }
+                    else
+                    {
+                        <AkaNotlar _SinavDto="_SinavDto" _DersAcilanDto="_DersAcilanDto"></AkaNotlar>
+                    }
                 </ContentTemplate>
             </TabItem>
         </TabItems>
@@ -32,6 +39,8 @@
 </div>
 
 @code{
+
+    bool forReRender;
 
     SfTab DersNotTab;
 
@@ -44,7 +53,7 @@
     SinavDto _SinavDto;
 
     //int _dersAcilanId;
-    DersAcilanDto _dersAcilanDto;
+    DersAcilanDto _DersAcilanDto;
 
     public void TabCreate()
     {
@@ -61,6 +70,10 @@
         {
             DersNotTab.EnableTab(1, false);
         }
+        if (args.SelectedIndex == 0)
+        {
+            forReRender = !forReRender;
+        }
     }
 
     //public void SinavToNotlar(AkademisyenSinavDto AkademisyenSinavDto)
@@ -75,9 +88,10 @@
     //    TabDegis(1);
     //}
 
-    public void SinavToNotlar(SinavDto sinavDto)
+    public void SinavToNotlar(SinavDersAcilanDto sinavDersAcilanDto)
     {
-        _SinavDto = sinavDto;
+        _SinavDto = sinavDersAcilanDto.SinavDto;
+        _DersAcilanDto = sinavDersAcilanDto.DersAcilanDto;
         TabDegis(1);
     }
 

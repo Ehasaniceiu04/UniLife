@@ -17,6 +17,7 @@ namespace UniLife.Shared.DataInterfaces
         Task Onayla(List<int> ids);
         Task OnayKaldir(List<int> ids);
         Task Harflendir(int dersAcilanId);
+        Task KurulHarflendir(int dersAcilanId);
         Task<List<DersKayitOgrOrtalamaDto>> GetOgrDersHarfs(int dersAcilanId);
         Task ButHarflendir(int dersAcilanId);
     }

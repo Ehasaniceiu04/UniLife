@@ -18,7 +18,7 @@ namespace UniLife.Server.Controllers
 
         [Microsoft.AspNet.OData.EnableQuery()]
         [HttpGet]
-        //[Authorize(Permissions.DersAcilan.Read)]
+        [Authorize(Permissions.DersAcilan.Read)]
         public IEnumerable<DersAcilan> Get()
         {
             return _applicationDbContext.DersAcilans;

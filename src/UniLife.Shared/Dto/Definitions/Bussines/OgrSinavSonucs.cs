@@ -18,5 +18,6 @@ namespace UniLife.Shared.Dto.Definitions
         public double Not { get; set; }
         public int Katilim { get; set; }
         public int SinavId { get; set; }
+        public int DersAcilanId { get; set; }
     }
 }

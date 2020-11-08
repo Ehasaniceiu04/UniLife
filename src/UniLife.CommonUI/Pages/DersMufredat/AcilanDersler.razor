@@ -23,7 +23,7 @@
         </div>
         <div class="col-sm-5">
             <div class="form-group row">
-                <label for="DropFakulte" class="col-sm-2 col-form-label-sm">Dönem</label>
+                <label for="DropDonem" class="col-sm-2 col-form-label-sm">Dönem</label>
                 <div class="col-sm-10">
                     <SfDropDownList Enabled="@(!sadeceYillik)" ID="DropDonem" @ref="DropDonem" TValue="int?" TItem="DonemDto" Placeholder="Dönem seçiniz..."
                                     Query="@donemQuery"
@@ -67,9 +67,9 @@
                                     <div class="col-12 pb-2">
                                         <div class="form-row">
                                             <label class="col-md-2 col-form-label" for="Kod">Kod</label>
-                                            <SfTextBox ID="Kod" CssClass="form-control col-sm-3" @bind-Value="@(dAcilanContext.Kod)"></SfTextBox>
+                                            <SfTextBox ID="Kod" CssClass=" col-sm-3" @bind-Value="@(dAcilanContext.Kod)"></SfTextBox>
                                             <label class="col-md-2 col-form-label" for="Sube">Sube No</label>
-                                            <SfNumericTextBox ID="Sube" CssClass="form-control col-sm-3" @bind-Value="@(dAcilanContext.Sube)"></SfNumericTextBox>
+                                            <SfNumericTextBox ID="Sube" CssClass=" col-sm-3" @bind-Value="@(dAcilanContext.Sube)"></SfNumericTextBox>
                                             <SfCheckBox Label="Aktif" CssClass="col-sm-2" @bind-Checked="@dAcilanContext.Durum"></SfCheckBox>
                                         </div>
                                     </div>
@@ -79,7 +79,7 @@
                                     <div class="col-12 pb-2">
                                         <div class="form-row">
                                             <label class="col-md-2 col-form-label" for="Ad">Ad</label>
-                                            <SfTextBox ID="Ad" CssClass="form-control col-sm-8 pb-1" @bind-Value="@(dAcilanContext.Ad)"></SfTextBox>
+                                            <SfTextBox ID="Ad" CssClass=" col-sm-8 pb-1" @bind-Value="@(dAcilanContext.Ad)"></SfTextBox>
                                             <SfCheckBox Label="Zorunlu" CssClass="col-sm-2" @bind-Checked="@dAcilanContext.Zorunlu"></SfCheckBox>
                                         </div>
                                     </div>
@@ -87,7 +87,7 @@
                                     @*<div class="col-12 pb-2">
                                             <div class="form-row">
                                                 <label class="col-md-2 col-form-label" for="Akademisyen">Akademisyen</label>
-                                                <SfAutoComplete ID="Akademisyen" CssClass="form-control col-sm-10 pb-1" @bind-Value="@(dAcilanContext.AkademisyenAd)" TValue="string" TItem="Akademisyen" Query="@Query">
+                                                <SfAutoComplete ID="Akademisyen" CssClass=" col-sm-10 pb-1" @bind-Value="@(dAcilanContext.AkademisyenAd)" TValue="string" TItem="Akademisyen" Query="@Query">
                                                     <SfDataManager Url="odata/Akademisyens" Adaptor="Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
                                                     <AutoCompleteFieldSettings Value="Ad" Text="Ad"></AutoCompleteFieldSettings>
                                                 </SfAutoComplete>
@@ -97,33 +97,33 @@
                                     <div class="col-12 pb-2">
                                         <div class="form-row">
                                             <label class="col-md-2 col-form-label" for="Sinif">Sınıf</label>
-                                            <SfNumericTextBox ID="Sinif" CssClass="form-control col-sm-2 pb-1" @bind-Value="@(dAcilanContext.Sinif)"></SfNumericTextBox>
+                                            <SfNumericTextBox ID="Sinif" CssClass=" col-sm-2 pb-1" @bind-Value="@(dAcilanContext.Sinif)"></SfNumericTextBox>
                                             <label class="col-md-2 col-form-label" for="Kredi">Kredi</label>
-                                            <SfNumericTextBox ID="Kredi" CssClass="form-control col-sm-2" @bind-Value="@(dAcilanContext.Kredi)"></SfNumericTextBox>
+                                            <SfNumericTextBox ID="Kredi" CssClass=" col-sm-2" @bind-Value="@(dAcilanContext.Kredi)"></SfNumericTextBox>
                                             <label class="col-md-2 col-form-label" for="Akts">Akts</label>
-                                            <SfNumericTextBox ID="Akts" CssClass="form-control col-sm-2" @bind-Value="@(dAcilanContext.Akts)"></SfNumericTextBox>
+                                            <SfNumericTextBox ID="Akts" CssClass=" col-sm-2" @bind-Value="@(dAcilanContext.Akts)"></SfNumericTextBox>
                                         </div>
                                     </div>
 
                                     <div class="col-12 pb-2">
                                         <div class="form-row">
                                             <label class="col-md-2 col-form-label" for="TeoSaat">Teo. Saat</label>
-                                            <SfNumericTextBox ID="TeoSaat" CssClass="form-control col-sm-2" @bind-Value="@(dAcilanContext.TeoSaat)"></SfNumericTextBox>
+                                            <SfNumericTextBox ID="TeoSaat" CssClass=" col-sm-2" @bind-Value="@(dAcilanContext.TeoSaat)"></SfNumericTextBox>
                                             <label class="col-md-2 col-form-label" for="UygSaat">Uyg. Saat</label>
-                                            <SfNumericTextBox ID="UygSaat" CssClass="form-control col-sm-2" @bind-Value="@(dAcilanContext.UygSaat)"></SfNumericTextBox>
+                                            <SfNumericTextBox ID="UygSaat" CssClass=" col-sm-2" @bind-Value="@(dAcilanContext.UygSaat)"></SfNumericTextBox>
                                             <label class="col-md-2 col-form-label" for="LabSaat">Lab. Saat</label>
-                                            <SfNumericTextBox ID="LabSaat" CssClass="form-control col-sm-2" @bind-Value="@(dAcilanContext.LabSaat)"></SfNumericTextBox>
+                                            <SfNumericTextBox ID="LabSaat" CssClass=" col-sm-2" @bind-Value="@(dAcilanContext.LabSaat)"></SfNumericTextBox>
                                         </div>
                                     </div>
 
                                     <div class="col-12 pb-2">
                                         <div class="form-row">
                                             <label class="col-md-2 col-form-label" for="TopKont">Toplan Kontenjan</label>
-                                            <SfNumericTextBox ID="TopKont" CssClass="form-control col-sm-2" @bind-Value="@(dAcilanContext.TopKont)"></SfNumericTextBox>
+                                            <SfNumericTextBox ID="TopKont" CssClass=" col-sm-2" @bind-Value="@(dAcilanContext.TopKont)"></SfNumericTextBox>
                                             <label class="col-md-2 col-form-label" for="BolDisKont">Bölümü Dışı Kontenjan</label>
-                                            <SfNumericTextBox ID="BolDisKont" CssClass="form-control col-sm-2" @bind-Value="@(dAcilanContext.BolDisKont)"></SfNumericTextBox>
+                                            <SfNumericTextBox ID="BolDisKont" CssClass=" col-sm-2" @bind-Value="@(dAcilanContext.BolDisKont)"></SfNumericTextBox>
                                             <label class="col-md-2 col-form-label" for="AltKont">Alttan Kontenjan</label>
-                                            <SfNumericTextBox ID="AltKont" CssClass="form-control col-sm-2" @bind-Value="@(dAcilanContext.AltKont)"></SfNumericTextBox>
+                                            <SfNumericTextBox ID="AltKont" CssClass=" col-sm-2" @bind-Value="@(dAcilanContext.AltKont)"></SfNumericTextBox>
                                         </div>
                                     </div>
 
@@ -169,7 +169,7 @@
                             </div>
 
                             <div class="col-md-3">
-                                <SfButton OnClick="@(()=>programDialogOpen =true)" CssClass="e-success col-sm-12 form-control-sm">Program Ata</SfButton>
+                                <SfButton OnClick="@(()=>programDialogOpen =true)" CssClass="e-success col-sm-12 -sm">Program Ata</SfButton>
 
                                 @if (dAcilanContext.Program != null)
                                 {
@@ -185,26 +185,39 @@
                                 }
 
 
+                            <div class="form-group row">
+                                <label for="DonemId" class="col-sm-2 col-form-label">Dönem</label>
+                                <div class="col-sm-10">
+                                    <SfDropDownList ID="DonemId" TValue="int?" TItem="DonemDto" Placeholder="Dönem seçiniz..."
+                                                    Query="@donemQuery"
+                                                    @bind-Value="@dAcilanContext.DonemId">
+                                        <SfDataManager Url="odata/donems?$orderby=Yil desc, DonemTipId" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
+                                        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                                    </SfDropDownList>
+                                </div>
+                            </div>
+                            <div class="card" style="background-color:lavender;">
                                 <div class="form-group row">
-                                    <label for="DonemId" class="col-sm-2 col-form-label">Dönem</label>
-                                    <div class="col-sm-10">
-                                        <SfDropDownList ID="DonemId" TValue="int?" TItem="DonemDto" Placeholder="Dönem seçiniz..."
-                                                        Query="@donemQuery"
-                                                        @bind-Value="@dAcilanContext.DonemId">
-                                            <SfDataManager Url="odata/donems?$orderby=Yil desc, DonemTipId" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
-                                            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                                        </SfDropDownList>
-                                    </div>
-                                    <label for="yillik" class="col-sm-8">Yıllık</label>
+                                    <label for="yillik" class="col-sm-8">Yıllık mı?</label>
                                     <div class="col-sm-4">
                                         <SfCheckBox ID="yillik" @bind-Checked="@dAcilanContext.IsYillik" TChecked="bool" CssClass="color:red"></SfCheckBox>
                                     </div>
+                                    <label for="IsKurul" class="col-sm-8">Kurul dersi mi?</label>
+                                    <div class="col-sm-4">
+                                        <SfCheckBox ID="IsKurul" @bind-Checked="@dAcilanContext.IsKurul" TChecked="bool" CssClass="color:red"></SfCheckBox>
+                                    </div>
+                                    <label for="IsKurulSon" class="col-sm-8">Kurul Son Final?</label>
+                                    <div class="col-sm-4">
+                                        <SfCheckBox ID="IsKurulSon" @bind-Checked="@dAcilanContext.IsKurulSon" TChecked="bool" CssClass="color:red"></SfCheckBox>
+                                    </div>
                                 </div>
+                            </div>
+
 
                                 @*<div class="form-group row">
-                                        <SfTextBox ID="akademisyen" Enabled="false" Placeholder="Akademisyen" CssClass="form-control col-sm-8" @bind-Value="@(dAcilanContext.Akademisyen.Ad)"></SfTextBox>
-                                        <SfButton IconCss="e-icons e-Resource" EnableRtl="true" OnClick="@(() =>AkademisyenAta(dAcilanContext.Id))" CssClass="e-flat form-control col-sm-2" IsPrimary="true"></SfButton>
-                                    </div>*@
+            <SfTextBox ID="akademisyen" Enabled="false" Placeholder="Akademisyen" CssClass=" col-sm-8" @bind-Value="@(dAcilanContext.Akademisyen.Ad)"></SfTextBox>
+            <SfButton IconCss="e-icons e-Resource" EnableRtl="true" OnClick="@(() =>AkademisyenAta(dAcilanContext.Id))" CssClass="e-flat  col-sm-2" IsPrimary="true"></SfButton>
+        </div>*@
 
                             </div>
                         </div>

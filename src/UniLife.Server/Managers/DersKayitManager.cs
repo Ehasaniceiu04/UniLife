@@ -91,6 +91,20 @@ namespace UniLife.Server.Managers
             }
         }
 
+        public async Task<ApiResponse> KurulHarflendir(int dersAcilanId)
+        {
+            try
+            {
+                await _dersKayitStore.KurulHarflendir(dersAcilanId);
+                return new ApiResponse(Status200OK, "Öğrenci ders sonuçları harflendirildi.");
+            }
+            catch (DomainException ex)
+            {
+                _logger.LogError(" Kurul Harflendirme hatası: {0}, {1}", ex.Description, ex.Message);
+                return new ApiResponse(Status400BadRequest, $"Kurul Harflendirme hatası: {ex.Description} ");
+            }
+        }
+
         public async Task<ApiResponse> GetOgrDersHarfs(int dersAcilanId)
         {
             return new ApiResponse(Status200OK, "Öğrenci ders sonuçları harflendirildi.", await _dersKayitStore.GetOgrDersHarfs(dersAcilanId));

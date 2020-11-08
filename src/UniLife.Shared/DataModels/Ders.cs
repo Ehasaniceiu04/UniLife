@@ -44,6 +44,8 @@ namespace UniLife.Shared.DataModels
         public int? Sinif { get; set; }
         public string KancalananDersAd { get; set; }
         public bool IsYillik { get; set; }
+        public bool IsKurul { get; set; }
+        public bool IsKurulSon { get; set; }
 
         public virtual ICollection<DersAcilan> DersAcilans { get; set; }
     }

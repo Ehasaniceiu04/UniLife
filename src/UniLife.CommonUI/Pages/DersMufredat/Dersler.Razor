@@ -171,7 +171,7 @@ else
                                     </SfDropDownList>
                                 </div>
                             </div>
-                         
+
                             @*<div class="form-group row">
                                     <label for="Durum" class="col-sm-2 col-form-label">Durum</label>
                                     <div class="col-sm-4">
@@ -196,20 +196,20 @@ else
 
 
                                 @*<label for="GecmeNotu" class="col-sm-2 col-form-label">Geçme Notu</label>
-            <div class="col-sm-4">
-                <SfNumericTextBox ID="GecmeNotu"  @bind-Value="@(dersDto.GecmeNotu)"></SfNumericTextBox>
-            </div>*@
+                                    <div class="col-sm-4">
+                                        <SfNumericTextBox ID="GecmeNotu"  @bind-Value="@(dersDto.GecmeNotu)"></SfNumericTextBox>
+                                    </div>*@
                             </div>
                             @*<div class="form-group row">
-            <label for="OptikKod" class="col-sm-2 col-form-label">OptikKod</label>
-            <div class="col-sm-4">
-                <SfTextBox ID="OptikKod" @bind-Value="@(dersDto.OptikKod)"></SfTextBox>
-            </div>
-            <label for="UygSaat" class="col-sm-2 col-form-label">Uyg.Saat</label>
-            <div class="col-sm-4">
-                <SfNumericTextBox ID="UygSaat" @bind-Value="@(dersDto.UygSaat)"></SfNumericTextBox>
-            </div>
-        </div>*@
+                                    <label for="OptikKod" class="col-sm-2 col-form-label">OptikKod</label>
+                                    <div class="col-sm-4">
+                                        <SfTextBox ID="OptikKod" @bind-Value="@(dersDto.OptikKod)"></SfTextBox>
+                                    </div>
+                                    <label for="UygSaat" class="col-sm-2 col-form-label">Uyg.Saat</label>
+                                    <div class="col-sm-4">
+                                        <SfNumericTextBox ID="UygSaat" @bind-Value="@(dersDto.UygSaat)"></SfNumericTextBox>
+                                    </div>
+                                </div>*@
                             <div class="form-group row">
 
                                 <label for="LabSaat" class="col-sm-2 col-form-label">Lab.Saat</label>
@@ -259,15 +259,25 @@ else
                                 <label class="col-sm-4">@(dersDtoContext.Durum ? "":$"Bağlı old. ders : {dersDtoContext.KancalananDersAd}")</label>
                             </div>
                             @if (isShowYillik)
-	                        {
-                                <div class="form-group row">
-                                    <label for="IsYillik" class="col-sm-2 col-form-label">Yıllık</label>
-                                    <div class="col-sm-4">
-                                        <SfCheckBox ID="IsYillik" @bind-Checked="@(dersDtoContext.IsYillik)"></SfCheckBox>
+                            {
+                                <div class="card"  style="background-color:lavender;">
+                                    <div class="form-group row">
+                                        <label for="IsYillik" class="col-sm-2 col-form-label">Yıllık mı?</label>
+                                        <div class="col-sm-4">
+                                            <SfCheckBox ID="IsYillik" @bind-Checked="@(dersDtoContext.IsYillik)"></SfCheckBox>
+                                        </div>
+                                        <label for="IsKurul" class="col-sm-2 col-form-label">Kurul dersi mi?</label>
+                                        <div class="col-sm-4">
+                                            <SfCheckBox ID="IsKurul" @bind-Checked="@(dersDtoContext.IsKurul)"></SfCheckBox>
+                                        </div>
+                                        <label for="IsKurulSon" class="col-sm-2 col-form-label">Kurul Son Final?</label>
+                                        <div class="col-sm-4">
+                                            <SfCheckBox ID="IsKurulSon" @bind-Checked="@(dersDtoContext.IsKurulSon)"></SfCheckBox>
+                                        </div>
                                     </div>
                                 </div>
-	                        }
-                            
+                            }
+
                             @if (isOpsCoklama)
                             {
                                 <div style="background-color: antiquewhite;" class="card">
@@ -323,6 +333,8 @@ else
             <GridColumn Visible="false" Field=@nameof(DersDto.DersDilId) HeaderText="DersDilId"></GridColumn>
             <GridColumn AutoFit="true" Field=@nameof(DersDto.Durum) HeaderText="Durum" DisplayAsCheckBox="true"></GridColumn>
             <GridColumn Visible="false" Field=@nameof(DersDto.IsYillik) HeaderText="IsYillik" DisplayAsCheckBox="true"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(DersDto.IsKurul) HeaderText="IsKurul" DisplayAsCheckBox="true"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(DersDto.IsKurulSon) HeaderText="IsKurulSon" DisplayAsCheckBox="true"></GridColumn>
             <GridColumn AutoFit="true" Field=@nameof(DersDto.Zorunlu) HeaderText="Zorunlu" DisplayAsCheckBox="true"></GridColumn>
             @*<GridColumn Visible="false" Field=@nameof(DersDto.AktifDonemdeAcik) HeaderText="AktifDonemdeAcik" DisplayAsCheckBox="true"></GridColumn>*@
             <GridColumn AutoFit="true" Field=@nameof(DersDto.SecmeliKodu) HeaderText="SecmeliKodu"></GridColumn>
@@ -422,7 +434,6 @@ else
     }
 
     .card {
-        display: unset;
+        flex-direction: column;
     }
-
 </style>

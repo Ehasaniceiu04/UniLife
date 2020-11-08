@@ -6,6 +6,7 @@
 @using Syncfusion.Blazor.DropDowns
 @using Syncfusion.Blazor.Navigations
 @using Syncfusion.Blazor.Buttons
+@inject IJSRuntime Runtime
 
 @attribute [Authorize(Roles = "Administrator,Personel,Akademisyen")]
 
@@ -19,11 +20,11 @@
 else
 {
     @*<SfDropDownList ID="DropDonem" @ref="DropDonem" ShowClearButton="true" Index="0" TItem="DonemDto" CssClass="form-control-sm"
-                    TValue="int?" Placeholder="Dönem Seçimi..."
-                    DataSource="@(donemDtos.OrderByDescending(x=>x.Yil).ThenBy(n => n.BasTarih))" @bind-Value="@(selectedDonemId)">
-        <DropDownListEvents TValue="int?" ValueChange="DonemChange"></DropDownListEvents>
-        <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-    </SfDropDownList>*@
+                        TValue="int?" Placeholder="Dönem Seçimi..."
+                        DataSource="@(donemDtos.OrderByDescending(x=>x.Yil).ThenBy(n => n.BasTarih))" @bind-Value="@(selectedDonemId)">
+            <DropDownListEvents TValue="int?" ValueChange="DonemChange"></DropDownListEvents>
+            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+        </SfDropDownList>*@
     <div class="form-group row">
         <label for="DropFakulte" class="col-sm-1 col-form-label-sm">Dönem :</label>
         <div class="col-sm-6">
@@ -40,9 +41,9 @@ else
         </div>
     </div>
 
-    <SfGrid ID="grdDersler" @ref="grdDersler" Query="@(new Query().Where("akademisyen/Id", "equal", akademisyenDto.Id).Where(sadeceYillik? new WhereFilter() { Field ="IsYillik",Operator="equal",value=sadeceYillik}:new WhereFilter() { Field ="DonemId",Operator="equal",value=selectedDonemId}))" TValue="DersAcilanDto" AllowFiltering="true" AllowResizing="true" Toolbar="@(Toolbaritems)" AllowPaging="true">
+    <SfGrid ID="grdDersler" @ref="grdDersler" Query="@(new Query().Where("akademisyen/Id", "equal", akademisyenDto.Id).Where(sadeceYillik? new WhereFilter() { Field ="IsYillik",Operator="equal",value=sadeceYillik}:new WhereFilter() { Field ="DonemId",Operator="equal",value=selectedDonemId}))" TValue="DersAcilanDto" AllowFiltering="true" AllowSorting="true" AllowResizing="true" Toolbar="@(Toolbaritems)" AllowPaging="true">
         <SfDataManager Url="@(OdataQuery)" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
-        <GridEvents TValue="DersAcilanDto" OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectedHandler"></GridEvents>
+        <GridEvents TValue="DersAcilanDto" DetailDataBound="DetailDataBound" DataBound="DataBound" OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectedHandler"></GridEvents>
         @*<GridGroupSettings Columns="@Initial"></GridGroupSettings>*@
         <GridPageSettings PageCount="100" PageSizes="new int[]{ 5, 10, 50, 100,10000}"></GridPageSettings>
         <GridTemplates>
@@ -74,11 +75,16 @@ else
                 </div>
             </DetailTemplate>
         </GridTemplates>
-
+        <GridSortSettings>
+            <GridSortColumns>
+                <GridSortColumn Field="Kod" Direction="SortDirection.Ascending"></GridSortColumn>
+            </GridSortColumns>
+        </GridSortSettings>
         <GridColumns>
             <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="DersAcilanId" AllowEditing="false" IsPrimaryKey="true"></GridColumn>
             <GridColumn Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kod"></GridColumn>
             <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Ad"></GridColumn>
+            <GridColumn Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
             <GridColumn Field="Donem.Ad" HeaderText="Donem"></GridColumn>
             @*<GridColumn>
                     <GridCommandColumns>
@@ -148,6 +154,7 @@ else
     //string[] Template = (new string[] { "Donem.Ad" });
 
     SfGrid<DersAcilanDto> grdDersler;
+    DersAcilanDto target;
     SfGrid<SinavDto> grdSinavlar;
 
     //List<AkademisyenDersDto> akademisyenDersDtos;
@@ -219,14 +226,14 @@ else
     //}
 
     [Parameter]
-    public EventCallback<SinavDto> SinavToNotlar { get; set; }
+    public EventCallback<SinavDersAcilanDto> SinavToNotlar { get; set; }
 
     public void CommandClickHandlerSinav(CommandClickEventArgs<SinavDto> args)
     {
         if (args.CommandColumn.Title == "Sınava Git")
         {
             args.RowData.DersAcilanAd = expDersAcilan.Ad + " - " + expDersAcilan.Kod + " - " + args.RowData.SinavTip.Ad;
-            SinavToNotlar.InvokeAsync(args.RowData);
+            SinavToNotlar.InvokeAsync(new SinavDersAcilanDto { SinavDto = args.RowData, DersAcilanDto = expDersAcilan });
         }
     }
 
@@ -285,6 +292,33 @@ else
 
     }
 
+    public bool firstrender { get; set; } = true;
+    public async Task DataBound()
+    {
+        if (firstrender)
+        {
+            var dotNetReference = DotNetObjectReference.Create(this);           // create dotnet ref
+            await Runtime.InvokeAsync<string>("detail", dotNetReference);       // send the dotnet ref to JS side
+            firstrender = false;
+        }
+    }
+    public async Task DetailDataBound(DetailDataBoundEventArgs<DersAcilanDto> args)
+    {
+        if (target != null)
+        {
+            if (target == args.Data)              // return when target is equal to args.data
+            {
+                return;
+            }
+            await grdDersler.DetailExpandCollapseRow(target);
+        }
+        target = args.Data;
+    }
+    [JSInvokable("DetailCollapse")]              // method called from JS when collapse is done
+    public void DetailRowCollapse()
+    {
+        target = null;                   // empty the target when collapse action is done
+    }
 }
 
 <style type="text/css" class="cssStyles">

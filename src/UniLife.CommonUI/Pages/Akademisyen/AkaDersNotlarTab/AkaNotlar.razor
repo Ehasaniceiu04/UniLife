@@ -77,6 +77,9 @@
     [Parameter]
     public SinavDto _SinavDto { get; set; }
 
+    [Parameter]
+    public DersAcilanDto _DersAcilanDto { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         await GetNots();
@@ -88,8 +91,6 @@
         {
 
             ApiResponseDto<List<SinavOgrNotlarDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<SinavOgrNotlarDto>>>("api/sinavkayit/GetSinavKayitOgrenciNotlar/" + _SinavDto.Id + "/" + _SinavDto.DersAcilanId);
-
-
 
             if (apiResponse.IsSuccessStatusCode)
             {
@@ -184,15 +185,12 @@
         {
             matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
         }
-
     }
 
     async Task Yayinla()
     {
-
         try
         {
-
             ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/sinav/yayinla/" + _SinavDto.Id);
 
             if (apiResponse.IsSuccessStatusCode)
@@ -206,32 +204,21 @@
         {
             matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
         }
-
     }
 
     async Task HarflendirmeSonucGoster()
     {
+        if (_DersAcilanDto.IsKurulSon)
+        {
+            //DersSonuc kurulksa ağaıdaki listeye diğer derslerin notlarnı getir ve/veya ortalama. sonra hesaplatacaz. birde büt var.
+        }
 
 
         isHarflendirmeSonucGoster = false;
         StateHasChanged();
         await Task.Delay(100);
         isHarflendirmeSonucGoster = true;
-        //ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/derskayit/Harflendir/"+ _SinavDto.DersAcilanId);
 
-        //try
-        //{
-        //    if (apiResponse.IsSuccessStatusCode)
-        //    {
-        //        matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
-        //    }
-        //    else
-        //        matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
-        //}
-        //catch (Exception ex)
-        //{
-        //    matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
-        //}
     }
 
     public void QueryCellInfoHandler(QueryCellInfoEventArgs<SinavOgrNotlarDto> args)
@@ -244,8 +231,18 @@
 
     async Task FinalHarflendir()
     {
+        ApiResponseDto apiResponse;
 
-        ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/derskayit/Harflendir/" + _SinavDto.DersAcilanId);
+        if (_DersAcilanDto.IsKurulSon)
+        {
+            apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/derskayit/KurulHarflendir/" + _SinavDto.DersAcilanId);
+        }
+        else
+        {
+            apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>("api/derskayit/Harflendir/" + _SinavDto.DersAcilanId);
+        }
+
+
 
         try
         {

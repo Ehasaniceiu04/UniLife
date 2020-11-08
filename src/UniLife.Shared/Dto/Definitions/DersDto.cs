@@ -46,6 +46,8 @@ namespace UniLife.Shared.Dto.Definitions
         public int? Sinif { get; set; }
         public string KancalananDersAd { get; set; }
         public bool IsYillik { get; set; } = false;
+        public bool IsKurul { get; set; }
+        public bool IsKurulSon { get; set; }
 
         private string kancalananDersKod;
         public string KancalananDersKod {
