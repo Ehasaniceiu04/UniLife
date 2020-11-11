@@ -92,6 +92,9 @@
     //public AkademisyenSinavDto _AkademisyenSinavDto { get; set; }
 
     [Parameter]
+    public DersAcilanDto _DersAcilanDto { get; set; }
+
+    [Parameter]
     public SinavDto _SinavDto { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -107,8 +110,16 @@
     {
         try
         {
+            ApiResponseDto<List<DersKayitOgrOrtalamaDto>> apiResponse;
+            if (_DersAcilanDto.IsKurulSon)
+            {
+                apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<DersKayitOgrOrtalamaDto>>>("api/derskayit/GetOgrKurulSonDersHarfs/" + _SinavDto.DersAcilanId);
+            }
+            else
+            {
+                apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<DersKayitOgrOrtalamaDto>>>("api/derskayit/GetOgrDersHarfs/" + _SinavDto.DersAcilanId);
+            }
 
-            ApiResponseDto<List<DersKayitOgrOrtalamaDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<DersKayitOgrOrtalamaDto>>>("api/derskayit/GetOgrDersHarfs/" + _SinavDto.DersAcilanId);
 
             if (apiResponse.IsSuccessStatusCode)
             {

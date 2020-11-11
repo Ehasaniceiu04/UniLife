@@ -270,12 +270,12 @@ namespace UniLife.Storage.Stores
                 dersNotHarfDto = new DersNotHarfDto();
                 var birOgrKurulSinavlari = derseKayitliOgrlerinKurulSinavlari.Where(x => x.OgrenciId == kurulSonDersKayit.OgrenciId);
 
-                var kurulSinavOrtalama = birOgrKurulSinavlari.Where(x => x.DersAcilanId != kurulSonDersKayit.DersAcilanId).Average(x=>x.Not);
+                var kurulSinavOrtalama = birOgrKurulSinavlari.Where(x => x.DersAcilanId != kurulSonDersKayit.DersAcilanId).Average(x => x.Not);
                 var kurulSonSinav = birOgrKurulSinavlari.FirstOrDefault(x => x.DersAcilanId == kurulSonDersKayit.DersAcilanId).Not;
 
-                kurulSonDersKayit.Ort = (kurulSinavOrtalama * (6 / 10)) + (kurulSonSinav * (4 / 10));
+                kurulSonDersKayit.Ort = Math.Round((kurulSinavOrtalama * (6.0 / 10.0)) + (kurulSonSinav * (4.0 / 10.0)), 2);
 
-                dersNotHarfDto  = hesapKitap.MutlakOrtalamaHarflendir(kurulSonDersKayit.Ort);
+                dersNotHarfDto = hesapKitap.MutlakOrtalamaHarflendir(kurulSonDersKayit.Ort);
 
                 kurulSonDersKayit.Carpan = dersNotHarfDto.carpan;
                 kurulSonDersKayit.HarfNot = dersNotHarfDto.harf;
@@ -510,7 +510,7 @@ namespace UniLife.Storage.Stores
 
         }
 
-            private async Task OransalBagil(List<DersKayit> dersKayitlari, List<OgrSinavSonucs> derseKayitliOgrlerinTumSinavlariButsuz)
+        private async Task OransalBagil(List<DersKayit> dersKayitlari, List<OgrSinavSonucs> derseKayitliOgrlerinTumSinavlariButsuz)
         {
             List<DersKayit> oransalBagilHesabaGiremeyenler = new List<DersKayit>();
             List<DersKayit> oransalBagilHesabaGirenler = new List<DersKayit>();
@@ -655,6 +655,11 @@ namespace UniLife.Storage.Stores
             return String.Join(" ", derseKayitliOgrlerinTumSinavlari.Where(y => y.OgrenciId == o.Id).OrderBy(x => x.SinavTipAd).Select(x => x.SinavTipAd + ":" + x.Not));
         }
 
+        private static string GetDigerKurulSinavsByText(List<OgrSinavSonucs> derseKayitliOgrlerinKurulSinavlari, Ogrenci o)
+        {
+            return String.Join(" ", derseKayitliOgrlerinKurulSinavlari.Where(y => y.OgrenciId == o.Id).OrderBy(x => x.SinavTipAd).Select(x => "K.Fin:" + x.Not));
+        }
+
         public async Task<List<DersKayitOgrOrtalamaDto>> GetOgrDersHarfs(int dersAcilanId)
         {
             var derseKayitliOgrlerinTumSinavlari = await (from s in _db.Sinavs.Where(x => x.DersAcilanId == dersAcilanId)
@@ -682,6 +687,47 @@ namespace UniLife.Storage.Stores
                                                HarfNot = dk.HarfNot,
                                                IsGecti = dk.GecDurum,
                                                OgrSinavlarText = GetDigerSinavsByText(derseKayitliOgrlerinTumSinavlari, o)
+                                           }).AsNoTracking().ToListAsync();
+
+            return kayitliOgrenciler;
+        }
+
+        public async Task<List<DersKayitOgrOrtalamaDto>> GetOgrKurulSonDersHarfs(int dersAcilanId)
+        {
+            DersAcilan KurulSonDers = await _db.DersAcilans.FirstOrDefaultAsync(x => x.Id == dersAcilanId);
+
+            List<DersAcilan> KurulDerss = await _db.DersAcilans.Where(x => x.MufredatId == KurulSonDers.MufredatId
+                                                                           && x.Sinif == KurulSonDers.Sinif
+                                                                           && x.IsKurul == true
+                                                                           && x.IsKurulSon == false
+                                                                           && x.DonemId == KurulSonDers.DonemId).AsNoTracking().ToListAsync();
+            var kurulDersAcilanIdList = KurulDerss.Select(x => x.Id);
+
+            var derseKayitliOgrlerinDigerKurulSinavlari = await (from s in _db.Sinavs.Where(x => kurulDersAcilanIdList.Contains(x.DersAcilanId))
+                                                                 join st in _db.SinavTips on s.SinavTipId equals st.Id
+                                                                 join sk in _db.SinavKayits on s.Id equals sk.SinavId
+                                                                 select new OgrSinavSonucs
+                                                                 {
+                                                                     OgrenciId = sk.OgrenciId,
+                                                                     SinavTipAd = st.Ad,
+                                                                     Not = sk.OgrNot,
+                                                                     EtkiOran = s.EtkiOran
+                                                                 }).AsNoTracking().ToListAsync();
+
+
+            var kayitliOgrenciler = await (from dk in _db.DersKayits.Where(x => x.DersAcilanId == dersAcilanId)
+                                           join o in _db.Ogrencis on dk.OgrenciId equals o.Id
+                                           select new DersKayitOgrOrtalamaDto
+                                           {
+                                               DersKayitId = dk.Id,
+                                               OgrenciId = o.Id,
+                                               OgrenciAdSoyad = o.Ad + " " + o.Soyad,
+                                               OgrenciNo = o.OgrNo,
+                                               DersAcilanId = dk.DersAcilanId,
+                                               OgrOrt = dk.Ort,
+                                               HarfNot = dk.HarfNot,
+                                               IsGecti = dk.GecDurum,
+                                               OgrSinavlarText = GetDigerKurulSinavsByText(derseKayitliOgrlerinDigerKurulSinavlari, o)
                                            }).AsNoTracking().ToListAsync();
 
             return kayitliOgrenciler;

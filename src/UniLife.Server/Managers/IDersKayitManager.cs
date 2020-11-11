@@ -21,7 +21,7 @@ namespace UniLife.Server.Managers
         Task<ApiResponse> KurulHarflendir(int dersAcilanId);
 
         Task<ApiResponse> GetOgrDersHarfs(int dersAcilanId);
+        Task<ApiResponse> GetOgrKurulSonDersHarfs(int dersAcilanId);
         Task<ApiResponse> ButHarflendir(int dersAcilanId);
-        
     }
 }

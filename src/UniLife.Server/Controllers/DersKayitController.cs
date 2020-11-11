@@ -247,7 +247,23 @@ namespace UniLife.Server.Controllers
             }
         }
 
-        
+        [HttpGet]
+        [Route("GetOgrKurulSonDersHarfs/{dersAcilanId}")]
+        [Authorize(Permissions.DersKayit.Update)]
+        [Authorize(Roles = "Administrator,Personel,Akademisyen")]
+        public async Task<ApiResponse> GetOgrKurulSonDersHarfs(int dersAcilanId)
+        {
+            if (ModelState.IsValid)
+            {
+                return await _dersKayitManager.GetOgrKurulSonDersHarfs(dersAcilanId);
+            }
+            else
+            {
+                return new ApiResponse(Status400BadRequest, "DersKayitDto Model is Invalid");
+            }
+        }
+
+
 
 
 
