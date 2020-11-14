@@ -382,13 +382,13 @@ user.HasClaim("permission", Permissions.DersKayit.Delete)))
                     <MatNavSubMenuList>
                         @if (user.HasClaim("permission", Permissions.Menu.Diploma))
                         {
-                            <MatNavItem Href="@navigationManager.ToAbsoluteUri(" ").AbsoluteUri">
+                            <MatNavItem Href="@navigationManager.ToAbsoluteUri("diploma").AbsoluteUri">
                                 <MatIcon>touch_app</MatIcon> <span class="miniHover">Diploma</span>
                             </MatNavItem>
                         }
                         @if (user.HasClaim("permission", Permissions.Menu.Mezuniyet))
                         {
-                            <MatNavItem Href="@navigationManager.ToAbsoluteUri(" ").AbsoluteUri">
+                            <MatNavItem Href="@navigationManager.ToAbsoluteUri("mezuniyet").AbsoluteUri">
                                 <MatIcon>touch_app</MatIcon> <span class="miniHover">Mezuniyet</span>
                             </MatNavItem>
                         }

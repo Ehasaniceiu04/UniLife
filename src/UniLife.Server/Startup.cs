@@ -675,6 +675,8 @@ namespace UniLife.Server
 
             FunctionConfiguration getOgrdersOptional = objOgrenci.EntityType.Collection.Function("GetForDanisman");
             getOgrdersOptional.ReturnsCollectionFromEntitySet<Ogrenci>("Ogrencis");
+            FunctionConfiguration getOgrMezuniyetOptional = objOgrenci.EntityType.Collection.Function("OgrMezuniyet");
+            getOgrMezuniyetOptional.ReturnsCollectionFromEntitySet<Ogrenci>("Ogrencis");
 
             builder.EntitySet<UniLife.Shared.Dto.Definitions.OgrenciDersRaporDto>("OgrenciDersRapors");
             builder.EntitySet<OgrenciOnay>("GetOgrenciForDanisman");

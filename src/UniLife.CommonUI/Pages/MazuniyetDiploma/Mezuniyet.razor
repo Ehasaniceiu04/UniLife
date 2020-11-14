@@ -1,0 +1,121 @@
+﻿@page "/Mezuniyet"
+@using UniLife.Shared.Dto.Definitions
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Data
+
+<div class="row pb-2 card">
+    <div class="col-sm-4">
+        <FakBolPrg @bind-ProgramId="ProgramId"
+                   @bind-BolumId="BolumId"
+                   @bind-FakulteId="FakulteId"
+                   ProgramPlaceHolder=" "
+                   ProgramShow="true"></FakBolPrg>
+    </div>
+
+    @*Custom odata yapacaz gene. seçilenler param olarak gidecek. diğer örneği bi incele*@
+
+    <div class="col-sm-8">
+        <div class="form-group row">
+            <label for="KayOgr" class="col-sm-2">AGNOKontrol</label>
+            <div class="col-sm-1">
+                <SfCheckBox @bind-Checked="@AGNOKontrol" TChecked="bool"></SfCheckBox>
+            </div>
+            <label for="KayOgr" class="col-sm-2">KrediKontrol</label>
+            <div class="col-sm-1">
+                <SfCheckBox @bind-Checked="@KrediKontrol" TChecked="bool"></SfCheckBox>
+            </div>
+            <label for="KayOgr" class="col-sm-2">AKTSKontrol</label>
+            <div class="col-sm-1">
+                <SfCheckBox @bind-Checked="@AKTSKontrol" TChecked="bool"></SfCheckBox>
+            </div>
+            <label for="KayOgr" class="col-sm-2">StajKontrol</label>
+            <div class="col-sm-1">
+                <SfCheckBox @bind-Checked="@StajKontrol" TChecked="bool"></SfCheckBox>
+            </div>
+            <label for="KayOgr" class="col-sm-2">ZorunluDersKontrol</label>
+            <div class="col-sm-1">
+                <SfCheckBox @bind-Checked="@ZorunluDersKontrol" TChecked="bool"></SfCheckBox>
+            </div>
+            <label for="KayOgr" class="col-sm-2">SecemeliDersKontrol</label>
+            <div class="col-sm-1">
+                <SfCheckBox @bind-Checked="@SecemeliDersKontrol" TChecked="bool"></SfCheckBox>
+            </div>
+            <label for="KayOgr" class="col-sm-2">BasarisizDersKontrol</label>
+            <div class="col-sm-1">
+                <SfCheckBox @bind-Checked="@BasarisizDersKontrol" TChecked="bool"></SfCheckBox>
+            </div>
+            <label for="KayOgr" class="col-sm-2">HazirlikKontrol</label>
+            <div class="col-sm-1">
+                <SfCheckBox @bind-Checked="@HazirlikKontrol" TChecked="bool"></SfCheckBox>
+            </div>
+        </div>
+        <SfButton OnClick="Refresh" CssClass="e-success col-sm-12 form-control-sm">Bul / Yenile</SfButton>
+
+    </div>
+</div>
+
+@if (true)
+{
+    <SfGrid PrintMode="PrintMode.CurrentPage" @ref="mezunGrid" Query="@totalQuery" TValue="OgrenciDto" AllowSorting="true" AllowResizing="true" AllowExcelExport="true" AllowPdfExport="true" AllowPaging="true" AllowFiltering="true" Toolbar="@(new List<string>() {"PdfExport","ExcelExport","ColumnChooser"})" ShowColumnChooser="true">
+        <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+        @*<GridEvents RowSelecting="OnRowSelecting" OnToolbarClick="ToolbarClickHandler" OnActionComplete="ActionCompletedHandler" OnActionBegin="OnActionBeginHandler" CommandClicked="CommandClickHandler" TValue="DersAcilanDto"></GridEvents>*@
+        <GridPageSettings PageCount="5" PageSizes="new int[]{ 5, 10, 50, 100,10000}"></GridPageSettings>
+        <GridFilterSettings Mode="FilterBarMode.OnEnter" ImmediateModeDelay="300"></GridFilterSettings>
+        <GridSortSettings>
+            <GridSortColumns>
+                <GridSortColumn Field="OgrNo" Direction="SortDirection.Ascending"></GridSortColumn>
+            </GridSortColumns>
+        </GridSortSettings>
+        <GridColumns>
+            <GridColumn Visible="false" Field=@nameof(OgrenciDto.Id) HeaderText="Açılan Ders ID" Edit="false" AllowEditing="false" TextAlign="TextAlign.Left"></GridColumn>
+            <GridColumn AutoFit="true"  FilterSettings="@(new FilterSettings{Type = Syncfusion.Blazor.Grids.FilterType.Menu })" Field=@nameof(OgrenciDto.OgrNo) Type="ColumnType.Number" HeaderText="Öğr No"></GridColumn>
+            <GridColumn AutoFit="true" FilterSettings="@(new FilterSettings{ Operator = Operator.Contains })" Field=@nameof(OgrenciDto.Ad) HeaderText="Ad"></GridColumn>
+        </GridColumns>
+    </SfGrid>
+}
+
+
+<style>
+    .form-group {
+        margin-bottom: 0.2rem;
+    }
+
+    input.e-input, .e-input-group input, .e-input-group.e-control-wrapper input, .e-input-group input.e-input, .e-input-group.e-control-wrapper input.e-input {
+        height: auto;
+    }
+
+    .col-form-label-sm {
+        padding-bottom: unset;
+        /*font-size: 0.65rem;*/
+        /*font-size: .775rem;*/
+    }
+
+    .e-Resource:before {
+        content: '\e7d3';
+        color: #31ba13;
+    }
+
+    .e-Circle_Add:before {
+        content: '\e755';
+        color: #31ba13;
+    }
+
+    .mdc-dialog .mdc-dialog__container {
+        width: 100%;
+    }
+
+    .mdc-dialog .mdc-dialog__surface {
+        max-width: none;
+        width: 70%;
+    }
+
+    .card {
+        flex-direction: unset;
+    }
+
+    .e-grid .e-altrow {
+        background-color: #fafafa;
+    }
+</style>

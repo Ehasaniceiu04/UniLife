@@ -91,7 +91,7 @@ namespace UniLife.Server.Controllers
 
         [Microsoft.AspNet.OData.EnableQuery()]
         [HttpGet]
-        [Authorize(Roles = "Administrator,Personel,Akademisyen")]
+        //[Authorize(Roles = "Administrator,Personel,Akademisyen")]
         public IEnumerable<Ogrenci> Get()
         {
             return _applicationDbContext.Ogrencis;
@@ -100,7 +100,7 @@ namespace UniLife.Server.Controllers
         [Microsoft.AspNet.OData.EnableQuery()]
         [HttpGet]
         [ODataRoute("GetForDanisman")]
-        [Authorize(Roles = "Administrator,Personel,Akademisyen")]
+        //[Authorize(Roles = "Administrator,Personel,Akademisyen")]
         public IEnumerable<OgrenciDto> GetForDanisman()
         {
             //sadece login olan akademsyenin öğrencileri.
@@ -147,6 +147,31 @@ namespace UniLife.Server.Controllers
                         KayitTarih = o.KayitTarih,
                         OgrNo = o.OgrNo,
                         DersKayitOnayli = cCount>0
+                    });
+
+
+        }
+
+        [Microsoft.AspNet.OData.EnableQuery()]
+        [HttpGet]
+        [ODataRoute("OgrMezuniyet/{akts}")]
+        //[Authorize(Roles = "Administrator,Personel,Akademisyen")]
+        public IEnumerable<OgrenciDto> OgrMezuniyet(int? akts)
+        {
+            var aka = _applicationDbContext.Akademisyens.FirstOrDefault(x => x.ApplicationUserId.ToString() == User.GetSubjectId());
+
+            var aktifDonem = _applicationDbContext.Donems.FirstOrDefault(x => x.Durum == true);
+
+            return (from o in _applicationDbContext.Ogrencis.Where(x => x.DanismanId == aka.Id)
+                    let cCount = o.DersKayits.Where(x => x.IsOnayli == true && x.DersAcilan.DonemId == aktifDonem.Id).Count()
+                    select new OgrenciDto
+                    {
+                        Ad = o.Ad,
+                        Soyad = o.Soyad,
+                        TCKN = o.TCKN,
+                        KayitTarih = o.KayitTarih,
+                        OgrNo = o.OgrNo,
+                        DersKayitOnayli = cCount > 0
                     });
 
 
