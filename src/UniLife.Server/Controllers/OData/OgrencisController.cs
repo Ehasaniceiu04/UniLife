@@ -156,25 +156,14 @@ namespace UniLife.Server.Controllers
         [HttpGet]
         [ODataRoute("OgrMezuniyet/{akts}")]
         //[Authorize(Roles = "Administrator,Personel,Akademisyen")]
-        public IEnumerable<OgrenciDto> OgrMezuniyet(int? akts)
+        public IEnumerable<Ogrenci> OgrMezuniyet(bool agno,bool kredi, bool akts,bool staj,bool zders,bool sders,bool bders,bool hazirlik)
         {
-            var aka = _applicationDbContext.Akademisyens.FirstOrDefault(x => x.ApplicationUserId.ToString() == User.GetSubjectId());
+            var ogrenciList = from o in _applicationDbContext.Ogrencis
+                              join p in _applicationDbContext.Programs on o.ProgramId equals p.Id
+                              where o.Sinif >= p.NormalSure
+                              select o;
 
-            var aktifDonem = _applicationDbContext.Donems.FirstOrDefault(x => x.Durum == true);
-
-            return (from o in _applicationDbContext.Ogrencis.Where(x => x.DanismanId == aka.Id)
-                    let cCount = o.DersKayits.Where(x => x.IsOnayli == true && x.DersAcilan.DonemId == aktifDonem.Id).Count()
-                    select new OgrenciDto
-                    {
-                        Ad = o.Ad,
-                        Soyad = o.Soyad,
-                        TCKN = o.TCKN,
-                        KayitTarih = o.KayitTarih,
-                        OgrNo = o.OgrNo,
-                        DersKayitOnayli = cCount > 0
-                    });
-
-
+            return ogrenciList;
         }
 
         //[Microsoft.AspNet.OData.EnableQuery()]

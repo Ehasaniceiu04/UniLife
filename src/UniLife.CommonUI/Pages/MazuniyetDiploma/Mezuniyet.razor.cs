@@ -42,7 +42,35 @@ namespace UniLife.CommonUI.Pages.MazuniyetDiploma
 
             if (AGNOKontrol)
             {
-                totalQuery.AddParams("akts", 123);
+                totalQuery.AddParams("agno", AGNOKontrol);
+            }
+            if (KrediKontrol)
+            {
+                totalQuery.AddParams("kredi", KrediKontrol);
+            }
+            if (AKTSKontrol)
+            {
+                totalQuery.AddParams("akts", AKTSKontrol);
+            }
+            if (StajKontrol)
+            {
+                totalQuery.AddParams("staj", StajKontrol);
+            }
+            if (ZorunluDersKontrol)
+            {
+                totalQuery.AddParams("zders", ZorunluDersKontrol);
+            }
+            if (SecemeliDersKontrol)
+            {
+                totalQuery.AddParams("sders", SecemeliDersKontrol);
+            }
+            if (BasarisizDersKontrol)
+            {
+                totalQuery.AddParams("bders", BasarisizDersKontrol);
+            }
+            if (HazirlikKontrol)
+            {
+                totalQuery.AddParams("hazirlik", HazirlikKontrol);
             }
 
             if (ProgramId.HasValue)

@@ -6,7 +6,7 @@
 @using Syncfusion.Blazor.Data
 
 <div class="row pb-2 card">
-    <div class="col-sm-4">
+    <div class="col-sm-5">
         <FakBolPrg @bind-ProgramId="ProgramId"
                    @bind-BolumId="BolumId"
                    @bind-FakulteId="FakulteId"
@@ -16,37 +16,37 @@
 
     @*Custom odata yapacaz gene. seçilenler param olarak gidecek. diğer örneği bi incele*@
 
-    <div class="col-sm-8">
+    <div class="col-sm-7">
         <div class="form-group row">
-            <label for="KayOgr" class="col-sm-2">AGNOKontrol</label>
+            <label for="KayOgr" class="col-sm-3">AGNO</label>
             <div class="col-sm-1">
                 <SfCheckBox @bind-Checked="@AGNOKontrol" TChecked="bool"></SfCheckBox>
             </div>
-            <label for="KayOgr" class="col-sm-2">KrediKontrol</label>
+            <label for="KayOgr" class="col-sm-3">Kredi</label>
             <div class="col-sm-1">
                 <SfCheckBox @bind-Checked="@KrediKontrol" TChecked="bool"></SfCheckBox>
             </div>
-            <label for="KayOgr" class="col-sm-2">AKTSKontrol</label>
+            <label for="KayOgr" class="col-sm-3">AKTS</label>
             <div class="col-sm-1">
                 <SfCheckBox @bind-Checked="@AKTSKontrol" TChecked="bool"></SfCheckBox>
             </div>
-            <label for="KayOgr" class="col-sm-2">StajKontrol</label>
+            <label for="KayOgr" class="col-sm-3">Staj</label>
             <div class="col-sm-1">
                 <SfCheckBox @bind-Checked="@StajKontrol" TChecked="bool"></SfCheckBox>
             </div>
-            <label for="KayOgr" class="col-sm-2">ZorunluDersKontrol</label>
+            <label for="KayOgr" class="col-sm-3">ZorunluDers</label>
             <div class="col-sm-1">
                 <SfCheckBox @bind-Checked="@ZorunluDersKontrol" TChecked="bool"></SfCheckBox>
             </div>
-            <label for="KayOgr" class="col-sm-2">SecemeliDersKontrol</label>
+            <label for="KayOgr" class="col-sm-3">SecemeliDers</label>
             <div class="col-sm-1">
                 <SfCheckBox @bind-Checked="@SecemeliDersKontrol" TChecked="bool"></SfCheckBox>
             </div>
-            <label for="KayOgr" class="col-sm-2">BasarisizDersKontrol</label>
+            <label for="KayOgr" class="col-sm-3">BasarisizDers</label>
             <div class="col-sm-1">
                 <SfCheckBox @bind-Checked="@BasarisizDersKontrol" TChecked="bool"></SfCheckBox>
             </div>
-            <label for="KayOgr" class="col-sm-2">HazirlikKontrol</label>
+            <label for="KayOgr" class="col-sm-3">Hazirlik</label>
             <div class="col-sm-1">
                 <SfCheckBox @bind-Checked="@HazirlikKontrol" TChecked="bool"></SfCheckBox>
             </div>
@@ -70,7 +70,7 @@
         </GridSortSettings>
         <GridColumns>
             <GridColumn Visible="false" Field=@nameof(OgrenciDto.Id) HeaderText="Açılan Ders ID" Edit="false" AllowEditing="false" TextAlign="TextAlign.Left"></GridColumn>
-            <GridColumn AutoFit="true"  FilterSettings="@(new FilterSettings{Type = Syncfusion.Blazor.Grids.FilterType.Menu })" Field=@nameof(OgrenciDto.OgrNo) Type="ColumnType.Number" HeaderText="Öğr No"></GridColumn>
+            <GridColumn AutoFit="true" Field=@nameof(OgrenciDto.OgrNo) Type="ColumnType.Number" HeaderText="Öğr No"></GridColumn>
             <GridColumn AutoFit="true" FilterSettings="@(new FilterSettings{ Operator = Operator.Contains })" Field=@nameof(OgrenciDto.Ad) HeaderText="Ad"></GridColumn>
         </GridColumns>
     </SfGrid>
