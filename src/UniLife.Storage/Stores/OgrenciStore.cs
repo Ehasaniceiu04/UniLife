@@ -141,7 +141,7 @@ namespace UniLife.Storage.Stores
 
             var rawBulkUpdateQuery = $"update public.'Ogrencis' set 'DanismanId' = {ReqEntityIdWithOtherEntitiesIds.EntityId} where 'Id' in ({queryIncludeIds})";
 
-            int numberOfRowAffected = await _db.Database.ExecuteSqlCommandAsync(rawBulkUpdateQuery.Replace('\'', '"'));
+            int numberOfRowAffected = await _db.Database.ExecuteSqlRawAsync(rawBulkUpdateQuery.Replace('\'', '"'));
         }
 
         public async Task SetMufredatToOgrencis(ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds)
@@ -156,7 +156,7 @@ namespace UniLife.Storage.Stores
 
             var rawBulkUpdateQuery = $"update public.'Ogrencis' set 'MufredatId' = {reqEntityIdWithOtherEntitiesIds.EntityId} where 'Id' in ({queryIncludeIds})";
 
-            int numberOfRowAffected = await _db.Database.ExecuteSqlCommandAsync(rawBulkUpdateQuery.Replace('\'', '"'));
+            int numberOfRowAffected = await _db.Database.ExecuteSqlRawAsync(rawBulkUpdateQuery.Replace('\'', '"'));
         }
 
 
@@ -172,7 +172,7 @@ namespace UniLife.Storage.Stores
 
             var rawBulkUpdateQuery = $"update public.'Ogrencis' set 'OgrenimDurumId' = {reqEntityIdWithOtherEntitiesIds.EntityId} where 'Id' in ({queryIncludeIds})";
 
-            int numberOfRowAffected = await _db.Database.ExecuteSqlCommandAsync(rawBulkUpdateQuery.Replace('\'', '"'));
+            int numberOfRowAffected = await _db.Database.ExecuteSqlRawAsync(rawBulkUpdateQuery.Replace('\'', '"'));
         }
 
         public async Task OgrencisSinifAtlat(ReqEntityIdWithOtherEntitiesIds reqEntityIdWithOtherEntitiesIds)

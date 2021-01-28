@@ -121,7 +121,7 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs
 
         int selectedItem;
 
-        private void OnDonemChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
+        private void OnDonemChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?, DonemDto> args)
         {
             IsChecked = !IsChecked;
             appState.DersKayitDonemIdState = (int)seciliDonemId;//await donemRadio.GetSelectedValue());

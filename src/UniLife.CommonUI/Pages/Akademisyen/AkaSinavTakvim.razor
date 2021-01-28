@@ -37,12 +37,12 @@ else
             </ScheduleViews>
             <ScheduleGroup EnableCompactView="false" Resources="@GroupData"></ScheduleGroup>
             <ScheduleResources>
-                <ScheduleResource TValue="DerslikDto" DataSource="@derslikDtos" Field="DerslikId" Title="Derslik" Name="MeetingRoomzx" TextField="Ad" IdField="Id" ColorField="Color" AllowMultiple="true"></ScheduleResource>
+                <ScheduleResource TValue="DerslikDto" TItem="DerslikDto" DataSource="@derslikDtos" Field="DerslikId" Title="Derslik" Name="MeetingRoomzx" TextField="Ad" IdField="Id" ColorField="Color" AllowMultiple="true"></ScheduleResource>
             </ScheduleResources>
             <ScheduleTemplates>
                 <ResourceHeaderTemplate>
                     @{
-                        DerslikDto contextDerslik = ((context as DerslikRezervDto).ResourceData as DerslikDto);
+                        DerslikDto contextDerslik = ((context as TemplateContext).ResourceData as DerslikDto);
                     }
                     <div class='template-wrap'>
                         <div class="room-name">@(contextDerslik.Ad)</div>

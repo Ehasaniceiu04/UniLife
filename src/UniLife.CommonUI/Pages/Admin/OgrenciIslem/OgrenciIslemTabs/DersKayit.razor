@@ -38,7 +38,7 @@ else
                             Query="@donemQuery"
                             @bind-Value="@seciliDonemId">
                 <SfDataManager Url="odata/donems?$orderby=Yil desc, DonemTipId" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
-                <DropDownListEvents TValue="int?" ValueChange="OnDonemChange"></DropDownListEvents>
+                <DropDownListEvents TValue="int?" TItem="DonemDto" ValueChange="OnDonemChange"></DropDownListEvents>
                 <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
             </SfDropDownList>
         </div>

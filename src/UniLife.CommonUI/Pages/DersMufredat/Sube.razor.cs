@@ -146,7 +146,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         }
 
 
-        private void FakulteToBolum(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
+        private void FakulteToBolum(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?, KeyValueDto> args)
         {
             bolumDtos = new List<KeyValueDto>();
             programDtos = new List<KeyValueDto>();
@@ -163,7 +163,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             StateHasChanged();
         }
 
-        private void BolumToProgram(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
+        private void BolumToProgram(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?, KeyValueDto> args)
         {
             programDtos = new List<KeyValueDto>();
             _dersAcilanDto.ProgramId = null;

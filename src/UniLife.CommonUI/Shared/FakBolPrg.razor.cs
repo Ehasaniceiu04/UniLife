@@ -128,7 +128,7 @@ namespace UniLife.CommonUI.Shared
             }
         }
 
-        private async Task FakulteToBolum(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
+        private async Task FakulteToBolum(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?, KeyValueDto> args)
         {
             bolumDtos = new List<KeyValueDto>();
             programDtos = new List<KeyValueDto>();
@@ -136,7 +136,10 @@ namespace UniLife.CommonUI.Shared
             ProgramId = null;
             //if (reqOgrTopAtaDto.Id == 0)
             //{
-            await ReadBolums(args.Value);
+            if (args.Value.HasValue)
+            {
+                await ReadBolums(args.Value);
+            }
             //}
             //else
             //{
@@ -145,21 +148,25 @@ namespace UniLife.CommonUI.Shared
             StateHasChanged();
         }
 
-        private async Task BolumToProgram(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
+        private async Task BolumToProgram(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?, KeyValueDto> args)
         {
             programDtos = new List<KeyValueDto>();
             ProgramId = null;
-
-            await ReadPrograms(args.Value);
+            if (args.Value.HasValue)
+            {
+                await ReadPrograms(args.Value);
+            }
 
         }
 
-        private async Task ProgramToMufredat(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
+        private async Task ProgramToMufredat(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?, KeyValueDto> args)
         {
             mufredatDtos = new List<KeyValueDto>();
             MufredatId = null;
-
-            await ReadMufredats(args.Value);
+            if (args.Value.HasValue)
+            {
+                await ReadMufredats(args.Value);
+            }
 
         }
 

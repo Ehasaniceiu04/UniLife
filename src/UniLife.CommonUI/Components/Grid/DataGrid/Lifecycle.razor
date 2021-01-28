@@ -1,0 +1,42 @@
+﻿@page "/lifecycle"
+<h1>Life cycle Methods ..</h1>
+@foreach (var item in EventType)
+{@item
+<hr />
+}
+@code {
+
+    List<string> EventType = new List<string>();
+    protected override void OnInitialized()
+    {
+        EventType.Add(" 1 OnInit");
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        EventType.Add("2 OnInit Async");
+        await Task.Delay(1000);
+    }
+    protected override void OnParametersSet()
+    {
+        EventType.Add("3 On Parameter set ");
+    }
+    protected override async Task OnParametersSetAsync()
+    {
+        EventType.Add(" 4 OnParametersSet Async Started");
+        await Task.Delay(1000);
+    }
+    protected override bool ShouldRender()
+    {
+        EventType.Add(" 5 Should render called");
+        return true;
+    }
+    protected override void OnAfterRender(bool firstRender)
+    {
+        EventType.Add(" 6 OnAfterRenderStarted");
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        EventType.Add(" 7 OnAfterRender Async Started");
+        await Task.Delay(1000);
+    }
+}

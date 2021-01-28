@@ -673,13 +673,32 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         }
 
 
-        SfDropDownList<int, SinavTipDto> sinavTipDrop;
+        SfDropDownList<int?, SinavTipDto> sinavTipDrop;
         SinavDto sinavInfo = new SinavDto();
         bool butEnabled = true;
-        async Task SinavTipHandler(ChangeEventArgs<int?> args)
+        async Task SinavTipHandler(ChangeEventArgs<int?, SinavTipDto> args)
         {
             
             if (args.Value == (int?)SinavTipEnum.But)
+            {
+                SinavDto selectedSinavTip = SinavDtos.FirstOrDefault(x => x.SinavTipId == (int)SinavTipEnum.Final);
+                if (selectedSinavTip == null)
+                {
+                    dialogUyariText = "Büt oluşturmak için dersin bir finalinin olması lazım.";
+                    isUyariOpen = true;
+                    await sinavTipDrop.Clear();
+                }
+                else
+                {
+                    butEnabled = false;
+                    sinavInfo.EtkiOran = selectedSinavTip.EtkiOran;
+                }
+            }
+        }
+
+        async Task OnValueSelect(Syncfusion.Blazor.DropDowns.SelectEventArgs<SinavTipDto> args)
+        {
+            if (args.ItemData.Id == (int?)SinavTipEnum.But)
             {
                 SinavDto selectedSinavTip = SinavDtos.FirstOrDefault(x => x.SinavTipId == (int)SinavTipEnum.Final);
                 if (selectedSinavTip == null)

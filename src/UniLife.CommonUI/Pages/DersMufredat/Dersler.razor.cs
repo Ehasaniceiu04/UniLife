@@ -502,7 +502,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         }
 
 
-        private void OnDonemTipValueChage(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
+        private void OnDonemTipValueChage(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?, KeyValueDto> args)
         {
             if ((int)DonemTipEnum.Güz_Dönemi == args.Value)
             {

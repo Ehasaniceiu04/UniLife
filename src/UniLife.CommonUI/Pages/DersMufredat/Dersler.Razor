@@ -167,7 +167,7 @@ else
                                 <div class="col-sm-10">
                                     <SfDropDownList ID="DonemTipId" @bind-Value="@(dersDtoContext.DonemTipId)" TValue="int?" TItem="KeyValueDto" Index="0" DataSource="@Sabitler.DonemTipDtos">
                                         <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
-                                        <DropDownListEvents TValue="int?" ValueChange="OnDonemTipValueChage"></DropDownListEvents>
+                                        <DropDownListEvents TValue="int?" TItem="KeyValueDto" ValueChange="OnDonemTipValueChage"></DropDownListEvents>
                                     </SfDropDownList>
                                 </div>
                             </div>

@@ -21,7 +21,7 @@
                                 TValue="int?" PopupHeight="230px" Placeholder="Dönem Seçiniz"
                                 @bind-Value="@donemId" DataSource="@donemDtos.OrderByDescending(x=>x.Durum).ThenBy(x=>x.Yil)">
                     <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                    <DropDownListEvents TValue="int?" ValueChange="DonemChange"></DropDownListEvents>
+                    <DropDownListEvents TValue="int?" TItem="DonemDto" ValueChange="DonemChange"></DropDownListEvents>
                 </SfDropDownList>
             </div>
             <label for="DropFakulte" class="col-sm-1 col-form-label-sm">Fakülte</label>
@@ -29,7 +29,7 @@
                 <SfDropDownList ID="DropFakulte" @ref="DropFakulte" ShowClearButton="true" TItem="KeyValueDto"
                                 TValue="int?" PopupHeight="230px" Placeholder="Fakülte Seçiniz"
                                 @bind-Value="@fakulteId" DataSource="@fakulteDtos">
-                    <DropDownListEvents TValue="int?" ValueChange="FakChange"></DropDownListEvents>
+                    <DropDownListEvents TValue="int?" TItem="KeyValueDto" ValueChange="FakChange"></DropDownListEvents>
                     <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                 </SfDropDownList>
             </div>
@@ -266,12 +266,12 @@ else
         //}
     }
 
-    private void DonemChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
+    private void DonemChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?, DonemDto> args)
     {
         //ReadAkademikTakvims();
         //AkademikTakvimGrid.Refresh();
     }
-    private void FakChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?> args)
+    private void FakChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int?, KeyValueDto> args)
     {
         //ReadAkademikTakvims();
         //AkademikTakvimGrid.Refresh();

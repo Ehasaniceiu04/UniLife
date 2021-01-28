@@ -19,7 +19,7 @@
                         <SfDropDownList ID="DropFakulte" @ref="DropFakulte" ShowClearButton="true" TItem="KeyValueDto" CssClass="form-control-sm"
                                         TValue="int?" PopupHeight="230px"
                                         @bind-Value="@reqOgrTopAtaDto.FakulteId" DataSource="@fakulteDtos">
-                            <DropDownListEvents TValue="int?" ValueChange="FakulteToBolum"></DropDownListEvents>
+                            <DropDownListEvents TValue="int?" TItem="KeyValueDto" ValueChange="FakulteToBolum"></DropDownListEvents>
                             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                         </SfDropDownList>
                     </div>
@@ -30,7 +30,7 @@
                         <SfDropDownList ID="DropBolum" @ref="DropBolum" ShowClearButton="true" TItem="KeyValueDto" CssClass="form-control-sm"
                                         TValue="int?" PopupHeight="230px"
                                         @bind-Value="@reqOgrTopAtaDto.BolumId" DataSource="@bolumDtos">
-                            <DropDownListEvents TValue="int?" ValueChange="BolumToProgram"></DropDownListEvents>
+                            <DropDownListEvents TValue="int?" TItem="KeyValueDto" ValueChange="BolumToProgram"></DropDownListEvents>
                             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                         </SfDropDownList>
                     </div>
@@ -41,7 +41,7 @@
                         <SfDropDownList ID="DropProgram" @ref="DropProgram" ShowClearButton="true" TItem="KeyValueDto" CssClass="form-control-sm"
                                         TValue="int?" PopupHeight="230px"
                                         @bind-Value="@reqOgrTopAtaDto.ProgramId" DataSource="@programDtos">
-                            <DropDownListEvents TValue="int?" ValueChange="ValChange"></DropDownListEvents>
+                            <DropDownListEvents TValue="int?" TItem="KeyValueDto" ValueChange="ValChange"></DropDownListEvents>
                             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                         </SfDropDownList>
                     </div>
@@ -52,7 +52,7 @@
                         <SfDropDownList ID="DropKayitNeden" @ref="DropKayitNeden" ShowClearButton="true" TItem="KeyValueDto" CssClass="form-control-sm"
                                         TValue="int?" PopupHeight="230px"
                                         @bind-Value="@reqOgrTopAtaDto.KayitNedenId" DataSource="@kayitNedenDtos">
-                            <DropDownListEvents TValue="int?" ValueChange="ValChange"></DropDownListEvents>
+                            <DropDownListEvents TValue="int?" TItem="KeyValueDto" ValueChange="ValChange"></DropDownListEvents>
                             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                         </SfDropDownList>
                     </div>
@@ -61,7 +61,7 @@
                         <SfDropDownList ID="DropOgrDurum" @ref="DropOgrDurum" ShowClearButton="true" TItem="KeyValueDto" CssClass="form-control-sm"
                                         TValue="int?" PopupHeight="230px" Placeholder="Durum"
                                         @bind-Value="@reqOgrTopAtaDto.OgrenimDurumId" DataSource="@ogrenimDurumDtos">
-                            <DropDownListEvents TValue="int?" ValueChange="ValChange"></DropDownListEvents>
+                            <DropDownListEvents TValue="int?" TItem="KeyValueDto" ValueChange="ValChange"></DropDownListEvents>
                             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                         </SfDropDownList>
                     </div>
@@ -73,7 +73,7 @@
                         <SfDropDownList ID="DropSinif" @ref="DropSinif" ShowClearButton="true" TItem="SinifDto" CssClass="form-control-sm"
                                         TValue="int?"
                                         @bind-Value="@(reqOgrTopAtaDto.Sinif)" DataSource="@sinifDtos">
-                            <DropDownListEvents TValue="int?" ValueChange="onSinifChange"></DropDownListEvents>
+                            <DropDownListEvents TValue="int?" TItem="SinifDto" ValueChange="onSinifChange"></DropDownListEvents>
                             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                         </SfDropDownList>
                     </div>
@@ -82,7 +82,7 @@
                         <SfDropDownList ID="DropCinsiyet" @ref="DropCinsiyet" ShowClearButton="true" TItem="KeyValueDto" CssClass="form-control-sm"
                                         TValue="int?" PopupHeight="230px"
                                         @bind-Value="@reqOgrTopAtaDto.Cinsiyet" DataSource="@cinsiyetDtos">
-                            <DropDownListEvents TValue="int?" ValueChange="onCinsChange"></DropDownListEvents>
+                            <DropDownListEvents TValue="int?" TItem="KeyValueDto" ValueChange="onCinsChange"></DropDownListEvents>
                             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                         </SfDropDownList>
                     </div>

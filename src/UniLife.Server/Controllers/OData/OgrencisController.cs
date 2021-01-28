@@ -89,6 +89,13 @@ namespace UniLife.Server.Controllers
         //    return filteredQuery;
         //}
 
+        //[EnableQuery]
+        //[ODataRoute("({id})")]
+        //public IEnumerable<Ogrenci> Get([FromODataUri] int id)
+        //{
+        //    return _applicationDbContext.Ogrencis;
+        //}
+
         [Microsoft.AspNet.OData.EnableQuery()]
         [HttpGet]
         //[Authorize(Roles = "Administrator,Personel,Akademisyen")]
@@ -154,9 +161,10 @@ namespace UniLife.Server.Controllers
 
         [Microsoft.AspNet.OData.EnableQuery()]
         [HttpGet]
-        [ODataRoute("OgrMezuniyet/{akts}")]
+        [ODataRoute("{agno:bool},{kredi:bool},{akts:bool},{staj:bool},{zders:bool},{sders:bool},{bders:bool},{hazirlik:bool}")]
+        //[ODataRoute("OgrMezuniyet({akts}, {agno})")]
         //[Authorize(Roles = "Administrator,Personel,Akademisyen")]
-        public IEnumerable<Ogrenci> OgrMezuniyet(bool agno,bool kredi, bool akts,bool staj,bool zders,bool sders,bool bders,bool hazirlik)
+        public IEnumerable<Ogrenci> OgrMezuniyet([FromODataUri] bool agno, bool kredi, [FromODataUri] bool akts, bool staj, bool zders, bool sders, bool bders, bool hazirlik)
         {
             var ogrenciList = from o in _applicationDbContext.Ogrencis
                               join p in _applicationDbContext.Programs on o.ProgramId equals p.Id

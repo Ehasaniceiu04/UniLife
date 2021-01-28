@@ -13,7 +13,7 @@
         <GridColumn Field=@nameof(Orders.ShipCountry) HeaderText="Ship Country" EditType="EditType.DropDownEdit" Width="150">
             <EditTemplate>
                 <SfDropDownList ID="ShipCountry" Placeholder="Select a Country" TItem="string" TValue="string" @bind-Value="@((context as Orders).ShipCountry)" DataSource="@Countries">
-                    <DropDownListEvents TValue="string" ValueChange="ValueChange"></DropDownListEvents>
+                    @*<DropDownListEvents TValue="string" ValueChange="ValueChange"></DropDownListEvents>*@
                     <DropDownListFieldSettings Text="ShipCountry" Value="ShipCountry"></DropDownListFieldSettings>
                 </SfDropDownList>
             </EditTemplate>

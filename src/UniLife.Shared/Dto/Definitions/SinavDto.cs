@@ -13,10 +13,10 @@ namespace UniLife.Shared.Dto.Definitions
 
         public string DersAcilanAd { get; set; }
 
-        public int SinavTipId { get; set; }
+        public int? SinavTipId { get; set; }
         public virtual SinavTipDto SinavTip { get; set; }
 
-        public int SinavTurId { get; set; }
+        public int? SinavTurId { get; set; }
         public virtual SinavTurDto SinavTur { get; set; }
 
         public string SablonAd { get; set; }

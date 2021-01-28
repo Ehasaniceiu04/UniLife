@@ -50,7 +50,7 @@
                             <SfDropDownList ShowClearButton="true" TValue="int?" TItem="DonemDto"
                                             @bind-Value="@kayitNeden">
                                 <SfDataManager Url="odata/kayitnedens" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
-                                <DropDownListEvents TValue="int?" ValueChange="KaynakChange"></DropDownListEvents>
+                                <DropDownListEvents TValue="int?" TItem="DonemDto" ValueChange="KaynakChange"></DropDownListEvents>
                                 <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                             </SfDropDownList>
                         </div>
@@ -106,7 +106,7 @@
                             <SfDropDownList ShowClearButton="true" TValue="int?" TItem="DonemDto" Placeholder="Dönem seçiniz..."
                                             @bind-Value="@donemId">
                                 <SfDataManager Url="odata/donems?$orderby=Yil desc, DonemTipId" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
-                                <DropDownListEvents TValue="int?" ValueChange="HedefChange"></DropDownListEvents>
+                                <DropDownListEvents TValue="int?" TItem="DonemDto" ValueChange="HedefChange"></DropDownListEvents>
                                 <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                             </SfDropDownList>
                         </div>

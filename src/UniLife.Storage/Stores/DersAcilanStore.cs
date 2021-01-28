@@ -625,24 +625,24 @@ namespace UniLife.Storage.Stores
                                     select new OgrenciDerslerDto
                                     {
                                         OgrenciId = ogrenciId,
-                                        DersAcilanId = da.Id,
+                                        DersAcilanId = da==null?0:da.Id,
                                         DersId = der.Id,
-                                        Sube = da.Sube,
+                                        Sube = da == null?0:da.Sube,
                                         DersKod = dkan == null ? (da.Kod ?? der.Kod) : $"{der.Kod}({dkan.AktifMufredatDersKod})",
                                         DersAd = dkan == null ? (da.Ad ?? der.Ad) : $"{der.Ad}({dkan.AktifMufredatDersAd})",
-                                        SonucDurum = ((DersSonucDurum)dk.SonucDurum).ToString(),
-                                        GecDurum = dk.GecDurum,
-                                        Ort = dk.Ort,
-                                        HarfNot = dk.HarfNot,
+                                        SonucDurum = dk==null?"X":((DersSonucDurum)dk.SonucDurum).ToString(),
+                                        GecDurum = dk==null?false:dk.GecDurum,
+                                        Ort = dk == null ?0: dk.Ort,
+                                        HarfNot = dk == null ?"X": dk.HarfNot,
                                         //Carpan = dk.Carpan,
-                                        Durumu = ((DersSonuc)dk.Sonuc).ToString(),
+                                        Durumu = dk == null ?"X": ((DersSonuc)dk.Sonuc).ToString(),
                                         Sinif = da.Sinif ?? der.Sinif,
                                         Donem = d.Ad,
                                         MufredatYil = muf.Yil,
                                         IsZorunlu = der.Zorunlu,
                                         Kredi = da == null ? der.Kredi : da.Kredi,
                                         Akts = da == null ? der.Akts : da.Akts,
-                                        AkademisyenId = da.AkademisyenId
+                                        AkademisyenId = da==null?0:da.AkademisyenId
                                     }).ToListAsync();
 
 

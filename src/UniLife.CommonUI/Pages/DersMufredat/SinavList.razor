@@ -24,7 +24,7 @@
                 <SfDropDownList @ref="DropSinif" TItem="SinifDto"
                                 TValue="int?" ShowClearButton="true"
                                 DataSource="@(Sabitler.SinifDtos)" @bind-Value="@Sinif">
-                    <DropDownListEvents TValue="int?" ValueChange="KaynakChange"></DropDownListEvents>
+                    <DropDownListEvents TValue="int?" TItem="SinifDto" ValueChange="KaynakChange"></DropDownListEvents>
                     <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                 </SfDropDownList>
             </div>
@@ -33,7 +33,7 @@
                 <SfDropDownList @ref="DropDonem" TValue="int?" TItem="KeyValueDto" Placeholder="Dönem seçiniz..."
                                 Query="@donemQuery"
                                 @bind-Value="@DonemId">
-                    <DropDownListEvents TValue="int?" ValueChange="KaynakChange"></DropDownListEvents>
+                    <DropDownListEvents TValue="int?" TItem="KeyValueDto" ValueChange="KaynakChange"></DropDownListEvents>
                     <SfDataManager Url="odata/donems" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
                     <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                 </SfDropDownList>
@@ -54,7 +54,7 @@
         <SfDataManager Url=@(OdataQuery) Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
         <GridEvents TValue="SinavDto" OnToolbarClick="ToolbarClickHandler"></GridEvents>
         <GridPageSettings PageCount="5" PageSizes="new int[]{ 5, 10, 50, 100,10000}"></GridPageSettings>
-        <GridSelectionSettings Type="SelectionType.Multiple" CheckboxOnly="true"></GridSelectionSettings>
+        <GridSelectionSettings Type="Syncfusion.Blazor.Grids.SelectionType.Multiple" CheckboxOnly="true"></GridSelectionSettings>
         <GridEditSettings AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog">
             <Template>
                 @{

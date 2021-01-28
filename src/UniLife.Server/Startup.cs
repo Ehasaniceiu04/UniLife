@@ -68,7 +68,8 @@ namespace UniLife.Server
 
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MjgzMTIyQDMxMzgyZTMyMmUzMElrS3Z6YXN4bUo3RTJESVhIeWRXMEZXa0pSc2NIaVN2d0kvM0F5YXRQNlU9");
+            //Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MjgzMTIyQDMxMzgyZTMyMmUzMElrS3Z6YXN4bUo3RTJESVhIeWRXMEZXa0pSc2NIaVN2d0kvM0F5YXRQNlU9");
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MzMyNDQzQDMxMzgyZTMzMmUzMG5TOG5VWXBtOXdzTjhjV0lNZ253eXArNXlBWlhyZFBqL2ZSWTR1Yk92UVE9");
             Configuration = configuration;
             _environment = env;
         }

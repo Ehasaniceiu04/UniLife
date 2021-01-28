@@ -56,7 +56,7 @@ else
                 @*OnRecordClick="OnRecordClickHandler" Toolbar="@(ToolbarDersitems)" OnToolbarClick="ToolbarDersClickHandler" *@
                 <SfGrid ID="DersAcGrid" @ref="DersAcGrid" Query="@totalQuery" TValue="DersAcilanForSinav" RowHeight="20" AllowSorting="true" AllowFiltering="true" AllowSelection="true" AllowPaging="true" AllowExcelExport="true" AllowResizing="true" AllowPdfExport="true">
                     <GridEvents RowSelected="RowSelectedHandler" TValue="DersAcilanForSinav" CommandClicked="CommandClickHandler"></GridEvents>
-                    <GridSelectionSettings CellSelectionMode="CellSelectionMode.BoxWithBorder" CheckboxOnly="true" Type="SelectionType.Multiple" PersistSelection="true"></GridSelectionSettings>
+                    <GridSelectionSettings CellSelectionMode="CellSelectionMode.BoxWithBorder" CheckboxOnly="true" Type="Syncfusion.Blazor.Grids.SelectionType.Multiple" PersistSelection="true"></GridSelectionSettings>
                     <GridPageSettings PageCount="5" PageSizes="new int[]{ 5, 10, 50, 100,10000}"></GridPageSettings>
                     <SfDataManager Url="@("odata/DersAcilansForSinavs")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
                     @*<SfDataManager Url="@("odata/dersacilans?$expand=derskayits,akademisyen")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>*@
@@ -121,12 +121,12 @@ else
                                             <div class="col-12 pb-2">
                                                 <div class="form-row">
                                                     <label class="col-md-3 col-form-label" for="SinavTipId">Sinav Tip</label>
-                                                    <SfDropDownList @ref="sinavTipDrop" ID="SinavTipId" CssClass="form-control col-sm-9" @bind-Value="@(sinavInfo.SinavTipId)" TValue="int" TItem="SinavTipDto" Index="0" DataSource="@sinavTipDtos">
+                                                    <SfDropDownList @ref="sinavTipDrop" ID="SinavTipId" CssClass="form-control col-sm-9" TValue="int?" @bind-Value="@(sinavInfo.SinavTipId)" TItem="SinavTipDto" Index="0" DataSource="@sinavTipDtos">
                                                         <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
-                                                        <DropDownListEvents TValue="int?" ValueChange="SinavTipHandler"></DropDownListEvents>
+                                                        <DropDownListEvents TValue="int?" TItem="SinavTipDto" ValueChange="SinavTipHandler"></DropDownListEvents>
                                                     </SfDropDownList>
                                                     <label class="col-md-3 col-form-label" for="SinavTurId">Sinav Tur</label>
-                                                    <SfDropDownList Enabled="false" ID="SinavTurId" CssClass="form-control col-sm-9" @bind-Value="@(sinavInfo.SinavTurId)" TValue="int" TItem="SinavTurDto" Index="0" DataSource="@sinavTurDtos">
+                                                    <SfDropDownList Enabled="false" ID="SinavTurId" CssClass="form-control col-sm-9" @bind-Value="@(sinavInfo.SinavTurId)" TValue="int?" TItem="SinavTurDto" Index="0" DataSource="@sinavTurDtos">
                                                         <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
                                                     </SfDropDownList>
                                                     <label class="col-md-3 col-form-label" for="EtkiOran">EtkiOran (%)</label>

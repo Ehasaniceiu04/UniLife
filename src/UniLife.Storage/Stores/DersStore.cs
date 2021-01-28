@@ -6,11 +6,11 @@ using UniLife.Shared.Dto.Definitions;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
+//using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using System.Threading.Tasks;
-using SQLitePCL;
-using System.Security.Cryptography.X509Certificates;
+//using SQLitePCL;
+//using System.Security.Cryptography.X509Certificates;
 using UniLife.Shared;
 using UniLife.Shared.Dto;
 

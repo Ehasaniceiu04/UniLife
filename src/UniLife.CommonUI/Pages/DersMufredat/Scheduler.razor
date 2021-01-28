@@ -29,7 +29,7 @@
                         <SfDropDownList ID="DropSinif" @ref="DropSinif" ShowClearButton="true" TItem="SinifDto" CssClass="form-control-sm"
                                         TValue="int?"
                                         DataSource="@(sinifDtos)" Value="@(_dersAcilanDto.Sinif)">
-                            <DropDownListEvents TValue="int?" ValueChange="SinifChange"></DropDownListEvents>
+                            <DropDownListEvents TValue="int?" TItem="SinifDto" ValueChange="SinifChange"></DropDownListEvents>
                             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                         </SfDropDownList>
                     </div>
@@ -40,7 +40,7 @@
                         <SfDropDownList ID="DropFakulte" @ref="DropFakulte" ShowClearButton="true" TItem="KeyValueDto" CssClass="form-control-sm"
                                         TValue="int?" PopupHeight="230px"
                                         @bind-Value="@_dersAcilanDto.FakulteId" DataSource="@fakulteDtos">
-                            <DropDownListEvents TValue="int?" ValueChange="FakulteToBolum"></DropDownListEvents>
+                            <DropDownListEvents TValue="int?" TItem="KeyValueDto" ValueChange="FakulteToBolum"></DropDownListEvents>
                             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                         </SfDropDownList>
                     </div>
@@ -51,7 +51,7 @@
                         <SfDropDownList ID="DropBolum" @ref="DropBolum" ShowClearButton="true" TItem="KeyValueDto" CssClass="form-control-sm"
                                         TValue="int?" PopupHeight="230px"
                                         @bind-Value="@_dersAcilanDto.BolumId" DataSource="@bolumDtos">
-                            <DropDownListEvents TValue="int?" ValueChange="BolumToProgram"></DropDownListEvents>
+                            <DropDownListEvents TValue="int?" TItem="KeyValueDto" ValueChange="BolumToProgram"></DropDownListEvents>
                             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                         </SfDropDownList>
                     </div>
@@ -99,7 +99,7 @@
         <div class="row pb-2 bg-light text-dark">
             <SfGrid ID="DersAcGrid" @ref="DersAcGrid" DataSource="@DersAcDtos" RowHeight="20" AllowSorting="true" AllowSelection="true" AllowFiltering="true" AllowPaging="true">
                 <GridEvents RowSelected="RowSelectedHandler" TValue="ResDersAcilansByLongFilters" CommandClicked="CommandClickHandler"></GridEvents>
-                <GridSelectionSettings EnableToggle="false" Type="SelectionType.Single"></GridSelectionSettings>
+                <GridSelectionSettings EnableToggle="false" Type="Syncfusion.Blazor.Grids.SelectionType.Single"></GridSelectionSettings>
                 <GridColumns>
                     <GridColumn Visible="false" Field=@nameof(ResDersAcilansByLongFilters.DersAcilanId) IsIdentity="true" IsPrimaryKey="true"></GridColumn>
                     <GridColumn AutoFit="true" Field=@nameof(ResDersAcilansByLongFilters.Sube) HeaderText="Şb."></GridColumn>
@@ -128,7 +128,7 @@
                     <div class="col-sm-5">
                         <SfDropDownList ID="DropBina" @ref="DropBina" TItem="BinaDto" CssClass="form-control-sm"
                                         TValue="int?" PopupHeight="430px" DataSource="@binaDtos" Placeholder="Ders programını görüntülemek/düzenlemek için bina seçiniz">
-                            <DropDownListEvents TValue="int?" ValueChange="BinaOnChange"> </DropDownListEvents>
+                            <DropDownListEvents TValue="int?" TItem="BinaDto" ValueChange="BinaOnChange"> </DropDownListEvents>
                             <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                         </SfDropDownList>
                     </div>
@@ -159,12 +159,12 @@
                     </ScheduleViews>
                     <ScheduleGroup EnableCompactView="false" Resources="@GroupData"></ScheduleGroup>
                     <ScheduleResources>
-                        <ScheduleResource TValue="DerslikDto" DataSource="@derslikDtos" Field="DerslikId" Title="Derslik" Name="MeetingRoomzx" TextField="Ad" IdField="Id" ColorField="Color" AllowMultiple="true"></ScheduleResource>
+                        <ScheduleResource TItem="DerslikDto" TValue="DerslikDto" DataSource="@derslikDtos" Field="DerslikId" Title="Derslik" Name="MeetingRoomzx" TextField="Ad" IdField="Id" ColorField="Color" AllowMultiple="true"></ScheduleResource>
                     </ScheduleResources>
                     <ScheduleTemplates>
                         <ResourceHeaderTemplate>
                             @{
-                                DerslikDto contextDerslik = ((context as DerslikRezervDto).ResourceData as DerslikDto);
+                                DerslikDto contextDerslik = ((context as TemplateContext).ResourceData as DerslikDto);
                             }
                             <div class='template-wrap'>
                                 <div class="room-name">@(contextDerslik.Ad)</div>
