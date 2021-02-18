@@ -49,6 +49,8 @@ namespace UniLife.CommonUI.Pages.MazuniyetDiploma
                 totalQuery.AddParams("bders", BasarisizDersKontrol);
                 totalQuery.AddParams("hazirlik", HazirlikKontrol);
 
+            totalQuery.Expand(new List<string> { "KayitNeden($select=Id,Ad)", "Danisman($select=Id,Ad)", "Program($select=Id,Ad)" });
+
             if (ProgramId.HasValue)
             {
                 totalQuery.Where("programId", "equal", ProgramId);
@@ -66,6 +68,23 @@ namespace UniLife.CommonUI.Pages.MazuniyetDiploma
             StateHasChanged();
             await Task.Delay(100);
             mezunGrid.Refresh();
+        }
+
+        async Task AlDersler(int ogrId)
+        {
+
+        }
+        async Task MufDurum(int ogrId)
+        {
+
+        }
+        async Task Transkript(int ogrId)
+        {
+
+        }
+        async Task MezuniyetTranskript(int ogrId)
+        {
+
         }
 
     }

@@ -166,18 +166,38 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         }
 
+        string kaynakURL;
+
         async Task KaynakChange()
         {
-            kaynakVisible = false;
-            await Task.Delay(100);
-            kaynakVisible = true;
+            if (dersId.HasValue)
+            {
+                //kaynakVisible = false;
+                //await Task.Delay(100);
+                //kaynakVisible = true;
+                //StateHasChanged();
+                kaynakURL = $"odata/derskayits?$filter=DersAcilanId eq {dersId} and DersAcilan/sinif eq {Sinif} and DersAcilan/donemId eq {DonemId}&$expand=Ogrenci($expand=Program($select=Ad,Id);$select=Ad,Id,Soyad,TCKN,OgrNo),DersAcilan($select=Ad,Id)&$select=Id,ogrenciId";
+                await Task.Delay(100);
+                ogrGrid.Refresh();
+            }            
         }
+
+        string hedefURL;
 
         async Task HedefChange()
         {
-            hedefVisible = false;
-            await Task.Delay(100);
-            hedefVisible = true;
+            if (dersId2.HasValue)
+            {
+                //hedefVisible = false;
+                //await Task.Delay(100);
+                //hedefVisible = true;
+                //StateHasChanged();
+                //await Task.Delay(1000);
+                hedefURL = $"odata/derskayits?$filter=DersAcilanId eq {dersId2} and DersAcilan/sinif eq {sinif2} and DersAcilan/donemId eq {donemId2}&$expand=Ogrenci($expand=Program($select=Ad,Id);$select=Ad,Id,Soyad,OgrNo),DersAcilan($select=Ad,Id)&$select=Id,ogrenciId";
+                //StateHasChanged();
+                await Task.Delay(100);
+                ogrHedefGrid.Refresh();
+            }
         }
 
         async Task ProgramIdChangedHandler(int? programId)

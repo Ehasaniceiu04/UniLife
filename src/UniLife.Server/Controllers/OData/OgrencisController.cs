@@ -166,8 +166,11 @@ namespace UniLife.Server.Controllers
         //[Authorize(Roles = "Administrator,Personel,Akademisyen")]
         public IEnumerable<Ogrenci> OgrMezuniyet([FromODataUri] bool agno, bool kredi, [FromODataUri] bool akts, bool staj, bool zders, bool sders, bool bders, bool hazirlik)
         {
-            var ogrenciList = from o in _applicationDbContext.Ogrencis
+            var ogrenciList = from o in _applicationDbContext.Ogrencis.Include(x=>x.KayitNeden).Include(x=>x.Danisman)
                               join p in _applicationDbContext.Programs on o.ProgramId equals p.Id
+
+                              //join kn in _applicationDbContext.KayitNedens on o.KayitNedenId equals kn.Id
+                              //join dan in _applicationDbContext.Akademisyens on o.DanismanId equals dan.Id
                               where o.Sinif >= p.NormalSure
                               select o;
 

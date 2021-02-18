@@ -266,7 +266,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                 ApiResponseDto<List<DersAcilanDto>> apiResponse = Http.GetFromJsonAsync<ApiResponseDto<List<DersAcilanDto>>>($"api/DersAcilan/GetDersAcilansByMufredat/{MufredatId2}/{donemId}/{Sinif2}").Result;
 
                 dersAcilanDtos = apiResponse.Result;
-                dersAcGrid.Refresh();
+                //dersAcGrid.Refresh();
             }
             
             //totalQueryDers = new Query();

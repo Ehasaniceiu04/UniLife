@@ -104,9 +104,23 @@ namespace UniLife.Shared.Dto.Definitions
         public string ProgramAdi { get; set; }
         public string BolumAdi { get; set; }
         public long SinavKayitId { get; set; }
-
-
         public int Sube { get; set; }
+
+        public decimal AgNo1 { get; set; }
+        public decimal AgNo2 { get; set; }
+        public int TopKredi1 { get; set; }
+        public int TopKredi2 { get; set; }
+        public int TopAkts1 { get; set; }
+        public int TopAkts2 { get; set; }
+        public int HasStaj { get; set; }
+        public int HasHazirlik { get; set; }
+        public int SDersler1 { get; set; }
+        public int SDersler2 { get; set; }
+        public int ZDersler1 { get; set; }
+        public int ZDersler2 { get; set; }
+        public int BasarisizDersler { get; set; }
+        [MaxLength(11)]
+        public string SonDonem { get; set; }
 
     }
 }
