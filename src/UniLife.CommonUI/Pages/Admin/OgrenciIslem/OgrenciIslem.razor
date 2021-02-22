@@ -101,7 +101,7 @@
                     <TabHeader Text="Müfredat Dersleri"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
-                    <OgrenciMufredatDersler></OgrenciMufredatDersler>
+                    <OgrenciMufredatDersler OgrId="appState.OgrenciState.Id"></OgrenciMufredatDersler>
                 </ContentTemplate>
             </TabItem>
             <TabItem Visible="@(appState.OgrenciState!=null)">
@@ -109,7 +109,7 @@
                     <TabHeader Text="Dönem Bilgileri"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
-                    <OgrenciDonemDersler></OgrenciDonemDersler>
+                    <OgrenciDonemDersler OgrId="appState.OgrenciState.Id"></OgrenciDonemDersler>
                 </ContentTemplate>
             </TabItem>
             <TabItem Visible="@(appState.OgrenciState!=null)">

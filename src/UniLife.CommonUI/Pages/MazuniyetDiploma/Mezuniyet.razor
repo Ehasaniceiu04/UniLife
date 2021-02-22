@@ -5,6 +5,8 @@
 @using Syncfusion.Blazor.Buttons
 @using Syncfusion.Blazor.Data
 @inject Microsoft.AspNetCore.Components.NavigationManager UriHelper
+@using UniLife.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs
+
 
 <div class="row pb-2 card">
     <div class="col-sm-5">
@@ -71,9 +73,9 @@
                 <Template>
                     @{
                         var ogrenciInfo = (context as OgrenciDto);
-                                        <div class="image">
-                                            <img class="photo" src="@($"/_content/UniLife.CommonUI/images/ogrenci/{ogrenciInfo.ApplicationUserId.ToString()}.png")" alt="@ogrenciInfo.Id" />
-                                        </div>
+                        <div class="image">
+                            <img class="photo" src="@($"/_content/UniLife.CommonUI/images/ogrenci/{ogrenciInfo.ApplicationUserId.ToString()}.png")" alt="@ogrenciInfo.Id" />
+                        </div>
                     }
                 </Template>
             </GridColumn>
@@ -203,6 +205,12 @@
     </SfGrid>
 }
 
+@if (isUyariOpen)
+{
+    <Dialog Baslik="Traskript" @bind-isDialogOpen="@isUyariOpen">
+        <OgrenciMufredatDersler OgrId="@OgrId"></OgrenciMufredatDersler>
+    </Dialog>
+}
 
 <style>
     .form-group {

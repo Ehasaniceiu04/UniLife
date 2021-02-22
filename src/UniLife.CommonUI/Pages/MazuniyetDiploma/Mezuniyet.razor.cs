@@ -30,6 +30,9 @@ namespace UniLife.CommonUI.Pages.MazuniyetDiploma
         bool BasarisizDersKontrol;
         bool HazirlikKontrol;
 
+        bool isUyariOpen;
+        int OgrId;
+
         Syncfusion.Blazor.Grids.SfGrid<OgrenciDto> mezunGrid;
 
         string OdataQuery = "odata/ogrencis/OgrMezuniyet";
@@ -72,19 +75,24 @@ namespace UniLife.CommonUI.Pages.MazuniyetDiploma
 
         async Task AlDersler(int ogrId)
         {
-
+            OgrId = ogrId;
+            isUyariOpen = true;
         }
         async Task MufDurum(int ogrId)
         {
-
+            OgrId = ogrId;
+            isUyariOpen = true;
         }
         async Task Transkript(int ogrId)
         {
+            OgrId = ogrId;
+            isUyariOpen = true;
 
         }
         async Task MezuniyetTranskript(int ogrId)
         {
-
+            OgrId = ogrId;
+            isUyariOpen = true;
         }
 
     }

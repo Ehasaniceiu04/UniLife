@@ -135,13 +135,16 @@ else
 
     bool ShowTumSinif;
 
+    [Parameter]
+    public int OgrId { get; set; }
+
     public OgrenciDto _OgrenciDto { get; set; }
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            _OgrenciDto = await appState.GetOgrenciState();
-            ApiResponseDto<List<OgrenciDerslerDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDerslerDto>>>("api/dersAcilan/GetDonemDersByOgrenciId/" + _OgrenciDto.Id);
+            //_OgrenciDto = await appState.GetOgrenciState();
+            ApiResponseDto<List<OgrenciDerslerDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDerslerDto>>>("api/dersAcilan/GetDonemDersByOgrenciId/" + OgrId);
 
             if (apiResponse.IsSuccessStatusCode)
             {
