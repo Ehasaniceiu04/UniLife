@@ -4,6 +4,7 @@
 @using UniLife.Shared.Dto.Definitions
 @using Syncfusion.Blazor.Buttons
 @attribute [Authorize(Roles = "Administrator,Personel")]
+@inject AppState appState
 
 <div class="control-section e-tab-section">
     <SfTab @ref="Tab" CssClass="BlazorTab" LoadOn="ContentLoad.Dynamic">
@@ -25,6 +26,18 @@
                     <PersonelDuzenle BilgilerToPersonel="TabDegis" _PersonelDto="_PersonelDto"></PersonelDuzenle>
                 </ContentTemplate>
             </TabItem>
+            @*@if (appState.UserNavigationLoadRole != null && appState.UserNavigationLoadRole.Contains(UserRoles.Administrator.ToString()))*@
+            @if (appState.UserNavigationLoadRole == UserRoles.Administrator.ToString())
+            {
+                <TabItem Visible="@(PersSelected)">
+                    <ChildContent>
+                        <TabHeader Text="Program Yetkileri"></TabHeader>
+                    </ChildContent>
+                    <ContentTemplate>
+                        <PersonelProgramYetki PersonelUserId="@_PersonelDto.ApplicationUserId"></PersonelProgramYetki>
+                    </ContentTemplate>
+                </TabItem>
+            }
         </TabItems>
     </SfTab>
 </div>
@@ -104,6 +117,7 @@
     .e-tab .e-tab-header:not(.e-vertical) .e-toolbar-item.e-active {
         border-bottom: 1px solid #69e0f0;
     }
+
     .e-DoubleArrowLeft:before {
         content: '\e7ba';
         color: #12a37c;

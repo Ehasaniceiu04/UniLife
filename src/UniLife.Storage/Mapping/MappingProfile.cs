@@ -80,6 +80,7 @@ namespace UniLife.Storage.Mapping
             CreateMap<DersKanca, DersKancaDto>().ReverseMap();
             CreateMap<Kampus, KampusDto>().ReverseMap();
             CreateMap<PersonelTask, PersonelTaskDto>().ReverseMap();
+            CreateMap<UserProgramYetki, UserProgramYetkiDto>().ReverseMap();
         }
     }
 }

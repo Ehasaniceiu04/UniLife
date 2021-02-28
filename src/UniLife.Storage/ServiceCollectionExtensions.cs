@@ -68,6 +68,7 @@ namespace UniLife.Storage
             services.AddTransient<IKampusStore, KampusStore>();
             services.AddTransient<IYokStore, YokStore>();
             services.AddTransient<IPersonelTaskStore, PersonelTaskStore>();
+            services.AddTransient<IUserProgramYetkiStore, UserProgramYetkiStore>();
 
             //services.AddTransient<ITenantStore, TenantStore>();
             services.AddTransient<IApiLogStore, ApiLogStore>();

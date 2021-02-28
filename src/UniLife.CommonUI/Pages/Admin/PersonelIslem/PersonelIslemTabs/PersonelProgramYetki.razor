@@ -1,0 +1,145 @@
+﻿@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Buttons
+@using UniLife.Shared.Dto.Definitions
+@inject IMatToaster matToaster
+@inject HttpClient Http;
+@using Syncfusion.Blazor.SplitButtons
+@inject AuthenticationStateProvider authStateProvider
+@using Syncfusion.Blazor.Calendars
+@attribute [Authorize(Roles = "Administrator")]
+@using Syncfusion.Blazor.Navigations;
+
+@using UniLife.Shared.Dto.Definitions.Bussines;
+
+
+<ControlSection>
+    <div class="col-12 pb-2">
+        <FakBolPrg ProgramShow="false"
+                   @bind-BolumId=@(filterBolumId)
+                   @bind-FakulteId=@(filterFakulteId)></FakBolPrg>
+    </div>
+
+    <SfGrid @ref="ProgramGrid" Height="400px" DataSource="@programDtos.Where(x=>filterFakulteId==null ? true : x.FakulteId==filterFakulteId).ToList()" Toolbar="@(new List<string>() { "Kaydet" })" AllowSorting="true" AllowFiltering="true" AllowPaging="true" AllowSelection="true" AllowResizing="true">
+        <GridEvents OnToolbarClick="ToolbarClickHandler" DataBound="OnDataBound" RowDataBound="OnRowDataBound" TValue="UserProgramYetkiDto"></GridEvents>
+        <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.CheckBox"></GridFilterSettings>
+        @*<GridSelectionSettings CheckboxOnly="true" PersistSelection="true"></GridSelectionSettings>*@
+        <GridSelectionSettings CheckboxOnly="true"></GridSelectionSettings>
+        <GridColumns>
+            <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
+            @*<GridColumn Width="50">
+                    <Template>
+                        @{ var a = context as UserProgramYetkiDto; }
+                        <SfCheckBox Checked="@(a.Id!=0)"></SfCheckBox>
+                    </Template>
+                </GridColumn>*@
+            <GridColumn Visible="false" Field=@nameof(UserProgramYetkiDto.ProgramId) HeaderText="ID" AllowAdding="false" AllowEditing="false" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+            <GridColumn AllowEditing="false" Field=@nameof(UserProgramYetkiDto.ProgramAd) HeaderText="Program İsim"></GridColumn>
+            <GridColumn AllowEditing="false" Visible="false" Field=@nameof(UserProgramYetkiDto.FakulteId) HeaderText="FakulteId"></GridColumn>
+            <GridColumn AllowEditing="false" Visible="false" Field=@nameof(UserProgramYetkiDto.BolumId) HeaderText="BolumId"></GridColumn>
+            <GridColumn AllowEditing="false" Visible="false" Field=@nameof(UserProgramYetkiDto.UserId)></GridColumn>
+            <GridColumn AllowEditing="false" Visible="false" Field=@nameof(UserProgramYetkiDto.Id)></GridColumn>
+
+        </GridColumns>
+    </SfGrid>
+</ControlSection>
+
+
+
+
+
+
+@code {
+
+    public int? filterBolumId { get; set; }
+    public int? filterFakulteId { get; set; }
+
+    private List<Object> Toolbaritems = new List<Object>() { new ItemModel() { Text = "Kaydet", TooltipText = "Kaydet", PrefixIcon = "e-icons e-SendToBack", Id = "YetkiKaydet" } };
+
+    [Parameter]
+    public Guid PersonelUserId { get; set; }
+
+    SfGrid<UserProgramYetkiDto> ProgramGrid;
+
+    List<UserProgramYetkiDto> programDtos = new List<UserProgramYetkiDto>();
+
+    protected override void OnInitialized()
+    {
+        ReadPrograms();
+
+        //ApiResponseDto apiResponse = Http.GetFromJsonAsync<ApiResponseDto>("api/bolum").Result;
+        //bolumDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<BolumDto[]>(apiResponse.Result.ToString()).ToList<BolumDto>();
+
+        //ApiResponseDto<List<FakulteDto>> apiResponseFakulte = Http.GetFromJsonAsync<ApiResponseDto<List<FakulteDto>>>("api/fakulte").Result;
+        //fakulteDtos = apiResponseFakulte.Result;
+
+    }
+
+    void ReadPrograms()
+    {
+
+        ApiResponseDto apiResponse = Http.GetFromJsonAsync<ApiResponseDto>($"api/UserProgramYetki/GetUPYByUserId/{PersonelUserId}").Result;
+
+        if (apiResponse.StatusCode == Status200OK)
+        {
+            matToaster.Add(apiResponse.Message, MatToastType.Success, "Programler getirildi");
+            programDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<UserProgramYetkiDto[]>(apiResponse.Result.ToString()).ToList<UserProgramYetkiDto>();
+        }
+        else
+        {
+            matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Program bilgisi getirilirken hata oluştu!");
+        }
+    }
+
+
+    public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+    {
+        if (args.Item.Text == "Kaydet")
+        {
+            List<UserProgramYetkiDto> ListUserYetki = await ProgramGrid.GetSelectedRecords();
+
+            ProgramYetkiListUserIdDto programYetkiListUserIdDto = new ProgramYetkiListUserIdDto();
+            programYetkiListUserIdDto.UserProgramYetkiList = await ProgramGrid.GetSelectedRecords();
+            programYetkiListUserIdDto.UserId = PersonelUserId;
+
+            ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/UserProgramYetki/UpdateUserProgramYetkis", programYetkiListUserIdDto);
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                matToaster.Add("Ders açıldı", MatToastType.Success, "İşlem başarılı.");
+
+            }
+            else
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
+                ProgramGrid.Refresh();
+            }
+        }
+    }
+
+    public List<double> RowIndexes = new List<double>();
+
+    public void OnDataBound()
+    {
+        ProgramGrid.SelectRows(RowIndexes);
+        RowIndexes = new List<double>();
+    }
+    public async Task OnRowDataBound(RowDataBoundEventArgs<UserProgramYetkiDto> args)
+    {
+        if (args.Data.Id != 0)
+        {
+            var RowIndexValue = await ProgramGrid.GetRowIndexByPrimaryKey(args.Data.ProgramId);
+            RowIndexes.Add(RowIndexValue);
+        }
+    }
+}
+
+
+<style>
+    .form-group {
+        margin-bottom: unset;
+    }
+
+    .e-grid .e-altrow {
+        background-color: #fafafa;
+    }
+</style>
