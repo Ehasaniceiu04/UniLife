@@ -19,5 +19,6 @@ namespace UniLife.Server.Managers
         Task<ApiResponse> SinifAtlaTemizle(HedefKaynakDto hedefKaynakDto);
         Task<ApiResponse> GetOgrInfos(string kullaniciId);
         Task<ApiResponse> GetOgrenciBelgesi(int id);
+        Task<ApiResponse> UpdateOgrenciOnayBekle(IEnumerable<int> ogrIds);
     }
 }

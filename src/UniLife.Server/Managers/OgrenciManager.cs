@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using UniLife.Server.Middleware.Wrappers;
 using UniLife.Shared.DataInterfaces;
 using UniLife.Shared.DataModels;
@@ -74,6 +75,12 @@ namespace UniLife.Server.Managers
         public async Task<ApiResponse> GetOgrenciBelgesi(int id)
         {
             return new ApiResponse(Status200OK, "Retrieved OgrenciDto", await _ogrenciStore.GetOgrenciBelgesi(id));
+        }
+
+        public async Task<ApiResponse> UpdateOgrenciOnayBekle(IEnumerable<int> ogrIds)
+        {
+            await _ogrenciStore.UpdateOgrenciOnayBekle(ogrIds);
+            return new ApiResponse(Status200OK, "UpdateOgrenciOnayBekle done!", null);
         }
     }
 }

@@ -1,11 +1,57 @@
 ﻿@page "/deneme"
 @using Syncfusion.Blazor.Grids
-@using Syncfusion.Blazor.Spinner
+@inject Microsoft.AspNetCore.Components.NavigationManager UriHelper
+@inherits SampleBaseComponent;
+
 @using GridData
 @using Syncfusion.Blazor.DropDowns
-@using System;
-@inject Microsoft.AspNetCore.Components.NavigationManager UriHelper
-@*Hidden:Lines*@
+<div class="col-lg-12 control-section">
+    <div class="content-wrapper">
+        <div class="row">
+            @{
+                if (Data)
+                {
+                    <span id="initialload" class="topload">Loading 10,000 Rows and 20 Columns</span>
+                    <div class="loading">
+                        <span id="spancontrol" class="visible">Generating Data </span>
+                        <img src="@UriHelper.ToAbsoluteUri($"images/data-grid/spinner.gif")" />
+                    </div>
+                }
+                else
+                {
+                    <span id="afterload" class="topload">Loaded 10,000 Rows and 20 Columns</span>
+                }
+            }
+        <SfGrid DataSource="@GridData" Height="410" Width="auto" EnableHover="false" EnableVirtualization="true" EnableColumnVirtualization="true" AllowSelection="true">
+            <GridSelectionSettings CheckboxOnly="true" PersistSelection="true"></GridSelectionSettings>
+            <GridPageSettings PageSize="80"></GridPageSettings>
+            <GridColumns>
+                <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
+                <GridColumn Field="Field1" HeaderText="PlayerName" Width="120"></GridColumn>
+                <GridColumn Field="Field2" HeaderText="Year" TextAlign="TextAlign.Right" Width="150"></GridColumn>
+                <GridColumn Field="Field3" HeaderText="Stint" TextAlign="TextAlign.Right" Width="150"></GridColumn>
+                <GridColumn Field="Field4" HeaderText="TMID" TextAlign="TextAlign.Right" Width="150"></GridColumn>
+                <GridColumn Field="Field5" HeaderText="LGID" TextAlign="TextAlign.Right" Width="150"></GridColumn>
+                <GridColumn Field="Field6" HeaderText="GP" TextAlign="TextAlign.Right" Width="150"></GridColumn>
+                <GridColumn Field="Field7" HeaderText="GS" TextAlign="TextAlign.Right" Width="150"></GridColumn>
+                <GridColumn Field="Field8" HeaderText="Minutes" TextAlign="TextAlign.Right" Width="150"></GridColumn>
+                <GridColumn Field="Field9" HeaderText="Points" TextAlign="TextAlign.Right" Width="150"></GridColumn>
+                <GridColumn Field="Field10" HeaderText="oRebounds" TextAlign="TextAlign.Right" Width="150"></GridColumn>
+                <GridColumn Field="Field11" HeaderText="dRebounds" TextAlign="TextAlign.Right" Width="150"></GridColumn>
+                <GridColumn Field="Field12" HeaderText="Rebounds" TextAlign="TextAlign.Right" Width="150"></GridColumn>
+                <GridColumn Field="Field13" HeaderText="Assists" TextAlign="TextAlign.Right" Width="150"></GridColumn>
+                <GridColumn Field="Field14" HeaderText="Steals" TextAlign="TextAlign.Right" Width="150"></GridColumn>
+                <GridColumn Field="Field15" HeaderText="Blocks" TextAlign="TextAlign.Right" Width="150"></GridColumn>
+                <GridColumn Field="Field16" HeaderText="TurnOvers" TextAlign="TextAlign.Right" Width="150"></GridColumn>
+                <GridColumn Field="Field17" HeaderText="PF" TextAlign="TextAlign.Right" Width="150"></GridColumn>
+                <GridColumn Field="Field18" HeaderText="fgAttempted" TextAlign="TextAlign.Right" Width="150"></GridColumn>
+                <GridColumn Field="Field19" HeaderText="fgMade" TextAlign="TextAlign.Right" Width="150"></GridColumn>
+                <GridColumn Field="Field20" HeaderText="ftAttempted" TextAlign="TextAlign.Right" Width="150"></GridColumn>
+            </GridColumns>
+        </SfGrid>
+        </div>
+    </div>
+</div>
 <style>
     .visible {
         display: inline-block;
@@ -24,377 +70,58 @@
         padding-left: 44%;
     }
 
-    .fabric .empimg {
-        background-color: #0078d6;
-    }
-
-    .material .empimg {
-        background-color: #e3165b;
-    }
-
-
-    .highcontrast .empimg {
-        background-color: #ffd939;
-    }
-
-    _:-ms-fullscreen, :root .highcontrast .e-userimg.sf-icon-Male::before,
-    _:-ms-fullscreen, :root .highcontrast .e-userimg.sf-icon-FeMale::before {
-        color: black;
-    }
-
-    .highcontrast .e-userimg.sf-icon-Male::before,
-    .highcontrast .e-userimg.sf-icon-FeMale::before {
-        color: black;
-    }
-
-    .bootstrap .empimg {
-        background-color: #0078d6;
-    }
-
-    .bootstrap4 .empimg {
-        background-color: #0078d6;
-    }
-
-    #Emptext {
-        top: -12px;
-        left: 41px;
-        position: relative;
-    }
-
-    .empimg {
-        height: 27px;
-        width: 29px;
-        border-radius: 14px;
-    }
-
-    .e-grid.e-rtl #Emptext {
-        top: -12px;
-        left: -41px;
-        position: relative;
-    }
-
-    .e-userimg.sf-icon-Male::before,
-    .e-userimg.sf-icon-FeMale::before {
-        font-size: 13px;
-    }
-
-    .e-userimg.sf-icon-Male, .e-userimg.sf-icon-FeMale {
-        margin: 0px 8px;
-        line-height: 26px;
-        color: white;
-        font-size: 13px;
-    }
-
-        .e-userimg.sf-icon-Male::before {
-            content: '\e700';
-        }
-
-        .e-userimg.sf-icon-FeMale::before {
-            content: '\e701';
-        }
-
-    .highcontrast .e-grid td.e-rowcell.e-selectionbackground.e-active {
-        background-color: transparent;
-        color: white;
-    }
-
-    .e-bigger .e-grid .statustxt {
-        position: relative;
-        top: -2px;
-    }
-
-    .rating .star {
-        font-size: 132%;
-        color: lightgrey;
-    }
-
-        .rating .star.checked {
-            color: #ffa600;
-        }
-
-        .rating .star:before {
-            content: '★';
-        }
-
-    td.e-rowcell.e-selectionbackground.e-active {
-        background-color: transparent;
-    }
-
-    .e-image {
-        height: 13px;
-        width: 14px;
-    }
-
-    td.e-rowcell .statustxt.e-activecolor {
-        color: #00cc00;
-        position: relative;
-        top: 9px;
-    }
-
-    td.e-rowcell .statustxt.e-inactivecolor {
-        color: #e60000;
-        position: relative;
-        top: 9px;
-    }
-
-    .statustemp.e-inactivecolor {
-        background-color: #ffd7cc;
-        width: 64px;
-    }
-
-    .statustemp.e-activecolor {
-        background-color: #ccffcc;
-        width: 57px;
-    }
-
-    .statustxt.e-activecolor {
-        color: #00cc00;
-    }
-
-    .statustxt.e-inactivecolor {
-        color: #e60000;
-    }
-
-    .statustemp {
-        position: relative;
-        height: 19px;
-        border-radius: 5px;
-        text-align: center
-    }
-
-    .highcontrast #msg {
-        color: #FFFFFF
-    }
-
-    #msg {
-        font-family: "Segoe UI", "GeezaPro", "DejaVu Serif", sans-serif;
-        font-size: 14px;
-        font-weight: 400;
-        opacity: 0.95;
-        color: #333;
-        float: right;
-        margin-top: 3px;
-    }
-
-    @@media only screen and (max-width: 370px) {
-        #msg {
-            float: left;
-            margin-top: 3px;
-        }
-
-        #Grid {
-            margin-top: 36px;
-        }
-    }
-
-    #samplecontainer {
-        padding-top: 5px;
-    }
-
-    #myProgress {
-        position: relative;
-        height: 18px;
-        width: 10em;
-        text-align: left;
-        background-color: white;
-    }
-
-    .highcontrast .e-grid #myProgress {
-        background-color: black;
-    }
-
-    .e-dddata {
-        padding-bottom: 10px;
-    }
-
-    #myBar {
-        position: absolute;
-        width: 10%;
-        height: 100%;
-        background-color: #00b300;
-    }
-
-        #myBar.progressdisable {
-            background-color: #df2222;
-        }
-
-    #label {
-        position: relative;
-        left: 10px;
-        line-height: 18px;
-        font-size: 10px;
-        color: white;
-    }
-
-    @@font-face {
-        font-family: 'Grid control Font';
-        src: url(data:application/x-font-ttf;charset=utf-8;base64,AAEAAAAKAIAAAwAgT1MvMj1tSfQAAAEoAAAAVmNtYXDnE+ddAAABkAAAADpnbHlmWm7FjgAAAdgAAAPkaGVhZBFF/fMAAADQAAAANmhoZWEIHwQFAAAArAAAACRobXR4EAAAAAAAAYAAAAAQbG9jYQKaAUgAAAHMAAAACm1heHABEACgAAABCAAAACBuYW1lmuAR1QAABbwAAAKdcG9zdHgFC7MAAAhcAAAAQgABAAAEAAAAAFwEAAAAAAADwgABAAAAAAAAAAAAAAAAAAAABAABAAAAAQAAJ9BcPl8PPPUACwQAAAAAANcy3IEAAAAA1zLcgQAAAAADwgP0AAAACAACAAAAAAAAAAEAAAAEAJQAAgAAAAAAAgAAAAoACgAAAP8AAAAAAAAAAQQAAZAABQAAAokCzAAAAI8CiQLMAAAB6wAyAQgAAAIABQMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUGZFZABA5wDnAgQAAAAAXAQAAAAAAAABAAAAAAAABAAAAAQAAAAEAAAABAAAAAAAAAIAAAADAAAAFAADAAEAAAAUAAQAJgAAAAQABAABAADnAv//AADnAP//AAAAAQAEAAAAAQACAAMAAAAAAAAAqAFIAfIAAAABAAAAAAPBA/MAkwAAASMPDRUfBQ8FHw4VDxYhLxY1Pw8vAz8DLxcjDwUBhQEIEQoKCwoEBQMEAwIBAQEBAwQFBggGAwIBAQICBQcKDAUEBwUFBgYICAYHCQkUFxcXPRUUFBAODAoMCQQEAgIBA4QBBAQEBQsKCw0PEhQUFh0sFxcUCQkHBgoMCAgDAwIBDAsGBQUDAgECBAcKDgYDAgEBAQMDBAUGBwkJCwsODxAOEQoLDA0ODwwNDg8PDxAD2gQLCQwOEgoLDA0NDxAREhMUFhYYGgoMBwgICQoKCgoKCiEUFgoLCQkIBncICAcHDgwLCRUKCw0NDg0OFBIMCwoQDxYTCwwMEw4ODQ4NDAoJChALDA4HBwgIdwwTERULDQ0OCQsHCAkJCgsMDA0NNiMaGxsODQ0NDAsLCgkJBwYEBA4ICQMEAwIBAQECAwMFBQABAAAAAAPCA/QAjQAAAQ8VFRcVDwcVHwwPFCEvFTM/Cy8INy8aAegOGhgVExAODAoMCwcKCAUFBAcGAgUDAQEDBgkHBAMBAQICBAcTCgsMDBkjMgUGBwgJCQsligkJCQ8OCwoJCgUFBgOEBgoGCAkLDQ4RCQkKC3UlCgoJCAcGBSITEhEPGRUPDwYDAgEBAQEJAgUCAQEBAQECAwYGCgsLDAwMDA0RCwoRDwQDCA8QEBERA/MCBQcJCQoKCwsPERAOEA0ODh8hEC8vEycZGRggJQoICAcGBQUFBAYKBQMDAwQCAQ4LCgkIBwYQRgYGBw8PEBEQGA8THR0iEBAQERAPDgYGBgU7EAYHCAkKCw4BAgICBwYHCAYHBwcGBgYVCBYLCrUUFBMTER8bHRkRDwwLCAcIBAIDAQYDBggFBQIBAAIAAAAAA14D9AA/AJIAAAEPDy8PPw8fDgUVHwcJAT8HNS8dKwEPHQJ9AQIDBAUGCAgJCQoLDAwMDQ0MDAwLCgkJCAgGBQQDAgEBAgMEBQYICAkJCgsMDAwNDQwMDAsKCQkICAYFBAMC/iYBAwQHCAkLDAEnAScMCwkIBwQDAQICAwQFBQcHBwkJCgoLDAwMDg0PDg8QEBAREBIREhISEhESEBEQEBAPDg8NDgwMDAsKCgkJBwcHBQUEAwICApYNDAwMCwoJCQgIBgUEAwIBAQIDBAUGCAgJCQoLDAwMDQ0MDAwLCgkJCAgGBQQDAgEBAgMEBQYICAkJCgsMDAwiDg4bGhkZGBcW/lMBrRYXGBkZGhscExMSEhISEREREA8PDw4NDQ0LCwsJCQgIBgYFBAQCAgICBAQFBgYICAkJCwsLDQ0NDg8PDxARERESEhISEwAAAAAAABIA3gABAAAAAAAAAAEAAAABAAAAAAABABEAAQABAAAAAAACAAcAEgABAAAAAAADABEAGQABAAAAAAAEABEAKgABAAAAAAAFAAsAOwABAAAAAAAGABEARgABAAAAAAAKACwAVwABAAAAAAALABIAgwADAAEECQAAAAIAlQADAAEECQABACIAlwADAAEECQACAA4AuQADAAEECQADACIAxwADAAEECQAEACIA6QADAAEECQAFABYBCwADAAEECQAGACIBIQADAAEECQAKAFgBQwADAAEECQALACQBmyBHcmlkIGNvbnRyb2wgRm9udFJlZ3VsYXJHcmlkIGNvbnRyb2wgRm9udEdyaWQgY29udHJvbCBGb250VmVyc2lvbiAxLjBHcmlkIGNvbnRyb2wgRm9udEZvbnQgZ2VuZXJhdGVkIHVzaW5nIFN5bmNmdXNpb24gTWV0cm8gU3R1ZGlvd3d3LnN5bmNmdXNpb24uY29tACAARwByAGkAZAAgAGMAbwBuAHQAcgBvAGwAIABGAG8AbgB0AFIAZQBnAHUAbABhAHIARwByAGkAZAAgAGMAbwBuAHQAcgBvAGwAIABGAG8AbgB0AEcAcgBpAGQAIABjAG8AbgB0AHIAbwBsACAARgBvAG4AdABWAGUAcgBzAGkAbwBuACAAMQAuADAARwByAGkAZAAgAGMAbwBuAHQAcgBvAGwAIABGAG8AbgB0AEYAbwBuAHQAIABnAGUAbgBlAHIAYQB0AGUAZAAgAHUAcwBpAG4AZwAgAFMAeQBuAGMAZgB1AHMAaQBvAG4AIABNAGUAdAByAG8AIABTAHQAdQBkAGkAbwB3AHcAdwAuAHMAeQBuAGMAZgB1AHMAaQBvAG4ALgBjAG8AbQAAAAACAAAAAAAAAAoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQBAgEDAQQBBQAETWFsZQZGZW1hbGUITG9jYXRpb24AAAAA) format('truetype');
-        font-weight: normal;
-        font-style: normal;
-    }
-
-    [class^="sf-icon-"], [class*=" sf-icon-"] {
-        font-family: 'Grid control Font' !important;
-        speak: none;
-        font-size: 55px;
-        font-style: normal;
-        font-weight: normal;
-        font-variant: normal;
-        text-transform: none;
-        line-height: 1;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
+    .topload {
+        font-size: 15px;
     }
 </style>
-@*End:Hidden*@
-
-<div class="col-lg-12 control-section">
-    <div class="content-wrapper">
-        <div class="row">
-            <div id="container">
-                <SfGrid DataSource="@GridData" AllowSelection="true" AllowSorting="true" AllowFiltering="true" EnableVirtualization="true" EnableHover="false" Height="600" RowHeight="38">
-                    <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
-                    <GridPageSettings PageSize="40"></GridPageSettings>
-                    <GridSelectionSettings CheckboxOnly="true" PersistSelection="true" Type="SelectionType.Multiple"></GridSelectionSettings>
-                    <GridColumns>
-                        <GridColumn Type="ColumnType.CheckBox" AllowFiltering="false" AllowSorting="false" Width="60"></GridColumn>
-                        <GridColumn Field=@nameof(OverviewData.EmployeeID) HeaderText="Employee ID" Visible="false" IsPrimaryKey="true" Width="130"></GridColumn>
-                        <GridColumn Field=@nameof(OverviewData.Employees) HeaderText="Employee Name" Width="200" ClipMode="ClipMode.EllipsisWithTooltip">
-                            <Template>
-                                @{
-                                    var employee = (context as OverviewData);
-                                    <div>
-                                        @if (employee.EmployeeImg == "usermale")
-                                        {
-                                            <div class="empimg" style="background-color: cornflowerblue;">
-                                                <span class="e-userimg sf-icon-Male"></span>
-                                            </div>
-                                        }
-                                        @if (employee.EmployeeImg == "userfemale")
-                                        {
-                                            <div class="empimg" style="background-color: coral;">
-                                                <span class="e-userimg sf-icon-FeMale"></span>
-                                            </div>
-                                        }
-                                        <span id="Emptext">@employee.Employees</span>
-                                    </div>
-                                }
-                            </Template>
-                        </GridColumn>
-                        <GridColumn Field=@nameof(OverviewData.Designation) HeaderText="Designation" Width="170" FilterSettings="@(new FilterSettings { Type = Syncfusion.Blazor.Grids.FilterType.CheckBox })" ClipMode="ClipMode.EllipsisWithTooltip"></GridColumn>
-                        <GridColumn Field=@nameof(OverviewData.Mail) HeaderText="Mail" Width="230" FilterSettings="@(new FilterSettings { Type = Syncfusion.Blazor.Grids.FilterType.Menu })"></GridColumn>
-                        <GridColumn Field=@nameof(OverviewData.Location) HeaderText="Location" FilterSettings="@(new FilterSettings { Type = Syncfusion.Blazor.Grids.FilterType.CheckBox })" Width="140">
-                            <Template>
-                                @{
-                                    var location = (context as OverviewData);
-                                    <div class="loc">
-                                        <img src="@UriHelper.ToAbsoluteUri($"images/data-grid/map.png")" class="e-image" alt=@location.Location />
-                                        <span id="locationtext">@location.Location</span>
-                                    </div>
-                                }
-                            </Template>
-                        </GridColumn>
-                        <GridColumn Field=@nameof(OverviewData.Status) HeaderText="Status" FilterSettings="@(new FilterSettings { Type = Syncfusion.Blazor.Grids.FilterType.CheckBox })" Width="150">
-                            <Template>
-                                @{
-                                    var employee = (context as OverviewData);
-                                    if (employee.Status == "Active")
-                                    {
-                                        <div class="statustemp e-activecolor">
-                                            <span class="statustxt e-activecolor">@employee.Status</span>
-                                        </div>
-                                    }
-                                    else
-                                    {
-                                        <div class="statustemp e-inactivecolor">
-                                            <span class="statustxt e-inactivecolor">@employee.Status</span>
-                                        </div>
-                                    }
-                                }
-                            </Template>
-                        </GridColumn>
-                        <GridColumn Field=@nameof(OverviewData.Trustworthiness) HeaderText="Trustworthiness" FilterSettings="@(new FilterSettings { Type = Syncfusion.Blazor.Grids.FilterType.CheckBox })" Width="160">
-                            <Template>
-                                @{
-                                    var trust = (context as OverviewData);
-                                    <div class="trust">
-                                        <img style="width: 31px; height: 24px" src="@UriHelper.ToAbsoluteUri($"images/data-grid/{trust.Trustworthiness?.ToLowerInvariant()}.png")" />
-                                        <span id="Trusttext">@trust.Trustworthiness</span>
-                                    </div>
-                                }
-                            </Template>
-                        </GridColumn>
-                        <GridColumn Field=@nameof(OverviewData.Rating) HeaderText="Rating" FilterSettings="@(new FilterSettings { Type = Syncfusion.Blazor.Grids.FilterType.CheckBox })" AllowFiltering="false" AllowSorting="false" Width="180">
-                            <Template>
-                                @{
-                                    var rate = (context as OverviewData);
-                                    <div class="rate">
-                                        <div class="rating">
-                                            @for (var i = 0; i < 5; i++)
-                                            {
-                                                if (i < rate.Rating)
-                                                {
-                                                    <span class="star checked"></span>
-                                                }
-                                                else
-                                                {
-                                                    <span class="star"></span>
-                                                }
-                                            }
-                                        </div>
-                                    </div>
-                                }
-                            </Template>
-                        </GridColumn>
-                        <GridColumn Field=@nameof(OverviewData.Software) HeaderText="Software Proficiency" AllowFiltering="false" AllowSorting="false" Width="180">
-                            <Template>
-                                @{
-                                    var employee = (context as OverviewData);
-                                    @if (employee.Status == "Inactive")
-                                    {
-                                        <div id="myProgress" class="pbar">
-                                            <div id="myBar" style="width:@employee.Software%" class="bar progressdisable">
-                                                <div id="label" class="barlabel">@employee.Software%</div>
-                                            </div>
-                                        </div>
-                                    }
-                                    @if (employee.Status == "Active")
-                                    {
-                                        <div id="myProgress" class="pbar">
-                                            <div id="myBar" style="width:@employee.Software%" class="bar">
-                                                <div id="label" class="barlabel">@employee.Software%</div>
-                                            </div>
-                                        </div>
-                                    }
-                                }
-                            </Template>
-                        </GridColumn>
-                        <GridColumn Field=@nameof(OverviewData.CurrentSalary) HeaderText="Current Salary" FilterSettings="@(new FilterSettings { Type = Syncfusion.Blazor.Grids.FilterType.Menu })" Format="C2" TextAlign="TextAlign.Right" Width="160"></GridColumn>
-                        <GridColumn Field=@nameof(OverviewData.Address) HeaderText="Address" FilterSettings="@(new FilterSettings { Type = Syncfusion.Blazor.Grids.FilterType.Menu })" Width="240" ClipMode="ClipMode.EllipsisWithTooltip"></GridColumn>
-                    </GridColumns>
-                </SfGrid>
-            </div>
-        </div>
-    </div>
-</div>
 @code{
-    public List<OverviewData> GridData { get; set; }
-    public int Value { get; set; } = 1000;
-    string target { get; set; } = "#container";
-    public class DDData
+    public List<VirtualData> GridData { get; set; } = new List<VirtualData>();
+    public Boolean Data = true;
+    protected override async Task OnInitializedAsync()
     {
-        public string Text { get; set; }
-        public string Value { get; set; }
+        await Task.Delay(100);
+        GridData = await GetAllRecords();
+        Data = false;
     }
-    public List<DDData> DLData = new List<DDData>() {
-        new DDData(){ Text= "1,000 Rows and 11 Columns", Value= "1000" },
-        new DDData(){ Text= "10,000 Rows and 11 Columns", Value= "10000" },
-        new DDData(){ Text= "1,00,000 Rows and 11 Columns", Value= "100000" },
-    };
-    private int? index { get; set; } = 0;
-
-    protected override void OnInitialized()
+    public async Task<List<VirtualData>> GetAllRecords()
     {
-        GridData = OverviewData.GetAllRecords(Value);
+        List<VirtualData> data = new List<VirtualData>(10000);
+        Random random = new Random();
+        await Task.Delay(10);
+        string[] name = new string[] {"hardire", "abramjo01", "aubucch01", "Hook", "Rumpelstiltskin", "Belle", "Emma", "Regina", "Aurora", "Elsa",
+          "Anna", "Snow White", "Prince Charming", "Cora", "Zelena", "August", "Mulan", "Graham", "Discord", "Will", "Robin Hood",
+          "Jiminy Cricket", "Henry", "Neal", "Red", "Aaran", "Aaren", "Aarez", "Aarman", "Aaron", "Aaron-James", "Aarron", "Aaryan", "Aaryn",
+          "Aayan", "Aazaan", "Abaan", "Abbas", "Abdallah", "Abdalroof", "Abdihakim", "Abdirahman", "Abdisalam", "Abdul", "Abdul-Aziz",
+          "Abdulbasir", "Abdulkadir", "Abdulkarem", "Abdulkhader", "Abdullah", "Abdul-Majeed", "Abdulmalik", "Abdul-Rehman", "Abdur",
+          "Abdurraheem", "Abdur-Rahman", "Abdur-Rehmaan", "Abel", "Abhinav", "Abhisumant", "Abid", "Abir", "Abraham", "Abu", "Abubakar",
+          "Ace", "Adain", "Adam", "Adam-James", "Addison", "Addisson", "Adegbola", "Adegbolahan", "Aden", "Adenn", "Adie", "Adil", "Aditya",
+          "Adnan", "Adrian", "Adrien", "Aedan", "Aedin", "Aedyn", "Aeron", "Afonso", "Ahmad", "Ahmed", "Ahmed-Aziz", "Ahoua", "Ahtasham",
+          "Aiadan", "Aidan", "Aiden", "Aiden-Jack", "Aiden-Vee" };
+        for (int i = 0; i < 10000; i++)
+        {
+            string Field1 = name[random.Next(96)];
+            int Field2 = 1967 + (i % 10);
+            int Field3 = (int)Math.Floor(random.NextDouble() * 200);
+            int Field4 = (int)Math.Floor(random.NextDouble() * 100);
+            int Field5 = (int)Math.Floor(random.NextDouble() * 2000);
+            int Field6 = (int)Math.Floor(random.NextDouble() * 1000);
+            int Field7 = (int)Math.Floor(random.NextDouble() * 100);
+            int Field8 = (int)Math.Floor(random.NextDouble() * 10);
+            int Field9 = (int)Math.Floor(random.NextDouble() * 10);
+            int Field10 = (int)Math.Floor(random.NextDouble() * 100);
+            int Field11 = (int)Math.Floor(random.NextDouble() * 100);
+            int Field12 = (int)Math.Floor(random.NextDouble() * 1000);
+            int Field13 = (int)Math.Floor(random.NextDouble() * 10);
+            int Field14 = (int)Math.Floor(random.NextDouble() * 10);
+            int Field15 = (int)Math.Floor(random.NextDouble() * 1000);
+            int Field16 = (int)Math.Floor(random.NextDouble() * 200);
+            int Field17 = (int)Math.Floor(random.NextDouble() * 300);
+            int Field18 = (int)Math.Floor(random.NextDouble() * 400);
+            int Field19 = (int)Math.Floor(random.NextDouble() * 500);
+            int Field20 = (int)Math.Floor(random.NextDouble() * 700);
+            data.Add(new VirtualData(Field1, Field2, Field3, Field4, Field5, Field6, Field7, Field8, Field9, Field10, Field11,
+                Field12, Field13, Field14, Field15, Field16, Field17, Field18, Field19, Field20));
+        }
+        return data;
     }
 }

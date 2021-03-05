@@ -16,13 +16,14 @@ namespace UniLife.Shared.DataModels
         [Required]
         [MaxLength(300)]
         public string Ad { get; set; }
+        [MaxLength(300)]
         public string Soyad { get; set; }
 
         public long OgrNo { get; set; }
 
         [MaxLength(11)]
         public string TCKN { get; set; }
-
+        [MaxLength(150)]
         public string Email { get; set; }
 
         public int FakulteId { get; set; }
@@ -33,7 +34,7 @@ namespace UniLife.Shared.DataModels
         public virtual Program Program{ get; set; }
         public int MufredatId { get; set; }
         public virtual Mufredat Mufredat { get; set; }
-
+        [MaxLength(500)]
         public string Eimg { get; set; }
 
         public int KayitNedenId { get; set; }
@@ -49,9 +50,14 @@ namespace UniLife.Shared.DataModels
         public int? DanismanId { get; set; }
         public virtual Akademisyen Danisman { get; set; }
 
+        public DateTime? MezuniyetTarih { get; set; }
+        [MaxLength(11)]
+        public string DiplomaNo { get; set; }
+        public bool? DanismanOnay { get; set; }
 
+        [MaxLength(500)]
         public string DnmSnfGecBilgi { get; set; }
-
+        [MaxLength(500)]
         public string AskerDurum { get; set; }
         public DateTime KayitTarih { get; set; }
         public DateTime? AyrilTarih { get; set; }
@@ -60,9 +66,12 @@ namespace UniLife.Shared.DataModels
         public decimal OdenenTopUcret { get; set; }
         public decimal GenelBakiye { get; set; }
         public bool IsMale { get; set; }
+        [MaxLength(500)]
         public string Adres { get; set; }
+        [MaxLength(500)]
         public string BilgNotu { get; set; }
         public bool MultiUni { get; set; }
+        [MaxLength(200)]
         public string IlaveDonem { get; set; }
         public int CapYan { get; set; }=1;
 

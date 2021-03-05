@@ -6,7 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using UniLife.Shared.Dto.Definitions;
 using Syncfusion.Blazor.Data;
-
+using Syncfusion.Blazor.Navigations;
+using Syncfusion.Blazor.DropDowns;
+using UniLife.Shared.Dto;
+using MatBlazor;
+using UniLife.CommonUI.Extensions;
+using System.Net.Http.Json;
+using Microsoft.AspNetCore.Http;
 
 namespace UniLife.CommonUI.Pages.MazuniyetDiploma
 {
@@ -31,13 +37,27 @@ namespace UniLife.CommonUI.Pages.MazuniyetDiploma
         bool HazirlikKontrol;
 
         bool isUyariOpen;
+        bool isDialogUyariOpen;
         int OgrId;
+        string dialogText;
 
         Syncfusion.Blazor.Grids.SfGrid<OgrenciDto> mezunGrid;
+
+        Syncfusion.Blazor.Grids.SfGrid<OgrenciDto> mezunOnayGrid;
+
+        List<OgrenciDto> ogrenciMezunDtos = new List<OgrenciDto>();
+        
 
         string OdataQuery = "odata/ogrencis/OgrMezuniyet";
         public Query totalQuery;
 
+        SfDropDownList<int?, DonemDto> DropDonem;
+        int? donemId;
+        public DateTime? MezuniyetTarih { get; set; }
+
+        public Query donemQuery = new Query().Select(new List<string> { "Id", "Ad" }).RequiresCount();
+
+        private List<Object> Toolbaritems = new List<Object>() { new ItemModel() { Text = "Onaya Gönder", TooltipText = "Onaya Gönder", PrefixIcon = "e-click", Id = "OnayaGonder" } };
 
         async Task Refresh()
         {
@@ -71,6 +91,27 @@ namespace UniLife.CommonUI.Pages.MazuniyetDiploma
             StateHasChanged();
             await Task.Delay(100);
             mezunGrid.Refresh();
+
+            if (donemId!=0 && MezuniyetTarih.HasValue)
+            {
+                await MezunOnayLoad();
+            }
+        }
+
+        async Task MezunOnayLoad()
+        {
+            ApiResponseDto<List<OgrenciDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDto>>>($"api/ogrenci/GetOgrenciOnay/{FakulteId}/{BolumId}/{ProgramId}/{donemId}");
+
+            if (apiResponse.StatusCode == StatusCodes.Status200OK)
+            {
+                ogrenciMezunDtos = apiResponse.Result;
+                //mezunOnayGrid.Refresh();
+                //StateHasChanged();
+            }
+            else
+            {
+                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Bölüm getirilirken hata oluştu!");
+            }
         }
 
         async Task AlDersler(int ogrId)
@@ -95,5 +136,58 @@ namespace UniLife.CommonUI.Pages.MazuniyetDiploma
             isUyariOpen = true;
         }
 
+        public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+        {
+            if (args.Item.Id == "OnayaGonder")
+            {
+
+                if (!MezuniyetTarih.HasValue)
+                {
+                    dialogText = "Mezuniyet tarihi seçmelisiniz!";
+                    isDialogUyariOpen = true;
+                    return;
+                }
+                if (donemId ==0)
+                {
+                    dialogText = "Liste dönemi seçmelisiniz!";
+                    isDialogUyariOpen = true;
+                    return;
+                }
+
+                var selectedOgr = await mezunGrid.GetSelectedRecords();
+                
+                foreach (var item in selectedOgr) 
+                {
+                    item.MezuniyetTarih = MezuniyetTarih;
+                    item.DanismanOnay = false;
+                }
+
+                ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/Ogrenci/UpdateOgrenciOnayBekle", selectedOgr.Select(x => x.Id));
+                if (apiResponse.IsSuccessStatusCode)
+                {
+                    ogrenciMezunDtos = selectedOgr;
+                    mezunOnayGrid.Refresh();
+                    matToaster.Add("Onaya gönderildi", MatToastType.Success, "İşlem başarılı.");
+
+                }
+                else
+                {
+                    matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
+                }
+
+                
+
+                
+
+            }
+        }
+
+        async Task DonemChange()
+        {
+            if (donemId.HasValue)
+            {
+                MezunOnayLoad();
+            }
+        }
     }
 }

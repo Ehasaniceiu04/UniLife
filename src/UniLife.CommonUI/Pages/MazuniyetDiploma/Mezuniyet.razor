@@ -4,6 +4,7 @@
 @using Syncfusion.Blazor.Inputs
 @using Syncfusion.Blazor.Buttons
 @using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.Calendars
 @inject Microsoft.AspNetCore.Components.NavigationManager UriHelper
 @using UniLife.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs
 
@@ -55,155 +56,203 @@
             </div>
         </div>
         <SfButton OnClick="Refresh" CssClass="e-success col-sm-12 form-control-sm">Bul / Yenile</SfButton>
-
     </div>
 </div>
 
-@if (true)
-{
-    <SfGrid PrintMode="PrintMode.CurrentPage" @ref="mezunGrid" Query="@totalQuery" TValue="OgrenciDto" AllowPaging="true" AllowSelection="true">
-        <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
-        @*<GridEvents RowSelecting="OnRowSelecting" OnToolbarClick="ToolbarClickHandler" OnActionComplete="ActionCompletedHandler" OnActionBegin="OnActionBeginHandler" CommandClicked="CommandClickHandler" TValue="DersAcilanDto"></GridEvents>*@
-        <GridPageSettings PageCount="5" PageSizes="new int[]{ 5, 10, 50, 100,10000}"></GridPageSettings>
-        <GridSelectionSettings CheckboxOnly="true" PersistSelection="true"></GridSelectionSettings>
-        <GridColumns>
-            <GridColumn Visible="false" Field=@nameof(OgrenciDto.Id) Edit="false" AllowEditing="false" IsPrimaryKey="true"></GridColumn>
-            <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
-            <GridColumn HeaderText="Resim" Width="120">
-                <Template>
-                    @{
-                        var ogrenciInfo = (context as OgrenciDto);
-                        <div class="image">
-                            <img class="photo" src="@($"/_content/UniLife.CommonUI/images/ogrenci/{ogrenciInfo.ApplicationUserId.ToString()}.png")" alt="@ogrenciInfo.Id" />
-                        </div>
-                    }
-                </Template>
-            </GridColumn>
-            <GridColumn HeaderText="Öğrenci">
-                <Template>
-                    @{
-                        var ogrenciInfo = (context as OgrenciDto);
-                        <div class="form-group row">
-                            <label for="OgrNo" class="col-sm-3">OgrNo:</label>
-                            <div id="OgrNo" class="col-sm-9">
-                                @(ogrenciInfo.OgrNo )
-                            </div>
-                            <label for="Ad" class="col-sm-3">Ad:</label>
-                            <div id="Ad" class="col-sm-9">
-                                @(ogrenciInfo.Ad )
-                            </div>
-                            <label for="Soyad" class="col-sm-3">Soyad:</label>
-                            <div id="Soyad" class="col-sm-9">
-                                @(ogrenciInfo.Soyad )
-                            </div>
-                            <label for="Sinif" class="col-sm-3">Sınıf:</label>
-                            <div id="Sinif" class="col-sm-9">
-                                @(ogrenciInfo.Sinif )
-                            </div>
-                        </div>
-                    }
-                </Template>
-            </GridColumn>
-            <GridColumn HeaderText="Kayıt">
-                <Template>
-                    @{
-                        var ogrenciInfo = (context as OgrenciDto);
-                        <div class="form-group row">
-                            <label for="Program" class="col-sm-5">Program:</label>
-                            <div id="Program" class="col-sm-7">
-                                @(ogrenciInfo.Program.Ad)
-                            </div>
-                            <label for="ktarih" class="col-sm-5">Kayit Tarih:</label>
-                            <div id="ktarih" class="col-sm-7">
-                                @(Convert.ToDateTime(ogrenciInfo.KayitTarih).ToString("dd.MM.yyyy") )
-                            </div>
-                            <label for="kNeden" class="col-sm-5">Kayit Neden:</label>
-                            <div id="kNeden" class="col-sm-7">
-                                @(ogrenciInfo.KayitNeden.Ad )
-                            </div>
-                            <label for="Danisman" class="col-sm-5">Danisman:</label>
-                            <div id="Danisman" class="col-sm-7">
-                                @(ogrenciInfo.Danisman.Ad)
-                            </div>
-                        </div>
-                    }
-                </Template>
-            </GridColumn>
-            <GridColumn HeaderText="Bilgi 1">
-                <Template>
-                    @{
-                        var ogrenciInfo = (context as OgrenciDto);
-                        <div class="form-group row">
-                            <label for="AGNO" class="col-sm-6">AGNO:</label>
-                            <div id="AGNO" class="col-sm-6">
-                                @(ogrenciInfo.AgNo1 +"/"+ ogrenciInfo.AgNo2 )
-                            </div>
-                            <label for="topKredi" class="col-sm-6">Toplam Kredi:</label>
-                            <div id="topKredi" class="col-sm-6">
-                                @(ogrenciInfo.TopKredi1+"/"+ ogrenciInfo.TopKredi2)
-                            </div>
-                            <label for="takts" class="col-sm-6">Toplam AKTS:</label>
-                            <div id="takts" class="col-sm-6">
-                                @(ogrenciInfo.TopAkts1+"/"+ ogrenciInfo.TopAkts2)
-                            </div>
-                            <label for="stajhaz" class="col-sm-6">Staj/Hazırlık:</label>
-                            <div id="stajhaz" class="col-sm-6">
-                                @(ogrenciInfo.HasStaj+"/"+ ogrenciInfo.HasHazirlik)
-                            </div>
-                        </div>
-                    }
-                </Template>
-            </GridColumn>
-            <GridColumn HeaderText="Bilgi 2">
-                <Template>
-                    @{
-                        var ogrenciInfo = (context as OgrenciDto);
-                        <div class="form-group row">
-                            <label for="secDers" class="col-sm-7">Secmeli Dersler:</label>
-                            <div id="secDers" class="col-sm-5">
-                                @(ogrenciInfo.SDersler1+"/"+ ogrenciInfo.SDersler2)
-                            </div>
-                            <label for="zders" class="col-sm-7">Zorunlu Dersler:</label>
-                            <div id="zders" class="col-sm-5">
-                                @(ogrenciInfo.ZDersler1 +"/"+ ogrenciInfo.ZDersler2 )
-                            </div>
-                            <label for="basDers" class="col-sm-7">Başarısız Dersler:</label>
-                            <div id="basDers" class="col-sm-5">
-                                @(ogrenciInfo.BasarisizDersler )
-                            </div>
-                            <label for="sonDonem" class="col-sm-7">Son Dönemi:</label>
-                            <div id="sonDonem" class="col-sm-5">
-                                @(ogrenciInfo.SonDonem)
-                            </div>
-                        </div>
-                    }
-                </Template>
-            </GridColumn>
-            <GridColumn HeaderText="Bilgi 3">
-                <Template>
-                    @{
-                        var ogrenciInfo = (context as OgrenciDto);
-                        <div class="form-group row">
-                            <div class="col-sm-12">
-                                <a href="javascript: void(0)" @onclick="@(()=>AlDersler(ogrenciInfo.Id))">Aldığı Dersler</a>
-                            </div>
-                            <div class="col-sm-12">
-                                <a href="javascript: void(0)" @onclick="@(()=>MufDurum(ogrenciInfo.Id))">Müfredat Durum</a>
-                            </div>
-                            <div class="col-sm-12">
-                                <a href="javascript: void(0)" @onclick="@(()=>Transkript(ogrenciInfo.Id))">Traskript</a>
-                            </div>
-                            <div class="col-sm-12">
-                                <a href="javascript: void(0)" @onclick="@(()=>MezuniyetTranskript(ogrenciInfo.Id))">Mezuniyet Traskript</a>
-                            </div>
-                        </div>
-                    }
-                </Template>
-            </GridColumn>
+@*EnableVirtualization="true" EnableColumnVirtualization="true"   Height="410" Width="auto"*@
 
-        </GridColumns>
-    </SfGrid>
-}
+<SfGrid PrintMode="PrintMode.CurrentPage" @ref="mezunGrid" Query="@totalQuery" TValue="OgrenciDto" Toolbar="Toolbaritems" AllowPaging="true" AllowSelection="true">
+    <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+    <GridEvents OnToolbarClick="ToolbarClickHandler" TValue="OgrenciDto"></GridEvents>
+    <GridPageSettings PageCount="5" PageSizes="new int[]{ 5, 10, 50, 100,500,2000,10000}"></GridPageSettings>
+    <GridSelectionSettings CheckboxOnly="true" PersistSelection="true"></GridSelectionSettings>
+    <GridColumns>
+        <GridColumn Visible="false" Field=@nameof(OgrenciDto.Id) Edit="false" AllowEditing="false" IsPrimaryKey="true"></GridColumn>
+        <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
+        <GridColumn HeaderText="Resim" Width="120">
+            <Template>
+                @{
+                    var ogrenciInfo = (context as OgrenciDto);
+                    <div class="image">
+                        <img class="photo" src="@($"/_content/UniLife.CommonUI/images/ogrenci/{ogrenciInfo.ApplicationUserId.ToString()}.png")" alt="@ogrenciInfo.Id" />
+                    </div>
+                }
+            </Template>
+        </GridColumn>
+        <GridColumn HeaderText="Öğrenci">
+            <Template>
+                @{
+                    var ogrenciInfo = (context as OgrenciDto);
+                    <div class="form-group row">
+                        <label for="OgrNo" class="col-sm-3">OgrNo:</label>
+                        <div id="OgrNo" class="col-sm-9">
+                            @(ogrenciInfo.OgrNo )
+                        </div>
+                        <label for="Ad" class="col-sm-3">Ad:</label>
+                        <div id="Ad" class="col-sm-9">
+                            @(ogrenciInfo.Ad )
+                        </div>
+                        <label for="Soyad" class="col-sm-3">Soyad:</label>
+                        <div id="Soyad" class="col-sm-9">
+                            @(ogrenciInfo.Soyad )
+                        </div>
+                        <label for="Sinif" class="col-sm-3">Sınıf:</label>
+                        <div id="Sinif" class="col-sm-9">
+                            @(ogrenciInfo.Sinif )
+                        </div>
+                    </div>
+                }
+            </Template>
+        </GridColumn>
+        <GridColumn HeaderText="Kayıt">
+            <Template>
+                @{
+                    var ogrenciInfo = (context as OgrenciDto);
+                    <div class="form-group row">
+                        <label for="Program" class="col-sm-5">Program:</label>
+                        <div id="Program" class="col-sm-7">
+                            @(ogrenciInfo.Program.Ad)
+                        </div>
+                        <label for="ktarih" class="col-sm-5">Kayit Tarih:</label>
+                        <div id="ktarih" class="col-sm-7">
+                            @(Convert.ToDateTime(ogrenciInfo.KayitTarih).ToString("dd.MM.yyyy") )
+                        </div>
+                        <label for="kNeden" class="col-sm-5">Kayit Neden:</label>
+                        <div id="kNeden" class="col-sm-7">
+                            @(ogrenciInfo.KayitNeden.Ad )
+                        </div>
+                        <label for="Danisman" class="col-sm-5">Danisman:</label>
+                        <div id="Danisman" class="col-sm-7">
+                            @(ogrenciInfo.Danisman.Ad)
+                        </div>
+                    </div>
+                }
+            </Template>
+        </GridColumn>
+        <GridColumn HeaderText="Bilgi 1">
+            <Template>
+                @{
+                    var ogrenciInfo = (context as OgrenciDto);
+                    <div class="form-group row">
+                        <label for="AGNO" class="col-sm-6">AGNO:</label>
+                        <div id="AGNO" class="col-sm-6">
+                            @(ogrenciInfo.AgNo1 +"/"+ ogrenciInfo.AgNo2 )
+                        </div>
+                        <label for="topKredi" class="col-sm-6">Toplam Kredi:</label>
+                        <div id="topKredi" class="col-sm-6">
+                            @(ogrenciInfo.TopKredi1+"/"+ ogrenciInfo.TopKredi2)
+                        </div>
+                        <label for="takts" class="col-sm-6">Toplam AKTS:</label>
+                        <div id="takts" class="col-sm-6">
+                            @(ogrenciInfo.TopAkts1+"/"+ ogrenciInfo.TopAkts2)
+                        </div>
+                        <label for="stajhaz" class="col-sm-6">Staj/Hazırlık:</label>
+                        <div id="stajhaz" class="col-sm-6">
+                            @(ogrenciInfo.HasStaj+"/"+ ogrenciInfo.HasHazirlik)
+                        </div>
+                    </div>
+                }
+            </Template>
+        </GridColumn>
+        <GridColumn HeaderText="Bilgi 2">
+            <Template>
+                @{
+                    var ogrenciInfo = (context as OgrenciDto);
+                    <div class="form-group row">
+                        <label for="secDers" class="col-sm-7">Secmeli Dersler:</label>
+                        <div id="secDers" class="col-sm-5">
+                            @(ogrenciInfo.SDersler1+"/"+ ogrenciInfo.SDersler2)
+                        </div>
+                        <label for="zders" class="col-sm-7">Zorunlu Dersler:</label>
+                        <div id="zders" class="col-sm-5">
+                            @(ogrenciInfo.ZDersler1 +"/"+ ogrenciInfo.ZDersler2 )
+                        </div>
+                        <label for="basDers" class="col-sm-7">Başarısız Dersler:</label>
+                        <div id="basDers" class="col-sm-5">
+                            @(ogrenciInfo.BasarisizDersler )
+                        </div>
+                        <label for="sonDonem" class="col-sm-7">Son Dönemi:</label>
+                        <div id="sonDonem" class="col-sm-5">
+                            @(ogrenciInfo.SonDonem)
+                        </div>
+                    </div>
+                }
+            </Template>
+        </GridColumn>
+        <GridColumn HeaderText="Bilgi 3">
+            <Template>
+                @{
+                    var ogrenciInfo = (context as OgrenciDto);
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <a href="javascript: void(0)" @onclick="@(()=>AlDersler(ogrenciInfo.Id))">Aldığı Dersler</a>
+                        </div>
+                        <div class="col-sm-12">
+                            <a href="javascript: void(0)" @onclick="@(()=>MufDurum(ogrenciInfo.Id))">Müfredat Durum</a>
+                        </div>
+                        <div class="col-sm-12">
+                            <a href="javascript: void(0)" @onclick="@(()=>Transkript(ogrenciInfo.Id))">Traskript</a>
+                        </div>
+                        <div class="col-sm-12">
+                            <a href="javascript: void(0)" @onclick="@(()=>MezuniyetTranskript(ogrenciInfo.Id))">Mezuniyet Traskript</a>
+                        </div>
+                    </div>
+                }
+            </Template>
+        </GridColumn>
+    </GridColumns>
+</SfGrid>
+<br />
+
+<div class="row">
+    <div class="col-sm-12 col-md-6">
+        <div class="form-row form-group form-inline ">
+            <label class="col-sm-4" for="DropDonem">Liste Dönemi:</label>
+            <SfDropDownList ID="DropDonem" @ref="DropDonem" ShowClearButton="true" TValue="int?" TItem="DonemDto" Placeholder="Liste Dönemi" CssClass="col-sm-8 pb-1"
+                            Query="@donemQuery"
+                            @bind-Value="@donemId">
+                <SfDataManager Url="odata/donems" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
+                <DropDownListEvents TValue="int?" TItem="DonemDto" ValueChange="DonemChange"></DropDownListEvents>
+                <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+            </SfDropDownList>
+
+            <label class="col-sm-4" for="mezTarih">Kayıt Tarihi:</label>
+            <SfDatePicker ID="mezTarih" TValue="DateTime?" @bind-Value="@MezuniyetTarih" CssClass="col-sm-8 pb-1"></SfDatePicker>
+        </div>
+
+    </div>
+    <div class="col-sm-12 col-md-6">
+        <div class="form-row form-group form-inline ">
+
+        </div>
+    </div>
+</div>
+
+
+
+<br />
+<SfGrid PrintMode="PrintMode.CurrentPage" DataSource="ogrenciMezunDtos" @ref="mezunOnayGrid" TValue="OgrenciDto" AllowPaging="true" AllowSelection="true">
+    @*<GridEvents RowSelecting="OnRowSelecting" OnToolbarClick="ToolbarClickHandler" OnActionComplete="ActionCompletedHandler" OnActionBegin="OnActionBeginHandler" CommandClicked="CommandClickHandler" TValue="DersAcilanDto"></GridEvents>*@
+    <GridPageSettings PageCount="5" PageSizes="new int[]{ 5, 10, 50, 100,500,2000,10000}"></GridPageSettings>
+    <GridSelectionSettings CheckboxOnly="true" PersistSelection="true"></GridSelectionSettings>
+    <GridColumns>
+        <GridColumn Visible="false" Field=@nameof(OgrenciDto.Id) AllowEditing="false" IsPrimaryKey="true"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.Ad) HeaderText="Adı"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.FakulteAdi) HeaderText="Fakulte"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.ProgramAdi) HeaderText="Program"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.Sinif) HeaderText="Sınıf"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.KayitTarih) HeaderText="K.Tarih"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.KayitNeden) HeaderText="K.Neden"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.OgrenimDurum) HeaderText="Ö.Durum"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.SonDonem) HeaderText="SonDonem"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.MezuniyetTarih) HeaderText="Mez.Tarih"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.DiplomaNo) HeaderText="Dip.No"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.DanismanOnay) DisplayAsCheckBox="true" HeaderText="Onay"></GridColumn>
+    </GridColumns>
+</SfGrid>
+
+
 
 @if (isUyariOpen)
 {
@@ -211,6 +260,11 @@
         <OgrenciMufredatDersler OgrId="@OgrId"></OgrenciMufredatDersler>
     </Dialog>
 }
+
+<Dialog Baslik="Uyarı" @bind-isDialogOpen="@isDialogUyariOpen">
+    <p>@dialogText</p>
+</Dialog>
+
 
 <style>
     .form-group {

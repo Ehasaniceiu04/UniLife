@@ -34,12 +34,12 @@ namespace UniLife.Server.Controllers
 
         // GET: api/Ogrenci
         [HttpGet]
-        [Authorize(Roles ="Administrator,Personel")]
+        [Authorize(Roles = "Administrator,Personel")]
         public async Task<ApiResponse> Get()
         {
             return await _ogrenciManager.Get();
         }
-            //=> await _ogrenciManager.Get();
+        //=> await _ogrenciManager.Get();
 
         // GET: api/Ogrenci/5
         [HttpGet("{id}")]
@@ -127,7 +127,7 @@ namespace UniLife.Server.Controllers
                 await _ogrenciManager.GetOgrenciListByDersAcId(dersAcId) :
                 new ApiResponse(Status400BadRequest, "Ogrenci Model is Invalid");
 
-        
+
 
 
         // POST: api/Ogrenci
@@ -173,7 +173,7 @@ namespace UniLife.Server.Controllers
                 new ApiResponse(Status400BadRequest, "OgrencisSinifAtlat is Invalid");
 
 
-        
+
 
 
         // Put: api/Ogrenci
@@ -216,7 +216,7 @@ namespace UniLife.Server.Controllers
             }
         }
 
-        
+
         [HttpGet]
         [Route("GetOgrenciBelgesi/{id}")]
         [Authorize(Permissions.Ogrenci.Update)]
@@ -224,12 +224,46 @@ namespace UniLife.Server.Controllers
         {
             if (ModelState.IsValid)
             {
-                 return await _ogrenciManager.GetOgrenciBelgesi(id);
+                return await _ogrenciManager.GetOgrenciBelgesi(id);
             }
             else
             {
                 return new ApiResponse(Status400BadRequest, "Öğrenci bilgilerinde eksik var.");
             }
         }
+
+
+        [HttpPost]
+        [Route("UpdateOgrenciOnayBekle")]
+        //[Authorize(Permissions.Ogrenci.Update)]
+        [Authorize(Roles = "Administrator")]
+        public async Task<ApiResponse> UpdateOgrenciOnayBekle([FromBody] IEnumerable<int> OgrIds)
+        => ModelState.IsValid ?
+            await _ogrenciManager.UpdateOgrenciOnayBekle(OgrIds) :
+            new ApiResponse(Status400BadRequest, "OgrencisSinifAtlat is Invalid");
+
+        [HttpGet]
+        [Route("GetWhere/{fakulteId:int?}/{bolumId:int?}/{programId:int?}/{donemId}")]
+        [Authorize(Roles = "Administrator")]
+        public async Task<ApiResponse> GetOgrenciOnay(int? fakulteID, int? bolumId, int? programId, int donemId)
+        {
+            if (programId.HasValue)
+            {
+                return await _ogrenciManager.GetWhere(x => x.ProgramId == programId && !x.DanismanOnay.HasValue ); //&& x.SonDonem == donemId
+            }
+            else if (bolumId.HasValue)
+            {
+                return await _ogrenciManager.GetWhere(x => x.BolumId == bolumId && !x.DanismanOnay.HasValue);
+            }
+            else if (fakulteID.HasValue)
+            {
+                return await _ogrenciManager.GetWhere(x => x.FakulteId == fakulteID && !x.DanismanOnay.HasValue);
+            }
+            else
+            {
+                return await _ogrenciManager.GetWhere(x => !x.DanismanOnay.HasValue);
+            }
+        }
+        //=> await _ogrenciManager.GetWhere(x => !x.DanismanOnay.HasValue);
     }
 }

@@ -79,6 +79,11 @@ namespace UniLife.Shared.Dto.Definitions
 
         public bool DersKayitOnayli { get; set; }
 
+        public DateTime? MezuniyetTarih { get; set; }
+
+        public string DiplomaNo { get; set; }
+        public bool? DanismanOnay { get; set; }
+
         //[Required]
         //[StringLength(20, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
         //[RegularExpression(@"[^\s]+", ErrorMessage = "Spaces are not permitted.")]

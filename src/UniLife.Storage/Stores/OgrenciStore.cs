@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Threading;
 using System;
+using System.Security.Cryptography.X509Certificates;
 
 namespace UniLife.Storage.Stores
 {
@@ -300,6 +301,14 @@ namespace UniLife.Storage.Stores
                              TCKN = o.TCKN
                          };
             return await result.FirstOrDefaultAsync();
+        }
+
+        public async Task UpdateOgrenciOnayBekle(IEnumerable<int> ogrIds)
+        {
+            var asd = _db.Ogrencis.Where(x => ogrIds.Contains(x.Id));
+            await asd.ForEachAsync(x => x.DanismanOnay = false);
+            _db.Ogrencis.UpdateRange(asd);
+            await _db.SaveChangesAsync(CancellationToken.None);
         }
     }
 }

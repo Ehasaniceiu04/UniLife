@@ -22,5 +22,6 @@ namespace UniLife.Shared.DataInterfaces
         Task SinifAtlaTemizle(HedefKaynakDto hedefKaynakDto);
         Task<OgrenciInfoDto> GetOgrInfos(string kullaniciId);
         Task<OgrenciBelgesiDto> GetOgrenciBelgesi(int id);
+        Task UpdateOgrenciOnayBekle(IEnumerable<int> ogrIds);
     }
 }
