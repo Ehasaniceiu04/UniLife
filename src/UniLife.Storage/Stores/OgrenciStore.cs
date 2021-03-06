@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System;
 using System.Security.Cryptography.X509Certificates;
+using UniLife.Shared.Dto;
 
 namespace UniLife.Storage.Stores
 {
@@ -306,7 +307,7 @@ namespace UniLife.Storage.Stores
         public async Task UpdateOgrenciOnayBekle(IEnumerable<int> ogrIds)
         {
             var asd = _db.Ogrencis.Where(x => ogrIds.Contains(x.Id));
-            await asd.ForEachAsync(x => x.DanismanOnay = false);
+            await asd.ForEachAsync(x => x.MezunOnay = (int)MezunOnayDurum.DanismanOnayinda);
             _db.Ogrencis.UpdateRange(asd);
             await _db.SaveChangesAsync(CancellationToken.None);
         }

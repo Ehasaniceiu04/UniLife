@@ -14,6 +14,7 @@ using UniLife.Shared.DataModels;
 using IdentityServer4.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
+using UniLife.Shared.Dto;
 
 namespace UniLife.Server.Controllers
 {
@@ -243,25 +244,26 @@ namespace UniLife.Server.Controllers
             new ApiResponse(Status400BadRequest, "OgrencisSinifAtlat is Invalid");
 
         [HttpGet]
-        [Route("GetWhere/{fakulteId:int?}/{bolumId:int?}/{programId:int?}/{donemId}")]
+        //[Route("GetOgrenciOnay/{donemId}/{fakulteId:int?}/{bolumId:int?}/{programId:int?}")]
+        [Route("GetOgrenciOnay")]
         [Authorize(Roles = "Administrator")]
-        public async Task<ApiResponse> GetOgrenciOnay(int? fakulteID, int? bolumId, int? programId, int donemId)
+        public async Task<ApiResponse> GetOgrenciOnay(int donemId,int? fakulteID = null, int? bolumId = null, int? programId = null)
         {
             if (programId.HasValue)
             {
-                return await _ogrenciManager.GetWhere(x => x.ProgramId == programId && !x.DanismanOnay.HasValue ); //&& x.SonDonem == donemId
+                return await _ogrenciManager.GetWhere(x => x.ProgramId == programId && x.MezunOnay ==(int)MezunOnayDurum.DanismanOnayinda && x.SonDonemId == donemId);
             }
             else if (bolumId.HasValue)
             {
-                return await _ogrenciManager.GetWhere(x => x.BolumId == bolumId && !x.DanismanOnay.HasValue);
+                return await _ogrenciManager.GetWhere(x => x.BolumId == bolumId && x.MezunOnay == (int)MezunOnayDurum.DanismanOnayinda && x.SonDonemId == donemId);
             }
             else if (fakulteID.HasValue)
             {
-                return await _ogrenciManager.GetWhere(x => x.FakulteId == fakulteID && !x.DanismanOnay.HasValue);
+                return await _ogrenciManager.GetWhere(x => x.FakulteId == fakulteID && x.MezunOnay == (int)MezunOnayDurum.DanismanOnayinda && x.SonDonemId == donemId);
             }
             else
             {
-                return await _ogrenciManager.GetWhere(x => !x.DanismanOnay.HasValue);
+                return await _ogrenciManager.GetWhere(x => x.MezunOnay == (int)MezunOnayDurum.DanismanOnayinda && x.SonDonemId == donemId);
             }
         }
         //=> await _ogrenciManager.GetWhere(x => !x.DanismanOnay.HasValue);

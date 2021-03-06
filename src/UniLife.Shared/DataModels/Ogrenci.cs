@@ -53,7 +53,7 @@ namespace UniLife.Shared.DataModels
         public DateTime? MezuniyetTarih { get; set; }
         [MaxLength(11)]
         public string DiplomaNo { get; set; }
-        public bool? DanismanOnay { get; set; }
+        public int MezunOnay { get; set; }
 
         [MaxLength(500)]
         public string DnmSnfGecBilgi { get; set; }
@@ -88,8 +88,8 @@ namespace UniLife.Shared.DataModels
         public int ZDersler1 { get; set; }
         public int ZDersler2 { get; set; }
         public int BasarisizDersler { get; set; }
-        [MaxLength(11)]
-        public string SonDonem { get; set; }
+
+        public int? SonDonemId { get; set; }
 
         public virtual ICollection<DersKayit> DersKayits{ get; set; }
 

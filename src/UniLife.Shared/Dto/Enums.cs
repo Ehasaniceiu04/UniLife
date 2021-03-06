@@ -17,6 +17,13 @@ namespace UniLife.Shared.Dto
         Bekleniyor = 0,
         Sonuçlandırıldı = 1
     }
+    public enum MezunOnayDurum
+    {
+        Bekleniyor = 0,
+        Aktif = 1,
+        DanismanOnayinda=2,
+        DanışmanOnayladı=3
+    }
     public enum DersNedenEnum
     {
         Dönemsel=1,

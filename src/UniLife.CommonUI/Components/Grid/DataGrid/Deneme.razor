@@ -2,6 +2,8 @@
 @using Syncfusion.Blazor.Grids
 @inject Microsoft.AspNetCore.Components.NavigationManager UriHelper
 @inherits SampleBaseComponent;
+@using Syncfusion.Blazor.Buttons
+
 
 @using GridData
 @using Syncfusion.Blazor.DropDowns
@@ -22,33 +24,36 @@
                     <span id="afterload" class="topload">Loaded 10,000 Rows and 20 Columns</span>
                 }
             }
-        <SfGrid DataSource="@GridData" Height="410" Width="auto" EnableHover="false" EnableVirtualization="true" EnableColumnVirtualization="true" AllowSelection="true">
-            <GridSelectionSettings CheckboxOnly="true" PersistSelection="true"></GridSelectionSettings>
-            <GridPageSettings PageSize="80"></GridPageSettings>
-            <GridColumns>
-                <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
-                <GridColumn Field="Field1" HeaderText="PlayerName" Width="120"></GridColumn>
-                <GridColumn Field="Field2" HeaderText="Year" TextAlign="TextAlign.Right" Width="150"></GridColumn>
-                <GridColumn Field="Field3" HeaderText="Stint" TextAlign="TextAlign.Right" Width="150"></GridColumn>
-                <GridColumn Field="Field4" HeaderText="TMID" TextAlign="TextAlign.Right" Width="150"></GridColumn>
-                <GridColumn Field="Field5" HeaderText="LGID" TextAlign="TextAlign.Right" Width="150"></GridColumn>
-                <GridColumn Field="Field6" HeaderText="GP" TextAlign="TextAlign.Right" Width="150"></GridColumn>
-                <GridColumn Field="Field7" HeaderText="GS" TextAlign="TextAlign.Right" Width="150"></GridColumn>
-                <GridColumn Field="Field8" HeaderText="Minutes" TextAlign="TextAlign.Right" Width="150"></GridColumn>
-                <GridColumn Field="Field9" HeaderText="Points" TextAlign="TextAlign.Right" Width="150"></GridColumn>
-                <GridColumn Field="Field10" HeaderText="oRebounds" TextAlign="TextAlign.Right" Width="150"></GridColumn>
-                <GridColumn Field="Field11" HeaderText="dRebounds" TextAlign="TextAlign.Right" Width="150"></GridColumn>
-                <GridColumn Field="Field12" HeaderText="Rebounds" TextAlign="TextAlign.Right" Width="150"></GridColumn>
-                <GridColumn Field="Field13" HeaderText="Assists" TextAlign="TextAlign.Right" Width="150"></GridColumn>
-                <GridColumn Field="Field14" HeaderText="Steals" TextAlign="TextAlign.Right" Width="150"></GridColumn>
-                <GridColumn Field="Field15" HeaderText="Blocks" TextAlign="TextAlign.Right" Width="150"></GridColumn>
-                <GridColumn Field="Field16" HeaderText="TurnOvers" TextAlign="TextAlign.Right" Width="150"></GridColumn>
-                <GridColumn Field="Field17" HeaderText="PF" TextAlign="TextAlign.Right" Width="150"></GridColumn>
-                <GridColumn Field="Field18" HeaderText="fgAttempted" TextAlign="TextAlign.Right" Width="150"></GridColumn>
-                <GridColumn Field="Field19" HeaderText="fgMade" TextAlign="TextAlign.Right" Width="150"></GridColumn>
-                <GridColumn Field="Field20" HeaderText="ftAttempted" TextAlign="TextAlign.Right" Width="150"></GridColumn>
-            </GridColumns>
-        </SfGrid>
+            <SfGrid DataSource="@GridData" @ref="mezunGrid" Height="410" Width="auto" EnableHover="false" EnableVirtualization="true" EnableColumnVirtualization="true" AllowSelection="true">
+                <GridSelectionSettings CheckboxOnly="true" PersistSelection="true"></GridSelectionSettings>
+                <GridPageSettings PageSize="80"></GridPageSettings>
+                <GridColumns>
+                    <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
+                    <GridColumn Field="Field1" HeaderText="PlayerName" Width="120"></GridColumn>
+                    <GridColumn Field="Field2" HeaderText="Year" TextAlign="TextAlign.Right" Width="150"></GridColumn>
+                    <GridColumn Field="Field3" HeaderText="Stint" TextAlign="TextAlign.Right" Width="150"></GridColumn>
+                    <GridColumn Field="Field4" HeaderText="TMID" TextAlign="TextAlign.Right" Width="150"></GridColumn>
+                    <GridColumn Field="Field5" HeaderText="LGID" TextAlign="TextAlign.Right" Width="150"></GridColumn>
+                    <GridColumn Field="Field6" HeaderText="GP" TextAlign="TextAlign.Right" Width="150"></GridColumn>
+                    <GridColumn Field="Field7" HeaderText="GS" TextAlign="TextAlign.Right" Width="150"></GridColumn>
+                    <GridColumn Field="Field8" HeaderText="Minutes" TextAlign="TextAlign.Right" Width="150"></GridColumn>
+                    <GridColumn Field="Field9" HeaderText="Points" TextAlign="TextAlign.Right" Width="150"></GridColumn>
+                    <GridColumn Field="Field10" HeaderText="oRebounds" TextAlign="TextAlign.Right" Width="150"></GridColumn>
+                    <GridColumn Field="Field11" HeaderText="dRebounds" TextAlign="TextAlign.Right" Width="150"></GridColumn>
+                    <GridColumn Field="Field12" HeaderText="Rebounds" TextAlign="TextAlign.Right" Width="150"></GridColumn>
+                    <GridColumn Field="Field13" HeaderText="Assists" TextAlign="TextAlign.Right" Width="150"></GridColumn>
+                    <GridColumn Field="Field14" HeaderText="Steals" TextAlign="TextAlign.Right" Width="150"></GridColumn>
+                    <GridColumn Field="Field15" HeaderText="Blocks" TextAlign="TextAlign.Right" Width="150"></GridColumn>
+                    <GridColumn Field="Field16" HeaderText="TurnOvers" TextAlign="TextAlign.Right" Width="150"></GridColumn>
+                    <GridColumn Field="Field17" HeaderText="PF" TextAlign="TextAlign.Right" Width="150"></GridColumn>
+                    <GridColumn Field="Field18" HeaderText="fgAttempted" TextAlign="TextAlign.Right" Width="150"></GridColumn>
+                    <GridColumn Field="Field19" HeaderText="fgMade" TextAlign="TextAlign.Right" Width="150"></GridColumn>
+                    <GridColumn Field="Field20" HeaderText="ftAttempted" TextAlign="TextAlign.Right" Width="150"></GridColumn>
+                </GridColumns>
+            </SfGrid>
+
+            <SfButton OnClick="Refresh">Bul / Yenile</SfButton>
+
         </div>
     </div>
 </div>
@@ -75,6 +80,14 @@
     }
 </style>
 @code{
+
+    async Task Refresh()
+    {
+        var asd = await mezunGrid.GetSelectedRecords();
+    }
+
+    Syncfusion.Blazor.Grids.SfGrid<VirtualData> mezunGrid;
+
     public List<VirtualData> GridData { get; set; } = new List<VirtualData>();
     public Boolean Data = true;
     protected override async Task OnInitializedAsync()

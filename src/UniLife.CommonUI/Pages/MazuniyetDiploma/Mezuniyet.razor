@@ -173,7 +173,7 @@
                         </div>
                         <label for="sonDonem" class="col-sm-7">Son Dönemi:</label>
                         <div id="sonDonem" class="col-sm-5">
-                            @(ogrenciInfo.SonDonem)
+                            @(ogrenciInfo.SonDonemId)
                         </div>
                     </div>
                 }
@@ -216,7 +216,7 @@
                 <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
             </SfDropDownList>
 
-            <label class="col-sm-4" for="mezTarih">Kayıt Tarihi:</label>
+            <label class="col-sm-4" for="mezTarih">Mezuniyet Tarihi:</label>
             <SfDatePicker ID="mezTarih" TValue="DateTime?" @bind-Value="@MezuniyetTarih" CssClass="col-sm-8 pb-1"></SfDatePicker>
         </div>
 
@@ -245,10 +245,10 @@
         <GridColumn Field=@nameof(OgrenciDto.KayitTarih) HeaderText="K.Tarih"></GridColumn>
         <GridColumn Field=@nameof(OgrenciDto.KayitNeden) HeaderText="K.Neden"></GridColumn>
         <GridColumn Field=@nameof(OgrenciDto.OgrenimDurum) HeaderText="Ö.Durum"></GridColumn>
-        <GridColumn Field=@nameof(OgrenciDto.SonDonem) HeaderText="SonDonem"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.SonDonemId) HeaderText="SonDonem"></GridColumn>
         <GridColumn Field=@nameof(OgrenciDto.MezuniyetTarih) HeaderText="Mez.Tarih"></GridColumn>
         <GridColumn Field=@nameof(OgrenciDto.DiplomaNo) HeaderText="Dip.No"></GridColumn>
-        <GridColumn Field=@nameof(OgrenciDto.DanismanOnay) DisplayAsCheckBox="true" HeaderText="Onay"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.MezunOnay) HeaderText="Onay"></GridColumn>
     </GridColumns>
 </SfGrid>
 

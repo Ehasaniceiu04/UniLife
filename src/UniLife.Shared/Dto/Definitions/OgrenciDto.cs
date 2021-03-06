@@ -82,7 +82,7 @@ namespace UniLife.Shared.Dto.Definitions
         public DateTime? MezuniyetTarih { get; set; }
 
         public string DiplomaNo { get; set; }
-        public bool? DanismanOnay { get; set; }
+        public int MezunOnay { get; set; }
 
         //[Required]
         //[StringLength(20, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
@@ -124,8 +124,8 @@ namespace UniLife.Shared.Dto.Definitions
         public int ZDersler1 { get; set; }
         public int ZDersler2 { get; set; }
         public int BasarisizDersler { get; set; }
-        [MaxLength(11)]
-        public string SonDonem { get; set; }
+
+        public int? SonDonemId { get; set; }
 
     }
 }

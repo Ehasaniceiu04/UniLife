@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using UniLife.Storage;
@@ -9,9 +10,10 @@ using UniLife.Storage;
 namespace UniLife.Storage.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210306165208_donemmez")]
+    partial class donemmez
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2438,6 +2440,9 @@ namespace UniLife.Storage.Migrations
                     b.Property<int?>("DanismanId")
                         .HasColumnType("integer");
 
+                    b.Property<bool?>("DanismanOnay")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("DiplomaNo")
                         .HasMaxLength(11)
                         .HasColumnType("character varying(11)");
@@ -2487,9 +2492,6 @@ namespace UniLife.Storage.Migrations
 
                     b.Property<DateTime>("KayitTarih")
                         .HasColumnType("timestamp without time zone");
-
-                    b.Property<int>("MezunOnay")
-                        .HasColumnType("integer");
 
                     b.Property<DateTime?>("MezuniyetTarih")
                         .HasColumnType("timestamp without time zone");

@@ -46,7 +46,7 @@ namespace UniLife.CommonUI.Pages.MazuniyetDiploma
         Syncfusion.Blazor.Grids.SfGrid<OgrenciDto> mezunOnayGrid;
 
         List<OgrenciDto> ogrenciMezunDtos = new List<OgrenciDto>();
-        
+
 
         string OdataQuery = "odata/ogrencis/OgrMezuniyet";
         public Query totalQuery;
@@ -63,14 +63,14 @@ namespace UniLife.CommonUI.Pages.MazuniyetDiploma
         {
             totalQuery = new Query();
 
-                totalQuery.AddParams("agno", AGNOKontrol);
-                totalQuery.AddParams("kredi", KrediKontrol);
-                totalQuery.AddParams("akts", AKTSKontrol);
-                totalQuery.AddParams("staj", StajKontrol);
-                totalQuery.AddParams("zders", ZorunluDersKontrol);
-                totalQuery.AddParams("sders", SecemeliDersKontrol);
-                totalQuery.AddParams("bders", BasarisizDersKontrol);
-                totalQuery.AddParams("hazirlik", HazirlikKontrol);
+            totalQuery.AddParams("agno", AGNOKontrol);
+            totalQuery.AddParams("kredi", KrediKontrol);
+            totalQuery.AddParams("akts", AKTSKontrol);
+            totalQuery.AddParams("staj", StajKontrol);
+            totalQuery.AddParams("zders", ZorunluDersKontrol);
+            totalQuery.AddParams("sders", SecemeliDersKontrol);
+            totalQuery.AddParams("bders", BasarisizDersKontrol);
+            totalQuery.AddParams("hazirlik", HazirlikKontrol);
 
             totalQuery.Expand(new List<string> { "KayitNeden($select=Id,Ad)", "Danisman($select=Id,Ad)", "Program($select=Id,Ad)" });
 
@@ -92,7 +92,7 @@ namespace UniLife.CommonUI.Pages.MazuniyetDiploma
             await Task.Delay(100);
             mezunGrid.Refresh();
 
-            if (donemId!=0 && MezuniyetTarih.HasValue)
+            if (donemId != 0 && MezuniyetTarih.HasValue)
             {
                 await MezunOnayLoad();
             }
@@ -100,17 +100,22 @@ namespace UniLife.CommonUI.Pages.MazuniyetDiploma
 
         async Task MezunOnayLoad()
         {
-            ApiResponseDto<List<OgrenciDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDto>>>($"api/ogrenci/GetOgrenciOnay/{FakulteId}/{BolumId}/{ProgramId}/{donemId}");
 
-            if (apiResponse.StatusCode == StatusCodes.Status200OK)
+            try
             {
-                ogrenciMezunDtos = apiResponse.Result;
-                //mezunOnayGrid.Refresh();
-                //StateHasChanged();
+                ApiResponseDto<List<OgrenciDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<OgrenciDto>>>($"api/ogrenci/GetOgrenciOnay?donemId={donemId}&FakulteId={FakulteId}&BolumId={BolumId}&ProgramId ={ProgramId}");
+
+                if (apiResponse.IsSuccessStatusCode)
+                {
+                    ogrenciMezunDtos = apiResponse.Result;
+                    matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+                }
+                else
+                    matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
             }
-            else
+            catch (Exception ex)
             {
-                matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Bölüm getirilirken hata oluştu!");
+                matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
             }
         }
 
@@ -147,7 +152,7 @@ namespace UniLife.CommonUI.Pages.MazuniyetDiploma
                     isDialogUyariOpen = true;
                     return;
                 }
-                if (donemId ==0)
+                if (donemId == null)
                 {
                     dialogText = "Liste dönemi seçmelisiniz!";
                     isDialogUyariOpen = true;
@@ -155,11 +160,11 @@ namespace UniLife.CommonUI.Pages.MazuniyetDiploma
                 }
 
                 var selectedOgr = await mezunGrid.GetSelectedRecords();
-                
-                foreach (var item in selectedOgr) 
+
+                foreach (var item in selectedOgr)
                 {
                     item.MezuniyetTarih = MezuniyetTarih;
-                    item.DanismanOnay = false;
+                    item.MezunOnay = (int)MezunOnayDurum.DanismanOnayinda;
                 }
 
                 ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/Ogrenci/UpdateOgrenciOnayBekle", selectedOgr.Select(x => x.Id));
@@ -175,9 +180,9 @@ namespace UniLife.CommonUI.Pages.MazuniyetDiploma
                     matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
                 }
 
-                
 
-                
+
+
 
             }
         }
