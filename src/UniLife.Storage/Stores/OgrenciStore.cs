@@ -12,6 +12,7 @@ using System.Threading;
 using System;
 using System.Security.Cryptography.X509Certificates;
 using UniLife.Shared.Dto;
+using UniLife.Shared.Dto.Definitions.Bussines;
 
 namespace UniLife.Storage.Stores
 {
@@ -304,11 +305,19 @@ namespace UniLife.Storage.Stores
             return await result.FirstOrDefaultAsync();
         }
 
-        public async Task UpdateOgrenciOnayBekle(IEnumerable<int> ogrIds)
+        public async Task UpdateOgrenciOnayBekle(MazunOnayDto mazunOnayDto)
         {
-            var asd = _db.Ogrencis.Where(x => ogrIds.Contains(x.Id));
-            await asd.ForEachAsync(x => x.MezunOnay = (int)MezunOnayDurum.DanismanOnayinda);
+            var asd = _db.Ogrencis.Where(x => mazunOnayDto.SelectedOgrIds.Contains(x.Id));
+            await asd.ForEachAsync(x => { x.MezunOnay = (int)MezunOnayDurum.DanismanOnayinda; x.SonDonemId = mazunOnayDto.SelectedDonemId; });
             _db.Ogrencis.UpdateRange(asd);
+            await _db.SaveChangesAsync(CancellationToken.None);
+        } 
+
+        public async Task UpdateOnay(int ogrId, int onayNo)
+        {
+            var Ogrenci = await _db.Ogrencis.FirstOrDefaultAsync(x => x.Id == ogrId);
+            Ogrenci.MezunOnay = onayNo;
+            _db.Ogrencis.Update(Ogrenci);
             await _db.SaveChangesAsync(CancellationToken.None);
         }
     }

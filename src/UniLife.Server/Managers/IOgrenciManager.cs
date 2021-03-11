@@ -3,6 +3,7 @@ using UniLife.Shared.DataModels;
 using UniLife.Shared.Dto.Definitions;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using UniLife.Shared.Dto.Definitions.Bussines;
 
 namespace UniLife.Server.Managers
 {
@@ -19,6 +20,7 @@ namespace UniLife.Server.Managers
         Task<ApiResponse> SinifAtlaTemizle(HedefKaynakDto hedefKaynakDto);
         Task<ApiResponse> GetOgrInfos(string kullaniciId);
         Task<ApiResponse> GetOgrenciBelgesi(int id);
-        Task<ApiResponse> UpdateOgrenciOnayBekle(IEnumerable<int> ogrIds);
+        Task<ApiResponse> UpdateOgrenciOnayBekle(MazunOnayDto mazunOnayDto);
+        Task<ApiResponse> UpdateOnay(int ogrId, int onayNo);
     }
 }

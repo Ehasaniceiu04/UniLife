@@ -15,6 +15,7 @@ using IdentityServer4.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using UniLife.Shared.Dto;
+using UniLife.Shared.Dto.Definitions.Bussines;
 
 namespace UniLife.Server.Controllers
 {
@@ -238,33 +239,56 @@ namespace UniLife.Server.Controllers
         [Route("UpdateOgrenciOnayBekle")]
         //[Authorize(Permissions.Ogrenci.Update)]
         [Authorize(Roles = "Administrator")]
-        public async Task<ApiResponse> UpdateOgrenciOnayBekle([FromBody] IEnumerable<int> OgrIds)
+        public async Task<ApiResponse> UpdateOgrenciOnayBekle(MazunOnayDto mazunOnayDto)
         => ModelState.IsValid ?
-            await _ogrenciManager.UpdateOgrenciOnayBekle(OgrIds) :
+            await _ogrenciManager.UpdateOgrenciOnayBekle(mazunOnayDto) :
             new ApiResponse(Status400BadRequest, "OgrencisSinifAtlat is Invalid");
 
+
         [HttpGet]
-        //[Route("GetOgrenciOnay/{donemId}/{fakulteId:int?}/{bolumId:int?}/{programId:int?}")]
+        [Route("UpdateOnay")]
+        [Authorize(Roles = "Administrator")]
+        public async Task<ApiResponse> UpdateOnay(int ogrId,int onayNo)
+        {
+            if (ModelState.IsValid)
+            {
+                return await _ogrenciManager.UpdateOnay(ogrId, onayNo);
+            }
+            else
+            {
+                return new ApiResponse(Status400BadRequest, "UpdateOnay is Invalid");
+            }
+        }
+
+        [HttpGet]
         [Route("GetOgrenciOnay")]
         [Authorize(Roles = "Administrator")]
         public async Task<ApiResponse> GetOgrenciOnay(int donemId,int? fakulteID = null, int? bolumId = null, int? programId = null)
         {
-            if (programId.HasValue)
+            if (ModelState.IsValid)
             {
-                return await _ogrenciManager.GetWhere(x => x.ProgramId == programId && x.MezunOnay ==(int)MezunOnayDurum.DanismanOnayinda && x.SonDonemId == donemId);
-            }
-            else if (bolumId.HasValue)
-            {
-                return await _ogrenciManager.GetWhere(x => x.BolumId == bolumId && x.MezunOnay == (int)MezunOnayDurum.DanismanOnayinda && x.SonDonemId == donemId);
-            }
-            else if (fakulteID.HasValue)
-            {
-                return await _ogrenciManager.GetWhere(x => x.FakulteId == fakulteID && x.MezunOnay == (int)MezunOnayDurum.DanismanOnayinda && x.SonDonemId == donemId);
+                if (programId.HasValue)
+                {
+                    return await _ogrenciManager.GetWhere(x => x.ProgramId == programId && x.MezunOnay == (int)MezunOnayDurum.DanismanOnayinda && x.SonDonemId == donemId);
+                }
+                else if (bolumId.HasValue)
+                {
+                    return await _ogrenciManager.GetWhere(x => x.BolumId == bolumId && x.MezunOnay == (int)MezunOnayDurum.DanismanOnayinda && x.SonDonemId == donemId);
+                }
+                else if (fakulteID.HasValue)
+                {
+                    return await _ogrenciManager.GetWhere(x => x.FakulteId == fakulteID && x.MezunOnay == (int)MezunOnayDurum.DanismanOnayinda && x.SonDonemId == donemId);
+                }
+                else
+                {
+                    return await _ogrenciManager.GetWhere(x => x.MezunOnay == (int)MezunOnayDurum.DanismanOnayinda && x.SonDonemId == donemId);
+                }
             }
             else
             {
-                return await _ogrenciManager.GetWhere(x => x.MezunOnay == (int)MezunOnayDurum.DanismanOnayinda && x.SonDonemId == donemId);
+                return new ApiResponse(Status400BadRequest, "GetOgrenciOnay is Invalid");
             }
+           
         }
         //=> await _ogrenciManager.GetWhere(x => !x.DanismanOnay.HasValue);
     }

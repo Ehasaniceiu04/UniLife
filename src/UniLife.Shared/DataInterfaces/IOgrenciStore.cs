@@ -3,6 +3,7 @@ using UniLife.Shared.Dto.Definitions;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
+using UniLife.Shared.Dto.Definitions.Bussines;
 
 namespace UniLife.Shared.DataInterfaces
 {
@@ -22,6 +23,7 @@ namespace UniLife.Shared.DataInterfaces
         Task SinifAtlaTemizle(HedefKaynakDto hedefKaynakDto);
         Task<OgrenciInfoDto> GetOgrInfos(string kullaniciId);
         Task<OgrenciBelgesiDto> GetOgrenciBelgesi(int id);
-        Task UpdateOgrenciOnayBekle(IEnumerable<int> ogrIds);
+        Task UpdateOgrenciOnayBekle(MazunOnayDto mazunOnayDto);
+        Task UpdateOnay(int ogrId, int onayNo);
     }
 }

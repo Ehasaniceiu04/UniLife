@@ -13,6 +13,8 @@ using MatBlazor;
 using UniLife.CommonUI.Extensions;
 using System.Net.Http.Json;
 using Microsoft.AspNetCore.Http;
+using Syncfusion.Blazor.Grids;
+using UniLife.Shared.Dto.Definitions.Bussines;
 
 namespace UniLife.CommonUI.Pages.MazuniyetDiploma
 {
@@ -53,11 +55,11 @@ namespace UniLife.CommonUI.Pages.MazuniyetDiploma
 
         SfDropDownList<int?, DonemDto> DropDonem;
         int? donemId;
-        public DateTime? MezuniyetTarih { get; set; }
+        //public DateTime? MezuniyetTarih { get; set; }
 
         public Query donemQuery = new Query().Select(new List<string> { "Id", "Ad" }).RequiresCount();
 
-        private List<Object> Toolbaritems = new List<Object>() { new ItemModel() { Text = "Onaya Gönder", TooltipText = "Onaya Gönder", PrefixIcon = "e-click", Id = "OnayaGonder" } };
+        //private List<Object> Toolbaritems = new List<Object>() { new ItemModel() { Text = "Onaya Gönder", TooltipText = "Onaya Gönder", PrefixIcon = "e-click", Id = "OnayaGonder" } };
 
         async Task Refresh()
         {
@@ -87,12 +89,14 @@ namespace UniLife.CommonUI.Pages.MazuniyetDiploma
                 totalQuery.Where("fakulteId", "equal", FakulteId);
             }
 
+            totalQuery.Where("MezunOnay", "lessthan", 2);
+
             //isGridVisible = true;
             StateHasChanged();
             await Task.Delay(100);
             mezunGrid.Refresh();
 
-            if (donemId != 0 && MezuniyetTarih.HasValue)
+            if (donemId != 0)
             {
                 await MezunOnayLoad();
             }
@@ -108,6 +112,8 @@ namespace UniLife.CommonUI.Pages.MazuniyetDiploma
                 if (apiResponse.IsSuccessStatusCode)
                 {
                     ogrenciMezunDtos = apiResponse.Result;
+                    mezunOnayGrid.Refresh();
+                    StateHasChanged();
                     matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
                 }
                 else
@@ -141,51 +147,104 @@ namespace UniLife.CommonUI.Pages.MazuniyetDiploma
             isUyariOpen = true;
         }
 
-        public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+        //public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+        //{
+        //    if (args.Item.Id == "OnayaGonder")
+        //    {
+        //        if (donemId == null)
+        //        {
+        //            dialogText = "Liste dönemi seçmelisiniz!";
+        //            isDialogUyariOpen = true;
+        //            return;
+        //        }
+
+        //        var selectedOgr = await mezunGrid.GetSelectedRecords();
+
+        //        foreach (var item in selectedOgr)
+        //        {
+        //            item.MezunOnay = (int)MezunOnayDurum.DanismanOnayinda;
+        //        }
+
+        //        ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/Ogrenci/UpdateOgrenciOnayBekle", selectedOgr.Select(x => x.Id));
+        //        if (apiResponse.IsSuccessStatusCode)
+        //        {
+        //            ogrenciMezunDtos = selectedOgr;
+        //            mezunOnayGrid.Refresh();
+        //            matToaster.Add("Onaya gönderildi", MatToastType.Success, "İşlem başarılı.");
+
+        //        }
+        //        else
+        //        {
+        //            matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
+        //        }
+
+
+
+
+
+        //    }
+        //}
+
+        async Task OnayaGonder()
         {
-            if (args.Item.Id == "OnayaGonder")
+            if (donemId == null)
             {
+                dialogText = "Liste dönemi seçmelisiniz!";
+                isDialogUyariOpen = true;
+                return;
+            }
 
-                if (!MezuniyetTarih.HasValue)
-                {
-                    dialogText = "Mezuniyet tarihi seçmelisiniz!";
-                    isDialogUyariOpen = true;
-                    return;
-                }
-                if (donemId == null)
-                {
-                    dialogText = "Liste dönemi seçmelisiniz!";
-                    isDialogUyariOpen = true;
-                    return;
-                }
+            var selectedOgr = await mezunGrid.GetSelectedRecords();
 
-                var selectedOgr = await mezunGrid.GetSelectedRecords();
+            foreach (var item in selectedOgr)
+            {
+                item.MezunOnay = (int)MezunOnayDurum.DanismanOnayinda;
+            }
 
-                foreach (var item in selectedOgr)
-                {
-                    item.MezuniyetTarih = MezuniyetTarih;
-                    item.MezunOnay = (int)MezunOnayDurum.DanismanOnayinda;
-                }
+            MazunOnayDto mazunOnayDto = new MazunOnayDto { SelectedDonemId = (int)donemId, SelectedOgrIds = selectedOgr.Select(x => x.Id) };
 
-                ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/Ogrenci/UpdateOgrenciOnayBekle", selectedOgr.Select(x => x.Id));
-                if (apiResponse.IsSuccessStatusCode)
-                {
-                    ogrenciMezunDtos = selectedOgr;
-                    mezunOnayGrid.Refresh();
-                    matToaster.Add("Onaya gönderildi", MatToastType.Success, "İşlem başarılı.");
-
-                }
-                else
-                {
-                    matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
-                }
-
-
-
-
+            ApiResponseDto apiResponse = await Http.PostJsonAsync<ApiResponseDto>("api/Ogrenci/UpdateOgrenciOnayBekle", mazunOnayDto);
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                ogrenciMezunDtos = selectedOgr;
+                mezunOnayGrid.Refresh();
+                matToaster.Add("Onaya gönderildi", MatToastType.Success, "İşlem başarılı.");
 
             }
+            else
+            {
+                matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
+            }
+
+            mezunGrid.Refresh();
+            StateHasChanged();
         }
+
+        public async Task OnActionCompleteMezun(ActionEventArgs<OgrenciDto> args)
+        {
+            if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
+            {
+                try
+                {
+                    
+                      ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>($"api/ogrenci/UpdateOnay?ogrId={args.Data.Id}&onayNo={(int)MezunOnayDurum.Aktif}");
+
+                    if (apiResponse.IsSuccessStatusCode)
+                    {
+                        matToaster.Add(apiResponse.Message, MatToastType.Success, "İşlem başarılı.");
+                        mezunGrid.Refresh();
+                        StateHasChanged();
+                    }
+                    else
+                        matToaster.Add(apiResponse.Message, MatToastType.Danger, "Hata oluştu!");
+                }
+                catch (Exception ex)
+                {
+                    matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
+                }
+            }
+        }
+
 
         async Task DonemChange()
         {

@@ -89,7 +89,7 @@ namespace UniLife.Shared.DataModels
         public int ZDersler2 { get; set; }
         public int BasarisizDersler { get; set; }
 
-        public int? SonDonemId { get; set; }
+        public int SonDonemId { get; set; }
 
         public virtual ICollection<DersKayit> DersKayits{ get; set; }
 

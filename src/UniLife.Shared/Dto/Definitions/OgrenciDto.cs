@@ -125,7 +125,7 @@ namespace UniLife.Shared.Dto.Definitions
         public int ZDersler2 { get; set; }
         public int BasarisizDersler { get; set; }
 
-        public int? SonDonemId { get; set; }
+        public int SonDonemId { get; set; }
 
     }
 }

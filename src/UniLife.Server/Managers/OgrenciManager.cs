@@ -4,6 +4,7 @@ using UniLife.Server.Middleware.Wrappers;
 using UniLife.Shared.DataInterfaces;
 using UniLife.Shared.DataModels;
 using UniLife.Shared.Dto.Definitions;
+using UniLife.Shared.Dto.Definitions.Bussines;
 using static Microsoft.AspNetCore.Http.StatusCodes;
 
 namespace UniLife.Server.Managers
@@ -77,10 +78,16 @@ namespace UniLife.Server.Managers
             return new ApiResponse(Status200OK, "Retrieved OgrenciDto", await _ogrenciStore.GetOgrenciBelgesi(id));
         }
 
-        public async Task<ApiResponse> UpdateOgrenciOnayBekle(IEnumerable<int> ogrIds)
+        public async Task<ApiResponse> UpdateOgrenciOnayBekle(MazunOnayDto mazunOnayDto)
         {
-            await _ogrenciStore.UpdateOgrenciOnayBekle(ogrIds);
+            await _ogrenciStore.UpdateOgrenciOnayBekle(mazunOnayDto);
             return new ApiResponse(Status200OK, "UpdateOgrenciOnayBekle done!", null);
+        }
+
+        public async Task<ApiResponse> UpdateOnay(int ogrId, int onayNo)
+        {
+            await _ogrenciStore.UpdateOnay(ogrId, onayNo);
+            return new ApiResponse(Status200OK, "UpdateOnay done!");
         }
     }
 }
