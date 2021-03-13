@@ -1,19 +1,16 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using MatBlazor;
+using Microsoft.AspNetCore.Components;
+using Syncfusion.Blazor.Data;
+using Syncfusion.Blazor.DropDowns;
+using Syncfusion.Blazor.Grids;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UniLife.Shared.Dto.Definitions;
-using Syncfusion.Blazor.Data;
-using Syncfusion.Blazor.Navigations;
-using Syncfusion.Blazor.DropDowns;
-using UniLife.Shared.Dto;
-using MatBlazor;
-using UniLife.CommonUI.Extensions;
 using System.Net.Http.Json;
-using Microsoft.AspNetCore.Http;
-using Syncfusion.Blazor.Grids;
+using System.Threading.Tasks;
+using UniLife.CommonUI.Extensions;
+using UniLife.Shared.Dto;
+using UniLife.Shared.Dto.Definitions;
 using UniLife.Shared.Dto.Definitions.Bussines;
 
 namespace UniLife.CommonUI.Pages.MazuniyetDiploma
@@ -61,6 +58,12 @@ namespace UniLife.CommonUI.Pages.MazuniyetDiploma
 
         //private List<Object> Toolbaritems = new List<Object>() { new ItemModel() { Text = "Onaya Gönder", TooltipText = "Onaya Gönder", PrefixIcon = "e-click", Id = "OnayaGonder" } };
 
+        protected async override Task OnInitializedAsync()
+        {
+            await Refresh();
+        }
+
+
         async Task Refresh()
         {
             totalQuery = new Query();
@@ -96,7 +99,7 @@ namespace UniLife.CommonUI.Pages.MazuniyetDiploma
             await Task.Delay(100);
             mezunGrid.Refresh();
 
-            if (donemId != 0)
+            if (donemId != null)
             {
                 await MezunOnayLoad();
             }
@@ -125,23 +128,23 @@ namespace UniLife.CommonUI.Pages.MazuniyetDiploma
             }
         }
 
-        async Task AlDersler(int ogrId)
+        void AlDersler(int ogrId)
         {
             OgrId = ogrId;
             isUyariOpen = true;
         }
-        async Task MufDurum(int ogrId)
+        void MufDurum(int ogrId)
         {
             OgrId = ogrId;
             isUyariOpen = true;
         }
-        async Task Transkript(int ogrId)
+        void Transkript(int ogrId)
         {
             OgrId = ogrId;
             isUyariOpen = true;
 
         }
-        async Task MezuniyetTranskript(int ogrId)
+        void MezuniyetTranskript(int ogrId)
         {
             OgrId = ogrId;
             isUyariOpen = true;
@@ -226,8 +229,8 @@ namespace UniLife.CommonUI.Pages.MazuniyetDiploma
             {
                 try
                 {
-                    
-                      ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>($"api/ogrenci/UpdateOnay?ogrId={args.Data.Id}&onayNo={(int)MezunOnayDurum.Aktif}");
+
+                    ApiResponseDto apiResponse = await Http.GetFromJsonAsync<ApiResponseDto>($"api/ogrenci/UpdateOnay?ogrId={args.Data.Id}&onayNo={(int)MezunOnayDurum.Aktif}");
 
                     if (apiResponse.IsSuccessStatusCode)
                     {
@@ -250,7 +253,7 @@ namespace UniLife.CommonUI.Pages.MazuniyetDiploma
         {
             if (donemId.HasValue)
             {
-                MezunOnayLoad();
+                await MezunOnayLoad();
             }
         }
     }

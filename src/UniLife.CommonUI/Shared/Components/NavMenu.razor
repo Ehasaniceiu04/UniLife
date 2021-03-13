@@ -389,7 +389,13 @@ user.HasClaim("permission", Permissions.DersKayit.Delete)))
                         @if (user.HasClaim("permission", Permissions.Menu.Mezuniyet))
                         {
                             <MatNavItem Href="@navigationManager.ToAbsoluteUri("mezuniyet").AbsoluteUri">
-                                <MatIcon>touch_app</MatIcon> <span class="miniHover">Mezuniyet</span>
+                                <MatIcon>touch_app</MatIcon> <span class="miniHover">Mezuniyet Onay</span>
+                            </MatNavItem>
+                        }
+                        @if (user.HasClaim("permission", Permissions.Menu.Mezuniyet))
+                        {
+                            <MatNavItem Href="@navigationManager.ToAbsoluteUri("MezuniyetBitir").AbsoluteUri">
+                                <MatIcon>touch_app</MatIcon> <span class="miniHover">Mezuniyet Kabul</span>
                             </MatNavItem>
                         }
                     </MatNavSubMenuList>

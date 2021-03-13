@@ -22,6 +22,14 @@ namespace UniLife.Shared.Dto.Definitions
             new SinifDto() { Ad = "9", Id = 9 },
         };
 
+        public static List<KeyValueDto> DiplomaTipDtos { get; } = new List<KeyValueDto>
+        {
+            new KeyValueDto() { Ad = "birinci tip", Id = 1 },
+            new KeyValueDto() { Ad = "ikinci tip", Id = 2 },
+            new KeyValueDto() { Ad = "üç tip", Id = 3 },
+            new KeyValueDto() { Ad = "döt tip", Id = 4 },
+        };
+
         public static List<KeyValueDto> BasariTipiDtos { get; } = new List<KeyValueDto>
         {
             new KeyValueDto() { Ad = "%10", Id = 1 },

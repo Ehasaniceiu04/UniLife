@@ -217,7 +217,7 @@
             </SfDropDownList>
 
             @*<label class="col-sm-4" for="mezTarih">Mezuniyet Tarihi:</label>
-            <SfDatePicker ID="mezTarih" TValue="DateTime?" @bind-Value="@MezuniyetTarih" CssClass="col-sm-8 pb-1"></SfDatePicker>*@
+                <SfDatePicker ID="mezTarih" TValue="DateTime?" @bind-Value="@MezuniyetTarih" CssClass="col-sm-8 pb-1"></SfDatePicker>*@
         </div>
 
     </div>
@@ -236,7 +236,6 @@
     <GridEvents OnActionComplete="OnActionCompleteMezun" TValue="OgrenciDto"></GridEvents>
     <GridEditSettings ShowDeleteConfirmDialog="true" AllowDeleting="true"></GridEditSettings>
     <GridPageSettings PageCount="5" PageSizes="new int[]{ 5, 10, 50, 100,500,2000,10000}"></GridPageSettings>
-    <GridSelectionSettings CheckboxOnly="true" PersistSelection="true"></GridSelectionSettings>
     <GridColumns>
         <GridColumn Visible="false" Field=@nameof(OgrenciDto.Id) AllowEditing="false" IsPrimaryKey="true"></GridColumn>
         <GridColumn Field=@nameof(OgrenciDto.Ad) HeaderText="Adı"></GridColumn>
@@ -250,7 +249,13 @@
         <GridColumn Field=@nameof(OgrenciDto.SonDonemId) HeaderText="SonDonem"></GridColumn>
         <GridColumn Field=@nameof(OgrenciDto.MezuniyetTarih) HeaderText="Mez.Tarih"></GridColumn>
         <GridColumn Field=@nameof(OgrenciDto.DiplomaNo) HeaderText="Dip.No"></GridColumn>
-        <GridColumn Field=@nameof(OgrenciDto.MezunOnay) HeaderText="Onay"></GridColumn>
+        @*<GridColumn Field=@nameof(OgrenciDto.MezunOnay) HeaderText="Onay"></GridColumn>*@
+        <GridColumn Field=@nameof(OgrenciDto.MezunOnay) HeaderText="Onay" Width="70">
+            <Template>
+                @{ var a = context as OgrenciDto; }
+                <SfCheckBox Checked="@(a.MezunOnay==(int)MezunOnayDurum.DanışmanOnayladı)"></SfCheckBox>
+            </Template>
+        </GridColumn>
         <GridColumn Width="50">
             <GridCommandColumns>
                 <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-delete", CssClass = "e-flat" })"></GridCommandColumn>
@@ -340,6 +345,7 @@
         width: 100%;
         max-width: 70px;
     }
+
     .container-fluid {
         padding-left: 15px;
         padding-right: 15px;
