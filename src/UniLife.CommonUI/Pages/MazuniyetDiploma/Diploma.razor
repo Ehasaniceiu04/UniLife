@@ -1,1 +1,83 @@
-﻿@page "/diploma" 
+﻿@page "/diploma"
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.DropDowns
+@using UniLife.Shared.Dto.Definitions
+
+<div class="row">
+    <div class="col-sm-6">
+        <FakBolPrg @bind-ProgramId="FilterProgramId"
+                   @bind-BolumId="FilterBolumId"
+                   @bind-FakulteId="FilterFakulteId"
+                   ProgramPlaceHolder=" "
+                   ProgramShow="true"></FakBolPrg>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-group row">
+            <label for="DropMufredat" class="col-sm-3 col-form-label-sm">Kayit Neden</label>
+            <div class="col-sm-9">
+                <SfDropDownList @ref="DropKNe" ShowClearButton="true" TValue="int?" TItem="KeyValueDto"
+                                Query="@AdIdQuery"
+                                @bind-Value="@kayitNedenId">
+                    <SfDataManager Url="odata/kayitnedens" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
+                    <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                </SfDropDownList>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="DropMufredat" class="col-sm-3 col-form-label-sm">Öğr. Durumu</label>
+            <div class="col-sm-9">
+                <SfDropDownList @ref="DropOgrDurum" ShowClearButton="true" TValue="int?" TItem="KeyValueDto"
+                                Query="@AdIdQuery"
+                                @bind-Value="@ogrenimDurumId">
+                    <SfDataManager Url="odata/OgrenimDurums" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
+                    <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                </SfDropDownList>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="DropMufredat" class="col-sm-3 col-form-label-sm">Öğr. Türü</label>
+            <div class="col-sm-9">
+                <SfDropDownList @ref="DropOgrTur" ShowClearButton="true" TValue="int?" TItem="KeyValueDto"
+                                Query="@AdIdQuery"
+                                @bind-Value="@ogrenimTurId">
+                    <SfDataManager Url="odata/ogrenimturs" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
+                    <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                </SfDropDownList>
+            </div>
+        </div>
+
+        @*<SfButton OnClick="Refresh" CssClass="e-success col-sm-12 form-control-sm">Bul / Yenile</SfButton>*@
+
+    </div>
+</div>
+
+
+
+<SfGrid PrintMode="PrintMode.CurrentPage" @ref="diplomaGrid" Query="@totalQuery" TValue="OgrenciDto" AllowPaging="true" AllowSelection="true">
+    @*<GridEvents RowSelecting="OnRowSelecting" OnToolbarClick="ToolbarClickHandler" OnActionComplete="ActionCompletedHandler" OnActionBegin="OnActionBeginHandler" CommandClicked="CommandClickHandler" TValue="DersAcilanDto"></GridEvents>*@
+    <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+    <GridPageSettings PageCount="5" PageSizes="new int[]{ 5, 10, 50, 100,500,2000,10000}"></GridPageSettings>
+    <GridSelectionSettings CheckboxOnly="true" PersistSelection="true"></GridSelectionSettings>
+    <GridColumns>
+        <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
+        <GridColumn Visible="false" Field=@nameof(OgrenciDto.Id) AllowEditing="false" IsPrimaryKey="true"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.Ad) HeaderText="Adı"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad"></GridColumn>
+        
+    </GridColumns>
+</SfGrid>
+
+<style>
+    .container-fluid {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .form-group {
+        margin-bottom: 0.2rem;
+    }
+
+    input.e-input, .e-input-group input, .e-input-group.e-control-wrapper input, .e-input-group input.e-input, .e-input-group.e-control-wrapper input.e-input {
+        height: auto;
+    }
+</style>

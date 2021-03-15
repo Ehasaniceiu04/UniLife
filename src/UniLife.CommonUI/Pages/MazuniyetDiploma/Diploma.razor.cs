@@ -1,0 +1,112 @@
+﻿using Microsoft.AspNetCore.Components;
+using Syncfusion.Blazor.Data;
+using Syncfusion.Blazor.DropDowns;
+using Syncfusion.Blazor.Grids;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using UniLife.Shared.Dto.Definitions;
+
+namespace UniLife.CommonUI.Pages.MazuniyetDiploma
+{
+    public partial class Diploma: ComponentBase
+    {
+        [Inject]
+        public System.Net.Http.HttpClient Http { get; set; }
+        [Inject]
+        public MatBlazor.IMatToaster matToaster { get; set; }
+
+        int? _filterFakulteId;
+        public int? FilterFakulteId
+        {
+            get => _filterFakulteId;
+            set
+            {
+                if (_filterFakulteId == value) return;
+                else
+                {
+                    _filterFakulteId = value;
+                    Refresh();
+                }
+            }
+        }
+        int? _filterBolumId;
+        public int? FilterBolumId
+        {
+            get => _filterBolumId;
+            set
+            {
+                if (_filterBolumId == value) return;
+                else
+                {
+                    _filterBolumId = value;
+                    Refresh();
+                }
+            }
+        }
+        int? _filterProgramId;
+        public int? FilterProgramId
+        {
+            get => _filterProgramId;
+            set
+            {
+                if (_filterProgramId == value) return;
+                else
+                {
+                    _filterProgramId = value;
+                    Refresh();
+                }
+            }
+        }
+
+        int? kayitNedenId;
+        int? ogrenimDurumId;
+        int? ogrenimTurId;
+
+        SfDropDownList<int?, KeyValueDto> DropKNe;
+        SfDropDownList<int?, KeyValueDto> DropOgrDurum;
+        SfDropDownList<int?, KeyValueDto> DropOgrTur;
+
+        string OdataQuery = "odata/ogrencis";
+        public Query totalQuery = new Query();
+
+        public SfGrid<OgrenciDto> diplomaGrid;
+        
+
+        public Query AdIdQuery = new Query().Select(new List<string> { "Id", "Ad" }).RequiresCount();
+
+
+        async Task Refresh()
+        {
+            //totalQuery = new Query();
+
+
+            //totalQuery.Expand(new List<string> { "KayitNeden($select=Id,Ad)", "Danisman($select=Id,Ad)", "Program($select=Id,Ad)" });
+
+            //if (FilterProgramId.HasValue)
+            //{
+            //    totalQuery.Where("programId", "equal", FilterProgramId);
+            //}
+            //else if (FilterBolumId.HasValue)
+            //{
+            //    totalQuery.Where("bolumId", "equal", FilterBolumId);
+            //}
+            //else if (FilterFakulteId.HasValue)
+            //{
+            //    totalQuery.Where("fakulteId", "equal", FilterFakulteId);
+            //}
+
+            ////totalQuery.Where("MezunOnay", "greaterthan", 2);
+            //totalQuery.Where("MezunOnay", "lessthan", 2);
+
+
+            ////isGridVisible = true;
+            //StateHasChanged();
+            //await Task.Delay(100);
+            //mezunBitirGrid.Refresh();
+        }
+
+    }
+}
