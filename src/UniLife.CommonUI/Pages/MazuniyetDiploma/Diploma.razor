@@ -2,6 +2,7 @@
 @using Syncfusion.Blazor.Data
 @using Syncfusion.Blazor.DropDowns
 @using UniLife.Shared.Dto.Definitions
+@using Syncfusion.Blazor.Buttons
 
 <div class="row">
     <div class="col-sm-6">
@@ -17,7 +18,7 @@
             <div class="col-sm-9">
                 <SfDropDownList @ref="DropKNe" ShowClearButton="true" TValue="int?" TItem="KeyValueDto"
                                 Query="@AdIdQuery"
-                                @bind-Value="@kayitNedenId">
+                                @bind-Value="@KayitNedenId">
                     <SfDataManager Url="odata/kayitnedens" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
                     <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                 </SfDropDownList>
@@ -28,7 +29,7 @@
             <div class="col-sm-9">
                 <SfDropDownList @ref="DropOgrDurum" ShowClearButton="true" TValue="int?" TItem="KeyValueDto"
                                 Query="@AdIdQuery"
-                                @bind-Value="@ogrenimDurumId">
+                                @bind-Value="@OgrenimDurumId">
                     <SfDataManager Url="odata/OgrenimDurums" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
                     <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                 </SfDropDownList>
@@ -39,7 +40,7 @@
             <div class="col-sm-9">
                 <SfDropDownList @ref="DropOgrTur" ShowClearButton="true" TValue="int?" TItem="KeyValueDto"
                                 Query="@AdIdQuery"
-                                @bind-Value="@ogrenimTurId">
+                                @bind-Value="@OgrenimTurId">
                     <SfDataManager Url="odata/ogrenimturs" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
                     <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
                 </SfDropDownList>
@@ -61,11 +62,15 @@
     <GridColumns>
         <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
         <GridColumn Visible="false" Field=@nameof(OgrenciDto.Id) AllowEditing="false" IsPrimaryKey="true"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.OgrNo) HeaderText="Öğr.No"></GridColumn>
         <GridColumn Field=@nameof(OgrenciDto.Ad) HeaderText="Adı"></GridColumn>
         <GridColumn Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad"></GridColumn>
-        
+        <GridColumn Field=@nameof(OgrenciDto.ProgramAdi) HeaderText="Program"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.DiplomaNo) HeaderText="DiplomaNo"></GridColumn>
     </GridColumns>
 </SfGrid>
+
+<SfButton OnClick="Yazdir" CssClass="e-success col-sm-4 form-control-sm">Yazdır</SfButton>
 
 <style>
     .container-fluid {
@@ -74,7 +79,7 @@
     }
 
     .form-group {
-        margin-bottom: 0.2rem;
+        margin-bottom: 0.1rem;
     }
 
     input.e-input, .e-input-group input, .e-input-group.e-control-wrapper input, .e-input-group input.e-input, .e-input-group.e-control-wrapper input.e-input {

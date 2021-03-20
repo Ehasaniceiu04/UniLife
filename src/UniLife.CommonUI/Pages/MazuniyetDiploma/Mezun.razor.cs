@@ -11,13 +11,8 @@ using UniLife.Shared.Dto.Definitions;
 
 namespace UniLife.CommonUI.Pages.MazuniyetDiploma
 {
-    public partial class MezuniyetBitir : ComponentBase
+    public partial class Mezun : ComponentBase
     {
-        [Inject]
-        public System.Net.Http.HttpClient Http { get; set; }
-        [Inject]
-        public MatBlazor.IMatToaster matToaster { get; set; }
-
         int? _filterFakulteId;
         public int? FilterFakulteId
         {
@@ -61,29 +56,9 @@ namespace UniLife.CommonUI.Pages.MazuniyetDiploma
             }
         }
 
-
-        bool isDialogUyariOpen;
-        string dialogText;
-
         string OdataQuery = "odata/ogrencis";
-        public Query totalQuery;
+        public Query totalQuery = new Query().Where("MezunOnay", "greaterthan", 2);
         Syncfusion.Blazor.Grids.SfGrid<OgrenciDto> mezunBitirGrid;
-
-        SfDropDownList<int?, KeyValueDto> DropDiplomaTip;
-        int? DiplomaTip;
-
-        DateTime? MezuniyetTarih;
-
-
-        SfTab Tab;
-
-        public void CommandClickHandler(CommandClickEventArgs<OgrenciDto> args)
-        {
-            if (args.CommandColumn.Title == "Bitir")
-            {
-
-            }
-        }
 
 
 
@@ -107,8 +82,8 @@ namespace UniLife.CommonUI.Pages.MazuniyetDiploma
                 totalQuery.Where("fakulteId", "equal", FilterFakulteId);
             }
 
-            //totalQuery.Where("MezunOnay", "greaterthan", 2);
-            totalQuery.Where("MezunOnay", "lessthan", 2);
+            totalQuery.Where("MezunOnay", "greaterthan", 2);
+            //totalQuery.Where("MezunOnay", "lessthan", 2);
 
 
             //isGridVisible = true;
@@ -116,24 +91,5 @@ namespace UniLife.CommonUI.Pages.MazuniyetDiploma
             await Task.Delay(100);
             mezunBitirGrid.Refresh();
         }
-
-        async Task MezunBas()
-        {
-            if (!DiplomaTip.HasValue)
-            {
-                dialogText = "Diploma tipi seçmelisiniz!";
-                isDialogUyariOpen = true;
-                return;
-            }
-            if (!MezuniyetTarih.HasValue)
-            {
-                dialogText = "Mezuniyet tarihi seçmelisiniz!";
-                isDialogUyariOpen = true;
-                return;
-            }
-
-            //seçililerin diploması basılacak.
-        }
-
     }
 }

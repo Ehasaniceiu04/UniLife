@@ -11,7 +11,7 @@ using UniLife.Shared.Dto.Definitions;
 
 namespace UniLife.CommonUI.Pages.MazuniyetDiploma
 {
-    public partial class MezuniyetBitir : ComponentBase
+    public partial class MezuniyetBekleyen : ComponentBase
     {
         [Inject]
         public System.Net.Http.HttpClient Http { get; set; }
@@ -67,7 +67,7 @@ namespace UniLife.CommonUI.Pages.MazuniyetDiploma
 
         string OdataQuery = "odata/ogrencis";
         public Query totalQuery;
-        Syncfusion.Blazor.Grids.SfGrid<OgrenciDto> mezunBitirGrid;
+        Syncfusion.Blazor.Grids.SfGrid<OgrenciDto> mezunBekleyenGrid;
 
         SfDropDownList<int?, KeyValueDto> DropDiplomaTip;
         int? DiplomaTip;
@@ -108,13 +108,13 @@ namespace UniLife.CommonUI.Pages.MazuniyetDiploma
             }
 
             //totalQuery.Where("MezunOnay", "greaterthan", 2);
-            totalQuery.Where("MezunOnay", "lessthan", 2);
+            totalQuery.Where("MezunOnay", "lessthan", 3);
 
 
             //isGridVisible = true;
             StateHasChanged();
             await Task.Delay(100);
-            mezunBitirGrid.Refresh();
+            mezunBekleyenGrid.Refresh();
         }
 
         async Task MezunBas()
@@ -134,6 +134,5 @@ namespace UniLife.CommonUI.Pages.MazuniyetDiploma
 
             //seçililerin diploması basılacak.
         }
-
     }
 }

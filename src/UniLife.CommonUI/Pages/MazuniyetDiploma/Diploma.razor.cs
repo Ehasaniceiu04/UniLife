@@ -61,9 +61,50 @@ namespace UniLife.CommonUI.Pages.MazuniyetDiploma
             }
         }
 
-        int? kayitNedenId;
-        int? ogrenimDurumId;
-        int? ogrenimTurId;
+        int? _kayitNedenId;
+        public int? KayitNedenId
+        {
+            get => _kayitNedenId;
+            set
+            {
+                if (_kayitNedenId == value) return;
+                else
+                {
+                    _kayitNedenId = value;
+                    Refresh();
+                }
+            }
+        }
+
+        int? _ogrenimDurumId;
+        public int? OgrenimDurumId
+        {
+            get => _ogrenimDurumId;
+            set
+            {
+                if (_ogrenimDurumId == value) return;
+                else
+                {
+                    _ogrenimDurumId = value;
+                    Refresh();
+                }
+            }
+        }
+
+        int? _ogrenimTurId;
+        public int? OgrenimTurId
+        {
+            get => _ogrenimTurId;
+            set
+            {
+                if (_ogrenimTurId == value) return;
+                else
+                {
+                    _ogrenimTurId = value;
+                    Refresh();
+                }
+            }
+        }
 
         SfDropDownList<int?, KeyValueDto> DropKNe;
         SfDropDownList<int?, KeyValueDto> DropOgrDurum;
@@ -80,32 +121,50 @@ namespace UniLife.CommonUI.Pages.MazuniyetDiploma
 
         async Task Refresh()
         {
-            //totalQuery = new Query();
+            totalQuery = new Query();
 
 
-            //totalQuery.Expand(new List<string> { "KayitNeden($select=Id,Ad)", "Danisman($select=Id,Ad)", "Program($select=Id,Ad)" });
+            totalQuery.Expand(new List<string> { "Program($select=Id,Ad)" });
 
-            //if (FilterProgramId.HasValue)
-            //{
-            //    totalQuery.Where("programId", "equal", FilterProgramId);
-            //}
-            //else if (FilterBolumId.HasValue)
-            //{
-            //    totalQuery.Where("bolumId", "equal", FilterBolumId);
-            //}
-            //else if (FilterFakulteId.HasValue)
-            //{
-            //    totalQuery.Where("fakulteId", "equal", FilterFakulteId);
-            //}
-
-            ////totalQuery.Where("MezunOnay", "greaterthan", 2);
-            //totalQuery.Where("MezunOnay", "lessthan", 2);
+            if (FilterProgramId.HasValue)
+            {
+                totalQuery.Where("programId", "equal", FilterProgramId);
+            }
+            else if (FilterBolumId.HasValue)
+            {
+                totalQuery.Where("bolumId", "equal", FilterBolumId);
+            }
+            else if (FilterFakulteId.HasValue)
+            {
+                totalQuery.Where("fakulteId", "equal", FilterFakulteId);
+            }
 
 
-            ////isGridVisible = true;
-            //StateHasChanged();
-            //await Task.Delay(100);
-            //mezunBitirGrid.Refresh();
+            if (OgrenimTurId.HasValue)
+            {
+                totalQuery.Where("ogrenimturId", "equal", OgrenimTurId);
+            }
+            if (OgrenimDurumId.HasValue)
+            {
+                totalQuery.Where("ogrenimDurumId", "equal", OgrenimDurumId);
+            }
+            if (KayitNedenId.HasValue)
+            {
+                totalQuery.Where("kayitNedenId", "equal", KayitNedenId);
+            }
+
+            //totalQuery.Where("MezunOnay", "greaterthan", 2);
+            totalQuery.Where("MezunOnay", "lessthan", 2);
+
+
+            StateHasChanged();
+            await Task.Delay(100);
+            diplomaGrid.Refresh();
+        }
+
+        async Task Yazdir()
+        {
+
         }
 
     }

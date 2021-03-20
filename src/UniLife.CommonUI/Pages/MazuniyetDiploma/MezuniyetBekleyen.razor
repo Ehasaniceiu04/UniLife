@@ -1,0 +1,101 @@
+﻿@using UniLife.Shared.Dto.Definitions
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Calendars
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Data
+
+
+<div class="pb-2 card">
+    <div class="col-sm-5">
+        <FakBolPrg @bind-ProgramId="FilterProgramId"
+                   @bind-BolumId="FilterBolumId"
+                   @bind-FakulteId="FilterFakulteId"
+                   ProgramPlaceHolder=" "
+                   ProgramShow="true"></FakBolPrg>
+    </div>
+
+</div>
+
+<SfGrid PrintMode="PrintMode.CurrentPage" @ref="mezunBekleyenGrid" Query="@totalQuery" TValue="OgrenciDto" AllowPaging="true" AllowSelection="true">
+    @*<GridEvents RowSelecting="OnRowSelecting" OnToolbarClick="ToolbarClickHandler" OnActionComplete="ActionCompletedHandler" OnActionBegin="OnActionBeginHandler" CommandClicked="CommandClickHandler" TValue="DersAcilanDto"></GridEvents>*@
+    <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+    <GridEvents CommandClicked="CommandClickHandler" TValue="OgrenciDto"></GridEvents>
+    <GridPageSettings PageCount="5" PageSizes="new int[]{ 5, 10, 50, 100,500,2000,10000}"></GridPageSettings>
+    <GridSelectionSettings CheckboxOnly="true" PersistSelection="true"></GridSelectionSettings>
+    <GridColumns>
+        <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
+        <GridColumn Visible="false" Field=@nameof(OgrenciDto.Id) AllowEditing="false" IsPrimaryKey="true"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.Ad) HeaderText="Adı"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.FakulteAdi) HeaderText="Fakulte"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.ProgramAdi) HeaderText="Program"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.Sinif) HeaderText="Sınıf"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.KayitTarih) HeaderText="K.Tarih"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.KayitNeden) HeaderText="K.Neden"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.OgrenimDurum) HeaderText="Ö.Durum"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.SonDonemId) HeaderText="SonDonem"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.MezuniyetTarih) HeaderText="Mez.Tarih"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.DiplomaNo) HeaderText="Dip.No"></GridColumn>
+        @*<GridColumn Field=@nameof(OgrenciDto.MezunOnay) HeaderText="Onay" Width="70">
+            <Template>
+                @{ var a = context as OgrenciDto; }
+                <SfCheckBox Checked="@(a.MezunOnay==(int)MezunOnayDurum.DanışmanOnayladı)"></SfCheckBox>
+            </Template>
+        </GridColumn>*@
+        @*<GridColumn Field=@nameof(OgrenciDto.MezunOnay) HeaderText="Onay"></GridColumn>*@
+        @*<GridColumn>
+            <GridCommandColumns>
+                <GridCommandColumn Type="CommandButtonType.None" Title="Bitir" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-Tick", CssClass="e-flat" })"></GridCommandColumn>
+            </GridCommandColumns>
+        </GridColumn>*@
+    </GridColumns>
+</SfGrid>
+
+<br />
+
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <div class="form-row form-group form-inline ">
+            <label class="col-sm-2" for="DropDonem">Diploma Tip:</label>
+            <SfDropDownList @ref="DropDiplomaTip" TItem="KeyValueDto"
+                            TValue="int?" ShowClearButton="true"
+                            DataSource="@(Sabitler.DiplomaTipDtos)" @bind-Value="@DiplomaTip" CssClass="col-sm-4">
+                <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+            </SfDropDownList>
+            <label class="col-sm-2" for="mezTarih">Mezuniyet Tarihi:</label>
+            <SfDatePicker ID="mezTarih" TValue="DateTime?" @bind-Value="MezuniyetTarih" CssClass="col-sm-3"></SfDatePicker>
+            <SfButton OnClick="MezunBas" CssClass="e-success col-sm-1">Mezun Et</SfButton>
+        </div>
+
+    </div>
+</div>
+
+
+<Dialog Baslik="Uyarı" @bind-isDialogOpen="@isDialogUyariOpen">
+    <p>@dialogText</p>
+</Dialog>
+
+
+
+
+
+<style>
+    .e-Tick:before {
+        content: '\e718';
+        color: #44e83e;
+    }
+
+    .container-fluid {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .form-group {
+        margin-bottom: 0.2rem;
+    }
+
+    input.e-input, .e-input-group input, .e-input-group.e-control-wrapper input, .e-input-group input.e-input, .e-input-group.e-control-wrapper input.e-input {
+        height: auto;
+    }
+</style>
