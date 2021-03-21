@@ -61,6 +61,22 @@ namespace UniLife.CommonUI.Pages.MazuniyetDiploma
             }
         }
 
+        int? _donemId;
+        public int? DonemId
+        {
+            get => _donemId;
+            set
+            {
+                if (_donemId == value) return;
+                else
+                {
+                    _donemId = value;
+                    Refresh();
+                }
+
+            }
+        }
+
 
         bool isDialogUyariOpen;
         string dialogText;
@@ -77,6 +93,9 @@ namespace UniLife.CommonUI.Pages.MazuniyetDiploma
 
         SfTab Tab;
 
+        SfDropDownList<int?, DonemDto> DropDonem;
+        public Query donemQuery = new Query().Select(new List<string> { "Id", "Ad" }).RequiresCount();
+
         public void CommandClickHandler(CommandClickEventArgs<OgrenciDto> args)
         {
             if (args.CommandColumn.Title == "Bitir")
@@ -85,6 +104,10 @@ namespace UniLife.CommonUI.Pages.MazuniyetDiploma
             }
         }
 
+        protected override async Task OnInitializedAsync()
+        {
+            DonemId = (await appState.GetDonemState()).Id;
+        }
 
 
         async Task Refresh()
@@ -110,6 +133,7 @@ namespace UniLife.CommonUI.Pages.MazuniyetDiploma
             //totalQuery.Where("MezunOnay", "greaterthan", 2);
             totalQuery.Where("MezunOnay", "lessthan", 3);
 
+            totalQuery.Where("SonDonemId", "equal", DonemId);
 
             //isGridVisible = true;
             StateHasChanged();

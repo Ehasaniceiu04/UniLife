@@ -55,12 +55,33 @@ namespace UniLife.CommonUI.Pages.MazuniyetDiploma
                 }
             }
         }
+        int? _donemId;
+        public int? DonemId
+        {
+            get => _donemId;
+            set
+            {
+                if (_donemId == value) return;
+                else
+                {
+                    _donemId = value;
+                    Refresh();
+                }
+
+            }
+        }
+
+        SfDropDownList<int?, DonemDto> DropDonem;
+        public Query donemQuery = new Query().Select(new List<string> { "Id", "Ad" }).RequiresCount();
 
         string OdataQuery = "odata/ogrencis";
         public Query totalQuery = new Query().Where("MezunOnay", "greaterthan", 2);
         Syncfusion.Blazor.Grids.SfGrid<OgrenciDto> mezunBitirGrid;
 
-
+        protected override async Task OnInitializedAsync()
+        {
+            DonemId = (await appState.GetDonemState()).Id;
+        }
 
         async Task Refresh()
         {

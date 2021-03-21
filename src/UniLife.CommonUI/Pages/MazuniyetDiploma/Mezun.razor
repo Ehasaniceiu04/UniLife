@@ -4,15 +4,30 @@
 @using Syncfusion.Blazor.Calendars
 @using Syncfusion.Blazor.Navigations
 @using Syncfusion.Blazor.Data
+@inject AppState appState
 
 
 <div class="pb-2 card">
-    <div class="col-sm-5">
+    <div class="col-sm-6">
         <FakBolPrg @bind-ProgramId="FilterProgramId"
                    @bind-BolumId="FilterBolumId"
                    @bind-FakulteId="FilterFakulteId"
                    ProgramPlaceHolder=" "
                    ProgramShow="true"></FakBolPrg>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-group row">
+            <label for="DropDonem" class="col-sm-2 col-form-label-sm">Dönem</label>
+            <div class="col-sm-10">
+                <SfDropDownList ID="DropDonem" @ref="DropDonem" TValue="int?" TItem="DonemDto" Placeholder="Dönem seçiniz..."
+                                Query="@donemQuery"
+                                @bind-Value="@DonemId">
+                    <SfDataManager Url="odata/donems?$orderby=Yil desc, DonemTipId" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
+                    <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                </SfDropDownList>
+            </div>
+        </div>
+
     </div>
 </div>
 
@@ -38,3 +53,9 @@
         <GridColumn Field=@nameof(OgrenciDto.DiplomaNo) HeaderText="Dip.No"></GridColumn>
     </GridColumns>
 </SfGrid>
+
+<style>
+    .card {
+        flex-direction: unset;
+    }
+</style>
