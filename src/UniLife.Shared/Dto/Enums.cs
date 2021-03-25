@@ -22,7 +22,8 @@ namespace UniLife.Shared.Dto
         Bekleniyor = 0,
         Aktif = 1,
         DanismanOnayinda=2,
-        DanışmanOnayladı=3
+        DanışmanOnayladı=3,
+        MezunEdildi=4
     }
     public enum DersNedenEnum
     {

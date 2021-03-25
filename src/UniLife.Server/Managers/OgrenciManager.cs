@@ -89,5 +89,11 @@ namespace UniLife.Server.Managers
             await _ogrenciStore.UpdateOnay(ogrId, onayNo);
             return new ApiResponse(Status200OK, "UpdateOnay done!");
         }
+
+        public async Task<ApiResponse> UpdateMezunDanismanOnayli(int ogrenciId)
+        {
+            await _ogrenciStore.UpdateMezunDanismanOnayli(ogrenciId);
+            return new ApiResponse(Status200OK, "UpdateMezunDanismanOnayli done!");
+        }
     }
 }

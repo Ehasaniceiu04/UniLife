@@ -320,5 +320,13 @@ namespace UniLife.Storage.Stores
             _db.Ogrencis.Update(Ogrenci);
             await _db.SaveChangesAsync(CancellationToken.None);
         }
+
+        public async Task UpdateMezunDanismanOnayli(int ogrenciId)
+        {
+            var Ogrenci = await _db.Ogrencis.FirstOrDefaultAsync(x => x.Id == ogrenciId);
+            Ogrenci.MezunOnay = (int)MezunOnayDurum.DanışmanOnayladı;
+            _db.Ogrencis.Update(Ogrenci);
+            await _db.SaveChangesAsync(CancellationToken.None);
+        }
     }
 }

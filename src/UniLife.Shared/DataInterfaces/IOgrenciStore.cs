@@ -25,5 +25,6 @@ namespace UniLife.Shared.DataInterfaces
         Task<OgrenciBelgesiDto> GetOgrenciBelgesi(int id);
         Task UpdateOgrenciOnayBekle(MazunOnayDto mazunOnayDto);
         Task UpdateOnay(int ogrId, int onayNo);
+        Task UpdateMezunDanismanOnayli(int ogrenciId);
     }
 }

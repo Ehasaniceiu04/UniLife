@@ -1,0 +1,20 @@
+﻿@using Syncfusion.Blazor.Data
+@using UniLife.Shared.Dto.Definitions
+
+<SfGrid PrintMode="PrintMode.CurrentPage" Query="@totalQuery" TValue="OgrenciDto" AllowPaging="true" AllowSelection="true">
+    @*<GridEvents RowSelecting="OnRowSelecting" OnToolbarClick="ToolbarClickHandler" OnActionComplete="ActionCompletedHandler" OnActionBegin="OnActionBeginHandler" CommandClicked="CommandClickHandler" TValue="DersAcilanDto"></GridEvents>*@
+    <SfDataManager Url="@OdataQuery" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+    <GridPageSettings PageCount="5" PageSizes="new int[]{ 5, 10, 50, 100,500,2000,10000}"></GridPageSettings>
+    <GridColumns>
+        <GridColumn Visible="false" Field=@nameof(OgrenciDto.Id) AllowEditing="false" IsPrimaryKey="true"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.Ad) HeaderText="Adı"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.Soyad) HeaderText="Soyad"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.ProgramAdi) HeaderText="Program"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.Sinif) HeaderText="Sınıf"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.KayitTarih) HeaderText="K.Tarih"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.OgrenimDurum) HeaderText="Ö.Durum"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.SonDonemId) HeaderText="SonDonem"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.MezuniyetTarih) HeaderText="Mez.Tarih"></GridColumn>
+        <GridColumn Field=@nameof(OgrenciDto.DiplomaNo) HeaderText="Dip.No"></GridColumn>
+    </GridColumns>
+</SfGrid>

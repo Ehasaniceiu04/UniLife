@@ -248,7 +248,7 @@ namespace UniLife.Server.Controllers
         [HttpGet]
         [Route("UpdateOnay")]
         [Authorize(Roles = "Administrator")]
-        public async Task<ApiResponse> UpdateOnay(int ogrId,int onayNo)
+        public async Task<ApiResponse> UpdateOnay(int ogrId, int onayNo)
         {
             if (ModelState.IsValid)
             {
@@ -263,7 +263,7 @@ namespace UniLife.Server.Controllers
         [HttpGet]
         [Route("GetOgrenciOnay")]
         [Authorize(Roles = "Administrator")]
-        public async Task<ApiResponse> GetOgrenciOnay(int donemId,int? fakulteID = null, int? bolumId = null, int? programId = null)
+        public async Task<ApiResponse> GetOgrenciOnay(int donemId, int? fakulteID = null, int? bolumId = null, int? programId = null)
         {
             if (ModelState.IsValid)
             {
@@ -288,8 +288,16 @@ namespace UniLife.Server.Controllers
             {
                 return new ApiResponse(Status400BadRequest, "GetOgrenciOnay is Invalid");
             }
-           
+
         }
-        //=> await _ogrenciManager.GetWhere(x => !x.DanismanOnay.HasValue);
+
+        [HttpGet]
+        [Route("UpdateMezunDanismanOnayli/{ogrenciId}")]
+        [Authorize(Roles = "Administrator,Personel,Akademisyen")]
+        public async Task<ApiResponse> UpdateMezunDanismanOnayli(int ogrenciId)
+        => ModelState.IsValid ?
+            await _ogrenciManager.UpdateMezunDanismanOnayli(ogrenciId) :
+            new ApiResponse(Status400BadRequest, "UpdateMezunDanismanOnayli is Invalid");
+
     }
 }

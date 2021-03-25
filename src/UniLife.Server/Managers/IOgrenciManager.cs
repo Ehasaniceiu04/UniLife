@@ -22,5 +22,6 @@ namespace UniLife.Server.Managers
         Task<ApiResponse> GetOgrenciBelgesi(int id);
         Task<ApiResponse> UpdateOgrenciOnayBekle(MazunOnayDto mazunOnayDto);
         Task<ApiResponse> UpdateOnay(int ogrId, int onayNo);
+        Task<ApiResponse> UpdateMezunDanismanOnayli(int ogrenciId);
     }
 }
