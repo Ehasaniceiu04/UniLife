@@ -1,0 +1,87 @@
+﻿@page "/MezunBelge"
+
+@inject Microsoft.AspNetCore.Components.NavigationManager UriHelper
+@inject HttpClient Http
+@using UniLife.Shared.Dto.Definitions
+@inject IMatToaster matToaster
+@layout BelgeLayout
+@attribute [Authorize]
+
+
+<div>
+    Ahmet Sekmen
+</div>
+
+
+
+@code{
+
+
+    [Parameter]
+    public int ogrUserId { get; set; }
+
+    OgrenciBelgesiDto _OgrenciBelgesiDto = new OgrenciBelgesiDto();
+
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    try
+    //    {
+    //        ApiResponseDto<OgrenciBelgesiDto> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<OgrenciBelgesiDto>>("api/ogrenci/GetOgrenciBelgesi/" + ogrUserId);
+
+
+    //        if (apiResponse.IsSuccessStatusCode)
+    //        {
+    //            _OgrenciBelgesiDto = apiResponse.Result;
+    //        }
+    //        else
+    //        {
+    //            matToaster.Add(apiResponse.Message, MatToastType.Danger, "İşlem başarısız!");
+    //        }
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "İşlem başarısız!");
+    //    }
+    //}
+}
+
+
+<style>
+    @@-ms-viewport {
+        width: device-width;
+    }
+
+    /*A4Cozum 1*/
+    body {
+        height: 450px;
+        width: 595px;
+        /* to centre page on screen*/
+        margin-left: auto;
+        margin-right: auto;
+        line-height: 2;
+    }
+
+    /*A4 Cozum2*/
+    /*@@media print {
+    body{
+        width: 21cm;
+        height: 29.7cm;
+        margin: 30mm 45mm 30mm 45mm;*/
+    /* change the margins as you want them to be. */
+    /*}
+    }*/
+
+    .lblQE {
+        font-size: xx-large;
+    }
+
+    .lblDE {
+        font-size: xx-large;
+    }
+
+    @@media (min-width: 576px) {
+        .form-inline label {
+            justify-content: unset;
+        }
+    }
+</style>

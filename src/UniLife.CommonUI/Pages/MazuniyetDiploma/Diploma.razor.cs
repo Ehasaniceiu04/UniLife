@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using Syncfusion.Blazor.Data;
 using Syncfusion.Blazor.DropDowns;
 using Syncfusion.Blazor.Grids;
@@ -8,6 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UniLife.Shared.Dto.Definitions;
+
+
 
 namespace UniLife.CommonUI.Pages.MazuniyetDiploma
 {
@@ -162,9 +165,26 @@ namespace UniLife.CommonUI.Pages.MazuniyetDiploma
             diplomaGrid.Refresh();
         }
 
+        string selectedBelgeTip = "MezunBelge";
         async Task Yazdir()
         {
 
+            await NavTo(selectedBelgeTip, true);
+        }
+
+        public async Task NavTo(string url, bool isNewTab)
+        {
+            if (isNewTab)
+            {
+                //await JsRuntime.InvokeAsync<object>("open", new object[] { $"{UriHelper.BaseUri}/{selectedBelgeTip}", "_blank" });
+                await JsRuntime.InvokeVoidAsync("jsInterops.belgePrint", $"{UriHelper.BaseUri}{selectedBelgeTip}");
+                await Task.Delay(1000);
+                //window.print()
+            }
+            else
+            {
+                UriHelper.NavigateTo(url);
+            }
         }
 
     }
