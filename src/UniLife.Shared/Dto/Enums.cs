@@ -21,16 +21,17 @@ namespace UniLife.Shared.Dto
     {
         Bekleniyor = 0,
         Aktif = 1,
-        DanismanOnayinda=2,
-        DanışmanOnayladı=3,
-        MezunEdildi=4
+        DanismanOnayinda = 2,
+        DanışmanOnayladı = 3,
+        MezunEdildi = 4,
+        DanismanRet = 5
     }
     public enum DersNedenEnum
     {
-        Dönemsel=1,
-        Uzaktan_Eğitim=2,
-        Tez=3,
-        Staj=4
+        Dönemsel = 1,
+        Uzaktan_Eğitim = 2,
+        Tez = 3,
+        Staj = 4
     }
     public enum DersSonuc
     {
@@ -46,14 +47,14 @@ namespace UniLife.Shared.Dto
     {
         Ara_Sinav = 1,
         Final = 2,
-        But=3,
-        Mazeret=4,
+        But = 3,
+        Mazeret = 4,
     }
     public enum SinavKatilimEnum
     {
-        Katıldı=1,
-        Katılmadı=2,
-        Devamsız=3
+        Katıldı = 1,
+        Katılmadı = 2,
+        Devamsız = 3
     }
     public enum SinavDegerlendirmeTip
     {
@@ -85,7 +86,7 @@ namespace UniLife.Shared.Dto
         Doktora = 1,
         Lisans = 2,
         Ön_Lisans = 3,
-        Tezsiz_Yüksek_Lisans=4,
+        Tezsiz_Yüksek_Lisans = 4,
         Yüksek_Lisans = 5
     }
     public enum DonemTipEnum

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using UniLife.CommonUI.Services.Contracts;
 using UniLife.Shared;
@@ -23,6 +24,7 @@ namespace UniLife.CommonUI
 
         public OgrenciDto OgrenciState { get; set; }
         public OgrenciDto OgrenciTempState { get; set; }
+        public List<UserProgramYetkiDto> UserProgramYetkiListState { get; set; }
         public AkademisyenDto AkademisyenState { get; set; }
         public AkademisyenDto AkademisyenTempState { get; set; }
         public PersonelDto PersonelState { get; set; }
@@ -100,6 +102,24 @@ namespace UniLife.CommonUI
             }
             return new UserProfileDto();
         }
+
+        public async Task<List<UserProgramYetkiDto>> GetUserProgramYetkiState()
+        {
+            if (UserProgramYetkiListState != null && UserProgramYetkiListState.Count>0)
+            {
+                return UserProgramYetkiListState;
+            }
+
+            ApiResponseDto apiResponse = await _userProfileApi.GetUserProgramYetkiListState();
+
+            if (apiResponse.StatusCode == Status200OK)
+            {
+                UserProgramYetkiListState = JsonConvert.DeserializeObject<List<UserProgramYetkiDto>>(apiResponse.Result.ToString());
+                return UserProgramYetkiListState;
+            }
+            return new List<UserProgramYetkiDto>();
+        }
+
 
         public async Task<AkademisyenDto> GetAkademisyenState()
         {

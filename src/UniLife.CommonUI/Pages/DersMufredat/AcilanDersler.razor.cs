@@ -380,6 +380,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             {
                 totalQuery.Where("fakulteId", "equal", FakulteId);
             }
+
             isGridVisible = true;
             StateHasChanged();
             await Task.Delay(100);

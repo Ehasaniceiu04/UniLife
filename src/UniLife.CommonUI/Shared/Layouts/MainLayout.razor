@@ -116,6 +116,8 @@
                 var profile = await appState.GetUserProfile();
                 _navMenuOpened = profile.IsNavOpen;
                 _navMinified = profile.IsNavMinified;
+
+                await appState.GetUserProgramYetkiState();
             }
         }
 

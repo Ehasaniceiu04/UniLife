@@ -52,6 +52,7 @@ namespace UniLife.Server
                     //})
                     .UseStartup<Startup>()
                     .UseSerilog();
+                    //webBuilder.UseIIS();
                 });
     };
 }

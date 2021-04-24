@@ -43,6 +43,16 @@ namespace UniLife.Storage.Stores
             return upylist;
         }
 
+        public async Task<List<UserProgramYetkiDto>> GetUserProgramYetkiListState(Guid userId)
+        {
+                var akaQuery = from aka in _db.UserProgramYetkis
+                               where aka.UserId == userId
+                               select aka;
+
+                return _autoMapper.Map<List<UserProgramYetkiDto>>(await akaQuery.ToListAsync());
+            
+        }
+
         public async Task UpdateUserProgramYetkis(ProgramYetkiListUserIdDto programYetkiListUserIdDto)
         {
 

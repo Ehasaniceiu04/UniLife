@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using Syncfusion.Blazor.DropDowns;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using UniLife.Shared.Dto;
@@ -24,6 +25,7 @@ namespace UniLife.CommonUI.Shared
         List<KeyValueDto> bolumDtos = new List<KeyValueDto>();
         List<KeyValueDto> programDtos = new List<KeyValueDto>();
         List<KeyValueDto> mufredatDtos = new List<KeyValueDto>();
+        List<UserProgramYetkiDto> UserProgramYetkiDtos;
 
 
         private int? _fakValue;
@@ -104,11 +106,11 @@ namespace UniLife.CommonUI.Shared
         protected async override Task OnInitializedAsync()
         {
             await ReadFakultes();
-            if (BolumId !=null && FakulteId!=null)
+            if (BolumId != null && FakulteId != null)
             {
                 await ReadBolums(FakulteId);
             }
-            if (ProgramId !=null && BolumId !=null)
+            if (ProgramId != null && BolumId != null)
             {
                 await ReadPrograms(BolumId);
             }
@@ -119,7 +121,7 @@ namespace UniLife.CommonUI.Shared
 
             if (apiResponse.Value.Count != 0)
             {
-                fakulteDtos = apiResponse.Value;
+                fakulteDtos = appState.UserProgramYetkiListState.Count< 1 ? apiResponse.Value : apiResponse.Value.Where(x => appState.UserProgramYetkiListState.Select(y => y.FakulteId).Contains(x.Id)).ToList();
                 StateHasChanged();
             }
             else
@@ -170,7 +172,7 @@ namespace UniLife.CommonUI.Shared
 
         }
 
-        
+
 
         async Task ReadBolums(int? fakulteId)
         {
@@ -178,10 +180,9 @@ namespace UniLife.CommonUI.Shared
             //apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<BolumDto>>>("api/bolum/GetBolumByFakulteIds/" + string.Join(',', fakulteId));
             apiResponse = await Http.GetFromJsonAsync<OData<KeyValueDto>>($"odata/bolums?$filter=FakulteId eq {fakulteId}&select=Id,Ad&$orderby=Ad");
 
-
             if (apiResponse.Value.Count != 0)
             {
-                bolumDtos = apiResponse.Value;
+                bolumDtos = appState.UserProgramYetkiListState.Count < 1 ? apiResponse.Value : apiResponse.Value.Where(x => appState.UserProgramYetkiListState.Select(y => y.BolumId).Contains(x.Id)).ToList();
                 StateHasChanged();
             }
             else
@@ -199,7 +200,7 @@ namespace UniLife.CommonUI.Shared
 
                 if (apiResponse.Value != null)
                 {
-                    programDtos = apiResponse.Value;
+                    programDtos = appState.UserProgramYetkiListState.Count < 1 ? apiResponse.Value : apiResponse.Value.Where(x => appState.UserProgramYetkiListState.Select(y => y.ProgramId).Contains(x.Id)).ToList();
                     StateHasChanged();
                 }
                 else
@@ -207,7 +208,7 @@ namespace UniLife.CommonUI.Shared
                     matToaster.Add("", MatToastType.Danger, "Program getirilirken hata oluştu!");
                 }
             }
-            
+
         }
 
         async Task ReadMufredats(int? programId)
@@ -227,9 +228,9 @@ namespace UniLife.CommonUI.Shared
                     matToaster.Add("", MatToastType.Danger, "Mufredat getirilirken hata oluştu!");
                 }
             }
-            
+
         }
 
-        
+
     }
 }

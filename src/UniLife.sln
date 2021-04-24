@@ -16,6 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Dockerfile = Dockerfile
 		eskiOgrenciDigerTab.txt = eskiOgrenciDigerTab.txt
 		ogrenciDüzenleAutofilli.txt = ogrenciDüzenleAutofilli.txt
+		PublishInstructions.txt = PublishInstructions.txt
 		..\README.md = ..\README.md
 		libs\UltraMapper.dll = libs\UltraMapper.dll
 	EndProjectSection
@@ -36,7 +37,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DafaultQUeryler", "DafaultQ
 		kayitneden.txt = kayitneden.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniLife.Vendor", "UniLife.Vendor\UniLife.Vendor.csproj", "{C134F09A-EC74-4E68-BD78-664709AF9765}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniLife.Vendor", "UniLife.Vendor\UniLife.Vendor.csproj", "{C134F09A-EC74-4E68-BD78-664709AF9765}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

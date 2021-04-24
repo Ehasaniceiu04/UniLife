@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using UniLife.Shared.Dto;
 using UniLife.Shared.Dto.Account;
 using UniLife.Shared.Dto.Definitions;
@@ -18,5 +19,6 @@ namespace UniLife.CommonUI.Services.Contracts
         Task<ApiResponseDto> GetAkademisyenState();
         Task<ApiResponseDto> GetOgrenciState();
         Task<ApiResponseDto> GetDonemState();
+        Task<ApiResponseDto> GetUserProgramYetkiListState();
     }
 }

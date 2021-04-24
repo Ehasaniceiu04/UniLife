@@ -1,18 +1,12 @@
 ﻿using UniLife.Server.Managers;
 using UniLife.Server.Middleware.Wrappers;
 using UniLife.Shared.AuthorizationDefinitions;
-using UniLife.Shared.Dto.Sample;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using static Microsoft.AspNetCore.Http.StatusCodes;
 using UniLife.Shared.Dto.Definitions;
-using Microsoft.AspNetCore.Builder;
-using UniLife.Storage;
-using System.Collections.Generic;
-using UniLife.Shared.DataModels;
 using IdentityServer4.Extensions;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using UniLife.Shared.Dto;
 using UniLife.Shared.Dto.Definitions.Bussines;

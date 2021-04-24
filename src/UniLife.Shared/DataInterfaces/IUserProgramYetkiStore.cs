@@ -11,5 +11,6 @@ namespace UniLife.Shared.DataInterfaces
     {
         Task<List<UserProgramYetkiDto>> GetUPYByUserId(Guid userId);
         Task UpdateUserProgramYetkis(ProgramYetkiListUserIdDto programYetkiListUserIdDto);
+        Task<List<UserProgramYetkiDto>> GetUserProgramYetkiListState(Guid userId);
     }
 }

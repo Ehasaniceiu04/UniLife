@@ -12,5 +12,6 @@ namespace UniLife.Server.Managers
         Task<ApiResponse> GetAkademisyenState();
         Task<ApiResponse> GetOgrenciState();
         Task<ApiResponse> GetDonemState();
+        Task<ApiResponse> GetUserProgramYetkiListState();
     }
 }

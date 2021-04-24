@@ -1,13 +1,17 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using IdentityServer4.Extensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UniLife.Shared.AuthorizationDefinitions;
 using UniLife.Shared.DataModels;
+using UniLife.Shared.Extensions;
 using UniLife.Storage;
 
 namespace UniLife.Server.Controllers
 {
-    public class DersAcilansController : ControllerBase
+    public class DersAcilansController : BaseController
     {
         private readonly IApplicationDbContext _applicationDbContext;
 
@@ -21,7 +25,14 @@ namespace UniLife.Server.Controllers
         [Authorize(Permissions.DersAcilan.Read)]
         public IEnumerable<DersAcilan> Get()
         {
-            return _applicationDbContext.DersAcilans;
+            var userYetki = _applicationDbContext.UserProgramYetkis.Where(x => x.UserId == GuidUserId);
+
+            //var result = from da in _applicationDbContext.DersAcilans.Where(x => userYetki.Select(y => y.ProgramId).Contains(x.ProgramId))
+            var result = from da in _applicationDbContext.DersAcilans.WhereIf(userYetki.Count() > 0, x => userYetki.Select(y => y.ProgramId).Contains(x.ProgramId))
+                         select da;
+
+            return result;
+
         }
 
     }

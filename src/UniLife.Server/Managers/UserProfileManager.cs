@@ -17,18 +17,21 @@ namespace UniLife.Server.Managers
         private readonly IAkademisyenStore _akademisyenStore;
         private readonly IOgrenciStore _ogrenciStore;
         private readonly IDonemStore _donemStore;
+        private readonly IUserProgramYetkiStore _userProgramYetkiStore;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public UserProfileManager(IUserProfileStore userProfileStore, IHttpContextAccessor httpContextAccessor,
             IAkademisyenStore akademisyenStore,
             IOgrenciStore ogrenciStore,
-            IDonemStore donemStore)
+            IDonemStore donemStore,
+            IUserProgramYetkiStore userProgramYetkiStore)
         {
             _userProfileStore = userProfileStore;
             _httpContextAccessor = httpContextAccessor;
             _akademisyenStore = akademisyenStore;
             _ogrenciStore = ogrenciStore;
             _donemStore = donemStore;
+            _userProgramYetkiStore = userProgramYetkiStore;
         }
 
         public async Task<string> GetLastPageVisited(string userName)
@@ -57,6 +60,15 @@ namespace UniLife.Server.Managers
             }
         }
 
+        public async Task<ApiResponse> GetUserProgramYetkiListState()
+        {
+            var userId = new Guid(_httpContextAccessor.HttpContext.User.FindFirst(JwtClaimTypes.Subject).Value);
+
+            var userYetkis = await _userProgramYetkiStore.GetUserProgramYetkiListState(userId);
+
+            return new ApiResponse(Status200OK, "Retrieved Akademisyen state", userYetkis);
+        }
+
         public async Task<ApiResponse> GetAkademisyenState()
         {
             var userId = new Guid(_httpContextAccessor.HttpContext.User.FindFirst(JwtClaimTypes.Subject).Value);
@@ -83,6 +95,5 @@ namespace UniLife.Server.Managers
         }
 
         
-
     }
 }
