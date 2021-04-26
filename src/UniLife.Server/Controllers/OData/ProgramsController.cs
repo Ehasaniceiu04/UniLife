@@ -1,18 +1,17 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 using UniLife.Shared.AuthorizationDefinitions;
+using UniLife.Shared.Extensions;
 using UniLife.Storage;
 
 namespace UniLife.Server.Controllers
 {
-    public class ProgramsController : ControllerBase
+    public class ProgramsController : BaseOdataController
     {
-        private readonly IApplicationDbContext _applicationDbContext;
-
-        public ProgramsController(IApplicationDbContext applicationDbContext)
+        public ProgramsController(IApplicationDbContext applicationDbContext):base(applicationDbContext)
         {
-            _applicationDbContext = applicationDbContext;
         }
 
         [Microsoft.AspNet.OData.EnableQuery()]
@@ -20,7 +19,7 @@ namespace UniLife.Server.Controllers
         [Authorize(Permissions.Program.Read)]
         public IEnumerable<UniLife.Shared.DataModels.Program> Get()
         {
-            return _applicationDbContext.Programs;
+            return _applicationDbContext.Programs.WhereIf(UserYetki.Count() > 0, x => UserYetki.Select(y => y.ProgramId).Contains(x.Id));
         }
 
     }

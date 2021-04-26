@@ -39,6 +39,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DafaultQUeryler", "DafaultQ
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniLife.Vendor", "UniLife.Vendor\UniLife.Vendor.csproj", "{C134F09A-EC74-4E68-BD78-664709AF9765}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sql Queryler", "sql Queryler", "{5A4B46B3-3875-4F8C-BAEB-CB662206E896}"
+	ProjectSection(SolutionItems) = preProject
+		profile.txt = profile.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug_CSB|Any CPU = Debug_CSB|Any CPU
@@ -357,6 +362,7 @@ Global
 		{24EFF7D1-2E8C-4065-8477-055EABD5B124} = {1921F468-24D6-43B8-8274-2C980DF05237}
 		{9F7E36C4-F05E-4CEE-BE0B-15CC660E7E2F} = {1921F468-24D6-43B8-8274-2C980DF05237}
 		{654CD0E1-AC29-444E-B170-7CB585285B4E} = {683E9CAE-E8CE-4093-9665-58B12F12E6DB}
+		{5A4B46B3-3875-4F8C-BAEB-CB662206E896} = {683E9CAE-E8CE-4093-9665-58B12F12E6DB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {75F45143-A365-4C32-A2D5-56BDADCE76CC}

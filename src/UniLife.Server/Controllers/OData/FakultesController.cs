@@ -1,18 +1,17 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 using UniLife.Shared.DataModels;
+using UniLife.Shared.Extensions;
 using UniLife.Storage;
 
 namespace UniLife.Server.Controllers
 {
-    public class FakultesController : ControllerBase
+    public class FakultesController : BaseOdataController
     {
-        private readonly IApplicationDbContext _applicationDbContext;
-
-        public FakultesController(IApplicationDbContext applicationDbContext)
+        public FakultesController(IApplicationDbContext applicationDbContext):base(applicationDbContext)
         {
-            _applicationDbContext = applicationDbContext;
         }
 
         [Microsoft.AspNet.OData.EnableQuery()]
@@ -20,7 +19,7 @@ namespace UniLife.Server.Controllers
         [Authorize]
         public IEnumerable<Fakulte> Get()
         {
-            return _applicationDbContext.Fakultes;
+            return _applicationDbContext.Fakultes.WhereIf(UserYetki.Count() > 0, x => UserYetki.Select(y => y.FakulteId).Contains(x.Id));
         }
 
     }

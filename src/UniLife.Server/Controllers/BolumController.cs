@@ -1,17 +1,11 @@
-﻿using UniLife.Server.Managers;
-using UniLife.Server.Middleware.Wrappers;
-using UniLife.Shared.AuthorizationDefinitions;
-using UniLife.Shared.Dto.Sample;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using static Microsoft.AspNetCore.Http.StatusCodes;
+using UniLife.Server.Managers;
+using UniLife.Server.Middleware.Wrappers;
+using UniLife.Shared.AuthorizationDefinitions;
 using UniLife.Shared.Dto.Definitions;
-using UniLife.Shared.DataModels;
-using UniLife.CommonUI.Pages.Definitions.Tabs;
-using System.Linq;
-using System;
-using System.Collections.Generic;
+using static Microsoft.AspNetCore.Http.StatusCodes;
 
 namespace UniLife.Server.Controllers
 {

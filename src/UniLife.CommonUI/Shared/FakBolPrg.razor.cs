@@ -121,7 +121,8 @@ namespace UniLife.CommonUI.Shared
 
             if (apiResponse.Value.Count != 0)
             {
-                fakulteDtos = appState.UserProgramYetkiListState.Count< 1 ? apiResponse.Value : apiResponse.Value.Where(x => appState.UserProgramYetkiListState.Select(y => y.FakulteId).Contains(x.Id)).ToList();
+                fakulteDtos = apiResponse.Value;
+                //fakulteDtos = appState.UserProgramYetkiListState.Count< 1 ? apiResponse.Value : apiResponse.Value.Where(x => appState.UserProgramYetkiListState.Select(y => y.FakulteId).Contains(x.Id)).ToList();
                 StateHasChanged();
             }
             else
@@ -182,7 +183,8 @@ namespace UniLife.CommonUI.Shared
 
             if (apiResponse.Value.Count != 0)
             {
-                bolumDtos = appState.UserProgramYetkiListState.Count < 1 ? apiResponse.Value : apiResponse.Value.Where(x => appState.UserProgramYetkiListState.Select(y => y.BolumId).Contains(x.Id)).ToList();
+                bolumDtos = apiResponse.Value;
+                //bolumDtos = appState.UserProgramYetkiListState.Count < 1 ? apiResponse.Value : apiResponse.Value.Where(x => appState.UserProgramYetkiListState.Select(y => y.BolumId).Contains(x.Id)).ToList();
                 StateHasChanged();
             }
             else
@@ -200,7 +202,8 @@ namespace UniLife.CommonUI.Shared
 
                 if (apiResponse.Value != null)
                 {
-                    programDtos = appState.UserProgramYetkiListState.Count < 1 ? apiResponse.Value : apiResponse.Value.Where(x => appState.UserProgramYetkiListState.Select(y => y.ProgramId).Contains(x.Id)).ToList();
+                    programDtos = apiResponse.Value;
+                    //programDtos = appState.UserProgramYetkiListState.Count < 1 ? apiResponse.Value : apiResponse.Value.Where(x => appState.UserProgramYetkiListState.Select(y => y.ProgramId).Contains(x.Id)).ToList();
                     StateHasChanged();
                 }
                 else

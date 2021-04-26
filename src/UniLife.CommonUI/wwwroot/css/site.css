@@ -342,6 +342,7 @@ app {
 
 .mdc-drawere .mdc-list-item:active {
     box-shadow: inset 3px 0 0 #886ab5;
+    
 }
 
 .mdc-drawer .mdc-list-item--disabled {
@@ -350,11 +351,13 @@ app {
 
 .mdc-drawer a.mdc-list-item {
     padding: 0 14px !important;
+    
 }
 
 .mdc-drawer .mdc-list-item--selected {
-    border-left: solid 3px rgba(255, 255, 255, .5);
-    /*background-color:royalblue;*/
+    border-left: solid 5px rgba(255, 255, 255, .8);
+    /*border-left: 2px solid #94b97f*/
+    background-color: #4e555b6b;
 }
 
     .mdc-drawer .mdc-list-item--selected::before {
@@ -363,6 +366,7 @@ app {
 
 .mdc-expansion-panel--selected .mat-expansion-panel__summary {
     border-left: solid 3px rgba(255, 255, 255, .3);
+    background-color: #4e555b6b;
 }
 
     .mdc-expansion-panel--selected .mat-expansion-panel__summary::before {
@@ -371,6 +375,7 @@ app {
 
 .mat-accordion .mdc-nav-menu .mat-expansion-panel.mat-expansion-panel--expanded {
     margin: 0;
+    border: 2px solid #94b97f;
 }
 
 .drawer-logo {

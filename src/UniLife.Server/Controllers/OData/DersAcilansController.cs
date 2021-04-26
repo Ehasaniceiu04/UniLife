@@ -11,13 +11,11 @@ using UniLife.Storage;
 
 namespace UniLife.Server.Controllers
 {
-    public class DersAcilansController : BaseController
+    public class DersAcilansController : BaseOdataController
     {
-        private readonly IApplicationDbContext _applicationDbContext;
-
-        public DersAcilansController(IApplicationDbContext applicationDbContext)
+        public DersAcilansController(IApplicationDbContext applicationDbContext) : base(applicationDbContext)
         {
-            _applicationDbContext = applicationDbContext;
+
         }
 
         [Microsoft.AspNet.OData.EnableQuery()]
@@ -25,10 +23,7 @@ namespace UniLife.Server.Controllers
         [Authorize(Permissions.DersAcilan.Read)]
         public IEnumerable<DersAcilan> Get()
         {
-            var userYetki = _applicationDbContext.UserProgramYetkis.Where(x => x.UserId == GuidUserId);
-
-            //var result = from da in _applicationDbContext.DersAcilans.Where(x => userYetki.Select(y => y.ProgramId).Contains(x.ProgramId))
-            var result = from da in _applicationDbContext.DersAcilans.WhereIf(userYetki.Count() > 0, x => userYetki.Select(y => y.ProgramId).Contains(x.ProgramId))
+            var result = from da in _applicationDbContext.DersAcilans.WhereIf(UserYetki.Count() > 0, x => UserYetki.Select(y => y.ProgramId).Contains(x.ProgramId))
                          select da;
 
             return result;

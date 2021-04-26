@@ -1,18 +1,17 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 using UniLife.Shared.DataModels;
+using UniLife.Shared.Extensions;
 using UniLife.Storage;
 
 namespace UniLife.Server.Controllers
 {
-    public class BolumsController : ControllerBase
+    public class BolumsController : BaseOdataController
     {
-        private readonly IApplicationDbContext _applicationDbContext;
-
-        public BolumsController(IApplicationDbContext applicationDbContext)
+        public BolumsController(IApplicationDbContext applicationDbContext):base(applicationDbContext)
         {
-            _applicationDbContext = applicationDbContext;
         }
 
         [Microsoft.AspNet.OData.EnableQuery()]
@@ -20,7 +19,7 @@ namespace UniLife.Server.Controllers
         [Authorize]
         public IEnumerable<Bolum> Get()
         {
-            return _applicationDbContext.Bolums;
+            return _applicationDbContext.Bolums.WhereIf(UserYetki.Count() > 0, x => UserYetki.Select(y => y.BolumId).Contains(x.Id));
         }
 
     }
