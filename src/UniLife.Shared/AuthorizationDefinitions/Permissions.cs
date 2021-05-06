@@ -7,6 +7,7 @@ namespace UniLife.Shared.AuthorizationDefinitions
         public const string Create = nameof(Create);
         public const string Read = nameof(Read);
         public const string Update = nameof(Update);
+        public const string Confirm = nameof(Confirm);
         public const string Delete = nameof(Delete);
     }
 
@@ -97,6 +98,10 @@ namespace UniLife.Shared.AuthorizationDefinitions
             public const string Read = nameof(DersKayit) + "." + nameof(Actions.Read);
             [Description("Edit existing DersKayits")]
             public const string Update = nameof(DersKayit) + "." + nameof(Actions.Update);
+
+            [Description("Ders kayit Onay")]
+            public const string Confirm = nameof(DersKayit) + "." + nameof(Actions.Confirm);
+
             [Description("Delete any DersKayit")]
             public const string Delete = nameof(DersKayit) + "." + nameof(Actions.Delete);
         }
@@ -251,7 +256,7 @@ namespace UniLife.Shared.AuthorizationDefinitions
             [Description("Sınıf Atlatma")]
             public const string SinifAtlatma = nameof(Menu) + ".SınıfAtlatma";
             [Description("Ders Aktarım")]
-            public const string DersAktarim= nameof(Menu) + ".DersAktarım";
+            public const string DersAktarim = nameof(Menu) + ".DersAktarım";
             [Description("Toplu Ders Kayıt")]
             public const string TopDersKayit = nameof(Menu) + ".TopluDersKayıt";
 
@@ -279,14 +284,14 @@ namespace UniLife.Shared.AuthorizationDefinitions
             [Description("Paydaş Kurum İşlem")]
             public const string PaydasKurum = nameof(Menu) + ".PaydaşKurumİşlem";
             [Description("Paydaş İşlem")]
-            public const string Paydas= nameof(Menu) + ".Paydaşİşlem";
+            public const string Paydas = nameof(Menu) + ".Paydaşİşlem";
             [Description("Kurum İşlem")]
             public const string Kurum = nameof(Menu) + ".Kurumİşlem";
 
             [Description("Akts Tyyç Katoloğu")]
-            public const string AktsTyyc= nameof(Menu) + ".AktsTyyçKatoloğu";
+            public const string AktsTyyc = nameof(Menu) + ".AktsTyyçKatoloğu";
             [Description("Akts")]
-            public const string Akts= nameof(Menu) + ".Akts";
+            public const string Akts = nameof(Menu) + ".Akts";
             [Description("Tyyç")]
             public const string Tyyc = nameof(Menu) + ".Tyyç";
 
@@ -296,11 +301,11 @@ namespace UniLife.Shared.AuthorizationDefinitions
             public const string Baglantilar = nameof(Menu) + ".Bağlantılar";
             [Description("Ayarlar")]
             public const string Ayarlar = nameof(Menu) + ".Ayarlar";
-            
+
             [Description("Değişim Programı")]
-            public const string DegProgram= nameof(Menu) + ".Değişim Programı";
+            public const string DegProgram = nameof(Menu) + ".Değişim Programı";
             [Description("Başvurular")]
-            public const string Basvuru= nameof(Menu) + ".Başvurular";
+            public const string Basvuru = nameof(Menu) + ".Başvurular";
             [Description("Programlar")]
             public const string Programlar = nameof(Menu) + ".Programlar";
 

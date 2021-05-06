@@ -1,80 +1,76 @@
 ﻿@using UniLife.Shared.Dto.Definitions
 @using Syncfusion.Blazor.Buttons
 @inject AppState appState
-
-@attribute [Authorize(Roles = "Administrator,Personel,Ogrenci,Akademisyen")]
-
+@*@attribute [Authorize(Roles = "Administrator,Personel,Ogrenci,Akademisyen")]*@
 
 
-<Divider5></Divider5>
 
-    <div class="server-action-menu" style="padding-top: 10px;">
-        <div class="row">
-            <div class="col-sm-12 text-center">
 
-                <legend>Müfredat Dersleri</legend>
+        <div class="server-action-menu" style="padding-top: 10px;">
+            <div class="row">
+                <div class="col-sm-12 text-center">
+
+                    <legend>Müfredat Dersleri</legend>
+                </div>
             </div>
-        </div>
-        <div class="row">
+            <div class="row">
 
-            <div class="col-sm-12 col-md-12">
-                @if (DersAcilanDtos == null)
-                {
-                    <LoadingBackground ShowLogoBox="true">
-                        <label>Müfredat Dersleri Yükleniyor...</label>
-                    </LoadingBackground>
-                }
-                else
-                {
-                    <SfGrid ID="DersAcilanGrid" @ref="DersAcilanGrid" DataSource="@DersAcilanDtos" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
-                        @*<GridEvents OnActionComplete="ActionCompletedHandler" TValue="ProgramDto"></GridEvents>*@
-                        <GridEvents TValue="DersAcilanDto" QueryCellInfo="QueryCellInfoAcilanHandler" CommandClicked="CommandClickHandler"></GridEvents>
-                        <GridColumns>
-                            <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+                <div class="col-sm-12 col-md-12">
+                    @if (DersAcilanDtos == null)
+                    {
+                        <LoadingBackground ShowLogoBox="true">
+                            <label>Müfredat Dersleri Yükleniyor...</label>
+                        </LoadingBackground>
+                    }
+                    else
+                    {
+                        <SfGrid ID="DersAcilanGrid" @ref="DersAcilanGrid" DataSource="@DersAcilanDtos" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
+                            @*<GridEvents OnActionComplete="ActionCompletedHandler" TValue="ProgramDto"></GridEvents>*@
+                            <GridEvents TValue="DersAcilanDto" QueryCellInfo="QueryCellInfoAcilanHandler" CommandClicked="CommandClickHandler"></GridEvents>
+                            <GridColumns>
+                                <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
 
 
-                            <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kodu"></GridColumn>
-                            <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Adı"></GridColumn>
-                            <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Zorunlu) HeaderText="Zorunlu" DisplayAsCheckBox="true"></GridColumn>
-                            <GridColumn Field=@nameof(DersAcilanDto.Kredi) HeaderText="Kredi"></GridColumn>
-                            <GridColumn Field=@nameof(DersAcilanDto.Akts) HeaderText="Akts"></GridColumn>
-                            <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
-                            <GridColumn Field=@nameof(DersAcilanDto.ODTekrar) HeaderText="Önceki Dönemler Tekrar Durumu"></GridColumn>
-                            <GridColumn Field=@nameof(DersAcilanDto.ADKayit) HeaderText="Aktif Dönem Kayıt Durumu"></GridColumn>
-                            @if (!IsOnayli)
-                            {
-                                <GridColumn HeaderText="Seçmeli">
-                                    <Template>
-                                        @{
-                                            var dersacilan = (context as DersAcilanDto);
-                                            if (dersacilan.Zorunlu == false)
-                                            {
-                                                <SfButton IconCss="e-icons e-StrokeColor" OnClick="@(()=>CommandClickSecmeliAl(dersacilan))"></SfButton>
+                                <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kodu"></GridColumn>
+                                <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Adı"></GridColumn>
+                                <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Zorunlu) HeaderText="Zorunlu" DisplayAsCheckBox="true"></GridColumn>
+                                <GridColumn Field=@nameof(DersAcilanDto.Kredi) HeaderText="Kredi"></GridColumn>
+                                <GridColumn Field=@nameof(DersAcilanDto.Akts) HeaderText="Akts"></GridColumn>
+                                <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
+                                <GridColumn Field=@nameof(DersAcilanDto.ODTekrar) HeaderText="Önceki Dönemler Tekrar Durumu"></GridColumn>
+                                <GridColumn Field=@nameof(DersAcilanDto.ADKayit) HeaderText="Aktif Dönem Kayıt Durumu"></GridColumn>
+                                @if (!IsOnayli)
+                                {
+                                    <GridColumn HeaderText="Seçmeli">
+                                        <Template>
+                                            @{
+                                                var dersacilan = (context as DersAcilanDto);
+                                                if (dersacilan.Zorunlu == false)
+                                                {
+                                                    <SfButton IconCss="e-icons e-StrokeColor" OnClick="@(()=>CommandClickSecmeliAl(dersacilan))"></SfButton>
+                                                }
+                                                @*<SfButton Disabled="@(dersacilan.Zorunlu == true)">Refresh</SfButton>*@
                                             }
-                                            @*<SfButton Disabled="@(dersacilan.Zorunlu == true)">Refresh</SfButton>*@
-                                        }
-                                    </Template>
-                                </GridColumn>
-                                <GridColumn HeaderText="Kayıt" Width="75">
-                                    <GridCommandColumns>
-                                        <GridCommandColumn Type="CommandButtonType.None" Title="Kayıt" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowUP", CssClass="e-flat" })"></GridCommandColumn>
-                                        @*<GridCommandColumn Type="CommandButtonType.None" Title="Seçmeli Al" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-StrokeColor", CssClass="e-flat" })"></GridCommandColumn>*@
-                                    </GridCommandColumns>
-                                </GridColumn>
-                            }
-                        </GridColumns>
-                    </SfGrid>
-                }
+                                        </Template>
+                                    </GridColumn>
+                                    <GridColumn HeaderText="Kayıt" Width="75">
+                                        <GridCommandColumns>
+                                            <GridCommandColumn Type="CommandButtonType.None" Title="Kayıt" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowUP", CssClass="e-flat" })"></GridCommandColumn>
+                                            @*<GridCommandColumn Type="CommandButtonType.None" Title="Seçmeli Al" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-StrokeColor", CssClass="e-flat" })"></GridCommandColumn>*@
+                                        </GridCommandColumns>
+                                    </GridColumn>
+                                }
+                            </GridColumns>
+                        </SfGrid>
+                    }
+
+                </div>
 
             </div>
-
+            <div class="row">
+                <div class="astrodivider"><div class="astrodividermask"></div><span><i>&#10038;</i></span></div>
+            </div>
         </div>
-    <div class="row">
-        <div class="astrodivider"><div class="astrodividermask"></div><span><i>&#10038;</i></span></div>
-    </div>
-    </div>
-
-
 
 
 <Dialog Baslik="Ders mevcut" @bind-isDialogOpen="@dialog">
@@ -82,34 +78,34 @@
 </Dialog>
 
 @if (secmeliDersDialogOpen)
-	{
-<Dialog Baslik="Seçmeli Dersler" @bind-isDialogOpen="@secmeliDersDialogOpen">
-    <div class="row">
-        <SfGrid ID="SecmeliDersGrid" @ref="SecmeliDersGrid" DataSource="@SecmeliDerslerDtos" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowFiltering="true">
-            @*<GridEvents OnActionComplete="ActionCompletedHandler" TValue="ProgramDto"></GridEvents>*@
-            <GridEvents TValue="DersAcilanDto" CommandClicked="CommandClickHandlerSecmeli"></GridEvents>
-            @*<GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.CheckBox"></GridFilterSettings>*@
-            <GridColumns>
-                <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
-                <GridColumn Width="50">
-                    <GridCommandColumns>
-                        <GridCommandColumn Type="CommandButtonType.None" Title="Kayıt Ol Secmeli" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowDown", CssClass="e-flat" })"></GridCommandColumn>
-                    </GridCommandColumns>
-                </GridColumn>
-                <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kod) HeaderText="Kod"></GridColumn>
-                <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Adı"></GridColumn>
-                <GridColumn Field=@nameof(DersAcilanDto.FakulteAd) HeaderText="Fakulte Ad"></GridColumn>
-                <GridColumn Field=@nameof(DersAcilanDto.ProgramAd) HeaderText="Program Ad"></GridColumn>
-                <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Zorunlu) DisplayAsCheckBox="true" HeaderText="Z/S"></GridColumn>
-                <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kredi) HeaderText="Krd"></GridColumn>
-                <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Akts) HeaderText="Akts"></GridColumn>
-                <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
-            </GridColumns>
-        </SfGrid>
-    </div>
+{
+    <Dialog Baslik="Seçmeli Dersler" @bind-isDialogOpen="@secmeliDersDialogOpen">
+        <div class="row">
+            <SfGrid ID="SecmeliDersGrid" @ref="SecmeliDersGrid" DataSource="@SecmeliDerslerDtos" RowHeight="20" AllowSorting="true" AllowPaging="true" AllowFiltering="true">
+                @*<GridEvents OnActionComplete="ActionCompletedHandler" TValue="ProgramDto"></GridEvents>*@
+                <GridEvents TValue="DersAcilanDto" CommandClicked="CommandClickHandlerSecmeli"></GridEvents>
+                @*<GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.CheckBox"></GridFilterSettings>*@
+                <GridColumns>
+                    <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+                    <GridColumn Width="50">
+                        <GridCommandColumns>
+                            <GridCommandColumn Type="CommandButtonType.None" Title="Kayıt Ol Secmeli" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowDown", CssClass="e-flat" })"></GridCommandColumn>
+                        </GridCommandColumns>
+                    </GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kod) HeaderText="Kod"></GridColumn>
+                    <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Adı"></GridColumn>
+                    <GridColumn Field=@nameof(DersAcilanDto.FakulteAd) HeaderText="Fakulte Ad"></GridColumn>
+                    <GridColumn Field=@nameof(DersAcilanDto.ProgramAd) HeaderText="Program Ad"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Zorunlu) DisplayAsCheckBox="true" HeaderText="Z/S"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kredi) HeaderText="Krd"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Akts) HeaderText="Akts"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
+                </GridColumns>
+            </SfGrid>
+        </div>
 
-</Dialog>
-	}
+    </Dialog>
+}
 
 
 

@@ -5,91 +5,102 @@
 @using UniLife.Shared.Dto.Definitions
 
 @attribute [Authorize(Roles = "Administrator,Personel,Akademisyen")]
+@*@attribute [Authorize(Policy = Permissions.DersKayit.Read)]*@
 
 @*sınavları listeleyecez
     seçilen sınavın öğrencilerini açacak notlar girilecek.*@
+@*<AuthorizeView Policy="@Permissions.DersKayit.Read" Context="AuthorizeContext">
 
-<div class="control-section e-tab-section">
-    <SfTab @ref="DersNotTab" LoadOn="ContentLoad.Dynamic">
-        @*Selected="OnTabSelected" Selecting="OnTabSelecting"*@
-        <TabEvents Created="TabCreate" Selecting="OnTabSelecting"></TabEvents>
-        <TabItems>
-            <TabItem>
-                <ChildContent>
-                    <TabHeader Text="Dersler"></TabHeader>
-                </ChildContent>
-                <ContentTemplate>
-                    <AkaDersler SpesificDersAcilan="SpesificDersAcilan" SinavToNotlar="SinavToNotlar"></AkaDersler>
-                </ContentTemplate>
-            </TabItem>
-            <TabItem>
-                <ChildContent>
-                    <TabHeader Text="Öğrenci Notları"></TabHeader>
-                </ChildContent>
-                <ContentTemplate>
-                    <AkaNotlar _SinavDto="_SinavDto"></AkaNotlar>
-                </ContentTemplate>
-            </TabItem>
-        </TabItems>
-    </SfTab>
-</div>
+    <Authorized>*@
+        <div class="control-section e-tab-section">
+            <SfTab @ref="DersNotTab" LoadOn="ContentLoad.Dynamic">
+                @*Selected="OnTabSelected" Selecting="OnTabSelecting"*@
+                <TabEvents Created="TabCreate" Selecting="OnTabSelecting"></TabEvents>
+                <TabItems>
+                    <TabItem>
+                        <ChildContent>
+                            <TabHeader Text="Dersler"></TabHeader>
+                        </ChildContent>
+                        <ContentTemplate>
+                            <AkaDersler SpesificDersAcilan="SpesificDersAcilan" SinavToNotlar="SinavToNotlar"></AkaDersler>
+                        </ContentTemplate>
+                    </TabItem>
+                    <TabItem>
+                        <ChildContent>
+                            <TabHeader Text="Öğrenci Notları"></TabHeader>
+                        </ChildContent>
+                        <ContentTemplate>
+                            <AkaNotlar _SinavDto="_SinavDto"></AkaNotlar>
+                        </ContentTemplate>
+                    </TabItem>
+                </TabItems>
+            </SfTab>
+        </div>
 
-@code{
 
-    SfTab DersNotTab;
 
-    [Parameter]
-    public int SpesificDersAcilan { get; set; } = 0;
+        @code{
 
-    //AkademisyenSinavDto _AkademisyenSinavDto;
+            SfTab DersNotTab;
 
-    SinavDto _SinavDto;
+            [Parameter]
+            public int SpesificDersAcilan { get; set; } = 0;
 
-    //int _dersAcilanId;
-    DersAcilanDto _dersAcilanDto;
+            //AkademisyenSinavDto _AkademisyenSinavDto;
 
-    public void TabCreate()
-    {
-        DersNotTab.EnableTab(0, true);
-        DersNotTab.EnableTab(1, false);
-    }
-    public void OnTabSelecting(SelectingEventArgs args)
-    {
-        if (args.IsSwiped)
-        {
-            args.Cancel = true;
+            SinavDto _SinavDto;
+
+            //int _dersAcilanId;
+            DersAcilanDto _dersAcilanDto;
+
+            public void TabCreate()
+            {
+                DersNotTab.EnableTab(0, true);
+                DersNotTab.EnableTab(1, false);
+            }
+            public void OnTabSelecting(SelectingEventArgs args)
+            {
+                if (args.IsSwiped)
+                {
+                    args.Cancel = true;
+                }
+                if (args.SelectedIndex == 0)
+                {
+                    DersNotTab.EnableTab(1, false);
+                }
+            }
+
+            //public void SinavToNotlar(AkademisyenSinavDto AkademisyenSinavDto)
+            //{
+            //    _AkademisyenSinavDto = AkademisyenSinavDto;
+            //    TabDegis(1);
+            //}
+
+            //public void DerslerToOgrNotlar(DersAcilanDto dersAcilanDto)
+            //{
+            //    _dersAcilanDto = dersAcilanDto;
+            //    TabDegis(1);
+            //}
+
+            public void SinavToNotlar(SinavDersAcilanDto sinavDersAcilanDto)
+            {
+                _SinavDto = sinavDersAcilanDto.SinavDto;
+                TabDegis(1);
+            }
+
+
+
+
+            public void TabDegis(int tabIndex)
+            {
+                DersNotTab.EnableTab(0, true);
+                DersNotTab.EnableTab(1, tabIndex > 0);
+                DersNotTab.Select(tabIndex);
+            }
         }
-        if (args.SelectedIndex == 0)
-        {
-            DersNotTab.EnableTab(1, false);
-        }
-    }
 
-    //public void SinavToNotlar(AkademisyenSinavDto AkademisyenSinavDto)
-    //{
-    //    _AkademisyenSinavDto = AkademisyenSinavDto;
-    //    TabDegis(1);
-    //}
-
-    //public void DerslerToOgrNotlar(DersAcilanDto dersAcilanDto)
-    //{
-    //    _dersAcilanDto = dersAcilanDto;
-    //    TabDegis(1);
-    //}
-
-    public void SinavToNotlar(SinavDersAcilanDto sinavDersAcilanDto)
-    {
-        _SinavDto = sinavDersAcilanDto.SinavDto;
-        TabDegis(1);
-    }
-
-
-
-
-    public void TabDegis(int tabIndex)
-    {
-        DersNotTab.EnableTab(0, true);
-        DersNotTab.EnableTab(1, tabIndex > 0);
-        DersNotTab.Select(tabIndex);
-    }
-}
+    @*</Authorized>
+    <NotAuthorized>
+        <NotAuthorizedTemplate></NotAuthorizedTemplate>
+    </NotAuthorized>
+</AuthorizeView>*@

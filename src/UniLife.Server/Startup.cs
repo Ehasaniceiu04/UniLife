@@ -106,6 +106,7 @@ namespace UniLife.Server
 
             services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = true; });
             services.AddDbContext<ApplicationDbContext>(DbContextOptionsBuilder);
+            //services.AddDbContext<ApplicationDbContext>(DbContextOptionsBuilder,ServiceLifetime.Transient);// her req te almak istersen .
 
             services.AddIdentity<ApplicationUser, IdentityRole<Guid>>()
                 .AddRoles<IdentityRole<Guid>>()

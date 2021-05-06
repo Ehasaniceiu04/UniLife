@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using UniLife.CommonUI.Services.Contracts;
 using UniLife.Shared;
@@ -37,6 +38,8 @@ namespace UniLife.CommonUI
         public int DersKayitDonemIdState { get; set; }
 
         public string UserNavigationLoadRole { get; set; }
+
+        public ClaimsPrincipal LogedInUser { get; set; }
 
 
         public AppState(IUserProfileApi userProfileApi)

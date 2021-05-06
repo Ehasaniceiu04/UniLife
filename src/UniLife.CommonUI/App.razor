@@ -3,7 +3,7 @@
     <Found Context="routeData">
         <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
             <NotAuthorized>
-                <div class="login-container">
+                @*<div class="login-container">
                     <LoadingBackground ShowLogoBox="true">
                         <div class="login-body">
                             <label>Bu sayfaya erişim yetkiniz yok.</label><br />
@@ -11,7 +11,8 @@
                         </div>
 
                     </LoadingBackground>
-                </div>
+                </div>*@
+                <NotAuthorizedTemplate></NotAuthorizedTemplate>
                 @*<RedirectToLogin></RedirectToLogin>*@
             </NotAuthorized>
         </AuthorizeRouteView>

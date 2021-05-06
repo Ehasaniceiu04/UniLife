@@ -144,6 +144,10 @@ user.HasClaim("permission", Permissions.DersKayit.Delete)))
     </AuthorizeView>
 
 
+
+
+
+
     @*Personel*@
     <AuthorizeView Context="AuthorizeContext">
         <Authorized>
@@ -189,7 +193,7 @@ user.HasClaim("permission", Permissions.DersKayit.Delete)))
     @*Personel*@
     <AuthorizeView Context="AuthorizeContext">
         <Authorized>
-            @if (user.HasClaim("permission", Permissions.Menu.DersVeMufredat))
+            @if (@AuthorizeContext.User.HasClaim("permission", Permissions.Menu.DersVeMufredat))
             {
                 <MatNavSubMenu>
                     <MatNavSubMenuHeader>
@@ -232,7 +236,7 @@ user.HasClaim("permission", Permissions.DersKayit.Delete)))
     @*Personel*@
     <AuthorizeView Context="AuthorizeContext">
         <Authorized>
-            @if (user.HasClaim("permission", Permissions.Menu.SinavVeNot))
+            @if (@AuthorizeContext.User.HasClaim("permission", Permissions.Menu.SinavVeNot))
             {
                 <MatNavSubMenu>
                     <MatNavSubMenuHeader>
@@ -732,7 +736,9 @@ user.HasClaim("permission", Permissions.DersKayit.Delete)))
         }
 
         appState.UserNavigationLoadRole = user.FindFirst("role") != null ? user.FindFirst("role").Value : null;
-        //appState.UserNavigationLoadRole = user.FindFirst("role") != null ? string.Join(",", user.FindAll("role")) : null;
+        //appState.UserNavigationLoadRole = user.FindFirst("role") != null ? string.Join(",", user.FindAll("permission")) : null;
+
+        appState.LogedInUser = user;
 
         //if (user.IsInRole(UserRoles.Administrator.ToString()))
         //{

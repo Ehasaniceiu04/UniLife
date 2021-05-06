@@ -12,6 +12,9 @@ using System.Net.Http.Json;
 using System;
 using MatBlazor;
 using UniLife.CommonUI.Extensions;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Components.Authorization;
+using UniLife.Shared.AuthorizationDefinitions;
 
 namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs
 {
@@ -53,25 +56,30 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs
         string dialogText;
         bool dialog;
 
+
         private List<Object> Toolbaritems;
-    //        = new List<Object>() {
-    //        new ItemModel() { Text = "Eklenen Derslere Kayıt", TooltipText = "Click", PrefixIcon = "e-icons e-SendToBack", Id = "DersKayit" },
-    //        new ItemModel() { Text = "Onayla", TooltipText = "Click", PrefixIcon = "e-icons e-SendToBack", Id = "DersOnay" },
-    //        new ItemModel() { Text = "Onay Kaldır", TooltipText = "Click", PrefixIcon = "e-icons e-SendToBack", Id = "OnayKaldır", Disabled=true }
-    //};
+        //        = new List<Object>() {
+        //        new ItemModel() { Text = "Eklenen Derslere Kayıt", TooltipText = "Click", PrefixIcon = "e-icons e-SendToBack", Id = "DersKayit" },
+        //        new ItemModel() { Text = "Onayla", TooltipText = "Click", PrefixIcon = "e-icons e-SendToBack", Id = "DersOnay" },
+        //        new ItemModel() { Text = "Onay Kaldır", TooltipText = "Click", PrefixIcon = "e-icons e-SendToBack", Id = "OnayKaldır", Disabled=true }
+        //};
 
 
 
-    //protected override async Task OnInitializedAsync()
-    //{
-    //    _OgrenciDto = appState.OgrenciState;
-    //    await GetMufredatAcilanDerss();
-    //    await SetOgrenciProgramSure();
-    //}
+        //protected override async Task OnInitializedAsync()
+        //{
+        //    _OgrenciDto = appState.OgrenciState;
+        //    await GetMufredatAcilanDerss();
+        //    await SetOgrenciProgramSure();
+        //}
 
-    //protected override void OnInitialized()
-    protected override async Task OnInitializedAsync()
+        [CascadingParameter]
+        Task<AuthenticationState> authenticationStateTask { get; set; }
+        ClaimsPrincipal currentUser;
+        //protected override void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
+            currentUser = (await authenticationStateTask).User;
             if (_OgrenciDto == null)
             {
                 _OgrenciDto = await appState.GetOgrenciState();
@@ -90,14 +98,14 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs
         async Task ArrangeToolbar()
         {
             Toolbaritems = new List<object>();
-            if (appState.UserNavigationLoadRole == UserRoles.Ogrenci.ToString() || UserRoles.Personel.ToString() == appState.UserNavigationLoadRole)
+            if (currentUser.HasClaim("permission",Permissions.DersKayit.Update))
             {
                 if (!isOnayli)
                 {
                     Toolbaritems.Add(new ItemModel() { Text = "Eklenen Derslere Kayıt", TooltipText = "Click", PrefixIcon = "e-icons e-SendToBack", Id = "DersKayit" });
                 }
             }
-            if (appState.UserNavigationLoadRole == UserRoles.Personel.ToString() || UserRoles.Akademisyen.ToString() == appState.UserNavigationLoadRole)
+            if (currentUser.HasClaim("permission", Permissions.DersKayit.Confirm))
             {
                 if (!isOnayli)
                 {
@@ -108,6 +116,25 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs
                     Toolbaritems.Add(new ItemModel() { Text = "Onay Kaldır", TooltipText = "Click", PrefixIcon = "e-icons e-SendToBack", Id = "OnayKaldır" });
                 }
             }
+
+            //if (appState.UserNavigationLoadRole == UserRoles.Ogrenci.ToString() || UserRoles.Personel.ToString() == appState.UserNavigationLoadRole)
+            //{
+            //    if (!isOnayli)
+            //    {
+            //        Toolbaritems.Add(new ItemModel() { Text = "Eklenen Derslere Kayıt", TooltipText = "Click", PrefixIcon = "e-icons e-SendToBack", Id = "DersKayit" });
+            //    }
+            //}
+            //if (appState.UserNavigationLoadRole == UserRoles.Personel.ToString() || UserRoles.Akademisyen.ToString() == appState.UserNavigationLoadRole)
+            //{
+            //    if (!isOnayli)
+            //    {
+            //        Toolbaritems.Add(new ItemModel() { Text = "Onayla", TooltipText = "Click", PrefixIcon = "e-icons e-SendToBack", Id = "DersOnay" });
+            //    }
+            //    else
+            //    {
+            //        Toolbaritems.Add(new ItemModel() { Text = "Onay Kaldır", TooltipText = "Click", PrefixIcon = "e-icons e-SendToBack", Id = "OnayKaldır" });
+            //    }
+            //}
         }
 
         void GetDonems()
@@ -206,7 +233,7 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs
                 if (apiResponse.IsSuccessStatusCode)
                 {
                     DersKayitDtos = apiResponse.Result.OrderBy(x => x.Kod).ToList();
-                    if (DersKayitDtos.Count()>0 && !DersKayitDtos.Any(x => x.IsOnayli==false))
+                    if (DersKayitDtos.Count() > 0 && !DersKayitDtos.Any(x => x.IsOnayli == false))
                     {
                         isOnayli = true;
                     }
@@ -323,7 +350,7 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs
             }
         }
 
-        async Task DersKayitCallBackMain(DersAcilanDto dersAcilanDto)
+        void DersKayitCallBackMain(DersAcilanDto dersAcilanDto)
         {
             if (DersKayitDtos.Any(x => x.Id == dersAcilanDto.Id))
             {
