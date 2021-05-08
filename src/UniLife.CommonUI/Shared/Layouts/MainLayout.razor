@@ -1,7 +1,6 @@
 ﻿@inherits LayoutComponentBase
 @inject NavigationManager navigationManager
 @inject AppState appState
-@using UniLife.Shared.Dto
 
     @inject HttpClient Http;
 
@@ -100,6 +99,7 @@
         [CascadingParameter]
         Task<AuthenticationState> authenticationStateTask { get; set; }
 
+
         protected override async Task OnInitializedAsync()
         {
             // Uncomment to secure entire app  with no anonymous user access
@@ -117,11 +117,11 @@
                 _navMenuOpened = profile.IsNavOpen;
                 _navMinified = profile.IsNavMinified;
 
-
                 //UI da user program yetkileri lazım olursa burayı açacaz.
                 //await appState.GetUserProgramYetkiState();
             }
         }
+
 
 
         //[Inject]

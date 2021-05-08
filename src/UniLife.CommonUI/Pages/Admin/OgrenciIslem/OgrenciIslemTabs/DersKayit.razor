@@ -19,391 +19,379 @@
 
 @*<AuthorizeView Roles="Administrator,Personel,Ogrenci,Akademisyen" Context="AuthorizeContext">*@
 @*<AuthorizeView Policy="@Policies.IsAdmin" Context="AuthorizeContext">*@
+    <AuthorizeView Policy="@Permissions.DersKayit.Read" Context="AuthorizeContext">
+        <Authorized>
+            @if (_OgrenciDto == null || _OgrenciDto.Id == 0)
+            {
 
-@*<AuthorizeView Policy="@Permissions.DersKayit.Read" Context="AuthorizeContext">
-    <Authorized>*@
-
-@if (appState.LogedInUser.HasClaim("permission", Permissions.DersKayit.Read))
-{
-
-    @if (_OgrenciDto == null || _OgrenciDto.Id == 0)
-    {
-
-        <LoadingBackground ShowLogoBox="true">
-            <label>Ders Kayıt Yükleniyor...</label>
-        </LoadingBackground>
-    }
-    else
-    {
-        <div class="row">
-            <div class="col-sm-12 text-center">
-                @*@foreach (var item in donemDtos)
-                    {
-                        <SfRadioButton Label="@item.Ad" Name="donemRadio" Value="@item.Id.ToString()" ValueChange="@OnDonemChange" TChecked="string" @bind-Checked="@(seciliDonemId)"></SfRadioButton>
-                    }*@
-                <SfDropDownList ID="DropDonem" @ref="DropDonem" TValue="int?" TItem="DonemDto" CssClass="col-sm-4 azassa" Placeholder="Dönem seçiniz..."
-                                Query="@donemQuery"
-                                @bind-Value="@seciliDonemId">
-                    <SfDataManager Url="odata/donems?$orderby=Yil desc, DonemTipId" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
-                    <DropDownListEvents TValue="int?" TItem="DonemDto" ValueChange="OnDonemChange"></DropDownListEvents>
-                    <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
-                </SfDropDownList>
-            </div>
-        </div>
-        <br />
-        <div class="card">
-            <div class="server-action-menu">
+                <LoadingBackground ShowLogoBox="true">
+                    <label>Ders Kayıt Yükleniyor...</label>
+                </LoadingBackground>
+            }
+            else
+            {
                 <div class="row">
                     <div class="col-sm-12 text-center">
-                        <legend>Kayıt Olunan Dersler @(isOnayli?"(Onaylı)":string.Empty)</legend>
+                        @*@foreach (var item in donemDtos)
+                            {
+                                <SfRadioButton Label="@item.Ad" Name="donemRadio" Value="@item.Id.ToString()" ValueChange="@OnDonemChange" TChecked="string" @bind-Checked="@(seciliDonemId)"></SfRadioButton>
+                            }*@
+                        <SfDropDownList ID="DropDonem" @ref="DropDonem" TValue="int?" TItem="DonemDto" CssClass="col-sm-4 azassa" Placeholder="Dönem seçiniz..."
+                                        Query="@donemQuery"
+                                        @bind-Value="@seciliDonemId">
+                            <SfDataManager Url="odata/donems?$orderby=Yil desc, DonemTipId" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor" CrossDomain=true></SfDataManager>
+                            <DropDownListEvents TValue="int?" TItem="DonemDto" ValueChange="OnDonemChange"></DropDownListEvents>
+                            <DropDownListFieldSettings Text="Ad" Value="Id"></DropDownListFieldSettings>
+                        </SfDropDownList>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-sm-12 col-md-12">
-                        @if (DersKayitDtos == null)
-                        {
+                <br />
+                <div class="card">
+                    <div class="server-action-menu">
+                        <div class="row">
+                            <div class="col-sm-12 text-center">
+                                <legend>Kayıt Olunan Dersler @(isOnayli?"(Onaylı)":string.Empty)</legend>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12">
+                                @if (DersKayitDtos == null)
+                                {
 
-                            <LoadingBackground ShowLogoBox="true">
-                                <label>Kayıtlı Dersler Yükleniyor...</label>
-                            </LoadingBackground>
-                        }
-                        else
-                        {
+                                    <LoadingBackground ShowLogoBox="true">
+                                        <label>Kayıtlı Dersler Yükleniyor...</label>
+                                    </LoadingBackground>
+                                }
+                                else
+                                {
 
-                            <SfGrid ID="DersKayitGrid" @ref="DersKayitGrid" DataSource="@DersKayitDtos" Toolbar="Toolbaritems" AllowSorting="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
-                                <GridEvents TValue="DersAcilanDto" OnToolbarClick="ToolbarClickHandler" QueryCellInfo="QueryCellInfoHandler" CommandClicked="CommandClickHandlerKayit"></GridEvents>
-                                <GridAggregates>
-                                    <GridAggregate>
-                                        <GridAggregateColumns>
-                                            <GridAggregateColumn Field=@nameof(DersAcilanDto.Akts) Type="AggregateType.Sum" Format="N2">
-                                                <FooterTemplate>
-                                                    @{
-                                                        var aggregate = (context as AggregateTemplateContext);
-                                                        <div>
-                                                            <p>Toplam: @aggregate.Sum</p>
-                                                        </div>
-                                                    }
-                                                </FooterTemplate>
-                                            </GridAggregateColumn>
-                                            <GridAggregateColumn Field=@nameof(DersAcilanDto.Kredi) Type="AggregateType.Sum" Format="N2">
-                                                <FooterTemplate>
-                                                    @{
-                                                        var aggregate = (context as AggregateTemplateContext);
-                                                        <div>
-                                                            <p>Toplam: @aggregate.Sum</p>
-                                                        </div>
-                                                    }
-                                                </FooterTemplate>
-                                            </GridAggregateColumn>
-                                        </GridAggregateColumns>
-                                    </GridAggregate>
-                                </GridAggregates>
+                                    <SfGrid ID="DersKayitGrid" @ref="DersKayitGrid" DataSource="@DersKayitDtos" Toolbar="Toolbaritems" AllowSorting="true" AllowPaging="true" AllowExcelExport="true" AllowPdfExport="true">
+                                        <GridEvents TValue="DersAcilanDto" OnToolbarClick="ToolbarClickHandler" QueryCellInfo="QueryCellInfoHandler" CommandClicked="CommandClickHandlerKayit"></GridEvents>
+                                        <GridAggregates>
+                                            <GridAggregate>
+                                                <GridAggregateColumns>
+                                                    <GridAggregateColumn Field=@nameof(DersAcilanDto.Akts) Type="AggregateType.Sum" Format="N2">
+                                                        <FooterTemplate>
+                                                            @{
+                                                                var aggregate = (context as AggregateTemplateContext);
+                                                                <div>
+                                                                    <p>Toplam: @aggregate.Sum</p>
+                                                                </div>
+                                                            }
+                                                        </FooterTemplate>
+                                                    </GridAggregateColumn>
+                                                    <GridAggregateColumn Field=@nameof(DersAcilanDto.Kredi) Type="AggregateType.Sum" Format="N2">
+                                                        <FooterTemplate>
+                                                            @{
+                                                                var aggregate = (context as AggregateTemplateContext);
+                                                                <div>
+                                                                    <p>Toplam: @aggregate.Sum</p>
+                                                                </div>
+                                                            }
+                                                        </FooterTemplate>
+                                                    </GridAggregateColumn>
+                                                </GridAggregateColumns>
+                                            </GridAggregate>
+                                        </GridAggregates>
 
-                                <GridColumns>
-                                    <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
-                                    <GridColumn Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kodu"></GridColumn>
-                                    <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Adı"></GridColumn>
-                                    <GridColumn Visible="false" Field=@nameof(DersAcilanDto.YerineSecilenId) HeaderText="Yerine id"></GridColumn>
-                                    <GridColumn Field=@nameof(DersAcilanDto.Zorunlu) DisplayAsCheckBox="true" HeaderText="Zorunlu"></GridColumn>
-                                    <GridColumn Field=@nameof(DersAcilanDto.Kredi) Format="N2" HeaderText="Kredi"></GridColumn>
-                                    <GridColumn Field=@nameof(DersAcilanDto.Akts) Format="N2" HeaderText="Akts"></GridColumn>
-                                    <GridColumn Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
-                                    <GridColumn Field=@nameof(DersAcilanDto.YerineSecilenAd) HeaderText="Yerine Ders"></GridColumn>
-                                    @if (!isOnayli)
-                                    {
-                                        <GridColumn HeaderText="Kaldır" Width="75">
-                                            <GridCommandColumns>
-                                                <GridCommandColumn Type="CommandButtonType.None" Title="Kayıt Kaldır" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-Close", CssClass="e-flat" })"></GridCommandColumn>
-                                            </GridCommandColumns>
-                                        </GridColumn>
-                                    }
+                                        <GridColumns>
+                                            <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+                                            <GridColumn Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kodu"></GridColumn>
+                                            <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Adı"></GridColumn>
+                                            <GridColumn Visible="false" Field=@nameof(DersAcilanDto.YerineSecilenId) HeaderText="Yerine id"></GridColumn>
+                                            <GridColumn Field=@nameof(DersAcilanDto.Zorunlu) DisplayAsCheckBox="true" HeaderText="Zorunlu"></GridColumn>
+                                            <GridColumn Field=@nameof(DersAcilanDto.Kredi) Format="N2" HeaderText="Kredi"></GridColumn>
+                                            <GridColumn Field=@nameof(DersAcilanDto.Akts) Format="N2" HeaderText="Akts"></GridColumn>
+                                            <GridColumn Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
+                                            <GridColumn Field=@nameof(DersAcilanDto.YerineSecilenAd) HeaderText="Yerine Ders"></GridColumn>
+                                            @if (!isOnayli)
+                                            {
+                                                <GridColumn HeaderText="Kaldır" Width="75">
+                                                    <GridCommandColumns>
+                                                        <GridCommandColumn Type="CommandButtonType.None" Title="Kayıt Kaldır" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-Close", CssClass="e-flat" })"></GridCommandColumn>
+                                                    </GridCommandColumns>
+                                                </GridColumn>
+                                            }
 
-                                </GridColumns>
-                            </SfGrid>
-                        }
+                                        </GridColumns>
+                                    </SfGrid>
+                                }
+                            </div>
+                        </div>
                     </div>
+
+
+
+                    <Divider5></Divider5>
+
+
+
+
+                    <SfTab @ref="Tab" HeaderPlacement="HeaderPosition.Left" SelectedItem="@selectedItem" LoadOn="ContentLoad.Demand">
+                        <TabEvents Selecting="OnTabSelecting"></TabEvents>
+                        <TabAnimationSettings>
+                            <TabAnimationPrevious Effect="@(Syncfusion.Blazor.AnimationEffect.SlideTopIn)"></TabAnimationPrevious>
+                            <TabAnimationNext Effect="@(Syncfusion.Blazor.AnimationEffect.SlideBottomIn)"></TabAnimationNext>
+                        </TabAnimationSettings>
+                        <TabItems>
+                            @if (ogrenciProgramSure >= 1)
+                            {
+                                <TabItem>
+                                    <ChildContent>
+                                        <TabHeader Text="1. Sınıf"></TabHeader>
+                                    </ChildContent>
+                                    <ContentTemplate>
+                                        @if (IsChecked)
+                                        {
+                                            <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="1"></SinifGrid>
+                                        }
+                                        else
+                                        {
+                                            <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="1"></SinifGrid>
+                                        }
+                                    </ContentTemplate>
+                                </TabItem>
+                            }
+                            @if (ogrenciProgramSure >= 2)
+                            {
+                                <TabItem>
+                                    <ChildContent>
+                                        <TabHeader Text="2. Sınıf"></TabHeader>
+                                    </ChildContent>
+                                    <ContentTemplate>
+                                        @if (IsChecked)
+                                        {
+                                            <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="2"></SinifGrid>
+                                        }
+                                        else
+                                        {
+                                            <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="2"></SinifGrid>
+                                        }
+
+                                    </ContentTemplate>
+                                </TabItem>
+                            }
+                            @if (ogrenciProgramSure >= 3)
+                            {
+                                <TabItem>
+                                    <ChildContent>
+                                        <TabHeader Text="3. Sınıf"></TabHeader>
+                                    </ChildContent>
+                                    <ContentTemplate>
+
+                                        @if (IsChecked)
+                                        {
+                                            <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="3"></SinifGrid>
+                                        }
+                                        else
+                                        {
+                                            <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="3"></SinifGrid>
+                                        }
+                                    </ContentTemplate>
+                                </TabItem>
+                            }
+                            @if (ogrenciProgramSure >= 4)
+                            {
+                                <TabItem>
+                                    <ChildContent>
+                                        <TabHeader Text="4. Sınıf"></TabHeader>
+                                    </ChildContent>
+                                    <ContentTemplate>
+
+                                        @if (IsChecked)
+                                        {
+                                            <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="4"></SinifGrid>
+                                        }
+                                        else
+                                        {
+                                            <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="4"></SinifGrid>
+                                        }
+                                    </ContentTemplate>
+                                </TabItem>
+                            }
+                            @if (ogrenciProgramSure >= 5)
+                            {
+                                <TabItem>
+                                    <ChildContent>
+                                        <TabHeader Text="5. Sınıf"></TabHeader>
+                                    </ChildContent>
+                                    <ContentTemplate>
+
+                                        @if (IsChecked)
+                                        {
+                                            <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="5"></SinifGrid>
+                                        }
+                                        else
+                                        {
+                                            <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="5"></SinifGrid>
+                                        }
+                                    </ContentTemplate>
+                                </TabItem>
+                            }
+                            @if (ogrenciProgramSure >= 6)
+                            {
+                                <TabItem>
+                                    <ChildContent>
+                                        <TabHeader Text="6. Sınıf"></TabHeader>
+                                    </ChildContent>
+                                    <ContentTemplate>
+
+                                        @if (IsChecked)
+                                        {
+                                            <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="6"></SinifGrid>
+                                        }
+                                        else
+                                        {
+                                            <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="6"></SinifGrid>
+                                        }
+                                    </ContentTemplate>
+                                </TabItem>
+                            }
+                            @if (ogrenciProgramSure >= 7)
+                            {
+                                <TabItem>
+                                    <ChildContent>
+                                        <TabHeader Text="7. Sınıf"></TabHeader>
+                                    </ChildContent>
+                                    <ContentTemplate>
+
+                                        @if (IsChecked)
+                                        {
+                                            <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="7"></SinifGrid>
+                                        }
+                                        else
+                                        {
+                                            <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="7"></SinifGrid>
+                                        }
+                                    </ContentTemplate>
+                                </TabItem>
+                            }
+                            @if (ogrenciProgramSure >= 8)
+                            {
+                                <TabItem>
+                                    <ChildContent>
+                                        <TabHeader Text="8. Sınıf"></TabHeader>
+                                    </ChildContent>
+                                    <ContentTemplate>
+
+                                        @if (IsChecked)
+                                        {
+                                            <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="8"></SinifGrid>
+                                        }
+                                        else
+                                        {
+                                            <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="8"></SinifGrid>
+                                        }
+                                    </ContentTemplate>
+                                </TabItem>
+                            }
+                            @if (ogrenciProgramSure >= 9)
+                            {
+                                <TabItem>
+                                    <ChildContent>
+                                        <TabHeader Text="9. Sınıf"></TabHeader>
+                                    </ChildContent>
+                                    <ContentTemplate>
+
+                                        @if (IsChecked)
+                                        {
+                                            <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="9"></SinifGrid>
+                                        }
+                                        else
+                                        {
+                                            <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="9"></SinifGrid>
+                                        }
+                                    </ContentTemplate>
+                                </TabItem>
+                            }
+
+
+                        </TabItems>
+                    </SfTab>
+
+
+                    @*<div class="row">
+                            @if (appState.UserNavigationLoadRole == UserRoles.Ogrenci.ToString() || UserRoles.Personel.ToString() == appState.UserNavigationLoadRole)
+                            {
+                                @if (!isOnayli)
+                                {
+                                    <div class="col-6 text-center">
+                                        <SfProgressButton Content="Eklenen Derslere Kayıt Ol" OnClick="KayıtOl" CssClass="center-block e-primary">
+                                            <ProgressButtonSpinSettings Position="SpinPosition.Center"></ProgressButtonSpinSettings>
+                                        </SfProgressButton>
+                                    </div>
+                                }
+                            }
+                            @if (appState.UserNavigationLoadRole == UserRoles.Personel.ToString() || UserRoles.Akademisyen.ToString() == appState.UserNavigationLoadRole)
+                            {
+                                @if (!isOnayli)
+                                {
+                                    <div class="col-6 text-center">
+                                        <SfProgressButton Content="Onayla" OnClick="Onayla" CssClass="center-block e-primary">
+                                            <ProgressButtonSpinSettings Position="SpinPosition.Center"></ProgressButtonSpinSettings>
+                                        </SfProgressButton>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-6 text-center">
+                                        <SfProgressButton Content="Onay Kaldır" OnClick="OnayKaldir" CssClass="center-block e-primary">
+                                            <ProgressButtonSpinSettings Position="SpinPosition.Center"></ProgressButtonSpinSettings>
+                                        </SfProgressButton>
+                                    </div>
+                                }
+                            }
+
+                        </div>*@
                 </div>
-            </div>
+            }
 
 
-
-            <Divider5></Divider5>
-
-
-
-
-            <SfTab @ref="Tab" HeaderPlacement="HeaderPosition.Left" SelectedItem="@selectedItem" LoadOn="ContentLoad.Demand">
-                <TabEvents Selecting="OnTabSelecting"></TabEvents>
-                <TabAnimationSettings>
-                    <TabAnimationPrevious Effect="@(Syncfusion.Blazor.AnimationEffect.SlideTopIn)"></TabAnimationPrevious>
-                    <TabAnimationNext Effect="@(Syncfusion.Blazor.AnimationEffect.SlideBottomIn)"></TabAnimationNext>
-                </TabAnimationSettings>
-                <TabItems>
-                    @if (ogrenciProgramSure >= 1)
-                    {
-                        <TabItem>
-                            <ChildContent>
-                                <TabHeader Text="1. Sınıf"></TabHeader>
-                            </ChildContent>
-                            <ContentTemplate>
-                                @if (IsChecked)
-                                {
-                                    <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="1"></SinifGrid>
-                                }
-                                else
-                                {
-                                    <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="1"></SinifGrid>
-                                }
-                            </ContentTemplate>
-                        </TabItem>
-                    }
-                    @if (ogrenciProgramSure >= 2)
-                    {
-                        <TabItem>
-                            <ChildContent>
-                                <TabHeader Text="2. Sınıf"></TabHeader>
-                            </ChildContent>
-                            <ContentTemplate>
-                                @if (IsChecked)
-                                {
-                                    <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="2"></SinifGrid>
-                                }
-                                else
-                                {
-                                    <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="2"></SinifGrid>
-                                }
-
-                            </ContentTemplate>
-                        </TabItem>
-                    }
-                    @if (ogrenciProgramSure >= 3)
-                    {
-                        <TabItem>
-                            <ChildContent>
-                                <TabHeader Text="3. Sınıf"></TabHeader>
-                            </ChildContent>
-                            <ContentTemplate>
-
-                                @if (IsChecked)
-                                {
-                                    <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="3"></SinifGrid>
-                                }
-                                else
-                                {
-                                    <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="3"></SinifGrid>
-                                }
-                            </ContentTemplate>
-                        </TabItem>
-                    }
-                    @if (ogrenciProgramSure >= 4)
-                    {
-                        <TabItem>
-                            <ChildContent>
-                                <TabHeader Text="4. Sınıf"></TabHeader>
-                            </ChildContent>
-                            <ContentTemplate>
-
-                                @if (IsChecked)
-                                {
-                                    <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="4"></SinifGrid>
-                                }
-                                else
-                                {
-                                    <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="4"></SinifGrid>
-                                }
-                            </ContentTemplate>
-                        </TabItem>
-                    }
-                    @if (ogrenciProgramSure >= 5)
-                    {
-                        <TabItem>
-                            <ChildContent>
-                                <TabHeader Text="5. Sınıf"></TabHeader>
-                            </ChildContent>
-                            <ContentTemplate>
-
-                                @if (IsChecked)
-                                {
-                                    <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="5"></SinifGrid>
-                                }
-                                else
-                                {
-                                    <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="5"></SinifGrid>
-                                }
-                            </ContentTemplate>
-                        </TabItem>
-                    }
-                    @if (ogrenciProgramSure >= 6)
-                    {
-                        <TabItem>
-                            <ChildContent>
-                                <TabHeader Text="6. Sınıf"></TabHeader>
-                            </ChildContent>
-                            <ContentTemplate>
-
-                                @if (IsChecked)
-                                {
-                                    <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="6"></SinifGrid>
-                                }
-                                else
-                                {
-                                    <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="6"></SinifGrid>
-                                }
-                            </ContentTemplate>
-                        </TabItem>
-                    }
-                    @if (ogrenciProgramSure >= 7)
-                    {
-                        <TabItem>
-                            <ChildContent>
-                                <TabHeader Text="7. Sınıf"></TabHeader>
-                            </ChildContent>
-                            <ContentTemplate>
-
-                                @if (IsChecked)
-                                {
-                                    <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="7"></SinifGrid>
-                                }
-                                else
-                                {
-                                    <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="7"></SinifGrid>
-                                }
-                            </ContentTemplate>
-                        </TabItem>
-                    }
-                    @if (ogrenciProgramSure >= 8)
-                    {
-                        <TabItem>
-                            <ChildContent>
-                                <TabHeader Text="8. Sınıf"></TabHeader>
-                            </ChildContent>
-                            <ContentTemplate>
-
-                                @if (IsChecked)
-                                {
-                                    <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="8"></SinifGrid>
-                                }
-                                else
-                                {
-                                    <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="8"></SinifGrid>
-                                }
-                            </ContentTemplate>
-                        </TabItem>
-                    }
-                    @if (ogrenciProgramSure >= 9)
-                    {
-                        <TabItem>
-                            <ChildContent>
-                                <TabHeader Text="9. Sınıf"></TabHeader>
-                            </ChildContent>
-                            <ContentTemplate>
-
-                                @if (IsChecked)
-                                {
-                                    <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="9"></SinifGrid>
-                                }
-                                else
-                                {
-                                    <SinifGrid DersKayitCallBack="DersKayitCallBackMain" IsOnayli="isOnayli" Sinif="9"></SinifGrid>
-                                }
-                            </ContentTemplate>
-                        </TabItem>
-                    }
-
-
-                </TabItems>
-            </SfTab>
-
-
-            @*<div class="row">
-                    @if (appState.UserNavigationLoadRole == UserRoles.Ogrenci.ToString() || UserRoles.Personel.ToString() == appState.UserNavigationLoadRole)
-                    {
-                        @if (!isOnayli)
-                        {
-                            <div class="col-6 text-center">
-                                <SfProgressButton Content="Eklenen Derslere Kayıt Ol" OnClick="KayıtOl" CssClass="center-block e-primary">
-                                    <ProgressButtonSpinSettings Position="SpinPosition.Center"></ProgressButtonSpinSettings>
-                                </SfProgressButton>
-                            </div>
-                        }
-                    }
-                    @if (appState.UserNavigationLoadRole == UserRoles.Personel.ToString() || UserRoles.Akademisyen.ToString() == appState.UserNavigationLoadRole)
-                    {
-                        @if (!isOnayli)
-                        {
-                            <div class="col-6 text-center">
-                                <SfProgressButton Content="Onayla" OnClick="Onayla" CssClass="center-block e-primary">
-                                    <ProgressButtonSpinSettings Position="SpinPosition.Center"></ProgressButtonSpinSettings>
-                                </SfProgressButton>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="col-6 text-center">
-                                <SfProgressButton Content="Onay Kaldır" OnClick="OnayKaldir" CssClass="center-block e-primary">
-                                    <ProgressButtonSpinSettings Position="SpinPosition.Center"></ProgressButtonSpinSettings>
-                                </SfProgressButton>
-                            </div>
-                        }
-                    }
-
-                </div>*@
-        </div>
-    }
-
-}
-else
-{
-    <NotAuthorizedTemplate></NotAuthorizedTemplate>
-}
-
-
-
-@*</Authorized>
+        </Authorized>
         <NotAuthorized>
             <NotAuthorizedTemplate></NotAuthorizedTemplate>
         </NotAuthorized>
-    </AuthorizeView>*@
+    </AuthorizeView>
 
 
 
-<Dialog Baslik="Ders mevcut" @bind-isDialogOpen="@dialog">
-    <p>@dialogText</p>
-</Dialog>
+    <Dialog Baslik="Ders mevcut" @bind-isDialogOpen="@dialog">
+        <p>@dialogText</p>
+    </Dialog>
 
 
 
 
-<style type="text/css" class="cssStyles">
-    .detailtable td {
-        font-size: 13px;
-        padding: 4px;
-        max-width: 0;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
+    <style type="text/css" class="cssStyles">
+        .detailtable td {
+            font-size: 13px;
+            padding: 4px;
+            max-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
 
-    .photo {
-        width: 100px;
-        height: 100px;
-        border-radius: 50px;
-        box-shadow: inset 0 0 1px #e0e0e0, inset 0 0 14px rgba(0,0,0,0.2);
-    }
+        .photo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50px;
+            box-shadow: inset 0 0 1px #e0e0e0, inset 0 0 14px rgba(0,0,0,0.2);
+        }
 
-    .table td, .table th {
-        padding-top: 10px;
-        padding-bottom: 0px;
-    }
+        .table td, .table th {
+            padding-top: 10px;
+            padding-bottom: 0px;
+        }
 
-    .azassa {
-        margin-top: 5px;
-        background-color: #d4b5b5;
-    }
+        .azassa {
+            margin-top: 5px;
+            background-color: #d4b5b5;
+        }
 
 
-    .e-Close:before {
-        content: '\e745';
-        color: #ff6d4d;
-    }
-</style>
+        .e-Close:before {
+            content: '\e745';
+            color: #ff6d4d;
+        }
+    </style>

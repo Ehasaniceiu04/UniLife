@@ -3,64 +3,72 @@
 @using UniLife.Shared.Dto.Definitions
 @using UniLife.CommonUI.Pages
 @using UniLife.CommonUI.Pages.Definitions.Tabs
-@attribute [Authorize(Roles = "Administrator,Personel")]
-
-<div class="card">
-
-    <MatTabGroup>
-
-        <MatTab Label="Üniversite">
-
-            <UniversiteList></UniversiteList>
-        </MatTab>
-        <MatTab Label="Fakülte">
-            @*<UniLife.CommonUI.Pages.Definations.Tabs.GenericDefination ApiAdres="api/universite"
-                                                                             EntityName="Universite">
-                    <GridColumn Field=@nameof(UniversiteDto.Ad) HeaderText="Üniversite İsim" ValidationRules="@(new ValidationRules{ Required=true})" Width="170"></GridColumn>
-
-                </UniLife.CommonUI.Pages.Definations.Tabs.GenericDefination>*@
+@inject AppState appState
 
 
-            <FakulteList></FakulteList>
+<AuthorizeView Policy="@Permissions.Menu.AkadeTanim" Context="AuthorizeContext">
+    <Authorized>
+        <div class="card">
+
+            <MatTabGroup>
+
+                <MatTab Label="Üniversite">
+
+                    <UniversiteList></UniversiteList>
+                </MatTab>
+                <MatTab Label="Fakülte">
+                    @*<UniLife.CommonUI.Pages.Definations.Tabs.GenericDefination ApiAdres="api/universite"
+                                                                                     EntityName="Universite">
+                            <GridColumn Field=@nameof(UniversiteDto.Ad) HeaderText="Üniversite İsim" ValidationRules="@(new ValidationRules{ Required=true})" Width="170"></GridColumn>
+
+                        </UniLife.CommonUI.Pages.Definations.Tabs.GenericDefination>*@
 
 
-        </MatTab>
-        <MatTab Label="Bölüm">
-            <BolumList></BolumList>
-        </MatTab>
-        <MatTab Label="Program">
-            <ProgramList></ProgramList>
-        </MatTab>
-        @*<MatTab Label="Müfredat">
-                 <LabelContent>
-                    Third <MatIcon Icon="@MatIconNames.Close"></MatIcon>
-                </LabelContent>
-                <ChildContent>
-                    Ders
-                </ChildContent>
-                <SfCalendar TValue="DateTime?" Value="@DateValue"></SfCalendar>
-                <DialogEditing></DialogEditing>
+                    <FakulteList></FakulteList>
 
 
-            </MatTab>*@
-        <MatTab Label="Harç">
-            <HarcList></HarcList>
-        </MatTab>
-        <MatTab Label="Donem">
-            <Donem></Donem>
-        </MatTab>
-        <MatTab Label="Akademik Takvim">
-            <AkademikTakvim></AkademikTakvim>
-        </MatTab>
-        <MatTab Label="Sınav Kriterleri">
-            <SinavKriterList></SinavKriterList>
-        </MatTab>
+                </MatTab>
+                <MatTab Label="Bölüm">
+                    <BolumList></BolumList>
+                </MatTab>
+                <MatTab Label="Program">
+                    <ProgramList></ProgramList>
+                </MatTab>
+                @*<MatTab Label="Müfredat">
+                         <LabelContent>
+                            Third <MatIcon Icon="@MatIconNames.Close"></MatIcon>
+                        </LabelContent>
+                        <ChildContent>
+                            Ders
+                        </ChildContent>
+                        <SfCalendar TValue="DateTime?" Value="@DateValue"></SfCalendar>
+                        <DialogEditing></DialogEditing>
 
-    </MatTabGroup>
-</div>
+
+                    </MatTab>*@
+                <MatTab Label="Harç">
+                    <HarcList></HarcList>
+                </MatTab>
+                <MatTab Label="Donem">
+                    <Donem></Donem>
+                </MatTab>
+                <MatTab Label="Akademik Takvim">
+                    <AkademikTakvim></AkademikTakvim>
+                </MatTab>
+                <MatTab Label="Sınav Kriterleri">
+                    <SinavKriterList></SinavKriterList>
+                </MatTab>
+
+            </MatTabGroup>
+        </div>
+
+    </Authorized>
+    <NotAuthorized>
+
+    </NotAuthorized>
+</AuthorizeView>
 
 
-@*<button @onclick="@Switch">Switch</button>*@
 
 @code{
     public bool Visible { get; set; }

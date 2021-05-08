@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using UniLife.CommonUI.Services.Contracts;
@@ -18,6 +19,9 @@ namespace UniLife.CommonUI
     {
         public event Action OnChange;
         private readonly IUserProfileApi _userProfileApi;
+
+        [Microsoft.AspNetCore.Components.CascadingParameter]
+        Task<Microsoft.AspNetCore.Components.Authorization.AuthenticationState> authenticationStateTask { get; set; }
 
         public UserProfileDto UserProfile { get; set; }
         //public OgrenciDto OgrenciUserProfile { get; set; }
@@ -40,6 +44,28 @@ namespace UniLife.CommonUI
         public string UserNavigationLoadRole { get; set; }
 
         public ClaimsPrincipal LogedInUser { get; set; }
+        //{
+        //    get
+        //    {
+        //        if (LogedInUser != null)
+        //        {
+        //            return LogedInUser;
+        //        }
+
+        //        ClaimsPrincipal userInfo = authenticationStateTask.Result.User;
+
+        //        if (userInfo.Claims.Count() > 0)
+        //        {
+        //            LogedInUser = userInfo;
+        //            return userInfo;
+        //        }
+        //        return new ClaimsPrincipal();
+        //    }
+        //    set
+        //    {
+        //        LogedInUser = value;
+        //    }
+        //}
 
 
         public AppState(IUserProfileApi userProfileApi)
@@ -89,6 +115,23 @@ namespace UniLife.CommonUI
         //{
         //    await _userProfileApi.UpsertOgrenci(OgrenciUserProfile);
         //}
+
+        public async Task<ClaimsPrincipal> GetLogedInUser()
+        {
+            if (LogedInUser != null)
+            {
+                return LogedInUser;
+            }
+
+            ClaimsPrincipal claimsPrincipal = (await authenticationStateTask).User;
+
+            if (claimsPrincipal.Claims.Count() > 0)
+            {
+                LogedInUser = claimsPrincipal;
+                return LogedInUser;
+            }
+            return new ClaimsPrincipal();
+        }
 
         public async Task<UserProfileDto> GetUserProfile()
         {

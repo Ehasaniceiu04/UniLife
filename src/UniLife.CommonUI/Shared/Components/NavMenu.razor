@@ -738,7 +738,8 @@ user.HasClaim("permission", Permissions.DersKayit.Delete)))
         appState.UserNavigationLoadRole = user.FindFirst("role") != null ? user.FindFirst("role").Value : null;
         //appState.UserNavigationLoadRole = user.FindFirst("role") != null ? string.Join(",", user.FindAll("permission")) : null;
 
-        appState.LogedInUser = user;
+        //appState.LogedInUser = user;
+        //appState.GetLogedInUser();
 
         //if (user.IsInRole(UserRoles.Administrator.ToString()))
         //{

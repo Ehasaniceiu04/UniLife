@@ -23,6 +23,14 @@ namespace UniLife.Shared.AuthorizationDefinitions
                 .Build();
         }
 
+        //public static AuthorizationPolicy IsCustomPolicy(string customPolicy)
+        //{
+        //    return new AuthorizationPolicyBuilder()
+        //        .RequireAuthenticatedUser()
+        //        .RequireClaim(customPolicy)
+        //        .Build();
+        //}
+
         //public static AuthorizationPolicy IsOgrenciPolicy()
         //{
         //    return new AuthorizationPolicyBuilder()

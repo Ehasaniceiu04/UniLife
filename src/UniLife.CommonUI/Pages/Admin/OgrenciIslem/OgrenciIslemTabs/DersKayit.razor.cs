@@ -25,8 +25,6 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs
         [Inject]
         public MatBlazor.IMatToaster matToaster { get; set; }
 
-
-
         bool isOnayli;
         SfGrid<DersAcilanDto> DersKayitGrid;
 

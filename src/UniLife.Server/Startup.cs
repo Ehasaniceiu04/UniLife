@@ -270,7 +270,11 @@ namespace UniLife.Server
                 options.AddPolicy(Policies.IsAdmin, Policies.IsAdminPolicy());
                 //options.AddPolicy(Policies.IsOgrenci, Policies.IsOgrenciPolicy());
                 //options.AddPolicy(Policies.IsAkademisyen, Policies.IsAkademisyenPolicy());
-                //options.AddPolicy(Policies.IsPersonel, Policies.IsPersonelPolicy());
+                options.AddPolicy(Permissions.Menu.AkadeTanim, policy => policy.RequireClaim("permission", Permissions.Menu.AkadeTanim));
+                options.AddPolicy(Permissions.Universite.Read, policy => policy.RequireClaim("permission", Permissions.Universite.Read));
+                options.AddPolicy(Permissions.DersKayit.Read, policy => policy.RequireClaim("permission", Permissions.DersKayit.Read));
+
+                
                 options.AddPolicy(Policies.IsUser, Policies.IsUserPolicy());
                 options.AddPolicy(Policies.IsReadOnly, Policies.IsReadOnlyPolicy());
                 options.AddPolicy(Policies.IsMyDomain, Policies.IsMyDomainPolicy());  // valid only on serverside operations
