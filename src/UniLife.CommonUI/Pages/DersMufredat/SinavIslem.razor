@@ -60,22 +60,23 @@ else
                     <GridPageSettings PageCount="5" PageSizes="new int[]{ 5, 10, 50, 100,10000}"></GridPageSettings>
                     <SfDataManager Url="@("odata/DersAcilansForSinavs")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
                     @*<SfDataManager Url="@("odata/dersacilans?$expand=derskayits,akademisyen")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>*@
-                    <GridColumns>
-                        <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
-                        <GridColumn Visible="false" Field=@nameof(DersAcilanForSinav.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
-                        <GridColumn AutoFit="true" Field=@nameof(DersAcilanForSinav.Kod) FilterSettings="@(new FilterSettings{ Operator = Operator.Contains })" HeaderText="Ders Kodu"></GridColumn>
-                        <GridColumn Field=@nameof(DersAcilanForSinav.Ad)  FilterSettings="@(new FilterSettings{ Operator = Operator.Contains })" HeaderText="Ders Adı"></GridColumn>
-                        <GridColumn Field="AkademisyenAd" HeaderText="Akademisyen"></GridColumn>
-                        <GridColumn AutoFit="true" Field=@nameof(DersAcilanForSinav.Sinif) HeaderText="Sinif"></GridColumn>
-                        <GridColumn AutoFit="true" Field=@nameof(DersAcilanForSinav.Zorunlu) DisplayAsCheckBox="true" HeaderText="Z"></GridColumn>
-                        <GridColumn AutoFit="true" Field=@nameof(DersAcilanForSinav.DersKayitCount) HeaderText="Ö.Sayı"></GridColumn>
-                        @*<GridColumn Field="DersKayits@odata.count" HeaderText="Ö.Sayı"></GridColumn>*@
-                        <GridColumn>
-                            <GridCommandColumns>
-                                <GridCommandColumn Type="CommandButtonType.None" Title="Tanımlı Sınavlar" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowDown", CssClass="e-flat" })"></GridCommandColumn>
-                            </GridCommandColumns>
-                        </GridColumn>
-                    </GridColumns>
+                <GridColumns>
+                    <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
+                    <GridColumn Visible="false" Field=@nameof(DersAcilanForSinav.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(DersAcilanForSinav.Kod) FilterSettings="@(new FilterSettings{ Operator = Operator.Contains })" HeaderText="Ders Kodu"></GridColumn>
+                    <GridColumn Field=@nameof(DersAcilanForSinav.Ad) FilterSettings="@(new FilterSettings{ Operator = Operator.Contains })" HeaderText="Ders Adı"></GridColumn>
+                    <GridColumn Field="AkademisyenAd" HeaderText="Akademisyen"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(DersAcilanForSinav.Sinif) HeaderText="Sinif"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(DersAcilanForSinav.Sube) HeaderText="Şube"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(DersAcilanForSinav.Zorunlu) DisplayAsCheckBox="true" HeaderText="Z"></GridColumn>
+                    <GridColumn AutoFit="true" Field=@nameof(DersAcilanForSinav.DersKayitCount) HeaderText="Ö.Sayı"></GridColumn>
+                    @*<GridColumn Field="DersKayits@odata.count" HeaderText="Ö.Sayı"></GridColumn>*@
+                    <GridColumn>
+                        <GridCommandColumns>
+                            <GridCommandColumn Type="CommandButtonType.None" Title="Tanımlı Sınavlar" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowDown", CssClass="e-flat" })"></GridCommandColumn>
+                        </GridCommandColumns>
+                    </GridColumn>
+                </GridColumns>
                 </SfGrid>
                 @*}*@
                 @*<SfButton OnClick="TopluButOlustur" CssClass="e-success">Seçilen Derslerin Bütlerini Oluştur.</SfButton>*@
@@ -121,18 +122,19 @@ else
                                             <div class="col-12 pb-2">
                                                 <div class="form-row">
                                                     <label class="col-md-3 col-form-label" for="SinavTipId">Sinav Tip</label>
-                                                    <SfDropDownList @ref="sinavTipDrop" ID="SinavTipId" CssClass="form-control col-sm-9" TValue="int?" @bind-Value="@(sinavInfo.SinavTipId)" TItem="SinavTipDto" Index="0" DataSource="@sinavTipDtos">
+                                                    <SfDropDownList @ref="sinavTipDrop" ID="SinavTipId" CssClass="col-sm-9" TValue="int?" @bind-Value="@(sinavInfo.SinavTipId)" TItem="SinavTipDto" DataSource="@sinavTipDtos">
                                                         <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
                                                         <DropDownListEvents TValue="int?" TItem="SinavTipDto" ValueChange="SinavTipHandler"></DropDownListEvents>
                                                     </SfDropDownList>
                                                     <label class="col-md-3 col-form-label" for="SinavTurId">Sinav Tur</label>
-                                                    <SfDropDownList Enabled="false" ID="SinavTurId" CssClass="form-control col-sm-9" @bind-Value="@(sinavInfo.SinavTurId)" TValue="int?" TItem="SinavTurDto" Index="0" DataSource="@sinavTurDtos">
+                                                    <SfDropDownList Enabled="false" ID="SinavTurId" CssClass="col-sm-9" @bind-Value="@(sinavInfo.SinavTurId)" TValue="int?" TItem="SinavTurDto" Index="0" DataSource="@sinavTurDtos">
                                                         <DropDownListFieldSettings Value="Id" Text="Ad"></DropDownListFieldSettings>
                                                     </SfDropDownList>
                                                     <label class="col-md-3 col-form-label" for="EtkiOran">EtkiOran (%)</label>
-                                                    <SfNumericTextBox Enabled="@butEnabled" CssClass="form-control col-sm-9" ID="EtkiOran" Min="0" Max="100" @bind-Value="@(sinavInfo.EtkiOran)" TValue="int?" Format=n0></SfNumericTextBox>
+                                                    <SfNumericTextBox Enabled="@butEnabled" CssClass="col-sm-9" ID="EtkiOran" Min="0" Max="100" @bind-Value="@(sinavInfo.EtkiOran)" TValue="int?" Format=n0></SfNumericTextBox>
                                                     @*<label class="col-md-3 col-form-label" for="Tarih">Zaman</label>
-                                                        <SfDateTimePicker CssClass="form-control col-sm-9" ID="Tarih" TValue="DateTime?" @bind-Value="@(sinavInfo.Tarih)" Placeholder="Lütfen bir tarih seçiniz."></SfDateTimePicker>*@
+        <SfDateTimePicker CssClass="form-control col-sm-9" ID="Tarih" TValue="DateTime?" @bind-Value="@(sinavInfo.Tarih)" Placeholder="Lütfen bir tarih seçiniz."></SfDateTimePicker>*@
+
                                                 </div>
                                             </div>
 

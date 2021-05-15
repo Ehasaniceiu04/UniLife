@@ -674,7 +674,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
 
         SfDropDownList<int?, SinavTipDto> sinavTipDrop;
-        SinavDto sinavInfo = new SinavDto();
+        SinavDto sinavInfo;//= new SinavDto();
         bool butEnabled = true;
         async Task SinavTipHandler(ChangeEventArgs<int?, SinavTipDto> args)
         {

@@ -115,8 +115,15 @@ namespace UniLife.Server.Controllers
             => ModelState.IsValid ?
                 await _SinavManager.Yayinla(sinavId) :
                 new ApiResponse(Status400BadRequest, "Sinav is Invalid");
-        
 
+
+        [HttpGet]
+        [Route("GetSinavlarByDersAcilanId/{dersAcilanId}")]
+        [Authorize(Permissions.Sinav.Read)]
+        public async Task<ApiResponse> GetSinavlarByDersAcilanId(int dersAcilanId)
+            => ModelState.IsValid ?
+                await _SinavManager.GetWhere(x=>x.DersAcilanId== dersAcilanId) :
+                new ApiResponse(Status400BadRequest, "dersAcilanId is Invalid");
 
     }
 }

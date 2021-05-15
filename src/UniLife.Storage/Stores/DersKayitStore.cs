@@ -12,6 +12,7 @@ using System.IO;
 using System;
 using UniLife.Shared.Helpers;
 using UniLife.Shared.Dto;
+using AutoMapper.Internal;
 
 namespace UniLife.Storage.Stores
 {
@@ -106,6 +107,9 @@ namespace UniLife.Storage.Stores
                     }
                 }
             }
+
+            existDersKayits.ForAll(x => x.IsOnayli = true);
+            _db.DersKayits.UpdateRange(existDersKayits);
 
             _db.DersKayits.AddRange(dersKayits);
             await _db.SaveChangesAsync(CancellationToken.None);

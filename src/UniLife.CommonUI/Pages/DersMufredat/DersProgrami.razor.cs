@@ -476,11 +476,11 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         }
         public async Task CommandClickHandlerSinav(Syncfusion.Blazor.Grids.CommandClickEventArgs<SinavDto> args)
         {
-            if (args.CommandColumn.Title == "Tanımlı Ders Programları")
+            if (args.CommandColumn.Title == "Tanımlı Sinav Programları")
             {
                 //SinaviID yi derslikrezerver e yazıcaz. dersAcilanId Zorunlulana onu kaldıracaz. impact test
 
-                string oDataQuery = $"odata/DerslikRezervs?$expand=ResourceData($select=Id,Ad)&$filter=DersAcilanId eq {args.RowData.Id}";
+                string oDataQuery = $"odata/DerslikRezervs?$expand=ResourceData($select=Id,Ad)&$filter=SinavId eq {args.RowData.Id}";
                 OData<DerslikRezervDto> apiResponse = await Http.GetFromJsonAsync<OData<DerslikRezervDto>>(oDataQuery);
                 SecDrsPrgDtos = apiResponse.Value;
 

@@ -414,6 +414,14 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             }
             else
             {
+                ApiResponseDto<List<SinavDto>> apiResponse = await Http.GetFromJsonAsync<ApiResponseDto<List<SinavDto>>>($"api/Sinav/GetSinavlarByDersAcilanId/{selectedDersAcilanId}");
+
+                if (apiResponse.Result.Count>0)
+                {
+                    isUyariOpen = true;
+                    dialogUyariText = "Seçilmiş dersin tanımlı sınavları var. Bu ders şubelendirilemez.";
+                    return;
+                }
                 OgrenciDtos = new List<OgrenciDto>();
                 DersSubeDtos = new List<DersAcilanDto>();
                 SubeliDersAcilan = new List<DersAcilanDto>();

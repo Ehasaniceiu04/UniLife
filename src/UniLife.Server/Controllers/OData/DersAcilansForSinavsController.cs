@@ -33,6 +33,7 @@ namespace UniLife.Server.Controllers
                                  Kod = da.Kod,
                                  Ad = da.Ad,
                                  Sinif = da.Sinif,
+                                 Sube=da.Sube,
                                  Zorunlu = da.Zorunlu,
                                  AkademisyenAd = a.Ad,
                                  DersKayitCount = cCount,

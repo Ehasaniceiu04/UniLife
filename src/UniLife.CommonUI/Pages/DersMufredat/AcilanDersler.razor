@@ -262,6 +262,7 @@
                 <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Kredi) HeaderText="Kredi"></GridColumn>
                 <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Akts) HeaderText="Akts"></GridColumn>
                 <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
+                <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.Sube) HeaderText="Şube"></GridColumn>
                 <GridColumn AutoFit="true" Field=@nameof(DersAcilanDto.AltKota) HeaderText="Alt-Bol-Top">
                     <Template>
                         @{
@@ -278,7 +279,7 @@
                     </FilterTemplate>
                 </GridColumn>
                 @*<GridColumn Field=@nameof(DersAcilanDto.ProgramId) EditType="EditType.DropDownEdit" HeaderText="Program" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@programDtos" Width="150"></GridColumn>
-                    <GridColumn Field=@nameof(DersAcilanDto.AkademisyenId) HeaderText="Öğrt Görev" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@akademisyenDtos" Width="150"></GridColumn>*@
+        <GridColumn Field=@nameof(DersAcilanDto.AkademisyenId) HeaderText="Öğrt Görev" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@akademisyenDtos" Width="150"></GridColumn>*@
                 <GridColumn AutoFit="true" Field="Donem.Ad" HeaderText="Donem"></GridColumn>
                 <GridColumn AutoFit="true" Field="Program.Ad" HeaderText="Program"></GridColumn>
                 <GridColumn Visible="false" Field="Bolum.Ad" HeaderText="Bölüm"></GridColumn>
@@ -287,22 +288,22 @@
                 <GridColumn Visible="false" Field=@nameof(DersAcilanDto.DersDilId) HeaderText="DersDilId"></GridColumn>
                 <GridColumn AutoFit="true" Field="Akademisyen.Ad" HeaderText="Akademisyen">
                     @*<Template>
-                            @{
-                                DersAcilanDto dersAcInfo = (context as DersAcilanDto);
-                                if (dersAcInfo.Akademisyen != null)
-                                {
-                                    <div>
-                                        <p style="margin-bottom: 0px;">@(dersAcInfo.Akademisyen.Ad) <SfButton IconCss="e-icons e-Resource" EnableRtl="true" OnClick="@(() =>AkademisyenAta(dersAcInfo.Id))" CssClass="e-flat" IsPrimary="true"></SfButton></p>
+                @{
+                    DersAcilanDto dersAcInfo = (context as DersAcilanDto);
+                    if (dersAcInfo.Akademisyen != null)
+                    {
+                        <div>
+                            <p style="margin-bottom: 0px;">@(dersAcInfo.Akademisyen.Ad) <SfButton IconCss="e-icons e-Resource" EnableRtl="true" OnClick="@(() =>AkademisyenAta(dersAcInfo.Id))" CssClass="e-flat" IsPrimary="true"></SfButton></p>
 
-                                    </div>
+                        </div>
 
-                                }
-                                else
-                                {
-                                    <SfButton IconCss="e-icons e-Resource" EnableRtl="true" OnClick="@(() =>AkademisyenAta(dersAcInfo.Id))" CssClass="e-flat" Content="Ekle" IsPrimary="true"></SfButton>
-                                }
-                            }
-                        </Template>*@
+                    }
+                    else
+                    {
+                        <SfButton IconCss="e-icons e-Resource" EnableRtl="true" OnClick="@(() =>AkademisyenAta(dersAcInfo.Id))" CssClass="e-flat" Content="Ekle" IsPrimary="true"></SfButton>
+                    }
+                }
+            </Template>*@
                 </GridColumn>
                 <GridColumn AutoFit="true" Width="200" AllowFiltering="false">
                     <GridCommandColumns>

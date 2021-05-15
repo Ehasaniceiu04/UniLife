@@ -354,6 +354,7 @@ namespace UniLife.CommonUI.Pages.Admin.OgrenciIslem.OgrenciIslemTabs
             {
                 dialog = true;
                 dialogText = $"'{dersAcilanDto.Kod}' kodlu, '{dersAcilanDto.Ad}' isimli ders zaten ekli!";
+                return;
             }
 
             DersKayitDtos.Add(dersAcilanDto);
