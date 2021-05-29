@@ -44,6 +44,18 @@ namespace UniLife.Shared.Dto.Definitions
             new KeyValueDto() { Ad = "Katılmadı", Id = 2 },
             new KeyValueDto() { Ad = "Devamsız", Id = 3 }
         };
+        public static List<KeyValueDto> SinavTurLoadedDtos { get; } = new List<KeyValueDto>
+        {
+            new KeyValueDto() { Ad = "Yeni Sınav", Id = 1 },
+            new KeyValueDto() { Ad = "Mazeret Sınavı", Id = 2 }
+        };
+        public static List<KeyValueDto> SinavTipLoadedDtos { get; } = new List<KeyValueDto>
+        {
+            new KeyValueDto() { Ad = "Ara", Id = 1 },
+            new KeyValueDto() { Ad = "Final", Id = 2 },
+            new KeyValueDto() { Ad = "Büt", Id = 3 },
+            new KeyValueDto() { Ad = "Mazeret", Id = 4 }
+        };
 
         public static List<KeyValueDto> CapYandal { get; } = new List<KeyValueDto>
         {

@@ -711,7 +711,32 @@ namespace UniLife.Storage.Stores
                                         AkademisyenId = da.AkademisyenId
                                     }).ToListAsync();
 
-            return dersSonucs;
+            //sınavları göstermek için;
+            var sinavSonucs = await (from sk in _db.SinavKayits.Where(x => x.OgrenciId == ogrenciId)
+                                     join s in _db.Sinavs on sk.SinavId equals s.Id
+                                     select new DersNotHesaplamaDto
+                                     {
+                                         Id = s.Id,
+                                         DersAcilanId = s.DersAcilanId,
+                                         SinavTipId = s.SinavTipId,
+                                         OgrNot = sk.OgrNot,
+                                         SEtkiOran = s.EtkiOran,
+                                         MazeretiSinavKayitId = sk.MazeretiSinavKayitId,
+                                         MazeretiSinavId = s.MazeretiSinavId
+                                     }).ToListAsync();
+
+            foreach (var item in dersSonucs)
+            {
+                var dersOgrencisSinavs = sinavSonucs.Where(x => x.DersAcilanId == item.DersAcilanId);
+
+                item.SinavNotlari = String.Join(" ", dersOgrencisSinavs.Select(x => (SinavTipEnum)x.SinavTipId + ":" + x.OgrNot));
+            }
+
+            return _autoMapper.Map<List<OgrenciDerslerDto>>(dersSonucs);
+
+
+
+            //return dersSonucs;
         }
 
         public async Task<List<DersAcilanDto>> GetDersAcilansByMufredat(int mufredatId, int donemId, int? sinif)

@@ -11,6 +11,7 @@ namespace UniLife.Shared.Dto.Definitions
         public int DersAcilanId { get; set; }
         public int DersKayitId { get; set; }
         public string SinavAd { get; set; }
+        public int SinavTipId { get; set; }
         public double OgrNot { get; set; }
         public double SEtkiOran { get; set; }
         public long? MazeretiSinavKayitId { get; set; }

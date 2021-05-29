@@ -85,12 +85,13 @@ else
             <GridColumn Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kod"></GridColumn>
             <GridColumn Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Ad"></GridColumn>
             <GridColumn Field=@nameof(DersAcilanDto.Sinif) HeaderText="Sinif"></GridColumn>
+            <GridColumn Field=@nameof(DersAcilanDto.Sube) HeaderText="Şube"></GridColumn>
             <GridColumn Field="Donem.Ad" HeaderText="Donem"></GridColumn>
             @*<GridColumn>
-                    <GridCommandColumns>
-                        <GridCommandColumn Type="CommandButtonType.None" Title="Ders Sınavları" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
-                    </GridCommandColumns>
-                </GridColumn>*@
+            <GridCommandColumns>
+                <GridCommandColumn Type="CommandButtonType.None" Title="Ders Sınavları" ButtonOption="@(new CommandButtonOptions() { IconCss = " e-icons e-DoubleArrowRight", CssClass="e-flat" })"></GridCommandColumn>
+            </GridCommandColumns>
+        </GridColumn>*@
         </GridColumns>
         @*<GridGroupSettings Columns=@Template>
                 <CaptionTemplate>
