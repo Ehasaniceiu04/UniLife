@@ -3,7 +3,7 @@
 
 @attribute [Authorize(Roles = "Administrator,Personel")]
 
-<SfFileManager AllowMultiSelection="true" ShowHiddenItems="true">
+<SfFileManager AllowMultiSelection="true" ShowHiddenItems="true" TValue="FileManagerDirectoryContent">
     <FileManagerAjaxSettings Url=@($"/uploapi/OgrFile/FileOperations?ogr={_OgrenciDto.OgrNo}")
                              UploadUrl=@($"/uploapi/OgrFile/Upload?ogr={_OgrenciDto.OgrNo}")
                              DownloadUrl=@($"/uploapi/OgrFile/Download?ogr={_OgrenciDto.OgrNo}")

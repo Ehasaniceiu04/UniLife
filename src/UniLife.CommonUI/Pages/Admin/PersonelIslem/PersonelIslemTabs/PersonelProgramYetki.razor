@@ -116,19 +116,19 @@
         }
     }
 
-    public List<double> RowIndexes = new List<double>();
+    public double[] RowIndexes;
 
     public void OnDataBound()
     {
         ProgramGrid.SelectRows(RowIndexes);
-        RowIndexes = new List<double>();
+        //RowIndexes = new List<double>();
     }
     public async Task OnRowDataBound(RowDataBoundEventArgs<UserProgramYetkiDto> args)
     {
         if (args.Data.Id != 0)
         {
             var RowIndexValue = await ProgramGrid.GetRowIndexByPrimaryKey(args.Data.ProgramId);
-            RowIndexes.Add(RowIndexValue);
+            RowIndexes.Append(RowIndexValue);
         }
     }
 }

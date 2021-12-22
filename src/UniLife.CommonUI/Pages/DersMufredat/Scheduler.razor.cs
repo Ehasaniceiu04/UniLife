@@ -312,7 +312,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         public void OnActionBegin(Syncfusion.Blazor.Schedule.ActionEventArgs<DerslikRezervDto> args)
         {
-            if (args.RequestType == "eventCreate")   //To check for request type is event delete
+            if (args.ActionType == ActionType.EventCreate)   //To check for request type is event delete
             {
                 if (args.AddedRecords[0].Subject == " ")
                 {
@@ -340,7 +340,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
 
         public async Task OnActionCompleted(Syncfusion.Blazor.Schedule.ActionEventArgs<DerslikRezervDto> args)
         {
-            if (args.RequestType == "eventCreated")
+            if (args.ActionType == ActionType.EventCreate)
             {
                 args.AddedRecords[0].DersAcilanId = SelectedDersAcilanGridRow.DersAcilanId;
                 args.AddedRecords[0].IsSinav = isSinav;
@@ -363,7 +363,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                     matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Rezervasyon oluşturma hatası!");
                 }
             }
-            else if (args.RequestType == "eventChanged")
+            else if (args.ActionType == ActionType.EventChange)
             {
                 //args.ChangedRecords[0].DersAcilanId = 2;
                 ApiResponseDto apiResponse = await Http.PutJsonAsync<ApiResponseDto>("api/derslikrezerv", args.ChangedRecords.FirstOrDefault());
@@ -379,7 +379,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
                     matToaster.Add(apiResponse.Message + " : " + apiResponse.StatusCode, MatToastType.Danger, "Rezervasyon düzenleme hatası!");
                 }
             }
-            else if (args.RequestType == "eventRemoved")
+            else if (args.ActionType == ActionType.EventRemove)
             {
                 var response = await Http.DeleteAsync("api/derslikrezerv/" + args.DeletedRecords.FirstOrDefault().Id);
                 if (response.StatusCode == (System.Net.HttpStatusCode)Microsoft.AspNetCore.Http.StatusCodes.Status200OK)

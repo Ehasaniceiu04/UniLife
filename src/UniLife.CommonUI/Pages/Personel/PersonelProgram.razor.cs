@@ -11,6 +11,7 @@ using UniLife.CommonUI.Extensions;
 using UniLife.Shared.DataModels;
 using UniLife.Shared.Dto;
 using UniLife.Shared.Dto.Definitions;
+using Syncfusion.Blazor.Schedule;
 
 namespace UniLife.CommonUI.Pages.Personel
 {
@@ -32,14 +33,14 @@ namespace UniLife.CommonUI.Pages.Personel
 
         public async Task OnActionCompleted(Syncfusion.Blazor.Schedule.ActionEventArgs<PersonelTaskDto> args)
         {
-            if (args.RequestType == "dateNavigate")
+            if (args.ActionType == ActionType.DateNavigate)
             {
                 string odataRezervQuery = $"odata/personeltasks?$filter=(StartTime ge {CurrentDate.AddMonths(-1).ToString("s") + "Z"}) and (EndTime le {CurrentDate.AddMonths(1).ToString("s") + "Z"})";
                 OData<PersonelTaskDto> apiResponse = await Http.GetFromJsonAsync<OData<PersonelTaskDto>>(odataRezervQuery);
                 personelTaskDtos = apiResponse.Value;
                 
             }
-            if (args.RequestType == "eventCreated")
+            if (args.ActionType == ActionType.EventCreate)
             {
                 int selectedId = args.AddedRecords[0].Id;
                 args.AddedRecords[0].Id = 0;
@@ -69,7 +70,7 @@ namespace UniLife.CommonUI.Pages.Personel
                     matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Hata oluştu!");
                 }
             }
-            else if (args.RequestType == "eventChanged")
+            else if (args.ActionType == ActionType.EventChange)
             {
                 try
                 {
@@ -86,7 +87,7 @@ namespace UniLife.CommonUI.Pages.Personel
                     matToaster.Add(ex.GetBaseException().Message, MatToastType.Danger, "Olay düzenleme hatası!");
                 }
             }
-            else if (args.RequestType == "eventRemoved")
+            else if (args.ActionType == ActionType.EventRemove)
             {
                 var response = await Http.DeleteAsync("api/personeltask/" + args.DeletedRecords.FirstOrDefault().Id);
                 if (response.StatusCode == (System.Net.HttpStatusCode)Microsoft.AspNetCore.Http.StatusCodes.Status200OK)

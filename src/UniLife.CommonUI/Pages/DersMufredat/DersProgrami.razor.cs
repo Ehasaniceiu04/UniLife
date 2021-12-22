@@ -322,7 +322,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
         {
             if (!isSinav)
             {
-                if (args.RequestType == "eventCreate")   
+                if (args.ActionType == ActionType.EventCreate)   
                 {
                     if (args.AddedRecords[0].Subject == " ")
                     {
@@ -344,7 +344,7 @@ namespace UniLife.CommonUI.Pages.DersMufredat
             }
             else
             {
-                if (args.RequestType == "eventCreate") 
+                if (args.ActionType == ActionType.EventCreate) 
                 {
                     if (args.AddedRecords[0].Subject == " ")
                     {

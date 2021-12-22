@@ -145,8 +145,8 @@ else
                                 <GridColumns>
                                     <GridColumn Visible="false" Field=@nameof(SinavDto.Id) HeaderText="Ders ID" IsIdentity="true" IsPrimaryKey="true" TextAlign="TextAlign.Left"></GridColumn>
                                     <GridColumn Field=@nameof(SinavDto.Tarih) HeaderText="Tarih"></GridColumn>
-                                    <GridColumn Field=@nameof(SinavDto.SinavTipId) ValidationRules="@(new ValidationRules{ Required=true})" HeaderText="Tipi" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@sinavTipDtos"></GridColumn>
-                                    <GridColumn Field=@nameof(SinavDto.SinavTurId) ValidationRules="@(new ValidationRules{ Required=true})" HeaderText="Türü" ForeignKeyValue="Ad" ForeignKeyField="Id" DataSource="@sinavTurDtos"></GridColumn>
+                                    <GridForeignColumn  Field=@nameof(SinavDto.SinavTipId) ValidationRules="@(new ValidationRules{ Required=true})" HeaderText="Tipi" ForeignKeyValue="Ad" ForeignKeyField="Id" ForeignDataSource="@sinavTipDtos"></GridForeignColumn >
+                                    <GridForeignColumn  Field=@nameof(SinavDto.SinavTurId) ValidationRules="@(new ValidationRules{ Required=true})" HeaderText="Türü" ForeignKeyValue="Ad" ForeignKeyField="Id" ForeignDataSource="@sinavTurDtos"></GridForeignColumn >
                                     @*<GridColumn Field=@nameof(SinavDto.KisaAd) HeaderText="Kısa Ad"></GridColumn>*@
                                     @*<GridColumn Field=@nameof(SinavDto.SablonAd) HeaderText="Ad Şablon"></GridColumn>*@
                                     @*<GridColumn Visible="false" Field=@nameof(SinavDto.IsYayinli)></GridColumn>*@

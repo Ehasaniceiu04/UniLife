@@ -255,7 +255,7 @@
                 </GridSortColumns>
             </GridSortSettings>
             <GridColumns>
-                <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Açılan Ders ID" Edit="false" AllowEditing="false" TextAlign="TextAlign.Left"></GridColumn>
+                <GridColumn Visible="false" Field=@nameof(DersAcilanDto.Id) HeaderText="Açılan Ders ID" AllowEditing="false" TextAlign="TextAlign.Left"></GridColumn>
                 <GridColumn AutoFit="true" FilterSettings="@(new FilterSettings{ Operator = Operator.StartsWith })" Field=@nameof(DersAcilanDto.Kod) HeaderText="Ders Kod"></GridColumn>
                 <GridColumn AutoFit="true" FilterSettings="@(new FilterSettings{ Operator = Operator.Contains })" Field=@nameof(DersAcilanDto.Ad) HeaderText="Ders Ad" ValidationRules="@(new ValidationRules{ Required=true})"></GridColumn>
                 @*<GridColumn Field=@nameof(DersAcilanDto.Kredi) HeaderText="T+U TODO"></GridColumn>*@

@@ -38,7 +38,7 @@ else
                             <div class="server-action-menu">
                                 <div class="form-row form-group form-inline ">
                                     <label class="col-sm-2" for="OgrNo">Öğrenci NO:</label>
-                                    <SfNumericTextBox @bind-Value="@_OgrenciDto.OgrNo" Enabled="false" ID="OgrNo" CssClass="col-sm-4"></SfNumericTextBox>
+                                    <SfNumericTextBox @bind-Value="@_OgrenciDto.OgrNo" Enabled="false" ID="OgrNo" CssClass="col-sm-4" ShowSpinButton="false"></SfNumericTextBox>
                                     <label class="col-sm-2" for="durum">Durum:</label>
                                     <SfCheckBox ID="durum" CssClass="col-sm-4" @bind-Checked="@_OgrenciDto.Durum"></SfCheckBox>
                                     <label class="col-sm-2" for="TCKN">TCKN:</label>
